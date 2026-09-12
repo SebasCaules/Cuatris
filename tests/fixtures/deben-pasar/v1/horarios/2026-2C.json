@@ -1,0 +1,72 @@
+{
+  "contrato": "1.0.0",
+  "cursos": [
+    {
+      "codigo": "93.18",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "001R"
+              ],
+              "desde": "14:00",
+              "dia": "lunes",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "201T"
+              ],
+              "desde": "14:00",
+              "dia": "miercoles",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "sdt"
+            },
+            {
+              "aulas": [
+                "203R"
+              ],
+              "desde": "14:00",
+              "dia": "jueves",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 48
+          },
+          "docentes": [
+            "Cabana, Adriana Elena",
+            "Peña, Nelly Haydee"
+          ],
+          "id": "A",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 48
+          }
+        }
+      ],
+      "departamento": "Ciencias Exactas y Naturales",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Álgebra Lineal"
+    }
+  ],
+  "fuente": {
+    "capturado": "2026-09-09",
+    "sistema": "sga"
+  },
+  "periodo": {
+    "anio": 2026,
+    "cuatrimestre": "2C",
+    "desde": "2026-07-26",
+    "hasta": "2026-12-31",
+    "id": "2026-2C"
+  }
+}

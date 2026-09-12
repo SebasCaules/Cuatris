@@ -42,8 +42,10 @@ Referencias, solo la parte que se indique en tu tarea:
    otro archivo, descríbelo en `notes` y no lo toques.
 3. **Español neutro** (tú/usted) en documentación, comentarios, mensajes de error y nombres
    de CLI (`cuatris validar`, no `validate`). Identificadores de código en español, sin
-   acentos (`cargar_indice`, `parsearComisiones`). Los textos de la interfaz siguen el mockup
-   tal cual (están en voseo a propósito).
+   acentos (`cargar_indice`, `parsearComisiones`). **Los textos de la interfaz** —los del mockup y
+   los nuevos que haga falta escribir— van en el registro del mockup (voseo, dirigido a
+   estudiantes del ITBA); un texto de interfaz en tú/usted es una inconsistencia, no una
+   virtud.
 4. **Nada de credenciales**: ni en código, ni en tests, ni en fixtures. Nada de llamadas al
    SGA real en tests.
 5. **Falla ruidosamente**: un parser que encuentra algo que no reconoce lanza una excepción

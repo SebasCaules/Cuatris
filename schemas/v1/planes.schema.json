@@ -1,0 +1,229 @@
+{
+  "$id": "https://sebascaules.github.io/Cuatris/schemas/v1/planes.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "definitions": {
+    "ciclo": {
+      "description": "Ciclo al que pertenece la materia.",
+      "enum": [
+        "basico",
+        "profesional",
+        "electiva"
+      ],
+      "type": "string"
+    },
+    "materia": {
+      "additionalProperties": false,
+      "description": "Una materia del plan, con sus correlativas y su ciclo.",
+      "properties": {
+        "ciclo": {
+          "$ref": "#/definitions/ciclo"
+        },
+        "codigo": {
+          "description": "Codigo de materia del ITBA, siempre string (por ejemplo «93.18»).",
+          "pattern": "^\\d{2}\\.\\d{2}$",
+          "type": "string"
+        },
+        "correlativas": {
+          "description": "Codigos que hay que tener antes; todos existen en materias[].",
+          "items": {
+            "description": "Codigo de materia del ITBA, siempre string (por ejemplo «93.18»).",
+            "pattern": "^\\d{2}\\.\\d{2}$",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "creditos": {
+          "description": "Creditos que otorga; cero es valido y sigue siendo un item del titulo.",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "creditos_requeridos": {
+          "description": "Creditos aprobados necesarios para poder cursarla.",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "cuatrimestre_sugerido": {
+          "description": "Cuatrimestre sugerido 1-10 para las obligatorias; null para las electivas.",
+          "maximum": 10,
+          "minimum": 1,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "minors": {
+          "description": "Siglas de los minors a los que suma la electiva; vacio en las obligatorias.",
+          "items": {
+            "$ref": "#/definitions/sigla_minor"
+          },
+          "type": "array"
+        },
+        "nombre": {
+          "description": "Nombre de la materia segun el listado del SGA.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "vigente": {
+          "description": "Si la materia sigue vigente en el plan o solo existe en el SGA.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "codigo",
+        "nombre",
+        "creditos",
+        "ciclo",
+        "cuatrimestre_sugerido",
+        "creditos_requeridos",
+        "correlativas",
+        "minors",
+        "vigente"
+      ],
+      "type": "object"
+    },
+    "minor": {
+      "additionalProperties": false,
+      "description": "Un minor: un conjunto de electivas con un minimo de creditos.",
+      "properties": {
+        "creditos_minimos": {
+          "description": "Creditos minimos del minor para que se considere cumplido.",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "nombre": {
+          "description": "Nombre completo del minor.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "sigla": {
+          "$ref": "#/definitions/sigla_minor"
+        }
+      },
+      "required": [
+        "sigla",
+        "nombre",
+        "creditos_minimos"
+      ],
+      "type": "object"
+    },
+    "sigla_minor": {
+      "description": "Sigla de un minor declarado en minors[].",
+      "pattern": "^[A-Z]{2,4}$",
+      "type": "string"
+    },
+    "titulo": {
+      "additionalProperties": false,
+      "description": "Un titulo del plan, con su exigencia de creditos e items.",
+      "properties": {
+        "creditos": {
+          "description": "Creditos aprobados que exige el titulo.",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "id": {
+          "description": "Identificador interno del titulo.",
+          "pattern": "^[a-z0-9_]+$",
+          "type": "string"
+        },
+        "nombre": {
+          "description": "Nombre del titulo tal como lo publica el SGA.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "requiere_ciclos": {
+          "description": "Ciclos cuyos items hay que aprobar por completo; opcional.",
+          "items": {
+            "$ref": "#/definitions/ciclo"
+          },
+          "type": "array"
+        },
+        "requiere_electivas": {
+          "description": "Creditos de electivas aprobadas que exige el titulo; opcional.",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "tipo": {
+          "description": "Si el titulo es intermedio o el principal de la carrera.",
+          "enum": [
+            "intermedio",
+            "principal"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "nombre",
+        "tipo",
+        "creditos"
+      ],
+      "type": "object"
+    }
+  },
+  "description": "Materias, correlativas, titulos y minors de un plan de estudios.",
+  "properties": {
+    "carrera": {
+      "description": "Nombre de la carrera a la que pertenece el plan.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "contrato": {
+      "description": "Version del contrato de datos, en SemVer.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "type": "string"
+    },
+    "electivas": {
+      "additionalProperties": false,
+      "description": "Exigencia global de electivas del plan.",
+      "properties": {
+        "creditos_requeridos": {
+          "description": "Creditos de materias electivas que hay que aprobar.",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "creditos_requeridos"
+      ],
+      "type": "object"
+    },
+    "materias": {
+      "description": "Materias del plan, obligatorias y electivas.",
+      "items": {
+        "$ref": "#/definitions/materia"
+      },
+      "type": "array"
+    },
+    "minors": {
+      "description": "Minors disponibles; no se llaman «orientaciones».",
+      "items": {
+        "$ref": "#/definitions/minor"
+      },
+      "type": "array"
+    },
+    "plan": {
+      "description": "Identificador del plan, por ejemplo «S10-Rev23».",
+      "pattern": "^[A-Za-z0-9.\\-]{1,32}$",
+      "type": "string"
+    },
+    "titulos": {
+      "description": "Titulos que otorga el plan, del intermedio al principal.",
+      "items": {
+        "$ref": "#/definitions/titulo"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "contrato",
+    "plan",
+    "carrera",
+    "titulos",
+    "electivas",
+    "minors",
+    "materias"
+  ],
+  "title": "Plan de estudios",
+  "type": "object"
+}

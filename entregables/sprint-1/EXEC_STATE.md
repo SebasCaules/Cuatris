@@ -33,19 +33,28 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 - **N0-5** Puntos de integración exclusivos del orquestador: `tools/pyproject.toml`,
   `tools/cuatris/cli.py` (registro de subcomandos ajenos), `README.md`, `.github/**`,
   `data/index.json`.
+- **N0-6** Créditos de 72.23 y 72.70: gana el Excel (6 y 3); el «1» del listado del SGA no es
+  plausible. Queda como `--creditos-decididos` explícito en el importador y en los tests.
+- **N0-7** Textos de la interfaz, incluidos los nuevos: en voseo como el mockup (finding
+  «Recargá en un rato» de W1.4 rechazado como defecto; ENV y CLAUDE.md aclarados).
+- **N0-8** `cli.py` con registro explícito `MODULOS_EXTERNOS` (un módulo = `AYUDA`,
+  `configurar`, `ejecutar`); errores de dominio con mensaje limpio salvo `--traceback`; un
+  archivo que no se puede abrir no aborta el lote. Cierra los dos findings medios de W1.1.
+- **N0-9** `vocabulario.json` solo con las sedes observadas en el material (`rectorado`,
+  `sdt`); `sdf` entra cuando aparezca en una captura.
 
 ## Pasos
 
 | Paso | Estado | Commit | Notas |
 |---|---|---|---|
 | F0 reconciliación, contrato, ENV, specs de la Ola 1 | DONE | — | este archivo |
-| F0 esqueleto del repo, `.venv`, `git init`, commit inicial | DOING | | |
-| Ola 1 · W1.1 contrato + validador C1/C2 | TODO | | |
-| Ola 1 · W1.2 plan + abreviaciones + vocabulario | TODO | | |
-| Ola 1 · W1.3 parsers SGA offline | TODO | | |
-| Ola 1 · W1.4 cascarón de la SPA | TODO | | |
-| Ola 1 · integración, gates, commit | TODO | | |
-| Ola 2 · C3 invariantes, scraper en vivo + instructivo, motor de dominio, shell de pantallas, workflows, index | TODO | | specs al cerrar la Ola 1 |
+| F0 esqueleto del repo, `.venv`, `git init`, commit inicial | DONE | 27a129e | MIT, CODEOWNERS, pyproject, conftest |
+| Ola 1 · W1.1 contrato + validador C1/C2 | DONE | ola-1 | VERDE (wf_9c4f0791-712) |
+| Ola 1 · W1.2 plan + abreviaciones + vocabulario | DONE | ola-1 | VERDE (wf_9c4f0791-712) |
+| Ola 1 · W1.3 parsers SGA offline | DONE | ola-1 | VERDE (wf_9c4f0791-712) |
+| Ola 1 · W1.4 cascarón de la SPA | DONE | ola-1 | VERDE (wf_9c4f0791-712) |
+| Ola 1 · integración, gates, commit | DONE | ola-1 | 172 tests Python, 62 tests app, validar/fmt/build verdes |
+| Ola 2 · W2.1 invariantes+index · W2.2 scraper vivo · W2.3 motor · W2.4 primitivas+carrusel+tipos · W2.5 workflows+vendor | TODO | | specs en `olas/ola-2/` |
 | Ola 3 · pantallas 13b, 13c, 13d, 13e, 13h, 13a, exportar/importar | TODO | | |
 | Ola 4 · datos reales (corrida del autor), deploy a Pages, auditoría final, smoke | TODO | | |
 
@@ -55,7 +64,12 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 |---|---|---|---|---|
 | S-01 | Parser de historia académica | app 13a | G-02 | cuando llegue la muestra |
 | S-02 | `no-plan.json` y código desconocido como error | validador C3 | G-06 | Sprint 2 |
-| S-03 | Generación de tipos TS desde schemas + test de equivalencia | app | G-08 | Ola 2 |
+| S-03 | Generación de tipos TS desde schemas + test de equivalencia | app | G-08 | Ola 2 (W2.4) |
+| S-04 | Regex de legajo demasiado estricta (`legajo nro. 58123` no se detecta) | triage C1 | W1.1 baja | Ola 4 (transversal) |
+| S-05 | Persistencia en localStorage que falla en silencio (cuota llena) | app estado | W1.4 baja | Ola 3 (pantalla de aviso) |
+| S-06 | Fixture 72.44 con fechas del período en vez de las de su captura (1C 2026) | fixtures | W1.1 baja | documentar en `docs/contrato.md` en Ola 4 |
+| S-07 | Datos de ejemplo de la app con una comisión recombinada de literales del contrato | app datos/ejemplo | W1.4 baja | reemplazar por un recorte de datos reales en Ola 4 |
+| S-08 | Unificar clases de error de la CLI bajo una base común | tools | W1.2 baja | Ola 4 |
 
 ## Veredicto final
 

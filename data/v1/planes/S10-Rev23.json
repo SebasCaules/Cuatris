@@ -1,0 +1,2237 @@
+{
+  "carrera": "Ingeniería en Informática",
+  "contrato": "1.0.0",
+  "electivas": {
+    "creditos_requeridos": 27
+  },
+  "materias": [
+    {
+      "ciclo": "basico",
+      "codigo": "31.08",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 1,
+      "minors": [],
+      "nombre": "Sistemas de Representación",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.03",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 1,
+      "minors": [],
+      "nombre": "Introducción a la Informática",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.26",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 1,
+      "minors": [],
+      "nombre": "Análisis Matemático I",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.58",
+      "correlativas": [],
+      "creditos": 9,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 1,
+      "minors": [],
+      "nombre": "Álgebra",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "94.24",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 1,
+      "minors": [],
+      "nombre": "Metodología del Aprendizaje",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.31",
+      "correlativas": [
+        "93.58",
+        "72.03"
+      ],
+      "creditos": 9,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 2,
+      "minors": [],
+      "nombre": "Programación Imperativa",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.28",
+      "correlativas": [
+        "93.58",
+        "93.26"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 2,
+      "minors": [],
+      "nombre": "Análisis Matemático II",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.41",
+      "correlativas": [
+        "93.26"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 2,
+      "minors": [],
+      "nombre": "Física I",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.59",
+      "correlativas": [
+        "93.58"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 2,
+      "minors": [],
+      "nombre": "Matemática Discreta",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "12.09",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 3,
+      "minors": [],
+      "nombre": "Química",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.32",
+      "correlativas": [
+        "72.31"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 3,
+      "minors": [],
+      "nombre": "Diseño y Procesamiento de Documentos XML",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.33",
+      "correlativas": [
+        "72.31"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 3,
+      "minors": [],
+      "nombre": "Programación Orientada a Objetos",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.35",
+      "correlativas": [
+        "93.58"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 3,
+      "minors": [],
+      "nombre": "Lógica Computacional",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.43",
+      "correlativas": [
+        "93.28",
+        "93.41"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 4,
+      "minors": [],
+      "nombre": "Física III",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.08",
+      "correlativas": [
+        "72.31"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 4,
+      "minors": [],
+      "nombre": "Arquitectura de Computadoras",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.34",
+      "correlativas": [
+        "93.59",
+        "72.33"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 4,
+      "minors": [],
+      "nombre": "Estructura de Datos y Algoritmos",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.24",
+      "correlativas": [
+        "93.28"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 4,
+      "minors": [],
+      "nombre": "Probabilidad y Estadística",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.42",
+      "correlativas": [
+        "93.28"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 3,
+      "minors": [],
+      "nombre": "Física II",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.11",
+      "correlativas": [
+        "72.08",
+        "72.34"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 5,
+      "minors": [],
+      "nombre": "Sistemas Operativos",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.35",
+      "correlativas": [
+        "72.33"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 5,
+      "minors": [],
+      "nombre": "Ingenieria de Software I",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.36",
+      "correlativas": [
+        "72.33",
+        "72.32"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 5,
+      "minors": [],
+      "nombre": "Interacción Hombre-Computadora (HCI)",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.37",
+      "correlativas": [
+        "72.34",
+        "93.35"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 5,
+      "minors": [],
+      "nombre": "Base de Datos I",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.07",
+      "correlativas": [
+        "72.11"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 6,
+      "minors": [],
+      "nombre": "Protocolos de Comunicación",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.38",
+      "correlativas": [
+        "72.11",
+        "72.37",
+        "72.36",
+        "72.35"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 6,
+      "minors": [],
+      "nombre": "Proyecto de Aplicaciones Web",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.39",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 6,
+      "minors": [],
+      "nombre": "Autómatas, Teoría de Lenguajes y Compiladores",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.07",
+      "correlativas": [
+        "93.28"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 6,
+      "minors": [],
+      "nombre": "Métodos Numéricos",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "94.21",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 6,
+      "minors": [],
+      "nombre": "Formación General I",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "94.51",
+      "correlativas": [],
+      "creditos": 0,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 6,
+      "minors": [],
+      "nombre": "Inglés I",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "61.23",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 120,
+      "cuatrimestre_sugerido": 7,
+      "minors": [],
+      "nombre": "Economía para Ingenieros",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "61.32",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 120,
+      "cuatrimestre_sugerido": 7,
+      "minors": [],
+      "nombre": "Derecho para Ingenieros",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.40",
+      "correlativas": [
+        "72.35"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 7,
+      "minors": [],
+      "nombre": "Ingenieria del Software II",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.41",
+      "correlativas": [
+        "72.11",
+        "72.37"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 7,
+      "minors": [],
+      "nombre": "Base de Datos II",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.42",
+      "correlativas": [
+        "72.07",
+        "72.37"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 7,
+      "minors": [],
+      "nombre": "Programación de Objetos Distribuidos",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "93.75",
+      "correlativas": [
+        "93.07"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 7,
+      "minors": [],
+      "nombre": "Métodos Numéricos Avanzados",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.25",
+      "correlativas": [
+        "72.34",
+        "93.07"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 140,
+      "cuatrimestre_sugerido": 8,
+      "minors": [],
+      "nombre": "Simulación de Sistemas",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.27",
+      "correlativas": [
+        "93.24",
+        "72.34"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 140,
+      "cuatrimestre_sugerido": 8,
+      "minors": [],
+      "nombre": "Sistemas de Inteligencia Artificial",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.43",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 8,
+      "minors": [],
+      "nombre": "Gestión de Proyectos Informáticos",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.44",
+      "correlativas": [
+        "72.07"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 8,
+      "minors": [],
+      "nombre": "Criptografía y Seguridad",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "12.83",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 140,
+      "cuatrimestre_sugerido": 9,
+      "minors": [],
+      "nombre": "Seguridad Ocupacional y Ambiental",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.20",
+      "correlativas": [
+        "72.07"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 9,
+      "minors": [],
+      "nombre": "Redes de Información",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.45",
+      "correlativas": [],
+      "creditos": 12,
+      "creditos_requeridos": 160,
+      "cuatrimestre_sugerido": 9,
+      "minors": [],
+      "nombre": "Proyecto Final",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.98",
+      "correlativas": [],
+      "creditos": 0,
+      "creditos_requeridos": 192,
+      "cuatrimestre_sugerido": 10,
+      "minors": [],
+      "nombre": "Práctica Laboral",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "94.23",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 168,
+      "cuatrimestre_sugerido": 10,
+      "minors": [],
+      "nombre": "Formación General III",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "94.52",
+      "correlativas": [
+        "94.51"
+      ],
+      "creditos": 0,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 10,
+      "minors": [],
+      "nombre": "Inglés II",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "10.07",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 96,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Creatividad",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "10.09",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Formación para Emprendedores",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "11.36",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 192,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Innovación y Competitividad",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "11.83",
+      "correlativas": [
+        "93.24"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Gestión de Operaciones",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "16.04",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Neurociencias y Desarrollo Productivo",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "16.50",
+      "correlativas": [
+        "72.37"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "Introducción a la Bioinformática",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "16.57",
+      "correlativas": [
+        "72.08"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Robótica Bioinspirada",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "16.68",
+      "correlativas": [
+        "93.75"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Señales y Sistemas",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "16.82",
+      "correlativas": [
+        "93.28",
+        "72.34",
+        "93.24"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Neurociencia Computacional",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "16.95",
+      "correlativas": [],
+      "creditos": 1,
+      "creditos_requeridos": 144,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Startups basadas en ciencia",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "22.09",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Fundamentos Electrónicos de la Informática",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "22.48",
+      "correlativas": [
+        "93.75"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IRV"
+      ],
+      "nombre": "Procesamiento de Imágenes",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "23.15",
+      "correlativas": [
+        "93.58",
+        "72.34"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA",
+        "IRV"
+      ],
+      "nombre": "Realidad Virtual",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "25.04",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 144,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "ARQ"
+      ],
+      "nombre": "Computación Cuántica",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "25.27",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 144,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Sistemas Embebidos",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "48.02",
+      "correlativas": [],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "AI: Data Management Course & Digital Transformation",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "61.08",
+      "correlativas": [
+        "61.32"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Derecho Digital",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "61.11",
+      "correlativas": [
+        "61.32"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Derecho Laboral y Seguridad Social en la Empresa",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "61.13",
+      "correlativas": [
+        "61.32"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Práctica Contractual",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "61.16",
+      "correlativas": [
+        "61.23"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Introducción a las Finanzas",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "61.50",
+      "correlativas": [
+        "61.23"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Finanzas de la Empresa",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "68.99",
+      "correlativas": [],
+      "creditos": 1,
+      "creditos_requeridos": 144,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Introducción a la Ciencia de Ciudades",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "71.48",
+      "correlativas": [],
+      "creditos": 1,
+      "creditos_requeridos": 51,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Introducción a la realidad aumentada",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.02",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Organización Básica de la Computadora",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.18",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 4,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Programación Funcional",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.22",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Sistemas Tolerantes a Fallas",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.23",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Diseño y Construcción de Compiladores",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.28",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Topología de Internet: Análisis y Modelado",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.29",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Tipos para Lenguajes de Programación",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.46",
+      "correlativas": [
+        "72.27"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Robótica Basada en Comportamiento",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.49",
+      "correlativas": [
+        "72.42"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "Sistemas Tolerantes a Fallas",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.50",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IRV"
+      ],
+      "nombre": "Introducción al Desarrollo de Videojuegos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.51",
+      "correlativas": [
+        "72.42"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "Tecnologías para Web 2.0 y Redes Sociales",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.52",
+      "correlativas": [
+        "93.75",
+        "72.34"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA",
+        "IRV"
+      ],
+      "nombre": "Análisis y Tratamiento de Imágenes",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.53",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA",
+        "IRV"
+      ],
+      "nombre": "Visión Computacional 3D",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.54",
+      "correlativas": [
+        "93.24",
+        "72.41"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "IA"
+      ],
+      "nombre": "OLAP y Explotación de Datos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.55",
+      "correlativas": [
+        "72.32",
+        "72.37"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "Ontologías en la Web",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.56",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Automatización e Integración de Sistemas de Información",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.57",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Sistemas Embebidos",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.58",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IRV"
+      ],
+      "nombre": "Computación Gráfica",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.59",
+      "correlativas": [
+        "72.27"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Sistemas de Inteligencia Artificial II",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.60",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "IA",
+        "ARQ"
+      ],
+      "nombre": "Programación Funcional",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.61",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IRV"
+      ],
+      "nombre": "Taller de Diseño de Videojuegos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.64",
+      "correlativas": [
+        "72.32"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Cloud Computing",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.65",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IRV"
+      ],
+      "nombre": "Desarrollo de Videojuegos 2D en iPhone OS",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.66",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Sistemas Embebidos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.67",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Robótica Cinemática Computacional",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.68",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Arte y Ciencia Interactivos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.69",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "Seguridad de Software basada en Flujo de Información",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.70",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Modelos e Imágenes Fractales",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.71",
+      "correlativas": [
+        "72.07",
+        "72.35",
+        "72.37"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "ARQ"
+      ],
+      "nombre": "Integración de Sistemas de Información",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.72",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "ARQ"
+      ],
+      "nombre": "Análisis y Verificación de Modelos y Códigos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.73",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Aprendizaje por Refuerzo en Robótica",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.74",
+      "correlativas": [
+        "72.31"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "IRV"
+      ],
+      "nombre": "Visualización de Información",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.75",
+      "correlativas": [
+        "93.75",
+        "72.34",
+        "93.24"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Aprendizaje Automático (Machine Learning)",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.77",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "ARQ"
+      ],
+      "nombre": "Técnicas Automáticas para Testing de Software",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.78",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "IA"
+      ],
+      "nombre": "OLAP Espacial",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.79",
+      "correlativas": [
+        "72.27"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Sistemas Multiagente I",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.80",
+      "correlativas": [
+        "72.41"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "IA",
+        "IRV"
+      ],
+      "nombre": "Big Data",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.81",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Simulación y Animación de Sistemas Multipartículas",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.82",
+      "correlativas": [
+        "72.41"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "Tópicos de NOSQL",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.83",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Técnicas Avanzadas de HCI con Uso de Rastreadores de Ojos y Manos",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.84",
+      "correlativas": [
+        "72.37"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "IRV"
+      ],
+      "nombre": "Base de Datos Espaciales y Sistemas de Información Geográfica",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.85",
+      "correlativas": [
+        "72.32",
+        "72.37"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "Análisis de Datos en la Web Semántica",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.86",
+      "correlativas": [
+        "72.97"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IRV"
+      ],
+      "nombre": "Técnicas Avanzadas en Videojuegos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.87",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IRV"
+      ],
+      "nombre": "Diseño Sonoro para Animación y Videojuegos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.88",
+      "correlativas": [
+        "93.75",
+        "72.34",
+        "93.24"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "IA"
+      ],
+      "nombre": "Introducción a la Neurociencia Computacional",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.89",
+      "correlativas": [
+        "72.44"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "Moneda Digital Descentralizada",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.90",
+      "correlativas": [
+        "93.07",
+        "93.43"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "IA"
+      ],
+      "nombre": "Internet de las Cosas (IoT)",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.92",
+      "correlativas": [
+        "72.41"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "El Paradigma NoSQL - Bases de Datos de Grafos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.94",
+      "correlativas": [
+        "72.08"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Introducción a los Sistemas Embebidos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.95",
+      "correlativas": [],
+      "creditos": 12,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Proyecto de Innovación Científico-Tecnológico",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.96",
+      "correlativas": [
+        "72.38"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IRV",
+        "ARQ"
+      ],
+      "nombre": "Proyecto de Aplicaciones Móviles",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "72.97",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IRV"
+      ],
+      "nombre": "Introducción a la Programación de Videojuegos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.21",
+      "correlativas": [
+        "72.38"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IRV",
+        "ARQ"
+      ],
+      "nombre": "Desarrollo de Aplicaciones Móviles Multiplataforma",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.22",
+      "correlativas": [
+        "72.35"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "ARQ"
+      ],
+      "nombre": "Fundamentos de DevOps",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.23",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Programación Orientada a Datos",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.24",
+      "correlativas": [
+        "72.34"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Diseño de Runtimes Concurrentes",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.30",
+      "correlativas": [
+        "72.35"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "ARQ"
+      ],
+      "nombre": "Desarrollo profesional de software: del código al producto",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.31",
+      "correlativas": [
+        "72.38",
+        "72.35"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Spec-Driven Development",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.40",
+      "correlativas": [
+        "72.40",
+        "72.41"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "ARQ"
+      ],
+      "nombre": "ARQUITECTURA DE MICROSERVICIOS",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.50",
+      "correlativas": [
+        "72.20",
+        "72.41"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Infraestructura de Cómputo: Data Center, Cloud y Edge",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.60",
+      "correlativas": [],
+      "creditos": 1,
+      "creditos_requeridos": 140,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Introducción a la Robótica Empresarial",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.61",
+      "correlativas": [],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Neurorobótica",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.62",
+      "correlativas": [
+        "72.33",
+        "72.11"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "ARQ"
+      ],
+      "nombre": "Introducción a la Programación Paralela",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.63",
+      "correlativas": [
+        "72.27"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Redes Equivariantes",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.64",
+      "correlativas": [
+        "72.27"
+      ],
+      "creditos": 2,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Temas Avanzados en Deep Learning",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.65",
+      "correlativas": [
+        "93.07"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Procesamiento del Lenguaje Natural",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.66",
+      "correlativas": [],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Procesamiento de Imágenes Satelitales",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.67",
+      "correlativas": [
+        "72.27"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Análisis de series de tiempo con Inteligencia Artificial",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.68",
+      "correlativas": [
+        "72.27"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Tecnologías Emergentes para Aprendizaje Automático e Inteligencia Artificial",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.69",
+      "correlativas": [
+        "72.27"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Large Language Models",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.70",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 144,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Análisis de datos en neurociencias",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.80",
+      "correlativas": [
+        "72.44"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "SEGURIDAD OFENSIVA",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.81",
+      "correlativas": [
+        "72.44"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Ciberseguridad Ofensiva y Defensiva",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.82",
+      "correlativas": [
+        "72.37"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "Bases de Datos Espaciales y de Movilidad",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.83",
+      "correlativas": [
+        "72.44"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Gestión estratégica de la Ciberseguridad",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.84",
+      "correlativas": [
+        "72.27"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "IA"
+      ],
+      "nombre": "Ciencia de Datos Aplicada",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.89",
+      "correlativas": [
+        "72.44"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "Introducción a Blockchain y Criptomonedas",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "73.98",
+      "correlativas": [
+        "72.97"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Desarrollo Integral de Videojuegos",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "74.60",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 144,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Visión por Computadora (Computer Vision)",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "74.61",
+      "correlativas": [
+        "72.27"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Current AI techniques for scientific discovery",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "81.13",
+      "correlativas": [],
+      "creditos": 1,
+      "creditos_requeridos": 140,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Futuros Posibles",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "81.14",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 120,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Product Management",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "81.16",
+      "correlativas": [],
+      "creditos": 1,
+      "creditos_requeridos": 140,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Negociación",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "81.57",
+      "correlativas": [
+        "72.07",
+        "72.35",
+        "72.37"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "ARQ"
+      ],
+      "nombre": "Arquitectura de soluciones digitales",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "81.74",
+      "correlativas": [],
+      "creditos": 1,
+      "creditos_requeridos": 51,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IRV"
+      ],
+      "nombre": "Introducción a la realidad aumentada",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "81.76",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 144,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Tecnologías para las Finanzas",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "81.94",
+      "correlativas": [],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Experiencia Inmersiva de Innovación Tecnológica",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "82.08",
+      "correlativas": [
+        "72.32"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD",
+        "IA",
+        "ARQ"
+      ],
+      "nombre": "Cloud Computing",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "82.18",
+      "correlativas": [
+        "93.07"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Procesamiento del Lenguaje Natural",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "82.21",
+      "correlativas": [
+        "61.23"
+      ],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [
+        "CD"
+      ],
+      "nombre": "Factibilidad de Proyectos Data Driven",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "94.26",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Comunicación Organizacional",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "94.42",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Comunicación Estratégica",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "94.62",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Ética en los Negocios",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "94.64",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 120,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Prácticas Expositivas",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "94.65",
+      "correlativas": [],
+      "creditos": 0,
+      "creditos_requeridos": 144,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Practica Profesional supervisada",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "94.78",
+      "correlativas": [
+        "10.09"
+      ],
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Gestión de Capital Emprendedor y Venture Capital",
+      "vigente": false
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "94.92",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": null,
+      "minors": [],
+      "nombre": "Escritura Académica",
+      "vigente": true
+    }
+  ],
+  "minors": [
+    {
+      "creditos_minimos": 14,
+      "nombre": "Ciencia de Datos",
+      "sigla": "CD"
+    },
+    {
+      "creditos_minimos": 14,
+      "nombre": "Inteligencia Artificial",
+      "sigla": "IA"
+    },
+    {
+      "creditos_minimos": 14,
+      "nombre": "Imágenes y Realidad Virtual",
+      "sigla": "IRV"
+    },
+    {
+      "creditos_minimos": 14,
+      "nombre": "Arquitectura de Software",
+      "sigla": "ARQ"
+    }
+  ],
+  "plan": "S10-Rev23",
+  "titulos": [
+    {
+      "creditos": 147,
+      "id": "analista",
+      "nombre": "Analista en Tecnología Informática",
+      "requiere_ciclos": [
+        "basico"
+      ],
+      "tipo": "intermedio"
+    },
+    {
+      "creditos": 192,
+      "id": "bachiller",
+      "nombre": "Bachiller en Ingeniería",
+      "requiere_ciclos": [
+        "basico"
+      ],
+      "tipo": "intermedio"
+    },
+    {
+      "creditos": 243,
+      "id": "ingeniero",
+      "nombre": "Ingeniero/a en Informática",
+      "requiere_ciclos": [
+        "basico",
+        "profesional"
+      ],
+      "requiere_electivas": 27,
+      "tipo": "principal"
+    }
+  ]
+}

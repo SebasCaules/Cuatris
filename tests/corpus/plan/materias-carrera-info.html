@@ -1,0 +1,1685 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0063)https://sga.itba.edu.ar/app2/fyBfZ9p6trN4RMeNESpNvQ/fyBce/eNE4b -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="description" content="Sistema de Gestión Académica">
+<meta name="keywords" content="academica, gestion">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="./materias-carrera-info_files/bootstrap.css" type="text/css" rel="stylesheet">
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="./materias-carrera-info_files/itba_bootstrap.css" type="text/css" rel="stylesheet">
+<script src="./materias-carrera-info_files/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="./materias-carrera-info_files/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="https://sga.itba.edu.ar/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://sga.itba.edu.ar/img/favicon.ico" type="image/x-icon">
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="./materias-carrera-info_files/sVVa2"></script>
+<script type="text/javascript" src="./materias-carrera-info_files/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="fyBfZ9p6trN4RMeNESpNvQ/fyBce/eNE4b";
+/*]]>*/
+</script>
+<script type="text/javascript">
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../fyBfZ9p6trPc3m2jiAhkzR--mlmOO4g-TjxYaaC1H7gFARn_pDtlVLviSrTzKpe6qaq_7yzLVf4/fyBce/_7y80',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id203'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div id="id204" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<!--[If !IE]--> <a href="https://sga.itba.edu.ar/app2/"><div class="logo"></div></a> <!--[endif]-->
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp;&nbsp;&nbsp;<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QBoVXP1G0Q47IOZ_wrqZHqw/fyBce/Pc3df">[Salir]</a> <a id="id205" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_Qo9XU3KZQj3zOu3NMLCbupTxeDLp1VJP_g5PvflWmFNXLz1XVxpSroo4TzCtkayTxvD95PixTzsI/fyBce/FNXdf" class="" data-toggle=""><span>Inicio</span></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trN4RMeNESpNvQ/fyBce/eNE4b#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_Qo9XU3KZQj3zOu3NMLCbupTxeDLp1VJP_ewcJE2QE6Nye8AEaDfbB55VH3V9SCpbSuKW4QYNMjFBkdQD--f2slBjkoi6PSuATlBOgK-UfbHcyqXRaeckMdKypIzV1fLy7PXewttiVTJ0/fyBce/i4_23"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trN4RMeNESpNvQ/fyBce/eNE4b#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_Qo9XU3KZQj3zOu3NMLCbupTxeDLp1VJP_unH9ipb12BDiib2olqk1Tz-P17VkcIzcU3-2k_ZYfskDbggJDbZrzD-pBoYLG9Cvd5DETXiRKqCcGu4pgya3-UrwNBF-QLAvhmVRhQlYbPQ/fyBce/i4_23"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_Qo9XU3KZQj3zOu3NMLCbupTxeDLp1VJP_unH9ipb12BDiib2olqk1Tz-P17VkcIzcU3-2k_ZYfskDbggJDbZrzD-pBoYLG9CvdTeCKrIsprn3OwvkuqEv3Cp6FhXMrDXx4Bin-1zrHaQ/fyBce/i4_23"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_Qo9XU3KZQj3zOu3NMLCbupTxeDLp1VJP_unH9ipb12BDiib2olqk1Tz-P17VkcIzcU3-2k_ZYfskDbggJDbZrzD-pBoYLG9Cv-xAuOJ13MV1P47SZYUr29IOyZs_RkrDmh3x-NStVOt4/fyBce/i4_23"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_Qo9XU3KZQj3zOu3NMLCbupTxeDLp1VJP_unH9ipb12BDiib2olqk1Tz-P17VkcIzcU3-2k_ZYfskDbggJDbZrzD-pBoYLG9CvK1tGLVKamtj3uG905qebHP0Ho7YIDsMseufy2cD8rTw/fyBce/i4_23"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trN4RMeNESpNvQ/fyBce/eNE4b#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trN4RMeNESpNvQ/fyBce/eNE4b#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_Qo9XU3KZQj3zOu3NMLCbupTxeDLp1VJP_AKEoxX6v8XRiDzrDCCV05MflfEdLRxzilgzNPTCf024TTSHBDt-1FjXQDRnWmC-_Td3mJkhdfBdXbz0g-6LJX8zQDckVTIxhiKa-7WQbyII/fyBce/i4_23"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trN4RMeNESpNvQ/fyBce/eNE4b#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_Qo9XU3KZQj3zOu3NMLCbupTxeDLp1VJP_ljy4dJOeWaurclGrCqqYxOJi2ydHpH5HfE_3rEs0nltsUounO6ordWkmJM_b3E3PLGB7PZS7NIM0O17p9oJj-f9I5c2xhrm2mKATr7eMW1s/fyBce/i4_23"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id206">
+  
+</div>
+			
+
+<h3>Detalle de Planes de estudio</h3>
+
+<div class="backgroundBordered">
+	<h4>Plan de estudio:  <span>S10-Rev23</span></h4>
+
+	
+	<div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id208">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Ciclo Básico</span>
+	
+	
+		<span style="font-weight: normal;">
+			 ( Título otorgado:
+			<span>Analista en Tecnologia Informática</span> )
+		</span>
+	
+	- <span>Requisito: Aprobar todos los items (suma 147 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  <tr>
+		  	<td>  <div id="id209">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id20a">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJVblO0Tw_PV60KWUrrL_8rLV7BVaYL4wJO_5i53OPKvbq3pG6Jy5OSg/fyBce/kmRcf"><span>31.08 - Sistemas de Representación</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJVblO0Tw_PV60KWUrrL_8rLV7BVaYL4wJPWDel7RWeD_N_6DIDq2HJE/fyBce/kmRcf"><span>72.03 - Introducción a la Informática</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJVblO0Tw_PV60KWUrrL_8rLV7BVaYL4wJP_iPgq2Q4t5OU-vhkFcD9c/fyBce/kmRcf"><span>93.26 - Análisis Matemático I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJVblO0Tw_PV60KWUrrL_8rLV7BVaYL4wJMceeKVb9M96ptNbcwkHuWi/fyBce/kmRcf"><span>93.58 - Álgebra</span></a></td>
+				<td>9</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJVblO0Tw_PV60KWUrrL_8rLV7BVaYL4wJMholtJ1rBLO0RHaKkRDA5W/fyBce/kmRcf"><span>94.24 - Metodología del Aprendizaje</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id20b">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id20c">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJVsUwT82rYhPq1jDBY6nV-IuJYeoIOXRnbJKIt0_pnvZLhTRj_5SF3S/fyBce/kmRcf"><span>72.31 - Programación Imperativa</span></a></td>
+				<td>9</td>
+				<td>0</td>
+				
+				<td> <span>93.58 &nbsp;</span><span>72.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJVsUwT82rYhPq1jDBY6nV-IuJYeoIOXRnZ69G5XQMLJVhw34SyEKfR-/fyBce/kmRcf"><span>93.28 - Análisis Matemático II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.58 &nbsp;</span><span>93.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJVsUwT82rYhPq1jDBY6nV-IuJYeoIOXRnYw9qnDEFmgbJ-pwcQ1_nA6/fyBce/kmRcf"><span>93.41 - Física I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJVsUwT82rYhPq1jDBY6nV-IuJYeoIOXRnbgxiNcFSz4-8LsJjXGqxaC/fyBce/kmRcf"><span>93.59 - Matemática Discreta</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.58 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id20d">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id20e">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJWsQqinqt0Y55roHYzok4GMr2VQZM2puNuUo-7nB4dYuc-iROorDxx8/fyBce/kmRcf"><span>12.09 - Química</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJWsQqinqt0Y55roHYzok4GMr2VQZM2puNvfMxMYxN6GeOBYiXTRPWmJ/fyBce/kmRcf"><span>72.32 - Diseño y Procesamiento de Documentos XML</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.31 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJWsQqinqt0Y55roHYzok4GMr2VQZM2puNurbV8ioLZJ4s1PHpqOwMq0/fyBce/kmRcf"><span>72.33 - Programación Orientada a Objetos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.31 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJWsQqinqt0Y55roHYzok4GMr2VQZM2puNvk4Enf5T8REKVGlPAnzpKz/fyBce/kmRcf"><span>93.35 - Lógica Computacional</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.58 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJWsQqinqt0Y55roHYzok4GMr2VQZM2puNvESI1B2gW9_omOE-FRqJ65/fyBce/kmRcf"><span>93.43 - Física III</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.28 &nbsp;</span><span>93.41 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id20f">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id210">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJX2mkwWvAzLxEd4b-vK--vnRwSBWO-AoeINlzMnVUyvmfkS-_Dt8-E-/fyBce/kmRcf"><span>72.08 - Arquitectura de Computadoras</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.31 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJX2mkwWvAzLxEd4b-vK--vnRwSBWO-AoeJt8uT_tt0wnPcH7TH6W6Xv/fyBce/kmRcf"><span>72.34 - Estructura de Datos y Algoritmos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.59 &nbsp;</span><span>72.33 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJX2mkwWvAzLxEd4b-vK--vnRwSBWO-AoeL8aVyy0iIaLYqWLrv1YqOH/fyBce/kmRcf"><span>93.24 - Probabilidad y Estadística</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.28 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJX2mkwWvAzLxEd4b-vK--vnRwSBWO-AoeKnbo9WUHeqUDZtz4CfBKId/fyBce/kmRcf"><span>93.42 - Física II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.28 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id211">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id212">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJU6_8VUoyYqHnYhXX5GfrJRyNLGvG5zOHzbcFi8X8cT93TuKthQYk61/fyBce/kmRcf"><span>72.11 - Sistemas Operativos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.08 &nbsp;</span><span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJU6_8VUoyYqHnYhXX5GfrJRyNLGvG5zOHwDKLrox0efAuL33eRPZu3l/fyBce/kmRcf"><span>72.35 - Ingenieria de Software I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.33 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJU6_8VUoyYqHnYhXX5GfrJRyNLGvG5zOHwVsAGIzVck8Iw0XuXkBSpc/fyBce/kmRcf"><span>72.36 - Interacción Hombre-Computadora (HCI)</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.33 &nbsp;</span><span>72.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJU6_8VUoyYqHnYhXX5GfrJRyNLGvG5zOHw8NBh1OJCjA8j-xP9vqVKo/fyBce/kmRcf"><span>72.37 - Base de Datos I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span><span>93.35 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id213">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id214">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJWlM3ZjpRwDZUJfOVCaiN9at3E0q7uaIhfKPWMggFh9dx2UW3qcMUri/fyBce/kmRcf"><span>72.07 - Protocolos de Comunicación</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJWlM3ZjpRwDZUJfOVCaiN9at3E0q7uaIheqXmkYO7vZ4MeqO6YAO9zp/fyBce/kmRcf"><span>72.38 - Proyecto de Aplicaciones Web</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.11 &nbsp;</span><span>72.37 &nbsp;</span><span>72.36 &nbsp;</span><span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJWlM3ZjpRwDZUJfOVCaiN9at3E0q7uaIhcxTYIMoNOwK9FGtgw2YeS0/fyBce/kmRcf"><span>72.39 - Autómatas, Teoría de Lenguajes y Compiladores</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJWlM3ZjpRwDZUJfOVCaiN9at3E0q7uaIher6Ve273mowHupE4TSjsq4/fyBce/kmRcf"><span>93.07 - Métodos Numéricos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.28 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJWlM3ZjpRwDZUJfOVCaiN9at3E0q7uaIhdGpRFQeb0WL5akrLbLugMn/fyBce/kmRcf"><span>94.21 - Formación General I</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1yAyK8ZL9LJWlM3ZjpRwDZUJfOVCaiN9at3E0q7uaIhcfZBbs59QmO78rk2IdtJzm/fyBce/kmRcf"><span>94.51 - Inglés I</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr>
+	      
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id215">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Ciclo Profesional</span>
+	
+	
+	- <span>Requisito: Aprobar todos los items (suma 96 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  <tr>
+		  	<td>  <div id="id216">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id217">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3920OcxqsqwiKIOqdNCX2TBLkcQFPNCmN_-OIpEvDZyYBZEfXwzFXQz/fyBce/kmRcf"><span>61.23 - Economía para Ingenieros</span></a></td>
+				<td>3</td>
+				<td>120</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3920OcxqsqwiKIOqdNCX2TBLkcQFPNCmN9kejuCiyLLBSxgfAciB8y0/fyBce/kmRcf"><span>61.32 - Derecho para Ingenieros</span></a></td>
+				<td>3</td>
+				<td>120</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3920OcxqsqwiKIOqdNCX2TBLkcQFPNCmN9s3wG5gHab6VHU9GmDL3K8/fyBce/kmRcf"><span>72.40 - Ingenieria del Software II</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3920OcxqsqwiKIOqdNCX2TBLkcQFPNCmN8O-LSHDmT_prWqipKTqr42/fyBce/kmRcf"><span>72.41 - Base de Datos II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.37 &nbsp;</span><span>72.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3920OcxqsqwiKIOqdNCX2TBLkcQFPNCmN_KwBaOZRpDJgN76Ir0kMRy/fyBce/kmRcf"><span>72.42 - Programación de Objetos Distribuidos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.07 &nbsp;</span><span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3920OcxqsqwiKIOqdNCX2TBLkcQFPNCmN830sHV13MpM--kIh-btuH_/fyBce/kmRcf"><span>93.75 - Métodos Numéricos Avanzados</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.07 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id218">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id219">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3-J7qY4KN4ik372xprtWjE7bK0bV3ndh3sXiqEQ9Sm9ZCfdK4OhTQdV/fyBce/kmRcf"><span>72.25 - Simulación de Sistemas</span></a></td>
+				<td>6</td>
+				<td>140</td>
+				
+				<td> <span>93.75 &nbsp;</span><span>72.34 &nbsp;</span><span>93.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3-J7qY4KN4ik372xprtWjE7bK0bV3ndh3uc0a8p5M5KYe5UpjopEzyQ/fyBce/kmRcf"><span>72.27 - Sistemas de Inteligencia Artificial</span></a></td>
+				<td>6</td>
+				<td>120</td>
+				
+				<td> <span>93.75 &nbsp;</span><span>93.24 &nbsp;</span><span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3-J7qY4KN4ik372xprtWjE7bK0bV3ndh3tUjGcu5fH4pjXZCMWTd6PR/fyBce/kmRcf"><span>72.43 - Gestión de Proyectos Informáticos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3-J7qY4KN4ik372xprtWjE7bK0bV3ndh3uTvUzxFUgjVBEeXJC3kJi2/fyBce/kmRcf"><span>72.44 - Criptografía y Seguridad</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Electivas</span></em></span></td>
+				<td>27</td>
+				<td>27</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id21a">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id21b">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3_hunhpIn0FBeazknh8HABVSUyEBMgG2qT8_OxiTe3WEUlDqs7NRKSP/fyBce/kmRcf"><span>12.83 - Seguridad Ocupacional y Ambiental</span></a></td>
+				<td>3</td>
+				<td>140</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3_hunhpIn0FBeazknh8HABVSUyEBMgG2qTr947agYa1dVM4nv8fVzZo/fyBce/kmRcf"><span>72.20 - Redes de Información</span></a></td>
+				<td>6</td>
+				<td>171</td>
+				
+				<td> <span>72.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3_hunhpIn0FBeazknh8HABVSUyEBMgG2qTDFhEV6AOtG1-rXLaUR6LA/fyBce/kmRcf"><span>72.45 - Proyecto Final </span></a></td>
+				<td>12</td>
+				<td>160</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id21c">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id21d">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3-Hj74vpierPweMETa9kKU2u9HqBhB20ekDykvxD8e297aluMokZRMk/fyBce/kmRcf"><span>72.98 - Práctica Laboral</span></a></td>
+				<td>0</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3-Hj74vpierPweMETa9kKU2u9HqBhB20elnhQRuMOxOnM-u3yvHCFt0/fyBce/kmRcf"><span>94.23 - Formación General III</span></a></td>
+				<td>3</td>
+				<td>168</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1J00Q7f1Ol3-Hj74vpierPweMETa9kKU2u9HqBhB20elQ83L-u-cibOvzZ5BaAVRZ/fyBce/kmRcf"><span>94.52 - Inglés II</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr>
+	      
+		  </tbody>
+		</table>
+	</div><div>
+		<div>
+			  </div><table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id21e">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Electivas</span>
+	
+	
+	- <span>Requisito: Juntar 27 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <tr> 
+			  	<td> 
+			  		<div id="id21f">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id220">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuuXhVhZCuagQo8mPVyM1IpA/fyBce/PVyc2"><span>10.07 - Creatividad</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfL1WiIJKAuJ1Q/fyBce/IJKf9"><span>10.09 - Formación para Emprendedores</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuCY0Vunn-iev7kY4CWNqK4Q/fyBce/4CW87"><span>11.36 - Innovación y Competitividad</span></a></td>
+				<td>3</td>
+				<td>192</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuronvIZjWFh_lZndPhrG3Bw/fyBce/dPh2b"><span>11.83 - Gestión de Operaciones</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPlIM0XYiWBsowkXMjJpD5g/fyBce/XMj14"><span>16.04 - Neurociencias y Desarrollo Productivo</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFu_FwtXR-6E8zzSltAUrcKeg/fyBce/tAU67"><span>16.50 - Introducción a la Bioinformática</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFumsfy0QXQf104QmVHPQDDag/fyBce/VHPcd"><span>16.57 - Robótica Bioinspirada</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.08 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFucaVPWDPJyKeU7v-rbXTUdg/fyBce/-rbcc"><span>16.68 - Señales y Sistemas</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.75 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuok0B2HpQOETo8_5tqPwLVg/fyBce/5tq41"><span>16.82 - Neurociencia Computacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.28 &nbsp;</span><span>72.34 &nbsp;</span><span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuqPgOqoLDZqhu8IX8bxn1hQ/fyBce/X8b31"><span>16.95 - Startups basadas en ciencia</span></a></td>
+				<td>1</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfIdnZR_BUxvVQ/fyBce/R_B74"><span>22.09 - Fundamentos Electrónicos de la Informática</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfIRetcs6Rk4ug/fyBce/cs6c5"><span>22.48 - Procesamiento de Imágenes</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.75 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfLC_ihXSKg87w/fyBce/hXS12"><span>23.15 - Realidad Virtual</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.58 &nbsp;</span><span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfKUcjiKvjeA-w/fyBce/iKv73"><span>25.04 - Computación Cuántica</span></a></td>
+				<td>6</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfL929kncUNlag/fyBce/knc0f"><span>25.27 - Sistemas Embebidos</span></a></td>
+				<td>6</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfKKA0PaUmywbw/fyBce/PaUa3"><span>48.02 - AI: Data Management Course &amp; Digital Transformation</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfLlrTIeDJ3bKw/fyBce/IeDe7"><span>61.08 - Derecho Digital</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>61.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfI74bjYMxLZkg/fyBce/jYM7d"><span>61.11 - Derecho Laboral y Seguridad Social en la Empresa</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>61.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfLO5TX0sbY3rQ/fyBce/X0sca"><span>61.13 - Práctica Contractual</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>61.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfK0p0PH5W24Bw/fyBce/PH5ec"><span>61.16 - Introducción a las Finanzas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>61.23 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuCY0Vunn-ieuZT1ka2vdS7w/fyBce/ka27b"><span>61.50 - Finanzas de la Empresa</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>61.23 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuCY0Vunn-ies1JhPXTOP-XA/fyBce/PXTfb"><span>68.99 - Introducción a la Ciencia de Ciudades</span></a></td>
+				<td>1</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuCY0Vunn-ieusjn53eJ8TiA/fyBce/53e46"><span>71.48 - Introducción a la realidad aumentada</span></a></td>
+				<td>1</td>
+				<td>51</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuCY0Vunn-iesoo1B76xTwyQ/fyBce/B7600"><span>72.02 - Organización Básica de la Computadora</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuCY0Vunn-ieuXh-GWl6rggQ/fyBce/GWl3b"><span>72.18 - Programación Funcional</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuCY0Vunn-ievdiPjCUHOa9Q/fyBce/jCU7b"><span>72.22 - Sistemas Tolerantes a Fallas</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuCY0Vunn-ievIbbOWe4qTAg/fyBce/OWe3c"><span>72.23 - Diseño y Construcción de Compiladores</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuCY0Vunn-ievptbiSgqVLPg/fyBce/iSgdc"><span>72.28 - Topología de Internet: Análisis y Modelado</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuCY0Vunn-iesd3pes_l2ZzA/fyBce/es_30"><span>72.29 - Tipos para Lenguajes de Programación</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuCY0Vunn-iety8EiqZk_AgQ/fyBce/iqZ51"><span>72.46 - Robótica Basada en Comportamiento</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuronvIZjWFh9LDaVfUx6D5w/fyBce/VfU54"><span>72.49 - Sistemas Tolerantes a Fallas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.42 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuronvIZjWFh-PV7jFitGesA/fyBce/jFi1c"><span>72.50 - Introducción al Desarrollo de Videojuegos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuronvIZjWFh_nYqJacrVkiw/fyBce/Jaceb"><span>72.51 - Tecnologías para Web 2.0 y Redes Sociales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.42 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuronvIZjWFh9SBqqizf6BRA/fyBce/qiz01"><span>72.52 - Análisis y Tratamiento de Imágenes</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.75 &nbsp;</span><span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuronvIZjWFh9HC1lznbBJ8w/fyBce/lznef"><span>72.53 - Visión Computacional 3D</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuronvIZjWFh-3GqWI2rza2w/fyBce/WI27f"><span>72.54 - OLAP y Explotación de Datos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span><span>72.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuronvIZjWFh-3UKqw0ps9Rw/fyBce/qw049"><span>72.55 - Ontologías en la Web</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.32 &nbsp;</span><span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuronvIZjWFh9FlRErdJ4zcA/fyBce/Erde6"><span>72.56 - Automatización e Integración de Sistemas de Información</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuronvIZjWFh_u7VTUOYzyAQ/fyBce/TUOed"><span>72.57 - Sistemas Embebidos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuronvIZjWFh8T17vsn3qKnQ/fyBce/vsnf0"><span>72.58 - Computación Gráfica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPlIM0XYiWBu4wLGKsiMxow/fyBce/GKs0e"><span>72.59 - Sistemas de Inteligencia Artificial II</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPlIM0XYiWBsoDQ3AI8CoMw/fyBce/3AI7a"><span>72.60 - Programación Funcional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPlIM0XYiWBunhFXKLMcyiA/fyBce/XKL98"><span>72.61 - Taller de Diseño de Videojuegos</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPlIM0XYiWBvbrwiRmSQlLA/fyBce/iRmb3"><span>72.64 - Cloud Computing</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPlIM0XYiWBvFadPXaIEOqw/fyBce/PXa08"><span>72.65 - Desarrollo de Videojuegos 2D en iPhone OS</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPlIM0XYiWBsMmveT74WLhQ/fyBce/eT757"><span>72.66 - Sistemas Embebidos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPlIM0XYiWBs7qmp08Vn1fQ/fyBce/p08a7"><span>72.67 - Robótica Cinemática Computacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPlIM0XYiWBvfMeKemt3pTg/fyBce/Kem52"><span>72.68 - Arte y Ciencia Interactivos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPlIM0XYiWBsduCGlNPrKag/fyBce/GlNf8"><span>72.69 - Seguridad de Software basada en Flujo de Información</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPlIM0XYiWBtTwk69VyJxFQ/fyBce/69Vf2"><span>72.70 - Modelos e Imágenes Fractales</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFu_FwtXR-6E8zQwGoDtLkCFg/fyBce/oDtee"><span>72.71 - Integración de Sistemas de Información</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.07 &nbsp;</span><span>72.37 &nbsp;</span><span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFu_FwtXR-6E8zVRU0SYF-m_g/fyBce/0SYf5"><span>72.72 - Análisis y Verificación de Modelos y Códigos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFu_FwtXR-6E8yXIntcjiAIzw/fyBce/tcjba"><span>72.73 - Aprendizaje por Refuerzo en Robótica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFu_FwtXR-6E8xzh_HqtwjIWw/fyBce/Hqtaa"><span>72.74 - Visualización de Información</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.31 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFu_FwtXR-6E8yqnWDg8Tix8Q/fyBce/Dg814"><span>72.75 - Aprendizaje Automático (Machine Learning)</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.75 &nbsp;</span><span>72.34 &nbsp;</span><span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFu_FwtXR-6E8zQJlg2JMNPOQ/fyBce/g2J6e"><span>72.77 - Técnicas Automáticas para  Testing de Software</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFu_FwtXR-6E8zhL0T6Criu1Q/fyBce/T6C30"><span>72.78 - OLAP Espacial</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFu_FwtXR-6E8xLZvqwgSJPfg/fyBce/qwg80"><span>72.79 - Sistemas Multiagente I</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFu_FwtXR-6E8zKp4DgQZ6ZIQ/fyBce/DgQ2d"><span>72.80 - Big Data</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFu_FwtXR-6E8yyQv5JFyyUyA/fyBce/5JF60"><span>72.81 - Simulación y Animación de Sistemas Multipartículas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFumsfy0QXQf13bGTO2YduKIQ/fyBce/O2Y65"><span>72.82 - Tópicos de NOSQL</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFumsfy0QXQf10wF-62vmKnCg/fyBce/62vc9"><span>72.83 - Técnicas Avanzadas de HCI con Uso de Rastreadores de Ojos y Manos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFumsfy0QXQf12tHTzlr69G6w/fyBce/zlr2f"><span>72.84 - Base de Datos Espaciales y Sistemas de Información Geográfica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFumsfy0QXQf11Xxpdu5y69kQ/fyBce/du5c3"><span>72.85 - Análisis de Datos en la Web Semántica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.32 &nbsp;</span><span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFumsfy0QXQf13mGXlI03DlUg/fyBce/lI0b2"><span>72.86 - Técnicas Avanzadas en Videojuegos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.97 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFumsfy0QXQf10VhBZW7bSQwg/fyBce/ZW7f9"><span>72.87 - Diseño Sonoro para Animación y Videojuegos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFumsfy0QXQf105BOEFS21F5Q/fyBce/EFSc1"><span>72.88 - Introducción a la Neurociencia Computacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.75 &nbsp;</span><span>93.24 &nbsp;</span><span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFumsfy0QXQf111aaxdbRRlRQ/fyBce/xdb65"><span>72.89 - Moneda Digital Descentralizada</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.44 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFumsfy0QXQf13Yc49HLjiIow/fyBce/9HL8c"><span>72.90 - Internet de las Cosas (IoT)</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.07 &nbsp;</span><span>93.43 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFumsfy0QXQf11H3I0mzZhFuw/fyBce/0mzdc"><span>72.92 - El Paradigma NoSQL - Bases de Datos de Grafos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFucaVPWDPJyKdJ-RzxvD7A-w/fyBce/zxv67"><span>72.94 - Introducción a los Sistemas Embebidos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.08 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFucaVPWDPJyKcAH2mSSViDyA/fyBce/mSS4c"><span>72.95 - Proyecto de Innovación Científico-Tecnológico</span></a></td>
+				<td>12</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFucaVPWDPJyKfg5B5lEC3OYg/fyBce/5lE9d"><span>72.96 - Proyecto de Aplicaciones Móviles</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.38 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFucaVPWDPJyKcs1x4taZZnKA/fyBce/4ta90"><span>72.97 - Introducción a la Programación de Videojuegos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFucaVPWDPJyKd5fFI8D52RbQ/fyBce/I8Da4"><span>73.21 - Desarrollo de Aplicaciones Móviles Multiplataforma</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.38 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFucaVPWDPJyKcx8CnmmLF11w/fyBce/nmmcd"><span>73.22 - Fundamentos de DevOps</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFucaVPWDPJyKd5o52NWEuvcA/fyBce/2NW4a"><span>73.23 - Programación Orientada a Datos</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFucaVPWDPJyKeugRN7zNWHxg/fyBce/N7zd0"><span>73.24 - Diseño de Runtimes Concurrentes</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFucaVPWDPJyKc6BfbMQRLzuA/fyBce/bMQ45"><span>73.30 - Desarrollo profesional de software: del código al producto</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.38 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFucaVPWDPJyKfDd98xDLbTvA/fyBce/8xDb3"><span>73.31 - Spec-Driven Development</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.38 &nbsp;</span><span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuok0B2HpQOEQZTz4PwSaIfQ/fyBce/4Pw0a"><span>73.40 - ARQUITECTURA DE MICROSERVICIOS</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.07 &nbsp;</span><span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuok0B2HpQOETnHCEw-1wvhw/fyBce/Ew-9a"><span>73.50 - Infraestructura de Cómputo: Data Center, Cloud y Edge</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.20 &nbsp;</span><span>72.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuok0B2HpQOERX0HooI66_ww/fyBce/ooIa8"><span>73.60 - Introducción a la Robótica Empresarial</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuok0B2HpQOERABt3A6qEJBQ/fyBce/3A667"><span>73.61 - Neurorobótica</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuok0B2HpQOESZ8rOEAQjI1g/fyBce/OEAca"><span>73.62 - Introducción a la Programación Paralela</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.33 &nbsp;</span><span>72.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuok0B2HpQOEQVxZDpi7b26g/fyBce/Dpiec"><span>73.63 - Redes Equivariantes</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuok0B2HpQOERuYrYupkPy9Q/fyBce/Yup13"><span>73.64 - Temas Avanzados en Deep Learning</span></a></td>
+				<td>2</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuok0B2HpQOEQYLzmcbvXJdg/fyBce/mcb4b"><span>73.65 - Procesamiento del Lenguaje Natural</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuok0B2HpQOEQjN8ACqyanxg/fyBce/ACqce"><span>73.66 - Procesamiento de Imágenes Satelitales</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuok0B2HpQOESZjir16EiSeQ/fyBce/r1616"><span>73.67 - Análisis de series de tiempo con Inteligencia Artificial</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuqPgOqoLDZqhPXyiIanQKTA/fyBce/iIa00"><span>73.68 - Tecnologías Emergentes para Aprendizaje Automático e Inteligencia Artificial</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuqPgOqoLDZqi8_SQtO3ZmDQ/fyBce/QtObb"><span>73.69 - Large Language Models</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuqPgOqoLDZqjHgqn2q8B9bA/fyBce/n2qfc"><span>73.70 - Análisis de datos en neurociencias</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuqPgOqoLDZqi5QK7yfFUTnw/fyBce/7yf63"><span>73.80 - SEGURIDAD OFENSIVA</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.44 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuqPgOqoLDZqj2aMffX0XCiw/fyBce/ffX67"><span>73.81 - Ciberseguridad Ofensiva y Defensiva</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.44 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuqPgOqoLDZqiVBQ8igDLQVA/fyBce/8ig15"><span>73.82 - Bases de Datos Espaciales y de Movilidad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuqPgOqoLDZqibNcY8XsfmtQ/fyBce/Y8Xc8"><span>73.83 - Gestión estratégica de la Ciberseguridad</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.44 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuqPgOqoLDZqj0F1uuG7zCfA/fyBce/uuG86"><span>73.84 - Ciencia de Datos Aplicada</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuqPgOqoLDZqif2RIuKfyjLQ/fyBce/IuKde"><span>73.89 - Introducción a Blockchain y Criptomonedas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.44 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuqPgOqoLDZqhVjUfF9gmLYA/fyBce/fF968"><span>73.98 - Desarrollo Integral de Videojuegos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.97 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfK3lNgMgXJf8Q/fyBce/gMg80"><span>74.60 - Visión por Computadora (Computer Vision)</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfK_fzEnbB-i2A/fyBce/Enb28"><span>74.61 - Current AI techniques for scientific discovery</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfK_WJnPG4mQxQ/fyBce/nPG54"><span>81.13 - Futuros Posibles</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfKxgCScdHk0UQ/fyBce/Scdf3"><span>81.14 - Product Management</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfKRCzWQhTB9_g/fyBce/WQh2d"><span>81.16 - Negociación</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfK5WeFT90t4HA/fyBce/FT9da"><span>81.57 - Arquitectura de soluciones digitales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.07 &nbsp;</span><span>72.37 &nbsp;</span><span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfJy7v9HtM6mtA/fyBce/9Htb4"><span>81.74 - Introducción a la realidad aumentada</span></a></td>
+				<td>1</td>
+				<td>51</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfLPzmmAnoEk8Q/fyBce/mAn19"><span>81.76 - Tecnologías para las Finanzas</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfKwuodAB-8YDg/fyBce/dAB44"><span>81.94 - Experiencia Inmersiva de Innovación Tecnológica</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfKHyeasJlLvWg/fyBce/asJ97"><span>82.08 - Cloud Computing</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfJVEZPy0ZRxcw/fyBce/Py0e6"><span>82.18 - Procesamiento del Lenguaje Natural</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfIZnx5w6-vmTg/fyBce/5w693"><span>82.21 - Factibilidad de Proyectos Data Driven</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>61.23 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfIgH73MY3lPzg/fyBce/3MYbe"><span>94.26 - Comunicación Organizacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfJybepONrrvuw/fyBce/pON6e"><span>94.42 - Comunicación Estratégica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfJk2pUDnwkDDg/fyBce/UDn8e"><span>94.62 - Ética en los Negocios</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfKLw_VWN5itpg/fyBce/VWN8c"><span>94.64 - Prácticas Expositivas</span></a></td>
+				<td>3</td>
+				<td>120</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfIgnvSAeHYuGA/fyBce/SAeb6"><span>94.65 - Practica Profesional supervisada</span></a></td>
+				<td>0</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfIGLmeRkWbXcQ/fyBce/eRk2d"><span>94.78 - Gestión de Capital Emprendedor y Venture Capital</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>10.09 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPc3m2jiAhkzZbY7reii4_QkmRA8oydGxoqEvOaxkTFfp73tWM9c2S1u0bRwjhB_3Ov_1siyIAUWeYX4poKP7IZ1vpaUWhkdAttyMN_B-QnI1-aKhM7ssFuPupQiXanhfKpjcIgCDCNGA/fyBce/IgC44"><span>94.92 - Escritura Académica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  
+		  </tbody>
+		</table>
+	</div>
+	
+
+	<div id="id221">
+		
+		<div style="clear:both;">
+</div>
+	</div>
+	
+	<div id="id222">
+
+<h4>Títulos otorgados</h4>
+<table class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr class="blue">
+			<td>Tipo</td>
+			<td>Título</td>
+			<td>Requisitos</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span>Intermedio</span></td>
+			<td><span>Analista en Tecnologia Informática</span></td>
+			<td><span>Aprobar Ciclo Básico y sumar 147 créditos</span></td>
+		</tr><tr>
+			<td><span>Principal</span></td>
+			<td><span>Ingeniero/a en Informática</span></td>
+			<td><span>Aprobar S10-Rev23 y sumar 243 créditos</span></td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+
+</div>
+
+
+		</div>
+		<div id="id203"></div>
+	</div>
+
+
+</body></html>

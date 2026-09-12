@@ -12,8 +12,8 @@ Repositorio: `SebasCaules/Cuatris` (público, rama `main`). Sitio: `https://seba
 
 ## Estado y mapa de documentos
 
-La planificación está terminada; no hay código todavía. El siguiente paso es el **Sprint 1
-(MVP), Fase 0**, cuando el autor lo indique.
+Sprint 1 (MVP) en ejecución con el método workforce: estado, gaps y decisiones en
+`entregables/sprint-1/EXEC_STATE.md`; contrato exacto en `entregables/sprint-1/CONTRATO-v1.md`.
 
 | Documento | Qué es | Autoridad sobre |
 |---|---|---|
@@ -78,8 +78,9 @@ No se reabren sin pedido explícito del autor.
 - **Anonimizar antes de commitear fixtures**: los HTML guardados traen `CAULES, SEBASTIAN`
   en la barra superior; reemplazar por un marcador.
 - **Idioma.** Documentación, comentarios, mensajes de commit y todo lo dirigido al autor: en
-  español neutro (tú/usted), sin voseo ni regionalismos. Los **textos de la interfaz** siguen
-  el mockup, que está en voseo porque habla a estudiantes del ITBA; no «corregirlos».
+  español neutro (tú/usted), sin voseo ni regionalismos. Los **textos de la interfaz** —los del
+  mockup y los nuevos— van en voseo, como el mockup, porque hablan a estudiantes del ITBA; no
+  «corregirlos» ni mezclar registros dentro de la aplicación.
 - **Git.** Trabajar en rama, PR contra `main`, nunca reescribir historia. Commitear solo
   cuando el autor lo pida. En una sesión de datos, `git add` por rutas explícitas.
 - **El diseño se importa, no se reinterpreta.** Si un mockup no cubre un estado, la decisión
@@ -108,7 +109,7 @@ No se reabren sin pedido explícito del autor.
 ```
 app/          SPA (Vite + React + TS)            tools/cuatris/  CLI Python
 data/         index.json, CHANGELOG.jsonl, v1/   vendor/         wheels
-schemas/v1/   JSON Schema 2020-12                tests/          corpus anonimizado y fixtures
+schemas/v1/   JSON Schema draft-07                 tests/          corpus anonimizado y fixtures
 docs/         contrato, scraping-sga, runbook    .github/        workflows y CODEOWNERS
 ```
 

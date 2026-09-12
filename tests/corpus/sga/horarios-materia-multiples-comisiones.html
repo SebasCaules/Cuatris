@@ -1,0 +1,858 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0063)https://sga.itba.edu.ar/app2/fyBfZ9p6trPsPQezpEQd1Q/fyBce/ezp8a -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="description" content="Sistema de Gestión Académica">
+<meta name="keywords" content="academica, gestion">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="./horarios-materia-multiples-comisiones_files/bootstrap.css" type="text/css" rel="stylesheet">
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="./horarios-materia-multiples-comisiones_files/itba_bootstrap.css" type="text/css" rel="stylesheet">
+<script src="./horarios-materia-multiples-comisiones_files/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="./horarios-materia-multiples-comisiones_files/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="https://sga.itba.edu.ar/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://sga.itba.edu.ar/img/favicon.ico" type="image/x-icon">
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="./horarios-materia-multiples-comisiones_files/sVVa2"></script>
+<script type="text/javascript" src="./horarios-materia-multiples-comisiones_files/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="fyBfZ9p6trPsPQezpEQd1Q/fyBce/ezp8a";
+/*]]>*/
+</script>
+<script type="text/javascript">
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../fyBfZ9p6trOyK9IE1Cbaeme2K1c5BAGcNhEtoqGA0I9J9FLBwB1CjsJpC0hiHouu_LbJ0vHLVNo/fyBce/J0vff',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id2ae'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div id="id2af" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<!--[If !IE]--> <a href="https://sga.itba.edu.ar/app2/"><div class="logo"></div></a> <!--[endif]-->
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp;&nbsp;&nbsp;<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD27ScI1lxlqV6ihBFCNvKk6g/fyBce/OyK60">[Salir]</a> <a id="id2b0" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD2hEsfZx5jIEBl4K9ckLr8Gxi5PAo_QC-fYR6WbH668TwMgSute9TJEciPYRlwfd5FKJVMTE_yI2Y/fyBce/8Tw4a" class="" data-toggle=""><span>Inicio</span></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPsPQezpEQd1Q/fyBce/ezp8a#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD2hEsfZx5jIEBl4K9ckLr8Gxi5PAo_QC-fWAKOTDE24JIixoANlH6UVbmlONa036oZ_AJzSyyPKI4FcVTijWj9ofEpDosI6MqK0mgZtB125X6B1Th9d8z2uzANAvA4d8pThEi5aaFf2kM/fyBce/kOD3f"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPsPQezpEQd1Q/fyBce/ezp8a#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD2hEsfZx5jIEBl4K9ckLr8Gxi5PAo_QC-fNyibioWCRxiD8Qu-xkmUGhshME3EG0m5vZmzWf0hIHhJJZPOlWyOO8YpcJfzNmsqpfivIPmo2c9K8czNnevaI4gdS6buey4RsMmzputu2i0/fyBce/kOD3f"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD2hEsfZx5jIEBl4K9ckLr8Gxi5PAo_QC-fNyibioWCRxiD8Qu-xkmUGhshME3EG0m5vZmzWf0hIHhJJZPOlWyOO8YpcJfzNmsqocB1m0qE-z6gqbKz8PEFJejr919wVXOs-gUw9xjzOAA/fyBce/kOD3f"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD2hEsfZx5jIEBl4K9ckLr8Gxi5PAo_QC-fNyibioWCRxiD8Qu-xkmUGhshME3EG0m5vZmzWf0hIHhJJZPOlWyOO8YpcJfzNmsqHmlTAkBgztIhJOZoLZiGpQ10VXQEBMsMOG7qPtFRqfU/fyBce/kOD3f"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD2hEsfZx5jIEBl4K9ckLr8Gxi5PAo_QC-fNyibioWCRxiD8Qu-xkmUGhshME3EG0m5vZmzWf0hIHhJJZPOlWyOO8YpcJfzNmsqmpceLU6H5EwHfWHIkC3Va4xH2JMal-Q6pAk2ktto6QM/fyBce/kOD3f"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPsPQezpEQd1Q/fyBce/ezp8a#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPsPQezpEQd1Q/fyBce/ezp8a#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD2hEsfZx5jIEBl4K9ckLr8Gxi5PAo_QC-fWJoUdEMviP_tF_2miCunqLclmWqDlEg947N4b_4VTg1Do8WeJ-7hTk_vpghDoWNB3yD4d7vK3MSwnnCeJViRNPgfnlUe_d65sarmHinhz6k/fyBce/kOD3f"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPsPQezpEQd1Q/fyBce/ezp8a#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD2hEsfZx5jIEBl4K9ckLr8Gxi5PAo_QC-fiJ_fCQmmXHtbAOe7BadT6HZJVPkS3j4WWwayxytcUdHfoj0yzHsKfCEIK9g0qrXx0FRi4F4-7FgwQ0NUL5QuwL8LHIFjGzcIvQNExJuJAtg/fyBce/kOD3f"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id2b1">
+  
+</div>
+			
+		<h3>
+			Detalle del curso
+		</h3>
+
+		<div class="backgroundBordered">
+			<div>
+				<div class="row bottomMargin5">
+					<div class="span3">
+						<label class="bold">Materia:</label>
+					</div>
+					<label>93.18 - Álgebra Lineal</label>
+				</div>
+				<div class="row bottomMargin5">
+					<div class="span3">
+						<label class="bold">Departamento:</label>
+					</div>
+					<label>Ciencias Exactas y Naturales</label>
+				</div>
+				<div class="row bottomMargin5">
+					<div class="span3">
+						<label class="bold">Cuatrimestre:</label>
+					</div>
+					<div class="span2 noLeftMargin">
+						<span>Segundo Cuat.</span> <span>2026</span>
+					</div>
+				</div>
+				<div id="id2b2" style="display:none"></div>
+				<br>
+				<div class="row bottomMargin5">
+					<div>
+						<span class="span3"></span>
+						&nbsp;&nbsp; 
+						
+					</div>
+				</div>
+				<br>
+				<div class="tabpanel4">
+<div class="tab-row">
+<ul class="nav nav-tabs">
+	<li class="tab0">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD26_HzV78SO_F-BeLkSL9MC6oxbNS2R2Fle_IfnzRMO8Uf9aETQcvXs6jOOI5PkR3e/fyBce/e_I6e"><span>Plantel Docente</span></a>
+	</li><li class="active">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD26_HzV78SO_F-BeLkSL9MC6oxbNS2R2Fle_IfnzRMO8W9BEHabQ2DbloaU91n00Al/fyBce/e_I6e"><span>Comisiones</span></a>
+	</li><li class="tab3">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD26_HzV78SO_F-BeLkSL9MC6oxbNS2R2Fle_IfnzRMO8WjU693gJGFl8cva225fUvo/fyBce/e_I6e"><span>Contenidos mínimos</span></a>
+	</li><li class="tab5 last">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trOyK9IE1CbaelKT7h-9kOD26_HzV78SO_F-BeLkSL9MC6oxbNS2R2Fle_IfnzRMO8UYrVaAITEFo6KVuO68Zfp5/fyBce/e_I6e"><span>Información de la materia</span></a>
+	</li>
+</ul>
+</div>
+<div class="tab-panel">
+		<div class="backgroundBordered" id="id2b3">
+			<h4>
+				<span>93.18</span> - <span>Álgebra Lineal</span>
+			</h4>
+			<table class="table table-bordered table-condensed table-hover">
+				<thead>
+					<tr class="blue">
+						<th class="centered">Comisión</th>
+						<th class="centered">Horarios</th>
+						<th class="centered">Profesores</th>
+						<th class="centered">Cupo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><label class="centered">A</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id2b4">
+			Aula ITBA: <span>001R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2b5">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2b6" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Miércoles</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id2b7">
+			Aula ITBA: <span>201T #----&gt; SDT</span>
+		</span>
+		<span id="id2b8">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2b9" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id2ba">
+			Aula ITBA: <span>203R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2bb">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2bc" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Cabana, Adriana Elena</label></div><div><label>Peña, Nelly Haydee</label></div>
+						</td>
+						<td class="centered"><span>48</span>
+							/ <span>48</span></td>
+					</tr><tr>
+						<td><label class="centered">B</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>12:00</span> - <span>14:00</span>
+								<span><span>
+		<span id="id2bd">
+			Aula ITBA: <span>007R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2be">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2bf" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Miércoles</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id2c0">
+			Aula ITBA: <span>003T #----&gt; SDT</span>
+		</span>
+		<span id="id2c1">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2c2" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Miércoles</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id2c3">
+			Aula ITBA: <span>004T #----&gt; SDT</span>
+		</span>
+		<span id="id2c4">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2c5" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>12:00</span> - <span>14:00</span>
+								<span><span>
+		<span id="id2c6">
+			Aula ITBA: <span>203R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2c7">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2c8" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Peña, Nelly Haydee</label></div><div><label>Blanco Vitorero, Maria Patricia</label></div>
+						</td>
+						<td class="centered"><span>48</span>
+							/ <span>49</span></td>
+					</tr><tr>
+						<td><label class="centered">C</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id2c9">
+			Aula ITBA: <span>108R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2ca">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2cb" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>11:00</span> - <span>13:00</span>
+								<span><span>
+		<span id="id2cc">
+			Aula ITBA: <span>007R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2cd">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2ce" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Viernes</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id2cf">
+			Aula ITBA: <span>101R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2d0">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2d1" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Cabana, Adriana Elena</label></div><div><label>Oviedo, Martina Guadalupe</label></div>
+						</td>
+						<td class="centered"><span>31</span>
+							/ <span>48</span></td>
+					</tr><tr>
+						<td><label class="centered">D</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id2d2">
+			Aula ITBA: <span>203R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2d3">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2d4" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Miércoles</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id2d5">
+			Aula ITBA: <span>009R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2d6">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2d7" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id2d8">
+			Aula ITBA: <span>104R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2d9">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2da" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Blanco Vitorero, Maria Patricia</label></div><div><label>Acosta, Demian Matías</label></div>
+						</td>
+						<td class="centered"><span>10</span>
+							/ <span>48</span></td>
+					</tr><tr>
+						<td><label class="centered">E</label></td>
+						<td class="centered">
+							<div>
+								<span>Martes</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id2db">
+			Aula ITBA: <span>003R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2dc">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2dd" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>08:00</span> - <span>10:00</span>
+								<span><span>
+		<span id="id2de">
+			Aula ITBA: <span>003R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2df">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2e0" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Viernes</span>
+								<span>12:00</span> - <span>14:00</span>
+								<span><span>
+		<span id="id2e1">
+			Aula ITBA: <span>003R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2e2">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2e3" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>De Rossi, Fernando Daniel</label></div><div><label>Oviedo, Martina Guadalupe</label></div>
+						</td>
+						<td class="centered"><span>49</span>
+							/ <span>49</span></td>
+					</tr><tr>
+						<td><label class="centered">F</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>08:00</span> - <span>10:00</span>
+								<span><span>
+		<span id="id2e4">
+			Aula ITBA: <span>002R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2e5">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2e6" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Martes</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id2e7">
+			Aula ITBA: <span>006R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2e8">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2e9" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Viernes</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id2ea">
+			Aula ITBA: <span>110R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2eb">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2ec" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Gualtieri, Sergio Alberto</label></div><div><label>González Rodríguez, Rafael Ricardo</label></div>
+						</td>
+						<td class="centered"><span>49</span>
+							/ <span>49</span></td>
+					</tr><tr>
+						<td><label class="centered">G</label></td>
+						<td class="centered">
+							<div>
+								<span>Martes</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id2ed">
+			Aula ITBA: <span>201R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2ee">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2ef" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>12:00</span> - <span>14:00</span>
+								<span><span>
+		<span id="id2f0">
+			Aula ITBA: <span>109R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2f1">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2f2" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Viernes</span>
+								<span>12:00</span> - <span>14:00</span>
+								<span><span>
+		<span id="id2f3">
+			Aula ITBA: <span>006R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2f4">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2f5" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Vargas, Gabriela</label></div><div><label>D´Alesio Souto, Sofía Nerina</label></div>
+						</td>
+						<td class="centered"><span>49</span>
+							/ <span>49</span></td>
+					</tr><tr>
+						<td><label class="centered">H</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id2f6">
+			Aula ITBA: <span>102R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2f7">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2f8" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Martes</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id2f9">
+			Aula ITBA: <span>002R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2fa">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2fb" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>11:00</span> - <span>13:00</span>
+								<span><span>
+		<span id="id2fc">
+			Aula ITBA: <span>006R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id2fd">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id2fe" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Acosta, Demian Matías</label></div><div><label>Palacios, Patricia Elizabeth</label></div>
+						</td>
+						<td class="centered"><span>47</span>
+							/ <span>50</span></td>
+					</tr><tr>
+						<td><label class="centered">K</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>08:00</span> - <span>10:00</span>
+								<span><span>
+		<span id="id2ff">
+			Aula ITBA: <span>202R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id300">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id301" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Lunes</span>
+								<span>08:00</span> - <span>10:00</span>
+								<span><span>
+		<span id="id302">
+			Aula ITBA: <span>203R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id303">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id304" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Martes</span>
+								<span>12:00</span> - <span>14:00</span>
+								<span><span>
+		<span id="id305">
+			Aula ITBA: <span>002R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id306">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id307" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Martes</span>
+								<span>12:00</span> - <span>14:00</span>
+								<span><span>
+		<span id="id308">
+			Aula ITBA: <span>003R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id309">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id30a" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>08:00</span> - <span>10:00</span>
+								<span><span>
+		<span id="id30b">
+			Aula ITBA: <span>202R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id30c">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id30d" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>08:00</span> - <span>10:00</span>
+								<span><span>
+		<span id="id30e">
+			Aula ITBA: <span>203R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id30f">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id310" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Peralta, Nora Beatriz</label></div><div><label>Blanco Vitorero, Maria Patricia</label></div>
+						</td>
+						<td class="centered"><span>59</span>
+							/ <span>60</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br>
+		<br>
+	</div>
+</div>
+			</div>
+		</div>
+
+	
+		</div>
+		<div id="id2ae"></div>
+	</div>
+
+
+</body></html>

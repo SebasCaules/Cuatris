@@ -1,0 +1,65 @@
+.marcador {
+  background: var(--superficie);
+  border: var(--borde-tarjeta);
+  border-radius: var(--radio-tarjeta);
+  box-shadow: var(--sombra-tarjeta);
+  padding: 12px 14px;
+}
+
+.marcador + .marcador {
+  margin-top: 12px;
+}
+
+.marcador__encabezado {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--linea-columna);
+}
+
+.marcador__titulo {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.marcador__pantalla {
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+  padding: 1px 4px;
+  border: 1px solid var(--linea-columna);
+  border-radius: var(--radio-bloque);
+}
+
+.marcador__cuerpo {
+  margin-top: 9px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}
+
+.marcador__cuerpo p + p,
+.marcador__cuerpo p + ul,
+.marcador__cuerpo ul + p {
+  margin-top: 8px;
+}
+
+.marcador__lista li {
+  padding: 4px 0;
+  border-bottom: 1px dotted var(--linea-columna);
+  color: var(--texto);
+}
+
+.marcador__lista li:last-child {
+  border-bottom: 0;
+}
+
+.marcador__dato {
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto-secundario);
+}

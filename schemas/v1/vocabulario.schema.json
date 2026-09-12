@@ -1,0 +1,44 @@
+{
+  "$id": "https://sebascaules.github.io/Cuatris/schemas/v1/vocabulario.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "description": "Listas cerradas editables del contrato; hoy, las sedes del ITBA.",
+  "properties": {
+    "contrato": {
+      "description": "Version del contrato de datos, en SemVer.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "type": "string"
+    },
+    "sedes": {
+      "description": "Sedes validas; su id es lo que va en bloques[].sede.",
+      "items": {
+        "additionalProperties": false,
+        "description": "Una sede del ITBA.",
+        "properties": {
+          "id": {
+            "description": "Identificador en minusculas que usan los bloques horarios.",
+            "pattern": "^[a-z0-9_]+$",
+            "type": "string"
+          },
+          "nombre": {
+            "description": "Nombre de la sede tal como lo muestra el SGA, sin expandir siglas.",
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nombre"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "contrato",
+    "sedes"
+  ],
+  "title": "Vocabulario controlado",
+  "type": "object"
+}

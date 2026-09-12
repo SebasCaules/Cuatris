@@ -1,0 +1,149 @@
+{
+  "$id": "https://sebascaules.github.io/Cuatris/schemas/v1/index.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "definitions": {
+    "archivo_unico": {
+      "additionalProperties": false,
+      "description": "Un archivo unico del contrato, con su ruta y su hash.",
+      "properties": {
+        "archivo": {
+          "description": "Ruta del archivo, relativa a data/.",
+          "pattern": "^v1/[^/]+\\.json$",
+          "type": "string"
+        },
+        "hash": {
+          "description": "Hash del contenido canonico del archivo referido.",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "archivo",
+        "hash"
+      ],
+      "type": "object"
+    }
+  },
+  "description": "Que archivos existen, con que hash y desde cuando cada periodo esta activo.",
+  "properties": {
+    "abreviaciones": {
+      "$ref": "#/definitions/archivo_unico"
+    },
+    "actualizado": {
+      "description": "Fecha de la ultima actualizacion del indice.",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "type": "string"
+    },
+    "contrato": {
+      "description": "Version del contrato de datos, en SemVer.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "type": "string"
+    },
+    "horarios": {
+      "description": "Periodos de horarios publicados; publicar no es activar.",
+      "items": {
+        "additionalProperties": false,
+        "description": "Un periodo publicado, con sus fechas de vigencia y su hash.",
+        "properties": {
+          "archivo": {
+            "description": "Ruta del archivo, relativa a data/.",
+            "pattern": "^v1/horarios/[^/]+\\.json$",
+            "type": "string"
+          },
+          "desde": {
+            "description": "Primer dia en que el periodo esta activo.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "type": "string"
+          },
+          "hash": {
+            "description": "Hash del contenido canonico del archivo referido.",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "hasta": {
+            "description": "Ultimo dia en que el periodo esta activo.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "type": "string"
+          },
+          "periodo": {
+            "description": "Identificador del periodo publicado.",
+            "pattern": "^\\d{4}-[12]C$",
+            "type": "string"
+          },
+          "publicado": {
+            "description": "Fecha en que se publicaron estos horarios.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "periodo",
+          "archivo",
+          "publicado",
+          "desde",
+          "hasta",
+          "hash"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "horarios_esperados": {
+      "additionalProperties": false,
+      "description": "Periodos futuros y el mes en que se esperan; curado a mano, opcional.",
+      "patternProperties": {
+        "^\\d{4}-[12]C$": {
+          "description": "Mes esperado de publicacion, en formato YYYY-MM.",
+          "pattern": "^\\d{4}-\\d{2}$",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "planes": {
+      "description": "Planes de estudio publicados.",
+      "items": {
+        "additionalProperties": false,
+        "description": "Un plan publicado, con su archivo y su hash.",
+        "properties": {
+          "archivo": {
+            "description": "Ruta del archivo, relativa a data/.",
+            "pattern": "^v1/planes/[^/]+\\.json$",
+            "type": "string"
+          },
+          "hash": {
+            "description": "Hash del contenido canonico del archivo referido.",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "plan": {
+            "description": "Identificador del plan.",
+            "pattern": "^[A-Za-z0-9.\\-]{1,32}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "plan",
+          "archivo",
+          "hash"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "vocabulario": {
+      "$ref": "#/definitions/archivo_unico"
+    }
+  },
+  "required": [
+    "contrato",
+    "actualizado",
+    "planes",
+    "abreviaciones",
+    "vocabulario",
+    "horarios"
+  ],
+  "title": "Indice de datos",
+  "type": "object"
+}

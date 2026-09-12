@@ -1,0 +1,104 @@
+.barra-superior {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 10px 16px;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--linea-columna);
+}
+
+.barra-superior__identidad {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  /* Puede encogerse, pero el texto se recorta en vez de desbordar sobre las
+     pestañas. */
+  min-width: 0;
+  overflow: hidden;
+}
+
+.barra-superior__carrera,
+.barra-superior__plan {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.barra-superior__carrera {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.barra-superior__plan {
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--texto-secundario);
+}
+
+.barra-superior__pestanas {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 2px;
+}
+
+.barra-superior__pestana {
+  padding: 4px 10px;
+  border: 0;
+  border-radius: var(--radio-chip);
+  background: transparent;
+  color: var(--texto-secundario);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.barra-superior__pestana:hover {
+  color: var(--texto);
+}
+
+.barra-superior__pestana[aria-current="page"] {
+  background: var(--acento);
+  color: var(--acento-contraste);
+}
+
+.barra-superior__acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.barra-superior__busqueda {
+  width: 240px;
+  max-width: 40vw;
+  padding: 5px 9px;
+  border: 1px solid var(--linea-columna);
+  border-radius: var(--radio-chip);
+  background: var(--fondo);
+  font-size: 11px;
+}
+
+.barra-superior__busqueda:focus {
+  border: var(--borde-campo-activo);
+  outline: none;
+}
+
+.barra-superior__busqueda:disabled,
+.barra-superior__sugerir:disabled {
+  opacity: 0.55;
+}
+
+.barra-superior__sugerir {
+  padding: 5px 10px;
+  border: 1px solid var(--linea-columna);
+  border-radius: var(--radio-chip);
+  background: var(--superficie);
+  color: var(--texto);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}

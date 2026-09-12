@@ -14,3 +14,7 @@ app/.vite/
 
 # sistema
 .DS_Store
+
+# artefactos de empaquetado y caches del scraper
+*.egg-info/
+.cuatris-cache/

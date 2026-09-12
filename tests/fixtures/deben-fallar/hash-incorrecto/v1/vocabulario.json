@@ -1,0 +1,17 @@
+{
+  "contrato": "1.0.0",
+  "sedes": [
+    {
+      "id": "rectorado",
+      "nombre": "Rectorado"
+    },
+    {
+      "id": "sdt",
+      "nombre": "SDT"
+    },
+    {
+      "id": "sdf",
+      "nombre": "SDF"
+    }
+  ]
+}

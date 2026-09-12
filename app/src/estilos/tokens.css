@@ -1,0 +1,131 @@
+/*
+ * Tokens de diseño — paleta 4a «Arena y ladrillo».
+ * Fuente: entregables/04-diseno/tokens.md. No se inventan valores acá: si hace
+ * falta uno nuevo, primero se agrega al documento de diseño.
+ *
+ * Los roles se definen tres veces:
+ *   1. `:root`               → tema claro, siempre presente.
+ *   2. `prefers-color-scheme` → tema del sistema, salvo que haya `data-tema="claro"`.
+ *   3. `[data-tema="oscuro"]` → elección explícita del usuario, gana en ambos sentidos.
+ */
+
+:root {
+  /* Roles base — claro */
+  --fondo: #f1f0eb;
+  --superficie: #ffffff;
+  --texto: #1f1d1c;
+  --texto-secundario: #5f6b70;
+  --acento: #9c3d2e;
+  --acento-hover: #7a2e22;
+  --acento-contraste: #ffffff;
+  --choque: #1f1d1c;
+
+  /* Líneas de la grilla semanal */
+  --linea-hora: #dcd8d0;
+  --linea-columna: #dedbd1;
+
+  /* Nota «sin horario publicado» */
+  --sin-horario-borde: #a2a79f;
+  --sin-horario-fondo: #f9f8f4;
+
+  /* Trama de materia bloqueada */
+  --bloqueada-trama: repeating-linear-gradient(
+    135deg,
+    #e2ddd6 0 3px,
+    #f2eee9 3px 6px
+  );
+
+  /* Diez colores de materia: se asignan por orden de agregado al plan y quedan
+     fijos para toda la carrera. El estado nunca cambia el color. */
+  --materia-0: #1f4e5f;
+  --materia-1: #9c3d2e;
+  --materia-2: #3d7183;
+  --materia-3: #a8762c;
+  --materia-4: #4a5578;
+  --materia-5: #7d3f4f;
+  --materia-6: #2f7a6a;
+  --materia-7: #8c4a32;
+  --materia-8: #5f7a4a;
+  --materia-9: #4a4f55;
+
+  /* Mezclas del bloque en la grilla (tokens.md: barra 3 px + relleno 14 %) */
+  --materia-relleno-porcentaje: 14%;
+  --materia-relleno-base: var(--superficie);
+
+  /* Tipografía */
+  --fuente-texto: "Newsreader", Georgia, "Times New Roman", serif;
+  --fuente-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
+
+  /* Radios y bordes */
+  --radio-tarjeta: 8px;
+  --radio-chip: 4px;
+  --radio-bloque: 2px;
+  --borde-tarjeta: 1px solid rgba(0, 0, 0, 0.1);
+  --sombra-tarjeta: 0 2px 8px rgba(0, 0, 0, 0.07);
+  --borde-campo-activo: 1.5px solid #1f1d1c;
+
+  /* Grilla semanal: 18 px por hora con una tarjeta sola, 15 px con dos lado a
+     lado. Es un token, no una constante. */
+  --hora-px: 15px;
+  --hora-px-tarjeta-sola: 18px;
+  --grilla-desde-hora: 8;
+  --grilla-hasta-hora: 22;
+}
+
+/* Tema del sistema. `:not([data-tema="claro"])` deja que la elección explícita
+   de tema claro gane sobre el sistema. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    --fondo: #17161a;
+    --superficie: #22211f;
+    --texto: #f2efe9;
+    /* Derivados: tokens.md no fija estos roles en oscuro. */
+    --texto-secundario: #a8b0b4;
+    --acento: #d4694f;
+    --acento-hover: #e0836c;
+    --acento-contraste: #17161a;
+    --choque: #f2efe9;
+    --linea-hora: #35332f;
+    --linea-columna: #33312d;
+    --sin-horario-borde: #6b6f68;
+    --sin-horario-fondo: #1d1c1a;
+    --bloqueada-trama: repeating-linear-gradient(
+      135deg,
+      #2e2c29 0 3px,
+      #26241f 3px 6px
+    );
+    /* Mismo matiz aclarado un 62 % para la barra; el relleno sube al 34 %. */
+    --materia-relleno-porcentaje: 34%;
+    --materia-relleno-base: var(--superficie);
+    --borde-tarjeta: 1px solid rgba(255, 255, 255, 0.12);
+    --sombra-tarjeta: 0 2px 8px rgba(0, 0, 0, 0.35);
+    --borde-campo-activo: 1.5px solid #f2efe9;
+  }
+}
+
+/* Elección explícita del usuario. */
+:root[data-tema="oscuro"] {
+  --fondo: #17161a;
+  --superficie: #22211f;
+  --texto: #f2efe9;
+  --texto-secundario: #a8b0b4;
+  --acento: #d4694f;
+  --acento-hover: #e0836c;
+  --acento-contraste: #17161a;
+  --choque: #f2efe9;
+  --linea-hora: #35332f;
+  --linea-columna: #33312d;
+  --sin-horario-borde: #6b6f68;
+  --sin-horario-fondo: #1d1c1a;
+  --bloqueada-trama: repeating-linear-gradient(
+    135deg,
+    #2e2c29 0 3px,
+    #26241f 3px 6px
+  );
+  --materia-relleno-porcentaje: 34%;
+  --materia-relleno-base: var(--superficie);
+  --borde-tarjeta: 1px solid rgba(255, 255, 255, 0.12);
+  --sombra-tarjeta: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --borde-campo-activo: 1.5px solid #f2efe9;
+}

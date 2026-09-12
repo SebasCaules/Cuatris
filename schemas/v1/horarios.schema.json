@@ -1,0 +1,286 @@
+{
+  "$id": "https://sebascaules.github.io/Cuatris/schemas/v1/horarios.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "definitions": {
+    "bloque": {
+      "additionalProperties": false,
+      "description": "Un bloque horario: dia, franja, sede, modalidad y aulas.",
+      "properties": {
+        "aulas": {
+          "description": "Aulas del bloque; nunca es enum y admite dos aulas simultaneas.",
+          "items": {
+            "description": "Codigo de aula tal como lo publica el SGA.",
+            "pattern": "^[0-9A-Za-z][0-9A-Za-z .\\-]{0,15}$",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "desde": {
+          "description": "Hora de inicio del bloque.",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+          "type": "string"
+        },
+        "dia": {
+          "description": "Dia de la semana, sin acentos; el domingo no existe en la cursada.",
+          "enum": [
+            "lunes",
+            "martes",
+            "miercoles",
+            "jueves",
+            "viernes",
+            "sabado"
+          ],
+          "type": "string"
+        },
+        "hasta": {
+          "description": "Hora de fin del bloque.",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+          "type": "string"
+        },
+        "modalidad": {
+          "description": "Modalidad del bloque; puede variar entre bloques de una misma comision.",
+          "enum": [
+            "presencial",
+            "virtual_sincronica",
+            "virtual_asincronica",
+            "blended"
+          ],
+          "type": "string"
+        },
+        "sede": {
+          "description": "Identificador de sede de vocabulario.json; null solo si no es presencial.",
+          "pattern": "^[a-z0-9_]+$",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "dia",
+        "desde",
+        "hasta",
+        "sede",
+        "modalidad",
+        "aulas"
+      ],
+      "type": "object"
+    },
+    "comision": {
+      "additionalProperties": false,
+      "description": "Una comision del curso, con sus docentes y sus bloques horarios.",
+      "properties": {
+        "bloques": {
+          "description": "Bloques horarios de la comision; vacio si no hay horario publicado.",
+          "items": {
+            "$ref": "#/definitions/bloque"
+          },
+          "type": "array"
+        },
+        "cupo": {
+          "additionalProperties": false,
+          "description": "Capacidad declarada de la comision; dato estable, opcional.",
+          "properties": {
+            "capacidad": {
+              "description": "Cantidad maxima de inscriptos.",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "capacidad"
+          ],
+          "type": "object"
+        },
+        "docentes": {
+          "description": "Docentes de la comision, como los lista el SGA; puede estar vacio.",
+          "items": {
+            "description": "Nombre del docente, en la forma «Apellido, Nombre».",
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "Identificador opaco de la comision; no se exige orden ni contiguidad.",
+          "pattern": "^[A-Z0-9]{1,4}$",
+          "type": "string"
+        },
+        "ocupacion": {
+          "additionalProperties": false,
+          "description": "Inscriptos a una fecha; dato volatil, opcional y fuera del hash estable.",
+          "properties": {
+            "al": {
+              "description": "Fecha a la que corresponde la ocupacion.",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            },
+            "inscriptos": {
+              "description": "Cantidad de inscriptos al momento de la captura.",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "inscriptos",
+            "al"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "docentes",
+        "bloques"
+      ],
+      "type": "object"
+    },
+    "curso": {
+      "additionalProperties": false,
+      "description": "Un curso: una materia dictada en este periodo.",
+      "properties": {
+        "codigo": {
+          "description": "Codigo de materia del ITBA, siempre string (por ejemplo «93.18»).",
+          "pattern": "^\\d{2}\\.\\d{2}$",
+          "type": "string"
+        },
+        "comisiones": {
+          "description": "Comisiones del curso; vacio si todavia no se publicaron.",
+          "items": {
+            "$ref": "#/definitions/comision"
+          },
+          "type": "array"
+        },
+        "departamento": {
+          "description": "Departamento que dicta la materia; opcional.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "desde": {
+          "description": "Primer dia de dictado del curso; puede ser un periodo corto.",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
+        "dictado_conjunto": {
+          "description": "Codigos que se dictan junto con este curso y comparten aula legitimamente.",
+          "items": {
+            "description": "Codigo de materia del ITBA, siempre string (por ejemplo «93.18»).",
+            "pattern": "^\\d{2}\\.\\d{2}$",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "hasta": {
+          "description": "Ultimo dia de dictado del curso.",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
+        "nombre": {
+          "description": "Nombre de la materia tal como lo muestra el SGA.",
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "codigo",
+        "nombre",
+        "desde",
+        "hasta",
+        "dictado_conjunto",
+        "comisiones"
+      ],
+      "type": "object"
+    }
+  },
+  "description": "Oferta de cursos, comisiones y bloques horarios de un cuatrimestre.",
+  "properties": {
+    "contrato": {
+      "description": "Version del contrato de datos, en SemVer.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "type": "string"
+    },
+    "cursos": {
+      "description": "Cursos ofrecidos en el periodo, uno por codigo de materia.",
+      "items": {
+        "$ref": "#/definitions/curso"
+      },
+      "type": "array"
+    },
+    "fuente": {
+      "additionalProperties": false,
+      "description": "De donde salieron los datos y cuando se capturaron.",
+      "properties": {
+        "capturado": {
+          "description": "Fecha en que se capturaron los datos.",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
+        "sistema": {
+          "description": "Sistema de origen: el SGA o una carga manual.",
+          "enum": [
+            "sga",
+            "manual"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "sistema",
+        "capturado"
+      ],
+      "type": "object"
+    },
+    "periodo": {
+      "additionalProperties": false,
+      "description": "Cuatrimestre al que pertenece todo el archivo.",
+      "properties": {
+        "anio": {
+          "description": "Anio calendario del periodo.",
+          "maximum": 2100,
+          "minimum": 2000,
+          "type": "integer"
+        },
+        "cuatrimestre": {
+          "description": "Primer o segundo cuatrimestre.",
+          "enum": [
+            "1C",
+            "2C"
+          ],
+          "type": "string"
+        },
+        "desde": {
+          "description": "Primer dia de clases del periodo.",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
+        "hasta": {
+          "description": "Ultimo dia de clases del periodo.",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
+        "id": {
+          "description": "Identificador del periodo, con la forma «<anio>-<cuatrimestre>».",
+          "pattern": "^\\d{4}-[12]C$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "anio",
+        "cuatrimestre",
+        "desde",
+        "hasta"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "contrato",
+    "periodo",
+    "fuente",
+    "cursos"
+  ],
+  "title": "Horarios de un periodo",
+  "type": "object"
+}
