@@ -55,6 +55,17 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
   comisión guardada que ya no existe se descarta en silencio hasta el aviso del Sprint 2.
 - **N0-14** Ruta `#/muestrario` cableada en `rutas.ts`/`App.tsx`; el puente provisional de
   `Disposicion` se retiró.
+- **N0-15** Simulación optimista: una materia con historia `cursando` o `regular` cuenta como
+  aprobada para todo período posterior al activo; en el activo, no.
+- **N0-16** La ficha 13e queda como página con «← Plan» en el Sprint 1 (el mockup la dibuja
+  como panel de 560 px); pasa a modal en el Sprint 2 (S-22). El resto de los findings de la
+  auditoría (29 confirmados + 13 que el tope de refutación dejó pasar y N0 revisó a mano) va
+  a la ola de fixes `olas/ola-4/FIXES.md` en cinco clústeres.
+- **N0-17** `hash_estable` (ocupación fuera del hash) no se implementa en este sprint: se
+  retira la promesa de la documentación hasta la replicación independiente del Sprint 3.
+- **N0-18** Hasta que exista C4, cualquier baja dentro de `data/` es `necesita-humano`.
+- **N0-19** Marcar una materia como aprobada la quita de los períodos planificados; la grilla
+  saltea las aprobadas.
 
 ## Pasos
 
@@ -76,7 +87,8 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | Ola 3A · U3.1 grilla semanal + tarjeta + lista de conflictos | DONE | ola-3a | VERDE (wf_6a1c5fda-af8); medido contra 13b elemento por elemento |
 | Ola 3B · U3.2 página del plan · U3.3 panel agregar · U3.4 modal comisiones · U3.5 ficha y bloqueo · U3.6 inicio y menú | DONE | 61798d7 | todas VERDE; N0 cableó `App.tsx`, corrigió cupo-lleno y motivos encajonados (U3.3) y la comisión desaparecida (U3.5) |
 | Ola 3B · smoke visual con período de prueba (fixture como 2026-2C, sin versionar) | DONE | — | 13a → marcar 28 materias → 13b con grilla → 13c «cripto» → 13d Elegir S → bloque en la grilla, progreso 153/192 → 13e ficha. Sin errores de consola |
-| Ola 4 · auditoría adversarial (6 dimensiones) + refutación | DOING | | `olas/ola-4/AUDITORIA.md` |
+| Ola 4 · auditoría adversarial (6 dimensiones) + refutación | DONE | — | 36 agentes; 61 findings, 29 confirmados, 1 refutado, 13 sin refutar por tope (adjudicados por N0), 18 bajos |
+| Ola 4 · fixes en cinco clústeres (F1 CI · F2 validador · F3 motor · F4 interfaz · F5 scraper) + re-verificación | DOING | | `olas/ola-4/FIXES.md` |
 | Ola 4 · fixes confirmados, gates, push, plataforma, deploy, datos reales | TODO | | requiere la corrida del scraper por el autor y su OK al push |
 
 ## Fixes y tareas diferidas (S-nn)
@@ -104,6 +116,8 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | S-19 | `GrillaSemanal` sin prop `destacados`: el «Ver» de ↕ resalta por una regla CSS sobre `aria-label` | app | U3.2 | Sprint 2 |
 | S-20 | Materia planificada con comisiones publicadas pero sin comisión elegida no se ve en la tarjeta | app | U3.2 | Sprint 2 (hoy el panel siempre pasa por el modal) |
 | S-21 | `useDatos` sin caché: cada página que lo llame vuelve a pedir los JSON (hoy solo `App` lo llama) | app datos | U3.2/U3.3 | Sprint 2 (`ProveedorDatos`) |
+| S-22 | Ficha 13e como modal de 560 px con ✕ en vez de página | app | auditoría A4 | Sprint 2 |
+| S-23 | El período de prueba (fixture) no permite recorrer 13h → «Resolver» en el navegador: hace falta el período real | smoke | auditoría A4 | con la corrida del scraper |
 
 ## Veredicto final
 
