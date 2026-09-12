@@ -6,6 +6,10 @@ C1 (`triage`) sobre los bytes y el objeto crudo, C2 (`esquema`) contra el JSON S
 dejaron errores, y las reglas que miran otros archivos —el plan y el vocabulario de sedes—
 necesitan un `Contexto`: `contexto_de_datos("data")` lo arma, y `cuatris validar --data` lo
 pasa. Sin contexto, C3 comprueba lo que se puede comprobar dentro del propio archivo.
+
+Dos controles de C1 esperan a saber el tipo, porque solo tienen sentido sobre un documento
+del contrato: el major de `contrato`, que vale para los cinco tipos —todos son de `v1`—, y
+los hashes de `index.json`.
 """
 
 from __future__ import annotations
@@ -120,6 +124,7 @@ def validar_archivo(
         )
         return hallazgos
 
+    hallazgos.extend(triage.revisar_contrato(datos, archivo))
     if deducido == "index":
         hallazgos.extend(triage.revisar_index(camino, datos, archivo))
     hallazgos.extend(esquema.revisar(datos, deducido, archivo))

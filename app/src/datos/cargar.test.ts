@@ -89,13 +89,12 @@ describe("cargar", () => {
     ]);
 
     const abreviaciones = await cargarAbreviaciones(indice);
-    expect(abreviaciones.abreviaciones["72.44"]).toBe("Cripto");
+    expect(abreviaciones.abreviaciones["72.45"]).toBe("PF");
 
     const vocabulario = await cargarVocabulario(indice);
     expect(vocabulario.sedes.map((sede) => sede.id)).toEqual([
       "rectorado",
       "sdt",
-      "sdf",
     ]);
   });
 

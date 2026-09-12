@@ -127,6 +127,40 @@ describe("reducir", () => {
     expect(aprobada.historia["93.18"]).toEqual({ estado: "aprobada" });
   });
 
+  it("marcarAprobada saca la materia de todos los períodos planificados", () => {
+    const conPlan = reducir(
+      reducir(conMaterias(["93.18", "72.44"]), {
+        tipo: "elegirComision",
+        periodo: "2026-2C",
+        codigo: "93.18",
+        comision: "A",
+      }),
+      { tipo: "agregarMateria", periodo: "2027-1C", codigo: "93.18" },
+    );
+    expect(conPlan.periodos["2026-2C"]).toEqual([
+      { codigo: "93.18", comision: "A" },
+      { codigo: "72.44" },
+    ]);
+
+    const aprobada = reducir(conPlan, {
+      tipo: "marcarAprobada",
+      codigo: "93.18",
+    });
+    expect(aprobada.periodos["2026-2C"]).toEqual([{ codigo: "72.44" }]);
+    expect(aprobada.periodos["2027-1C"]).toEqual([]);
+    // El color no se libera: identifica a la materia para toda la carrera.
+    expect(aprobada.colores["93.18"]).toBe(0);
+  });
+
+  it("marcar aprobada algo que no estaba planificado deja los períodos como estaban", () => {
+    const conPlan = conMaterias(["72.44"]);
+    const aprobada = reducir(conPlan, {
+      tipo: "marcarAprobada",
+      codigo: "93.18",
+    });
+    expect(aprobada.periodos).toBe(conPlan.periodos);
+  });
+
   it("setVisibles cambia la preferencia del carrusel", () => {
     const estado = reducir(planUsuarioInicial(), {
       tipo: "setVisibles",

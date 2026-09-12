@@ -5,9 +5,10 @@ cada selector cuando deje de funcionar. Está escrito para alguien que llega a e
 repositorio dentro de varios años y no vio nunca el SGA.
 
 > **Resumen para el apurado.** `export SGA_USUARIO=…`, después
-> `.venv/bin/cuatris sga bajar --anio 2026 --cuatrimestre 2C --salida data/v1/horarios/2026-2C.json --limite 3`
-> para probar, y sin `--limite` para el barrido completo (~500 peticiones, entre ocho y diez
-> minutos). Si se corta, se vuelve a correr el mismo comando: retoma donde iba.
+> `.venv/bin/cuatris sga bajar --anio 2026 --cuatrimestre 2C --salida /tmp/prueba-2026-2C.json --limite 3`
+> para probar, y el mismo comando con `--salida data/v1/horarios/2026-2C.json` y sin `--limite`
+> para el barrido completo (~500 peticiones, entre ocho y diez minutos). Si se corta, se
+> vuelve a correr el mismo comando: retoma donde iba.
 
 ## Qué es el SGA y cómo se consigue una cuenta
 
@@ -83,11 +84,21 @@ balanceador de AWS. Tres consecuencias que explican casi todas las decisiones de
 
 ## Cómo se corre
 
-Requisitos: Python 3.11+ con las dependencias del proyecto instaladas (`.venv/` en la raíz)
-y una cuenta del SGA.
+Requisitos: Python 3.11+, una cuenta del SGA y el entorno del proyecto (`.venv/` en la raíz).
+`.venv/` no está versionado (`.gitignore`), así que en un clon limpio hay que crearlo; las
+dependencias salen de `vendor/`, sin red:
 
 ```bash
 cd /ruta/al/repositorio
+python3 -m venv .venv
+.venv/bin/pip install --no-index --find-links vendor -r vendor/requisitos.txt
+.venv/bin/pip install --no-index --no-build-isolation --no-deps -e tools
+```
+
+Eso deja `.venv/bin/cuatris`, que es el comando que usa el resto de esta página. (`docs/ci.md`
+§«Correr todo localmente» instala lo mismo, más `ruff`, para correr los tests y los linters.)
+
+```bash
 export SGA_USUARIO=su.usuario        # la contraseña NO se exporta: se escribe cuando la pida
 ```
 
@@ -100,15 +111,17 @@ historial del shell.
 ```bash
 .venv/bin/cuatris sga bajar \
   --anio 2026 --cuatrimestre 2C \
-  --salida data/v1/horarios/2026-2C.json \
+  --salida /tmp/prueba-2026-2C.json \
   --limite 3
 ```
 
 Baja solo tres cursos y escribe el archivo completo: alcanza para ver en un minuto si el
-login, los filtros, la paginación y el parseo siguen funcionando. **Ese archivo no se
-publica**: las fechas del período salen de los cursos que se hayan mirado, así que con
-`--limite` el encabezado `periodo` no representa al cuatrimestre entero. Es una prueba, no un
-entregable; el comando lo dice al terminar.
+login, los filtros, la paginación y el parseo siguen funcionando. **La salida va a `/tmp`, no
+a `data/`, a propósito**: las fechas del período salen de los cursos que se hayan mirado, así
+que con `--limite` el encabezado `periodo` no representa al cuatrimestre entero. Es una
+prueba, no un entregable —el comando lo dice al terminar—, y ningún validador la distingue de
+un archivo publicable: si quedara en la ruta de publicación y el barrido completo se cortara,
+el PR publicaría el archivo de prueba.
 
 **Barrido completo:**
 
@@ -130,6 +143,7 @@ Opciones:
 | `--nivel` | Nivel del filtro del listado; por defecto `Grado` |
 | `--guardar-html` | Ante un error, vuelca la respuesta problemática en `.cuatris-cache/` |
 | `--data` | Directorio de datos del que la capa C3 toma el plan y el vocabulario |
+| `--cache` | Directorio del checkpoint, de los volcados y de los descartes; por defecto `./.cuatris-cache` |
 
 Sobre `--ritmo`: **no lo suba.** Una petición por segundo sobre ~500 peticiones son unos
 ocho minutos, y el `User-Agent` que manda el scraper
@@ -156,9 +170,12 @@ lo bajado.
 - **Que el detalle sea el que se pidió**: si se abre la lupa de 30.28 y el SGA devuelve
   93.18, corta.
 - **Que no haya dos cursos con el mismo código** en el archivo.
-- **Que el archivo final valide** (C1, C2 y C3). Si hay errores, el archivo queda con el
-  sufijo `.invalido.json` y el comando sale con código 1, para que un archivo que no valida
-  no se pueda confundir con uno publicable.
+- **Que el archivo final valide** (C1, C2 y C3). Si hay errores, el archivo **se mueve** a
+  `.cuatris-cache/<periodo>.invalido.json` —fuera de `data/`— y el comando sale con código 1,
+  para que un archivo que no valida no se pueda confundir con uno publicable. Queda ahí solo
+  para mirarlo: es un descarte y se borra. Nunca lo deje dentro de `data/`, porque un segundo
+  archivo del mismo período rompe `cuatris indice actualizar` y tumba los gates de CI, que
+  validan todos los JSON de `data/`.
 
 ## Qué extrae cada parser y en qué se ancla
 
@@ -330,8 +347,8 @@ El orden de siempre: mirar el mensaje, mirar el HTML, comparar contra el corpus.
    | `horarios-materia-multiples-comisiones.html` | 93.18, nueve comisiones: el caso rico |
 
    ```bash
-   diff <(python -c "import sys,bs4;print(bs4.BeautifulSoup(open(sys.argv[1]).read(),'html.parser').prettify())" .cuatris-cache/2026-2C-error.html) \
-        <(python -c "import sys,bs4;print(bs4.BeautifulSoup(open(sys.argv[1]).read(),'html.parser').prettify())" tests/corpus/sga/oferta-materias.html)
+   diff <(.venv/bin/python -c "import sys,bs4;print(bs4.BeautifulSoup(open(sys.argv[1]).read(),'html.parser').prettify())" .cuatris-cache/2026-2C-error.html) \
+        <(.venv/bin/python -c "import sys,bs4;print(bs4.BeautifulSoup(open(sys.argv[1]).read(),'html.parser').prettify())" tests/corpus/sga/oferta-materias.html)
    ```
 
    La diferencia señala el anclaje que hay que actualizar. Las tablas de arriba dicen cuál.
@@ -369,6 +386,19 @@ y publicarlo.
 `cuatris indice actualizar` recalcula el `hash` y la fecha de `data/index.json`, y crea la
 entrada del período nuevo leyendo `periodo` del propio archivo (`--publicado YYYY-MM-DD` fija
 la fecha de publicación). Es el único comando que escribe hashes: `cuatris validar` los comprueba.
+
+```bash
+# 4. Verlo en la página antes de abrir el PR
+cd app && npm run dev        # sirve además ../data bajo /data/, así que lee el archivo recién escrito
+```
+
+Este paso no es decorativo: es lo único que muestra lo que ningún validador puede ver.
+`periodoActivo` (`app/src/datos/cargar.ts`; `docs/contrato.md`, «`data/index.json`») elige el
+período con `desde <= hoy <= hasta`, así que un `periodo` mal fechado deja el cuatrimestre
+nuevo fuera de la pantalla sin que nada falle; y un archivo de prueba de tres cursos valida
+igual de bien que uno completo. Abra el período nuevo, confirme que aparece seleccionado, que
+la cantidad de materias es la esperada y que una materia conocida trae sus comisiones y
+horarios.
 
 Después, el PR:
 

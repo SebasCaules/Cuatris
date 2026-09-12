@@ -1,7 +1,7 @@
 {
   "abreviaciones": {
     "archivo": "v1/abreviaciones.json",
-    "hash": "sha256:152df09052a957cc8abd3ffb32a9424f951af825c51a8daef8adc5a55b2b965f"
+    "hash": "sha256:1412dbab80c9e1640573e8d4b630543da79850d976f99718a55beb93fb24f8dd"
   },
   "actualizado": "2026-09-20",
   "contrato": "1.0.0",
@@ -27,6 +27,6 @@
   ],
   "vocabulario": {
     "archivo": "v1/vocabulario.json",
-    "hash": "sha256:4fa023f69537888e80ee5850b211f43acb7c9f7b112b6e88fc3c00fb9b864580"
+    "hash": "sha256:cd60dcfae753b34976f6054ab1c10ce6962f4618402d4b176c95e4648a0040d7"
   }
 }

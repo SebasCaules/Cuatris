@@ -29,5 +29,5 @@ export type { PropsNota, VarianteNota } from "./Nota";
 export { PanelLateral } from "./PanelLateral";
 export type { PropsPanelLateral } from "./PanelLateral";
 
-export { useFocoAtrapado } from "./foco";
-export type { OpcionesFoco } from "./foco";
+export { useEscapeDeCapa, useFocoAtrapado } from "./foco";
+export type { OpcionesEscape, OpcionesFoco } from "./foco";

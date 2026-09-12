@@ -58,9 +58,10 @@ const VISIBLES: readonly Visibles[] = [1, 2, 3];
 
 export interface PropsPaginaPlan {
   /**
-   * El panel lateral de «Agregar materia» está abierto (13c). Mientras lo
-   * está, el carrusel baja a una tarjeta y al cerrarse vuelve a la preferencia
-   * guardada.
+   * El panel lateral de «Agregar materia» está abierto (13c). El carrusel no
+   * cambia de tamaño por eso —13c conserva sus dos tarjetas al lado del panel
+   * de 330 px—; solo se achica la escala de la grilla para que las dos entren
+   * en el ancho que queda.
    */
   panelAbierto?: boolean;
   /** Abre el panel de U3.3 para ese cuatrimestre. */
@@ -208,10 +209,9 @@ export function PlanConDatos({
   }
 
   const enCurso = seleccionado ?? periodos[0] ?? null;
-  const visibles: Visibles = panelAbierto
-    ? 1
-    : planUsuario.preferencias.visibles;
-  const horaPx = visibles === 1 ? HORA_PX_SOLA : HORA_PX_ACOMPANADA;
+  const visibles: Visibles = planUsuario.preferencias.visibles;
+  const horaPx =
+    visibles === 1 && !panelAbierto ? HORA_PX_SOLA : HORA_PX_ACOMPANADA;
 
   /** Choques y cambios de sede del único período que tiene horarios. */
   const conflictos: { choques: Choque[]; cambiosDeSede: CambioDeSede[] } =
@@ -373,7 +373,6 @@ export function PlanConDatos({
                     cuantos === visibles ? " plan__visible--activo" : ""
                   }`}
                   aria-pressed={cuantos === visibles}
-                  disabled={panelAbierto}
                   onClick={() => {
                     despachar({ tipo: "setVisibles", visibles: cuantos });
                   }}

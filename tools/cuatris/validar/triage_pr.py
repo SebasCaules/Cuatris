@@ -17,6 +17,11 @@ puntero de 40 caracteres, un puntero LFS convierte el archivo en una descarga en
 uso, `.gitattributes` reescribe el contenido al hacer checkout, y dos rutas que solo difieren
 en mayusculas son un solo archivo en macOS y en Windows.
 
+Se rechaza ademas **toda baja dentro de `data/`**. Ninguna capa del Sprint 1 mira magnitud ni
+bajas —eso es C4, y llega en el Sprint 2—, asi que un PR que borra `data/v1/horarios/2026-2C.json`
+y deja `"horarios": []` en el indice pasa las dos validaciones en verde y despublica el
+cuatrimestre entero. Mientras C4 no exista, una baja la mira una persona.
+
 El diff se toma desde la **base de fusion** (`git merge-base`), que es lo que muestra GitHub
 en un PR; si las dos refs no tienen ancestro comun se compara directamente contra `--base`.
 
@@ -64,6 +69,9 @@ MODO_SUBMODULO = "160000"
 
 MODOS_ADMITIDOS = (MODO_AUSENTE, MODO_ARCHIVO)
 """Un archivo de datos es un archivo regular no ejecutable, o no esta."""
+
+PREFIJO_DE_DATOS = "data/"
+"""Todo lo que cuelga de aca se publica en Pages: una baja despublica lo que la SPA sirve."""
 
 NOMBRES_DE_MODO = {
     MODO_EJECUTABLE: "un archivo ejecutable",
@@ -290,6 +298,11 @@ def clasificar(repo: str | Path, base: str, head: str) -> Clasificacion:
             resultado.rechazar(
                 f"«{ruta}»: {donde} {explicacion}; un archivo de datos es un archivo "
                 "regular no ejecutable"
+            )
+        if cambio.modo_destino == MODO_AUSENTE and ruta.startswith(PREFIJO_DE_DATOS):
+            resultado.rechazar(
+                f"«{ruta}» se borra: hasta que exista el control de magnitud (C4, Sprint 2), "
+                "toda baja dentro de data/ la mira una persona"
             )
         if cambio.modo_destino == MODO_ARCHIVO and _es_puntero_lfs(camino, cambio.blob_destino):
             resultado.rechazar(

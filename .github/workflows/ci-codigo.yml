@@ -56,8 +56,28 @@ jobs:
       - name: Tests
         run: python -m pytest tests/tools -q
 
-      - name: Guardarraíles de los workflows
-        run: cuatris guardarrailes .github/workflows
+      # `.github` entero y no solo `.github/workflows`: un `action.yml` local corre con los
+      # permisos del job que lo invoca, y el `uses: ./…` que lo llama se saltea en la regla de
+      # SHA porque no hay SHA que fijar. Si no se lo revisa acá, no lo revisa nadie.
+      - name: Guardarraíles de los workflows y de las acciones locales
+        run: cuatris guardarrailes .github
+
+      # El corpus de `app/src/datos/ejemplo/` tiene forma de documento del contrato y es el
+      # sustituto de `data/` en los tests de la SPA, pero no lo mira ningún gate: `pr-datos.yml`
+      # y `deploy.yml` solo validan `data/`. Lo pide F2.
+      - name: Validar el corpus de ejemplo de la SPA
+        run: |
+          set -euo pipefail
+          archivos=()
+          while IFS= read -r archivo; do
+            archivos+=("$archivo")
+          done < <(find app/src/datos/ejemplo -type f -name '*.json' | sort)
+          if [ "${#archivos[@]}" -eq 0 ]; then
+            echo "::error::el corpus de ejemplo de la SPA no tiene ningún JSON"
+            exit 1
+          fi
+          printf 'archivos a validar: %s\n' "${#archivos[@]}"
+          cuatris validar --data app/src/datos/ejemplo "${archivos[@]}"
 
   node:
     name: node

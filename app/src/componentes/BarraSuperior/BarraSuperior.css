@@ -136,3 +136,24 @@
 .barra-superior__menu-item:disabled {
   opacity: 0.55;
 }
+
+/*
+ * «Sugerir corrección» apagado: el botón y su motivo, apilados. La nota está a
+ * la vista —no recortada— porque es el mismo trato que reciben los botones
+ * pendientes del pie de la ficha de materia: un motivo que solo existe en el
+ * árbol de accesibilidad no llega a quien mira la pantalla.
+ */
+.barra-superior__sugerir {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.barra-superior__nota {
+  font-family: var(--fuente-texto);
+  font-size: 9px;
+  line-height: 1.2;
+  color: var(--texto-secundario);
+  white-space: nowrap;
+}

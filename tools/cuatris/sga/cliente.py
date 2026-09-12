@@ -284,7 +284,7 @@ class ClienteSGA:
                     self.reintentos,
                     espera,
                     metodo,
-                    url,
+                    _sin_sesion(url),
                 )
                 self._dormir(espera)
             self._esperar_turno()

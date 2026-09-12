@@ -34,11 +34,20 @@ def test_cargar_rechaza_claves_duplicadas(tmp_path: Path) -> None:
 
 
 def test_cargar_rechaza_bom(tmp_path: Path) -> None:
-    """Un BOM al principio del archivo se rechaza con un mensaje propio."""
+    """Un BOM al principio del archivo se rechaza con el mensaje propio de `leer_texto`.
+
+    El mensaje importa: si el BOM lo rechazara `json.loads` («Unexpected UTF-8 BOM»), el
+    guardia de `leer_texto` podria no existir y `leer_texto` devolveria texto con BOM, que es
+    lo que alimenta el hash del indice. Por eso se afirma el texto en español, no «BOM».
+    """
     ruta = tmp_path / "bom.json"
     ruta.write_bytes(canon.BOM_UTF8 + canon.serializar(MINIMO).encode("utf-8"))
-    with pytest.raises(canon.ErrorCanonico, match="BOM"):
+    with pytest.raises(canon.ErrorCanonico, match="empieza con BOM de UTF-8"):
         canon.cargar(ruta)
+    with pytest.raises(canon.ErrorCanonico, match="empieza con BOM de UTF-8"):
+        canon.leer_texto(ruta)
+    with pytest.raises(canon.ErrorCanonico, match="empieza con BOM de UTF-8"):
+        canon.hash_canonico(ruta)
 
 
 def test_cargar_rechaza_crlf(tmp_path: Path) -> None:

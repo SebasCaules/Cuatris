@@ -14,7 +14,7 @@ import type {
   Plan,
   PlanUsuario,
 } from "../contrato/tipos";
-import { compararPeriodos } from "./periodos";
+import { compararPeriodos, primerPeriodoDelPlan } from "./periodos";
 
 export type Historia = Record<Codigo, EntradaHistoria>;
 
@@ -78,8 +78,43 @@ export function primerPeriodoPlanificado(
 }
 
 /**
+ * Códigos que la historia trae como `cursando` o `regular` y que la simulación
+ * optimista da por aprobados al empezar `periodo`.
+ *
+ * Regla (decisión N0-15): una materia que se está cursando cuenta como
+ * aprobada para **todo período posterior al período activo** —el primero del
+ * plan del usuario— y **no** en el período activo mismo, donde todavía no hay
+ * nota. Sin ningún período en el plan no hay período activo del que hablar:
+ * el usuario recién pegó su historia y mira hacia adelante, así que lo que está
+ * cursando se da por aprobado para cualquier período que consulte (optimista,
+ * como el resto de la simulación).
+ */
+function cursandoAlEmpezar(
+  periodo: PeriodoId,
+  planUsuario: PlanUsuario,
+  plan: Plan,
+): Codigo[] {
+  const activo = primerPeriodoDelPlan(planUsuario);
+  if (activo !== null && compararPeriodos(periodo, activo) <= 0) {
+    return [];
+  }
+  const materias = indiceDeMaterias(plan);
+  const salida: Codigo[] = [];
+  for (const [codigo, entrada] of Object.entries(planUsuario.historia)) {
+    const enCurso =
+      entrada.estado === "cursando" || entrada.estado === "regular";
+    if (enCurso && materias.has(codigo)) {
+      salida.push(codigo);
+    }
+  }
+  return salida.sort();
+}
+
+/**
  * Créditos con los que el usuario **empieza** `periodo`: los aprobados más los
- * de todo lo planificado en períodos estrictamente anteriores.
+ * de todo lo planificado en períodos estrictamente anteriores, más los de lo
+ * que está cursando cuando `periodo` es posterior al activo (ver
+ * `cursandoAlEmpezar`).
  *
  * Lo planificado en `periodo` no suma: todavía no se cursó. Una materia ya
  * aprobada que además aparece planificada se cuenta una sola vez.
@@ -91,6 +126,9 @@ export function creditosAlEmpezar(
 ): number {
   const materias = indiceDeMaterias(plan);
   const aprobados = new Set(itemsAprobados(planUsuario.historia, plan));
+  for (const codigo of cursandoAlEmpezar(periodo, planUsuario, plan)) {
+    aprobados.add(codigo);
+  }
   let total = 0;
   for (const codigo of aprobados) {
     total += materias.get(codigo)?.creditos ?? 0;
@@ -109,7 +147,8 @@ export function creditosAlEmpezar(
 
 /**
  * Códigos que la simulación optimista da por aprobados al empezar `periodo`:
- * los de la historia más lo planificado antes.
+ * los de la historia, más lo que se está cursando cuando `periodo` es
+ * posterior al activo (decisión N0-15), más lo planificado antes.
  */
 export function aprobadasAlEmpezar(
   periodo: PeriodoId,
@@ -117,6 +156,9 @@ export function aprobadasAlEmpezar(
   plan: Plan,
 ): Set<Codigo> {
   const salida = new Set(itemsAprobados(planUsuario.historia, plan));
+  for (const codigo of cursandoAlEmpezar(periodo, planUsuario, plan)) {
+    salida.add(codigo);
+  }
   const materias = indiceDeMaterias(plan);
   for (const [codigo, cuando] of primerPeriodoPlanificado(planUsuario)) {
     if (!materias.has(codigo)) {

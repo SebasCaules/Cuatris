@@ -33,11 +33,20 @@ export interface PropsPaginaInicio {
    * se pueda montar como ruta suelta.
    */
   plan?: Plan;
+  /**
+   * Acción «importar» de quien ya montó `useMenuPlan` (la `App`). Sin esto la
+   * pantalla arma la suya, que es lo que necesita la ruta suelta.
+   *
+   * Con la propia se montaría un segundo selector de archivo invisible y el
+   * primer ingreso tendría dos controles idénticos en la cadena de tabulación.
+   */
+  alImportar?: () => void;
 }
 
-function Inicio({ plan }: { plan: Plan }) {
+function Inicio({ plan, alImportar }: PropsPaginaInicio & { plan: Plan }) {
   const [camino, setCamino] = useState<Camino>("pegar");
-  const { acciones, dialogos } = useMenuPlan();
+  const propio = useMenuPlan();
+  const importar = alImportar ?? propio.acciones.importar;
 
   return (
     <section className="inicio" aria-labelledby="inicio-titulo">
@@ -83,11 +92,11 @@ function Inicio({ plan }: { plan: Plan }) {
         Todo queda en este navegador. No hay cuenta ni servidor.
       </p>
 
-      <Boton variante="terciario" onClick={acciones.importar}>
+      <Boton variante="terciario" onClick={importar}>
         Importar un plan guardado
       </Boton>
 
-      {dialogos}
+      {alImportar === undefined ? propio.dialogos : null}
     </section>
   );
 }
@@ -107,9 +116,11 @@ function InicioAutonomo() {
   return <Inicio plan={datos.datos.plan} />;
 }
 
-export function PaginaInicio({ plan }: PropsPaginaInicio = {}) {
+export function PaginaInicio({ plan, alImportar }: PropsPaginaInicio = {}) {
   if (plan === undefined) {
     return <InicioAutonomo />;
   }
-  return <Inicio plan={plan} />;
+  return (
+    <Inicio plan={plan} {...(alImportar === undefined ? {} : { alImportar })} />
+  );
 }

@@ -96,4 +96,75 @@ describe("PanelLateral", () => {
     expect(campo).toHaveValue("algebra");
     expect(campo).toHaveFocus();
   });
+
+  /**
+   * F4.9: el panel no es un modal, así que tampoco atrapa el Tab. Con la
+   * trampa puesta, quien navegaba con teclado quedaba encerrado y no llegaba a
+   * las flechas, los chips ni los bloques de la tarjeta, que es justo lo que el
+   * panel prometía dejar a la vista.
+   */
+  it("el Tab sale del panel en vez de dar la vuelta adentro", async () => {
+    const usuario = userEvent.setup();
+    render(
+      <>
+        <PanelLateral abierto titulo="Agregar a 1.º 2026" onCerrar={() => {}}>
+          <button type="button">+</button>
+        </PanelLateral>
+        <button type="button">Cuatrimestre siguiente</button>
+      </>,
+    );
+
+    // Arranca en el ✕, sigue por el «+» y el siguiente Tab sale del panel.
+    expect(screen.getByRole("button", { name: "Cerrar" })).toHaveFocus();
+    await usuario.tab();
+    expect(screen.getByRole("button", { name: "+" })).toHaveFocus();
+    await usuario.tab();
+    expect(
+      screen.getByRole("button", { name: "Cuatrimestre siguiente" }),
+    ).toHaveFocus();
+    expect(screen.getByRole("dialog")).not.toContainElement(
+      document.activeElement as HTMLElement,
+    );
+  });
+
+  /**
+   * F4.9 (segunda mitad): con el `keydown` enganchado en la caja, salir del
+   * panel con un clic afuera dejaba a Escape sin efecto.
+   */
+  it("Escape cierra aunque el foco se haya ido del panel", async () => {
+    const usuario = userEvent.setup();
+    const alCerrar = vi.fn();
+    render(
+      <>
+        <PanelLateral abierto titulo="Agregar a 1.º 2026" onCerrar={alCerrar}>
+          <button type="button">+</button>
+        </PanelLateral>
+        <button type="button">Cuatrimestre siguiente</button>
+      </>,
+    );
+
+    await usuario.click(
+      screen.getByRole("button", { name: "Cuatrimestre siguiente" }),
+    );
+    await usuario.keyboard("{Escape}");
+    expect(alCerrar).toHaveBeenCalledTimes(1);
+  });
+
+  it("con `enfocarAlAbrir` en falso el foco se queda donde estaba", () => {
+    const afuera = document.createElement("button");
+    document.body.appendChild(afuera);
+    afuera.focus();
+    render(
+      <PanelLateral
+        abierto
+        titulo="Agregar a 1.º 2026"
+        enfocarAlAbrir={false}
+        onCerrar={() => {}}
+      >
+        <button type="button">+</button>
+      </PanelLateral>,
+    );
+    expect(afuera).toHaveFocus();
+    afuera.remove();
+  });
 });

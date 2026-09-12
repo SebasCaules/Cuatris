@@ -182,11 +182,17 @@ describe("PaginaPlan · cuántas tarjetas se ven", () => {
     expect(screen.getByText("3 de 5 visibles")).toBeVisible();
   });
 
-  it("con el panel de agregar abierto baja a una tarjeta (13c)", () => {
+  /**
+   * F4.6: 13c conserva sus dos tarjetas al lado del panel de 330 px («2 de 5
+   * visibles» en el artboard). Antes el panel forzaba una sola y además dejaba
+   * el selector 1/2/3 apagado.
+   */
+  it("con el panel de agregar abierto conserva las tarjetas de 13c", () => {
     dibujar({ panelAbierto: true });
-    expect(carrusel().style.getPropertyValue("--carrusel-visibles")).toBe("1");
+    expect(carrusel().style.getPropertyValue("--carrusel-visibles")).toBe("2");
+    expect(screen.getByText("2 de 5 visibles")).toBeVisible();
     const grupo = screen.getByRole("group", { name: "Cuatrimestres visibles" });
-    expect(within(grupo).getByRole("button", { name: "2" })).toBeDisabled();
+    expect(within(grupo).getByRole("button", { name: "2" })).not.toBeDisabled();
   });
 });
 

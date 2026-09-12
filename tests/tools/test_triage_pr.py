@@ -14,6 +14,7 @@ import subprocess
 from pathlib import Path
 
 import pytest
+from cuatris.validar import triage_pr
 from cuatris.validar.triage_pr import (
     DATOS,
     NECESITA_HUMANO,
@@ -103,6 +104,54 @@ def test_rutas_que_no_son_datos(ruta: str):
     assert not es_ruta_de_datos(ruta)
 
 
+@pytest.mark.parametrize(
+    "ruta",
+    [
+        # Con barra invertida: `_coincide` parte solo por `/`, asi que sin este guardia la
+        # ruta entera seria un unico segmento y `fnmatch` la aceptaria contra `*.json`.
+        "data/v1/horarios/..\\..\\.github\\workflows\\x.json",
+        "data/v1/horarios/../../x.json",
+        "/data/index.json",
+        "data//index.json",
+        "data/v1/horarios/./2026-2C.json",
+    ],
+)
+def test_rutas_que_se_escapan_del_allowlist(ruta: str):
+    """Los tres guardias de `es_ruta_de_datos`: barra inicial, `\\`, y segmento vacio, `.` o `..`.
+
+    Es el vector A12 escrito como ruta en vez de como modo de git: una ruta que se ve como un
+    archivo de datos y apunta a otro lado. El de la barra invertida es el que sostiene la regla
+    con el allowlist de hoy: `_coincide` parte solo por `/`, asi que sin el
+    `data/v1/horarios/..\\..\\.github\\workflows\\x.json` seria un unico segmento y `fnmatch` lo
+    aceptaria contra `*.json`.
+    """
+    assert not es_ruta_de_datos(ruta)
+
+
+@pytest.mark.parametrize(
+    "ruta",
+    [
+        "data/v1/../index.json",
+        "data/v1/./index.json",
+        "data/v1//index.json",
+    ],
+)
+def test_un_patron_con_comodin_de_directorio_no_admite_ni_punto_ni_vacio(
+    monkeypatch: pytest.MonkeyPatch, ruta: str
+):
+    """Por que el guardia de `.`, `..` y el segmento vacio no es decoracion.
+
+    Con el allowlist de hoy ninguno de esos segmentos llega a coincidir: los patrones tienen
+    `*` solo en el nombre del archivo, y `..` no cumple `*.json`. En cuanto un patron traiga un
+    comodin de **directorio** —`data/v1/*/*.json` es el candidato obvio cuando aparezca
+    `catalogo/` u otra familia— `fnmatch("..", "*")` da verdadero y el guardia pasa a ser lo
+    unico que impide salir del directorio de datos. Se fija ahora, no cuando duela.
+    """
+    monkeypatch.setattr(triage_pr, "RUTAS_DE_DATOS", ("data/v1/*/*.json",))
+    assert triage_pr.es_ruta_de_datos("data/v1/horarios/2026-2C.json")
+    assert not triage_pr.es_ruta_de_datos(ruta)
+
+
 # ---------------------------------------------------------------------------------------
 # Clasificacion
 # ---------------------------------------------------------------------------------------
@@ -142,12 +191,41 @@ def test_un_solo_archivo_de_codigo_arrastra_todo_el_pr(repo: Path):
     assert "tools/cuatris/cli.py" in resultado.motivos[0]
 
 
-def test_borrar_un_archivo_de_datos_sigue_siendo_datos(repo: Path):
+def test_borrar_un_archivo_de_datos_necesita_humano(repo: Path):
+    """Decision N0: hasta que exista C4 (Sprint 2), toda baja dentro de `data/` la mira alguien.
+
+    Antes de esto, un PR que borraba `data/v1/horarios/2026-2C.json` y dejaba `"horarios": []`
+    en el indice salia `DATOS` con `motivos: []` y los dos checks requeridos en verde, y el
+    deploy publicaba despues un indice vacio: el cuatrimestre entero despublicado sin que
+    ninguna persona lo mirara.
+    """
     (repo / HORARIOS).unlink()
+    _escribir(repo, "data/index.json", '{"horarios": []}\n')
     _commit(repo, "baja")
     resultado = clasificar(repo, "main", "pr")
+    assert resultado.clase == NECESITA_HUMANO
+    assert resultado.archivos == ["data/index.json", HORARIOS]
+    assert any("toda baja dentro de data/" in motivo for motivo in resultado.motivos)
+    assert resultado.codigo_de_salida() == 1
+
+
+def test_una_baja_fuera_de_datos_no_agrega_el_motivo_de_la_baja(repo: Path):
+    """La regla habla de `data/`: un archivo de codigo borrado se rechaza por el allowlist."""
+    (repo / "README.md").unlink()
+    _commit(repo, "baja de codigo")
+    resultado = clasificar(repo, "main", "pr")
+    assert resultado.clase == NECESITA_HUMANO
+    assert not any("toda baja dentro de data/" in motivo for motivo in resultado.motivos)
+    assert any("allowlist" in motivo for motivo in resultado.motivos)
+
+
+def test_modificar_un_archivo_de_datos_sigue_siendo_datos(repo: Path):
+    """La regla de bajas no alcanza a un alta ni a una modificacion."""
+    _escribir(repo, HORARIOS, '{"cursos": [1]}\n')
+    _commit(repo, "modificacion")
+    resultado = clasificar(repo, "main", "pr")
     assert resultado.clase == DATOS
-    assert resultado.archivos == [HORARIOS]
+    assert resultado.motivos == []
 
 
 def test_diff_vacio_necesita_humano(repo: Path):
@@ -202,12 +280,32 @@ def test_puntero_de_git_lfs(repo: Path):
     assert any("Git LFS" in motivo for motivo in resultado.motivos)
 
 
-def test_gitattributes(repo: Path):
-    _escribir(repo, ".gitattributes", "*.json text eol=crlf\n")
-    _commit(repo, "gitattributes")
+MOTIVO_DE_ARCHIVOS_DE_GIT = "cambia como git materializa el arbol"
+"""Fragmento exacto del motivo de `ARCHIVOS_DE_GIT`.
+
+Afirmar `".gitattributes" in motivo` no probaba nada: el motivo generico del allowlist tambien
+nombra el archivo («`.gitattributes` no esta en el allowlist de rutas de datos…»), asi que el
+test pasaba con `ARCHIVOS_DE_GIT = ()`. La regla especifica se distingue por su texto.
+"""
+
+
+@pytest.mark.parametrize("nombre", [".gitattributes", ".gitmodules"])
+def test_archivos_que_cambian_como_git_materializa_el_arbol(repo: Path, nombre: str):
+    _escribir(repo, nombre, "*.json text eol=crlf\n")
+    _commit(repo, "archivo de git")
     resultado = clasificar(repo, "main", "pr")
     assert resultado.clase == NECESITA_HUMANO
-    assert any(".gitattributes" in motivo for motivo in resultado.motivos)
+    assert any(MOTIVO_DE_ARCHIVOS_DE_GIT in motivo for motivo in resultado.motivos)
+    assert any(nombre in motivo for motivo in resultado.motivos)
+
+
+def test_gitattributes_en_un_subdirectorio_tambien_se_rechaza(repo: Path):
+    """`git archive` aplica los atributos de cualquier `.gitattributes` del arbol, no solo el de la raiz."""
+    _escribir(repo, "data/v1/horarios/.gitattributes", "*.json export-ignore\n")
+    _commit(repo, "gitattributes escondido")
+    resultado = clasificar(repo, "main", "pr")
+    assert resultado.clase == NECESITA_HUMANO
+    assert any(MOTIVO_DE_ARCHIVOS_DE_GIT in motivo for motivo in resultado.motivos)
 
 
 def test_colision_en_minusculas(repo: Path):

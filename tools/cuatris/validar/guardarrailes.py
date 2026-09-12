@@ -1,4 +1,4 @@
-"""Guardarrailes de los workflows de GitHub Actions (`cuatris guardarrailes .github/workflows`).
+"""Guardarrailes de los workflows de GitHub Actions (`cuatris guardarrailes .github`).
 
 Los workflows son el unico codigo del repositorio que corre con permisos: un error ahi no lo
 atrapa ningun test de la suite. Este modulo revisa, sobre el YAML ya parseado, las cinco reglas
@@ -9,9 +9,14 @@ del plan de la Fase 4 («Sobre los workflows corre ademas un punado de guardarra
     repositorio hace que un cambio en la configuracion de la plataforma cambie en silencio lo
     que puede hacer cada job.
 `interpolacion-peligrosa`
-    Ningun `run:` interpola `${{ github.event.* }}` ni `${{ github.head_ref }}`. Esos valores
-    los escribe quien abre el PR y se expanden **antes** de que el shell vea la linea: un
-    titulo de PR con comillas y `;` es ejecucion de codigo con los permisos del job.
+    Ninguna cadena del paso que la plataforma vaya a ejecutar o evaluar —`run:`, `if:` y las
+    entradas de `with:` que la accion pasa a un interprete (`ENTRADAS_QUE_EJECUTAN`)— interpola
+    `${{ github.event.* }}` ni `${{ github.head_ref }}`. Esos valores los escribe quien abre el
+    PR y se expanden **antes** de que el paso corra: un titulo de PR con comillas y `;` es
+    ejecucion de codigo con los permisos del job, y el `with.script` de `actions/github-script`
+    es un sumidero tan directo como un `run:`. Quedan fuera a proposito el `env:` del paso y las
+    entradas de `with:` que son datos (`ref`, `repository`, `path`…): pasar el dato por una
+    variable de entorno o por el `ref:` de `actions/checkout` es justamente el remedio.
 `accion-sin-sha` / `accion-sin-version`
     Toda accion de terceros esta fijada a un SHA de 40 caracteres y lleva la version en un
     comentario en la misma linea (`# v4.2.2`). Una etiqueta como `@v4` la mueve su autor.
@@ -19,10 +24,18 @@ del plan de la Fase 4 («Sobre los workflows corre ademas un punado de guardarra
     No hay `secrets.` fuera de `GITHUB_TOKEN`: el repositorio no tiene secretos y no debe
     empezar a tenerlos sin que alguien lo note.
 `pull-request-target-con-permisos`
-    En un workflow disparado por `pull_request_target`, el job que trae codigo del PR —un
-    `actions/checkout` cuyo `ref:` o `repository:` apunta al head, o un `run:` que busca
-    `refs/pull/`— tiene `permissions: {}`. Ese es el unico precio que vuelve aceptable a
-    `pull_request_target`.
+    En un workflow disparado por `pull_request_target`, el job que trae codigo del PR tiene
+    `permissions: {}`. Cuenta como traerlo un `actions/checkout` cuyo `ref:` o `repository:`
+    apunta al head, un `run:` que nombra `refs/pull/`, y tambien un `run:` que hace
+    `git fetch`/`git checkout`/`gh pr checkout` del head del PR —por interpolacion directa o
+    por una variable de `env:` que lo reciba—, que es la forma habitual de traerlo por SHA.
+    Ese es el unico precio que vuelve aceptable a `pull_request_target`.
+
+Un directorio se recorre **recursivamente**, y no se revisan solo los workflows: un
+`action.yml` local (`.github/actions/<nombre>/action.yml`) tiene `run:` y `uses:` propios y
+corre con los permisos del job que lo invoca, asi que se le aplican las reglas de pasos. Lo
+que no es ni workflow ni accion —`ISSUE_TEMPLATE/config.yml`, por ejemplo— se saltea cuando
+se llego a el recorriendo un directorio, y se revisa igual cuando se lo nombra explicitamente.
 
 El parser de YAML es propio y esta en este mismo archivo: el subconjunto que usan los
 workflows es chico, y las bibliotecas de YAML de PyPI publican wheels por plataforma, asi que
@@ -43,13 +56,23 @@ from cuatris.validar.reporte import ERROR, WARNING, Hallazgo, hay_errores
 AYUDA = "Revisa los guardarrailes de seguridad de los workflows de GitHub Actions."
 
 EXTENSIONES = (".yml", ".yaml")
-"""Archivos que se consideran workflows dentro de un directorio."""
+"""Extensiones de los YAML que se revisan al recorrer un directorio."""
 
 INTERPOLACIONES_PELIGROSAS = (
     re.compile(r"\$\{\{\s*github\.event\b[^}]*\}\}"),
     re.compile(r"\$\{\{\s*github\.head_ref\b[^}]*\}\}"),
 )
-"""Expresiones que no pueden aparecer dentro de un `run:`; las escribe quien abre el PR."""
+"""Expresiones que no pueden aparecer en `run:`, `if:` ni `with:`; las escribe quien abre el PR."""
+
+ENTRADAS_QUE_EJECUTAN = ("script", "inlinescript", "command", "cmd", "run", "entrypoint", "args")
+"""Entradas de `with:` que la accion entrega a un interprete: ahi interpolar es ejecutar.
+
+`with.script` de `actions/github-script` es JavaScript que se evalua tal cual; `inlineScript`
+de `azure/cli` y `command`/`run`/`args`/`entrypoint` de las acciones de contenedor son shell.
+Las demas entradas —`ref`, `repository`, `path`, `version`…— llegan a la accion como variables
+de entorno (`INPUT_<NOMBRE>`) y no las evalua nadie: interpolar el SHA del head en el `ref:` de
+`actions/checkout` es la forma **correcta** de traer el PR, no una falla, y marcarla seria el
+falso positivo cronico que la amenaza A10 obliga a evitar."""
 
 SECRETO = re.compile(r"\$\{\{\s*secrets\.(?P<nombre>[A-Za-z_][A-Za-z0-9_]*)[^}]*\}\}")
 SECRETOS_PERMITIDOS = ("GITHUB_TOKEN",)
@@ -198,9 +221,7 @@ def cargar_yaml(texto: str) -> Any:
         lineas = lineas[1:]
     for linea in lineas:
         if linea.contenido in ("---", "..."):
-            raise ErrorYaml(
-                f"linea {linea.numero}: este parser lee un solo documento por archivo"
-            )
+            raise ErrorYaml(f"linea {linea.numero}: este parser lee un solo documento por archivo")
     estado = _Estado(lineas, crudas)
     valor = estado.nodo(lineas[0].sangria)
     if estado.indice < len(estado.lineas):
@@ -277,9 +298,7 @@ class _Estado:
             if linea.sangria < sangria:
                 break
             if linea.sangria > sangria:
-                raise ErrorYaml(
-                    f"linea {linea.numero}: sangria inesperada en «{linea.contenido}»"
-                )
+                raise ErrorYaml(f"linea {linea.numero}: sangria inesperada en «{linea.contenido}»")
             if linea.contenido == "-" or linea.contenido.startswith("- "):
                 if tope is not None and sangria > tope:
                     break
@@ -313,9 +332,7 @@ class _Estado:
             return None
         if hijo.sangria > sangria:
             return self.nodo(hijo.sangria)
-        if hijo.sangria == sangria and (
-            hijo.contenido == "-" or hijo.contenido.startswith("- ")
-        ):
+        if hijo.sangria == sangria and (hijo.contenido == "-" or hijo.contenido.startswith("- ")):
             # Secuencia al mismo nivel que su clave: YAML lo permite y los workflows lo usan.
             return self._secuencia(sangria)
         return None
@@ -567,33 +584,55 @@ def _revisar_permisos(jobs: dict[str, Any], archivo: str) -> list[Hallazgo]:
     return hallazgos
 
 
-def _revisar_interpolaciones(jobs: dict[str, Any], archivo: str) -> list[Hallazgo]:
-    """Ningun `run:` interpola datos que escribe quien abre el PR."""
+def _cadenas_ejecutables(paso: dict[str, Any]) -> Iterator[tuple[str, Any]]:
+    """Cadenas del paso que la plataforma ejecuta o evalua, con el nombre de su clave.
+
+    Son `run:` (el shell), `if:` (la expresion que decide si el paso corre) y las entradas de
+    `with:` que la accion entrega a un interprete (`ENTRADAS_QUE_EJECUTAN`). El `env:` del paso
+    queda deliberadamente afuera: mover el dato a una variable de entorno y usarla entre
+    comillas es el remedio, no la falla. Las demas entradas de `with:`, tampoco: son datos.
+    """
+    for clave in ("run", "if"):
+        valor = paso.get(clave)
+        if isinstance(valor, str):
+            yield clave, valor
+    con = paso.get("with")
+    if isinstance(con, dict):
+        for entrada, valor in con.items():
+            if str(entrada).lower() not in ENTRADAS_QUE_EJECUTAN:
+                continue
+            for cadena in _cadenas_de(valor):
+                yield f"with.{entrada}", cadena
+
+
+def _revisar_interpolaciones(
+    jobs: dict[str, Any], archivo: str, sujeto: str = "el job"
+) -> list[Hallazgo]:
+    """Ninguna cadena ejecutable del paso interpola datos que escribe quien abre el PR."""
     hallazgos: list[Hallazgo] = []
     for nombre, job in jobs.items():
         for paso in _pasos(job):
-            orden = paso.get("run")
-            if not isinstance(orden, str):
-                continue
-            linea = _linea_de(paso.get("run"))
-            for patron in INTERPOLACIONES_PELIGROSAS:
-                encontrado = patron.search(orden)
-                if encontrado is None:
-                    continue
-                hallazgos.append(
-                    Hallazgo(
-                        ERROR,
-                        "interpolacion-peligrosa",
-                        _ubicacion(archivo, linea),
-                        f"el job «{nombre}» interpola «{encontrado.group(0)}» dentro de un "
-                        "`run:`: ese texto lo escribe quien abre el PR y se expande antes del "
-                        "shell; pasalo por una variable de entorno y usala entre comillas",
+            for clave, cadena in _cadenas_ejecutables(paso):
+                linea = _linea_de(cadena)
+                for patron in INTERPOLACIONES_PELIGROSAS:
+                    encontrado = patron.search(str(cadena))
+                    if encontrado is None:
+                        continue
+                    hallazgos.append(
+                        Hallazgo(
+                            ERROR,
+                            "interpolacion-peligrosa",
+                            _ubicacion(archivo, linea),
+                            f"{sujeto} «{nombre}» interpola «{encontrado.group(0)}» dentro de "
+                            f"`{clave}:`: ese texto lo escribe quien abre el PR y se expande "
+                            "antes de que el paso corra; pasalo por una variable de entorno y "
+                            "usala entre comillas",
+                        )
                     )
-                )
     return hallazgos
 
 
-def _revisar_acciones(jobs: dict[str, Any], archivo: str) -> list[Hallazgo]:
+def _revisar_acciones(jobs: dict[str, Any], archivo: str, sujeto: str = "el job") -> list[Hallazgo]:
     """Toda accion de terceros esta fijada a un SHA y lleva la version en el comentario."""
     hallazgos: list[Hallazgo] = []
     for nombre, job in jobs.items():
@@ -615,7 +654,7 @@ def _revisar_acciones(jobs: dict[str, Any], archivo: str) -> list[Hallazgo]:
                         ERROR,
                         "accion-sin-sha",
                         _ubicacion(archivo, linea),
-                        f"el job «{nombre}» usa «{texto}» sin fijarlo a un SHA de 40 "
+                        f"{sujeto} «{nombre}» usa «{texto}» sin fijarlo a un SHA de 40 "
                         "caracteres: una etiqueta la mueve su autor cuando quiere",
                     )
                 )
@@ -627,8 +666,8 @@ def _revisar_acciones(jobs: dict[str, Any], archivo: str) -> list[Hallazgo]:
                         ERROR,
                         "accion-sin-version",
                         _ubicacion(archivo, linea),
-                        f"el job «{nombre}» fija «{fijado.group('accion')}» a un SHA pero no "
-                        "deja la version en un comentario en la misma linea (`# v4.2.2`): sin "
+                        f"{sujeto} «{nombre}» fija «{fijado.group('accion')}» a un SHA pero "
+                        "no deja la version en un comentario en la misma linea (`# v4.2.2`): sin "
                         "eso nadie sabe que se esta actualizando",
                     )
                 )
@@ -660,16 +699,71 @@ REF_DEL_PR = "head"
 REF_PULL = "refs/pull/"
 """Namespace en el que GitHub publica el head de cada PR; traerlo es traer codigo del PR."""
 
+NAMESPACE_PULL = "pull/"
+"""La forma corta del mismo namespace: `git fetch origin pull/<n>/head` es sintaxis valida."""
 
-def _trae_codigo_del_pr(paso: dict[str, Any]) -> bool:
-    """Un paso trae codigo del PR si hace checkout de su head o lo trae con `git fetch`.
+ORDENES_QUE_TRAEN_CODIGO = ("git fetch", "git checkout", "git pull", "gh pr checkout")
+"""Ordenes con las que un `run:` trae el arbol del PR sin nombrar nunca `refs/pull/`."""
+
+DATO_DEL_PR = re.compile(
+    r"\$\{\{\s*github\."
+    r"(?:event\.pull_request\.head|head_ref|event\.pull_request\.number|event\.number)"
+    r"\b[^}]*\}\}"
+)
+"""Expresion que nombra el PR: su head (SHA, rama, repositorio de quien lo abre) o su numero.
+
+El numero cuenta tanto como el head porque es con lo que se lo trae de la forma idiomatica:
+`gh pr checkout "$NUMERO"` y `git fetch origin "pull/$NUMERO/head"` terminan las dos con el
+arbol del PR en el disco, y ninguna de las dos nombra su head ni la cadena `refs/pull/`.
+"""
+
+
+def _variables_con_datos_del_pr(entornos: tuple[Any, ...]) -> set[str]:
+    """Nombres de variables de `env:` cuyo valor interpola el head del PR o su numero."""
+    nombres: set[str] = set()
+    for entorno in entornos:
+        if not isinstance(entorno, dict):
+            continue
+        for nombre, valor in entorno.items():
+            if isinstance(valor, str) and DATO_DEL_PR.search(str(valor)):
+                nombres.add(str(nombre))
+    return nombres
+
+
+def _usa_alguna_variable(orden: str, nombres: set[str]) -> bool:
+    """Indica si el shell lee alguna de esas variables (`$SHA`, `${SHA}`, `"$SHA"`)."""
+    return any(re.search(r"\$\{?" + re.escape(nombre) + r"\b", orden) for nombre in nombres)
+
+
+def _trae_codigo_del_pr(
+    paso: dict[str, Any], entorno_del_job: Any = None, entorno_del_documento: Any = None
+) -> bool:
+    """Un paso trae codigo del PR si hace checkout de su head o lo trae desde el shell.
 
     Sin `ref:`, `actions/checkout` bajo `pull_request_target` trae la **rama base**, que es
     codigo de confianza; por eso solo cuenta un `ref:` (o `repository:`) que mencione el head.
+
+    Desde el shell cuentan todas las formas de traerlo: nombrar `refs/pull/<n>/head`, traer el
+    head por SHA (`git fetch origin "$SHA" && git checkout FETCH_HEAD`) y traerlo por numero
+    (`gh pr checkout "$NUMERO"`, `git fetch origin "pull/$NUMERO/head"`), que es la idiomatica.
+    Ninguna de las ultimas usa `actions/checkout`, y las de numero no nombran ni el head ni
+    `refs/pull/`, asi que hay que reconocerlas por la orden mas el dato del PR —su head o su
+    numero— venga interpolado en la propia linea o por una variable de `env:`, o bien por el
+    namespace `pull/<n>/head`, que ya nombra al PR aunque el numero venga de otra parte.
     """
     orden = paso.get("run")
-    if isinstance(orden, str) and REF_PULL in str(orden):
-        return True
+    if isinstance(orden, str):
+        texto = str(orden)
+        if REF_PULL in texto:
+            return True
+        if any(traida in texto for traida in ORDENES_QUE_TRAEN_CODIGO):
+            if DATO_DEL_PR.search(texto) or NAMESPACE_PULL in texto:
+                return True
+            variables = _variables_con_datos_del_pr(
+                (paso.get("env"), entorno_del_job, entorno_del_documento)
+            )
+            if variables and _usa_alguna_variable(texto, variables):
+                return True
     uso = paso.get("uses")
     if not isinstance(uso, str) or "actions/checkout" not in str(uso):
         return False
@@ -677,7 +771,17 @@ def _trae_codigo_del_pr(paso: dict[str, Any]) -> bool:
     if not isinstance(con, dict):
         return False
     entradas = (con.get("ref"), con.get("repository"))
-    return any(isinstance(valor, str) and REF_DEL_PR in str(valor).lower() for valor in entradas)
+    for valor in entradas:
+        if not isinstance(valor, str):
+            continue
+        texto = str(valor)
+        # `ref: refs/pull/<n>/merge`, `ref: ${{ github.event.pull_request.head.sha }}` y
+        # `ref: pull/${{ github.event.number }}/head` traen el PR aunque no digan «head».
+        if REF_DEL_PR in texto.lower() or REF_PULL in texto or NAMESPACE_PULL in texto:
+            return True
+        if DATO_DEL_PR.search(texto):
+            return True
+    return False
 
 
 def _revisar_pull_request_target(
@@ -690,7 +794,12 @@ def _revisar_pull_request_target(
     for nombre, job in jobs.items():
         if not isinstance(job, dict):
             continue
-        if not any(_trae_codigo_del_pr(paso) for paso in _pasos(job)):
+        entorno_del_job = job.get("env")
+        entorno_del_documento = documento.get("env") if isinstance(documento, dict) else None
+        if not any(
+            _trae_codigo_del_pr(paso, entorno_del_job, entorno_del_documento)
+            for paso in _pasos(job)
+        ):
             continue
         linea = jobs.lineas.get(nombre, 0) if isinstance(jobs, Mapa) else 0
         permisos = job.get("permissions")
@@ -709,8 +818,61 @@ def _revisar_pull_request_target(
     return hallazgos
 
 
-def revisar_archivo(ruta: str | Path) -> list[Hallazgo]:
-    """Corre todas las reglas sobre un workflow y devuelve los hallazgos, en orden."""
+WORKFLOW = "workflow"
+ACCION = "accion"
+OTRO = "otro"
+
+
+def _clase_de_documento(documento: Any) -> str:
+    """Que es este YAML: un workflow, una accion local, u otra cosa que no corre nada.
+
+    Una accion local se reconoce por su bloque `runs:` (`using:` mas, si es compuesta,
+    `steps:`); un workflow, por `on:` o `jobs:`. Lo demas —la configuracion del selector de
+    plantillas de issue, por ejemplo— no lo ejecuta la plataforma y no tiene pasos que revisar.
+    """
+    if not isinstance(documento, dict):
+        return WORKFLOW
+    corre = documento.get("runs")
+    if isinstance(corre, dict) and ("steps" in corre or "using" in corre):
+        return ACCION
+    if "on" in documento or "jobs" in documento:
+        return WORKFLOW
+    return OTRO
+
+
+def _nombre_de_la_accion(documento: dict[str, Any], camino: Path) -> str:
+    """Como nombrar la accion local en los mensajes: su `name:`, o el directorio que la aloja."""
+    nombre = documento.get("name")
+    if isinstance(nombre, str) and nombre.strip():
+        return str(nombre).strip()
+    return camino.parent.name or camino.name
+
+
+def _revisar_accion_local(documento: dict[str, Any], camino: Path, archivo: str) -> list[Hallazgo]:
+    """Reglas de pasos sobre un `action.yml` local: interpolaciones, `uses:` y secretos.
+
+    Una accion local no declara `permissions:` ni `on:` —corre dentro del job que la invoca y
+    hereda su token—, asi que esas dos reglas no le aplican. Sus `run:` y sus `uses:` si: el
+    `uses: ./…` del workflow que la invoca se saltea en `_revisar_acciones` porque no hay SHA
+    que fijar, y sin esta revision nadie mira nunca lo que la accion hace.
+    """
+    nombre = _nombre_de_la_accion(documento, camino)
+    pasos = Mapa({nombre: documento.get("runs")})
+    hallazgos: list[Hallazgo] = []
+    hallazgos.extend(_revisar_interpolaciones(pasos, archivo, "la accion local"))
+    hallazgos.extend(_revisar_acciones(pasos, archivo, "la accion local"))
+    hallazgos.extend(_revisar_secretos(documento, archivo))
+    return hallazgos
+
+
+def revisar_archivo(ruta: str | Path, exigir_workflow: bool = True) -> list[Hallazgo]:
+    """Corre todas las reglas sobre un workflow o una accion local, en orden.
+
+    Con `exigir_workflow` en falso —lo que hace `revisar_ruta` al recorrer un directorio— un
+    YAML que no es ni workflow ni accion se saltea en silencio en vez de reclamarle `on:` y
+    `jobs:`. Cuando el archivo se nombra explicitamente se lo revisa siempre como workflow:
+    quien lo nombro dijo que lo era.
+    """
     camino = Path(ruta)
     archivo = str(ruta)
     try:
@@ -735,11 +897,15 @@ def revisar_archivo(ruta: str | Path) -> list[Hallazgo]:
             )
         ]
 
+    clase = _clase_de_documento(documento)
+    if clase == OTRO and not exigir_workflow:
+        return []
+    if clase == ACCION:
+        return _revisar_accion_local(documento, camino, archivo)
+
     hallazgos: list[Hallazgo] = []
     if "on" not in documento:
-        hallazgos.append(
-            Hallazgo(ERROR, "sin-disparador", archivo, "el workflow no declara `on:`")
-        )
+        hallazgos.append(Hallazgo(ERROR, "sin-disparador", archivo, "el workflow no declara `on:`"))
     jobs = documento.get("jobs")
     if not isinstance(jobs, dict) or not jobs:
         hallazgos.append(
@@ -756,11 +922,16 @@ def revisar_archivo(ruta: str | Path) -> list[Hallazgo]:
 
 
 def revisar_ruta(ruta: str | Path) -> list[Hallazgo]:
-    """Revisa un workflow o todos los de un directorio (sin recorrer subdirectorios)."""
+    """Revisa un workflow, o todos los YAML de un directorio **y de sus subdirectorios**.
+
+    El recorrido es recursivo a proposito: `cuatris guardarrailes .github` tiene que alcanzar
+    tanto `.github/workflows/*.yml` como `.github/actions/<nombre>/action.yml`, que corre con
+    los permisos del job que lo invoca y que nadie revisaria de otro modo.
+    """
     camino = Path(ruta)
     if camino.is_dir():
         archivos = sorted(
-            hijo for hijo in camino.iterdir() if hijo.is_file() and hijo.suffix in EXTENSIONES
+            hijo for hijo in camino.rglob("*") if hijo.is_file() and hijo.suffix in EXTENSIONES
         )
         if not archivos:
             return [
@@ -771,12 +942,11 @@ def revisar_ruta(ruta: str | Path) -> list[Hallazgo]:
                     "el directorio no tiene ningun archivo .yml ni .yaml",
                 )
             ]
-    else:
-        archivos = [camino]
-    hallazgos: list[Hallazgo] = []
-    for archivo in archivos:
-        hallazgos.extend(revisar_archivo(archivo))
-    return hallazgos
+        hallazgos: list[Hallazgo] = []
+        for archivo in archivos:
+            hallazgos.extend(revisar_archivo(archivo, exigir_workflow=False))
+        return hallazgos
+    return revisar_archivo(camino)
 
 
 # --------------------------------------------------------------------------------------
@@ -821,7 +991,7 @@ def ejecutar(args: argparse.Namespace) -> int:
 def main(argv: list[str] | None = None) -> int:
     """Permite correr el guardarrail sin pasar por `cuatris`, mientras se registra en `cli.py`.
 
-        python -m cuatris.validar.guardarrailes .github/workflows
+    python -m cuatris.validar.guardarrailes .github/workflows
     """
     parser = argparse.ArgumentParser(prog="cuatris guardarrailes", description=AYUDA)
     configurar(parser)

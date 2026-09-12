@@ -26,6 +26,17 @@ export function nombreDeArchivo(fecha: Fecha): string {
 }
 
 /**
+ * Nombre del archivo con el plan guardado que no se pudo leer.
+ *
+ * Va aparte del exportado sano para que, si el usuario guarda los dos en la
+ * misma carpeta, se vea cuál es cuál: el ilegible es el que hay que mandar a
+ * arreglar, no el que se vuelve a importar.
+ */
+export function nombreDeArchivoIlegible(fecha: Fecha): string {
+  return `cuatris-plan-ilegible-${fecha}.json`;
+}
+
+/**
  * Dispara la descarga de un texto como archivo.
  *
  * Se arma un enlace que no se llega a ver: no hay servidor que sirva el

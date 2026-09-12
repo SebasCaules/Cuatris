@@ -293,6 +293,34 @@ def test_reintenta_ante_5xx_con_espera_creciente(html_listado: str) -> None:
     assert cliente.peticiones == 3
 
 
+def test_el_aviso_de_reintento_no_filtra_el_identificador_de_sesion(
+    caplog: pytest.LogCaptureFixture, html_listado: str
+) -> None:
+    """El WARNING del reintento pasa la URL por `_sin_sesion()`, como el resto del modulo.
+
+    Las URL de Wicket llevan `;jsessionid=<token>`: ese token es la sesion viva del SGA y no
+    puede terminar en la terminal ni en un archivo de log.
+    """
+    reloj = Reloj()
+    estado = {"fallos": 1}
+    url = "https://sga.itba.edu.ar/app2/;jsessionid=ABC123SECRETO?0-1.-login"
+
+    def manejar(peticion: httpx.Request) -> httpx.Response:
+        if estado["fallos"]:
+            estado["fallos"] -= 1
+            return httpx.Response(503, text="Service Unavailable")
+        return httpx.Response(200, html=html_listado)
+
+    caplog.set_level(logging.DEBUG, logger="cuatris.sga")
+    with _cliente(manejar, reloj) as cliente:
+        cliente.obtener(url)
+
+    avisos = [r.getMessage() for r in caplog.records if r.levelno == logging.WARNING]
+    assert any("Reintento 1" in mensaje for mensaje in avisos)
+    assert "ABC123SECRETO" not in caplog.text
+    assert ";jsessionid=…" in caplog.text
+
+
 def test_reintenta_ante_timeout_y_se_rinde_tras_tres_intentos() -> None:
     reloj = Reloj()
     intentos = {"n": 0}

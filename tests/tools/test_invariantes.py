@@ -15,7 +15,7 @@ import pytest
 from cuatris import canon
 from cuatris.cli import main
 from cuatris.validar import Contexto, contexto_de_datos, validar_archivo
-from cuatris.validar.invariantes import revisar
+from cuatris.validar.invariantes import DURACION_MAXIMA_MINUTOS, revisar
 from cuatris.validar.reporte import ERROR, WARNING
 
 # Reglas de C3 que cada fixture de `deben-fallar` tiene que disparar, y solo esa.
@@ -35,7 +35,9 @@ FIXTURES_C3 = {
     "c3-curso-invertido.json": "curso-invertido",
     "c3-franja-fuera-de-rango.json": "franja-fuera-de-rango",
     "c3-materia-duplicada.json": "materia-duplicada",
+    "c3-minor-en-obligatoria.json": "minor-en-obligatoria",
     "c3-minor-inexistente.json": "minor-inexistente",
+    "c3-periodo-incoherente.json": "periodo-incoherente",
     "c3-sede-desconocida.json": "sede-desconocida",
     "c3-sede-nula-presencial.json": "sede-nula-presencial",
 }
@@ -599,3 +601,128 @@ def test_las_fixtures_c3_estan_en_forma_canonica(fixtures: Path) -> None:
     for carpeta in ("deben-fallar", "deben-pasar"):
         for ruta in sorted((fixtures / carpeta).glob("c3-*.json")):
             assert canon.esta_canonico(ruta), ruta
+
+
+# --- periodo, dictado conjunto y minors ---------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("anio", "cuatrimestre", "identificador", "esperado"),
+    [
+        (2026, "2C", "2026-2C", []),
+        (2027, "1C", "2027-1C", []),
+        (2019, "1C", "2026-2C", ["periodo-incoherente"]),
+        (2026, "1C", "2026-2C", ["periodo-incoherente"]),
+        (2026, "2C", "2027-2C", ["periodo-incoherente"]),
+    ],
+)
+def test_el_id_del_periodo_es_anio_y_cuatrimestre(
+    anio: int, cuatrimestre: str, identificador: str, esperado: list[str]
+) -> None:
+    """El schema no puede relacionar tres campos con patrones independientes; C3 si."""
+    datos = _horarios([])
+    datos["periodo"].update({"anio": anio, "cuatrimestre": cuatrimestre, "id": identificador})
+    assert _reglas(revisar(datos, "horarios", "prueba.json", None)) == esperado
+
+
+def test_el_periodo_incoherente_dice_cual_seria_el_id() -> None:
+    """El mensaje trae el id que corresponde: el que corrige no tiene que deducirlo."""
+    datos = _horarios([])
+    datos["periodo"].update({"anio": 2019, "cuatrimestre": "1C"})
+    hallazgos = revisar(datos, "horarios", "prueba.json", None)
+    assert "2019-1C" in hallazgos[0].mensaje
+    assert hallazgos[0].nivel == ERROR
+
+
+def test_el_dictado_conjunto_apunta_a_cursos_del_archivo() -> None:
+    """Un codigo que no esta en el archivo apaga la exencion sin que nadie se entere."""
+    juntos = [
+        _curso("93.18", [_bloque("lunes", "08:00", "10:00", ["002R"])], dictado_conjunto=["72.44"]),
+        _curso("72.44", [_bloque("lunes", "08:00", "10:00", ["002R"])]),
+    ]
+    assert _revisar_horarios(juntos) == []
+    mal = copy.deepcopy(juntos)
+    mal[0]["dictado_conjunto"] = ["99.99"]
+    reglas = _revisar_horarios(mal)
+    assert "dictado-conjunto-inexistente" in reglas
+    hallazgos = revisar(_horarios(mal), "horarios", "prueba.json", None)
+    tipeado = [h for h in hallazgos if h.regla == "dictado-conjunto-inexistente"]
+    assert tipeado[0].nivel == WARNING
+    assert "99.99" in tipeado[0].mensaje
+
+
+def test_el_codigo_mal_tipeado_deja_de_eximir_la_colision() -> None:
+    """Es la consecuencia que hace falta avisar: vuelve a aparecer `colision-de-aula`."""
+    mal = [
+        _curso("93.18", [_bloque("lunes", "08:00", "10:00", ["002R"])], dictado_conjunto=["7.244"]),
+        _curso("72.44", [_bloque("lunes", "08:00", "10:00", ["002R"])]),
+    ]
+    assert sorted(_revisar_horarios(mal)) == [
+        "colision-de-aula",
+        "dictado-conjunto-inexistente",
+    ]
+
+
+@pytest.mark.parametrize(
+    ("ciclo", "minors", "esperado"),
+    [
+        ("electiva", ["CD"], []),
+        ("electiva", [], []),
+        ("basico", [], []),
+        ("profesional", [], []),
+        ("basico", ["CD"], ["minor-en-obligatoria"]),
+        ("profesional", ["CD"], ["minor-en-obligatoria"]),
+    ],
+)
+def test_solo_las_electivas_declaran_minors(
+    ciclo: str, minors: list[str], esperado: list[str]
+) -> None:
+    """Una obligatoria con siglas pinta chips de minor y suma creditos de otra carrera."""
+    sugerido = None if ciclo == "electiva" else 1
+    materia = _materia("72.44", ciclo=ciclo, cuatrimestre_sugerido=sugerido, minors=minors)
+    assert _revisar_plan([materia]) == esperado
+
+
+def test_una_obligatoria_con_un_minor_inexistente_dispara_las_dos_reglas() -> None:
+    """Las dos reglas miran cosas distintas y ninguna tapa a la otra."""
+    assert sorted(_revisar_plan([_materia("72.44", minors=["ZZ"])])) == [
+        "minor-en-obligatoria",
+        "minor-inexistente",
+    ]
+
+
+def test_el_plan_del_repositorio_no_tiene_obligatorias_con_minors(raiz: Path) -> None:
+    """La regla nueva no rechaza el plan publicado: 44 obligatorias y 85 electivas."""
+    datos = canon.cargar(raiz / "data" / "v1" / "planes" / "S10-Rev23.json")
+    assert "minor-en-obligatoria" not in _reglas(revisar(datos, "planes", "plan.json", None))
+
+
+# --- lo que el codigo exige tiene que estar escrito (F2.5 y F2.6) -------------------------
+
+DOCUMENTOS_DEL_CONTRATO = (
+    "docs/contrato.md",
+    "entregables/sprint-1/CONTRATO-v1.md",
+)
+
+
+@pytest.mark.parametrize("relativa", DOCUMENTOS_DEL_CONTRATO)
+def test_el_techo_de_ocho_horas_esta_documentado(raiz: Path, relativa: str) -> None:
+    """Un error duro que ningun contrato declara es un falso positivo esperando a pasar."""
+    texto = (raiz / relativa).read_text(encoding="utf-8")
+    assert f"{DURACION_MAXIMA_MINUTOS // 60} h" in texto, relativa
+    assert "bloque-demasiado-largo" in texto, relativa
+
+
+@pytest.mark.parametrize(
+    "relativa",
+    (*DOCUMENTOS_DEL_CONTRATO, "schemas/v1/horarios.schema.json"),
+)
+def test_no_se_promete_un_hash_estable_que_no_existe(raiz: Path, relativa: str) -> None:
+    """El unico hash del repositorio cubre el archivo entero, `ocupacion` incluida.
+
+    La promesa vuelve cuando exista `hash_estable()`; hasta entonces, prometerla haria que
+    alguien construya la corroboracion del Sprint 3 sobre una propiedad que no se cumple.
+    """
+    texto = (raiz / relativa).read_text(encoding="utf-8")
+    assert not hasattr(canon, "hash_estable"), "si existe, hay que volver a documentarla"
+    assert "fuera del hash estable" not in texto, relativa

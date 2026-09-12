@@ -26,6 +26,23 @@ describe("parsearPeriodo", () => {
     expect(esPeriodoId("2026-2C")).toBe(true);
     expect(esPeriodoId("2026-3C")).toBe(false);
   });
+
+  it("la forma está anclada: nada de texto pegado alrededor", () => {
+    // Sin `^` ni `$` un período válido escondido en cualquier texto pasaría.
+    for (const invalido of [
+      " 2026-1C",
+      "2026-1C ",
+      "x2026-1C",
+      "2026-1Cx",
+      "basura 2026-1C basura",
+      "12026-1C",
+      "2026-1C2",
+      "\n2026-1C",
+    ]) {
+      expect(esPeriodoId(invalido)).toBe(false);
+      expect(() => parsearPeriodo(invalido)).toThrow(PeriodoInvalido);
+    }
+  });
 });
 
 describe("orden cronológico", () => {

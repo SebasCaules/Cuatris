@@ -115,12 +115,19 @@ export function useMenuPlan(fecha?: string): MenuPlanCableado {
 
   const dialogos = (
     <>
+      {/*
+        Fuera de la cadena de tabulación: es un control que no se dibuja y al
+        que solo se llega por «Importar plan», que sí está en la cadena. Con
+        `tabIndex` por omisión el foco desaparecía en un punto sin nada visible
+        y sin indicación de foco.
+      */}
       <input
         className="menu-plan__archivo"
         ref={archivo}
         type="file"
         accept={`${TIPO_JSON},.json`}
         aria-label="Archivo de plan exportado"
+        tabIndex={-1}
         onChange={alElegirArchivo}
       />
 

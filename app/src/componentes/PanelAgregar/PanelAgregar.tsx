@@ -44,6 +44,12 @@ const ANCHO = 330;
 export interface PropsPanelAgregar {
   /** Cuatrimestre al que se agrega; da el título «Agregar a 1.º 2026». */
   periodo: PeriodoId;
+  /**
+   * Consulta con la que se abre el panel. En 13c el campo de la barra superior
+   * y el del panel son la misma búsqueda: lo que se escribió arriba llega acá
+   * en vez de perderse.
+   */
+  consulta?: string;
   plan: Plan;
   abreviaciones: Abreviaciones;
   /** Horarios del período; `null` si todavía no se publicaron. */
@@ -59,6 +65,7 @@ export interface PropsPanelAgregar {
 
 export function PanelAgregar({
   periodo,
+  consulta = "",
   plan,
   abreviaciones,
   horarios = null,
@@ -68,20 +75,30 @@ export function PanelAgregar({
   msAvisoAgregada = MS_AVISO_AGREGADA,
 }: PropsPanelAgregar) {
   const { plan: planUsuario, despachar } = usePlanUsuario();
-  const [texto, setTexto] = useState("");
+  const [texto, setTexto] = useState(consulta);
   const [filtros, setFiltros] = useState<Filtros>(FILTROS_INICIALES);
   const [agregada, setAgregada] = useState<Codigo | null>(null);
   const cajaBusqueda = useRef<HTMLDivElement>(null);
+  // Si el panel se abrió con una consulta, se abrió tipeando en la barra de
+  // arriba: el foco tiene que quedarse ahí.
+  const [enfocarAlAbrir] = useState(consulta === "");
+
+  // La búsqueda de la barra superior sigue escribiendo mientras el panel está
+  // abierto: cada tecla de arriba es la consulta de acá.
+  useEffect(() => {
+    setTexto(consulta);
+  }, [consulta]);
 
   // El campo se lleva el foco al abrirse. Va después del enganche de foco de
   // `PanelLateral` —que enfoca el ✕, su primer enfocable— porque el efecto del
-  // hijo corre antes que el del padre.
+  // hijo corre antes que el del padre. Si el panel se abrió tipeando arriba, el
+  // foco se queda arriba: robárselo partiría la consulta en dos campos.
   useEffect(() => {
-    if (!abierto) {
+    if (!abierto || !enfocarAlAbrir) {
       return;
     }
     cajaBusqueda.current?.querySelector("input")?.focus();
-  }, [abierto]);
+  }, [abierto, enfocarAlAbrir]);
 
   useEffect(() => {
     if (agregada === null) {
@@ -140,6 +157,7 @@ export function PanelAgregar({
       abierto={abierto}
       titulo={`Agregar a ${etiquetaCorta(periodo)}`}
       ancho={ANCHO}
+      enfocarAlAbrir={enfocarAlAbrir}
       onCerrar={alCerrar}
     >
       <div className="panel-agregar">

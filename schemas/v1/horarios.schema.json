@@ -109,7 +109,7 @@
         },
         "ocupacion": {
           "additionalProperties": false,
-          "description": "Inscriptos a una fecha; dato volatil, opcional y fuera del hash estable.",
+          "description": "Inscriptos a una fecha; dato volatil y opcional, separado del cupo.",
           "properties": {
             "al": {
               "description": "Fecha a la que corresponde la ocupacion.",

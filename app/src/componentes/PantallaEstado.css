@@ -39,3 +39,10 @@
   color: var(--texto-secundario);
   overflow-wrap: anywhere;
 }
+
+.pantalla-estado__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}

@@ -4,7 +4,7 @@ import { createRef, type RefObject } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import type { PeriodoId, Visibles } from "../../contrato/tipos";
-import { Carrusel, type ManijaCarrusel } from "./Carrusel";
+import { ASOMO_PX, Carrusel, type ManijaCarrusel } from "./Carrusel";
 import { PeriodoFueraDelCarrusel } from "./periodos";
 
 /** Los cinco períodos del carrusel de 13b. */
@@ -232,5 +232,77 @@ describe("Carrusel", () => {
     expect(
       screen.getByRole("button", { name: "Agregar materia" }),
     ).toBeInTheDocument();
+  });
+});
+
+/**
+ * F4.2: todas las tarjetas siguen en el DOM, pero las de afuera de la ventana
+ * van `inert`. Con sus controles alcanzables, un Tab hasta una tarjeta
+ * recortada hacía que el navegador scrolleara la ventana recortada: los chips y
+ * el contador seguían diciendo una cosa y la pantalla mostraba otra, sin forma
+ * de volver salvo recargando.
+ */
+describe("Carrusel · tarjetas fuera de la ventana", () => {
+  function tarjetas(): HTMLElement[] {
+    return Array.from(
+      document.querySelectorAll<HTMLElement>(".carrusel__tarjeta"),
+    );
+  }
+
+  it("las de afuera de [indice, indice + visibles) van inert", () => {
+    montar({ visibles: 2 });
+    const inertes = tarjetas().map((tarjeta) => tarjeta.hasAttribute("inert"));
+    expect(inertes).toEqual([false, false, true, true, true]);
+  });
+
+  it("mover el carrusel mueve también qué tarjetas son inert", async () => {
+    const usuario = userEvent.setup();
+    montar({ visibles: 2 });
+    await usuario.click(
+      screen.getByRole("button", { name: "Cuatrimestre siguiente" }),
+    );
+    expect(indiceActual()).toBe("1");
+    expect(tarjetas().map((t) => t.hasAttribute("inert"))).toEqual([
+      true,
+      false,
+      false,
+      true,
+      true,
+    ]);
+  });
+
+  it("con todas a la vista ninguna queda inert", () => {
+    montar({ visibles: 3, periodos: ["2026-1C", "2026-2C", "2027-1C"] });
+    expect(tarjetas().every((t) => !t.hasAttribute("inert"))).toBe(true);
+  });
+});
+
+/**
+ * F4.5: 13b deja asomar la tarjeta siguiente («el tercero asomando, que es lo
+ * que avisa que hay más»). El reparto exacto de la ventana entre las `visibles`
+ * no dejaba ni un píxel de la siguiente.
+ */
+describe("Carrusel · asomo de la tarjeta siguiente", () => {
+  function asomo(): string {
+    const carrusel = document.querySelector(".carrusel");
+    if (!(carrusel instanceof HTMLElement)) {
+      throw new Error("No hay carrusel en el documento.");
+    }
+    return carrusel.style.getPropertyValue("--carrusel-asomo");
+  }
+
+  it("con más períodos que tarjetas visibles, la siguiente asoma", () => {
+    montar({ visibles: 2 });
+    expect(asomo()).toBe(`${String(ASOMO_PX)}px`);
+  });
+
+  it("con tantos períodos como tarjetas visibles no hay asomo", () => {
+    montar({ visibles: 2, periodos: ["2026-1C", "2026-2C"] });
+    expect(asomo()).toBe("0px");
+  });
+
+  it("con menos períodos que tarjetas visibles tampoco", () => {
+    montar({ visibles: 3, periodos: ["2026-1C"] });
+    expect(asomo()).toBe("0px");
   });
 });

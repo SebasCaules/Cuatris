@@ -20,6 +20,29 @@ function titulo(id: string, resultado: ReturnType<typeof progresoTitulos>) {
   return encontrado;
 }
 
+describe("los ítems del ciclo básico, anclados con literales", () => {
+  // `codigosDelCiclo` repite el filtro de `itemsDeCiclos`: si los tests solo
+  // comparan una contra la otra, cualquier cambio en el filtro pasa
+  // desapercibido. Estos literales salen de `data/v1/planes/S10-Rev23.json`.
+  it("son 28 e incluyen 12.09 Química y 94.51 Inglés I", () => {
+    expect(BASICO).toHaveLength(28);
+    expect(BASICO).toContain("12.09");
+    expect(BASICO).toContain("94.51");
+    expect(BASICO[0]).toBe("12.09");
+  });
+
+  it("sin 12.09 Química, Analista no está alcanzado y falta ese ítem", () => {
+    const sinQuimica = BASICO.filter((codigo) => codigo !== "12.09");
+    expect(sinQuimica).toHaveLength(27);
+    const analista = titulo(
+      "analista",
+      progresoTitulos(planCon(historiaCon(sinQuimica), {}), PLAN),
+    );
+    expect(analista.faltanItems).toEqual(["12.09"]);
+    expect(analista.alcanzado).toBe(false);
+  });
+});
+
 describe("progresoTitulos", () => {
   it("con el ciclo básico aprobado, Analista está alcanzado", () => {
     const resultado = progresoTitulos(planCon(historiaCon(BASICO), {}), PLAN);
@@ -139,6 +162,16 @@ describe("minors", () => {
     expect(porSigla.get("IA")?.creditos).toBe(3);
     expect(porSigla.get("IRV")?.creditos).toBe(3);
     expect(porSigla.get("ARQ")?.creditos).toBe(0);
+  });
+
+  it("por encima del mínimo faltan 0, nunca un número negativo", () => {
+    // Seis electivas de CD de 3 créditos = 18, por arriba de los 14 del minor.
+    const deCd = ["16.50", "72.49", "72.51", "72.54", "72.55", "72.60"];
+    const plan = planCon(historiaCon(deCd), {});
+    const cd = minors(plan, PLAN).find((minor) => minor.sigla === "CD");
+    expect(cd?.creditos).toBe(18);
+    expect(cd?.minimos).toBe(14);
+    expect(cd?.faltan).toBe(0);
   });
 
   it("lo planificado se informa aparte de lo aprobado", () => {

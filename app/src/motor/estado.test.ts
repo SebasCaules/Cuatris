@@ -1,12 +1,15 @@
 import { describe, expect, it } from "vitest";
 
 import { MateriaDesconocida, SinPeriodoDeReferencia } from "./errores";
+import { creditosAlEmpezar } from "./creditos";
 import {
   estadoMateria,
   habilita,
   motivosBloqueo,
+  PERIODOS_ADELANTE,
   seDestrabaEn,
 } from "./estado";
+import { periodosDesde } from "./periodos";
 import {
   codigosDelCiclo,
   historiaCon,
@@ -67,6 +70,28 @@ describe("motivosBloqueo", () => {
         periodo: "2027-2C",
       },
     ]);
+  });
+
+  it("el umbral de créditos es inclusivo: con el valor exacto no bloquea", () => {
+    // 72.45 Proyecto Final exige 160 y no tiene correlativas. Básico = 147.
+    // 72.41 (6) + 72.44 (6) = 159 al empezar 2027-1C; sumando 73.61 (1), 160.
+    const justoAbajo = planCon(historiaCon(BASICO), {
+      "2026-2C": [{ codigo: "72.41" }, { codigo: "72.44" }],
+    });
+    expect(creditosAlEmpezar("2027-1C", justoAbajo, PLAN)).toBe(159);
+    expect(motivosBloqueo("72.45", "2027-1C", justoAbajo, PLAN)).toEqual([
+      { tipo: "creditos", requeridos: 160, tienes: 159 },
+    ]);
+
+    const justo = planCon(historiaCon(BASICO), {
+      "2026-2C": [
+        { codigo: "72.41" },
+        { codigo: "72.44" },
+        { codigo: "73.61" },
+      ],
+    });
+    expect(creditosAlEmpezar("2027-1C", justo, PLAN)).toBe(160);
+    expect(motivosBloqueo("72.45", "2027-1C", justo, PLAN)).toEqual([]);
   });
 
   it("una materia que el plan no conoce es un error, no una lista vacía", () => {
@@ -142,6 +167,28 @@ describe("seDestrabaEn", () => {
     expect(seDestrabaEn("93.58", planVacio(), PLAN, "2026-2C")).toBe("2026-2C");
   });
 
+  it("mira exactamente PERIODOS_ADELANTE + 1 períodos: el 13 sí, el 14 no", () => {
+    // Desde 2026-2C, el período 13 de la ventana es 2032-2C y el 14, 2033-1C.
+    // 72.80 exige solo 72.41: planificarla un período antes del borde la
+    // destraba justo en el borde; planificarla en el borde la deja afuera.
+    expect(PERIODOS_ADELANTE).toBe(12);
+    const [...ventana] = periodosDesde("2026-2C", PERIODOS_ADELANTE + 1);
+    expect(ventana).toHaveLength(13);
+    expect(ventana[12]).toBe("2032-2C");
+
+    const enElBorde = planCon(historiaCon(BASICO), {
+      "2032-1C": [{ codigo: "72.41" }],
+    });
+    expect(seDestrabaEn("72.80", enElBorde, PLAN, "2026-2C")).toBe("2032-2C");
+
+    const justoAfuera = planCon(historiaCon(BASICO), {
+      "2032-2C": [{ codigo: "72.41" }],
+    });
+    expect(seDestrabaEn("72.80", justoAfuera, PLAN, "2026-2C")).toBeNull();
+    // Y se destraba en 2033-1C si se mira desde un período más adelante.
+    expect(seDestrabaEn("72.80", justoAfuera, PLAN, "2027-1C")).toBe("2033-1C");
+  });
+
   it("sin períodos y sin punto de partida, falla ruidosamente", () => {
     expect(() => seDestrabaEn("72.45", planVacio(), PLAN)).toThrow(
       SinPeriodoDeReferencia,
@@ -150,15 +197,29 @@ describe("seDestrabaEn", () => {
 });
 
 describe("habilita", () => {
-  it("lista las materias que tienen a esta como correlativa", () => {
+  it("lista las materias vigentes que tienen a esta como correlativa", () => {
+    // 73.50 también depende de 72.41, pero no está vigente: no se puede
+    // cursar, así que prometerla sería mentir.
     expect(habilita("72.41", PLAN)).toEqual([
       "72.54",
       "72.80",
       "72.82",
       "72.92",
       "73.40",
-      "73.50",
     ]);
+  });
+
+  it("deja afuera las no vigentes (72.44, la del recorrido de humo)", () => {
+    // 73.81 y 73.83 dependen de 72.44 y tienen `vigente: false`.
+    expect(habilita("72.44", PLAN)).toEqual(["72.89", "73.80", "73.89"]);
+    const noVigentes = PLAN.materias
+      .filter((materia) => !materia.vigente)
+      .map((materia) => materia.codigo);
+    expect(noVigentes).toContain("73.81");
+    expect(noVigentes).toContain("73.83");
+    for (const codigo of habilita("72.27", PLAN)) {
+      expect(noVigentes).not.toContain(codigo);
+    }
   });
 
   it("una materia terminal no habilita nada", () => {

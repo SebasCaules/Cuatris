@@ -1,7 +1,14 @@
+/*
+ * El alto se acota a la ventana y cada columna scrollea por dentro. Sin este
+ * techo, `.panel-lateral__cuerpo` —que pide `overflow-y: auto`— nunca activa su
+ * scroll: su contenedor crece con el contenido y es la página la que se estira
+ * (medido: 6638 px con el panel «Agregar materia» abierto), dejando fuera de
+ * pantalla la barra superior, el carrusel y la cabecera del propio panel.
+ */
 .disposicion {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  height: 100vh;
   background: var(--fondo);
 }
 
@@ -10,13 +17,15 @@
   flex: 1;
   align-items: stretch;
   min-height: 0;
+  overflow: hidden;
 }
 
 .disposicion__principal {
   flex: 1;
   min-width: 0;
   padding: 12px 14px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .disposicion__banner {
@@ -28,7 +37,9 @@
 .disposicion__panel {
   flex: 0 0 250px;
   width: 250px;
+  min-height: 0;
   padding: 12px;
+  overflow-y: auto;
   background: var(--superficie);
   border-left: 1px solid var(--linea-columna);
 }

@@ -51,6 +51,23 @@ jobs:
       - name: Revalidar data/ completo
         run: |
           set -euo pipefail
+          # `find data -type f` no lista enlaces simbolicos, así que un symlink dentro de
+          # `data/` no lo validaría nadie y `cp -R data app/dist/data` lo publicaría igual.
+          # El gate ya los rechaza, pero esta revalidación es la última antes de Pages y no
+          # puede depender de que el árbol haya llegado por un PR (amenaza A5/A12).
+          if [ -n "$(find data -type l -print -quit)" ]; then
+            echo "::error::hay enlaces simbólicos dentro de data/"
+            find data -type l
+            exit 1
+          fi
+          # `cp -R data app/dist/data` publica la carpeta entera y la SPA la sirve desde su
+          # mismo origen: lo que no sea JSON no lo valida nadie y no se publica (amenaza A5).
+          otros="$(find data -type f ! -name '*.json' | sort)"
+          if [ -n "$otros" ]; then
+            echo "::error::hay archivos que no son .json dentro de data/"
+            printf '%s\n' "$otros"
+            exit 1
+          fi
           archivos=()
           while IFS= read -r archivo; do
             archivos+=("$archivo")

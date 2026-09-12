@@ -19,5 +19,9 @@ app/.vite/
 *.egg-info/
 .cuatris-cache/
 
+# salida de `cuatris pr triage --salida triage.json`: la genera el workflow en el runner
+# (.github/workflows/pr-datos.yml) y tambien queda al correrlo a mano; nunca se versiona
+triage.json
+
 # cache del hook de diseño (la configuración sí se versiona)
 .impeccable/hook.cache.json

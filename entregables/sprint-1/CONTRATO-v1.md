@@ -6,11 +6,14 @@ diferencia en `EXEC_STATE.md`.
 
 ## Convenciones globales
 
-- Todo archivo de datos lleva `"contrato": "1.0.0"` (SemVer, string).
+- Todo archivo de datos lleva `"contrato": "1.0.0"` (SemVer, string). El corte de
+  compatibilidad es el directorio: C1 rechaza con `contrato-incompatible` cualquier archivo de
+  `v1/` cuyo major no sea 1, porque un major distinto vive en `data/v2/` con `schemas/v2/`.
 - **Forma canónica**: `json.dumps(obj, ensure_ascii=False, indent=2, sort_keys=True) + "\n"`,
   UTF-8 sin BOM, `LF`. Claves duplicadas en el JSON de entrada = error (usar
   `object_pairs_hook` al parsear). Es lo que produce `cuatris fmt` y lo que exige `--check`.
-- Fechas `YYYY-MM-DD` (regex `^\d{4}-\d{2}-\d{2}$`, además válida como fecha). Horas `HH:MM`
+- Fechas `YYYY-MM-DD` (regex `^\d{4}-\d{2}-\d{2}$`, además válida como fecha: el regex es del
+  schema y el calendario lo comprueba C1 con `fecha-invalida`). Horas `HH:MM`
   de 24 h. Códigos de materia: string `^\d{2}\.\d{2}$`. Período: string `^\d{4}-[12]C$`.
 - JSON Schema **draft-07** (compatibilidad plena con `fastjsonschema` y con
   `json-schema-to-typescript`). `additionalProperties: false` en todos los objetos. `$id`:
@@ -48,18 +51,18 @@ diferencia en `EXEC_STATE.md`.
 
 | Campo | Tipo | Reglas |
 |---|---|---|
-| `periodo.cuatrimestre` | enum `1C`, `2C` | `periodo.id` = `<anio>-<cuatrimestre>` |
+| `periodo.cuatrimestre` | enum `1C`, `2C` | `periodo.id` = `<anio>-<cuatrimestre>` (C3: `periodo-incoherente`) |
 | `fuente.sistema` | enum `sga`, `manual` | `capturado`: fecha de la captura |
 | `cursos[].codigo` | string código | única en el archivo (C3) |
 | `cursos[].departamento` | string, **opcional** | tal como lo muestra el SGA |
 | `cursos[].desde/hasta` | fecha | dentro del período (C3); períodos cortos son válidos |
-| `cursos[].dictado_conjunto` | array de códigos | requerido, puede ser `[]` |
+| `cursos[].dictado_conjunto` | array de códigos | requerido, puede ser `[]`; todo código es un curso del mismo archivo (C3, warning) |
 | `comisiones[].id` | string `^[A-Z0-9]{1,4}$` | opaco; único por curso (C3); sin chequeo de orden |
 | `comisiones[].cupo` | objeto `{capacidad: int ≥ 0}`, **opcional** | estable |
 | `comisiones[].ocupacion` | objeto `{inscriptos: int ≥ 0, al: fecha}`, **opcional** | volátil; `inscriptos > capacidad` es warning |
 | `comisiones[].docentes` | array de strings | requerido, puede ser `[]`; colisión de docente = warning |
 | `bloques[].dia` | enum `lunes`, `martes`, `miercoles`, `jueves`, `viernes`, `sabado` | sin acentos; `domingo` no existe |
-| `bloques[].desde/hasta` | hora | `desde < hasta`, entre `07:00` y `23:00` (C3) |
+| `bloques[].desde/hasta` | hora | `desde < hasta`, entre `07:00` y `23:00`, y a lo sumo **8 h** de duración (C3: `bloque-demasiado-largo`, error) |
 | `bloques[].sede` | string o `null` | id de `vocabulario.json`; `null` solo si la modalidad no es presencial |
 | `bloques[].modalidad` | enum `presencial`, `virtual_sincronica`, `virtual_asincronica`, `blended` | el scraper mapea `Presencial`, `Virtual Sinc.`, `Virtual Asinc.`, `Blended`; otro valor = error ruidoso |
 | `bloques[].aulas` | array de strings `^[0-9A-Za-z][0-9A-Za-z .\-]{0,15}$` | requerido, puede ser `[]` (virtual o sin asignar); dos aulas simultáneas es válido |
@@ -108,7 +111,7 @@ sábado al pie de la tarjeta.
 | `materias[].cuatrimestre_sugerido` | entero 1–10 para obligatorias (`(año-1)*2 + cuatrimestre`); `null` para electivas |
 | `materias[].creditos_requeridos` | entero ≥ 0; créditos aprobados necesarios para cursarla |
 | `materias[].correlativas` | array de códigos; **todas deben existir en `materias`** y el grafo debe ser acíclico (C3) |
-| `materias[].minors` | array de siglas de `minors[]`; vacío para obligatorias |
+| `materias[].minors` | array de siglas de `minors[]`; vacío para obligatorias (C3: `minor-en-obligatoria`) |
 | `materias[].vigente` | booleano: `true` para las 129 del Excel (44 obligatorias + 85 electivas), `false` para las 34 que solo están en el SGA |
 | `materias[].nombre` | el del listado del SGA; si el Excel difiere, se anota en `notes` del worker, no se inventa |
 
@@ -139,6 +142,12 @@ Claves: código; valores: string de 1 a 24 caracteres, **únicos** (error duro).
 
 `id`: minúsculas `^[a-z0-9_]+$`, es lo que va en `bloques[].sede`. `nombre`: el texto tal como
 lo muestra el SGA; **no expandir siglas que no aparezcan expandidas en el material**.
+
+**El ejemplo de tres sedes quedó superado por N0-9**: el vocabulario publicado lleva solo las
+sedes observadas en el material (`rectorado`, `sdt`); `sdf` entra cuando aparezca en una
+captura. Vale para `data/v1/vocabulario.json` y para el corpus de ejemplo de la app: un
+vocabulario más permisivo que el publicado deja pasar en los tests una sede que el validador
+rechaza sobre `data/`.
 
 ## 5. `data/index.json`
 
@@ -184,4 +193,6 @@ explícita; nunca se descarta un plan guardado sin exportarlo antes.
 - C3 completo (`tools/cuatris/validar/invariantes.py`): correlativas acíclicas y existentes;
   códigos de horarios: en el Sprint 1 un código que no está en el plan es **warning** (los
   horarios traen todas las carreras); pasa a error cuando exista `no-plan.json` (Sprint 2).
+  Lo mismo con `dictado-conjunto-inexistente`: un código de `dictado_conjunto` que no es un
+  curso del archivo es warning en el Sprint 1 y error cuando exista `no-plan.json`.
 - `catalogo/<codigo>.json` (Sprint 2), `no-plan.json` (Sprint 2), evidencia (Sprint 3).

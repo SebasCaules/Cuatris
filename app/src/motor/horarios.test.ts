@@ -11,7 +11,10 @@ import {
   paresQueChocan,
   seOfrece, HorariosDeOtroPeriodo } from "./horarios";
 import { HORARIOS_RAROS, PERIODO_RARO, planCon } from "./fixtures/reales";
-import { horariosConSedesConsecutivas } from "./fixtures/sedes-consecutivas";
+import {
+  horariosConSedeRepetida,
+  horariosConSedesConsecutivas,
+} from "./fixtures/sedes-consecutivas";
 
 /** Plan de usuario con estas materias y comisiones en el período del corpus. */
 function conComisiones(
@@ -47,6 +50,40 @@ describe("bloquesDelPeriodo", () => {
     const plan = conComisiones([{ codigo: "93.18", comision: "A" }]);
     expect(() => bloquesDelPeriodo("2027-1C", plan, HORARIOS_RAROS)).toThrow(
       HorariosDeOtroPeriodo,
+    );
+  });
+
+  it("una materia ya aprobada no ocupa bloques aunque siga planificada", () => {
+    const planificada = conComisiones([
+      { codigo: "72.44", comision: "S" },
+      { codigo: "93.18", comision: "A" },
+    ]);
+    expect(
+      bloquesDelPeriodo(PERIODO_RARO, planificada, HORARIOS_RAROS).map(
+        (ubicado) => ubicado.codigo,
+      ),
+    ).toEqual(["72.44", "93.18", "93.18", "93.18"]);
+    expect(choques(PERIODO_RARO, planificada, HORARIOS_RAROS)).toHaveLength(1);
+
+    const aprobada = planCon(
+      { "72.44": { estado: "aprobada" } },
+      { [PERIODO_RARO]: planificada.periodos[PERIODO_RARO] ?? [] },
+    );
+    expect(
+      bloquesDelPeriodo(PERIODO_RARO, aprobada, HORARIOS_RAROS).map(
+        (ubicado) => ubicado.codigo,
+      ),
+    ).toEqual(["93.18", "93.18", "93.18"]);
+    expect(choques(PERIODO_RARO, aprobada, HORARIOS_RAROS)).toEqual([]);
+  });
+
+  it("cursando o regular sí ocupan bloques: esas se están cursando", () => {
+    const plan = planCon(
+      { "72.44": { estado: "cursando" } },
+      { [PERIODO_RARO]: [{ codigo: "72.44", comision: "S" }] },
+    );
+    expect(bloquesDelPeriodo(PERIODO_RARO, plan, HORARIOS_RAROS)).toHaveLength(
+      1,
     );
   });
 });
@@ -140,6 +177,29 @@ describe("cambiosDeSede", () => {
     expect(cambios[0]?.a.codigo).toBe("93.18");
     expect(cambios[0]?.b.codigo).toBe("30.28");
     expect(choques(PERIODO_RARO, plan, horarios)).toEqual([]);
+  });
+
+  it("dos bloques igual de pegados pero en la misma sede no son un cambio", () => {
+    // Mismo fixture que el caso positivo, con un único dato distinto: el
+    // bloque movido queda en Rectorado, la sede del jueves de 93.18 com. B.
+    const horarios = horariosConSedeRepetida();
+    const plan = conComisiones([
+      { codigo: "93.18", comision: "B" },
+      { codigo: "30.28", comision: "A" },
+    ]);
+    const bloques = bloquesDelPeriodo(PERIODO_RARO, plan, horarios);
+    const jueves = bloques.filter((ubicado) => ubicado.bloque.dia === "jueves");
+    // El par existe y está pegado: 12:00–14:00 y 14:00–17:00, los dos en
+    // Rectorado. Lo único que falta para el ↕ es el cambio de sede.
+    expect(jueves.map((ubicado) => ubicado.bloque.sede)).toEqual([
+      "rectorado",
+      "rectorado",
+    ]);
+    expect(jueves.map((ubicado) => ubicado.bloque.desde)).toEqual([
+      "12:00",
+      "14:00",
+    ]);
+    expect(cambiosDeSede(PERIODO_RARO, plan, horarios)).toEqual([]);
   });
 
   it("con los horarios reales no hay ningún cambio de sede consecutivo", () => {

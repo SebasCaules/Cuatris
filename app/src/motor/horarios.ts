@@ -126,6 +126,10 @@ function ubicar(curso: Curso, comision: Comision): BloqueUbicado[] {
  * en los horarios publicados tampoco aporta bloques: avisar de ese cambio es
  * trabajo del Sprint 2, y hasta entonces callar es mejor que dibujar una franja
  * que ya no se dicta.
+ *
+ * Una materia que la historia ya da por `aprobada` tampoco ocupa bloques
+ * aunque haya quedado planificada: no se cursa dos veces, y avisar de un choque
+ * contra algo ya aprobado es ruido.
  */
 export function bloquesDelPeriodo(
   periodo: PeriodoId,
@@ -136,6 +140,9 @@ export function bloquesDelPeriodo(
   const salida: BloqueUbicado[] = [];
   for (const planificada of planUsuario.periodos[periodo] ?? []) {
     if (planificada.comision === undefined) {
+      continue;
+    }
+    if (planUsuario.historia[planificada.codigo]?.estado === "aprobada") {
       continue;
     }
     const curso = cursoDe(planificada.codigo, horarios);

@@ -205,3 +205,16 @@
     grid-template-columns: 1fr;
   }
 }
+
+/*
+ * Motivo visible de las dos acciones del pie que todavía no existen. Es lo que
+ * enlaza su `aria-describedby`: el `title` solo, sin nota, no llega ni al
+ * teclado ni a una pantalla táctil.
+ */
+.ficha__pendientes {
+  margin-top: 8px;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}

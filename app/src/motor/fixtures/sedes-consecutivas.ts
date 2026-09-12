@@ -15,7 +15,7 @@
  * entra en `data/`.
  */
 
-import type { Horarios } from "../../contrato/tipos";
+import type { Bloque, Horarios } from "../../contrato/tipos";
 import { HORARIOS_RAROS } from "./reales";
 
 /** Hora a la que el fixture mueve el jueves de 30.28. */
@@ -24,10 +24,31 @@ export const DESDE_MOVIDO = "14:00";
 export const HASTA_MOVIDO = "17:00";
 
 /**
+ * La sede del jueves de 93.18 com. B, con la que el bloque movido queda
+ * pegado. Usarla en `horariosConSedeRepetida` da el caso que **no** es ↕.
+ */
+export const SEDE_VECINA: Bloque["sede"] = "rectorado";
+
+/**
  * Los mismos horarios de casos raros con el jueves de 30.28 com. A corrido,
  * de modo que 93.18 com. B (Rectorado) y 30.28 com. A (SDT) queden pegados.
  */
 export function horariosConSedesConsecutivas(): Horarios {
+  return horariosConJuevesMovido(null);
+}
+
+/**
+ * El mismo movimiento, pero además con el bloque de 30.28 puesto en la sede de
+ * 93.18 com. B: dos bloques pegados **en la misma sede**, que es el caso que no
+ * tiene que dar ↕. Es el par negativo de `horariosConSedesConsecutivas`: cambia
+ * un solo dato más respecto de aquel, la sede.
+ */
+export function horariosConSedeRepetida(): Horarios {
+  return horariosConJuevesMovido(SEDE_VECINA);
+}
+
+/** `sede` en `null` deja la sede original del bloque. */
+function horariosConJuevesMovido(sede: Bloque["sede"] | null): Horarios {
   const copia = structuredClone(HORARIOS_RAROS);
   const curso = copia.cursos.find((candidato) => candidato.codigo === "30.28");
   if (curso === undefined) {
@@ -43,5 +64,8 @@ export function horariosConSedesConsecutivas(): Horarios {
   }
   jueves.desde = DESDE_MOVIDO;
   jueves.hasta = HASTA_MOVIDO;
+  if (sede !== null) {
+    jueves.sede = sede;
+  }
   return copia;
 }

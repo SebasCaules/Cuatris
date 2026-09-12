@@ -7,6 +7,7 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -37,6 +38,15 @@ export interface ContextoPlanUsuario {
   errorGuardado: PlanUsuarioCorrupto | null;
   /** Copia textual de lo que había en disco, para poder exportarlo. */
   crudoGuardado: string | null;
+  /**
+   * Acepta perder el plan corrupto y vuelve a habilitar el guardado.
+   *
+   * Hasta que se llama, el original se queda intacto en disco y nada de lo que
+   * el usuario haga se persiste: es la regla dura del §6 del contrato («nunca
+   * se descarta un plan guardado sin exportarlo antes»). La interfaz solo la
+   * llama después de ofrecer la descarga.
+   */
+  descartarGuardado: () => void;
 }
 
 const Contexto = createContext<ContextoPlanUsuario | null>(null);
@@ -62,10 +72,12 @@ export function ProveedorPlanUsuario({
     () => lecturaInicial ?? leer(),
   );
   const [plan, despachar] = useReducer(reducir, lectura, estadoInicial);
+  const [descartado, setDescartado] = useState(false);
 
   // Si lo guardado está corrupto no se escribe nada: el original se queda en
   // disco hasta que el usuario lo exporte o acepte perderlo.
-  const puedeGuardar = lectura.estado !== "corrupto";
+  const corrupto = lectura.estado === "corrupto" && !descartado;
+  const puedeGuardar = !corrupto;
 
   useEffect(() => {
     if (!puedeGuardar) {
@@ -74,14 +86,21 @@ export function ProveedorPlanUsuario({
     return guardarConRetardo(plan, retardoGuardadoMs);
   }, [plan, retardoGuardadoMs, puedeGuardar]);
 
+  const descartarGuardado = useCallback(() => {
+    setDescartado(true);
+  }, []);
+
   const valor = useMemo<ContextoPlanUsuario>(
     () => ({
       plan,
       despachar,
-      errorGuardado: lectura.estado === "corrupto" ? lectura.error : null,
-      crudoGuardado: lectura.estado === "corrupto" ? lectura.crudo : null,
+      errorGuardado:
+        corrupto && lectura.estado === "corrupto" ? lectura.error : null,
+      crudoGuardado:
+        corrupto && lectura.estado === "corrupto" ? lectura.crudo : null,
+      descartarGuardado,
     }),
-    [plan, lectura],
+    [plan, lectura, corrupto, descartarGuardado],
   );
 
   return <Contexto.Provider value={valor}>{children}</Contexto.Provider>;

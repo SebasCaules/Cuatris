@@ -8,6 +8,10 @@
  * El carrusel no sabe qué hay adentro de cada tarjeta: `render(periodo)`
  * devuelve el contenido. Así la tarjeta con grilla y la tarjeta sin horarios
  * publicados (13g) conviven sin que el carrusel se entere.
+ *
+ * La tarjeta siguiente **asoma** a la derecha (13b: «el tercero asomando, que
+ * es lo que avisa que hay más»): el reparto de la ventana descuenta ese asomo
+ * en vez de partirla en partes iguales.
  */
 
 import {
@@ -50,6 +54,14 @@ export interface PropsCarrusel {
   /** Controles a la derecha de la fila de chips («Agregar materia» en 13b). */
   acciones?: ReactNode;
 }
+
+/**
+ * Cuánto de la tarjeta siguiente queda a la vista, en píxeles.
+ *
+ * Es lo que mide el asomo del artboard 13b: tarjetas de 440 px con hueco de 10
+ * en una ventana de ~1002, o sea ~112 px de la tercera a la vista.
+ */
+export const ASOMO_PX = 112;
 
 function sinMovimiento(evento: KeyboardEvent<HTMLDivElement>): boolean {
   const destino = evento.target;
@@ -130,9 +142,13 @@ export const Carrusel = forwardRef<ManijaCarrusel, PropsCarrusel>(
     const porcentaje = total === 0 ? 100 : (aLaVista / total) * 100;
     const desplazamiento = total === 0 ? 0 : (indice / total) * 100;
 
+    // Sin tarjetas de sobra no hay nada que asomar y el asomo sería un hueco.
+    const asomo = total > visibles ? ASOMO_PX : 0;
+
     const estilo = {
       "--carrusel-visibles": visibles,
       "--carrusel-indice": indice,
+      "--carrusel-asomo": `${String(asomo)}px`,
       "--carrusel-barra-ancho": `${porcentaje}%`,
       "--carrusel-barra-desde": `${desplazamiento}%`,
     } as CSSProperties;
@@ -192,21 +208,30 @@ export const Carrusel = forwardRef<ManijaCarrusel, PropsCarrusel>(
 
         <div className="carrusel__ventana" tabIndex={0} onKeyDown={alTeclear}>
           <div className="carrusel__pista">
-            {periodos.map((periodo) => (
-              /*
-               * Todas las tarjetas quedan en el DOM y ninguna lleva
-               * `aria-hidden`: las de afuera de la ventana tienen controles
-               * enfocables, y un elemento enfocable dentro de `aria-hidden` es
-               * una trampa para quien navega con lector de pantalla.
-               */
-              <article
-                key={periodo}
-                className="carrusel__tarjeta"
-                aria-label={etiquetaDe(periodo)}
-              >
-                {render(periodo)}
-              </article>
-            ))}
+            {periodos.map((periodo, posicion) => {
+              const aLaVistaAhora =
+                posicion >= indice && posicion < indice + visibles;
+              return (
+                /*
+                 * Todas las tarjetas quedan en el DOM y ninguna lleva
+                 * `aria-hidden`: un elemento enfocable dentro de `aria-hidden`
+                 * es una trampa para quien navega con lector de pantalla. Las
+                 * de afuera de la ventana van `inert`, que saca sus controles
+                 * del árbol de accesibilidad *y* de la tabulación a la vez: con
+                 * ellos alcanzables, un Tab hasta una tarjeta recortada hacía
+                 * scrollear la ventana y dejaba el estado visual peleado con el
+                 * del componente, sin forma de volver salvo recargando.
+                 */
+                <article
+                  key={periodo}
+                  className="carrusel__tarjeta"
+                  aria-label={etiquetaDe(periodo)}
+                  {...(aLaVistaAhora ? {} : { inert: "" })}
+                >
+                  {render(periodo)}
+                </article>
+              );
+            })}
           </div>
         </div>
 

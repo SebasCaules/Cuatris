@@ -13,7 +13,7 @@
  * el plan de estudios y los horarios, por props, porque son datos cargados.
  */
 
-import { useState, type CSSProperties } from "react";
+import { useId, useState, type CSSProperties } from "react";
 
 import type {
   Bloque,
@@ -99,6 +99,10 @@ export interface PropsFichaMateria {
   alCerrar?: () => void;
 }
 
+/** Cuándo llegan las dos acciones del pie que todavía no existen. */
+const SPRINT_MOVER = "Llega en el Sprint 2";
+const SPRINT_SUGERIR = "Llega en el Sprint 3";
+
 export function FichaMateria({
   codigo,
   periodo: periodoPedido,
@@ -110,6 +114,8 @@ export function FichaMateria({
 }: PropsFichaMateria) {
   const { plan: planUsuario, despachar } = usePlanUsuario();
   const [confirmandoQuitar, setConfirmandoQuitar] = useState(false);
+  const idMover = useId();
+  const idSugerir = useId();
 
   const materias = indiceDeMaterias(plan);
   const materia = materias.get(codigo);
@@ -363,10 +369,26 @@ export function FichaMateria({
         >
           Cambiar de comisión
         </Boton>
-        <Boton disabled title="Llega en el Sprint 2">
+        {/*
+          `aria-disabled` y no `disabled`: un botón `disabled` no recibe foco,
+          así que su motivo no llega ni por teclado ni por lector de pantalla, y
+          el `title` solo aparece con el mouse quieto encima (nunca en una
+          pantalla táctil). Con `aria-disabled` el botón se enfoca, se anuncia
+          como deshabilitado y `aria-describedby` lleva a la nota de abajo, que
+          además está a la vista.
+        */}
+        <Boton
+          aria-disabled="true"
+          title={SPRINT_MOVER}
+          aria-describedby={idMover}
+        >
           Mover a otro cuatrimestre
         </Boton>
-        <Boton disabled title="Llega en el Sprint 3">
+        <Boton
+          aria-disabled="true"
+          title={SPRINT_SUGERIR}
+          aria-describedby={idSugerir}
+        >
           Sugerir corrección
         </Boton>
         {enElPeriodo === undefined ? null : (
@@ -380,6 +402,11 @@ export function FichaMateria({
           </Boton>
         )}
       </div>
+
+      <p className="ficha__pendientes">
+        <span id={idMover}>Mover a otro cuatrimestre: {SPRINT_MOVER}.</span>{" "}
+        <span id={idSugerir}>Sugerir corrección: {SPRINT_SUGERIR}.</span>
+      </p>
 
       {enElPeriodo === undefined || periodo === null || !confirmandoQuitar ? null : (
         <p className="ficha__confirmar">

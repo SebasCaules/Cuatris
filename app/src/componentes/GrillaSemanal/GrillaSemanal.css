@@ -110,6 +110,19 @@ button.grilla__bloque {
   border-left-width: 3px;
 }
 
+/*
+ * Bloqueada: el borde rayado de `tokens.md` («Estados») y el ⊘ adentro. El
+ * relleno sigue siendo el color de la materia, como en todos los demás estados;
+ * el rayado va en el borde con `border-image`. El motor le da precedencia sobre
+ * «planificada», así que este es el que se ve cuando la materia es las dos.
+ */
+.grilla__bloque--bloqueada {
+  border-style: solid;
+  border-width: 2px;
+  border-color: var(--sin-horario-borde);
+  border-image: var(--bloqueada-trama) 2 / 2px;
+}
+
 .grilla__bloque--sinHorario {
   border-style: dotted;
   border-width: 1.5px;

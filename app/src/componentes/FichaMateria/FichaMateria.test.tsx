@@ -81,17 +81,13 @@ describe("FichaMateria", () => {
 
     // `habilita("72.41")` en `data/v1/planes/S10-Rev23.json`. El mockup 13e
     // dibuja 72.45 y 72.20, que en el plan real no dependen de 72.41.
-    for (const codigo of [
-      "72.54",
-      "72.80",
-      "72.82",
-      "72.92",
-      "73.40",
-      "73.50",
-    ]) {
+    for (const codigo of ["72.54", "72.80", "72.82", "72.92", "73.40"]) {
       expect(screen.getAllByText(codigo).length).toBeGreaterThan(0);
     }
     expect(screen.getByText("OLAP y Explotación de Datos")).toBeInTheDocument();
+    // 73.50 también la tiene de correlativa, pero no está vigente: el panel de
+    // agregar nunca la va a ofrecer, así que la ficha no la promete.
+    expect(screen.queryByText("73.50")).not.toBeInTheDocument();
   });
 
   it("la línea mono trae departamento, créditos, ciclo y período", () => {
@@ -221,7 +217,7 @@ describe("FichaMateria", () => {
     expect(alCambiarComision).toHaveBeenCalledWith("72.44", PERIODO_RARO);
   });
 
-  it("las acciones de sprints siguientes quedan apagadas y lo dicen", () => {
+  it("las acciones de sprints siguientes quedan apagadas y lo dicen", async () => {
     montar(
       planVacio(),
       <FichaMateria codigo="72.41" periodo="2026-2C" plan={PLAN} />,
@@ -230,12 +226,35 @@ describe("FichaMateria", () => {
     const mover = screen.getByRole("button", {
       name: "Mover a otro cuatrimestre",
     });
-    expect(mover).toBeDisabled();
+    // `aria-disabled` y no `disabled`: el motivo tiene que llegar también por
+    // teclado y por lector de pantalla, y un botón `disabled` no recibe foco.
+    expect(mover).toHaveAttribute("aria-disabled", "true");
+    expect(mover).not.toBeDisabled();
     expect(mover).toHaveAttribute("title", "Llega en el Sprint 2");
 
     const sugerir = screen.getByRole("button", { name: "Sugerir corrección" });
-    expect(sugerir).toBeDisabled();
+    expect(sugerir).toHaveAttribute("aria-disabled", "true");
+    expect(sugerir).not.toBeDisabled();
     expect(sugerir).toHaveAttribute("title", "Llega en el Sprint 3");
+
+    // El motivo está a la vista y enlazado desde cada botón.
+    for (const [boton, texto] of [
+      [mover, "Mover a otro cuatrimestre: Llega en el Sprint 2."],
+      [sugerir, "Sugerir corrección: Llega en el Sprint 3."],
+    ] as const) {
+      const id = boton.getAttribute("aria-describedby");
+      expect(id).not.toBeNull();
+      expect(document.getElementById(id ?? "")).toHaveTextContent(texto);
+    }
+
+    // Y se alcanzan con el teclado, que es lo que `disabled` impedía.
+    await userEvent.tab();
+    let vueltas = 0;
+    while (document.activeElement !== mover && vueltas < 40) {
+      await userEvent.tab();
+      vueltas += 1;
+    }
+    expect(document.activeElement).toBe(mover);
   });
 
   it("un código que el plan no tiene se dice, no se dibuja a medias", () => {

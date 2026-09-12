@@ -186,13 +186,16 @@ export function seDestrabaEn(
 }
 
 /**
- * Materias del plan que tienen a `codigo` como correlativa: lo que se destraba
- * al aprobarla. Ordenadas por código.
+ * Materias **vigentes** del plan que tienen a `codigo` como correlativa: lo que
+ * se destraba al aprobarla. Ordenadas por código.
+ *
+ * Las no vigentes quedan afuera porque no se pueden cursar: prometer que una
+ * materia destraba algo que el panel de agregar nunca va a ofrecer es mentir.
  */
 export function habilita(codigo: Codigo, plan: Plan): Codigo[] {
   materiaDelPlan(codigo, plan);
   return plan.materias
-    .filter((materia) => materia.correlativas.includes(codigo))
+    .filter((materia) => materia.vigente && materia.correlativas.includes(codigo))
     .map((materia) => materia.codigo)
     .sort();
 }

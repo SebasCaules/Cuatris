@@ -10,10 +10,10 @@
  * Los textos son los del mockup, en voseo: hablan a estudiantes del ITBA.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 import type { Ruta } from "../../rutas";
-import { Boton, Campo } from "../primitivas";
+import { Boton, Campo, useEscapeDeCapa } from "../primitivas";
 import "./BarraSuperior.css";
 
 export interface PropsBarraSuperior {
@@ -61,6 +61,20 @@ function MenuPlan({ items }: { items: ItemMenu[] }) {
   const [abierto, setAbierto] = useState(false);
   const caja = useRef<HTMLDivElement>(null);
 
+  /*
+   * El Escape del menú pasa por la pila de capas de `foco.ts`. Antes era un
+   * `keydown` suelto en el documento y, con el panel «Agregar materia» abierto
+   * detrás, un solo Escape cerraba las dos capas y se llevaba la consulta ya
+   * tipeada en el panel. Como capa, este menú es la de más arriba: se cierra
+   * él y el panel se queda hasta el segundo Escape.
+   */
+  useEscapeDeCapa({
+    activo: abierto,
+    onCerrar: () => {
+      setAbierto(false);
+    },
+  });
+
   useEffect(() => {
     if (!abierto) {
       return;
@@ -71,16 +85,9 @@ function MenuPlan({ items }: { items: ItemMenu[] }) {
         setAbierto(false);
       }
     };
-    const alTeclear = (evento: KeyboardEvent) => {
-      if (evento.key === "Escape") {
-        setAbierto(false);
-      }
-    };
     document.addEventListener("mousedown", alApuntar);
-    document.addEventListener("keydown", alTeclear);
     return () => {
       document.removeEventListener("mousedown", alApuntar);
-      document.removeEventListener("keydown", alTeclear);
     };
   }, [abierto]);
 
@@ -122,6 +129,9 @@ function MenuPlan({ items }: { items: ItemMenu[] }) {
   );
 }
 
+/** Lo que se le dice a quien toca un control que todavía no existe. */
+const NOTA_SUGERIR = "Llega en el Sprint 3";
+
 export function BarraSuperior({
   carrera,
   plan,
@@ -133,6 +143,7 @@ export function BarraSuperior({
   onImportar,
   onBorrarTodo,
 }: PropsBarraSuperior) {
+  const idNota = useId();
   return (
     <header className="barra-superior">
       <div className="barra-superior__identidad">
@@ -165,13 +176,33 @@ export function BarraSuperior({
           disabled={onBuscar === undefined}
           {...(onBuscar === undefined ? {} : { onCambio: onBuscar })}
         />
-        <Boton
-          variante="secundario"
-          onClick={onSugerir}
-          disabled={onSugerir === undefined}
-        >
-          Sugerir corrección
-        </Boton>
+        {/*
+          Sin 13j el botón está apagado, pero con el mismo trato que los del pie
+          de la ficha de materia: `aria-disabled` y no `disabled`, así recibe
+          foco y con Tab se llega a él, y el motivo va en una nota **a la vista**
+          que `aria-describedby` enlaza. Un `disabled` con la nota recortada no
+          llega ni al teclado ni a una pantalla táctil, y dejaba a los dos
+          controles apagados de la app comportándose distinto.
+        */}
+        <div className="barra-superior__sugerir">
+          <Boton
+            variante="secundario"
+            {...(onSugerir === undefined
+              ? {
+                  "aria-disabled": "true",
+                  title: NOTA_SUGERIR,
+                  "aria-describedby": idNota,
+                }
+              : { onClick: onSugerir })}
+          >
+            Sugerir corrección
+          </Boton>
+          {onSugerir === undefined ? (
+            <span className="barra-superior__nota" id={idNota}>
+              {NOTA_SUGERIR}
+            </span>
+          ) : null}
+        </div>
         <MenuPlan
           items={[
             { texto: "Exportar plan", accion: onExportar },

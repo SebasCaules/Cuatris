@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { creditosAprobados } from "./creditos";
 import { parsearHistoria } from "./historia";
 import { PLAN } from "./fixtures/reales";
 
@@ -66,6 +67,46 @@ describe("parsearHistoria", () => {
 
   it("si la misma materia aparece dos veces gana la última línea", () => {
     const texto = ["93.58 Álgebra Cursando", "93.58 Álgebra Aprobada"].join("\n");
+    expect(parsearHistoria(texto, PLAN).reconocidas).toEqual({
+      "93.58": { estado: "aprobada" },
+    });
+  });
+
+  it("lo desaprobado no entra como aprobado: vuelve verbatim", () => {
+    // «desaprobada» contiene «aprobad»: sin las raíces negativas el parser la
+    // daba por aprobada y le sumaba los créditos.
+    const texto = [
+      "93.58 Álgebra 9 Aprobada",
+      "72.03 Introducción a la Informática 3 Aprobada",
+      "72.31 Programación Imperativa 9 Desaprobada",
+      "93.26 Análisis Matemático I 6 No aprobada",
+      "93.59 Matemática Discreta 6 Ausente",
+    ].join("\n");
+    const { reconocidas, noReconocidas } = parsearHistoria(texto, PLAN);
+    expect(reconocidas).toEqual({
+      "93.58": { estado: "aprobada" },
+      "72.03": { estado: "aprobada" },
+    });
+    expect(noReconocidas).toEqual([
+      "72.31 Programación Imperativa 9 Desaprobada",
+      "93.26 Análisis Matemático I 6 No aprobada",
+      "93.59 Matemática Discreta 6 Ausente",
+    ]);
+    expect(creditosAprobados(reconocidas, PLAN)).toBe(12);
+  });
+
+  it("«libre» tampoco es aprobada", () => {
+    const linea = "72.33 Programación Orientada a Objetos 6 Libre";
+    const { reconocidas, noReconocidas } = parsearHistoria(linea, PLAN);
+    expect(reconocidas).toEqual({});
+    expect(noReconocidas).toEqual([linea]);
+  });
+
+  it("una línea sin estado sigue siendo aprobada aunque otra esté desaprobada", () => {
+    const texto = [
+      "72.31 Programación Imperativa 9 Desaprobada",
+      "93.58 Álgebra 9",
+    ].join("\n");
     expect(parsearHistoria(texto, PLAN).reconocidas).toEqual({
       "93.58": { estado: "aprobada" },
     });

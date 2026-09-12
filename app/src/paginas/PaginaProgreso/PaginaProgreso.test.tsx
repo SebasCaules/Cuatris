@@ -5,6 +5,8 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import type { PlanUsuario } from "../../contrato/tipos";
+import { planUsuarioInicial } from "../../estado/planUsuario";
 import { PLAN } from "../../motor/fixtures/reales";
 import {
   planConElectivas,
@@ -166,5 +168,51 @@ describe("PaginaProgreso", () => {
     expect(
       screen.getByText("Todavía no cargaste ninguna electiva."),
     ).toBeVisible();
+  });
+
+  /**
+   * F4.3 en 13i: con los 243 créditos juntos y 94.52 «Inglés II» (0 créditos)
+   * sin aprobar, el pie decía «faltan 0 cr» y nada nombraba a la materia.
+   */
+  it("nombra los ítems que faltan aunque los créditos ya estén", () => {
+    const historia: PlanUsuario["historia"] = {};
+    for (const materia of PLAN.materias) {
+      if (
+        !materia.vigente ||
+        materia.codigo === "94.52" ||
+        !["basico", "profesional"].includes(materia.ciclo)
+      ) {
+        continue;
+      }
+      historia[materia.codigo] = { estado: "aprobada" };
+    }
+    let electivas = 0;
+    for (const materia of PLAN.materias) {
+      if (electivas >= 27 || !materia.vigente || materia.ciclo !== "electiva") {
+        continue;
+      }
+      historia[materia.codigo] = { estado: "aprobada" };
+      electivas += materia.creditos;
+    }
+    render(
+      <ProgresoConDatos
+        plan={PLAN}
+        planUsuario={{ ...planUsuarioInicial(), historia }}
+      />,
+    );
+
+    const titulos = screen.getByRole("region", { name: "Títulos y electivas" });
+    expect(within(titulos).getByText("243 / 243 cr")).toBeVisible();
+    expect(
+      within(titulos).getByText(
+        "falta 1 materia · todavía no alcanza con lo planificado",
+      ),
+    ).toBeVisible();
+    expect(within(titulos).queryByText(/faltan 0 cr/)).not.toBeInTheDocument();
+    // La lista de pendientes nombra el ítem, con su nombre completo.
+    const pendientes = titulos.querySelector(".progreso__faltantes");
+    expect(pendientes).not.toBeNull();
+    expect(pendientes).toHaveTextContent("94.52");
+    expect(pendientes).toHaveTextContent("Inglés II");
   });
 });

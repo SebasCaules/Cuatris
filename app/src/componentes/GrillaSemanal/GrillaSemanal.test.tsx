@@ -216,6 +216,27 @@ describe("GrillaSemanal", () => {
     expect(screen.getAllByText("◇").length).toBeGreaterThan(0);
   });
 
+  /**
+   * F4.10: el motor prioriza `bloqueada` sobre `planificada`, así que la grilla
+   * tiene que saber dibujarla; antes caía en `undefined` y el bloque quedaba
+   * sin borde ni glifo, igual que uno cualquiera.
+   */
+  it("«bloqueada» tiene su borde y su ⊘, como los demás estados", () => {
+    const { container } = render(
+      <GrillaSemanal
+        bloques={[{ ...ALGEBRA, estado: "bloqueada" }]}
+        horaPx={15}
+      />,
+    );
+    const bloque = container.querySelector(".grilla__bloque");
+    expect(bloque?.className).toContain("grilla__bloque--bloqueada");
+    expect(bloque?.getAttribute("style")).toContain(
+      "--materia: var(--materia-0)",
+    );
+    expect(screen.getAllByLabelText("Bloqueada").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("⊘").length).toBeGreaterThan(0);
+  });
+
   it("con `alClic` los bloques son botones y avisan el código", async () => {
     const usuario = userEvent.setup();
     const alClic = vi.fn();

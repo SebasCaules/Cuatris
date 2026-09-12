@@ -1,12 +1,14 @@
 /*
  * Anchos del carrusel.
  *
- * Con `v` tarjetas visibles y un hueco `g`, cada tarjeta mide
- *   A = (ventana − (v − 1)·g) / v
+ * Con `v` tarjetas visibles, un hueco `g` y un asomo `s` —lo que se deja ver de
+ * la tarjeta siguiente, 13b—, cada tarjeta mide
+ *   A = (ventana − (v − 1)·g − s) / v
  * y correr una posición desplaza la pista
- *   A + g = (ventana + g) / v
+ *   A + g = (ventana + g − s) / v
  * que es la forma que usa el `translateX`. En `translateX`, el 100 % es el
- * ancho de la pista, que es el de la ventana.
+ * ancho de la pista, que es el de la ventana. Con `s = 0` queda el reparto
+ * exacto de antes, que es lo que se usa cuando no hay tarjetas de sobra.
  */
 
 .carrusel {
@@ -64,8 +66,15 @@
   gap: 6px;
 }
 
+/*
+ * `clip` y no `hidden`: `overflow: hidden` crea un contenedor scrolleable, así
+ * que enfocar algo de una tarjeta recortada hacía que el navegador scrolleara
+ * la ventana y el estado visual quedaba desincronizado del componente —sin
+ * flecha ni chip que lo devolviera— hasta recargar la página. `clip` recorta
+ * sin scrollear.
+ */
 .carrusel__ventana {
-  overflow: hidden;
+  overflow: clip;
 }
 
 .carrusel__ventana:focus-visible {
@@ -80,7 +89,8 @@
   gap: var(--carrusel-hueco);
   transform: translateX(
     calc(
-      -1 * var(--carrusel-indice, 0) * (100% + var(--carrusel-hueco)) /
+      -1 * var(--carrusel-indice, 0) *
+        (100% + var(--carrusel-hueco) - var(--carrusel-asomo, 0px)) /
         var(--carrusel-visibles, 2)
     )
   );
@@ -97,7 +107,8 @@
   flex: 0 0
     calc(
       (
-          100% - (var(--carrusel-visibles, 2) - 1) * var(--carrusel-hueco)
+          100% - (var(--carrusel-visibles, 2) - 1) * var(--carrusel-hueco) -
+            var(--carrusel-asomo, 0px)
         ) / var(--carrusel-visibles, 2)
     );
   min-width: 0;

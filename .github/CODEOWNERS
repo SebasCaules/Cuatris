@@ -1,4 +1,11 @@
 # Rutas que exigen revisión de un code owner. Un PR de datos nunca las toca.
+#
+# `.gitattributes` y `.gitmodules` están acá porque cambian cómo git materializa el árbol: son
+# la palanca con la que un PR puede hacer que lo que se valida no sea lo que se mergea
+# (`export-subst`/`export-ignore` frente a `git archive`). El triage ya los deja en
+# `necesita-humano`, pero esa clase no hace fallar ningún check: la revisión obligatoria sí.
+/.gitattributes      @SebasCaules
+/.gitmodules         @SebasCaules
 /.github/            @SebasCaules
 /tools/              @SebasCaules
 /schemas/            @SebasCaules

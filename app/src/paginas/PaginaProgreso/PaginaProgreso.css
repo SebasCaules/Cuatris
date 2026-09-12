@@ -183,3 +183,24 @@
     width: 100%;
   }
 }
+
+/*
+ * Los ítems que le faltan al título. Van enteros y no resumidos: es la pantalla
+ * de lectura, y la regla del plan —el título se alcanza aprobando todos los
+ * ítems de sus ciclos, incluidos los de 0 créditos— solo se puede seguir si se
+ * ve cuáles son.
+ */
+.progreso__faltantes {
+  margin: 4px 0 0;
+  font-size: 9.5px;
+  line-height: 1.6;
+  color: var(--texto-secundario);
+}
+
+.progreso__faltantes-rotulo {
+  color: var(--texto);
+}
+
+.progreso__faltante-codigo {
+  font-family: var(--fuente-mono);
+}

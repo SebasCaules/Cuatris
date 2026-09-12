@@ -3,8 +3,11 @@
  *
  * No es un modal: mientras buscás se sigue viendo el carrusel, que es
  * justamente la razón de que en 13c el panel sea un panel y no un diálogo. Por
- * eso no lleva velo ni `aria-modal`, pero sí atrapa el foco y cierra con
- * Escape: quien llega con el teclado tiene que poder salir.
+ * eso no lleva velo ni `aria-modal` **ni atrapa el Tab**: el foco entra solo al
+ * abrirse y Escape cierra, pero tabulando se sale al carrusel, a los chips y a
+ * las flechas, que es lo que el panel prometía dejar a mano. Atrapar el Tab en
+ * una capa que el resto de la página sigue pudiendo recorrer con lector de
+ * pantalla dejaba las dos promesas contradiciéndose.
  */
 
 import { useId, useRef, type CSSProperties, type ReactNode } from "react";
@@ -18,6 +21,11 @@ export interface PropsPanelLateral {
   titulo: string;
   /** Ancho del panel, en píxeles (13c: 330). */
   ancho?: number;
+  /**
+   * Con `false` el foco se queda donde estaba al abrirse. Es lo que hace falta
+   * cuando el panel se abrió solo mientras se escribía en otro campo.
+   */
+  enfocarAlAbrir?: boolean;
   onCerrar: () => void;
   children: ReactNode;
 }
@@ -26,12 +34,18 @@ export function PanelLateral({
   abierto,
   titulo,
   ancho = 330,
+  enfocarAlAbrir = true,
   onCerrar,
   children,
 }: PropsPanelLateral) {
   const caja = useRef<HTMLDivElement>(null);
   const idTitulo = useId();
-  useFocoAtrapado(caja, { activo: abierto, onCerrar });
+  useFocoAtrapado(caja, {
+    activo: abierto,
+    onCerrar,
+    atrapar: false,
+    enfocar: enfocarAlAbrir,
+  });
 
   if (!abierto) {
     return null;

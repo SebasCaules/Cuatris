@@ -4,6 +4,7 @@
   flex: 0 0 var(--panel-ancho, 330px);
   width: var(--panel-ancho, 330px);
   max-width: 100%;
+  min-height: 0;
   padding: 12px;
   background: var(--superficie);
   border-left: 1px solid var(--linea-columna);

@@ -22,6 +22,18 @@ describe("buscar", () => {
     expect(buscar("cripto", PLAN, ABREVIACIONES)).toEqual(["72.44", "73.89"]);
   });
 
+  it("la abreviación va antes que el nombre («compiladores»)", () => {
+    // 72.23 «Autómatas, Teoría de Lenguajes y Compiladores» tiene la
+    // abreviación «Compiladores»; 72.39 «Diseño de Compiladores» coincide solo
+    // por el nombre. Ninguna de las dos empieza con el texto buscado.
+    expect(ABREVIACIONES.abreviaciones["72.23"]).toBe("Compiladores");
+    expect(ABREVIACIONES.abreviaciones["72.39"]).toBe("Autómatas");
+    expect(buscar("compiladores", PLAN, ABREVIACIONES)).toEqual([
+      "72.23",
+      "72.39",
+    ]);
+  });
+
   it("el código exacto va primero", () => {
     expect(buscar("72.44", PLAN, ABREVIACIONES)).toEqual(["72.44"]);
     expect(buscar("72.4", PLAN, ABREVIACIONES)[0]).toBe("72.40");

@@ -35,7 +35,7 @@
   color: var(--acento-contraste);
 }
 
-.boton--primario:hover:not(:disabled) {
+.boton--primario:hover:not(:disabled):not([aria-disabled="true"]) {
   background: var(--acento-hover);
   border-color: var(--acento-hover);
 }
@@ -46,7 +46,7 @@
   color: var(--texto);
 }
 
-.boton--secundario:hover:not(:disabled) {
+.boton--secundario:hover:not(:disabled):not([aria-disabled="true"]) {
   border-color: var(--texto);
 }
 
@@ -56,11 +56,21 @@
   color: var(--acento);
 }
 
-.boton--terciario:hover:not(:disabled) {
+.boton--terciario:hover:not(:disabled):not([aria-disabled="true"]) {
   color: var(--acento-hover);
   text-decoration: underline;
 }
 
 .boton:disabled {
   opacity: 0.55;
+}
+
+/*
+ * `aria-disabled` es para el control que se anuncia apagado pero sigue
+ * recibiendo foco (la acción que todavía no existe explica por qué). Se ve
+ * igual que uno `disabled`.
+ */
+.boton[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: default;
 }

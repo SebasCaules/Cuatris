@@ -4,6 +4,8 @@
 
 import { describe, expect, it } from "vitest";
 
+import { planUsuarioInicial } from "../../estado/planUsuario";
+import { estadoMateria } from "../../motor";
 import { PERIODO_RARO, PLAN, ABREVIACIONES } from "../../motor/fixtures/reales";
 import {
   creditosDelPeriodo,
@@ -137,6 +139,50 @@ describe("materias del período", () => {
     ]);
     expect(enGrilla[1]?.abreviacion).toBe("Cripto");
     expect(enGrilla[1]?.comision).toBe("S");
+  });
+
+  /**
+   * F4.10: `estadoMateria` da precedencia a `bloqueada` sobre `planificada`
+   * («una materia planificada que quedó bloqueada tiene que verse bloqueada»,
+   * `motor/estado.ts`). Sin este estado en la grilla, el bloque se dibujaba
+   * como uno normal —sin borde ni glifo— y nada avisaba que no se puede cursar.
+   */
+  it("una planificada y bloqueada se dibuja bloqueada, no en blanco", () => {
+    const sinHistoria = {
+      ...planUsuarioInicial(),
+      periodos: { [PERIODO_RARO]: [{ codigo: "72.44", comision: "S" }] },
+    };
+    expect(estadoMateria("72.44", PERIODO_RARO, sinHistoria, PLAN)).toBe(
+      "bloqueada",
+    );
+    const enGrilla = materiasEnGrilla(
+      PERIODO_RARO,
+      sinHistoria,
+      PLAN,
+      DATOS.horarios!,
+      ABREVIACIONES,
+    );
+    expect(enGrilla.map((materia) => materia.estado)).toEqual(["bloqueada"]);
+  });
+
+  /**
+   * Decisión N0 de F3.4, mitad de la grilla: `bloquesDelPeriodo` ya saltea las
+   * aprobadas, así que dibujarlas acá dejaba un bloque que el motor de choques
+   * no cuenta. Pasa con una historia pegada después de planificar.
+   */
+  it("una planificada que la historia da por aprobada no se dibuja", () => {
+    const conAprobada = {
+      ...PLAN_USUARIO,
+      historia: { ...PLAN_USUARIO.historia, "72.44": { estado: "aprobada" } },
+    } as typeof PLAN_USUARIO;
+    const enGrilla = materiasEnGrilla(
+      PERIODO_RARO,
+      conAprobada,
+      PLAN,
+      DATOS.horarios!,
+      ABREVIACIONES,
+    );
+    expect(enGrilla.map((materia) => materia.codigo)).not.toContain("72.44");
   });
 
   it("15.09 se ofrece sin comisiones y baja al pie", () => {

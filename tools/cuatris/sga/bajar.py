@@ -9,9 +9,10 @@ Corre **local, en la maquina del autor**, con la sesion del SGA: nunca en CI (ve
 Cada curso terminado se guarda en el checkpoint apenas se parsea, asi que un corte de red o
 un vencimiento de sesion no obliga a empezar de nuevo. Al final se arma el JSON del contrato
 con `parsers.a_contrato`, se escribe en forma canonica (`canon.serializar`) y se corre el
-validador (`cuatris.validar`): si hay errores el archivo queda con el sufijo
-`.invalido.json` y el comando sale con 1, para que un archivo que no valida no se pueda
-confundir con uno publicable.
+validador (`cuatris.validar`): si hay errores el archivo se mueve al directorio de cache
+con el sufijo `.invalido.json` y el comando sale con 1, para que un archivo que no valida no
+se pueda confundir con uno publicable ni quede dentro de `data/`, donde lo levantarian
+`cuatris indice actualizar` y los gates de CI.
 
 Ningun id de componente de Wicket esta escrito en este modulo: los nombres de los campos de
 filtro salen de `parsers.extraer_ids_filtro` y los valores de los desplegables, del texto
@@ -25,6 +26,7 @@ import dataclasses
 import getpass
 import logging
 import os
+import shutil
 from collections.abc import Callable, Iterable, Iterator, Mapping
 from datetime import date
 from pathlib import Path
@@ -39,7 +41,7 @@ from . import normalizar, parsers
 from .checkpoint import CACHE, Checkpoint
 from .cliente import REGISTRO, ClienteSGA, enlace_de_pestana, enlace_por_texto
 
-__all__ = ["AYUDA", "configurar", "ejecutar"]
+__all__ = ["AYUDA", "configurar", "configurar_registro", "ejecutar"]
 
 AYUDA = "Baja del SGA los horarios de un cuatrimestre (corrida local, con sesion del autor)."
 
@@ -321,9 +323,16 @@ def armar_documento(
     return documento
 
 
-def ruta_invalida(salida: Path) -> Path:
-    """`2026-2C.json` → `2026-2C.invalido.json`."""
-    return salida.with_name(f"{salida.stem}.invalido{salida.suffix}")
+def ruta_invalida(salida: Path, cache: Path | None = None) -> Path:
+    """`2026-2C.json` → `<cache>/2026-2C.invalido.json`, **fuera del arbol de datos**.
+
+    El archivo rechazado no puede quedar al lado de la salida: el `--salida` normal apunta a
+    `data/v1/horarios/`, y ahi un `.invalido.json` olvidado rompe `cuatris indice actualizar`
+    (dos archivos para el mismo periodo) y tumba los gates de CI, que validan todos los JSON
+    de `data/`. Por eso va al directorio de cache, que esta en `.gitignore`.
+    """
+    carpeta = Path(cache) if cache else Path(CACHE)
+    return carpeta / f"{salida.stem}.invalido{salida.suffix}"
 
 
 def escribir(documento: dict[str, Any], salida: Path) -> None:
@@ -422,9 +431,21 @@ def _cuatrimestre_texto(cuatrimestre: str) -> str:
     raise normalizar.ValorDesconocido("cuatrimestre", cuatrimestre)
 
 
+def configurar_registro() -> None:
+    """Deja el log del scraper en INFO y calla al de `httpx`.
+
+    El logger de `httpx` emite en INFO una linea «HTTP Request: …» con la URL entera, y las
+    URL del SGA llevan el identificador de sesion (`;jsessionid=<token>`): con el root logger
+    en INFO, un barrido escribiria ~500 veces el token vivo en la terminal. Todo lo que el
+    scraper muestra por su cuenta pasa antes por `cliente._sin_sesion()`.
+    """
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+
+
 def ejecutar(args: argparse.Namespace) -> int:
     """Corre el barrido completo. Devuelve el codigo de salida del proceso."""
-    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    configurar_registro()
     periodo_id = f"{args.anio}-{args.cuatrimestre}"
     cache = Path(args.cache) if args.cache else Path(CACHE)
     punto = Checkpoint(cache / f"{periodo_id}.jsonl", periodo_id)
@@ -472,9 +493,13 @@ def ejecutar(args: argparse.Namespace) -> int:
     for hallazgo in hallazgos:
         print(hallazgo.linea())
     if con_errores:
-        invalido = ruta_invalida(args.salida)
-        args.salida.replace(invalido)
-        print(f"El archivo no valida; quedo en {invalido} para que lo revise.")
+        invalido = ruta_invalida(args.salida, cache)
+        invalido.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(args.salida), str(invalido))
+        print(
+            f"El archivo no valida; quedo en {invalido}, fuera de data/, para que lo revise. "
+            "Es un descarte: borrelo cuando termine de mirarlo."
+        )
         return HAY_ERRORES
 
     print(f"{len(documento['cursos'])} cursos escritos en {args.salida}.")

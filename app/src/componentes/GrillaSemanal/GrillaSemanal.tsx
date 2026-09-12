@@ -38,8 +38,18 @@ import {
 } from "./geometria";
 import "./GrillaSemanal.css";
 
-/** Estados que cambian el borde y agregan glifo; el relleno no se toca. */
-export type EstadoEnGrilla = "cursando" | "planificada" | "sinHorario";
+/**
+ * Estados que cambian el borde y agregan glifo; el relleno no se toca.
+ *
+ * `bloqueada` está acá porque el motor le da precedencia sobre `planificada`
+ * (`motor/estado.ts`): una materia planificada que quedó bloqueada tiene que
+ * verse bloqueada, y sin este estado el bloque se dibujaba como uno normal.
+ */
+export type EstadoEnGrilla =
+  | "cursando"
+  | "planificada"
+  | "bloqueada"
+  | "sinHorario";
 
 /** Una materia del cuatrimestre con los bloques de la comisión elegida. */
 export interface MateriaEnGrilla {
@@ -121,10 +131,11 @@ const DIA_CORTO: Record<Dia, string> = {
 };
 
 /** Glifo de estado; «sin horario» no tiene bloques, pero el tipo lo admite. */
-const GLIFO: Record<EstadoEnGrilla, "cursando" | "planificada" | "sinHorario"> =
+const GLIFO: Record<EstadoEnGrilla, EstadoEnGrilla> =
   {
     cursando: "cursando",
     planificada: "planificada",
+    bloqueada: "bloqueada",
     sinHorario: "sinHorario",
   };
 

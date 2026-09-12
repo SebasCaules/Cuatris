@@ -130,7 +130,10 @@ export function nombreCorto(
   return materia?.nombre ?? nombreDelCurso ?? codigo;
 }
 
-/** Créditos que suma el período, según el plan. Lo que el plan no tiene, cero. */
+/**
+ * Créditos que suma el período, según el plan. Lo que el plan no tiene, cero;
+ * lo que la historia ya da por aprobado tampoco suma (N0-19).
+ */
 export function creditosDelPeriodo(
   periodo: PeriodoId,
   planUsuario: PlanUsuario,
@@ -139,6 +142,9 @@ export function creditosDelPeriodo(
   const materias = indiceDeMaterias(plan);
   let total = 0;
   for (const planificada of planUsuario.periodos[periodo] ?? []) {
+    if (planUsuario.historia[planificada.codigo]?.estado === "aprobada") {
+      continue;
+    }
     total += materias.get(planificada.codigo)?.creditos ?? 0;
   }
   return total;
@@ -158,7 +164,14 @@ export function resumenDelPeriodo(
   return choques === 0 ? base : `${base} · ▲ ${String(choques)}`;
 }
 
-/** El estado de la materia, traducido a los tres que la grilla sabe dibujar. */
+/**
+ * El estado de la materia, traducido a los que la grilla sabe dibujar.
+ *
+ * `bloqueada` entra tal cual porque el motor le da precedencia sobre
+ * `planificada` (`motor/estado.ts`): sin ella, una materia planificada que
+ * quedó bloqueada perdía hasta el glifo de planificada y el bloque se dibujaba
+ * como uno normal, sin nada que avisara que no se puede cursar.
+ */
 function estadoEnGrilla(
   codigo: Codigo,
   periodo: PeriodoId,
@@ -169,8 +182,8 @@ function estadoEnGrilla(
     return "planificada";
   }
   const estado = estadoMateria(codigo, periodo, planUsuario, plan);
-  if (estado === "cursando") {
-    return "cursando";
+  if (estado === "cursando" || estado === "bloqueada") {
+    return estado;
   }
   return estado === "planificada" ? "planificada" : undefined;
 }
@@ -180,6 +193,10 @@ function estadoEnGrilla(
  *
  * Sin comisión elegida no hay bloques que dibujar, así que la materia no entra
  * en la grilla (es la misma regla de `motor/horarios.bloquesDelPeriodo`).
+ *
+ * Una materia que la historia ya da por `aprobada` tampoco entra, aunque haya
+ * quedado planificada: `bloquesDelPeriodo` la saltea, así que dibujarla dejaba
+ * un bloque que el motor de choques ya no cuenta.
  */
 export function materiasEnGrilla(
   periodo: PeriodoId,
@@ -190,7 +207,10 @@ export function materiasEnGrilla(
 ): MateriaEnGrilla[] {
   const salida: MateriaEnGrilla[] = [];
   for (const planificada of planUsuario.periodos[periodo] ?? []) {
-    if (planificada.comision === undefined) {
+    if (
+      planificada.comision === undefined ||
+      planUsuario.historia[planificada.codigo]?.estado === "aprobada"
+    ) {
       continue;
     }
     const curso = cursoDe(planificada.codigo, horarios);
@@ -203,7 +223,12 @@ export function materiasEnGrilla(
     if (comision === undefined || comision.bloques.length === 0) {
       continue;
     }
-    const estado = estadoEnGrilla(planificada.codigo, periodo, planUsuario, plan);
+    const estado = estadoEnGrilla(
+      planificada.codigo,
+      periodo,
+      planUsuario,
+      plan,
+    );
     salida.push({
       codigo: planificada.codigo,
       abreviacion: nombreCorto(

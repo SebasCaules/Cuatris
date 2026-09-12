@@ -12,7 +12,11 @@
 import { useMemo } from "react";
 
 import { etiquetaCorta } from "../../componentes/Carrusel";
-import { creditosPlanificados } from "../../componentes/PanelProgreso";
+import {
+  creditosPlanificados,
+  unirPartes,
+  verboDeFaltantes,
+} from "../../componentes/PanelProgreso";
 import {
   PantallaCargando,
   PantallaError,
@@ -102,6 +106,10 @@ export function electivasQueFaltan(
  * `planificados` son los créditos que el usuario planificó y todavía no aprobó:
  * la cuenta de 13i («184 / 192 cr», «faltan 8 cr») es contra lo aprobado más lo
  * planificado, igual que el panel de 13b.
+ *
+ * Los ítems pendientes van antes que los créditos porque son los que mandan: un
+ * título con los 243 créditos y una materia de 0 créditos sin aprobar no está
+ * alcanzado, y diciendo solo «faltan 0 cr» no había forma de enterarse.
  */
 export function pieDelTitulo(
   titulo: ProgresoTitulo,
@@ -114,7 +122,18 @@ export function pieDelTitulo(
     0,
     titulo.requeridos - titulo.creditos - planificados,
   );
-  const base = `faltan ${String(faltan)} cr`;
+  const partes: string[] = [];
+  const cuantos = titulo.faltanItems.length;
+  if (cuantos > 0) {
+    partes.push(`${String(cuantos)} ${cuantos === 1 ? "materia" : "materias"}`);
+  }
+  if (faltan > 0) {
+    partes.push(`${String(faltan)} cr`);
+  }
+  // Concordancia con la primera parte: «falta 1 materia», «faltan 2 materias».
+  const verbo = verboDeFaltantes(partes).toLowerCase();
+  const base =
+    partes.length === 0 ? "faltan 0 cr" : `${verbo} ${unirPartes(partes)}`;
   if (titulo.estimado === null) {
     return `${base} · todavía no alcanza con lo planificado`;
   }
@@ -180,6 +199,22 @@ export function ProgresoConDatos({ plan, planUsuario }: PropsProgresoConDatos) {
               <p className="progreso__pie">
                 {pieDelTitulo(titulo, planificados)}
               </p>
+              {/* El título se alcanza por ítems, no por créditos: los que
+                  faltan se nombran, incluidos los de 0 créditos. */}
+              {titulo.alcanzado || titulo.faltanItems.length === 0 ? null : (
+                <p className="progreso__faltantes">
+                  <span className="progreso__faltantes-rotulo">
+                    Te falta aprobar:
+                  </span>{" "}
+                  {titulo.faltanItems.map((pendiente, posicion) => (
+                    <span key={pendiente}>
+                      {posicion === 0 ? "" : " · "}
+                      <span className="progreso__faltante-codigo">{pendiente}</span>{" "}
+                      {materias.get(pendiente)?.nombre ?? ""}
+                    </span>
+                  ))}
+                </p>
+              )}
             </div>
           );
         })}

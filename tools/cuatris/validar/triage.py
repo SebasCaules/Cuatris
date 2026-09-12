@@ -1,12 +1,14 @@
 """C1 — triage: los controles baratos que corren antes de cualquier schema.
 
 Todo lo que se revisa aqui es independiente del tipo de archivo (salvo los hashes de
-`index.json`) y no necesita instalar nada: tamano, profundidad, claves duplicadas, caracteres
-de control e invisibles, claves prohibidas, forma canonica y datos personales.
+`index.json` y el major del contrato) y no necesita instalar nada: tamano, profundidad, claves
+duplicadas, caracteres de control e invisibles, claves prohibidas, forma canonica, fechas que
+no existen en el calendario y datos personales.
 """
 
 from __future__ import annotations
 
+import datetime as dt
 import re
 from pathlib import Path
 from typing import Any
@@ -19,6 +21,15 @@ TAMANO_MAXIMO = 8 * 1024 * 1024
 
 PROFUNDIDAD_MAXIMA = 12
 """Anidamiento maximo admitido dentro del JSON."""
+
+MAJOR_CONTRATO = 1
+"""Major del contrato que implementan `schemas/v1/` y que lee la SPA (`MAJOR_SOPORTADO`)."""
+
+CONTRATO = re.compile(r"^(\d+)\.\d+\.\d+$")
+"""SemVer del campo `contrato`; el primer grupo es el major."""
+
+FECHA = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+"""Forma de las fechas del contrato; que ademas existan en el calendario se comprueba aparte."""
 
 CLAVES_PROHIBIDAS = ("__proto__", "constructor", "prototype")
 """Claves que contaminan el prototipo al deserializar en el navegador."""
@@ -46,10 +57,13 @@ PRIVACIDAD = (
 )
 
 __all__ = [
+    "MAJOR_CONTRATO",
     "PROFUNDIDAD_MAXIMA",
     "TAMANO_MAXIMO",
     "profundidad",
+    "profundidad_del_texto",
     "revisar_bytes",
+    "revisar_contrato",
     "revisar_datos",
     "revisar_index",
     "revisar_texto",
@@ -91,14 +105,40 @@ def revisar_bytes(crudo: bytes, archivo: str) -> list[Hallazgo]:
 
 
 def revisar_texto(texto: str, archivo: str) -> tuple[list[Hallazgo], Any | None]:
-    """Parsea el texto y compara contra la forma canonica; devuelve tambien el objeto."""
+    """Parsea el texto y compara contra la forma canonica; devuelve tambien el objeto.
+
+    El anidamiento se cuenta sobre el texto **antes** de parsear: el parser de la biblioteca
+    estandar es recursivo y un documento de miles de niveles lo tumba con `RecursionError`
+    mucho antes de que `revisar_datos` pueda mirar el objeto. Ese error tambien se atrapa
+    aqui, por si algun documento se las arregla para agotar la pila dentro del tope: un
+    archivo ilegible es un hallazgo suyo y no puede cortar el lote (N0-8).
+    """
     hallazgos: list[Hallazgo] = []
+    nivel = profundidad_del_texto(texto)
+    if nivel > PROFUNDIDAD_MAXIMA:
+        return [
+            Hallazgo(
+                ERROR,
+                "profundidad",
+                archivo,
+                f"el anidamiento llega a {nivel} y el maximo es {PROFUNDIDAD_MAXIMA}",
+            )
+        ], None
     try:
         datos = canon.cargar_texto(texto)
     except canon.ErrorClaveDuplicada as exc:
         return [Hallazgo(ERROR, "clave-duplicada", archivo, str(exc))], None
     except canon.ErrorCanonico as exc:
         return [Hallazgo(ERROR, "json-invalido", archivo, str(exc))], None
+    except RecursionError:
+        return [
+            Hallazgo(
+                ERROR,
+                "profundidad",
+                archivo,
+                "el parser se quedo sin pila al leer el archivo: el anidamiento es excesivo",
+            )
+        ], None
     if texto != canon.serializar(datos):
         hallazgos.append(
             Hallazgo(
@@ -122,6 +162,39 @@ def profundidad(datos: Any) -> int:
             pila.extend((hijo, nivel + 1) for hijo in valor.values())
         elif isinstance(valor, list):
             pila.extend((hijo, nivel + 1) for hijo in valor)
+    return maxima
+
+
+def profundidad_del_texto(texto: str) -> int:
+    """Anidamiento maximo del JSON sin parsearlo, contando los corchetes fuera de los strings.
+
+    Cuenta lo mismo que `profundidad` sobre el objeto ya parseado —el nivel del valor mas
+    hondo, con la raiz en 0— pero leyendo el texto caracter por caracter, que es lo unico que
+    se puede hacer antes de que el parser recursivo se quede sin pila.
+    """
+    maxima = 0
+    nivel = 0
+    en_cadena = False
+    escapado = False
+    for caracter in texto:
+        if en_cadena:
+            if escapado:
+                escapado = False
+            elif caracter == "\\":
+                escapado = True
+            elif caracter == '"':
+                en_cadena = False
+            continue
+        if caracter == '"':
+            en_cadena = True
+            maxima = max(maxima, nivel)
+        elif caracter in "[{":
+            maxima = max(maxima, nivel)
+            nivel += 1
+        elif caracter in "]}":
+            nivel = max(nivel - 1, 0)
+        elif caracter not in " \t\n\r,:":
+            maxima = max(maxima, nivel)
     return maxima
 
 
@@ -162,8 +235,23 @@ def _cadenas(datos: Any) -> list[tuple[str, str, str]]:
     return encontradas
 
 
+def _existe_la_fecha(texto: str) -> bool:
+    """Indica si un `YYYY-MM-DD` con la forma del contrato es ademas un dia del calendario."""
+    try:
+        dt.date.fromisoformat(texto)
+    except ValueError:
+        return False
+    return True
+
+
 def revisar_datos(datos: Any, archivo: str) -> list[Hallazgo]:
-    """Controles sobre el objeto ya parseado: profundidad, caracteres, claves y privacidad."""
+    """Controles sobre el objeto ya parseado: profundidad, caracteres, fechas y privacidad.
+
+    Las fechas se comprueban aqui y no en el schema porque el patron `^\\d{4}-\\d{2}-\\d{2}$`
+    acepta el 31 de septiembre: el contrato pide que la fecha «ademas sea valida como fecha»,
+    y eso es exactamente lo que un JSON Schema no puede expresar. Un dia inexistente que se
+    publica se compara despues como string en la SPA y pasa por un dia real.
+    """
     hallazgos: list[Hallazgo] = []
     nivel = profundidad(datos)
     if nivel > PROFUNDIDAD_MAXIMA:
@@ -205,6 +293,15 @@ def revisar_datos(datos: Any, archivo: str) -> list[Hallazgo]:
                     f"caracter invisible o de override bidireccional {invisible} en {ruta}",
                 )
             )
+        if FECHA.match(texto) and not _existe_la_fecha(texto):
+            hallazgos.append(
+                Hallazgo(
+                    ERROR,
+                    "fecha-invalida",
+                    archivo,
+                    f"«{texto}» en {ruta} tiene la forma de una fecha pero ese dia no existe",
+                )
+            )
         for regla, patron, motivo in PRIVACIDAD:
             coincidencia = patron.search(texto)
             if coincidencia is not None:
@@ -219,18 +316,75 @@ def revisar_datos(datos: Any, archivo: str) -> list[Hallazgo]:
     return hallazgos
 
 
+def revisar_contrato(datos: Any, archivo: str) -> list[Hallazgo]:
+    """El `contrato` de un documento de `v1` declara major 1.
+
+    El contrato pone el corte de compatibilidad en el directorio: un cambio incompatible crea
+    `data/v2/` con `schemas/v2/` y no toca `v1`. Los cinco schemas son de v1 y su patron de
+    SemVer acepta cualquier version, asi que sin esta regla un archivo que declara `2.0.0`
+    atraviesa los gates, se publica, y recien el navegador del visitante lo rechaza con
+    `ContratoIncompatible`. Un `contrato` ausente o mal formado no se informa aqui: es de C2.
+    """
+    if not isinstance(datos, dict):
+        return []
+    declarado = datos.get("contrato")
+    if not isinstance(declarado, str):
+        return []
+    coincidencia = CONTRATO.match(declarado)
+    if coincidencia is None or int(coincidencia.group(1)) == MAJOR_CONTRATO:
+        return []
+    return [
+        Hallazgo(
+            ERROR,
+            "contrato-incompatible",
+            archivo,
+            f"el archivo declara «contrato: {declarado}» y los schemas de «v1» solo admiten "
+            f"el major {MAJOR_CONTRATO}; un major distinto vive en su propio directorio de "
+            "datos, con sus propios schemas",
+        )
+    ]
+
+
+def _dentro(destino: Path, base: Path) -> bool:
+    """Indica si la ruta cae dentro del directorio de datos, ya resuelta."""
+    try:
+        return destino.resolve().is_relative_to(base)
+    except OSError:  # pragma: no cover - depende del sistema de archivos
+        return False
+
+
 def revisar_index(ruta: Path, datos: Any, archivo: str) -> list[Hallazgo]:
-    """Comprueba que cada `hash` de `index.json` coincida con el archivo referido."""
+    """Comprueba cada referencia de `index.json` contra el archivo que dice describir.
+
+    Tres cosas, en este orden: que la ruta caiga dentro del directorio de datos —C1 corre
+    antes que el schema, asi que es esta capa la que no puede seguir un `..` escrito en el
+    PR—, que el `hash` sea el del contenido canonico, y que el periodo y la vigencia que el
+    indice declara sean los del archivo de horarios apuntado, porque **el archivo manda sobre
+    el indice** y un indice que miente deja a la SPA sin periodo activo.
+    """
     hallazgos: list[Hallazgo] = []
     base = Path(ruta).resolve().parent
-    for referencia in _referencias(datos):
+    for clave, referencia in _referencias(datos):
         relativa = referencia.get("archivo")
         esperado = referencia.get("hash")
         if not isinstance(relativa, str) or not isinstance(esperado, str):
             continue
         destino = base / relativa
+        if not _dentro(destino, base):
+            hallazgos.append(
+                Hallazgo(
+                    ERROR,
+                    "archivo-fuera-del-directorio",
+                    archivo,
+                    f"«{relativa}» sale del directorio de datos; toda ruta del indice es "
+                    "relativa y queda dentro de el",
+                )
+            )
+            continue
         try:
-            real = canon.hash_canonico(destino)
+            texto = canon.leer_texto(destino)
+            contenido = canon.cargar_texto(texto)
+            real = canon.hash_de_texto(texto)
         except OSError:
             hallazgos.append(
                 Hallazgo(
@@ -255,19 +409,50 @@ def revisar_index(ruta: Path, datos: Any, archivo: str) -> list[Hallazgo]:
                     f"el hash de «{relativa}» es {real} y el indice declara {esperado}",
                 )
             )
+        if clave == "horarios":
+            hallazgos.extend(_revisar_periodo_indexado(referencia, contenido, relativa, archivo))
     return hallazgos
 
 
-def _referencias(datos: Any) -> list[dict[str, Any]]:
-    """Devuelve las entradas de `index.json` que declaran `archivo` y `hash`."""
+def _revisar_periodo_indexado(
+    referencia: dict[str, Any], contenido: Any, relativa: str, archivo: str
+) -> list[Hallazgo]:
+    """El `periodo`, el `desde` y el `hasta` del indice son los del archivo de horarios."""
+    if not isinstance(contenido, dict):
+        return []
+    periodo = contenido.get("periodo")
+    if not isinstance(periodo, dict):
+        return []
+    campos = (("periodo", "id"), ("desde", "desde"), ("hasta", "hasta"))
+    hallazgos: list[Hallazgo] = []
+    for en_el_indice, en_el_archivo in campos:
+        declarado = referencia.get(en_el_indice)
+        real = periodo.get(en_el_archivo)
+        if not isinstance(declarado, str) or not isinstance(real, str) or declarado == real:
+            continue
+        hallazgos.append(
+            Hallazgo(
+                ERROR,
+                "periodo-incorrecto",
+                archivo,
+                f"el indice declara «{en_el_indice}: {declarado}» para «{relativa}» y el "
+                f"archivo dice «periodo.{en_el_archivo}: {real}»; el archivo manda sobre el "
+                "indice, corre `cuatris indice actualizar`",
+            )
+        )
+    return hallazgos
+
+
+def _referencias(datos: Any) -> list[tuple[str, dict[str, Any]]]:
+    """Devuelve `(clave del indice, entrada)` de todo lo que declara `archivo` y `hash`."""
     if not isinstance(datos, dict):
         return []
-    encontradas: list[dict[str, Any]] = []
-    for valor in datos.values():
+    encontradas: list[tuple[str, dict[str, Any]]] = []
+    for clave, valor in datos.items():
         if isinstance(valor, dict) and "archivo" in valor:
-            encontradas.append(valor)
+            encontradas.append((clave, valor))
         elif isinstance(valor, list):
             encontradas.extend(
-                item for item in valor if isinstance(item, dict) and "archivo" in item
+                (clave, item) for item in valor if isinstance(item, dict) and "archivo" in item
             )
     return encontradas

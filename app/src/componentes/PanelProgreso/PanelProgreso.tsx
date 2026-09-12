@@ -18,7 +18,7 @@
  * **14 créditos** (hallazgo 1 de `05-plan-sprints.md`).
  */
 
-import type { PeriodoId, Plan, PlanUsuario } from "../../contrato/tipos";
+import type { Codigo, PeriodoId, Plan, PlanUsuario } from "../../contrato/tipos";
 import {
   compararPeriodos,
   electivas as calcularElectivas,
@@ -35,6 +35,84 @@ import "./PanelProgreso.css";
 
 /** Créditos que representa cada segmento de la barra de electivas (13b). */
 export const CREDITOS_POR_SEGMENTO = 3;
+
+/** Cuántos códigos se nombran antes de cortar con «y N más». */
+export const ITEMS_NOMBRADOS = 3;
+
+/**
+ * «94.52», «94.51 y 94.52», «12.09, 93.26, 93.58 y 25 más».
+ *
+ * La lista se corta porque quien recién empieza tiene 44 ítems pendientes y
+ * enumerarlos todos no dice nada; los primeros sí, porque están ordenados por
+ * código y el primero suele ser el que traba.
+ */
+export function listarItems(
+  items: readonly Codigo[],
+  nombrados = ITEMS_NOMBRADOS,
+): string {
+  const primeros = items.slice(0, nombrados);
+  const resto = items.length - primeros.length;
+  const lista =
+    primeros.length <= 1
+      ? (primeros[0] ?? "")
+      : `${primeros.slice(0, -1).join(", ")} y ${String(primeros[primeros.length - 1])}`;
+  if (resto === 0) {
+    return lista;
+  }
+  return `${primeros.join(", ")} y ${String(resto)} más`;
+}
+
+/** «1 materia», «3 materias». */
+function contarItems(cuantos: number): string {
+  return `${String(cuantos)} ${cuantos === 1 ? "materia" : "materias"}`;
+}
+
+/**
+ * Qué le falta al título, en partes: ítems, créditos y electivas.
+ *
+ * Los ítems van primero y no son opcionales: un título no se alcanza juntando
+ * créditos, hay que **aprobar todos los ítems** de los ciclos que exige
+ * (hallazgo 2), y son justo los de 0 créditos —Inglés II, Práctica Laboral— los
+ * que dejaban el panel diciendo «faltan 0 créditos» con el título sin alcanzar.
+ */
+export function faltantesDelTitulo(
+  titulo: ProgresoTitulo | undefined,
+  faltanCreditos: number,
+  faltanElectivas: number,
+): string[] {
+  const partes: string[] = [];
+  if (titulo !== undefined && titulo.faltanItems.length > 0) {
+    partes.push(
+      `${contarItems(titulo.faltanItems.length)} (${listarItems(titulo.faltanItems)})`,
+    );
+  }
+  if (faltanCreditos > 0) {
+    const palabra = faltanCreditos === 1 ? "crédito" : "créditos";
+    partes.push(`${String(faltanCreditos)} ${palabra}`);
+  }
+  if (faltanElectivas > 0) {
+    partes.push(`${String(faltanElectivas)} de electivas`);
+  }
+  return partes;
+}
+
+/**
+ * «Falta» o «Faltan», según la primera parte de la enumeración.
+ *
+ * La concordancia en español la manda el primer sustantivo: «Falta 1 materia y
+ * 3 créditos», «Faltan 2 materias y 1 crédito».
+ */
+export function verboDeFaltantes(partes: readonly string[]): string {
+  return partes[0]?.startsWith("1 ") === true ? "Falta" : "Faltan";
+}
+
+/** Une las partes: «A», «A y B», «A, B y C». */
+export function unirPartes(partes: readonly string[]): string {
+  if (partes.length <= 1) {
+    return partes[0] ?? "";
+  }
+  return `${partes.slice(0, -1).join(", ")} y ${String(partes[partes.length - 1])}`;
+}
 
 export interface PropsPanelProgreso {
   plan: Plan;
@@ -152,6 +230,14 @@ function Titulo({
       </div>
       {titulo.alcanzado ? (
         <p className="panel-progreso__pie">obtenible ya</p>
+      ) : titulo.faltanItems.length > 0 ? (
+        /* El título se alcanza por ítems, no por créditos: si falta alguno, la
+           barra al 100 % sin este pie diría que ya está. */
+        <p className="panel-progreso__pie">
+          falta{titulo.faltanItems.length === 1 ? "" : "n"}{" "}
+          {contarItems(titulo.faltanItems.length)}:{" "}
+          {listarItems(titulo.faltanItems)}
+        </p>
       ) : null}
     </div>
   );
@@ -197,6 +283,11 @@ export function PanelProgreso({
   const faltanElectivas = Math.max(
     0,
     electivas.requeridos - electivas.aprobados - electivas.planificados,
+  );
+  const partesQueFaltan = faltantesDelTitulo(
+    principal,
+    faltanCreditos,
+    faltanElectivas,
   );
 
   return (
@@ -257,11 +348,16 @@ export function PanelProgreso({
       <p className="panel-progreso__resumen">
         {principal !== undefined && principal.alcanzado ? (
           "✓ Ya alcanzaste el título principal con lo que tenés aprobado."
+        ) : partesQueFaltan.length === 0 ? (
+          <>
+            Con lo planificado cubrís todo lo que pide el título principal.{" "}
+            {colaDeCarga(principal?.estimado ?? null, referencia)}
+          </>
         ) : (
           <>
-            Faltan <strong>{faltanCreditos} créditos</strong> y {faltanElectivas}{" "}
-            de electivas para el título principal.{" "}
-            {colaDeCarga(principal?.estimado ?? null, referencia)}
+            {verboDeFaltantes(partesQueFaltan)}{" "}
+            <strong>{unirPartes(partesQueFaltan)}</strong> para el título
+            principal. {colaDeCarga(principal?.estimado ?? null, referencia)}
           </>
         )}
       </p>

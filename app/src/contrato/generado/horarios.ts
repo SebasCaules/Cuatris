@@ -119,7 +119,7 @@ export interface Comision {
    */
   id: string;
   /**
-   * Inscriptos a una fecha; dato volatil, opcional y fuera del hash estable.
+   * Inscriptos a una fecha; dato volatil y opcional, separado del cupo.
    */
   ocupacion?: {
     /**

@@ -199,8 +199,10 @@ def _revisar_horarios(datos: Any, archivo: str, contexto: Contexto | None) -> li
     periodo = datos.get("periodo") if isinstance(datos.get("periodo"), dict) else {}
     cursos = [curso for curso in _lista(datos.get("cursos")) if isinstance(curso, dict)]
 
+    hallazgos.extend(_revisar_periodo(periodo, archivo))
     hallazgos.extend(_revisar_identidades(cursos, archivo))
     hallazgos.extend(_revisar_fechas_de_cursos(cursos, periodo, archivo))
+    hallazgos.extend(_revisar_dictado_conjunto(cursos, archivo))
 
     bloques: list[_Bloque] = []
     for curso in cursos:
@@ -265,6 +267,63 @@ def _bloques_del_curso(curso: dict[str, Any]) -> list[_Bloque]:
                 )
             )
     return bloques
+
+
+def _revisar_periodo(periodo: dict[str, Any], archivo: str) -> list[Hallazgo]:
+    """`periodo.id` es exactamente `<anio>-<cuatrimestre>`.
+
+    Los tres campos tienen patrones independientes en el schema, que no puede relacionarlos:
+    un archivo con `id: "2026-2C"`, `anio: 2019` y `cuatrimestre: "1C"` cumple los tres y no
+    describe ningun cuatrimestre.
+    """
+    identificador = _texto(periodo.get("id"))
+    cuatrimestre = _texto(periodo.get("cuatrimestre"))
+    anio = periodo.get("anio")
+    if identificador is None or cuatrimestre is None or not isinstance(anio, int):
+        return []
+    esperado = f"{anio}-{cuatrimestre}"
+    if identificador == esperado:
+        return []
+    return [
+        Hallazgo(
+            ERROR,
+            "periodo-incoherente",
+            archivo,
+            f"el periodo declara «id: {identificador}» con «anio: {anio}» y «cuatrimestre: "
+            f"{cuatrimestre}»; el id de ese cuatrimestre es «{esperado}»",
+        )
+    ]
+
+
+def _revisar_dictado_conjunto(cursos: list[dict[str, Any]], archivo: str) -> list[Hallazgo]:
+    """Todo codigo de `dictado_conjunto` es un curso del mismo archivo.
+
+    Es advertencia por la misma razon que `codigo-fuera-del-plan` (S-02): los horarios traen
+    todas las carreras y el par exento podria estar en otro archivo. Pero conviene decirlo,
+    porque `dictado_conjunto` es la unica lista blanca de `colision-de-aula`: un codigo mal
+    tipeado ahi apaga la deteccion del par que se queria eximir y nadie se entera.
+    """
+    presentes = {
+        codigo for curso in cursos if (codigo := _texto(curso.get("codigo"))) is not None
+    }
+    hallazgos: list[Hallazgo] = []
+    vistos: set[tuple[str, str]] = set()
+    for curso in cursos:
+        codigo = _texto(curso.get("codigo")) or "?"
+        for otro in _lista(curso.get("dictado_conjunto")):
+            if not isinstance(otro, str) or otro in presentes or (codigo, otro) in vistos:
+                continue
+            vistos.add((codigo, otro))
+            hallazgos.append(
+                Hallazgo(
+                    WARNING,
+                    "dictado-conjunto-inexistente",
+                    archivo,
+                    f"el curso «{codigo}» se dicta en conjunto con «{otro}», que no es un "
+                    "curso de este archivo; «colision-de-aula» no revisa ese par",
+                )
+            )
+    return hallazgos
 
 
 def _revisar_identidades(cursos: list[dict[str, Any]], archivo: str) -> list[Hallazgo]:
@@ -735,7 +794,12 @@ def _revisar_cuatrimestres(materias: list[dict[str, Any]], archivo: str) -> list
 def _revisar_minors(
     datos: dict[str, Any], materias: list[dict[str, Any]], archivo: str
 ) -> list[Hallazgo]:
-    """Toda sigla de minor que use una materia esta declarada en `minors[]`."""
+    """Toda sigla de minor esta declarada en `minors[]`, y solo las electivas declaran alguna.
+
+    Un minor se arma con electivas: `minors` vacio en las obligatorias es lo que fija el
+    contrato. Una obligatoria con siglas aparece con chips de minor en la pantalla del plan y
+    suma a los creditos de ese minor, que es una carrera distinta de la que el estudiante ve.
+    """
     siglas = {
         sigla
         for minor in _lista(datos.get("minors"))
@@ -744,8 +808,9 @@ def _revisar_minors(
     hallazgos: list[Hallazgo] = []
     for materia in materias:
         codigo = _texto(materia.get("codigo")) or "?"
-        for sigla in _lista(materia.get("minors")):
-            if isinstance(sigla, str) and sigla not in siglas:
+        declaradas = [sigla for sigla in _lista(materia.get("minors")) if isinstance(sigla, str)]
+        for sigla in declaradas:
+            if sigla not in siglas:
                 hallazgos.append(
                     Hallazgo(
                         ERROR,
@@ -755,6 +820,17 @@ def _revisar_minors(
                         "«minors»",
                     )
                 )
+        ciclo = _texto(materia.get("ciclo"))
+        if declaradas and ciclo is not None and ciclo != "electiva":
+            hallazgos.append(
+                Hallazgo(
+                    ERROR,
+                    "minor-en-obligatoria",
+                    archivo,
+                    f"la materia «{codigo}» es del ciclo «{ciclo}» y declara los minors "
+                    f"{', '.join(declaradas)}; solo las electivas cuentan para un minor",
+                )
+            )
     return hallazgos
 
 

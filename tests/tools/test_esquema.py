@@ -209,3 +209,45 @@ def test_los_schemas_del_repositorio_estan_canonicos() -> None:
     archivos = sorted(str(ruta) for ruta in DIRECTORIO_SCHEMAS.glob("*.schema.json"))
     assert len(archivos) == len(TIPOS)
     assert main(["fmt", "--check", *archivos]) == 0
+
+
+# --- el corpus de ejemplo de la app tambien es del contrato (F2.7) ------------------------
+
+
+def _archivos_del_ejemplo(raiz: Path) -> list[Path]:
+    ejemplo = raiz / "app" / "src" / "datos" / "ejemplo"
+    return [ejemplo / "index.json", *sorted((ejemplo / "v1").rglob("*.json"))]
+
+
+def test_el_corpus_de_ejemplo_de_la_app_cumple_el_contrato(raiz: Path) -> None:
+    """Tiene forma de documento del contrato: el contrato tambien lo manda.
+
+    Es el corpus contra el que corren los tests de `app/src/datos/`: si es mas permisivo que
+    `data/`, la app pasa sus pruebas con datos que el validador rechaza al publicarlos.
+    """
+    from cuatris.validar import contexto_de_datos
+
+    ejemplo = raiz / "app" / "src" / "datos" / "ejemplo"
+    contexto = contexto_de_datos(ejemplo)
+    for ruta in _archivos_del_ejemplo(raiz):
+        hallazgos = validar_archivo(ruta, contexto=contexto)
+        assert not hay_errores(hallazgos), f"{ruta}: {hallazgos}"
+
+
+def test_el_corpus_de_ejemplo_esta_canonico_y_con_los_hashes_al_dia(raiz: Path) -> None:
+    """Si cambia un archivo hay que rehacer el indice: el hash lo dice."""
+    from cuatris import canon
+
+    for ruta in _archivos_del_ejemplo(raiz):
+        assert canon.esta_canonico(ruta), ruta
+
+
+def test_el_vocabulario_de_ejemplo_tiene_las_sedes_observadas(raiz: Path) -> None:
+    """N0-9: solo `rectorado` y `sdt`; `sdf` entra cuando aparezca en una captura."""
+    from cuatris import canon
+
+    ejemplo = raiz / "app" / "src" / "datos" / "ejemplo" / "v1" / "vocabulario.json"
+    publicado = raiz / "data" / "v1" / "vocabulario.json"
+    sedes = [sede["id"] for sede in canon.cargar(ejemplo)["sedes"]]
+    assert sedes == [sede["id"] for sede in canon.cargar(publicado)["sedes"]]
+    assert "sdf" not in sedes

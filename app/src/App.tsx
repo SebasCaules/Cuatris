@@ -14,7 +14,11 @@ import { useMenuPlan } from "./componentes/MenuPlan";
 import { ModalComisiones } from "./componentes/ModalComisiones";
 import { PanelAgregar } from "./componentes/PanelAgregar";
 import { PanelProgreso } from "./componentes/PanelProgreso";
-import { PantallaCargando, PantallaError } from "./componentes/PantallaEstado";
+import {
+  PantallaCargando,
+  PantallaError,
+  PantallaPlanCorrupto,
+} from "./componentes/PantallaEstado";
 import type { Codigo, PeriodoId } from "./contrato/tipos";
 import type { DatosCargados } from "./datos/useDatos";
 import { hoyIso, useDatos } from "./datos/useDatos";
@@ -32,6 +36,17 @@ interface ModalAbierto {
   periodo: PeriodoId;
   codigo: Codigo;
   fijada?: Codigo;
+}
+
+/**
+ * El panel «Agregar materia» de 13c, con la consulta que lo abrió.
+ *
+ * El texto viaja con el panel porque en 13c el campo de la barra superior y el
+ * del panel son **la misma búsqueda**: lo que se escribe arriba filtra abajo.
+ */
+interface PanelAbierto {
+  periodo: PeriodoId;
+  consulta: string;
 }
 
 /** El plan del usuario todavía no tiene nada: es el primer ingreso (13a). */
@@ -56,7 +71,7 @@ function Aplicacion({ datos }: { datos: DatosCargados }) {
   const { plan: planUsuario } = usePlanUsuario();
   const { ruta, ir } = useRuta();
   const { acciones, dialogos } = useMenuPlan();
-  const [panel, setPanel] = useState<PeriodoId | null>(null);
+  const [panel, setPanel] = useState<PanelAbierto | null>(null);
   const [modal, setModal] = useState<ModalAbierto | null>(null);
 
   const periodoActivo = datos.periodo?.entrada.periodo ?? null;
@@ -73,9 +88,9 @@ function Aplicacion({ datos }: { datos: DatosCargados }) {
   );
 
   const abrirPanel = useCallback(
-    (periodo: PeriodoId) => {
+    (periodo: PeriodoId, consulta = "") => {
       setModal(null);
-      setPanel(periodo);
+      setPanel({ periodo, consulta });
       if (ruta.vista !== "plan") {
         ir({ vista: "plan" });
       }
@@ -116,12 +131,17 @@ function Aplicacion({ datos }: { datos: DatosCargados }) {
     );
 
   if (ruta.vista === "inicio" || (ruta.vista === "plan" && primerIngreso)) {
-    principal = <PaginaInicio plan={datos.plan} />;
+    principal = (
+      <PaginaInicio plan={datos.plan} alImportar={acciones.importar} />
+    );
     lateral = null;
   } else if (ruta.vista === "progreso") {
     principal = (
       <ProgresoConDatos plan={datos.plan} planUsuario={planUsuario} />
     );
+    // 13i es de ancho completo: repetir el panel de progreso al lado de la
+    // página que ya lo cuenta entero sería decir dos veces lo mismo.
+    lateral = null;
   } else if (ruta.vista === "materia") {
     principal = (
       <PaginaMateria
@@ -148,13 +168,33 @@ function Aplicacion({ datos }: { datos: DatosCargados }) {
     );
   }
 
-  const horariosDelPanel = panel === null ? null : horariosDe(panel);
+  const horariosDelPanel = panel === null ? null : horariosDe(panel.periodo);
   const horariosDelModal = modal === null ? null : horariosDe(modal.periodo);
   const nombreDeMateria =
     modal === null
       ? undefined
       : datos.plan.materias.find((materia) => materia.codigo === modal.codigo)
           ?.nombre;
+
+  /*
+   * El panel de 13c es una columna más del cuerpo, con su ancho propio de
+   * 330 px: dentro del hueco del progreso (250 px) las filas partían los
+   * nombres en tres líneas y el cuatrimestre destino se veía peor, no mejor.
+   */
+  const panelAgregar =
+    panel !== null && ruta.vista === "plan" && !primerIngreso ? (
+      <PanelAgregar
+        periodo={panel.periodo}
+        consulta={panel.consulta}
+        plan={datos.plan}
+        abreviaciones={datos.abreviaciones}
+        horarios={horariosDelPanel}
+        alCerrar={cerrarPanel}
+        alElegirComision={(codigo) => {
+          abrirModal({ periodo: panel.periodo, codigo });
+        }}
+      />
+    ) : null;
 
   return (
     <>
@@ -167,29 +207,19 @@ function Aplicacion({ datos }: { datos: DatosCargados }) {
             ir={ir}
             {...(periodoActivo === null
               ? {}
-              : { onBuscar: () => abrirPanel(periodoActivo) })}
+              : {
+                  onBuscar: (texto: string) => {
+                    abrirPanel(periodoActivo, texto);
+                  },
+                })}
             onExportar={acciones.exportar}
             onImportar={acciones.importar}
             onBorrarTodo={acciones.borrarTodo}
           />
         }
         principal={principal}
-        panel={
-          panel !== null && ruta.vista === "plan" && !primerIngreso ? (
-            <PanelAgregar
-              periodo={panel}
-              plan={datos.plan}
-              abreviaciones={datos.abreviaciones}
-              horarios={horariosDelPanel}
-              alCerrar={cerrarPanel}
-              alElegirComision={(codigo) =>
-                abrirModal({ periodo: panel, codigo })
-              }
-            />
-          ) : (
-            lateral
-          )
-        }
+        panel={panelAgregar === null ? lateral : null}
+        agregar={panelAgregar}
       />
       {modal !== null && horariosDelModal !== null ? (
         <ModalComisiones
@@ -211,13 +241,28 @@ function Aplicacion({ datos }: { datos: DatosCargados }) {
 }
 
 export function App() {
-  const { plan: planUsuario } = usePlanUsuario();
+  const { plan: planUsuario, errorGuardado, crudoGuardado, descartarGuardado } =
+    usePlanUsuario();
   const { ruta } = useRuta();
   const hoy = useMemo(() => hoyIso(), []);
   const datos = useDatos(planUsuario.plan, hoy);
 
   if (ruta.vista === "muestrario") {
     return <Muestrario />;
+  }
+  /*
+   * Lo guardado no se pudo leer: hasta que el usuario se lleve la copia, nada
+   * de lo que haga se persiste. Cortar acá es lo que evita que trabaje toda la
+   * sesión sobre un plan que se pierde al cerrar la pestaña.
+   */
+  if (errorGuardado !== null) {
+    return (
+      <PantallaPlanCorrupto
+        error={errorGuardado}
+        crudo={crudoGuardado}
+        alEmpezarDeCero={descartarGuardado}
+      />
+    );
   }
   if (datos.fase === "cargando") {
     return <PantallaCargando />;

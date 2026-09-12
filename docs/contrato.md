@@ -10,7 +10,9 @@ JSON Schema draft-07 están en `schemas/v1/` y son el artefacto: no hay paso de 
   UTF-8 sin BOM, finales de línea LF. Es la única forma válida; `cuatris fmt --check` la exige.
 - Claves duplicadas = error. Evita el truco de `{"cupo": 48, "cupo": 0}`, donde el revisor lee
   una cosa y el parser usa otra.
-- Fechas `YYYY-MM-DD`, sin hora ni zona horaria. Horas `HH:MM` de 24 h.
+- Fechas `YYYY-MM-DD`, sin hora ni zona horaria, y que existan en el calendario: el patrón del
+  schema acepta el 31 de septiembre, así que la fecha se construye en C1 (`fecha-invalida`).
+  Horas `HH:MM` de 24 h.
 - Códigos de materia: string `^\d{2}\.\d{2}$` (`"93.18"` no es un decimal). Período:
   `^\d{4}-[12]C$`.
 - `additionalProperties: false` en todos los objetos. Un campo desconocido corta con un mensaje
@@ -22,27 +24,38 @@ JSON Schema draft-07 están en `schemas/v1/` y son el artefacto: no hay paso de 
 
 | Campo | Tipo | Reglas |
 |---|---|---|
-| `periodo.id` / `anio` / `cuatrimestre` | string, entero, enum `1C`/`2C` | `id` = `<anio>-<cuatrimestre>` |
+| `periodo.id` / `anio` / `cuatrimestre` | string, entero, enum `1C`/`2C` | `id` = `<anio>-<cuatrimestre>` (C3: `periodo-incoherente`) |
 | `periodo.desde` / `hasta` | fecha | vigencia del cuatrimestre |
 | `fuente.sistema` / `capturado` | enum `sga`/`manual`, fecha | de dónde salieron los datos |
 | `cursos[].codigo` | código | identidad del curso; única en el archivo |
 | `cursos[].nombre` | string | como lo muestra el SGA |
 | `cursos[].departamento` | string, opcional | como lo muestra el SGA |
 | `cursos[].desde` / `hasta` | fecha | del curso, no del período: los períodos cortos son reales |
-| `cursos[].dictado_conjunto` | array de códigos | requerido, puede ser `[]` |
+| `cursos[].dictado_conjunto` | array de códigos | requerido, puede ser `[]`; códigos del mismo archivo (C3, warning) |
 | `comisiones[].id` | string `^[A-Z0-9]{1,4}$` | opaco: sin orden ni contigüidad |
 | `comisiones[].cupo.capacidad` | entero >= 0, opcional | estable; separado del dato volátil |
 | `comisiones[].ocupacion` | `{inscriptos, al}`, opcional | volátil; `inscriptos > capacidad` es warning |
 | `comisiones[].docentes` | array de strings | requerido, puede ser `[]` |
 | `comisiones[].bloques` | array | puede ser `[]` si todavía no hay horario publicado |
 | `bloques[].dia` | enum | `lunes`…`sabado`, sin acentos; `domingo` no existe |
-| `bloques[].desde` / `hasta` | hora | `desde < hasta`, entre 07:00 y 23:00 (C3) |
+| `bloques[].desde` / `hasta` | hora | `desde < hasta`, entre 07:00 y 23:00, y nunca más de 8 h seguidas (C3) |
 | `bloques[].sede` | string o `null` | id de `vocabulario.json`; `null` solo si no es presencial |
 | `bloques[].modalidad` | enum | `presencial`, `virtual_sincronica`, `virtual_asincronica`, `blended` |
 | `bloques[].aulas` | array de strings | **nunca enum**; puede ser `[]` o tener dos aulas |
 
-`cupo` va separado de `ocupacion` para que dos capturas independientes del mismo cuatrimestre
-produzcan el mismo hash: habilita la corroboración entre dos personas.
+`cupo` va separado de `ocupacion` porque el primero es estable y el segundo cambia todos los
+días: así un diff dice de un vistazo si cambió la oferta o solo la cantidad de inscriptos.
+
+El techo de **8 h** por bloque (`bloque-demasiado-largo`, error) sale de que una franja más
+larga que una jornada es un error de carga, no una clase: en el material no hay ninguna que
+llegue a 4 h. Si aparece un dictado real más largo —un intensivo de sábado, por ejemplo— el
+que está mal es el validador, y el techo se sube con la fixture que lo motivó.
+
+**No hay un «hash estable»**: el único hash del repositorio es `canon.hash_canonico`, sobre el
+texto canónico del archivo entero, `ocupacion` y `fuente.capturado` incluidos. Dos capturas del
+mismo cuatrimestre en días distintos dan hashes distintos, así que no sirve para corroborar una
+carga contra otra. Un hash que ignore los campos volátiles llega con la replicación
+independiente (Sprint 3); hasta entonces, nada del repositorio promete esa propiedad.
 
 ## `data/v1/planes/<plan>.json`
 
@@ -57,7 +70,7 @@ produzcan el mismo hash: habilita la corroboración entre dos personas.
 | `materias[].cuatrimestre_sugerido` | entero 1–10 en las obligatorias; `null` en las electivas |
 | `materias[].creditos_requeridos` | créditos aprobados necesarios para cursarla (72.45 exige 160) |
 | `materias[].correlativas` | códigos que existen en `materias` y forman un grafo acíclico (C3) |
-| `materias[].minors` | siglas declaradas en `minors[]`; vacío en las obligatorias |
+| `materias[].minors` | siglas declaradas en `minors[]`; vacío en las obligatorias (C3: `minor-en-obligatoria`) |
 | `materias[].vigente` | `true` si sigue en el plan vigente; `false` si solo está en el SGA |
 
 Las materias de 0 créditos (94.51 Inglés I, 94.52 Inglés II, 72.98 Práctica Laboral) son
@@ -85,6 +98,13 @@ comprueba C1 y la SPA lo usa como `?v=` para invalidar la caché. **Publicar no 
 archivo de horarios existe cuando está en el repositorio, pero solo es el cuatrimestre por
 defecto cuando `desde <= hoy <= hasta`. `horarios_esperados` es un mapa curado a mano de
 período a `YYYY-MM`, opcional.
+
+C1 comprueba tres cosas sobre cada entrada: que la ruta sea relativa y caiga dentro del
+directorio de datos (`archivo-fuera-del-directorio`), que el `hash` sea el del archivo
+(`hash-incorrecto`) y, para los horarios, que el `periodo`, el `desde` y el `hasta` del índice
+sean los del archivo apuntado (`periodo-incorrecto`): **el archivo manda sobre el índice**, y
+un índice que miente sobre la vigencia deja a la SPA sin período activo. Se arregla corriendo
+`cuatris indice actualizar`, que es lo único que escribe esas entradas.
 
 ## Los siete casos reales
 
@@ -118,3 +138,7 @@ Un cambio incompatible —renombrar un campo, quitarlo, volver escalar algo que 
 **major**: crea `data/v2/` y `schemas/v2/`, y **no toca `v1`**. Las dos versiones conviven
 hasta que la SPA deje de leer la vieja. Es lo que evita que dentro de tres años alguien
 «simplifique» `aulas` a un string y rompa Álgebra Lineal.
+
+Ese corte lo custodia C1: un archivo de `v1/` que declare un major distinto de 1 es el error
+`contrato-incompatible`. Sin esa regla el archivo atraviesa los gates, se publica, y el único
+que lo rechaza es el navegador del visitante, que solo sabe leer el major 1.

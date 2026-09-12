@@ -332,11 +332,34 @@ function sinMateria(
   };
 }
 
+/**
+ * Los mismos períodos sin `codigo` en ninguno. Si no estaba en ninguna parte
+ * devuelve el objeto original, para no forzar re-render de balde.
+ */
+function sinMateriaEnTodos(
+  periodos: Record<PeriodoId, MateriaPlanificada[]>,
+  codigo: Codigo,
+): Record<PeriodoId, MateriaPlanificada[]> {
+  let cambio = false;
+  const salida: Record<PeriodoId, MateriaPlanificada[]> = {};
+  for (const [periodo, lista] of Object.entries(periodos)) {
+    const filtrada = lista.filter((materia) => materia.codigo !== codigo);
+    if (filtrada.length !== lista.length) {
+      cambio = true;
+    }
+    salida[periodo] = filtrada;
+  }
+  return cambio ? salida : periodos;
+}
+
 export function reducir(estado: PlanUsuario, accion: AccionPlan): PlanUsuario {
   switch (accion.tipo) {
     case "cargarHistoria":
       return { ...estado, historia: { ...accion.historia } };
 
+    // Marcarla aprobada la saca de todos los períodos planificados: una
+    // materia aprobada no se vuelve a cursar, y dejarla en la grilla la hacía
+    // chocar y sumar créditos contra sí misma. El color no se libera.
     case "marcarAprobada":
       return {
         ...estado,
@@ -344,6 +367,7 @@ export function reducir(estado: PlanUsuario, accion: AccionPlan): PlanUsuario {
           ...estado.historia,
           [accion.codigo]: { estado: "aprobada" },
         },
+        periodos: sinMateriaEnTodos(estado.periodos, accion.codigo),
       };
 
     case "agregarMateria": {

@@ -17,6 +17,20 @@ import { normalizar } from "./buscar";
 const CODIGO_EN_LINEA = /(?<!\d)(\d{2}\.\d{2})(?!\d)/;
 
 /**
+ * Raíces que niegan la aprobación. Se prueban **antes** que `PALABRAS` porque
+ * el emparejamiento es por substring y «desaprobada» contiene «aprobad»: sin
+ * este paso una materia reprobada entraría como aprobada. Una línea con
+ * cualquiera de estas raíces no se reconoce —el motor no tiene un estado para
+ * «desaprobada»— y va verbatim a `noReconocidas` para que el usuario decida.
+ */
+const NEGATIVAS: readonly string[] = [
+  "desaprobad",
+  "no aprobad",
+  "ausente",
+  "libre",
+];
+
+/**
  * Palabras clave de estado, en orden de prioridad. Son raíces a propósito:
  * cubren «Aprobada», «Aprobado», «Aprobada (final)», «Cursando», «Cursándola».
  */
@@ -38,7 +52,8 @@ export interface HistoriaParseada {
  * Lee un pegado de historia académica.
  *
  * Una línea entra en `reconocidas` si tiene un código **y ese código está en el
- * plan**. Sin palabra clave de estado se asume `aprobada`: lo que se pega es
+ * plan** **y no dice que la materia no se aprobó** (ver `NEGATIVAS`). Sin
+ * palabra clave de estado se asume `aprobada`: lo que se pega es
  * una historia, y lo que abunda ahí es lo aprobado. Todo lo demás —líneas de
  * encabezado, totales, códigos de otra carrera— va a `noReconocidas` sin
  * tocar, incluido el `93.18` del mockup, que no pertenece a S10-Rev23.
@@ -61,6 +76,10 @@ export function parsearHistoria(texto: string, plan: Plan): HistoriaParseada {
       continue;
     }
     const normalizada = normalizar(linea);
+    if (NEGATIVAS.some((raiz) => normalizada.includes(raiz))) {
+      noReconocidas.push(linea);
+      continue;
+    }
     const palabra = PALABRAS.find((candidata) =>
       normalizada.includes(candidata.raiz),
     );

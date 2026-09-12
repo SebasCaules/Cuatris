@@ -11,6 +11,7 @@ Ningun test hace red.
 from __future__ import annotations
 
 import re
+import unicodedata
 from pathlib import Path
 
 import pytest
@@ -197,6 +198,30 @@ def test_bloque_presencial_sin_aula_no_queda_sin_sede_en_silencio() -> None:
     assert "presencial" in str(error.value)
 
 
+@pytest.mark.parametrize("cupo", ["lleno / -", "48 / 49 / 50", "sin datos", "- / 30"])
+def test_un_cupo_con_la_forma_rota_falla_como_error_de_dominio(cupo: str) -> None:
+    """Una celda de cupo que no es «inscriptos / capacidad» da `EstructuraInesperada`.
+
+    Sin el guardia que exige dos numeros, `int("lleno")` sube como `ValueError` crudo hasta la
+    CLI: un stacktrace en medio de una bajada en vez de un error legible con el fragmento.
+    """
+    html = f"""
+    <table><thead><tr><th>Comisión</th><th>Horarios</th><th>Profesores</th>
+    <th>Cupo</th></tr></thead><tbody><tr>
+      <td><label>A</label></td>
+      <td><div><span>Lunes</span><span>14:00</span> - <span>16:00</span>
+        <span><span><span>Aula ITBA: <span>001R #----&gt; Sede Rectorado</span></span>
+        <span>Aula externa: <span>Presencial</span></span></span></span>
+      </div></td>
+      <td></td><td>{cupo}</td>
+    </tr></tbody></table>
+    """
+    with pytest.raises(parsers.EstructuraInesperada) as error:
+        parsers.parsear_comisiones(html)
+    assert "cupo" in str(error.value)
+    assert cupo in str(error.value)
+
+
 def test_celda_de_horarios_con_marcado_desconocido_no_deja_la_comision_sin_bloques() -> None:
     """Si Wicket cambia el `<div>` por otro tag, se avisa en vez de devolver `bloques=[]`."""
     html = """
@@ -375,6 +400,44 @@ def test_formulario_de_login_falla_si_no_hay_campo_de_contrasena() -> None:
 )
 def test_normalizar_dia(texto: str, esperado: str) -> None:
     assert normalizar.dia(texto) == esperado
+
+
+#: Variantes que **no** son la clave de la tabla: son el modo de falla real cuando el SGA
+#: publica la pagina sin tilde, en mayusculas, en NFD o con espacios de mas. Si la tabla se
+#: consultara con el texto crudo, cada una de estas seria un `ValorDesconocido` en produccion.
+@pytest.mark.parametrize(
+    ("funcion", "texto", "esperado"),
+    [
+        (normalizar.dia, "Miercoles", "miercoles"),
+        (normalizar.dia, "MIÉRCOLES", "miercoles"),
+        (normalizar.dia, "miércoles", "miercoles"),
+        (normalizar.dia, unicodedata.normalize("NFD", "Sábado"), "sabado"),
+        (normalizar.dia, " Sabado ", "sabado"),
+        (normalizar.modalidad, "VIRTUAL SINCRONICO", "virtual_sincronica"),
+        (
+            normalizar.modalidad,
+            unicodedata.normalize("NFD", "Virtual sincrónico"),
+            "virtual_sincronica",
+        ),
+        (normalizar.sede, "sede rectorado", "rectorado"),
+        (normalizar.cuatrimestre, " Segundo  Cuat. ", "2C"),
+        (normalizar.cuatrimestre, "SEGUNDO CUAT.", "2C"),
+    ],
+)
+def test_normalizar_tolera_acentos_mayusculas_y_espacios(
+    funcion, texto: str, esperado: str
+) -> None:
+    assert funcion(texto) == esperado
+    assert texto not in DIAS_Y_TABLAS, "el caso tiene que ser distinto de la clave de la tabla"
+
+
+#: Las claves literales de las tablas, para comprobar que las variantes de arriba no lo son.
+DIAS_Y_TABLAS = (
+    set(normalizar.DIAS)
+    | set(normalizar.MODALIDADES)
+    | set(normalizar.SEDES)
+    | set(normalizar.CUATRIMESTRES)
+)
 
 
 @pytest.mark.parametrize(

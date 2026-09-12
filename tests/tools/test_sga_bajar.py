@@ -11,7 +11,9 @@ Las credenciales que aparecen son inventadas y no valen en ningun lado.
 from __future__ import annotations
 
 import argparse
+import logging
 import re
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
@@ -21,7 +23,7 @@ from bs4 import BeautifulSoup
 from cuatris import canon, sga
 from cuatris import validar as validacion
 from cuatris.sga import bajar, parsers
-from cuatris.sga.checkpoint import Checkpoint, ErrorDeCheckpoint
+from cuatris.sga.checkpoint import CACHE, Checkpoint, ErrorDeCheckpoint
 from cuatris.sga.cliente import ClienteSGA, enlace_de_pestana, enlace_por_texto
 
 USUARIO = "usuario.de.prueba"
@@ -348,6 +350,37 @@ def _correr(
     return sga.ejecutar(args), args
 
 
+@pytest.fixture
+def nivel_de_httpx_restaurado() -> Iterator[logging.Logger]:
+    """`configurar_registro` toca un logger global; el test lo deja como estaba."""
+    registro = logging.getLogger("httpx")
+    previo = registro.level
+    try:
+        yield registro
+    finally:
+        registro.setLevel(previo)
+
+
+def test_configurar_registro_calla_el_log_de_httpx_con_el_jsessionid(
+    caplog: pytest.LogCaptureFixture, nivel_de_httpx_restaurado: logging.Logger
+) -> None:
+    """Subir el log a INFO no puede destapar el «HTTP Request: …» de httpx.
+
+    Esa linea trae la URL entera, y las del SGA llevan `;jsessionid=<token>`: con el logger
+    de httpx en INFO, un barrido escribe ~500 veces la sesion viva en la terminal.
+    """
+    bajar.configurar_registro()
+    caplog.set_level(logging.INFO)
+    url = "https://sga.itba.edu.ar/app2/;jsessionid=ABC123SECRETO?0-1.-login"
+    transporte = httpx.MockTransport(lambda _peticion: httpx.Response(200, html="<html></html>"))
+    with httpx.Client(transport=transporte) as http:
+        http.get(url)
+
+    assert "ABC123SECRETO" not in caplog.text
+    assert not nivel_de_httpx_restaurado.isEnabledFor(logging.INFO)
+    assert nivel_de_httpx_restaurado.isEnabledFor(logging.WARNING), "los errores se siguen viendo"
+
+
 def test_el_archivo_de_algebra_lineal_pasa_el_validador(
     tmp_path: Path,
     raiz: Path,
@@ -449,15 +482,24 @@ def test_un_archivo_que_no_valida_queda_como_invalido_y_sale_con_1(
     html_algebra: str,
     monkeypatch: pytest.MonkeyPatch,
     entorno_con_credenciales: None,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
-    """Un aula mas larga de lo que admite el contrato tiene que frenar la publicacion."""
+    """Un aula mas larga de lo que admite el contrato tiene que frenar la publicacion.
+
+    El archivo rechazado va al directorio de cache y **no** queda en el arbol de datos: uno
+    olvidado ahi rompe `cuatris indice actualizar` (dos archivos para el mismo periodo) y los
+    gates de CI, que validan todos los JSON de `data/`.
+    """
     roto = html_algebra.replace(
         "001R #----&gt; Sede Rectorado",
         "001R-un-codigo-de-aula-larguisimo #----&gt; Sede Rectorado",
     )
     assert roto != html_algebra
     falso, _ = _sga_de_algebra(html_listado, roto)
-    salida = tmp_path / "2026-2C.json"
+    datos = tmp_path / "data" / "v1" / "horarios"
+    datos.mkdir(parents=True)
+    salida = datos / "2026-2C.json"
+    cache = tmp_path / "cache"
 
     codigo, _args = _correr(
         falso,
@@ -465,13 +507,25 @@ def test_un_archivo_que_no_valida_queda_como_invalido_y_sale_con_1(
         anio=2026,
         cuatrimestre="2C",
         salida=salida,
-        cache=tmp_path / "cache",
+        cache=cache,
         data=raiz / "data",
     )
 
     assert codigo == 1
     assert not salida.exists()
-    assert (tmp_path / "2026-2C.invalido.json").is_file()
+    assert list(datos.iterdir()) == [], "nada rechazado puede quedar dentro del arbol de datos"
+    invalido = cache / "2026-2C.invalido.json"
+    assert invalido.is_file()
+    assert str(invalido) in capsys.readouterr().out
+
+
+def test_ruta_invalida_no_cae_nunca_dentro_del_arbol_de_datos(tmp_path: Path) -> None:
+    """Con o sin `--cache`, el descarte se escribe en el cache, no al lado de la salida."""
+    salida = tmp_path / "data" / "v1" / "horarios" / "2026-2C.json"
+    assert bajar.ruta_invalida(salida, tmp_path / "cache") == (
+        tmp_path / "cache" / "2026-2C.invalido.json"
+    )
+    assert bajar.ruta_invalida(salida) == Path(CACHE) / "2026-2C.invalido.json"
 
 
 def test_el_limite_baja_solo_esos_cursos(

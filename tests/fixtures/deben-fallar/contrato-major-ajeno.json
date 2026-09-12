@@ -1,5 +1,5 @@
 {
-  "contrato": "1.0.0",
+  "contrato": "2.0.0",
   "sedes": [
     {
       "id": "rectorado",
@@ -8,6 +8,10 @@
     {
       "id": "sdt",
       "nombre": "SDT"
+    },
+    {
+      "id": "sdf",
+      "nombre": "SDF"
     }
   ]
 }

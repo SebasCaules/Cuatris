@@ -7,6 +7,7 @@ import {
   itemsAprobados,
   primerPeriodoPlanificado,
 } from "./creditos";
+import { motivosBloqueo, seDestrabaEn } from "./estado";
 import {
   codigosDelCiclo,
   historiaCon,
@@ -64,7 +65,11 @@ describe("creditosAlEmpezar", () => {
   it("suma lo planificado en períodos anteriores, no lo del propio período", () => {
     const plan = planCon(historiaCon(BASICO), {
       // 72.41 (6) + 72.44 (6) + 72.42 (3) = 15 créditos.
-      "2026-2C": [{ codigo: "72.41" }, { codigo: "72.44" }, { codigo: "72.42" }],
+      "2026-2C": [
+        { codigo: "72.41" },
+        { codigo: "72.44" },
+        { codigo: "72.42" },
+      ],
       "2027-1C": [{ codigo: "72.20" }],
     });
     expect(creditosAlEmpezar("2026-2C", plan, PLAN)).toBe(147);
@@ -102,5 +107,37 @@ describe("aprobadasAlEmpezar", () => {
       "72.33",
       "93.58",
     ]);
+  });
+
+  it("lo que se está cursando cuenta recién a partir del período siguiente", () => {
+    // Decisión N0-15: `cursando`/`regular` cuentan como aprobadas para todo
+    // período posterior al activo —el primero del plan—, no en el activo.
+    const plan = planCon(
+      { "72.31": { estado: "regular" }, "93.58": { estado: "cursando" } },
+      { "2026-2C": [] },
+    );
+    expect([...aprobadasAlEmpezar("2026-2C", plan, PLAN)]).toEqual([]);
+    expect([...aprobadasAlEmpezar("2027-1C", plan, PLAN)].sort()).toEqual([
+      "72.31",
+      "93.58",
+    ]);
+    expect(creditosAlEmpezar("2026-2C", plan, PLAN)).toBe(0);
+    // 72.31 (9) + 93.58 (9).
+    expect(creditosAlEmpezar("2027-1C", plan, PLAN)).toBe(18);
+  });
+
+  it("sin ningún período en el plan lo cursado cuenta para cualquier período (optimista)", () => {
+    const plan = planCon({ "72.31": { estado: "cursando" } }, {});
+    expect([...aprobadasAlEmpezar("2030-1C", plan, PLAN)]).toEqual(["72.31"]);
+  });
+
+  it("una correlativa que se está cursando destraba la que sigue", () => {
+    // 72.33 exige 72.31. Antes del fix no se destrababa en ningún período.
+    const plan = planCon({ "72.31": { estado: "regular" } }, { "2026-2C": [] });
+    expect(motivosBloqueo("72.33", "2026-2C", plan, PLAN)).toEqual([
+      { tipo: "correlativa", codigo: "72.31", estado: "falta" },
+    ]);
+    expect(motivosBloqueo("72.33", "2027-1C", plan, PLAN)).toEqual([]);
+    expect(seDestrabaEn("72.33", plan, PLAN, "2026-2C")).toBe("2027-1C");
   });
 });
