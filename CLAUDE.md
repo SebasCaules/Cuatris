@@ -12,8 +12,10 @@ Repositorio: `SebasCaules/Cuatris` (público, rama `main`). Sitio: `https://seba
 
 ## Estado y mapa de documentos
 
-Sprint 1 (MVP) en ejecución con el método workforce: estado, gaps y decisiones en
-`entregables/sprint-1/EXEC_STATE.md`; contrato exacto en `entregables/sprint-1/CONTRATO-v1.md`.
+Sprint 1 (MVP) construido y auditado en local (método workforce): estado, gaps, decisiones
+N0-n y deuda S-nn en `entregables/sprint-1/EXEC_STATE.md`; contrato exacto en
+`entregables/sprint-1/CONTRATO-v1.md`. Pendiente: primer push, configuración de plataforma,
+deploy y el primer período real de horarios (scraper corrido por el autor).
 
 | Documento | Qué es | Autoridad sobre |
 |---|---|---|

@@ -66,6 +66,12 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 - **N0-18** Hasta que exista C4, cualquier baja dentro de `data/` es `necesita-humano`.
 - **N0-19** Marcar una materia como aprobada la quita de los períodos planificados; la grilla
   saltea las aprobadas.
+- **N0-20** N0-15 ampliada: sin ningún período planificado, lo que la historia trae como
+  `cursando`/`regular` cuenta como aprobado para cualquier período consultado (el usuario
+  recién pegó su historia y mira hacia adelante).
+- **N0-21** El período de prueba (fixture publicada localmente como 2026-2C) se usó solo para
+  el smoke y nunca se versiona: un `git add -A` lo coló en el commit de fixes y se retiró con
+  un amend antes de cualquier push.
 
 ## Pasos
 
@@ -88,8 +94,8 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | Ola 3B · U3.2 página del plan · U3.3 panel agregar · U3.4 modal comisiones · U3.5 ficha y bloqueo · U3.6 inicio y menú | DONE | 61798d7 | todas VERDE; N0 cableó `App.tsx`, corrigió cupo-lleno y motivos encajonados (U3.3) y la comisión desaparecida (U3.5) |
 | Ola 3B · smoke visual con período de prueba (fixture como 2026-2C, sin versionar) | DONE | — | 13a → marcar 28 materias → 13b con grilla → 13c «cripto» → 13d Elegir S → bloque en la grilla, progreso 153/192 → 13e ficha. Sin errores de consola |
 | Ola 4 · auditoría adversarial (6 dimensiones) + refutación | DONE | — | 36 agentes; 61 findings, 29 confirmados, 1 refutado, 13 sin refutar por tope (adjudicados por N0), 18 bajos |
-| Ola 4 · fixes en cinco clústeres (F1 CI · F2 validador · F3 motor · F4 interfaz · F5 scraper) + re-verificación | DOING | | `olas/ola-4/FIXES.md` |
-| Ola 4 · fixes confirmados, gates, push, plataforma, deploy, datos reales | TODO | | requiere la corrida del scraper por el autor y su OK al push |
+| Ola 4 · fixes en cinco clústeres (F1 CI · F2 validador · F3 motor · F4 interfaz · F5 scraper) + re-verificación | DONE | d697b0d | 58 findings corregidos; F1 y F2 quedaron ROJO por residuales que cerró N0 (guardarraíl: `env:` raíz y `ref: refs/pull/`; fixture de ejemplo); 462 tests Python, 536 tests app |
+| Ola 4 · push, ruleset y Pages, deploy, smoke con el período real | BLOCKED | | espera el OK del autor al push y su corrida del scraper (`docs/scraping-sga.md`) |
 
 ## Fixes y tareas diferidas (S-nn)
 
@@ -121,4 +127,17 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 
 ## Veredicto final
 
-Pendiente.
+**Sprint 1 (MVP): construido, auditado y verde en local; publicación pendiente del autor.**
+
+- Código: 16 unidades en cuatro olas, cada una con verificación adversarial independiente;
+  auditoría final de seis dimensiones (61 findings → 29 confirmados + 13 adjudicados por N0 +
+  1 refutado + 18 bajos) y ola de fixes en cinco clústeres con re-verificación.
+- Gates al cierre: 462 tests de Python, `ruff` limpio, `guardarrailes` en 0 sobre `.github/`,
+  `validar --data data` en 0, 536 tests de la app, `typecheck`, `lint` y `build` verdes, sin
+  Google Fonts en el `dist/`.
+- Smoke en el navegador con un período de prueba: 13a → marcar → 13b → 13c → 13d → 13e sin
+  errores de consola. 13h → «Resolver» queda sin recorrer hasta tener un período real (S-23).
+- Cero altas abiertas. Deuda registrada en S-01…S-23.
+- Falta, y no depende de esta sesión: el OK del autor al primer push, la configuración de
+  plataforma (ruleset, Pages, permisos del token), el deploy, y la corrida del scraper para el
+  primer período real.
