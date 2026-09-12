@@ -15,6 +15,7 @@ export type Ruta =
   | { vista: "plan" }
   | { vista: "progreso" }
   | { vista: "materia"; codigo: Codigo }
+  | { vista: "inicio" }
   | { vista: "muestrario" };
 
 /** Adónde se cae cuando el hash está vacío o no se reconoce. */
@@ -37,6 +38,9 @@ export function parsearRuta(hash: string): Ruta {
   if (primera === "progreso" && partes.length === 1) {
     return { vista: "progreso" };
   }
+  if (primera === "inicio" && partes.length === 1) {
+    return { vista: "inicio" };
+  }
   if (primera === "muestrario" && partes.length === 1) {
     return { vista: "muestrario" };
   }
@@ -58,6 +62,8 @@ export function rutaAHash(ruta: Ruta): string {
       return "#/progreso";
     case "materia":
       return `#/materia/${ruta.codigo}`;
+    case "inicio":
+      return "#/inicio";
     case "muestrario":
       return "#/muestrario";
   }

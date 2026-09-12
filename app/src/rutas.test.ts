@@ -8,6 +8,7 @@ describe("parsearRuta", () => {
     expect(parsearRuta("#/plan")).toEqual({ vista: "plan" });
     expect(parsearRuta("#/progreso")).toEqual({ vista: "progreso" });
     expect(parsearRuta("#/muestrario")).toEqual({ vista: "muestrario" });
+    expect(parsearRuta("#/inicio")).toEqual({ vista: "inicio" });
     expect(parsearRuta("#/materia/72.41")).toEqual({
       vista: "materia",
       codigo: "72.41",
