@@ -67,11 +67,10 @@ describe("App", () => {
     expect(
       await screen.findByText("Todavía no hay nada en tu plan"),
     ).toBeInTheDocument();
-    // El panel derecho existe como región, pero sin progreso: el primer
-    // ingreso no tiene nada que medir todavía.
+    // Sin progreso que medir, el primer ingreso no dibuja el panel derecho.
     expect(
-      screen.getByRole("complementary", { name: "Progreso" }),
-    ).toBeEmptyDOMElement();
+      screen.queryByRole("complementary", { name: "Progreso" }),
+    ).not.toBeInTheDocument();
   });
 
   it("con historia tiene las tres regiones de 13b; «Sugerir corrección» sigue inerte", async () => {
@@ -87,7 +86,7 @@ describe("App", () => {
     expect(screen.getByRole("main")).toBeInTheDocument();
     expect(
       await screen.findByRole("complementary", { name: "Progreso" }),
-    ).not.toBeEmptyDOMElement();
+    ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Sugerir corrección" }),
     ).toBeDisabled();

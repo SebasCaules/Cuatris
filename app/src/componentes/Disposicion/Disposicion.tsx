@@ -37,9 +37,11 @@ export function Disposicion({
           )}
           {principal}
         </main>
-        <aside className="disposicion__panel" aria-label="Progreso">
-          {panel}
-        </aside>
+        {panel === null || panel === undefined ? null : (
+          <aside className="disposicion__panel" aria-label="Progreso">
+            {panel}
+          </aside>
+        )}
       </div>
     </div>
   );

@@ -126,7 +126,7 @@ export function PegarHistoria({ plan, alTerminar }: PropsPegarHistoria) {
             </Boton>
           </div>
         </>
-      ) : (
+      ) : texto.trim() === "" ? null : (
         <Nota variante="linea">
           No encontré códigos de materia (por ejemplo 93.18)
         </Nota>

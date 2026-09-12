@@ -62,11 +62,11 @@ describe("PegarHistoria", () => {
     expect(area()).toHaveAttribute("placeholder", EJEMPLO);
   });
 
-  it("sin texto avisa que no encontró códigos", () => {
+  it("sin texto todavía no avisa nada: el aviso llega recién al escribir", () => {
     montar();
     expect(
-      screen.getByText("No encontré códigos de materia (por ejemplo 93.18)"),
-    ).toBeInTheDocument();
+      screen.queryByText("No encontré códigos de materia (por ejemplo 93.18)"),
+    ).not.toBeInTheDocument();
   });
 
   it("un texto sin ningún código avisa lo mismo", async () => {
