@@ -1,0 +1,68 @@
+/*
+ * El velo es el único color literal de esta hoja: en 13d es el texto de la
+ * paleta al 45 % y tiene que seguir siendo oscuro también en tema oscuro, así
+ * que no puede salir de `--texto` ni de `--choque`, que ahí se invierten.
+ */
+.modal__velo {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow: auto;
+  background: rgba(31, 29, 28, 0.45);
+}
+
+.modal {
+  width: 100%;
+  max-width: var(--modal-ancho, 640px);
+  padding: 14px;
+  border-radius: var(--radio-tarjeta);
+  background: var(--superficie);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.modal:focus {
+  outline: none;
+}
+
+.modal__cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal__titulo {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.modal__subtitulo {
+  margin-top: 2px;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto-secundario);
+}
+
+.modal__cerrar {
+  flex: none;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--texto-secundario);
+  font-family: var(--fuente-mono);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.modal__cerrar:hover {
+  color: var(--texto);
+}
+
+.modal__cuerpo {
+  margin-top: 10px;
+}

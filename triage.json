@@ -1,0 +1,9 @@
+{
+  "archivos": [
+    "data/v1/planes/otro.json"
+  ],
+  "clase": "necesita-humano",
+  "motivos": [
+    "«data/v1/planes/otro.json» no esta en el allowlist de rutas de datos (data/v1/horarios/*.json, data/v1/catalogo/*.json, data/v1/abreviaciones.json, data/v1/vocabulario.json, data/index.json)"
+  ]
+}

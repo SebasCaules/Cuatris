@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 from cuatris.cli import main
-from cuatris.validar import TIPOS, deducir_tipo, validar_archivo
+from cuatris.validar import TIPOS, deducir_tipo, hay_errores, validar_archivo
 from cuatris.validar.esquema import DIRECTORIO_SCHEMAS, compilar, esquema_de
 
 # Reglas de C2 que cada fixture de `deben-fallar` tiene que disparar, y solo esa.
@@ -45,7 +45,11 @@ def test_cada_campo_tiene_descripcion(tipo: str) -> None:
         if not isinstance(nodo, dict):
             return
         for clave, hijo in nodo.get("properties", {}).items():
-            if isinstance(hijo, dict) and "description" not in hijo and "$ref" not in hijo:
+            if (
+                isinstance(hijo, dict)
+                and "description" not in hijo
+                and "$ref" not in hijo
+            ):
                 sin_descripcion.append(f"{ruta}.{clave}")
             recorrer(hijo, f"{ruta}.{clave}")
         for clave, hijo in nodo.get("definitions", {}).items():
@@ -59,11 +63,18 @@ def test_cada_campo_tiene_descripcion(tipo: str) -> None:
 
 
 def test_todas_las_fixtures_que_deben_pasar_validan(fixtures: Path) -> None:
-    """Ningun archivo de `deben-pasar` produce errores ni advertencias."""
+    """Ningun archivo de `deben-pasar` produce errores.
+
+    Advertencias si puede haber: `c3-docente-repetido.json` existe justamente para producir
+    una (`colision-de-docente` es warning por diseño, nunca error).
+    """
     archivos = sorted((fixtures / "deben-pasar").rglob("*.json"))
-    assert len(archivos) == 6
+    assert len(archivos) >= 6
     for ruta in archivos:
-        assert validar_archivo(ruta) == [], f"{ruta} deberia validar sin hallazgos"
+        hallazgos = validar_archivo(ruta)
+        assert not hay_errores(hallazgos), (
+            f"{ruta} deberia validar sin errores: {hallazgos}"
+        )
 
 
 def test_los_siete_casos_raros_validan_sin_advertencias(fixtures: Path) -> None:
@@ -81,21 +92,39 @@ def test_los_siete_casos_raros_validan_sin_advertencias(fixtures: Path) -> None:
     # Letras no contiguas: A-H y K.
     assert sorted(comisiones) == ["A", "B", "C", "D", "E", "F", "G", "H", "K"]
     # Un bloque en dos aulas a la vez.
-    assert ["003T", "004T"] in [bloque["aulas"] for bloque in comisiones["B"]["bloques"]]
-    assert ["202R", "203R"] in [bloque["aulas"] for bloque in comisiones["K"]["bloques"]]
+    assert ["003T", "004T"] in [
+        bloque["aulas"] for bloque in comisiones["B"]["bloques"]
+    ]
+    assert ["202R", "203R"] in [
+        bloque["aulas"] for bloque in comisiones["K"]["bloques"]
+    ]
     # Comision que cruza sedes.
-    assert {bloque["sede"] for bloque in comisiones["A"]["bloques"]} == {"rectorado", "sdt"}
+    assert {bloque["sede"] for bloque in comisiones["A"]["bloques"]} == {
+        "rectorado",
+        "sdt",
+    }
     # Cupo completo.
-    assert comisiones["A"]["cupo"]["capacidad"] == comisiones["A"]["ocupacion"]["inscriptos"] == 48
+    assert (
+        comisiones["A"]["cupo"]["capacidad"]
+        == comisiones["A"]["ocupacion"]["inscriptos"]
+        == 48
+    )
     # Comision con identificador que no es una letra de la serie.
     assert [comision["id"] for comision in cursos["72.44"]["comisiones"]] == ["S"]
     # Modalidades mixtas dentro de una comision.
     modalidades = {b["modalidad"] for b in cursos["30.28"]["comisiones"][0]["bloques"]}
     assert modalidades == {"blended", "presencial"}
     # Periodo corto.
-    assert (cursos["15.09"]["desde"], cursos["15.09"]["hasta"]) == ("2026-09-18", "2026-10-16")
+    assert (cursos["15.09"]["desde"], cursos["15.09"]["hasta"]) == (
+        "2026-09-18",
+        "2026-10-16",
+    )
     # Homonimas con distinto codigo.
-    assert cursos["23.05"]["nombre"] == cursos["25.66"]["nombre"] == "Acústica para Ingenieros"
+    assert (
+        cursos["23.05"]["nombre"]
+        == cursos["25.66"]["nombre"]
+        == "Acústica para Ingenieros"
+    )
 
 
 @pytest.mark.parametrize(("nombre", "esperado"), sorted(FIXTURES_C2.items()))
@@ -137,7 +166,10 @@ def test_deduccion_de_tipo_por_contenido(fixtures: Path) -> None:
     from cuatris import canon
 
     datos = canon.cargar(fixtures / "deben-fallar" / "dia-domingo.json")
-    assert deducir_tipo(fixtures / "deben-fallar" / "dia-domingo.json", datos) == "horarios"
+    assert (
+        deducir_tipo(fixtures / "deben-fallar" / "dia-domingo.json", datos)
+        == "horarios"
+    )
     assert deducir_tipo("suelto.json") is None
 
 
@@ -156,7 +188,9 @@ def test_validar_sale_con_0_sin_errores(fixtures: Path) -> None:
     assert main(["validar", *archivos]) == 0
 
 
-def test_validar_sale_con_1_con_errores(fixtures: Path, capsys: pytest.CaptureFixture) -> None:
+def test_validar_sale_con_1_con_errores(
+    fixtures: Path, capsys: pytest.CaptureFixture
+) -> None:
     """Con errores sale con 1 e imprime una linea por hallazgo."""
     ruta = fixtures / "deben-fallar" / "dia-domingo.json"
     assert main(["validar", str(ruta)]) == 1

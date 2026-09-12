@@ -24,8 +24,9 @@ orquestador los registra en `MODULOS_EXTERNOS` como `pr` (acción `triage`) y `g
 ## Entregables
 
 1. **`tools/vendorizar.py`**: descarga a `vendor/` los wheels **puro-Python (`none-any`)**
-   de las dependencias de `tools/pyproject.toml` (runtime y dev, con sus dependencias
-   transitivas), con versiones fijadas en `vendor/requisitos.txt` (`paquete==versión
+   de las dependencias de `tools/pyproject.toml` (runtime, más `pytest` y sus dependencias
+   transitivas; **`ruff` no se vendoriza** porque es un binario: en CI se instala desde PyPI
+   con la versión fijada), con versiones fijadas en `vendor/requisitos.txt` (`paquete==versión
    --hash=sha256:…`). Falla si algún wheel no es `none-any`. Ejecútalo y commitea los wheels
    (reporta el tamaño total en `notes`; si supera 15 MB, avisa). Instalación reproducible:
    `pip install --no-index --find-links vendor -r vendor/requisitos.txt -e tools`.

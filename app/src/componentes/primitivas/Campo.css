@@ -1,0 +1,38 @@
+.campo {
+  box-sizing: border-box;
+  height: 26px;
+  padding: 4px 9px;
+  border: 1px solid var(--linea-columna);
+  border-radius: var(--radio-chip);
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--fuente-texto);
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.campo::placeholder {
+  color: var(--texto-secundario);
+}
+
+/* tokens.md: «Campo de búsqueda activo: 1.5px solid». El alto no cambia
+   porque la caja ya es `border-box`. */
+.campo:focus {
+  border: var(--borde-campo-activo);
+  outline: none;
+}
+
+.campo:disabled {
+  opacity: 0.55;
+}
+
+.campo--busqueda {
+  width: 240px;
+  max-width: 100%;
+}
+
+/* La crucecita nativa de `type="search"` no existe en todos los navegadores y
+   el mockup no la dibuja. */
+.campo--busqueda::-webkit-search-cancel-button {
+  appearance: none;
+}

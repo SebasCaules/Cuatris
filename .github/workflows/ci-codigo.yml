@@ -1,0 +1,119 @@
+# CI del código: corre la suite del PR en un sandbox sin permisos ni secretos.
+#
+# Acá `pull_request` sí es el disparador correcto, al revés que en `pr-datos.yml`: este
+# workflow existe para ejecutar el código del PR (los tests), así que tiene que salir del PR.
+# El precio se paga con un token de solo lectura, sin secretos y sin escritura sobre nada.
+#
+# El check requerido en el ruleset de `main` es `ci-codigo`: el job resumen del final, que
+# falla si cualquiera de los dos jobs de verdad no terminó en `success` (incluidos `skipped`
+# y `cancelled`, que de otro modo pasarían por verdes).
+name: CI del código
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-codigo-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: python
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Traer el repositorio
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Instalar Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: "3.12"
+
+      # Sin red: los wheels salen de `vendor/`, que está bajo CODEOWNERS. `--no-index`
+      # garantiza que ni un `pyproject.toml` modificado por el PR pueda traer un paquete.
+      - name: Instalar las dependencias desde vendor/
+        run: |
+          python -m pip install --no-index --find-links vendor -r vendor/requisitos.txt
+          python -m pip install --no-index --no-build-isolation --no-deps -e tools
+
+      # `ruff` es el único que no se vendoriza: publica binarios por plataforma. Va con la
+      # versión fijada acá para que una versión nueva no rompa el CI un martes cualquiera.
+      - name: Instalar ruff
+        run: python -m pip install "ruff==0.16.7"
+
+      - name: Lint
+        run: ruff check tools tests
+
+      - name: Tests
+        run: python -m pytest tests/tools -q
+
+      - name: Guardarraíles de los workflows
+        run: cuatris guardarrailes .github/workflows
+
+  node:
+    name: node
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - name: Traer el repositorio
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Instalar Node 20
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Instalar las dependencias
+        run: npm ci
+
+      - name: Tipos
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test -- --run
+
+      - name: Build
+        run: npm run build
+
+  # Un solo nombre de check para el ruleset. `if: always()` hace que el job corra aunque
+  # alguno de los anteriores falle; sin eso, un job cancelado dejaría el check «pendiente»
+  # para siempre y la rama quedaría bloqueada (amenaza A10 del plan).
+  ci_codigo:
+    name: ci-codigo
+    runs-on: ubuntu-24.04
+    needs: [python, node]
+    if: always()
+    permissions:
+      contents: read
+    steps:
+      - name: Comprobar que los dos jobs terminaron bien
+        env:
+          RESULTADO_PYTHON: ${{ needs.python.result }}
+          RESULTADO_NODE: ${{ needs.node.result }}
+        run: |
+          echo "python: $RESULTADO_PYTHON"
+          echo "node:   $RESULTADO_NODE"
+          if [ "$RESULTADO_PYTHON" != "success" ] || [ "$RESULTADO_NODE" != "success" ]; then
+            echo "::error::algún job del CI no terminó en éxito"
+            exit 1
+          fi

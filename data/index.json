@@ -1,0 +1,20 @@
+{
+  "abreviaciones": {
+    "archivo": "v1/abreviaciones.json",
+    "hash": "sha256:dc1ab59a81868167d0f20a40a9d003737c6515716176653ebbd5a7eba460838b"
+  },
+  "actualizado": "2026-09-12",
+  "contrato": "1.0.0",
+  "horarios": [],
+  "planes": [
+    {
+      "archivo": "v1/planes/S10-Rev23.json",
+      "hash": "sha256:e35d81e1c27a74f23f6f3268976b7034b14c2c515998b954e50390c46eb6a67c",
+      "plan": "S10-Rev23"
+    }
+  ],
+  "vocabulario": {
+    "archivo": "v1/vocabulario.json",
+    "hash": "sha256:cd60dcfae753b34976f6054ab1c10ce6962f4618402d4b176c95e4648a0040d7"
+  }
+}

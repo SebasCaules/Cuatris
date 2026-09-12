@@ -1,9 +1,11 @@
 """Validacion de los archivos de datos: deduccion de tipo y orquestacion de las capas.
 
 Las capas corren de barata a cara y ninguna cara toca datos que una barata ya rechazo:
-C1 (`triage`) sobre los bytes y el objeto crudo, C2 (`esquema`) contra el JSON Schema. C3
-(invariantes) se agrega en la ola siguiente sin tocar este archivo: alcanza con sumar su
-llamada al final de `validar_archivo`.
+C1 (`triage`) sobre los bytes y el objeto crudo, C2 (`esquema`) contra el JSON Schema y C3
+(`invariantes`) sobre las reglas que el schema no puede expresar. C3 solo corre si C1 y C2 no
+dejaron errores, y las reglas que miran otros archivos —el plan y el vocabulario de sedes—
+necesitan un `Contexto`: `contexto_de_datos("data")` lo arma, y `cuatris validar --data` lo
+pasa. Sin contexto, C3 comprueba lo que se puede comprobar dentro del propio archivo.
 """
 
 from __future__ import annotations
@@ -13,16 +15,19 @@ from pathlib import Path
 from typing import Any
 
 from cuatris import canon
-from cuatris.validar import esquema, triage
+from cuatris.validar import esquema, invariantes, triage
 from cuatris.validar.esquema import TIPOS
+from cuatris.validar.invariantes import Contexto, contexto_de_datos
 from cuatris.validar.reporte import ERROR, WARNING, Hallazgo, formatear, hay_errores
 
 __all__ = [
     "ERROR",
     "TIPOS",
     "WARNING",
+    "Contexto",
     "ErrorDeApertura",
     "Hallazgo",
+    "contexto_de_datos",
     "deducir_tipo",
     "formatear",
     "hay_errores",
@@ -75,8 +80,10 @@ def deducir_tipo(ruta: str | Path, datos: Any = None) -> str | None:
     return None
 
 
-def validar_archivo(ruta: str | Path, tipo: str | None = None) -> list[Hallazgo]:
-    """Corre C1 y C2 sobre un archivo y devuelve todos los hallazgos, en orden."""
+def validar_archivo(
+    ruta: str | Path, tipo: str | None = None, contexto: Contexto | None = None
+) -> list[Hallazgo]:
+    """Corre C1, C2 y C3 sobre un archivo y devuelve todos los hallazgos, en orden."""
     camino = Path(ruta)
     archivo = str(ruta)
     try:
@@ -116,4 +123,7 @@ def validar_archivo(ruta: str | Path, tipo: str | None = None) -> list[Hallazgo]
     if deducido == "index":
         hallazgos.extend(triage.revisar_index(camino, datos, archivo))
     hallazgos.extend(esquema.revisar(datos, deducido, archivo))
+    if hay_errores(hallazgos):
+        return hallazgos
+    hallazgos.extend(invariantes.revisar(datos, deducido, archivo, contexto))
     return hallazgos

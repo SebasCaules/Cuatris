@@ -55,7 +55,7 @@ desde tests; hardcodear ids de componente Wicket.
    cifradas, por qué solo `/app2/` es estable, por qué los ids rotan); **para cada dato, el
    ancla que usa el parser y cómo verificar que sigue valiendo**; diagnóstico cuando falle
    (`--guardar-html` vuelca la respuesta problemática en `.cuatris-cache/` para compararla
-   con el corpus); cómo cargar el resultado (`cuatris fmt`, `cuatris validar`, `cuatris index
+   con el corpus); cómo cargar el resultado (`cuatris fmt`, `cuatris validar`, `cuatris indice
    actualizar`, PR). Español neutro; comandos copiables; sin credenciales de ejemplo reales.
 
 ## Criterios de aceptación

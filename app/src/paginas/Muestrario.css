@@ -1,0 +1,112 @@
+/* Página de comparación contra el mockup. Todo sale de los tokens. */
+
+.muestrario {
+  padding: 16px;
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+.muestrario__encabezado {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.muestrario__seccion {
+  margin-bottom: 14px;
+  border: var(--borde-tarjeta);
+  border-radius: var(--radio-tarjeta);
+  background: var(--superficie);
+  box-shadow: var(--sombra-tarjeta);
+  overflow: hidden;
+}
+
+.muestrario__titulo {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--linea-columna);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.muestrario__pantalla {
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--texto-secundario);
+}
+
+.muestrario__cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 12px;
+}
+
+.muestrario__fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.muestrario__dato {
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto-secundario);
+}
+
+.muestrario__glifo {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  border: 1px solid var(--linea-columna);
+  border-radius: var(--radio-chip);
+}
+
+.muestrario__color {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 52px;
+  height: 34px;
+  padding: 3px;
+  border-radius: var(--radio-chip);
+  border-left: 3px solid var(--muestra);
+  background: color-mix(
+    in srgb,
+    var(--muestra) var(--materia-relleno-porcentaje),
+    var(--materia-relleno-base)
+  );
+}
+
+.muestrario__panel {
+  display: flex;
+  justify-content: flex-end;
+  border: 1px dashed var(--linea-columna);
+  border-radius: var(--radio-chip);
+}
+
+/* Tarjetas del carrusel: alturas distintas a propósito, para ver que la
+   pista las iguala. */
+.muestrario__tarjeta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid var(--linea-columna);
+  border-radius: 6px;
+  background: var(--superficie);
+}
+
+.muestrario__tarjeta-titulo {
+  font-size: 12.5px;
+  font-weight: 600;
+}

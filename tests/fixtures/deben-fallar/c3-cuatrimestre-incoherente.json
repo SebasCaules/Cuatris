@@ -1,0 +1,142 @@
+{
+  "carrera": "Ingeniería en Informática",
+  "contrato": "1.0.0",
+  "electivas": {
+    "creditos_requeridos": 27
+  },
+  "materias": [
+    {
+      "ciclo": "basico",
+      "codigo": "31.08",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 1,
+      "minors": [],
+      "nombre": "Sistemas de Representación",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "72.03",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 1,
+      "minors": [],
+      "nombre": "Introducción a la Informática",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.26",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 1,
+      "minors": [],
+      "nombre": "Análisis Matemático I",
+      "vigente": true
+    },
+    {
+      "ciclo": "basico",
+      "codigo": "93.58",
+      "correlativas": [],
+      "creditos": 9,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 1,
+      "minors": [],
+      "nombre": "Álgebra",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.42",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 7,
+      "minors": [],
+      "nombre": "Programación de Objetos Distribuidos",
+      "vigente": true
+    },
+    {
+      "ciclo": "profesional",
+      "codigo": "72.44",
+      "correlativas": [],
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 8,
+      "minors": [],
+      "nombre": "Criptografía y Seguridad",
+      "vigente": true
+    },
+    {
+      "ciclo": "electiva",
+      "codigo": "16.04",
+      "correlativas": [],
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "cuatrimestre_sugerido": 5,
+      "minors": [
+        "IA"
+      ],
+      "nombre": "Neurociencias y Desarrollo Productivo",
+      "vigente": true
+    }
+  ],
+  "minors": [
+    {
+      "creditos_minimos": 14,
+      "nombre": "Ciencia de Datos",
+      "sigla": "CD"
+    },
+    {
+      "creditos_minimos": 14,
+      "nombre": "Inteligencia Artificial",
+      "sigla": "IA"
+    },
+    {
+      "creditos_minimos": 14,
+      "nombre": "Imágenes y Realidad Virtual",
+      "sigla": "IRV"
+    },
+    {
+      "creditos_minimos": 14,
+      "nombre": "Arquitectura de Software",
+      "sigla": "ARQ"
+    }
+  ],
+  "plan": "S10-Rev23",
+  "titulos": [
+    {
+      "creditos": 147,
+      "id": "analista",
+      "nombre": "Analista en Tecnología Informática",
+      "requiere_ciclos": [
+        "basico"
+      ],
+      "tipo": "intermedio"
+    },
+    {
+      "creditos": 192,
+      "id": "bachiller",
+      "nombre": "Bachiller en Ingeniería",
+      "requiere_ciclos": [
+        "basico"
+      ],
+      "tipo": "intermedio"
+    },
+    {
+      "creditos": 243,
+      "id": "ingeniero",
+      "nombre": "Ingeniero/a en Informática",
+      "requiere_ciclos": [
+        "basico",
+        "profesional"
+      ],
+      "requiere_electivas": 27,
+      "tipo": "principal"
+    }
+  ]
+}

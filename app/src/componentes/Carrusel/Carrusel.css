@@ -1,0 +1,132 @@
+/*
+ * Anchos del carrusel.
+ *
+ * Con `v` tarjetas visibles y un hueco `g`, cada tarjeta mide
+ *   A = (ventana − (v − 1)·g) / v
+ * y correr una posición desplaza la pista
+ *   A + g = (ventana + g) / v
+ * que es la forma que usa el `translateX`. En `translateX`, el 100 % es el
+ * ancho de la pista, que es el de la ventana.
+ */
+
+.carrusel {
+  --carrusel-hueco: 10px;
+}
+
+.carrusel__controles {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.carrusel__flecha {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--texto);
+  border-radius: var(--radio-chip);
+  background: var(--superficie);
+  color: var(--texto);
+  font-family: var(--fuente-texto);
+  font-size: 16px;
+  line-height: 1;
+}
+
+.carrusel__flecha:disabled {
+  border-color: var(--linea-columna);
+  color: var(--texto-secundario);
+  opacity: 1;
+}
+
+.carrusel__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-left: 6px;
+  min-width: 0;
+}
+
+.carrusel__cuenta {
+  margin-left: auto;
+  flex: none;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto-secundario);
+}
+
+.carrusel__acciones {
+  flex: none;
+  display: flex;
+  gap: 6px;
+}
+
+.carrusel__ventana {
+  overflow: hidden;
+}
+
+.carrusel__ventana:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.carrusel__pista {
+  display: flex;
+  /* `stretch` es lo que iguala el alto de las tarjetas entre sí. */
+  align-items: stretch;
+  gap: var(--carrusel-hueco);
+  transform: translateX(
+    calc(
+      -1 * var(--carrusel-indice, 0) * (100% + var(--carrusel-hueco)) /
+        var(--carrusel-visibles, 2)
+    )
+  );
+  transition: transform 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carrusel__pista {
+    transition: none;
+  }
+}
+
+.carrusel__tarjeta {
+  flex: 0 0
+    calc(
+      (
+          100% - (var(--carrusel-visibles, 2) - 1) * var(--carrusel-hueco)
+        ) / var(--carrusel-visibles, 2)
+    );
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* La barra de posición dice cuánto del total se está viendo y dónde. */
+.carrusel__posicion {
+  position: relative;
+  height: 5px;
+  margin-top: 9px;
+  border-radius: 3px;
+  background: var(--linea-hora);
+}
+
+.carrusel__posicion-tramo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--carrusel-barra-desde, 0%);
+  width: var(--carrusel-barra-ancho, 100%);
+  border-radius: 3px;
+  background: var(--choque);
+  transition: left 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carrusel__posicion-tramo {
+    transition: none;
+  }
+}

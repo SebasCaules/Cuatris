@@ -1,0 +1,14 @@
+# Configuración del selector de plantillas de issue.
+#
+# El issue en blanco queda habilitado a propósito: la plantilla `sugerencia.yml` que llena la
+# propia página llega con la Fase 5 del plan, y hasta entonces cerrar el issue en blanco
+# dejaría a la gente sin ninguna forma de avisar que un dato está mal.
+blank_issues_enabled: true
+
+contact_links:
+  - name: Qué archivo contiene cada dato
+    url: https://github.com/SebasCaules/Cuatris/blob/main/docs/contrato.md
+    about: El contrato de datos explica dónde vive cada dato y cómo se corrige.
+  - name: Cómo funcionan el CI y la validación de los PR
+    url: https://github.com/SebasCaules/Cuatris/blob/main/docs/ci.md
+    about: Qué revisa cada workflow y cómo correr las mismas comprobaciones localmente.

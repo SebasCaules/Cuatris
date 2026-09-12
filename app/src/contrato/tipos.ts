@@ -1,11 +1,42 @@
 /**
  * Tipos del contrato de datos v1.
  *
- * Escritos a mano a partir de `entregables/sprint-1/CONTRATO-v1.md` (§1–§6).
- * PROVISIONAL: en la Ola 2 estos tipos se generan desde `schemas/v1/*.json`
- * con `json-schema-to-typescript` y este archivo pasa a ser el resultado
- * generado. Hasta entonces, cualquier cambio del contrato se copia acá a mano.
+ * **Un solo origen de verdad**: las formas salen de `schemas/v1/*.schema.json`
+ * por `npm run tipos` (que `typecheck` y `build` corren antes) y aterrizan en
+ * `./generado/`. Este archivo solo les pone los nombres que usa la aplicación
+ * y agrega lo que no viene de un schema: los alias documentados de los strings
+ * con patrón (`Codigo`, `Fecha`, …) y el estado del usuario (`PlanUsuario`),
+ * que vive en el navegador y no es parte del contrato de datos.
+ *
+ * Si el schema cambia, la aplicación no compila hasta adaptarse. Eso es lo que
+ * se busca: no hay copia a mano que se pueda olvidar de actualizar.
  */
+
+import type { AbreviacionesDeMaterias } from "./generado/abreviaciones";
+import type {
+  Bloque as BloqueGenerado,
+  Comision as ComisionGenerada,
+  Curso as CursoGenerado,
+  HorariosDeUnPeriodo,
+} from "./generado/horarios";
+import type { ArchivoUnico, IndiceDeDatos } from "./generado/index";
+import type {
+  Ciclo as CicloGenerado,
+  Materia as MateriaGenerada,
+  Minor as MinorGenerado,
+  PlanDeEstudios,
+  SiglaMinor,
+  Titulo as TituloGenerado,
+} from "./generado/planes";
+import type { VocabularioControlado } from "./generado/vocabulario";
+
+/* ------------------------------------------------------------------ */
+/* Alias de los strings con patrón                                      */
+/*                                                                      */
+/* Los schemas los expresan con `pattern`, que TypeScript no sabe       */
+/* representar: quedan como `string`. Los alias no agregan seguridad,   */
+/* documentan qué forma tiene el valor donde aparece.                   */
+/* ------------------------------------------------------------------ */
 
 /** Código de materia, `^\d{2}\.\d{2}$` (por ejemplo `"93.18"`). */
 export type Codigo = string;
@@ -18,201 +49,71 @@ export type Hora = string;
 /** `sha256:` + hex del contenido canónico del archivo. */
 export type Hash = string;
 
-export type Cuatrimestre = "1C" | "2C";
-
-/** Sin acentos; `domingo` no existe en el contrato. */
-export type Dia =
-  | "lunes"
-  | "martes"
-  | "miercoles"
-  | "jueves"
-  | "viernes"
-  | "sabado";
-
-export type Modalidad =
-  | "presencial"
-  | "virtual_sincronica"
-  | "virtual_asincronica"
-  | "blended";
-
-export type Ciclo = "basico" | "profesional" | "electiva";
-
-export type TipoTitulo = "intermedio" | "principal";
-
-export type SistemaFuente = "sga" | "manual";
-
 /* ------------------------------------------------------------------ */
 /* §1 — data/v1/horarios/<periodo>.json                                 */
 /* ------------------------------------------------------------------ */
 
-export interface Bloque {
-  dia: Dia;
-  desde: Hora;
-  hasta: Hora;
-  /** Id de `vocabulario.json`; `null` solo si la modalidad no es presencial. */
-  sede: string | null;
-  modalidad: Modalidad;
-  /** Requerido, puede ser `[]`; dos aulas simultáneas es válido. Nunca enum. */
-  aulas: string[];
-}
+export type Horarios = HorariosDeUnPeriodo;
+export type Curso = CursoGenerado;
+export type Comision = ComisionGenerada;
+export type Bloque = BloqueGenerado;
 
-/** Estable. */
-export interface Cupo {
-  capacidad: number;
-}
+/** Cuatrimestre al que pertenece el archivo de horarios. */
+export type Periodo = Horarios["periodo"];
+/** De dónde salieron los datos y cuándo se capturaron. */
+export type Fuente = Horarios["fuente"];
+/** Capacidad declarada de la comisión; dato estable. */
+export type Cupo = NonNullable<Comision["cupo"]>;
+/** Inscriptos a una fecha; dato volátil. */
+export type Ocupacion = NonNullable<Comision["ocupacion"]>;
 
-/** Volátil. */
-export interface Ocupacion {
-  inscriptos: number;
-  al: Fecha;
-}
-
-export interface Comision {
-  /** `^[A-Z0-9]{1,4}$`; opaco, único por curso. Sin orden garantizado. */
-  id: string;
-  cupo?: Cupo;
-  ocupacion?: Ocupacion;
-  /** Requerido, puede ser `[]`. */
-  docentes: string[];
-  bloques: Bloque[];
-}
-
-export interface Curso {
-  codigo: Codigo;
-  nombre: string;
-  /** Tal como lo muestra el SGA. */
-  departamento?: string;
-  desde: Fecha;
-  hasta: Fecha;
-  /** Requerido, puede ser `[]`. */
-  dictado_conjunto: Codigo[];
-  comisiones: Comision[];
-}
-
-export interface Periodo {
-  id: PeriodoId;
-  anio: number;
-  cuatrimestre: Cuatrimestre;
-  desde: Fecha;
-  hasta: Fecha;
-}
-
-export interface Fuente {
-  sistema: SistemaFuente;
-  capturado: Fecha;
-}
-
-export interface Horarios {
-  contrato: string;
-  periodo: Periodo;
-  fuente: Fuente;
-  cursos: Curso[];
-}
+export type Cuatrimestre = Periodo["cuatrimestre"];
+/** Sin acentos; `domingo` no existe en el contrato. */
+export type Dia = Bloque["dia"];
+export type Modalidad = Bloque["modalidad"];
+export type SistemaFuente = Fuente["sistema"];
 
 /* ------------------------------------------------------------------ */
 /* §2 — data/v1/planes/S10-Rev23.json                                   */
 /* ------------------------------------------------------------------ */
 
-export interface Titulo {
-  id: string;
-  nombre: string;
-  tipo: TipoTitulo;
-  creditos: number;
-  /** El título exige todos los ítems de esos ciclos aprobados. */
-  requiere_ciclos?: Ciclo[];
-  /** Créditos de electivas aprobadas. */
-  requiere_electivas?: number;
-}
-
-export interface Electivas {
-  creditos_requeridos: number;
-}
-
-export interface Minor {
-  sigla: string;
-  nombre: string;
-  creditos_minimos: number;
-}
-
-export interface Materia {
-  codigo: Codigo;
-  nombre: string;
-  creditos: number;
-  ciclo: Ciclo;
-  /** 1–10 para obligatorias, `null` para electivas. */
-  cuatrimestre_sugerido: number | null;
-  /** Créditos aprobados necesarios para cursarla. */
-  creditos_requeridos: number;
-  correlativas: Codigo[];
-  /** Siglas de `minors[]`; vacío para obligatorias. */
-  minors: string[];
-  vigente: boolean;
-}
-
-export interface Plan {
-  contrato: string;
-  plan: string;
-  carrera: string;
-  titulos: Titulo[];
-  electivas: Electivas;
-  minors: Minor[];
-  materias: Materia[];
-}
+export type Plan = PlanDeEstudios;
+export type Materia = MateriaGenerada;
+export type Minor = MinorGenerado;
+export type Titulo = TituloGenerado;
+export type Ciclo = CicloGenerado;
+export type TipoTitulo = Titulo["tipo"];
+/** Sigla de un minor declarado en `minors[]`, `^[A-Z]{2,4}$`. */
+export type Sigla = SiglaMinor;
+/** Exigencia global de electivas del plan. */
+export type Electivas = Plan["electivas"];
 
 /* ------------------------------------------------------------------ */
 /* §3 y §4 — abreviaciones.json y vocabulario.json                      */
 /* ------------------------------------------------------------------ */
 
-export interface Abreviaciones {
-  contrato: string;
-  /** Código → abreviación de 1 a 24 caracteres, únicas. */
-  abreviaciones: Record<Codigo, string>;
-}
-
-export interface Sede {
-  /** `^[a-z0-9_]+$`; es lo que va en `bloques[].sede`. */
-  id: string;
-  nombre: string;
-}
-
-export interface Vocabulario {
-  contrato: string;
-  sedes: Sede[];
-}
+export type Abreviaciones = AbreviacionesDeMaterias;
+export type Vocabulario = VocabularioControlado;
+/** Una sede del ITBA; su `id` es lo que va en `bloques[].sede`. */
+export type Sede = Vocabulario["sedes"][number];
 
 /* ------------------------------------------------------------------ */
 /* §5 — data/index.json                                                 */
 /* ------------------------------------------------------------------ */
 
-export interface EntradaArchivo {
-  archivo: string;
-  hash: Hash;
-}
-
-export interface EntradaPlan extends EntradaArchivo {
-  plan: string;
-}
-
-export interface EntradaHorarios extends EntradaArchivo {
-  periodo: PeriodoId;
-  publicado: Fecha;
-  desde: Fecha;
-  hasta: Fecha;
-}
-
-export interface Indice {
-  contrato: string;
-  actualizado: Fecha;
-  planes: EntradaPlan[];
-  abreviaciones: EntradaArchivo;
-  vocabulario: EntradaArchivo;
-  horarios: EntradaHorarios[];
-  /** `periodo → "YYYY-MM"`, curado a mano. */
-  horarios_esperados?: Record<PeriodoId, string>;
-}
+export type Indice = IndiceDeDatos;
+/** Un archivo único del contrato, con su ruta y su hash. */
+export type EntradaArchivo = ArchivoUnico;
+/** Un plan publicado. */
+export type EntradaPlan = Indice["planes"][number];
+/** Un período de horarios publicado; publicar no es activar. */
+export type EntradaHorarios = Indice["horarios"][number];
 
 /* ------------------------------------------------------------------ */
 /* §6 — estado del usuario (no es parte del contrato de datos)          */
+/*                                                                      */
+/* No sale de ningún schema: vive en el navegador, se versiona aparte   */
+/* (`version: 1`) y se migra con código explícito.                      */
 /* ------------------------------------------------------------------ */
 
 export type EstadoHistoria = "aprobada" | "regular" | "cursando";

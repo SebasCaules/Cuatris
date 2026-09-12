@@ -1,0 +1,253 @@
+# Gate autoritativo de los PR de datos.
+#
+# ¿Por qué `pull_request_target` y no `pull_request`?
+# Con `pull_request`, el archivo de workflow que corre **sale del PR**: quien abre el PR lo
+# reescribe como un `exit 0` con el mismo nombre de job y el check requerido queda verde. Con
+# `pull_request_target`, el workflow, el validador y los schemas salen **siempre de la rama
+# base** y el PR no puede tocarlos (y `/.github/**`, `/tools/**` y `/schemas/**` están además
+# bajo CODEOWNERS). Es contraintuitivo y es a propósito.
+#
+# ¿Por qué `permissions: {}` en el job que toca los bytes del PR?
+# El precio habitual de `pull_request_target` es que el token tiene escritura sobre el
+# repositorio. Ese precio se paga dándole al job **ningún permiso**: `validar-datos` es el
+# único job que toca bytes hostiles y no puede hacer nada con ellos. Como además el
+# repositorio no tiene ningún secreto, tampoco queda nada que robar.
+#
+# Los bytes del PR nunca se ejecutan: se traen con `git fetch` de `refs/pull/<n>/head`, se
+# extraen a `.cuarentena/` con `git archive` y de ahí solo se leen. Ni `npm`, ni `pip`, ni un
+# script del PR corren en ningún momento.
+#
+# El segundo job, `decidir`, tiene escritura sobre pull requests y **no abre ningún archivo
+# del PR**: le vuelve a pedir la lista de archivos a la API, reaplica el allowlist por su
+# cuenta, aborta si el SHA cambió y trata `skipped`/`cancelled` como falla.
+name: PR de datos
+
+on:
+  # Sin filtro `paths:`: si el workflow no corriera para los PR que no tocan datos, el check
+  # requerido nunca aparecería y esos PR quedarían bloqueados para siempre (amenaza A10).
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions: {}
+
+concurrency:
+  group: pr-datos-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validar_datos:
+    name: validar-datos
+    runs-on: ubuntu-24.04
+    # Token sin ningún alcance. Este es el único job que toca bytes del PR.
+    permissions: {}
+    steps:
+      # Sin `ref:`, `pull_request_target` hace checkout de la **rama base**: es lo que se
+      # quiere. De acá salen el validador, los schemas y los wheels de `vendor/`.
+      - name: Traer el código y los schemas de la rama base
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Instalar Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Instalar las dependencias desde vendor/ (sin red)
+        run: |
+          python -m pip install --no-index --find-links vendor -r vendor/requisitos.txt
+          python -m pip install --no-index --no-build-isolation --no-deps -e tools
+
+      # `refs/pull/<n>/head` existe en el repositorio base también para un PR de fork, y el
+      # repositorio es público: el fetch es anónimo, sin credenciales. Los datos del evento
+      # entran por `env:` y se usan entre comillas; nunca se interpolan dentro del `run:`.
+      - name: Traer los bytes del PR
+        env:
+          NUMERO: ${{ github.event.pull_request.number }}
+          SHA_PR: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          case "$NUMERO" in ''|*[!0-9]*) echo "::error::número de PR inesperado"; exit 1;; esac
+          case "$SHA_PR" in ''|*[!0-9a-f]*) echo "::error::SHA de PR inesperado"; exit 1;; esac
+          git fetch --no-tags origin "+refs/pull/$NUMERO/head:refs/cuatris/pr"
+          traido="$(git rev-parse refs/cuatris/pr)"
+          if [ "$traido" != "$SHA_PR" ]; then
+            echo "::error::el PR cambió entre el disparo y el fetch ($traido ≠ $SHA_PR)"
+            exit 1
+          fi
+
+      # El triage clasifica el diff por ruta y por modo de git. Su clase **no** hace fallar el
+      # job: un PR de código es legítimamente `necesita-humano` y no tiene por qué quedar
+      # bloqueado. La clase se le pasa a `decidir`, que es donde importa.
+      - name: Triage del diff
+        id: triage
+        env:
+          SHA_BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -uo pipefail
+          # Sin `set -e`: el shell por defecto de Actions es `bash -e {0}`, asi que un `exit 1`
+          # del triage —la clase `necesita-humano`, legitima para cualquier PR de codigo—
+          # abortaria el paso. El codigo se captura con `|| codigo=$?`, que suspende `-e` para
+          # ese comando, y solo un 2 o mas (no se pudo leer el diff) hace fallar el job.
+          codigo=0
+          cuatris pr triage --base "$SHA_BASE" --head refs/cuatris/pr --salida triage.json \
+            || codigo=$?
+          if [ "$codigo" -ge 2 ]; then
+            echo "::error::el triage no pudo leer el diff"
+            exit "$codigo"
+          fi
+          clase="$(python -c 'import json;print(json.load(open("triage.json"))["clase"])')"
+          echo "clase=$clase" >> "$GITHUB_OUTPUT"
+          echo "clase del PR: $clase"
+
+      - name: Copiar los datos del PR a .cuarentena/
+        run: |
+          set -euo pipefail
+          rm -rf .cuarentena
+          mkdir -p .cuarentena
+          if git cat-file -e refs/cuatris/pr:data 2>/dev/null; then
+            git archive refs/cuatris/pr data | tar -x -C .cuarentena
+          fi
+
+      # Se valida todo el árbol `data/` del PR, no solo lo que el diff toca: es el mismo
+      # precio (dos segundos) y además atrapa el caso «dos PR válidos por separado, inválidos
+      # juntos». Nada de esto se ejecuta: son archivos JSON que se leen.
+      - name: Validar los datos del PR en cuarentena
+        working-directory: .cuarentena
+        run: |
+          set -euo pipefail
+          if [ ! -d data ]; then
+            echo "El PR no trae ningún directorio data/: no hay nada que validar."
+            exit 0
+          fi
+          if [ -n "$(find data -type l -print -quit)" ]; then
+            echo "::error::hay enlaces simbólicos dentro de data/ en el PR"
+            exit 1
+          fi
+          archivos=()
+          while IFS= read -r archivo; do
+            archivos+=("$archivo")
+          done < <(find data -type f -name '*.json' | sort)
+          if [ "${#archivos[@]}" -eq 0 ]; then
+            echo "El PR no trae ningún JSON dentro de data/."
+            exit 0
+          fi
+          printf 'archivos a validar: %s\n' "${#archivos[@]}"
+          cuatris fmt --check "${archivos[@]}"
+          cuatris validar --data data "${archivos[@]}"
+
+      - name: Resumen
+        if: always()
+        env:
+          CLASE: ${{ steps.triage.outputs.clase }}
+        run: |
+          {
+            echo "### Triage del PR"
+            echo
+            echo "Clase: \`${CLASE:-desconocida}\`"
+            echo
+            if [ -f triage.json ]; then
+              echo '```json'
+              cat triage.json
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  decidir:
+    name: decidir
+    runs-on: ubuntu-24.04
+    needs: [validar_datos]
+    # Corre siempre para poder informar también cuando `validar-datos` falló o quedó cancelado.
+    if: always()
+    permissions:
+      # `contents: read` es necesario porque declarar el bloque pone en `none` todo lo que no
+      # se lista, y este job hace `actions/checkout` de la rama base.
+      contents: read
+      pull-requests: write
+    steps:
+      # De nuevo sin `ref:`: este job solo necesita el código de la rama base para reaplicar el
+      # allowlist con la misma función que usa el triage. No toca ni un byte del PR.
+      - name: Traer el código de la rama base
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      # `cuatris.validar` importa `fastjsonschema`, asi que tambien aca las dependencias
+      # salen de `vendor/` y sin red. Es el unico motivo por el que este job instala algo.
+      - name: Instalar Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Instalar las dependencias desde vendor/ (sin red)
+        run: |
+          python -m pip install --no-index --find-links vendor -r vendor/requisitos.txt
+          python -m pip install --no-index --no-build-isolation --no-deps -e tools
+
+      - name: Releer el PR desde la API y comentar el resultado
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          NUMERO: ${{ github.event.pull_request.number }}
+          SHA_VALIDADO: ${{ github.event.pull_request.head.sha }}
+          RESULTADO: ${{ needs.validar_datos.result }}
+          EJECUCION: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          case "$NUMERO" in ''|*[!0-9]*) echo "::error::número de PR inesperado"; exit 1;; esac
+
+          # El SHA no puede haber cambiado desde que se validó: si cambió, lo validado ya no
+          # es lo que se mergearía.
+          sha_actual="$(gh api "repos/$REPO/pulls/$NUMERO" --jq .head.sha)"
+          if [ "$sha_actual" != "$SHA_VALIDADO" ]; then
+            echo "::error::el PR cambió después de validarse ($sha_actual ≠ $SHA_VALIDADO)"
+            exit 1
+          fi
+
+          # La lista de archivos se vuelve a pedir a la API: no se confía en la que produjo el
+          # job anterior, ni se abre ningún archivo del PR.
+          gh api "repos/$REPO/pulls/$NUMERO/files" --paginate --jq '.[].filename' > archivos-api.txt
+          clase="$(python - archivos-api.txt <<'PY'
+          import sys
+          from cuatris.validar.triage_pr import DATOS, NECESITA_HUMANO, es_ruta_de_datos
+
+          with open(sys.argv[1], encoding="utf-8") as flujo:
+              rutas = [linea.strip() for linea in flujo if linea.strip()]
+          fuera = [ruta for ruta in rutas if not es_ruta_de_datos(ruta)]
+          print(DATOS if rutas and not fuera else NECESITA_HUMANO)
+          PY
+          )"
+
+          # `skipped` y `cancelled` son fallas: un check que no corrió no es un check verde.
+          if [ "$RESULTADO" = "success" ]; then
+            estado="La validación de datos pasó."
+          else
+            estado="La validación de datos **no** pasó (resultado: \`$RESULTADO\`)."
+          fi
+
+          {
+            echo "**Validación automática de datos**"
+            echo
+            echo "- $estado"
+            echo "- Clase del PR según el allowlist de rutas: \`$clase\`"
+            echo "- Archivos que informa la API: $(wc -l < archivos-api.txt)"
+            echo "- Detalle de la ejecución: $EJECUCION"
+            echo
+            if [ "$clase" = "DATOS" ] && [ "$RESULTADO" = "success" ]; then
+              echo "Este PR cumple las condiciones automáticas. El merge sigue siendo manual:"
+              echo "el auto-merge por niveles llega en el Sprint 3."
+            else
+              echo "Este PR necesita que lo revise una persona antes de mergear."
+            fi
+          } > comentario.md
+
+          gh pr comment "$NUMERO" --repo "$REPO" --body-file comentario.md
+
+          # Punto de extensión del Sprint 3: acá va la política de auto-merge por niveles
+          # (corrección puntual / carga masiva / reemplazo / catálogo / plan), con el
+          # presupuesto acumulado de siete días y la confianza de evidencia. Mientras tanto
+          # este job solo informa, y por eso no falla cuando la clase es `necesita-humano`.
+          if [ "$RESULTADO" != "success" ]; then
+            exit 1
+          fi

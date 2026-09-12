@@ -1,0 +1,42 @@
+.disposicion {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: var(--fondo);
+}
+
+.disposicion__cuerpo {
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.disposicion__principal {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  overflow: hidden;
+}
+
+.disposicion__banner {
+  margin-bottom: 10px;
+}
+
+/* Panel de progreso: ancho fijo, borde a la izquierda y fondo de superficie,
+   como en 13b. Es lectura, no edición. */
+.disposicion__panel {
+  flex: 0 0 250px;
+  width: 250px;
+  padding: 12px;
+  background: var(--superficie);
+  border-left: 1px solid var(--linea-columna);
+}
+
+/* El mockup es de 1280 px. Por debajo de 1100 el panel dejaría al carrusel sin
+   ancho para una tarjeta entera, así que se esconde. */
+@media (max-width: 1100px) {
+  .disposicion__panel {
+    display: none;
+  }
+}

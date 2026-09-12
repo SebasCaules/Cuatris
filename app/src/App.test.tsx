@@ -19,6 +19,18 @@ afterEach(() => {
 });
 
 describe("App", () => {
+  it("en #/muestrario dibuja el muestrario sin esperar los datos", () => {
+    window.location.hash = "#/muestrario";
+    try {
+      montar();
+      expect(
+        screen.getByRole("heading", { name: /Muestrario de primitivas/ }),
+      ).toBeInTheDocument();
+    } finally {
+      window.location.hash = "";
+    }
+  });
+
   it("muestra la pantalla de carga y después el cascarón", async () => {
     montar();
     expect(screen.getByText(/Cargando los datos/)).toBeInTheDocument();

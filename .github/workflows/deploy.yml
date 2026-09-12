@@ -1,0 +1,110 @@
+# Publicación del sitio en GitHub Pages.
+#
+# El deploy revalida `data/` entero antes de construir: si la validación falla no hay deploy, y
+# Pages sigue sirviendo la última publicación exitosa. Ese es el rollback automático del plan y
+# sale gratis — un merge malo por un error del gate no llega a producción.
+#
+# No hay secretos: la publicación va por OIDC (`id-token: write`), no por un token guardado.
+name: Publicar en Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Una publicación a la vez, y sin cancelar la que está en curso: cancelar a mitad de camino
+# puede dejar Pages sirviendo un artefacto a medio subir.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  desplegar:
+    name: desplegar
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacion.outputs.page_url }}
+    steps:
+      - name: Traer el repositorio
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Instalar Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Instalar las dependencias desde vendor/ (sin red)
+        run: |
+          python -m pip install --no-index --find-links vendor -r vendor/requisitos.txt
+          python -m pip install --no-index --no-build-isolation --no-deps -e tools
+
+      - name: Revalidar data/ completo
+        run: |
+          set -euo pipefail
+          archivos=()
+          while IFS= read -r archivo; do
+            archivos+=("$archivo")
+          done < <(find data -type f -name '*.json' | sort)
+          if [ "${#archivos[@]}" -eq 0 ]; then
+            echo "::error::no hay ningún archivo de datos que publicar"
+            exit 1
+          fi
+          printf 'archivos a validar: %s\n' "${#archivos[@]}"
+          cuatris fmt --check "${archivos[@]}"
+          cuatris validar --data data "${archivos[@]}"
+
+      - name: Instalar Node 20
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Instalar las dependencias de la SPA
+        working-directory: app
+        run: npm ci
+
+      # El sitio es de proyecto: se sirve bajo `/Cuatris/`, no en la raíz del dominio.
+      - name: Construir la SPA
+        working-directory: app
+        env:
+          VITE_BASE: /Cuatris/
+        run: npm run build
+
+      # `data/` no entra al bundle: se copia al lado, para que la SPA lo pida por HTTP y el
+      # índice siga decidiendo qué está activo.
+      - name: Copiar data/ junto al sitio
+        run: |
+          set -euo pipefail
+          rm -rf app/dist/data
+          cp -R data app/dist/data
+
+      - name: Smoke del artefacto
+        run: |
+          set -euo pipefail
+          test -f app/dist/index.html
+          test -f app/dist/data/index.json
+          cuatris validar --data app/dist/data app/dist/data/index.json
+          echo "smoke: index.html y data/index.json están y el índice valida"
+
+      - name: Preparar Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d  # v6.0.0
+
+      - name: Subir el artefacto
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9  # v5.0.0
+        with:
+          path: app/dist
+
+      - name: Publicar
+        id: publicacion
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346  # v5.0.1

@@ -1,0 +1,259 @@
+import { describe, expect, it } from "vitest";
+
+import type { BloqueUbicado } from "./horarios";
+import {
+  bloquesDelPeriodo,
+  cambiosDeSede,
+  choques,
+  cupoLleno,
+  cursoDe,
+  ordenarComisiones,
+  paresQueChocan,
+  seOfrece, HorariosDeOtroPeriodo } from "./horarios";
+import { HORARIOS_RAROS, PERIODO_RARO, planCon } from "./fixtures/reales";
+import { horariosConSedesConsecutivas } from "./fixtures/sedes-consecutivas";
+
+/** Plan de usuario con estas materias y comisiones en el período del corpus. */
+function conComisiones(
+  elegidas: readonly { codigo: string; comision?: string }[],
+) {
+  return planCon({}, { [PERIODO_RARO]: [...elegidas] });
+}
+
+describe("bloquesDelPeriodo", () => {
+  it("sin comisión elegida no hay bloques", () => {
+    const plan = conComisiones([{ codigo: "93.18" }]);
+    expect(bloquesDelPeriodo(PERIODO_RARO, plan, HORARIOS_RAROS)).toEqual([]);
+  });
+
+  it("toma los bloques de la comisión elegida", () => {
+    const plan = conComisiones([{ codigo: "93.18", comision: "A" }]);
+    const bloques = bloquesDelPeriodo(PERIODO_RARO, plan, HORARIOS_RAROS);
+    expect(bloques).toHaveLength(3);
+    expect(bloques.map((ubicado) => ubicado.bloque.dia)).toEqual([
+      "lunes",
+      "miercoles",
+      "jueves",
+    ]);
+    expect(bloques[0]?.nombre).toBe("Álgebra Lineal");
+  });
+
+  it("una comisión guardada que ya no existe no aporta bloques", () => {
+    const plan = conComisiones([{ codigo: "93.18", comision: "Z" }]);
+    expect(bloquesDelPeriodo(PERIODO_RARO, plan, HORARIOS_RAROS)).toEqual([]);
+  });
+
+  it("horarios de otro período son un error del llamador, no cero bloques", () => {
+    const plan = conComisiones([{ codigo: "93.18", comision: "A" }]);
+    expect(() => bloquesDelPeriodo("2027-1C", plan, HORARIOS_RAROS)).toThrow(
+      HorariosDeOtroPeriodo,
+    );
+  });
+});
+
+describe("choques", () => {
+  it("93.18 A y 72.44 S chocan el lunes (caso del mockup)", () => {
+    const plan = conComisiones([
+      { codigo: "93.18", comision: "A" },
+      { codigo: "72.44", comision: "S" },
+    ]);
+    const encontrados = choques(PERIODO_RARO, plan, HORARIOS_RAROS);
+    expect(encontrados).toHaveLength(1);
+    const choque = encontrados[0];
+    expect(choque?.dia).toBe("lunes");
+    // 93.18 A: 14:00–16:00. 72.44 S: 15:00–18:00.
+    expect(choque?.desde).toBe("15:00");
+    expect(choque?.hasta).toBe("16:00");
+    expect([choque?.a.codigo, choque?.b.codigo]).toEqual(["72.44", "93.18"]);
+  });
+
+  it("con la comisión C de 93.18 no hay choque", () => {
+    const plan = conComisiones([
+      { codigo: "93.18", comision: "C" },
+      { codigo: "72.44", comision: "S" },
+    ]);
+    expect(choques(PERIODO_RARO, plan, HORARIOS_RAROS)).toEqual([]);
+  });
+
+  it("una comisión en dos aulas simultáneas no choca consigo misma", () => {
+    // 93.18 com. B: miércoles 10:00–12:00 en 003T y 004T, un solo bloque.
+    const plan = conComisiones([{ codigo: "93.18", comision: "B" }]);
+    const bloques = bloquesDelPeriodo(PERIODO_RARO, plan, HORARIOS_RAROS);
+    const miercoles = bloques.find(
+      (ubicado) => ubicado.bloque.dia === "miercoles",
+    );
+    expect(miercoles?.bloque.aulas).toEqual(["003T", "004T"]);
+    expect(choques(PERIODO_RARO, plan, HORARIOS_RAROS)).toEqual([]);
+  });
+
+  it("dos comisiones de la misma materia tampoco chocan entre sí", () => {
+    // El estado del usuario guarda una sola comisión por materia; aun así la
+    // regla es explícita: un choque es siempre entre materias distintas.
+    const plan = conComisiones([
+      { codigo: "93.18", comision: "A" },
+      { codigo: "93.18", comision: "H" },
+    ]);
+    expect(choques(PERIODO_RARO, plan, HORARIOS_RAROS)).toEqual([]);
+  });
+
+  it("no hay choque si los cursos no se dictan a la vez", () => {
+    // Fechas de dictado reales de 15.09 (período corto verificado en el SGA);
+    // el segundo tramo es el complemento que hace falta para probar la regla.
+    const corto: BloqueUbicado = {
+      codigo: "15.09",
+      nombre: "Agile, Lean y Lean Six Sigma",
+      comision: "A",
+      vigencia: { desde: "2026-09-18", hasta: "2026-10-16" },
+      bloque: {
+        dia: "lunes",
+        desde: "14:00",
+        hasta: "16:00",
+        sede: "rectorado",
+        modalidad: "presencial",
+        aulas: [],
+      },
+    };
+    const antes: BloqueUbicado = {
+      ...corto,
+      codigo: "72.44",
+      nombre: "Criptografía y Seguridad",
+      comision: "S",
+      vigencia: { desde: "2026-07-26", hasta: "2026-09-04" },
+    };
+    const juntos: BloqueUbicado = { ...antes, vigencia: corto.vigencia };
+    expect(paresQueChocan([corto, antes])).toEqual([]);
+    expect(paresQueChocan([corto, juntos])).toHaveLength(1);
+  });
+});
+
+describe("cambiosDeSede", () => {
+  it("marca dos bloques pegados en sedes distintas y no los cuenta como choque", () => {
+    const horarios = horariosConSedesConsecutivas();
+    const plan = conComisiones([
+      { codigo: "93.18", comision: "B" },
+      { codigo: "30.28", comision: "A" },
+    ]);
+    const cambios = cambiosDeSede(PERIODO_RARO, plan, horarios);
+    expect(cambios).toHaveLength(1);
+    expect(cambios[0]?.dia).toBe("jueves");
+    expect(cambios[0]?.hora).toBe("14:00");
+    expect(cambios[0]?.a.codigo).toBe("93.18");
+    expect(cambios[0]?.b.codigo).toBe("30.28");
+    expect(choques(PERIODO_RARO, plan, horarios)).toEqual([]);
+  });
+
+  it("con los horarios reales no hay ningún cambio de sede consecutivo", () => {
+    const plan = conComisiones([
+      { codigo: "93.18", comision: "A" },
+      { codigo: "72.44", comision: "S" },
+      { codigo: "30.28", comision: "A" },
+    ]);
+    expect(cambiosDeSede(PERIODO_RARO, plan, HORARIOS_RAROS)).toEqual([]);
+  });
+});
+
+describe("cupoLleno y oferta", () => {
+  it("48 de 48 está lleno; 31 de 48 no", () => {
+    const curso = cursoDe("93.18", HORARIOS_RAROS);
+    const llena = curso?.comisiones.find((comision) => comision.id === "A");
+    const conLugar = curso?.comisiones.find((comision) => comision.id === "C");
+    expect(llena && cupoLleno(llena)).toBe(true);
+    expect(conLugar && cupoLleno(conLugar)).toBe(false);
+  });
+
+  it("sin ocupación publicada no se sabe, y no saber no es estar llena", () => {
+    expect(cupoLleno({ id: "X", docentes: [], bloques: [] })).toBe(false);
+  });
+
+  it("seOfrece distingue lo publicado de lo que no", () => {
+    expect(seOfrece("93.18", HORARIOS_RAROS)).toBe(true);
+    expect(seOfrece("72.45", HORARIOS_RAROS)).toBe(false);
+  });
+});
+
+describe("ordenarComisiones", () => {
+  it("aplica los cuatro criterios en orden (comisiones reales de 93.18)", () => {
+    const plan = conComisiones([{ codigo: "72.44", comision: "S" }]);
+    const evaluadas = ordenarComisiones(
+      "93.18",
+      PERIODO_RARO,
+      plan,
+      HORARIOS_RAROS,
+    );
+    // Sin choques y con cupo: B, C, D, K. Sin choques y llenas: E, F, G.
+    // Con choque y con cupo: H. Con choque y llena: A.
+    expect(evaluadas.map((comision) => comision.id)).toEqual([
+      "B",
+      "C",
+      "D",
+      "K",
+      "E",
+      "F",
+      "G",
+      "H",
+      "A",
+    ]);
+    expect(evaluadas.map((comision) => comision.choques)).toEqual([
+      0, 0, 0, 0, 0, 0, 0, 1, 1,
+    ]);
+    expect(evaluadas.map((comision) => comision.cupoLleno)).toEqual([
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      false,
+      true,
+    ]);
+  });
+
+  it("explica la consecuencia de elegir una comisión, en el registro del mockup", () => {
+    const plan = conComisiones([{ codigo: "72.44", comision: "S" }]);
+    const evaluadas = ordenarComisiones(
+      "93.18",
+      PERIODO_RARO,
+      plan,
+      HORARIOS_RAROS,
+    );
+    const a = evaluadas.find((comision) => comision.id === "A");
+    expect(a?.consecuencias).toEqual([
+      "Se superpone con Criptografía y Seguridad (comisión S) el lunes de " +
+        "15:00 a 16:00",
+      "El cupo está lleno: 48 de 48",
+    ]);
+  });
+
+  it("cuenta los cambios de sede como tercer criterio", () => {
+    const horarios = horariosConSedesConsecutivas();
+    const plan = conComisiones([{ codigo: "30.28", comision: "A" }]);
+    const evaluadas = ordenarComisiones("93.18", PERIODO_RARO, plan, horarios);
+    const b = evaluadas.find((comision) => comision.id === "B");
+    expect(b?.cambiosDeSede).toBe(1);
+    expect(b?.consecuencias).toContain("Cambiás de sede el jueves a las 14:00");
+    // Ninguna otra comisión con cupo queda por debajo de B por este criterio.
+    const sinChoques = evaluadas.filter(
+      (comision) => comision.choques === 0 && !comision.cupoLleno,
+    );
+    expect(sinChoques[sinChoques.length - 1]?.id).toBe("B");
+  });
+
+  it("no compara la materia contra la comisión que ya tenía elegida", () => {
+    const plan = conComisiones([{ codigo: "93.18", comision: "A" }]);
+    const evaluadas = ordenarComisiones(
+      "93.18",
+      PERIODO_RARO,
+      plan,
+      HORARIOS_RAROS,
+    );
+    expect(evaluadas.every((comision) => comision.choques === 0)).toBe(true);
+  });
+
+  it("una materia que no se ofrece no tiene comisiones que ordenar", () => {
+    const plan = conComisiones([]);
+    expect(
+      ordenarComisiones("72.45", PERIODO_RARO, plan, HORARIOS_RAROS),
+    ).toEqual([]);
+  });
+});

@@ -30,7 +30,11 @@ from cuatris.validar import TIPOS, ErrorDeApertura
 
 MODULOS_EXTERNOS: dict[str, str] = {
     "abreviaciones": "cuatris.abreviaciones",
+    "guardarrailes": "cuatris.validar.guardarrailes",
+    "indice": "cuatris.indice",
     "plan": "cuatris.plan",
+    "pr": "cuatris.validar.triage_pr",
+    "sga": "cuatris.sga",
 }
 """Subcomandos que aportan otros modulos: nombre -> modulo importable (importacion perezosa)."""
 
@@ -114,15 +118,52 @@ def _configurar_validar(parser: argparse.ArgumentParser) -> None:
         default=None,
         help="Fuerza el tipo de archivo en vez de deducirlo de la ruta.",
     )
+    parser.add_argument(
+        "--data",
+        type=Path,
+        default=None,
+        help=(
+            "Directorio de datos del que C3 toma el plan y el vocabulario de sedes; "
+            "por defecto «data» si existe."
+        ),
+    )
     parser.set_defaults(funcion=_ejecutar_validar)
 
 
 def _ejecutar_validar(args: argparse.Namespace) -> int:
-    """Corre C1 y C2 sobre cada archivo e imprime una linea por hallazgo."""
+    """Corre C1, C2 y C3 sobre cada archivo e imprime una linea por hallazgo.
+
+    El contexto de C3 (plan y vocabulario) sale de `--data`; si no se pasa, de `data/` cuando
+    ese directorio existe. Un `--data` explicito que no es un directorio es error de apertura:
+    validar en silencio sin las reglas que se pidieron seria peor que no validar.
+
+    Lo que C3 no pudo comprobar se dice antes del primer hallazgo: sin plan ni vocabulario
+    delante, las reglas cruzadas no corren, y callar tambien eso convierte un «no pude
+    revisarlo» en un «esta todo bien», que es lo unico que un validador no puede decir. Son
+    advertencias: no cambian el codigo de salida, pero quedan escritas. La falta de
+    vocabulario ya la informa C3 archivo por archivo (`sin-vocabulario`), asi que no se repite.
+    """
+    pedido = getattr(args, "data", None)
+    if pedido is not None and not Path(pedido).is_dir():
+        print(f"ERROR {pedido}: no es un directorio de datos")
+        return NO_SE_PUDO_ABRIR
+    directorio = Path(pedido) if pedido is not None else Path("data")
+    contexto = validacion.contexto_de_datos(directorio) if directorio.is_dir() else None
+    if contexto is None:
+        print(
+            f"WARNING: no hay directorio de datos en «{directorio}»: C3 dejo sin comprobar la "
+            "sede de cada bloque contra «v1/vocabulario.json» y los codigos de horarios y de "
+            "abreviaciones contra «v1/planes/». Use --data <dir> para comprobarlas."
+        )
+    elif contexto.codigos is None:
+        print(
+            f"WARNING: «{directorio}» no tiene «v1/planes/»: C3 dejo sin comprobar los codigos "
+            "de horarios y de abreviaciones contra el plan."
+        )
     salida = OK
     for ruta in args.archivos:
         try:
-            hallazgos = validacion.validar_archivo(ruta, args.tipo)
+            hallazgos = validacion.validar_archivo(ruta, args.tipo, contexto)
         except ErrorDeApertura as exc:
             print(f"ERROR {ruta}: {exc}")
             salida = NO_SE_PUDO_ABRIR

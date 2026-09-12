@@ -14,7 +14,8 @@ const CODIGO = /^\d{2}\.\d{2}$/;
 export type Ruta =
   | { vista: "plan" }
   | { vista: "progreso" }
-  | { vista: "materia"; codigo: Codigo };
+  | { vista: "materia"; codigo: Codigo }
+  | { vista: "muestrario" };
 
 /** Adónde se cae cuando el hash está vacío o no se reconoce. */
 export const RUTA_POR_DEFECTO: Ruta = { vista: "plan" };
@@ -36,6 +37,9 @@ export function parsearRuta(hash: string): Ruta {
   if (primera === "progreso" && partes.length === 1) {
     return { vista: "progreso" };
   }
+  if (primera === "muestrario" && partes.length === 1) {
+    return { vista: "muestrario" };
+  }
   if (primera === "materia" && partes.length === 2) {
     const codigo = partes[1] ?? "";
     if (CODIGO.test(codigo)) {
@@ -54,6 +58,8 @@ export function rutaAHash(ruta: Ruta): string {
       return "#/progreso";
     case "materia":
       return `#/materia/${ruta.codigo}`;
+    case "muestrario":
+      return "#/muestrario";
   }
 }
 

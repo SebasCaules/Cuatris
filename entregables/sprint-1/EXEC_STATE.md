@@ -42,6 +42,19 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
   archivo que no se puede abrir no aborta el lote. Cierra los dos findings medios de W1.1.
 - **N0-9** `vocabulario.json` solo con las sedes observadas en el material (`rectorado`,
   `sdt`); `sdf` entra cuando aparezca en una captura.
+- **N0-10** «Sin horario publicado» no es un estado de materia: es un atributo de la oferta
+  (`seOfrece`, `cupoLleno` del motor). `estadoMateria` conserva el parámetro `horarios`
+  documentado como reservado.
+- **N0-11** `deben-pasar/` admite advertencias por diseño (`c3-docente-repetido.json`); el test
+  exige «sin errores», no «sin hallazgos». El techo de `creditos_requeridos` se mide contra
+  el máximo entre la suma de materias y el título más alto, para que un plan parcial válido
+  (la fixture del contrato) no sea error.
+- **N0-12** Fixture sintética `motor/fixtures/sedes-consecutivas.ts` aceptada como caso de
+  prueba de ↕ (no existe un caso real en el material); marcada y fuera de `data/`.
+- **N0-13** Pasar horarios de otro período al motor lanza `HorariosDeOtroPeriodo`; una
+  comisión guardada que ya no existe se descarta en silencio hasta el aviso del Sprint 2.
+- **N0-14** Ruta `#/muestrario` cableada en `rutas.ts`/`App.tsx`; el puente provisional de
+  `Disposicion` se retiró.
 
 ## Pasos
 
@@ -54,7 +67,12 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | Ola 1 · W1.3 parsers SGA offline | DONE | ola-1 | VERDE (wf_9c4f0791-712) |
 | Ola 1 · W1.4 cascarón de la SPA | DONE | ola-1 | VERDE (wf_9c4f0791-712) |
 | Ola 1 · integración, gates, commit | DONE | ola-1 | 172 tests Python, 62 tests app, validar/fmt/build verdes |
-| Ola 2 · W2.1 invariantes+index · W2.2 scraper vivo · W2.3 motor · W2.4 primitivas+carrusel+tipos · W2.5 workflows+vendor | TODO | | specs en `olas/ola-2/` |
+| Ola 2 · W2.1 invariantes + índice | DONE | ola-2 | ROJO→integrado por N0 (test de fixtures, registro `indice`) |
+| Ola 2 · W2.2 scraper en vivo + instructivo | DONE | ola-2 | VERDE; N0: `valor_de_opcion` sin `value`, jsessionid fuera de logs |
+| Ola 2 · W2.3 motor de dominio | DONE | ola-2 | VERDE; N0: `HorariosDeOtroPeriodo` |
+| Ola 2 · W2.4 primitivas + carrusel + tipos generados | DONE | ola-2 | ROJO→VERDE; ruta muestrario cableada por N0 |
+| Ola 2 · W2.5 workflows + vendor + guardarraíles | DONE | ola-2 | ROJO→VERDE; 20 wheels, 3.5 MB; registro `pr`/`guardarrailes` |
+| Ola 2 · integración, gates, commit | DONE | ola-2 | 366 tests Python, 236 tests app, guardarrailes 0, índice validado |
 | Ola 3 · pantallas 13b, 13c, 13d, 13e, 13h, 13a, exportar/importar | TODO | | |
 | Ola 4 · datos reales (corrida del autor), deploy a Pages, auditoría final, smoke | TODO | | |
 
@@ -70,6 +88,12 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | S-06 | Fixture 72.44 con fechas del período en vez de las de su captura (1C 2026) | fixtures | W1.1 baja | documentar en `docs/contrato.md` en Ola 4 |
 | S-07 | Datos de ejemplo de la app con una comisión recombinada de literales del contrato | app datos/ejemplo | W1.4 baja | reemplazar por un recorte de datos reales en Ola 4 |
 | S-08 | Unificar clases de error de la CLI bajo una base común | tools | W1.2 baja | Ola 4 |
+| S-09 | `cuatris validar` sobre una fixture de abreviaciones contra el plan real imprime ~160 warnings `materia-sin-abreviacion` (contexto por omisión) | validador C3 | W2.1 baja | Ola 4: aplicar la completitud solo al archivo referido por `index.json` |
+| S-10 | `--guardar-html` no avisa cuando no hubo ninguna respuesta que guardar | scraper | W2.2 baja | Ola 4 |
+| S-11 | Comisión guardada que ya no existe en los horarios publicados: aviso «la comisión cambió» | app/motor | W2.3 media | Sprint 2 (hueco del mockup) |
+| S-12 | Reemplazar la fixture sintética de ↕ por un caso real cuando el scraper baje un período completo | motor tests | N0-12 | Ola 4 o Sprint 2 |
+| S-13 | La ayuda de `cuatris --help` muestra «(ver --help)» en vez de `AYUDA` para los subcomandos no invocados | cli | N0 | Ola 4 |
+| S-14 | `buscar` por docente sin caso positivo en tests: el corpus no trae docentes de materias del plan | motor tests | W2.3 baja | Ola 4 con datos reales |
 
 ## Veredicto final
 

@@ -9,6 +9,7 @@ import { BarraSuperior } from "./componentes/BarraSuperior";
 import { Disposicion } from "./componentes/Disposicion";
 import { Marcador } from "./componentes/Marcador";
 import { PantallaCargando, PantallaError } from "./componentes/PantallaEstado";
+import { Muestrario } from "./paginas/Muestrario";
 import type { Plan } from "./contrato/tipos";
 import type { PeriodoElegido } from "./datos/cargar";
 import { hoyIso, useDatos } from "./datos/useDatos";
@@ -156,6 +157,9 @@ export function App() {
   const hoy = useMemo(() => hoyIso(), []);
   const datos = useDatos(planUsuario.plan, hoy);
 
+  if (ruta.vista === "muestrario") {
+    return <Muestrario />;
+  }
   if (datos.fase === "cargando") {
     return <PantallaCargando />;
   }
