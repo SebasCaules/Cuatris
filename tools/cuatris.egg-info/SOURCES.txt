@@ -1,0 +1,7 @@
+pyproject.toml
+cuatris.egg-info/PKG-INFO
+cuatris.egg-info/SOURCES.txt
+cuatris.egg-info/dependency_links.txt
+cuatris.egg-info/entry_points.txt
+cuatris.egg-info/requires.txt
+cuatris.egg-info/top_level.txt

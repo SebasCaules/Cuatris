@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: cuatris
+Version: 0.1.0
+Summary: Herramientas de datos de Cuatris: contrato, validación, importadores y scraper del SGA
+License: MIT
+Requires-Python: >=3.11
+Requires-Dist: fastjsonschema>=2.19
+Requires-Dist: beautifulsoup4>=4.12
+Requires-Dist: openpyxl>=3.1
+Requires-Dist: httpx>=0.27
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: ruff>=0.5; extra == "dev"

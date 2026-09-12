@@ -1,0 +1,8 @@
+# Rutas que exigen revisión de un code owner. Un PR de datos nunca las toca.
+/.github/            @SebasCaules
+/tools/              @SebasCaules
+/schemas/            @SebasCaules
+/vendor/             @SebasCaules
+/tests/fixtures/     @SebasCaules
+/politica.json       @SebasCaules
+/data/v1/planes/     @SebasCaules
