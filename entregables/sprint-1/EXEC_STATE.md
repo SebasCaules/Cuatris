@@ -74,8 +74,10 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | Ola 2 · W2.5 workflows + vendor + guardarraíles | DONE | ola-2 | ROJO→VERDE; 20 wheels, 3.5 MB; registro `pr`/`guardarrailes` |
 | Ola 2 · integración, gates, commit | DONE | ola-2 | 366 tests Python, 236 tests app, guardarrailes 0, índice validado |
 | Ola 3A · U3.1 grilla semanal + tarjeta + lista de conflictos | DONE | ola-3a | VERDE (wf_6a1c5fda-af8); medido contra 13b elemento por elemento |
-| Ola 3B · U3.2 página del plan · U3.3 panel agregar · U3.4 modal comisiones · U3.5 ficha y bloqueo · U3.6 inicio y menú | TODO | | specs en `olas/ola-3/` |
-| Ola 4 · datos reales (corrida del autor), deploy a Pages, auditoría final, smoke | TODO | | |
+| Ola 3B · U3.2 página del plan · U3.3 panel agregar · U3.4 modal comisiones · U3.5 ficha y bloqueo · U3.6 inicio y menú | DONE | 61798d7 | todas VERDE; N0 cableó `App.tsx`, corrigió cupo-lleno y motivos encajonados (U3.3) y la comisión desaparecida (U3.5) |
+| Ola 3B · smoke visual con período de prueba (fixture como 2026-2C, sin versionar) | DONE | — | 13a → marcar 28 materias → 13b con grilla → 13c «cripto» → 13d Elegir S → bloque en la grilla, progreso 153/192 → 13e ficha. Sin errores de consola |
+| Ola 4 · auditoría adversarial (6 dimensiones) + refutación | DOING | | `olas/ola-4/AUDITORIA.md` |
+| Ola 4 · fixes confirmados, gates, push, plataforma, deploy, datos reales | TODO | | requiere la corrida del scraper por el autor y su OK al push |
 
 ## Fixes y tareas diferidas (S-nn)
 
@@ -97,6 +99,11 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | S-14 | `buscar` por docente sin caso positivo en tests: el corpus no trae docentes de materias del plan | motor tests | W2.3 baja | Ola 4 con datos reales |
 | S-15 | Choque con solapamiento total: el bloque desaparece de la grilla (solo queda la franja rayada y la lista) | GrillaSemanal | U3.1 baja | Sprint 2 |
 | S-16 | `choquesDelBloque` no distingue comisión: si se dibujaran dos comisiones de la misma materia a la vez, se recortarían entre sí | GrillaSemanal | U3.1 baja | Sprint 2 (no ocurre en 13b/13d) |
+| S-17 | `Disposicion` dibuja el `<aside>` vacío en el primer ingreso | app | smoke N0 | Ola 4 fixes |
+| S-18 | `PegarHistoria` muestra «No encontré códigos…» con el área vacía, antes de que el usuario escriba | app 13a | smoke N0 | Ola 4 fixes |
+| S-19 | `GrillaSemanal` sin prop `destacados`: el «Ver» de ↕ resalta por una regla CSS sobre `aria-label` | app | U3.2 | Sprint 2 |
+| S-20 | Materia planificada con comisiones publicadas pero sin comisión elegida no se ve en la tarjeta | app | U3.2 | Sprint 2 (hoy el panel siempre pasa por el modal) |
+| S-21 | `useDatos` sin caché: cada página que lo llame vuelve a pedir los JSON (hoy solo `App` lo llama) | app datos | U3.2/U3.3 | Sprint 2 (`ProveedorDatos`) |
 
 ## Veredicto final
 
