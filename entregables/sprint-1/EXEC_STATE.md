@@ -73,7 +73,8 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | Ola 2 · W2.4 primitivas + carrusel + tipos generados | DONE | ola-2 | ROJO→VERDE; ruta muestrario cableada por N0 |
 | Ola 2 · W2.5 workflows + vendor + guardarraíles | DONE | ola-2 | ROJO→VERDE; 20 wheels, 3.5 MB; registro `pr`/`guardarrailes` |
 | Ola 2 · integración, gates, commit | DONE | ola-2 | 366 tests Python, 236 tests app, guardarrailes 0, índice validado |
-| Ola 3 · pantallas 13b, 13c, 13d, 13e, 13h, 13a, exportar/importar | TODO | | |
+| Ola 3A · U3.1 grilla semanal + tarjeta + lista de conflictos | DONE | ola-3a | VERDE (wf_6a1c5fda-af8); medido contra 13b elemento por elemento |
+| Ola 3B · U3.2 página del plan · U3.3 panel agregar · U3.4 modal comisiones · U3.5 ficha y bloqueo · U3.6 inicio y menú | TODO | | specs en `olas/ola-3/` |
 | Ola 4 · datos reales (corrida del autor), deploy a Pages, auditoría final, smoke | TODO | | |
 
 ## Fixes y tareas diferidas (S-nn)
@@ -94,6 +95,8 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | S-12 | Reemplazar la fixture sintética de ↕ por un caso real cuando el scraper baje un período completo | motor tests | N0-12 | Ola 4 o Sprint 2 |
 | S-13 | La ayuda de `cuatris --help` muestra «(ver --help)» en vez de `AYUDA` para los subcomandos no invocados | cli | N0 | Ola 4 |
 | S-14 | `buscar` por docente sin caso positivo en tests: el corpus no trae docentes de materias del plan | motor tests | W2.3 baja | Ola 4 con datos reales |
+| S-15 | Choque con solapamiento total: el bloque desaparece de la grilla (solo queda la franja rayada y la lista) | GrillaSemanal | U3.1 baja | Sprint 2 |
+| S-16 | `choquesDelBloque` no distingue comisión: si se dibujaran dos comisiones de la misma materia a la vez, se recortarían entre sí | GrillaSemanal | U3.1 baja | Sprint 2 (no ocurre en 13b/13d) |
 
 ## Veredicto final
 

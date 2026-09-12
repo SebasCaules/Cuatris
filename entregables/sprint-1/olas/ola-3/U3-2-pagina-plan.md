@@ -26,6 +26,8 @@
    y los hitos (`progresoTitulos` por período: «✓ Al aprobar este cuatrimestre: n cr ·
    Título» cuando ese período alcanza un título; «72.45 … se destraba con 160 cr ✓» cuando
    `seDestrabaEn` cae ahí para una materia planificada después).
+   En `ListaConflictos` pasa `nombreDeMateria` para que las filas usen la **abreviación**
+   («93.18 Álgebra ↔ 72.44 Cripto»), no el nombre completo.
    Botones: «Agregar materia» (abre el panel de U3.3 para el período seleccionado —
    callback `alAgregar(periodo)` que el orquestador conecta; mientras tanto, `console.info`
    no: deja el prop y un `TODO` explícito), «Resolver» de un choque (callback

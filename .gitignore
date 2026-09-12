@@ -18,3 +18,6 @@ app/.vite/
 # artefactos de empaquetado y caches del scraper
 *.egg-info/
 .cuatris-cache/
+
+# cache del hook de diseño (la configuración sí se versiona)
+.impeccable/hook.cache.json

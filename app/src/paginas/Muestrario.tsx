@@ -23,6 +23,23 @@ import {
   etiquetaLarga,
   type ManijaCarrusel,
 } from "../componentes/Carrusel";
+import { GrillaSemanal } from "../componentes/GrillaSemanal";
+import {
+  ACCIONAMIENTOS_PEGADO,
+  ALGEBRA,
+  CAMBIOS_DE_SEDE,
+  CHOQUES,
+  CRIPTO_SABADO,
+  HITOS,
+  HORARIOS_ESPERADOS,
+  MATERIAS,
+  MATERIAS_SIN_HORARIOS,
+  nombreDeSede,
+  PERIODO,
+  SIN_HORARIO,
+} from "../componentes/GrillaSemanal/ejemplo";
+import { ListaConflictos } from "../componentes/ListaConflictos";
+import { TarjetaCuatrimestre } from "../componentes/TarjetaCuatrimestre";
 import {
   Boton,
   Campo,
@@ -240,7 +257,11 @@ export function Muestrario() {
             etiqueta="Buscar materia, código o docente (muestrario)"
             placeholder="Buscar materia, código o docente"
           />
-          <Campo etiqueta="Campo deshabilitado" placeholder="análisis" disabled />
+          <Campo
+            etiqueta="Campo deshabilitado"
+            placeholder="análisis"
+            disabled
+          />
         </Fila>
       </Seccion>
 
@@ -412,6 +433,114 @@ export function Muestrario() {
             </span>
           ))}
         </Fila>
+      </Seccion>
+
+      {/*
+        Widget 7a con el choque 9d y la tarjeta que lo contiene. Los datos son
+        los del corpus (`componentes/GrillaSemanal/ejemplo.ts`): 93.18 com. A,
+        72.44 com. S y 30.28 com. A del archivo de casos raros, con el choque y
+        el cambio de sede que calcula el motor.
+      */}
+      <Seccion titulo="Grilla semanal" pantalla="7a · 13b">
+        <p className="muestrario__dato">
+          15 px por hora (dos tarjetas) · choque del lunes 15–16
+        </p>
+        <GrillaSemanal
+          bloques={MATERIAS}
+          choques={CHOQUES}
+          horaPx={15}
+          nombreDeSede={nombreDeSede}
+          alClic={(codigo) => {
+            setUltimaAccion(`clic en ${codigo}`);
+          }}
+          alPasar={(bloque) => {
+            setUltimaAccion(
+              bloque === null ? "—" : `mouse en ${bloque.materia.codigo}`,
+            );
+          }}
+        />
+        <p className="muestrario__dato">
+          18 px por hora (una tarjeta sola) · estados, cambio de sede ↕ y bloque
+          de sábado al pie
+        </p>
+        <GrillaSemanal
+          bloques={[
+            { ...ALGEBRA, estado: "cursando" },
+            { ...ACCIONAMIENTOS_PEGADO, estado: "planificada" },
+            CRIPTO_SABADO,
+          ]}
+          cambiosDeSede={CAMBIOS_DE_SEDE}
+          horaPx={18}
+          nombreDeSede={nombreDeSede}
+        />
+      </Seccion>
+
+      <Seccion titulo="Lista de conflictos" pantalla="13b · 13h">
+        <ListaConflictos
+          choques={CHOQUES}
+          cambiosDeSede={CAMBIOS_DE_SEDE}
+          nombreDeSede={nombreDeSede}
+          alResolver={(choque) => {
+            setUltimaAccion(`resolver ${choque.a.codigo} ↔ ${choque.b.codigo}`);
+          }}
+          alVer={(cambio) => {
+            setUltimaAccion(`ver cambio de sede ${cambio.dia} ${cambio.hora}`);
+          }}
+        />
+      </Seccion>
+
+      <Seccion titulo="Tarjeta de cuatrimestre" pantalla="13b · 13g">
+        <Carrusel
+          periodos={[PERIODO, "2027-1C", "2027-2C"]}
+          visibles={2}
+          render={(periodo) =>
+            periodo === PERIODO ? (
+              <TarjetaCuatrimestre
+                variante="conHorarios"
+                periodo={periodo}
+                resumen="3 materias · ▲ 1"
+                bloques={MATERIAS}
+                choques={CHOQUES}
+                horaPx={15}
+                sinHorarioPublicado={[
+                  {
+                    codigo: SIN_HORARIO.codigo,
+                    abreviacion: SIN_HORARIO.abreviacion,
+                  },
+                ]}
+                publicado="2026-09-09"
+                hoy="2026-09-12"
+                nombreDeSede={nombreDeSede}
+                alResolver={(choque) => {
+                  setUltimaAccion(`resolver ${choque.a.codigo}`);
+                }}
+                alClic={(codigo) => {
+                  setUltimaAccion(`ficha de ${codigo}`);
+                }}
+              />
+            ) : periodo === "2027-1C" ? (
+              <TarjetaCuatrimestre
+                variante="sinHorarios"
+                periodo={periodo}
+                resumen="3 materias · 21 cr"
+                materias={MATERIAS_SIN_HORARIOS}
+                horariosEsperados={HORARIOS_ESPERADOS}
+                hitos={HITOS}
+                alAgregar={() => {
+                  setUltimaAccion("agregar materia en 1.º 2027");
+                }}
+              />
+            ) : (
+              <TarjetaCuatrimestre
+                variante="vacia"
+                periodo={periodo}
+                alAgregar={() => {
+                  setUltimaAccion("agregar materia en 2.º 2027");
+                }}
+              />
+            )
+          }
+        />
       </Seccion>
     </div>
   );

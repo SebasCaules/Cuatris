@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "app/src/paginas/Muestrario.css"
+        ],
+        "createdAt": "2026-09-12T19:12:48.157Z",
+        "reason": "Diseño aprobado en Claude Design: el bloque de materia del widget 7a lleva border-left 3px del color de materia con relleno al 14 % (entregables/04-diseno/tokens.md, «Diez colores de materia»); la muestra reproduce ese bloque"
+      }
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+/*
+ * Medidas de la lista al pie de la tarjeta (13b y 13h): cabecera en mono,
+ * filas de 5×6 px con una marca cuadrada de 13 px y el botón a la derecha.
+ */
+
+.conflictos {
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px solid var(--linea-columna);
+}
+
+.conflictos__titulo {
+  margin: 0 0 4px;
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.conflictos__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.conflictos__fila {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 4px;
+  padding: 5px 6px;
+  border: 1px solid var(--linea-columna);
+  border-radius: var(--radio-chip);
+  background: var(--superficie);
+}
+
+/* Recuadro oscuro para ▲; claro para ↕ (que no bloquea nada). */
+.conflictos__fila--choque {
+  border-color: var(--choque);
+  background: color-mix(in srgb, var(--choque) 6%, var(--superficie));
+}
+
+/* La fila encendida es la del choque que tiene el mouse encima en la grilla. */
+.conflictos__fila--activa {
+  border-width: 1.5px;
+}
+
+.conflictos__marca {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  background: var(--choque);
+  color: var(--superficie);
+  font-family: var(--fuente-mono);
+  font-size: 7px;
+  font-weight: 500;
+  line-height: 13px;
+  text-align: center;
+}
+
+.conflictos__marca--sede {
+  background: var(--texto-secundario);
+}
+
+.conflictos__texto {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--fuente-texto);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--texto);
+}
+
+/* Visible para el lector de pantalla, invisible en la pantalla. */
+.conflictos__oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

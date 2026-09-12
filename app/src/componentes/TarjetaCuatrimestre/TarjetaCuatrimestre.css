@@ -1,0 +1,142 @@
+/*
+ * Medidas de la tarjeta de 13b/13g: caja de 11 px de relleno, título de 12.5 px
+ * y resumen en mono a la derecha, alineados por la línea de base.
+ *
+ * El alto lo iguala el contenedor (el carrusel estira sus tarjetas), así que
+ * acá solo hace falta ocupar todo lo que el contenedor dé.
+ */
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 11px;
+  border: var(--borde-tarjeta);
+  border-radius: var(--radio-tarjeta);
+  background: var(--superficie);
+}
+
+.tarjeta__cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tarjeta__titulo {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.tarjeta__resumen {
+  margin: 0;
+  flex: none;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto);
+}
+
+/* Materia que se ofrece sin comisión publicada: baja al pie, nunca desaparece. */
+.tarjeta__sin-horario {
+  margin-top: 7px;
+}
+
+.tarjeta__publicado {
+  margin-top: 7px;
+}
+
+.tarjeta__materias {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tarjeta__materia {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 5px;
+  padding: 5px 6px;
+  border: 1.5px dotted var(--sin-horario-borde);
+  border-radius: 3px;
+}
+
+.tarjeta__barra {
+  flex: none;
+  width: 3px;
+  height: 15px;
+  border-radius: var(--radio-bloque);
+  background: var(--materia);
+}
+
+.tarjeta__abreviacion {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--fuente-texto);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--texto);
+}
+
+.tarjeta__creditos {
+  flex: none;
+  white-space: nowrap;
+  font-family: var(--fuente-mono);
+  font-size: 8px;
+  color: var(--texto-secundario);
+}
+
+.tarjeta__agregar {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  border: 1.5px dashed var(--sin-horario-borde);
+  border-radius: var(--radio-chip);
+  background: transparent;
+  font-family: var(--fuente-mono);
+  font-size: 9.5px;
+  color: var(--texto-secundario);
+  cursor: pointer;
+}
+
+.tarjeta__agregar:hover:not(:disabled) {
+  border-color: var(--texto);
+  color: var(--texto);
+}
+
+.tarjeta__agregar:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+/*
+ * Hito del plan: la nota verde de 13g. Usa el verde de materia 9 (#5f7a4a) y
+ * el mismo relleno al 14 % que los bloques de la grilla; el mockup lo dibuja
+ * un poco más claro, pero acá manda el token.
+ */
+.tarjeta__hito {
+  margin: 8px 0 0;
+  padding: 6px 8px;
+  border: 1.5px solid var(--materia-8);
+  border-radius: var(--radio-chip);
+  background: color-mix(
+    in srgb,
+    var(--materia-8) var(--materia-relleno-porcentaje),
+    var(--materia-relleno-base)
+  );
+  font-family: var(--fuente-texto);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--texto);
+}
