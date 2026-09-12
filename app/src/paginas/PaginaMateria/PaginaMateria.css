@@ -1,0 +1,26 @@
+/*
+ * La pantalla de 13e/13f mide 560 px; acá se centra en la zona principal y no
+ * pasa de ese ancho, que es el que el mockup fija para la ficha.
+ */
+
+.pagina-materia {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 560px;
+}
+
+.pagina-materia__volver {
+  align-self: flex-start;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+  text-decoration: none;
+}
+
+.pagina-materia__volver:hover {
+  color: var(--texto);
+  text-decoration: underline;
+}

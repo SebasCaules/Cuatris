@@ -1,0 +1,98 @@
+/*
+ * Medidas de 13a: caja de 520 px con borde `1.5px dashed`, rótulo en mono de
+ * 8.5 px y el texto pegado en mono de 10 px con interlínea 1.7.
+ */
+
+.pegar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 520px;
+  max-width: 100%;
+}
+
+.pegar__caja {
+  box-sizing: border-box;
+  padding: 14px;
+  border: 1.5px dashed var(--sin-horario-borde);
+  border-radius: 6px;
+  background: var(--superficie);
+}
+
+.pegar__marcador {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.pegar__area {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--texto);
+  font-family: var(--fuente-mono);
+  font-size: 10px;
+  line-height: 1.7;
+  resize: vertical;
+}
+
+.pegar__area::placeholder {
+  color: var(--texto-secundario);
+}
+
+.pegar__area:focus {
+  outline: none;
+}
+
+/* El foco se marca en la caja entera: el área no tiene borde propio. */
+.pegar__caja:focus-within {
+  border-style: solid;
+  border-color: var(--texto);
+}
+
+.pegar__resumen {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 10px;
+  color: var(--texto);
+}
+
+.pegar__sobrantes {
+  padding: 8px 10px;
+  border: 1px solid var(--linea-columna);
+  border-radius: var(--radio-chip);
+  background: var(--sin-horario-fondo);
+}
+
+.pegar__ayuda {
+  margin: 0 0 6px;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}
+
+.pegar__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pegar__linea {
+  font-family: var(--fuente-mono);
+  font-size: 10px;
+  line-height: 1.7;
+  color: var(--texto);
+  overflow-wrap: anywhere;
+}
+
+.pegar__acciones {
+  display: flex;
+  gap: 8px;
+}

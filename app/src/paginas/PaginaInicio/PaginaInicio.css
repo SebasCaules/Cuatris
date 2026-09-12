@@ -1,0 +1,52 @@
+/*
+ * 13a: todo centrado en una columna, con 56×40 px de aire y un alto mínimo que
+ * evita que la pantalla quede pegada a la barra.
+ */
+
+.inicio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  box-sizing: border-box;
+  min-height: 400px;
+  padding: 56px 40px;
+}
+
+.inicio__titulo {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.inicio__bajada {
+  max-width: 52ch;
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--texto-secundario);
+  text-align: center;
+}
+
+.inicio__caminos {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.inicio__camino {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.inicio__nota {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 10px;
+  color: var(--texto-secundario);
+}

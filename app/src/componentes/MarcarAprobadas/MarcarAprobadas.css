@@ -1,0 +1,124 @@
+/*
+ * Lista de «marcar a mano»: 520 px como la caja de pegar de 13a, la lista con
+ * su propio scroll y el contador fijo al pie, que es lo que hace que marcar
+ * cincuenta materias no sea a ciegas.
+ */
+
+.marcar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 520px;
+  max-width: 100%;
+  padding: 12px;
+  border: var(--borde-tarjeta);
+  border-radius: var(--radio-tarjeta);
+  background: var(--superficie);
+}
+
+.marcar__buscador {
+  display: flex;
+}
+
+.marcar__buscador > * {
+  flex: 1;
+}
+
+.marcar__lista {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.marcar__vacio {
+  margin: 8px 0;
+  font-family: var(--fuente-texto);
+  font-size: 11px;
+  color: var(--texto-secundario);
+}
+
+.marcar__grupo + .marcar__grupo {
+  margin-top: 10px;
+}
+
+/* El encabezado acompaña el scroll: con 129 materias se pierde de vista. */
+.marcar__titulo {
+  position: sticky;
+  top: 0;
+  margin: 0 0 4px;
+  padding: 3px 0;
+  background: var(--superficie);
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.marcar__materias {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.marcar__fila {
+  padding: 2px 0;
+  border-bottom: 1px solid var(--linea-columna);
+}
+
+.marcar__casilla {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 2px;
+  cursor: pointer;
+}
+
+.marcar__nombre {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--fuente-texto);
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--texto);
+}
+
+.marcar__creditos {
+  flex: none;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto-secundario);
+}
+
+/* Enlace discreto: es una oferta, no la acción principal de la fila. */
+.marcar__correlativas {
+  margin: 0 0 4px 25px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--acento);
+  font-family: var(--fuente-texto);
+  font-size: 10px;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.marcar__correlativas:hover {
+  color: var(--acento-hover);
+}
+
+.marcar__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--linea-columna);
+}
+
+.marcar__contador {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 10px;
+  color: var(--texto);
+}

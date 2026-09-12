@@ -1,0 +1,45 @@
+/*
+ * Diálogos de la copia de seguridad. La caja y el velo los pone `Modal`: acá
+ * solo están el selector escondido, el párrafo y la fila de botones.
+ */
+
+/*
+ * El selector de archivo no se dibuja —lo abre el menú «⋯»— pero sigue en el
+ * árbol para que el teclado y los lectores de pantalla lo alcancen. Por eso se
+ * recorta en vez de usar `display: none`.
+ */
+.menu-plan__archivo {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.menu-plan__parrafo {
+  margin: 0 0 10px;
+  font-family: var(--fuente-texto);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--texto-secundario);
+}
+
+/* El motivo es texto de máquina: va en mono y se puede partir en varias líneas. */
+.menu-plan__motivo {
+  display: block;
+  font-family: var(--fuente-mono);
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--texto);
+  overflow-wrap: anywhere;
+}
+
+.menu-plan__botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}

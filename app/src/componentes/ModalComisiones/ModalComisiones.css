@@ -1,0 +1,164 @@
+/*
+ * Medidas de 13d: lienzo de 1060 px, lista elástica a la izquierda y vista
+ * previa fija de 440 px a la derecha. Las tallas de texto suben ~1 px sobre el
+ * mockup porque Newsreader tiene la altura de x más baja que IBM Plex Sans
+ * (tokens.md, «Tipografía»); las del mono se mantienen.
+ */
+
+/*
+ * Dos columnas, como 13d. Envuelven en vez de aplastarse: el mockup es de
+ * 1060 px y la versión angosta llega en el Sprint 3 (tokens.md, «Huecos»),
+ * pero una ventana chica no tiene por qué dejar la lista de una letra de ancho.
+ */
+.comisiones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.comisiones__lista {
+  flex: 1 1 320px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.comisiones__tarjeta {
+  padding: 8px 10px;
+  border: 1px solid var(--linea-columna);
+  border-radius: 5px;
+  background: var(--superficie);
+}
+
+/* La elegida: contorno de 2 px y fondo del lienzo, como la comisión B de 13d. */
+.comisiones__tarjeta--elegida {
+  padding: 7px 9px;
+  border: 2px solid var(--texto);
+  background: var(--fondo);
+}
+
+.comisiones__cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.comisiones__nombre {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.comisiones__cupo {
+  flex: none;
+  font-family: var(--fuente-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+/* Ámbar solo cuando está llena; con lugar, el gris del resto de los datos. */
+.comisiones__cupo--llena {
+  color: var(--materia-3);
+}
+
+.comisiones__cupo-texto {
+  white-space: nowrap;
+}
+
+.comisiones__horario {
+  margin-top: 4px;
+  list-style: none;
+}
+
+.comisiones__bloque {
+  font-family: var(--fuente-mono);
+  font-size: 9.5px;
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}
+
+.comisiones__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.comisiones__consecuencias,
+.comisiones__resultado {
+  min-width: 0;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--texto);
+}
+
+.comisiones__punto {
+  color: var(--texto-secundario);
+}
+
+/* «✓ sin choques» va en verde; «▲ choque…» en el color del texto, como 13d. */
+.comisiones__consecuencia--bien {
+  color: var(--materia-8);
+}
+
+.comisiones__mas {
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font-family: var(--fuente-mono);
+  font-size: 9.5px;
+  color: var(--texto-secundario);
+}
+
+.comisiones__mas:hover {
+  color: var(--texto);
+  text-decoration: underline;
+}
+
+.comisiones__previa {
+  flex: 0 1 440px;
+  width: 440px;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 11px;
+  border: 1px solid var(--linea-columna);
+  border-radius: 5px;
+}
+
+.comisiones__previa-titulo {
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.comisiones__resultado {
+  margin: 2px 0 8px;
+}
+
+/* Sin comisiones publicadas: el modal se angosta a lo que hay que leer. */
+.comisiones__vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  max-width: 420px;
+}
+
+.comisiones__aviso {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.comisiones__aviso-secundario {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}

@@ -1,0 +1,207 @@
+/*
+ * Medidas de la ficha 13e: caja de 560 px con 14 px de relleno, título de
+ * 13 px, línea mono de 9.5 px y dos columnas iguales con 14 px de separación.
+ *
+ * Ningún color nuevo: todo sale de `tokens.css`. El ámbar del chip de cupo del
+ * mockup (#F6EFE0 / #A8762C) no es un token de rol, así que el chip usa la
+ * variante `relleno` de la primitiva y el ámbar queda solo en el glifo ◐, que
+ * sí lo tiene (`--materia-3`).
+ */
+
+.ficha {
+  box-sizing: border-box;
+  padding: 14px;
+  border: var(--borde-tarjeta);
+  border-radius: var(--radio-tarjeta);
+  background: var(--superficie);
+}
+
+.ficha__cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ficha__titulo {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.ficha__cerrar {
+  flex: none;
+  padding: 0 2px;
+  border: 0;
+  background: none;
+  font-family: var(--fuente-mono);
+  font-size: 12px;
+  line-height: 1;
+  color: var(--texto-secundario);
+  cursor: pointer;
+}
+
+.ficha__cerrar:hover {
+  color: var(--texto);
+}
+
+.ficha__encabezado {
+  margin: 3px 0 10px;
+  font-family: var(--fuente-mono);
+  font-size: 9.5px;
+  color: var(--texto-secundario);
+}
+
+.ficha__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+/* En el chip relleno el glifo hereda el color del texto: el verde de ✓ y el
+   ámbar de ◐ no tienen contraste sobre el relleno oscuro. */
+.ficha__chip-estado .glifo {
+  color: inherit;
+}
+
+.ficha__columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.ficha__columna {
+  min-width: 0;
+}
+
+.ficha__rotulo {
+  margin: 0 0 6px;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.ficha__lista + .ficha__rotulo,
+.ficha__vacio + .ficha__rotulo,
+.ficha__bloques + .ficha__rotulo,
+.nota + .ficha__rotulo {
+  margin-top: 12px;
+}
+
+.ficha__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ficha__fila {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 0;
+}
+
+.ficha__nombre {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  color: var(--texto);
+}
+
+.ficha__marca {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  flex: none;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.ficha__vacio {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  color: var(--texto-secundario);
+}
+
+.ficha__bloques {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Mismo tratamiento que el bloque de la grilla: barra de 3 px del color de la
+   materia y relleno al 14 % (tokens.md). */
+.ficha__bloque {
+  display: block;
+  margin-bottom: 5px;
+  padding: 5px 7px;
+  border-left: 3px solid var(--materia);
+  border-radius: var(--radio-bloque);
+  background: color-mix(
+    in srgb,
+    var(--materia) var(--materia-relleno-porcentaje),
+    var(--materia-relleno-base)
+  );
+}
+
+.ficha__bloque-cuando {
+  display: block;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--texto);
+}
+
+.ficha__bloque-donde {
+  display: block;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto-secundario);
+}
+
+.ficha__docentes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--texto);
+}
+
+.ficha__pie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--linea-columna);
+}
+
+.ficha__confirmar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 8px 0 0;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  color: var(--texto);
+}
+
+.ficha__separador {
+  color: var(--texto-secundario);
+}
+
+@media (max-width: 520px) {
+  .ficha__columnas {
+    grid-template-columns: 1fr;
+  }
+}

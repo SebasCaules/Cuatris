@@ -1,159 +1,218 @@
 /**
- * Cascarón de la SPA: barra, zona principal y panel derecho de la pantalla 13b,
- * con marcadores de posición donde todavía no hay componente real.
+ * Cableado de la SPA: enruta cada hash a su página, comparte los datos cargados
+ * una sola vez, y sostiene el estado efímero de la pantalla de trabajo (el panel
+ * «Agregar materia» de 13c y el modal «Elegir comisión» de 13d).
+ *
+ * El estado del usuario vive en `estado/`; acá solo hay estado de interfaz.
  */
 
-import { useMemo } from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 
 import { BarraSuperior } from "./componentes/BarraSuperior";
 import { Disposicion } from "./componentes/Disposicion";
-import { Marcador } from "./componentes/Marcador";
+import { useMenuPlan } from "./componentes/MenuPlan";
+import { ModalComisiones } from "./componentes/ModalComisiones";
+import { PanelAgregar } from "./componentes/PanelAgregar";
+import { PanelProgreso } from "./componentes/PanelProgreso";
 import { PantallaCargando, PantallaError } from "./componentes/PantallaEstado";
-import { Muestrario } from "./paginas/Muestrario";
-import type { Plan } from "./contrato/tipos";
-import type { PeriodoElegido } from "./datos/cargar";
+import type { Codigo, PeriodoId } from "./contrato/tipos";
+import type { DatosCargados } from "./datos/useDatos";
 import { hoyIso, useDatos } from "./datos/useDatos";
 import { usePlanUsuario } from "./estado/contexto";
-import { useRuta, type Ruta } from "./rutas";
+import { Muestrario } from "./paginas/Muestrario";
+import { PaginaInicio } from "./paginas/PaginaInicio";
+import { PaginaMateria } from "./paginas/PaginaMateria";
+import { PlanConDatos } from "./paginas/PaginaPlan";
+import { ProgresoConDatos } from "./paginas/PaginaProgreso";
+import { useRuta } from "./rutas";
 import "./App.css";
 
-function nombreDeCuatrimestre(periodo: string): string {
-  const [anio, cuatrimestre] = periodo.split("-");
-  const ordinal = cuatrimestre === "1C" ? "1.º" : "2.º";
-  return `${ordinal} cuatrimestre ${anio ?? ""}`.trim();
+/** Qué modal de comisiones está abierto; `fijada` es la otra materia del choque (13h). */
+interface ModalAbierto {
+  periodo: PeriodoId;
+  codigo: Codigo;
+  fijada?: Codigo;
 }
 
-function LeyendaPeriodo({ periodo }: { periodo: PeriodoElegido | null }) {
-  if (periodo === null) {
-    return (
-      <p className="app__leyenda">
-        El índice no publica ningún período activo ni futuro.
-      </p>
-    );
+/** El plan del usuario todavía no tiene nada: es el primer ingreso (13a). */
+function esPrimerIngreso(
+  historia: object,
+  periodos: Record<string, unknown[]>,
+): boolean {
+  if (Object.keys(historia).length > 0) {
+    return false;
   }
-  const cuando =
-    periodo.estado === "activo"
-      ? "período en curso"
-      : "vista previa: todavía no empezó";
-  return (
-    <p className="app__leyenda">
-      {nombreDeCuatrimestre(periodo.entrada.periodo)}{" "}
-      <span className="marcador__dato">
-        ({periodo.entrada.periodo} · {cuando} · publicado{" "}
-        {periodo.entrada.publicado})
-      </span>
-    </p>
+  return Object.values(periodos).every((materias) => materias.length === 0);
+}
+
+function nombreDeSedeDe(datos: DatosCargados): (id: string) => string {
+  const nombres = new Map(
+    datos.vocabulario.sedes.map((sede) => [sede.id, sede.nombre]),
   );
+  return (id) => nombres.get(id) ?? id;
 }
 
-function ZonaPrincipal({
-  ruta,
-  plan,
-  periodo,
-}: {
-  ruta: Ruta;
-  plan: Plan;
-  periodo: PeriodoElegido | null;
-}) {
-  if (ruta.vista === "progreso") {
-    return (
-      <Marcador titulo="Progreso" pantalla="13i">
-        <p>
-          Pestaña aparte porque es lectura, no edición. Los tres títulos
-          escalonados con su estado real, las electivas contra los 27 créditos y
-          las cuatro orientaciones como opcionales.
-        </p>
-      </Marcador>
+function Aplicacion({ datos }: { datos: DatosCargados }) {
+  const { plan: planUsuario } = usePlanUsuario();
+  const { ruta, ir } = useRuta();
+  const { acciones, dialogos } = useMenuPlan();
+  const [panel, setPanel] = useState<PeriodoId | null>(null);
+  const [modal, setModal] = useState<ModalAbierto | null>(null);
+
+  const periodoActivo = datos.periodo?.entrada.periodo ?? null;
+  const nombreDeSede = useMemo(() => nombreDeSedeDe(datos), [datos]);
+  const abreviaciones = datos.abreviaciones.abreviaciones;
+
+  /** Horarios de un período: solo tenemos cargado el archivo del período activo. */
+  const horariosDe = useCallback(
+    (periodo: PeriodoId) =>
+      datos.horarios !== null && datos.horarios.periodo.id === periodo
+        ? datos.horarios
+        : null,
+    [datos.horarios],
+  );
+
+  const abrirPanel = useCallback(
+    (periodo: PeriodoId) => {
+      setModal(null);
+      setPanel(periodo);
+      if (ruta.vista !== "plan") {
+        ir({ vista: "plan" });
+      }
+    },
+    [ir, ruta.vista],
+  );
+
+  const abrirModal = useCallback(
+    (abierto: ModalAbierto) => {
+      if (horariosDe(abierto.periodo) === null) {
+        // Sin horarios publicados no hay comisiones que elegir: el panel ya
+        // agrega la materia sin comisión en ese caso.
+        return;
+      }
+      setModal(abierto);
+    },
+    [horariosDe],
+  );
+
+  const cerrarModal = useCallback(() => setModal(null), []);
+  const cerrarPanel = useCallback(() => setPanel(null), []);
+
+  const primerIngreso = esPrimerIngreso(
+    planUsuario.historia,
+    planUsuario.periodos,
+  );
+
+  let principal: ReactNode;
+  let lateral: ReactNode =
+    periodoActivo === null ? (
+      <PanelProgreso plan={datos.plan} planUsuario={planUsuario} />
+    ) : (
+      <PanelProgreso
+        plan={datos.plan}
+        planUsuario={planUsuario}
+        desde={periodoActivo}
+      />
+    );
+
+  if (ruta.vista === "inicio" || (ruta.vista === "plan" && primerIngreso)) {
+    principal = <PaginaInicio plan={datos.plan} />;
+    lateral = null;
+  } else if (ruta.vista === "progreso") {
+    principal = (
+      <ProgresoConDatos plan={datos.plan} planUsuario={planUsuario} />
+    );
+  } else if (ruta.vista === "materia") {
+    principal = (
+      <PaginaMateria
+        datos={{
+          plan: datos.plan,
+          horarios: datos.horarios,
+          vocabulario: datos.vocabulario,
+          periodoActivo,
+        }}
+        alCambiarComision={(codigo, periodo) => abrirModal({ periodo, codigo })}
+        alPlanificar={() => ir({ vista: "plan" })}
+      />
+    );
+  } else {
+    principal = (
+      <PlanConDatos
+        datos={datos}
+        panelAbierto={panel !== null}
+        alAgregar={abrirPanel}
+        alResolver={(periodo, codigoA, codigoB) =>
+          abrirModal({ periodo, codigo: codigoA, fijada: codigoB })
+        }
+      />
     );
   }
 
-  if (ruta.vista === "materia") {
-    const materia = plan.materias.find(
-      (candidata) => candidata.codigo === ruta.codigo,
-    );
-    return (
-      <Marcador
-        titulo={
-          materia === undefined
-            ? `Materia ${ruta.codigo}`
-            : `${materia.codigo} ${materia.nombre}`
-        }
-        pantalla="13e"
-      >
-        <p>
-          Panel de detalle: correlativas que la habilitan y materias que
-          habilita, horario de la comisión elegida, docentes y cupo. Las tres
-          acciones que importan al pie.
-        </p>
-        {materia === undefined ? (
-          <p className="marcador__dato">
-            {ruta.codigo} no está en el plan cargado.
-          </p>
-        ) : null}
-      </Marcador>
-    );
-  }
+  const horariosDelPanel = panel === null ? null : horariosDe(panel);
+  const horariosDelModal = modal === null ? null : horariosDe(modal.periodo);
+  const nombreDeMateria =
+    modal === null
+      ? undefined
+      : datos.plan.materias.find((materia) => materia.codigo === modal.codigo)
+          ?.nombre;
 
   return (
     <>
-      <Marcador titulo="Carrusel de cuatrimestres" pantalla="13b">
-        <p>
-          La pantalla de trabajo. Dos cuatrimestres enteros con su calendario y
-          el tercero asomando, que es lo que avisa que hay más. Flechas, chips de
-          cuatrimestre y barra de posición; el progreso fijo a la derecha. El
-          cuatrimestre sin horarios usa la misma tarjeta y el mismo alto, con su
-          lista adentro.
-        </p>
-        <LeyendaPeriodo periodo={periodo} />
-      </Marcador>
-      <Marcador titulo="Agregar materia" pantalla="13c">
-        <p>
-          El panel entra a la derecha y el carrusel se angosta a una tarjeta:
-          mientras buscás sigue viéndose dónde va a caer la materia. Las
-          bloqueadas aparecen en los resultados con el motivo.
-        </p>
-      </Marcador>
+      <Disposicion
+        barra={
+          <BarraSuperior
+            carrera={datos.plan.carrera}
+            plan={datos.plan.plan}
+            ruta={ruta}
+            ir={ir}
+            {...(periodoActivo === null
+              ? {}
+              : { onBuscar: () => abrirPanel(periodoActivo) })}
+            onExportar={acciones.exportar}
+            onImportar={acciones.importar}
+            onBorrarTodo={acciones.borrarTodo}
+          />
+        }
+        principal={principal}
+        panel={
+          panel !== null && ruta.vista === "plan" && !primerIngreso ? (
+            <PanelAgregar
+              periodo={panel}
+              plan={datos.plan}
+              abreviaciones={datos.abreviaciones}
+              horarios={horariosDelPanel}
+              alCerrar={cerrarPanel}
+              alElegirComision={(codigo) =>
+                abrirModal({ periodo: panel, codigo })
+              }
+            />
+          ) : (
+            lateral
+          )
+        }
+      />
+      {modal !== null && horariosDelModal !== null ? (
+        <ModalComisiones
+          periodo={modal.periodo}
+          codigo={modal.codigo}
+          {...(modal.fijada === undefined ? {} : { fijada: modal.fijada })}
+          horarios={horariosDelModal}
+          abreviaciones={abreviaciones}
+          nombreDeSede={nombreDeSede}
+          {...(nombreDeMateria === undefined
+            ? {}
+            : { nombre: nombreDeMateria })}
+          alCerrar={cerrarModal}
+        />
+      ) : null}
+      {dialogos}
     </>
-  );
-}
-
-function PanelProgreso({ plan }: { plan: Plan }) {
-  return (
-    <Marcador titulo="Progreso" pantalla="13b">
-      <ul className="marcador__lista">
-        {plan.titulos.map((titulo) => (
-          <li key={titulo.id}>
-            {titulo.nombre}{" "}
-            <span className="marcador__dato">{titulo.creditos} cr</span>
-          </li>
-        ))}
-        <li>
-          Electivas{" "}
-          <span className="marcador__dato">
-            {plan.electivas.creditos_requeridos} cr
-          </span>
-        </li>
-        {plan.minors.map((minor) => (
-          <li key={minor.sigla}>
-            {minor.nombre}{" "}
-            <span className="marcador__dato">
-              {minor.sigla} · {minor.creditos_minimos} cr
-            </span>
-          </li>
-        ))}
-      </ul>
-      <p>
-        Los créditos alcanzados, las electivas acumuladas y el estimado de
-        cuatrimestres los calcula el motor de dominio, que llega en la ola
-        siguiente.
-      </p>
-    </Marcador>
   );
 }
 
 export function App() {
   const { plan: planUsuario } = usePlanUsuario();
-  const { ruta, ir } = useRuta();
+  const { ruta } = useRuta();
   const hoy = useMemo(() => hoyIso(), []);
   const datos = useDatos(planUsuario.plan, hoy);
 
@@ -166,25 +225,5 @@ export function App() {
   if (datos.fase === "error") {
     return <PantallaError error={datos.error} />;
   }
-
-  return (
-    <Disposicion
-      barra={
-        <BarraSuperior
-          carrera={datos.datos.plan.carrera}
-          plan={datos.datos.plan.plan}
-          ruta={ruta}
-          ir={ir}
-        />
-      }
-      principal={
-        <ZonaPrincipal
-          ruta={ruta}
-          plan={datos.datos.plan}
-          periodo={datos.datos.periodo}
-        />
-      }
-      panel={<PanelProgreso plan={datos.datos.plan} />}
-    />
-  );
+  return <Aplicacion datos={datos.datos} />;
 }

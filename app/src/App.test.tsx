@@ -3,7 +3,16 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { App } from "./App";
 import { indiceEjemplo, servidorEjemplo } from "./datos/ejemplo/servidor";
+import { CLAVE_ALMACENAMIENTO } from "./estado/almacenamiento";
 import { ProveedorPlanUsuario } from "./estado/contexto";
+import { exportar, planUsuarioInicial } from "./estado/planUsuario";
+
+/** Deja en localStorage un plan con 72.45 aprobada: ya no es el primer ingreso. */
+function sembrarPlanConHistoria() {
+  const plan = planUsuarioInicial();
+  plan.historia["72.45"] = { estado: "aprobada" };
+  window.localStorage.setItem(CLAVE_ALMACENAMIENTO, exportar(plan));
+}
 
 function montar(opciones?: Parameters<typeof servidorEjemplo>[0]) {
   vi.stubGlobal("fetch", servidorEjemplo(opciones).fetch);
@@ -16,6 +25,8 @@ function montar(opciones?: Parameters<typeof servidorEjemplo>[0]) {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  window.localStorage.clear();
+  window.location.hash = "";
 });
 
 describe("App", () => {
@@ -46,12 +57,25 @@ describe("App", () => {
       "aria-current",
       "page",
     );
-    expect(screen.getByRole("button", { name: "Progreso" })).not.toHaveAttribute(
-      "aria-current",
-    );
+    expect(
+      screen.getByRole("button", { name: "Progreso" }),
+    ).not.toHaveAttribute("aria-current");
   });
 
-  it("tiene las tres regiones de 13b y los controles inertes", async () => {
+  it("sin historia ni plan muestra el primer ingreso (13a) en vez del carrusel", async () => {
+    montar();
+    expect(
+      await screen.findByText("Todavía no hay nada en tu plan"),
+    ).toBeInTheDocument();
+    // El panel derecho existe como región, pero sin progreso: el primer
+    // ingreso no tiene nada que medir todavía.
+    expect(
+      screen.getByRole("complementary", { name: "Progreso" }),
+    ).toBeEmptyDOMElement();
+  });
+
+  it("con historia tiene las tres regiones de 13b; «Sugerir corrección» sigue inerte", async () => {
+    sembrarPlanConHistoria();
     montar();
     await waitFor(() => {
       expect(
@@ -59,21 +83,18 @@ describe("App", () => {
       ).toBeInTheDocument();
     });
 
-    expect(screen.getByRole("banner")).toBeInTheDocument();
+    expect(screen.getAllByRole("banner").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByRole("main")).toBeInTheDocument();
     expect(
-      screen.getByRole("complementary", { name: "Progreso" }),
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByLabelText("Buscar materia, código o docente"),
-    ).toBeDisabled();
+      await screen.findByRole("complementary", { name: "Progreso" }),
+    ).not.toBeEmptyDOMElement();
     expect(
       screen.getByRole("button", { name: "Sugerir corrección" }),
     ).toBeDisabled();
   });
 
   it("lista los títulos, las electivas y los minors del plan cargado", async () => {
+    sembrarPlanConHistoria();
     montar();
     const panel = await screen.findByRole("complementary", {
       name: "Progreso",
@@ -113,7 +134,7 @@ describe("App", () => {
     window.location.hash = "#/materia/72.45";
     montar();
     expect(
-      await screen.findByRole("heading", { name: "72.45 Proyecto Final" }),
+      await screen.findByRole("heading", { name: /72\.45 · Proyecto Final/ }),
     ).toBeInTheDocument();
   });
 

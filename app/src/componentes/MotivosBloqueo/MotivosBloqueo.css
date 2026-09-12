@@ -1,0 +1,138 @@
+/*
+ * Medidas de 13f: tarjeta blanca de 12 px, tarjeta rayada de 10 px con el
+ * gradiente de «bloqueada» de tokens.md, caja «POR QUÉ» con una fila por motivo
+ * y la caja de salida con contorno de 1.5 px.
+ *
+ * El verde de la caja de salida es el color de materia 9 (`--materia-8`), el
+ * mismo que `tokens.md` le da al glifo ✓; el relleno se arma con `color-mix`
+ * sobre la superficie en vez de un #F2F5EC que no es un token.
+ */
+
+.bloqueo {
+  box-sizing: border-box;
+  padding: 12px;
+  border: var(--borde-tarjeta);
+  border-radius: var(--radio-tarjeta);
+  background: var(--superficie);
+}
+
+.bloqueo__titulo {
+  margin: 0 0 9px;
+  font-family: var(--fuente-texto);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+/* Trama de materia bloqueada (tokens.md, «Estados»). */
+.bloqueo__materia {
+  padding: 10px;
+  border: 1px solid var(--sin-horario-borde);
+  border-radius: 5px;
+  background: var(--bloqueada-trama);
+}
+
+.bloqueo__linea {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.bloqueo__nombre {
+  font-family: var(--fuente-texto);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.bloqueo__estado {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin: 5px 0 0;
+  font-family: var(--fuente-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.bloqueo__porque {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid var(--linea-columna);
+  border-radius: 5px;
+}
+
+.bloqueo__rotulo {
+  margin: 0 0 7px;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.bloqueo__filas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bloqueo__fila {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 4px 0;
+  border-top: 1px solid var(--sin-horario-fondo);
+}
+
+.bloqueo__glifo {
+  flex: none;
+  width: 12px;
+}
+
+.bloqueo__que {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  color: var(--texto);
+}
+
+.bloqueo__como {
+  flex: none;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto-secundario);
+}
+
+.bloqueo__sin-salida {
+  margin: 9px 0 0;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  color: var(--texto-secundario);
+}
+
+.bloqueo__salida {
+  margin-top: 9px;
+  padding: 7px 9px;
+  border: 1.5px solid var(--materia-8);
+  border-radius: var(--radio-chip);
+  background: color-mix(in srgb, var(--materia-8) 10%, var(--superficie));
+}
+
+.bloqueo__salida-titulo {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--texto);
+}
+
+.bloqueo__salida-detalle {
+  margin: 2px 0 7px;
+  font-family: var(--fuente-texto);
+  font-size: 10px;
+  line-height: 1.45;
+  color: var(--texto-secundario);
+}

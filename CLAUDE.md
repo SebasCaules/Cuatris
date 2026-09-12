@@ -113,19 +113,27 @@ schemas/v1/   JSON Schema draft-07                 tests/          corpus anonim
 docs/         contrato, scraping-sga, runbook    .github/        workflows y CODEOWNERS
 ```
 
-## Comandos previstos
+## Comandos
 
-Actualizar esta sección al implementar cada uno; hasta entonces son el contrato de la CLI.
+Entorno: `.venv/bin/python` (crear con `python3 -m venv .venv && .venv/bin/pip install
+--no-index --find-links vendor -r vendor/requisitos.txt && .venv/bin/pip install --no-index
+--no-build-isolation --no-deps -e tools && .venv/bin/pip install ruff==0.16.7`).
 
 ```
-cuatris fmt | validar                 forma canónica y capas C1–C5
-cuatris plan importar                 Excel + SGA → planes/S10-Rev23.json
-cuatris abreviaciones exportar|importar
-cuatris pdf parsear <archivo>         PDF de materia → catalogo/<codigo>.json
-cuatris sga bajar --anio --cuatrimestre   scraper local, reanudable
-cuatris editar horario …              corrección puntual, diff mínimo
-cuatris historia ver|revertir|consolidar
+cuatris fmt [--check] <json…>                   forma canónica
+cuatris validar [--data data] <json…>           C1 triage, C2 schema, C3 invariantes
+cuatris plan importar --excel … --sga … --titulos … --creditos-decididos 72.23=6 --creditos-decididos 72.70=3 --salida data/v1/planes/S10-Rev23.json
+cuatris abreviaciones importar|exportar         CSV curado ↔ abreviaciones.json
+cuatris sga bajar --anio 2026 --cuatrimestre 2C --salida data/v1/horarios/2026-2C.json [--limite 3]
+cuatris indice actualizar --data data           hashes y entradas nuevas de index.json
+cuatris pr triage --base <ref> --head <ref>     clase del PR (DATOS / necesita-humano)
+cuatris guardarrailes [.github/workflows]       reglas de seguridad de los workflows
 ```
+
+Tests y lint: `.venv/bin/python -m pytest tests/tools -q` · `.venv/bin/ruff check tools tests`.
+App (`cd app`): `npm ci` · `npm run dev` (sirve `../data` bajo `/data/`) · `npm run typecheck`
+· `npm run lint` · `npm test -- --run` · `npm run build` (`VITE_BASE=/Cuatris/` en Pages).
+Muestrario de componentes: `#/muestrario`.
 
 ## Cuando vuelva Claude Design
 
