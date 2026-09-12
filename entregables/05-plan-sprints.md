@@ -87,7 +87,7 @@ Huecos del mockup, resueltos con una decisión mínima en el sprint indicado:
 
 | Hueco | Decisión | Sprint |
 |---|---|---|
-| Flujo «marcar materias a mano» | Lista del plan por año/cuatrimestre con casillas; el cuatrimestre sugerido ordena | 1 |
+| Flujo «marcar materias a mano» | **Reformulado (2026-09-12):** la pestaña «Plan» es el plan de estudios interactivo (años → cuatrimestres → materias) con un control propio de cuatro estados (final, cursada, cursando, pendiente) y marcado de años y cuatrimestres enteros; el carrusel de 13b pasa a la pestaña «Cursada» | 1 |
 | Qué abre «Resolver» | 13d para la primera materia del par, con la otra fijada | 1 |
 | «Mover a otro cuatrimestre» | Selector de período en la ficha; sin arrastrar | 2 |
 | Copia de seguridad del plan | Exportar/importar JSON desde la barra: «todo queda en este navegador» exige una salida | 1 |

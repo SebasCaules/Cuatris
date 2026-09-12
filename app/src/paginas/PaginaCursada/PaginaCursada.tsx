@@ -1,5 +1,9 @@
 /**
- * Pantalla de trabajo (13b, con 13g y 13h adentro).
+ * Pestaña «Cursada» (13b, con 13g y 13h adentro).
+ *
+ * Es la pantalla de trabajo: el carrusel de cuatrimestres con sus horarios. Lo
+ * que se aprobó no se marca acá —eso pasó a la pestaña «Plan» (R1)—; acá se
+ * arma la cursada que viene.
  *
  * El carrusel muestra un cuatrimestre por tarjeta. El único que tiene grilla es
  * el que tiene archivo de horarios publicado —el activo o el de vista previa—;
@@ -19,7 +23,7 @@ import {
   PantallaError,
 } from "../../componentes/PantallaEstado";
 import { TarjetaCuatrimestre } from "../../componentes/TarjetaCuatrimestre";
-import { Boton } from "../../componentes/primitivas";
+import { Boton, Nota } from "../../componentes/primitivas";
 import type {
   Codigo,
   Dia,
@@ -48,7 +52,7 @@ import {
   periodosDelCarrusel,
   resumenDelPeriodo,
 } from "./armado";
-import "./PaginaPlan.css";
+import "./PaginaCursada.css";
 
 /** Escala de la grilla: 18 px/h con una tarjeta sola, 15 con dos o tres. */
 const HORA_PX_SOLA = 18;
@@ -56,7 +60,7 @@ const HORA_PX_ACOMPANADA = 15;
 
 const VISIBLES: readonly Visibles[] = [1, 2, 3];
 
-export interface PropsPaginaPlan {
+export interface PropsPaginaCursada {
   /**
    * El panel lateral de «Agregar materia» está abierto (13c). El carrusel no
    * cambia de tamaño por eso —13c conserva sus dos tarjetas al lado del panel
@@ -68,21 +72,6 @@ export interface PropsPaginaPlan {
   alAgregar?: (periodo: PeriodoId) => void;
   /** «Resolver» un choque: abre 13d para la primera materia del par. */
   alResolver?: (periodo: PeriodoId, codigoA: Codigo, codigoB: Codigo) => void;
-}
-
-function Vacio() {
-  return (
-    <section className="plan-vacio">
-      <h2 className="plan-vacio__titulo">Todavía no hay nada en tu plan</h2>
-      <p className="plan-vacio__detalle">
-        Para empezar necesito saber qué aprobaste. Todo queda en este navegador:
-        no hay cuenta ni servidor.
-      </p>
-      <a className="plan-vacio__enlace" href="#/inicio">
-        Cargar tu historia académica
-      </a>
-    </section>
-  );
 }
 
 /**
@@ -125,14 +114,14 @@ export function reglaDeResaltado(cambio: CambioDeSede | null): string | null {
         `${lado.bloque.hasta}`,
     );
     return (
-      `.plan--resaltando .grilla__bloque[aria-label^="${prefijo}"]` +
+      `.cursada--resaltando .grilla__bloque[aria-label^="${prefijo}"]` +
       `[aria-label*="${franja}"]`
     );
   });
   return `${selectores.join(",")}{outline:2px solid var(--choque);outline-offset:1px;}`;
 }
 
-export interface PropsPlanConDatos extends PropsPaginaPlan {
+export interface PropsCursadaConDatos extends PropsPaginaCursada {
   datos: DatosCargados;
   /** Hoy, para saber en qué cuatrimestre estamos si el índice no lo dice. */
   hoy?: Fecha;
@@ -143,14 +132,14 @@ function claveDelCambio(cambio: CambioDeSede): string {
   return `${cambio.dia}-${cambio.hora}-${cambio.a.codigo}-${cambio.b.codigo}`;
 }
 
-/** 13b con los datos ya cargados. `PaginaPlan` es esto más la carga. */
-export function PlanConDatos({
+/** 13b con los datos ya cargados. `PaginaCursada` es esto más la carga. */
+export function CursadaConDatos({
   datos,
   hoy,
   panelAbierto = false,
   alAgregar,
   alResolver,
-}: PropsPlanConDatos) {
+}: PropsCursadaConDatos) {
   const { plan: planUsuario, despachar } = usePlanUsuario();
   const { plan, abreviaciones, vocabulario, indice, periodo, horarios } = datos;
 
@@ -202,11 +191,13 @@ export function PlanConDatos({
     [plan, abreviaciones],
   );
 
+  /*
+   * Sin nada aprobado el carrusel igual se dibuja: R1 sacó la pantalla vacía
+   * que tapaba 13b. Lo que se avisa es que las reglas que dan sentido a esta
+   * pantalla —choques, correlativas, créditos— se calculan sobre lo aprobado,
+   * y eso se marca en la pestaña «Plan».
+   */
   const sinHistoria = Object.keys(planUsuario.historia).length === 0;
-  const sinPeriodos = Object.keys(planUsuario.periodos).length === 0;
-  if (sinHistoria && sinPeriodos) {
-    return <Vacio />;
-  }
 
   const enCurso = seleccionado ?? periodos[0] ?? null;
   const visibles: Visibles = planUsuario.preferencias.visibles;
@@ -329,14 +320,26 @@ export function PlanConDatos({
   }
 
   return (
-    <div className={`plan${resaltado === null ? "" : " plan--resaltando"}`}>
+    <div className={`cursada${resaltado === null ? "" : " cursada--resaltando"}`}>
       {regla === null ? null : <style>{regla}</style>}
+
+      {sinHistoria ? (
+        <div className="cursada__aviso">
+          <Nota variante="caja">
+            Todavía no marcaste nada en el Plan: los choques y correlativas se
+            calculan sobre lo aprobado.{" "}
+            <a className="cursada__aviso-enlace" href="#/plan">
+              Ir al plan
+            </a>
+          </Nota>
+        </div>
+      ) : null}
 
       {/* El contenedor solo existe si el banner va a dibujar algo: con cero
           choques `BannerConflictos` devuelve `null` y un div vacío dejaba un
           hueco arriba del carrusel que 13b no tiene. */}
       {activo === null || conflictos.choques.length === 0 ? null : (
-        <div className="plan__banner">
+        <div className="cursada__banner">
           <BannerConflictos
             periodo={activo}
             choques={conflictos.choques}
@@ -359,9 +362,9 @@ export function PlanConDatos({
         visibles={visibles}
         onMover={setSeleccionado}
         acciones={
-          <div className="plan__acciones">
+          <div className="cursada__acciones">
             <div
-              className="plan__visibles"
+              className="cursada__visibles"
               role="group"
               aria-label="Cuatrimestres visibles"
             >
@@ -369,8 +372,8 @@ export function PlanConDatos({
                 <button
                   type="button"
                   key={cuantos}
-                  className={`plan__visible${
-                    cuantos === visibles ? " plan__visible--activo" : ""
+                  className={`cursada__visible${
+                    cuantos === visibles ? " cursada__visible--activo" : ""
                   }`}
                   aria-pressed={cuantos === visibles}
                   onClick={() => {
@@ -403,7 +406,7 @@ export function PlanConDatos({
 }
 
 /** 13b completa: carga los datos publicados y dibuja el carrusel. */
-export function PaginaPlan(props: PropsPaginaPlan) {
+export function PaginaCursada(props: PropsPaginaCursada) {
   const { plan: planUsuario } = usePlanUsuario();
   const hoy = useMemo(() => hoyIso(), []);
   const datos = useDatos(planUsuario.plan, hoy);
@@ -414,5 +417,5 @@ export function PaginaPlan(props: PropsPaginaPlan) {
   if (datos.fase === "error") {
     return <PantallaError error={datos.error} />;
   }
-  return <PlanConDatos datos={datos.datos} {...props} />;
+  return <CursadaConDatos datos={datos.datos} {...props} />;
 }

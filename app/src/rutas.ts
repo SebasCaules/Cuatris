@@ -2,7 +2,8 @@
  * Enrutado por hash.
  *
  * GitHub Pages no reescribe rutas, así que la SPA vive entera en el fragmento:
- * `#/plan`, `#/progreso`, `#/materia/<codigo>`. Nada de react-router.
+ * `#/plan`, `#/cursada`, `#/progreso`, `#/materia/<codigo>`. Nada de
+ * react-router.
  */
 
 import { useCallback, useEffect, useState } from "react";
@@ -12,7 +13,10 @@ import type { Codigo } from "./contrato/tipos";
 const CODIGO = /^\d{2}\.\d{2}$/;
 
 export type Ruta =
+  /** Plan de estudios completo: años, cuatrimestres y lo que ya se aprobó. */
   | { vista: "plan" }
+  /** El carrusel de cuatrimestres con horarios (13b). */
+  | { vista: "cursada" }
   | { vista: "progreso" }
   | { vista: "materia"; codigo: Codigo }
   | { vista: "inicio" }
@@ -34,6 +38,9 @@ export function parsearRuta(hash: string): Ruta {
   const primera = partes[0];
   if (primera === "plan" && partes.length === 1) {
     return { vista: "plan" };
+  }
+  if (primera === "cursada" && partes.length === 1) {
+    return { vista: "cursada" };
   }
   if (primera === "progreso" && partes.length === 1) {
     return { vista: "progreso" };
@@ -58,6 +65,8 @@ export function rutaAHash(ruta: Ruta): string {
   switch (ruta.vista) {
     case "plan":
       return "#/plan";
+    case "cursada":
+      return "#/cursada";
     case "progreso":
       return "#/progreso";
     case "materia":

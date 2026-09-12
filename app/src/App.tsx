@@ -26,7 +26,8 @@ import { usePlanUsuario } from "./estado/contexto";
 import { Muestrario } from "./paginas/Muestrario";
 import { PaginaInicio } from "./paginas/PaginaInicio";
 import { PaginaMateria } from "./paginas/PaginaMateria";
-import { PlanConDatos } from "./paginas/PaginaPlan";
+import { CursadaConDatos } from "./paginas/PaginaCursada";
+import { PlanDeEstudiosConDatos } from "./paginas/PaginaPlanDeEstudios";
 import { ProgresoConDatos } from "./paginas/PaginaProgreso";
 import { useRuta } from "./rutas";
 import "./App.css";
@@ -47,17 +48,6 @@ interface ModalAbierto {
 interface PanelAbierto {
   periodo: PeriodoId;
   consulta: string;
-}
-
-/** El plan del usuario todavía no tiene nada: es el primer ingreso (13a). */
-function esPrimerIngreso(
-  historia: object,
-  periodos: Record<string, unknown[]>,
-): boolean {
-  if (Object.keys(historia).length > 0) {
-    return false;
-  }
-  return Object.values(periodos).every((materias) => materias.length === 0);
 }
 
 function nombreDeSedeDe(datos: DatosCargados): (id: string) => string {
@@ -87,12 +77,14 @@ function Aplicacion({ datos }: { datos: DatosCargados }) {
     [datos.horarios],
   );
 
+  // Agregar una materia es armar la cursada: el panel vive en `#/cursada`, y
+  // buscar desde cualquier otra pestaña lleva hasta ahí.
   const abrirPanel = useCallback(
     (periodo: PeriodoId, consulta = "") => {
       setModal(null);
       setPanel({ periodo, consulta });
-      if (ruta.vista !== "plan") {
-        ir({ vista: "plan" });
+      if (ruta.vista !== "cursada") {
+        ir({ vista: "cursada" });
       }
     },
     [ir, ruta.vista],
@@ -113,11 +105,6 @@ function Aplicacion({ datos }: { datos: DatosCargados }) {
   const cerrarModal = useCallback(() => setModal(null), []);
   const cerrarPanel = useCallback(() => setPanel(null), []);
 
-  const primerIngreso = esPrimerIngreso(
-    planUsuario.historia,
-    planUsuario.periodos,
-  );
-
   let principal: ReactNode;
   let lateral: ReactNode =
     periodoActivo === null ? (
@@ -130,11 +117,23 @@ function Aplicacion({ datos }: { datos: DatosCargados }) {
       />
     );
 
-  if (ruta.vista === "inicio" || (ruta.vista === "plan" && primerIngreso)) {
+  /*
+   * R1: `#/plan` siempre muestra el plan de estudios. Antes, con el plan vacío,
+   * la ruta se desviaba al primer ingreso y no había forma de ver el plan hasta
+   * marcar algo; ahora el primer ingreso es una pantalla más, en `#/inicio`.
+   */
+  if (ruta.vista === "inicio") {
     principal = (
       <PaginaInicio plan={datos.plan} alImportar={acciones.importar} />
     );
     lateral = null;
+  } else if (ruta.vista === "plan") {
+    principal = (
+      <PlanDeEstudiosConDatos
+        plan={datos.plan}
+        abreviaciones={datos.abreviaciones}
+      />
+    );
   } else if (ruta.vista === "progreso") {
     principal = (
       <ProgresoConDatos plan={datos.plan} planUsuario={planUsuario} />
@@ -152,12 +151,12 @@ function Aplicacion({ datos }: { datos: DatosCargados }) {
           periodoActivo,
         }}
         alCambiarComision={(codigo, periodo) => abrirModal({ periodo, codigo })}
-        alPlanificar={() => ir({ vista: "plan" })}
+        alPlanificar={() => ir({ vista: "cursada" })}
       />
     );
   } else {
     principal = (
-      <PlanConDatos
+      <CursadaConDatos
         datos={datos}
         panelAbierto={panel !== null}
         alAgregar={abrirPanel}
@@ -182,7 +181,7 @@ function Aplicacion({ datos }: { datos: DatosCargados }) {
    * nombres en tres líneas y el cuatrimestre destino se veía peor, no mejor.
    */
   const panelAgregar =
-    panel !== null && ruta.vista === "plan" && !primerIngreso ? (
+    panel !== null && ruta.vista === "cursada" ? (
       <PanelAgregar
         periodo={panel.periodo}
         consulta={panel.consulta}

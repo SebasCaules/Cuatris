@@ -39,8 +39,16 @@ import {
   SIN_HORARIO,
 } from "../componentes/GrillaSemanal/ejemplo";
 import { ListaConflictos } from "../componentes/ListaConflictos";
+import {
+  DESCRIPCION_MARCA,
+  MarcaMateria,
+  type EstadoMarca,
+} from "../componentes/MarcaMateria";
+import { TarjetaAnio } from "../componentes/TarjetaAnio";
+import { COLUMNAS_ANIO_1 } from "../componentes/TarjetaAnio/ejemplo";
 import { TarjetaCuatrimestre } from "../componentes/TarjetaCuatrimestre";
 import {
+  BarraProgreso,
   Boton,
   Campo,
   Chip,
@@ -51,7 +59,7 @@ import {
   NOMBRES_GLIFO,
   PanelLateral,
 } from "../componentes/primitivas";
-import type { PeriodoId, Visibles } from "../contrato/tipos";
+import type { Codigo, PeriodoId, Visibles } from "../contrato/tipos";
 import type { Ruta } from "../rutas";
 import "./Muestrario.css";
 
@@ -131,6 +139,81 @@ function Seccion({
 
 function Fila({ children }: { children: ReactNode }) {
   return <div className="muestrario__fila">{children}</div>;
+}
+
+/** Los cuatro estados de la marca, en el orden en que los recorre el clic. */
+const ESTADOS_MARCA: readonly EstadoMarca[] = [
+  "pendiente",
+  "final",
+  "cursada",
+  "cursando",
+];
+
+/**
+ * La pestaña «Plan» en chico: la marca en sus cuatro estados, la barra en tres
+ * llenados y una `TarjetaAnio` completa con el año 1 del plan real.
+ *
+ * Tiene estado propio porque la tarjeta no lo guarda: así se puede ciclar una
+ * materia acá mismo y ver los cuatro aspectos sin montar el plan del usuario.
+ */
+function SeccionPlanDeEstudios() {
+  const [estados, setEstados] = useState<Record<Codigo, EstadoMarca>>({
+    "31.08": "final",
+    "72.03": "cursada",
+    "93.26": "cursando",
+  });
+
+  const marcar = (codigos: readonly Codigo[], estado: EstadoMarca) => {
+    setEstados((antes) => {
+      const salida = { ...antes };
+      for (const codigo of codigos) {
+        salida[codigo] = estado;
+      }
+      return salida;
+    });
+  };
+
+  return (
+    <Seccion titulo="Plan de estudios" pantalla="R1">
+      <Fila>
+        {ESTADOS_MARCA.map((estado) => (
+          <div className="muestrario__marca" key={estado}>
+            <MarcaMateria
+              codigo="31.08"
+              nombre="Sistemas de Representación"
+              estado={estado}
+              alCambiar={() => undefined}
+            />
+            <p className="muestrario__dato">{DESCRIPCION_MARCA[estado]}</p>
+          </div>
+        ))}
+      </Fila>
+
+      <div className="muestrario__barras">
+        {[0, 50, 100].map((porcentaje) => (
+          <div className="muestrario__barra" key={porcentaje}>
+            <BarraProgreso
+              valor={porcentaje}
+              maximo={100}
+              etiqueta={`Ejemplo al ${porcentaje} %`}
+            />
+            <p className="muestrario__dato">{porcentaje} %</p>
+          </div>
+        ))}
+      </div>
+
+      <TarjetaAnio
+        titulo="Año 1"
+        ciclo="CICLO BÁSICO"
+        columnas={COLUMNAS_ANIO_1}
+        estadoDe={(codigo) => estados[codigo] ?? "pendiente"}
+        alCambiar={(codigo, siguiente) => {
+          marcar([codigo], siguiente);
+        }}
+        alMarcarVarias={marcar}
+      />
+    </Seccion>
+  );
 }
 
 export function Muestrario() {
@@ -542,6 +625,8 @@ export function Muestrario() {
           }
         />
       </Seccion>
+
+      <SeccionPlanDeEstudios />
     </div>
   );
 }

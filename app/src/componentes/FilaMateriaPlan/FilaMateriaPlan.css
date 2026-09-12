@@ -1,0 +1,52 @@
+/* Filas de ~60 px de la captura: marca, código, nombre y créditos a la derecha. */
+.fila-materia-plan {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  padding: 6px 8px;
+  border-radius: var(--radio-chip);
+  list-style: none;
+}
+
+.fila-materia-plan:hover {
+  /* Resaltado suave: la misma arena del fondo sobre la superficie blanca. */
+  background: color-mix(in srgb, var(--fondo) 60%, var(--superficie));
+}
+
+.fila-materia-plan__codigo {
+  flex: 0 0 auto;
+  min-width: 38px;
+  color: var(--texto-secundario);
+}
+
+.fila-materia-plan__nombre {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--fuente-texto);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.fila-materia-plan__nombre:hover,
+.fila-materia-plan__nombre:focus-visible {
+  color: var(--acento);
+  text-decoration: underline;
+}
+
+.fila-materia-plan__minors {
+  flex: 0 0 auto;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.fila-materia-plan__creditos {
+  flex: 0 0 auto;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto-secundario);
+  white-space: nowrap;
+}

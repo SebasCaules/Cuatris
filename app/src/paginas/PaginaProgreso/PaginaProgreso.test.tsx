@@ -11,7 +11,7 @@ import { PLAN } from "../../motor/fixtures/reales";
 import {
   planConElectivas,
   planDePrueba,
-} from "../PaginaPlan/escenario";
+} from "../PaginaCursada/escenario";
 import { electivasQueFaltan, pieDelTitulo, ProgresoConDatos } from "./PaginaProgreso";
 
 describe("pieDelTitulo", () => {

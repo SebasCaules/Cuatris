@@ -48,6 +48,14 @@
   --materia-8: #5f7a4a;
   --materia-9: #4a4f55;
 
+  /* Verde de «aprobada» del plan de estudios (R1: la marca de la pestaña
+     «Plan»). No es un color nuevo: es `--materia-6` (#2F7A6A), el único verde
+     de la paleta 4a, elegido porque la captura de referencia usa exactamente
+     ese rol. Se le da nombre propio porque acá el verde significa un estado, no
+     identifica a una materia, y los dos usos tienen que poder moverse aparte. */
+  --aprobada: #2f7a6a;
+  --aprobada-texto: #ffffff;
+
   /* Mezclas del bloque en la grilla (tokens.md: barra 3 px + relleno 14 %) */
   --materia-relleno-porcentaje: 14%;
   --materia-relleno-base: var(--superficie);
@@ -95,6 +103,11 @@
       #2e2c29 0 3px,
       #26241f 3px 6px
     );
+    /* «Aprobada» en oscuro: el mismo matiz (168°) con la luminosidad subida,
+       como hace tokens.md con los colores de materia; el texto de adentro pasa
+       al fondo oscuro para no perder contraste contra el verde claro. */
+    --aprobada: #5abfa9;
+    --aprobada-texto: #17161a;
     /* Mismo matiz aclarado un 62 % para la barra; el relleno sube al 34 %. */
     --materia-relleno-porcentaje: 34%;
     --materia-relleno-base: var(--superficie);
@@ -123,6 +136,8 @@
     #2e2c29 0 3px,
     #26241f 3px 6px
   );
+  --aprobada: #5abfa9;
+  --aprobada-texto: #17161a;
   --materia-relleno-porcentaje: 34%;
   --materia-relleno-base: var(--superficie);
   --borde-tarjeta: 1px solid rgba(255, 255, 255, 0.12);

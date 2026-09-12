@@ -161,6 +161,109 @@ describe("reducir", () => {
     expect(aprobada.periodos).toBe(conPlan.periodos);
   });
 
+  /*
+   * R1: cuatro estados por materia y un control que cicla. El reducer tiene que
+   * saber ir a cada uno y volver a «pendiente», que es la ausencia de entrada.
+   */
+  it("marcarEstado recorre los cuatro estados y vuelve a pendiente", () => {
+    let estado = planUsuarioInicial();
+
+    estado = reducir(estado, {
+      tipo: "marcarEstado",
+      codigo: "93.18",
+      estado: "aprobada",
+    });
+    expect(estado.historia["93.18"]).toEqual({ estado: "aprobada" });
+
+    estado = reducir(estado, {
+      tipo: "marcarEstado",
+      codigo: "93.18",
+      estado: "regular",
+    });
+    expect(estado.historia["93.18"]).toEqual({ estado: "regular" });
+
+    estado = reducir(estado, {
+      tipo: "marcarEstado",
+      codigo: "93.18",
+      estado: "cursando",
+    });
+    expect(estado.historia["93.18"]).toEqual({ estado: "cursando" });
+
+    estado = reducir(estado, {
+      tipo: "marcarEstado",
+      codigo: "93.18",
+      estado: null,
+    });
+    expect(estado.historia).not.toHaveProperty("93.18");
+  });
+
+  it("marcarEstado en aprobada limpia los períodos; regular y cursando no", () => {
+    const conPlan = conMaterias(["93.18", "72.44"]);
+
+    const regular = reducir(conPlan, {
+      tipo: "marcarEstado",
+      codigo: "93.18",
+      estado: "regular",
+    });
+    expect(regular.periodos["2026-2C"]).toEqual([
+      { codigo: "93.18" },
+      { codigo: "72.44" },
+    ]);
+
+    const cursando = reducir(regular, {
+      tipo: "marcarEstado",
+      codigo: "93.18",
+      estado: "cursando",
+    });
+    expect(cursando.periodos["2026-2C"]).toEqual([
+      { codigo: "93.18" },
+      { codigo: "72.44" },
+    ]);
+
+    const aprobada = reducir(cursando, {
+      tipo: "marcarEstado",
+      codigo: "93.18",
+      estado: "aprobada",
+    });
+    expect(aprobada.periodos["2026-2C"]).toEqual([{ codigo: "72.44" }]);
+  });
+
+  it("marcarVarias escribe todas en una sola transición y limpia los períodos", () => {
+    const conPlan = conMaterias(["93.18", "72.44"]);
+    const marcadas = reducir(conPlan, {
+      tipo: "marcarVarias",
+      codigos: ["93.18", "72.44", "31.08"],
+      estado: "aprobada",
+    });
+    expect(marcadas.historia).toEqual({
+      "93.18": { estado: "aprobada" },
+      "72.44": { estado: "aprobada" },
+      "31.08": { estado: "aprobada" },
+    });
+    expect(marcadas.periodos["2026-2C"]).toEqual([]);
+  });
+
+  it("marcarVarias con null desmarca y no toca lo que no nombra", () => {
+    const marcadas = reducir(planUsuarioInicial(), {
+      tipo: "marcarVarias",
+      codigos: ["93.18", "72.44"],
+      estado: "aprobada",
+    });
+    const desmarcadas = reducir(marcadas, {
+      tipo: "marcarVarias",
+      codigos: ["93.18"],
+      estado: null,
+    });
+    expect(desmarcadas.historia).toEqual({ "72.44": { estado: "aprobada" } });
+  });
+
+  it("marcarVarias sin códigos devuelve el mismo estado", () => {
+    const antes = conMaterias(["93.18"]);
+    expect(
+      reducir(antes, { tipo: "marcarVarias", codigos: [], estado: "aprobada" }),
+    ).toBe(antes);
+  });
+
   it("setVisibles cambia la preferencia del carrusel", () => {
     const estado = reducir(planUsuarioInicial(), {
       tipo: "setVisibles",

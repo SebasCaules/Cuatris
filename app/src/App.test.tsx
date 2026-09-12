@@ -63,7 +63,34 @@ describe("App", () => {
     ).not.toHaveAttribute("aria-current");
   });
 
-  it("sin historia ni plan muestra el primer ingreso (13a) en vez del carrusel", async () => {
+  /**
+   * R1: `#/plan` ya no desvía a nadie. Antes, con la historia vacía, la ruta
+   * por defecto se cambiaba por el primer ingreso y no había forma de mirar el
+   * plan de estudios sin marcar algo primero.
+   */
+  it("sin historia, la ruta por defecto muestra el plan de estudios", async () => {
+    montar();
+    // El plan de ejemplo del servidor de pruebas tiene una sola obligatoria,
+    // 72.45 Proyecto Final, sugerida en el 9.º cuatrimestre: año 5.
+    expect(
+      await screen.findByRole("region", { name: "Año 5" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Electivas" })).toBeInTheDocument();
+    expect(
+      screen.queryByText("Todavía no hay nada en tu plan"),
+    ).not.toBeInTheDocument();
+    // El panel derecho acompaña al plan: es la misma cuenta que se está tocando.
+    expect(
+      screen.getByRole("complementary", { name: "Progreso" }),
+    ).toBeInTheDocument();
+    // Y la nota que dice por dónde empezar, con el atajo de pegar la historia.
+    expect(
+      screen.getByText(/Marcá lo que ya aprobaste/),
+    ).toBeInTheDocument();
+  });
+
+  it("el primer ingreso (13a) vive en #/inicio y no trae panel derecho", async () => {
+    window.location.hash = "#/inicio";
     montar();
     expect(
       await screen.findByText("Todavía no hay nada en tu plan"),
@@ -72,6 +99,24 @@ describe("App", () => {
     expect(
       screen.queryByRole("complementary", { name: "Progreso" }),
     ).not.toBeInTheDocument();
+  });
+
+  it("la pestaña Cursada queda marcada con #/cursada y muestra el carrusel", async () => {
+    sembrarPlanConHistoria();
+    window.location.hash = "#/cursada";
+    montar();
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Cursada" })).toHaveAttribute(
+        "aria-current",
+        "page",
+      );
+    });
+    expect(
+      screen.getByRole("region", { name: "Cuatrimestres" }),
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByRole("complementary", { name: "Progreso" }),
+    ).toBeInTheDocument();
   });
 
   it("con historia tiene las tres regiones de 13b; «Sugerir corrección» sigue inerte", async () => {
@@ -197,6 +242,7 @@ describe("App", () => {
    * el foco desaparecía dos veces en puntos sin nada visible.
    */
   it("en el primer ingreso hay un solo selector de archivo, fuera del Tab", async () => {
+    window.location.hash = "#/inicio";
     montar();
     expect(
       await screen.findByText("Todavía no hay nada en tu plan"),
@@ -340,8 +386,9 @@ describe("App · plan guardado ilegible", () => {
       expect(empezar).toBeEnabled();
       await usuario.click(empezar);
 
+      // Se empieza en el plan de estudios, que es la ruta por defecto (R1).
       expect(
-        await screen.findByText("Todavía no hay nada en tu plan"),
+        await screen.findByRole("region", { name: "Año 5" }),
       ).toBeInTheDocument();
     } finally {
       HTMLAnchorElement.prototype.click = clicOriginal;

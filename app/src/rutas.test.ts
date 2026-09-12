@@ -4,8 +4,9 @@ import { describe, expect, it } from "vitest";
 import { navegar, parsearRuta, rutaAHash, useRuta } from "./rutas";
 
 describe("parsearRuta", () => {
-  it("reconoce las tres vistas", () => {
+  it("reconoce todas las vistas", () => {
     expect(parsearRuta("#/plan")).toEqual({ vista: "plan" });
+    expect(parsearRuta("#/cursada")).toEqual({ vista: "cursada" });
     expect(parsearRuta("#/progreso")).toEqual({ vista: "progreso" });
     expect(parsearRuta("#/muestrario")).toEqual({ vista: "muestrario" });
     expect(parsearRuta("#/inicio")).toEqual({ vista: "inicio" });
@@ -25,6 +26,7 @@ describe("parsearRuta", () => {
   it("cae en el plan ante algo desconocido", () => {
     expect(parsearRuta("#/inventada")).toEqual({ vista: "plan" });
     expect(parsearRuta("#/plan/de más")).toEqual({ vista: "plan" });
+    expect(parsearRuta("#/cursada/de más")).toEqual({ vista: "plan" });
     expect(parsearRuta("#/materia")).toEqual({ vista: "plan" });
   });
 
@@ -39,6 +41,7 @@ describe("rutaAHash", () => {
   it("es la vuelta de parsearRuta", () => {
     const rutas = [
       { vista: "plan" },
+      { vista: "cursada" },
       { vista: "progreso" },
       { vista: "materia", codigo: "93.18" },
     ] as const;

@@ -46,6 +46,31 @@ describe("BarraSuperior", () => {
     expect(ir).toHaveBeenCalledWith({ vista: "progreso" });
   });
 
+  /** R1: son tres pestañas, en este orden, y «Cursada» es el carrusel. */
+  it("tiene las pestañas Plan · Cursada · Progreso, en ese orden", async () => {
+    const usuario = userEvent.setup();
+    const ir = vi.fn();
+    montar({ ir, ruta: { vista: "cursada" } });
+
+    const pestanas = screen.getByRole("navigation", { name: "Secciones" });
+    expect(
+      [...pestanas.querySelectorAll("button")].map((boton) => boton.textContent),
+    ).toEqual(["Plan", "Cursada", "Progreso"]);
+
+    expect(screen.getByRole("button", { name: "Cursada" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    expect(screen.getByRole("button", { name: "Plan" })).not.toHaveAttribute(
+      "aria-current",
+    );
+
+    await usuario.click(screen.getByRole("button", { name: "Cursada" }));
+    expect(ir).toHaveBeenCalledWith({ vista: "cursada" });
+    await usuario.click(screen.getByRole("button", { name: "Plan" }));
+    expect(ir).toHaveBeenCalledWith({ vista: "plan" });
+  });
+
   it("sin callbacks, búsqueda y «Sugerir corrección» quedan inertes", () => {
     montar();
     expect(

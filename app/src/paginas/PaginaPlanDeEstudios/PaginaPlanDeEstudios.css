@@ -1,0 +1,16 @@
+/* Una tarjeta por año sobre el fondo arena, en columna. */
+.plan-estudios {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.plan-estudios__aviso-enlace {
+  font-family: var(--fuente-texto);
+  font-weight: 500;
+  color: var(--acento);
+}
+
+.plan-estudios__aviso-enlace:hover {
+  color: var(--acento-hover);
+}

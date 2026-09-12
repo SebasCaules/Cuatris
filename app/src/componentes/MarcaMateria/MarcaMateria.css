@@ -1,0 +1,57 @@
+/*
+ * El cuadrado de ~28 px de la captura, con las esquinas de chip. `appearance:
+ * none` y el borde declarado a mano son lo que garantiza que ningún navegador
+ * le ponga su propio aspecto.
+ */
+.marca-materia {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  appearance: none;
+  border: 1.5px solid var(--linea-columna);
+  border-radius: var(--radio-chip);
+  background: transparent;
+  color: var(--aprobada-texto);
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.marca-materia:hover {
+  border-color: var(--aprobada);
+}
+
+.marca-materia:focus-visible {
+  outline: 2px solid var(--texto);
+  outline-offset: 2px;
+}
+
+/* Pendiente: contorno gris y nada adentro. */
+.marca-materia--pendiente {
+  background: transparent;
+}
+
+/* Aprobada con final y cursada aprobada: relleno verde, glifo blanco. */
+.marca-materia--final,
+.marca-materia--cursada {
+  border-color: var(--aprobada);
+  background: var(--aprobada);
+}
+
+/* Cursando: contorno verde, punto verde al centro. */
+.marca-materia--cursando {
+  border-color: var(--aprobada);
+  background: transparent;
+  color: var(--aprobada);
+}
+
+.marca-materia__glifo {
+  display: block;
+  width: 20px;
+  height: 20px;
+}

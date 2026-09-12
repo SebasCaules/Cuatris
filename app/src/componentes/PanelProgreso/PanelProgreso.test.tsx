@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 import type { PlanUsuario } from "../../contrato/tipos";
 import { planUsuarioInicial } from "../../estado/planUsuario";
 import { PLAN } from "../../motor/fixtures/reales";
-import { planDePrueba } from "../../paginas/PaginaPlan/escenario";
+import { planDePrueba } from "../../paginas/PaginaCursada/escenario";
 import {
   colaDeCarga,
   creditosPlanificados,

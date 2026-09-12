@@ -69,6 +69,10 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 - **N0-20** N0-15 ampliada: sin ningún período planificado, lo que la historia trae como
   `cursando`/`regular` cuenta como aprobado para cualquier período consultado (el usuario
   recién pegó su historia y mira hacia adelante).
+- **N0-22** (pedido del autor) La pestaña «Plan» es el plan de estudios interactivo; el
+  carrusel pasa a «Cursada»; cuatro estados por materia (final, cursada, cursando, pendiente);
+  marcar año o cuatrimestre entero = final. Regla permanente: componentes propios, nada de
+  controles por defecto (guardada en memoria).
 - **N0-21** El período de prueba (fixture publicada localmente como 2026-2C) se usó solo para
   el smoke y nunca se versiona: un `git add -A` lo coló en el commit de fixes y se retiró con
   un amend antes de cualquier push.
@@ -96,6 +100,7 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | Ola 4 · auditoría adversarial (6 dimensiones) + refutación | DONE | — | 36 agentes; 61 findings, 29 confirmados, 1 refutado, 13 sin refutar por tope (adjudicados por N0), 18 bajos |
 | Ola 4 · fixes en cinco clústeres (F1 CI · F2 validador · F3 motor · F4 interfaz · F5 scraper) + re-verificación | DONE | d697b0d | 58 findings corregidos; F1 y F2 quedaron ROJO por residuales que cerró N0 (guardarraíl: `env:` raíz y `ref: refs/pull/`; fixture de ejemplo); 462 tests Python, 536 tests app |
 | Ola 4 · push, ruleset y Pages, deploy, smoke con el período real | BLOCKED | | espera el OK del autor al push y su corrida del scraper (`docs/scraping-sga.md`) |
+| Ola 5 · R1 reformulación: pestaña Plan = plan de estudios interactivo (4 estados, marcar años/cuatrimestres), carrusel → «Cursada», componentes propios | DONE | ola-5 | VERDE (wf_c9c2f512-68a); 591 tests app; N0 subió la fila a 58 px |
 
 ## Fixes y tareas diferidas (S-nn)
 
@@ -124,6 +129,7 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | S-21 | `useDatos` sin caché: cada página que lo llame vuelve a pedir los JSON (hoy solo `App` lo llama) | app datos | U3.2/U3.3 | Sprint 2 (`ProveedorDatos`) |
 | S-22 | Ficha 13e como modal de 560 px con ✕ en vez de página | app | auditoría A4 | Sprint 2 |
 | S-23 | El período de prueba (fixture) no permite recorrer 13h → «Resolver» en el navegador: hace falta el período real | smoke | auditoría A4 | con la corrida del scraper |
+| S-24 | El ciclo del control pasa por «final» antes de «cursada», y «final» quita la materia de los períodos planificados (N0-19): dos clics sobre una materia de la cursada la dejan en `regular` y sin período | app Plan | R1 verificador | revisar el orden del ciclo o hacer que N0-19 solo aplique al soltar el control en «final» |
 
 ## Veredicto final
 

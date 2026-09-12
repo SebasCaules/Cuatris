@@ -8,13 +8,13 @@ import { describe, expect, it, vi } from "vitest";
 
 import { ProveedorPlanUsuario } from "../../estado/contexto";
 import { HORARIOS_RAROS, planVacio } from "../../motor/fixtures/reales";
-import type { PropsPlanConDatos } from "./PaginaPlan";
-import { PlanConDatos, reglaDeResaltado } from "./PaginaPlan";
+import type { PropsCursadaConDatos } from "./PaginaCursada";
+import { CursadaConDatos, reglaDeResaltado } from "./PaginaCursada";
 import { DATOS, DATOS_SIN_HORARIOS, planDePrueba } from "./escenario";
 import type { Horarios, PlanUsuario } from "../../contrato/tipos";
 import type { DatosCargados } from "../../datos/useDatos";
 
-type PropsDePrueba = Omit<PropsPlanConDatos, "datos"> & {
+type PropsDePrueba = Omit<PropsCursadaConDatos, "datos"> & {
   datos?: DatosCargados;
 };
 
@@ -24,7 +24,7 @@ function dibujar(
 ) {
   return render(
     <ProveedorPlanUsuario lecturaInicial={{ estado: "listo", plan }}>
-      <PlanConDatos datos={datos} {...props} />
+      <CursadaConDatos datos={datos} {...props} />
     </ProveedorPlanUsuario>,
   );
 }
@@ -54,7 +54,7 @@ function horariosConCambioDeSedeElMiercoles(): Horarios {
 
 /** Los selectores de la regla que la página inyecta para resaltar bloques. */
 function selectoresResaltados(): string | null {
-  const estilo = document.querySelector(".plan style");
+  const estilo = document.querySelector(".cursada style");
   const regla = estilo?.textContent ?? "";
   const llave = regla.indexOf("{");
   return llave === -1 ? null : regla.slice(0, llave);
@@ -68,7 +68,7 @@ function carrusel(): HTMLElement {
   return elemento;
 }
 
-describe("PaginaPlan · el cuatrimestre en curso", () => {
+describe("PaginaCursada · el cuatrimestre en curso", () => {
   it("avisa del único choque del corpus y lo nombra en singular", () => {
     dibujar();
     const banner = screen.getByRole("region", {
@@ -130,7 +130,7 @@ describe("PaginaPlan · el cuatrimestre en curso", () => {
   });
 });
 
-describe("PaginaPlan · los cuatrimestres futuros", () => {
+describe("PaginaCursada · los cuatrimestres futuros", () => {
   it("muestra cinco cuatrimestres: los planificados y dos vacíos al final", () => {
     dibujar();
     expect(screen.getByText("2 de 5 visibles")).toBeVisible();
@@ -170,7 +170,7 @@ describe("PaginaPlan · los cuatrimestres futuros", () => {
   });
 });
 
-describe("PaginaPlan · cuántas tarjetas se ven", () => {
+describe("PaginaCursada · cuántas tarjetas se ven", () => {
   it("el control 1/2/3 cambia el ancho de las tarjetas y guarda la preferencia", async () => {
     dibujar();
     expect(carrusel().style.getPropertyValue("--carrusel-visibles")).toBe("2");
@@ -196,7 +196,7 @@ describe("PaginaPlan · cuántas tarjetas se ven", () => {
   });
 });
 
-describe("PaginaPlan · cambio de sede en un día con acento", () => {
+describe("PaginaCursada · cambio de sede en un día con acento", () => {
   function conCambioDeSede() {
     return dibujar({
       datos: { ...DATOS, horarios: horariosConCambioDeSedeElMiercoles() },
@@ -218,9 +218,9 @@ describe("PaginaPlan · cambio de sede en un día con acento", () => {
     conCambioDeSede();
     const ver = screen.getByRole("button", { name: "Ver" });
     await userEvent.click(ver);
-    expect(document.querySelector(".plan--resaltando")).not.toBeNull();
+    expect(document.querySelector(".cursada--resaltando")).not.toBeNull();
     await userEvent.click(ver);
-    expect(document.querySelector(".plan--resaltando")).toBeNull();
+    expect(document.querySelector(".cursada--resaltando")).toBeNull();
     expect(selectoresResaltados()).toBeNull();
   });
 
@@ -230,11 +230,11 @@ describe("PaginaPlan · cambio de sede en un día con acento", () => {
     expect(
       screen.queryByRole("region", { name: "Conflictos sin resolver" }),
     ).toBeNull();
-    expect(document.querySelector(".plan__banner")).toBeNull();
+    expect(document.querySelector(".cursada__banner")).toBeNull();
   });
 });
 
-describe("PaginaPlan · sin período activo en el índice", () => {
+describe("PaginaCursada · sin período activo en el índice", () => {
   it("igual muestra carrusel para planificar desde el cuatrimestre de hoy", () => {
     // Es el `data/index.json` real de hoy: `horarios: []`, ningún activo. El
     // usuario cargó su historia y todavía no planificó nada.
@@ -255,16 +255,28 @@ describe("PaginaPlan · sin período activo en el índice", () => {
   });
 });
 
-describe("PaginaPlan · estado vacío", () => {
-  it("sin historia ni cuatrimestres enlaza a la pantalla de inicio", () => {
+/**
+ * R1: la pantalla vacía que tapaba 13b se fue. Sin nada aprobado el carrusel
+ * se dibuja igual y arriba va la nota que manda a la pestaña «Plan».
+ */
+describe("PaginaCursada · sin nada marcado en el Plan", () => {
+  it("dibuja el carrusel igual y avisa que lo aprobado se marca en el Plan", () => {
     dibujar({}, planVacio());
     expect(
-      screen.getByRole("heading", { name: "Todavía no hay nada en tu plan" }),
+      screen.getByText(
+        /Todavía no marcaste nada en el Plan: los choques y correlativas se calculan sobre lo aprobado\./,
+      ),
     ).toBeVisible();
-    expect(
-      screen.getByRole("link", { name: "Cargar tu historia académica" }),
-    ).toHaveAttribute("href", "#/inicio");
-    expect(document.querySelector(".carrusel")).toBeNull();
+    expect(screen.getByRole("link", { name: "Ir al plan" })).toHaveAttribute(
+      "href",
+      "#/plan",
+    );
+    expect(document.querySelector(".carrusel")).not.toBeNull();
+  });
+
+  it("con algo aprobado la nota no aparece", () => {
+    dibujar({});
+    expect(screen.queryByRole("link", { name: "Ir al plan" })).toBeNull();
   });
 });
 

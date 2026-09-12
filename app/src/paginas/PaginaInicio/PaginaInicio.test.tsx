@@ -1,10 +1,14 @@
 /**
- * 13a comparada contra el mockup: los textos exactos y los tres caminos.
+ * 13a comparada contra el mockup, ya con la reformulación de R1: los textos
+ * exactos, el campo de pegado a la vista y los dos caminos que quedan.
+ *
+ * El paso «Marcar materias a mano» se fue de acá: marcar es la pestaña «Plan»,
+ * y el botón secundario lleva hasta ahí en vez de abrir otra lista.
  */
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 
 import { ProveedorPlanUsuario } from "../../estado/contexto";
 import { PLAN } from "../../motor/fixtures/reales";
@@ -18,6 +22,10 @@ function montar() {
   );
 }
 
+afterEach(() => {
+  window.location.hash = "";
+});
+
 describe("PaginaInicio", () => {
   it("el título y la bajada son los del mockup", () => {
     montar();
@@ -27,8 +35,8 @@ describe("PaginaInicio", () => {
     expect(
       screen.getByText(
         "Para empezar necesito saber qué aprobaste. Podés pegar tu historia " +
-          "académica del sistema del ITBA o ir marcando las materias a mano; " +
-          "después agregás las que faltan a cada cuatrimestre.",
+          "académica del sistema del ITBA o marcarlo vos mismo en el plan de " +
+          "estudios; después agregás las que faltan a cada cuatrimestre.",
       ),
     ).toBeInTheDocument();
   });
@@ -42,30 +50,40 @@ describe("PaginaInicio", () => {
     ).toBeInTheDocument();
   });
 
-  it("arranca con «Pegar historia académica» abierto", () => {
+  it("el campo de pegado está a la vista y el botón primario le da el foco", async () => {
     montar();
-    expect(
+    const area = screen.getByLabelText("PEGAR ACÁ · una materia por línea");
+    expect(area).toBeInTheDocument();
+
+    await userEvent.click(
       screen.getByRole("button", { name: "Pegar historia académica" }),
-    ).toHaveAttribute("aria-pressed", "true");
-    expect(
-      screen.getByLabelText("PEGAR ACÁ · una materia por línea"),
-    ).toBeInTheDocument();
+    );
+    expect(area).toHaveFocus();
   });
 
-  it("el segundo botón cambia al camino de marcar a mano", async () => {
+  /** R1: el segundo camino es la pestaña «Plan», no una lista aparte. */
+  it("«Marcar en el plan» lleva a #/plan", async () => {
     montar();
     await userEvent.click(
-      screen.getByRole("button", { name: "Marcar materias a mano" }),
+      screen.getByRole("button", { name: "Marcar en el plan" }),
     );
+    expect(window.location.hash).toBe("#/plan");
+  });
+
+  it("ya no ofrece «Marcar materias a mano»", () => {
+    montar();
     expect(
-      screen.queryByLabelText("PEGAR ACÁ · una materia por línea"),
+      screen.queryByRole("button", { name: "Marcar materias a mano" }),
     ).not.toBeInTheDocument();
+    expect(screen.queryByText(/Marcar materias a mano/)).not.toBeInTheDocument();
+  });
+
+  /** La regla del autor, fijada también en el primer ingreso. */
+  it("no tiene ningún control nativo con aspecto por defecto", () => {
+    montar();
     expect(
-      screen.getByRole("heading", { name: "Año 1 · Cuatrimestre 1" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: "Marcar materias a mano" }),
-    ).toHaveAttribute("aria-pressed", "true");
+      document.querySelectorAll('input[type="checkbox"], select, progress'),
+    ).toHaveLength(0);
   });
 
   it("ofrece importar un plan guardado", () => {

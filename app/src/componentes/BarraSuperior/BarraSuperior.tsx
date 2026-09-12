@@ -1,5 +1,6 @@
 /**
- * Barra superior de 13b: identidad de la carrera, pestañas Plan/Progreso,
+ * Barra superior de 13b: identidad de la carrera, pestañas
+ * Plan · Cursada · Progreso,
  * búsqueda, «Sugerir corrección» y el menú «⋯» con la copia de seguridad del
  * plan (exportar / importar / borrar todo).
  *
@@ -157,6 +158,13 @@ export function BarraSuperior({
           activa={ruta.vista === "plan"}
           onClick={() => {
             ir({ vista: "plan" });
+          }}
+        />
+        <Pestana
+          texto="Cursada"
+          activa={ruta.vista === "cursada"}
+          onClick={() => {
+            ir({ vista: "cursada" });
           }}
         />
         <Pestana

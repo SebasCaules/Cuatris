@@ -3,8 +3,12 @@
  *
  * «No hay carrusel vacío de bienvenida: la pantalla pide el único dato que hace
  * funcionar todo lo demás, la historia académica, y aclara que el plan vive en
- * el navegador.» Los dos caminos del mockup —pegar y marcar a mano— son
- * excluyentes: el elegido se dibuja debajo de los botones.
+ * el navegador.»
+ *
+ * R1 le sacó el segundo camino de adentro: marcar a mano ya no es una lista
+ * aparte, es la pestaña «Plan». Acá queda el botón que lleva hasta ahí. Y la
+ * pantalla dejó de ser obligatoria: `#/plan` ya no desvía a nadie, así que
+ * quien prefiera marcar puede no pasar nunca por acá.
  *
  * El tercer enlace, «Importar un plan guardado», es el otro extremo de la copia
  * de seguridad: si el plan quedó en otra computadora, entra por acá.
@@ -12,20 +16,17 @@
  * Los textos son los del mockup, en voseo.
  */
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import type { Plan } from "../../contrato/tipos";
-import { MarcarAprobadas } from "../../componentes/MarcarAprobadas";
 import { useMenuPlan } from "../../componentes/MenuPlan";
 import { PegarHistoria } from "../../componentes/PegarHistoria";
 import { Boton } from "../../componentes/primitivas";
 import { PantallaCargando, PantallaError } from "../../componentes/PantallaEstado";
 import { hoyIso, useDatos } from "../../datos/useDatos";
 import { usePlanUsuario } from "../../estado/contexto";
+import { navegar } from "../../rutas";
 import "./PaginaInicio.css";
-
-/** Cuál de los dos caminos está abierto. */
-export type Camino = "pegar" | "marcar";
 
 export interface PropsPaginaInicio {
   /**
@@ -44,9 +45,18 @@ export interface PropsPaginaInicio {
 }
 
 function Inicio({ plan, alImportar }: PropsPaginaInicio & { plan: Plan }) {
-  const [camino, setCamino] = useState<Camino>("pegar");
   const propio = useMenuPlan();
   const importar = alImportar ?? propio.acciones.importar;
+  const caja = useRef<HTMLDivElement>(null);
+
+  /*
+   * El botón primario no abre ni cierra nada: el campo de pegado ya está
+   * abajo, a la vista. Lo que hace es llevar el foco hasta él, que es lo único
+   * honesto que puede hacer un botón cuyo destino ya está en pantalla.
+   */
+  const irAPegar = () => {
+    caja.current?.querySelector("textarea")?.focus();
+  };
 
   return (
     <section className="inicio" aria-labelledby="inicio-titulo">
@@ -55,37 +65,26 @@ function Inicio({ plan, alImportar }: PropsPaginaInicio & { plan: Plan }) {
       </h2>
       <p className="inicio__bajada">
         Para empezar necesito saber qué aprobaste. Podés pegar tu historia
-        académica del sistema del ITBA o ir marcando las materias a mano;
-        después agregás las que faltan a cada cuatrimestre.
+        académica del sistema del ITBA o marcarlo vos mismo en el plan de
+        estudios; después agregás las que faltan a cada cuatrimestre.
       </p>
 
       <div className="inicio__caminos" role="group" aria-label="Cómo empezar">
-        <Boton
-          variante={camino === "pegar" ? "primario" : "secundario"}
-          aria-pressed={camino === "pegar"}
-          onClick={() => {
-            setCamino("pegar");
-          }}
-        >
+        <Boton variante="primario" onClick={irAPegar}>
           Pegar historia académica
         </Boton>
         <Boton
-          variante={camino === "marcar" ? "primario" : "secundario"}
-          aria-pressed={camino === "marcar"}
+          variante="secundario"
           onClick={() => {
-            setCamino("marcar");
+            navegar({ vista: "plan" });
           }}
         >
-          Marcar materias a mano
+          Marcar en el plan
         </Boton>
       </div>
 
-      <div className="inicio__camino">
-        {camino === "pegar" ? (
-          <PegarHistoria plan={plan} />
-        ) : (
-          <MarcarAprobadas plan={plan} />
-        )}
+      <div className="inicio__camino" ref={caja}>
+        <PegarHistoria plan={plan} />
       </div>
 
       <p className="inicio__nota">

@@ -62,6 +62,12 @@ No se reabren sin pedido explícito del autor.
   JSON Schema; motor de dominio en TypeScript puro y probado, separado de la interfaz;
   enrutado por hash; `base` de Vite por variable de build; estado del usuario en el navegador
   con exportar/importar; cero telemetría.
+- **Pestañas**: «Plan» = plan de estudios interactivo (años → cuatrimestres → materias, con
+  marcado por materia en cuatro estados y por año o cuatrimestre entero); «Cursada» = el
+  carrusel de cuatrimestres con horarios y choques (13b); «Progreso» = 13i.
+- **Componentes propios, siempre** (regla del autor): ningún control nativo con aspecto por
+  defecto (casillas, selects, `<progress>`), ninguna librería de componentes ni set de iconos
+  genérico; glifos en SVG propio.
 
 ## Reglas de trabajo en este proyecto
 

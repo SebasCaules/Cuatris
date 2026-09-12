@@ -278,6 +278,18 @@ export function importar(texto: string): PlanUsuario {
 
 export type AccionPlan =
   | { tipo: "cargarHistoria"; historia: Record<Codigo, EntradaHistoria> }
+  /**
+   * Estado de una materia en la historia. `null` borra la entrada: «pendiente»
+   * no es un estado guardado, es la ausencia de entrada (R1).
+   */
+  | { tipo: "marcarEstado"; codigo: Codigo; estado: EstadoHistoria | null }
+  /** Lo mismo para varias materias, en una sola transición (marcar un año). */
+  | {
+      tipo: "marcarVarias";
+      codigos: readonly Codigo[];
+      estado: EstadoHistoria | null;
+    }
+  /** Alias histórico de `marcarEstado` con `"aprobada"`. */
   | { tipo: "marcarAprobada"; codigo: Codigo }
   | { tipo: "agregarMateria"; periodo: PeriodoId; codigo: Codigo }
   | { tipo: "quitarMateria"; periodo: PeriodoId; codigo: Codigo }
@@ -352,23 +364,60 @@ function sinMateriaEnTodos(
   return cambio ? salida : periodos;
 }
 
+/**
+ * Historia y períodos con `codigos` puestos en `nuevo`.
+ *
+ * Dos reglas que valen para las tres acciones de marcado:
+ *
+ * - **`null` borra la entrada.** «Pendiente» no se guarda; una materia sin
+ *   entrada es una materia pendiente, y así un plan exportado no arrastra
+ *   filas que no dicen nada.
+ * - **Pasar a `"aprobada"` la saca de todos los períodos planificados**
+ *   (N0-19): una materia aprobada no se vuelve a cursar, y dejarla en la
+ *   grilla la hacía chocar y sumar créditos contra sí misma. El color no se
+ *   libera: identifica a la materia para toda la carrera.
+ *
+ * `"regular"` y `"cursando"` **no** limpian los períodos: una materia que se
+ * está cursando, o a la que le falta el final, sigue ocupando su lugar.
+ */
+function conEstado(
+  estado: PlanUsuario,
+  codigos: readonly Codigo[],
+  nuevo: EstadoHistoria | null,
+): PlanUsuario {
+  if (codigos.length === 0) {
+    return estado;
+  }
+  const historia = { ...estado.historia };
+  for (const codigo of codigos) {
+    if (nuevo === null) {
+      delete historia[codigo];
+    } else {
+      historia[codigo] = { estado: nuevo };
+    }
+  }
+  let periodos = estado.periodos;
+  if (nuevo === "aprobada") {
+    for (const codigo of codigos) {
+      periodos = sinMateriaEnTodos(periodos, codigo);
+    }
+  }
+  return { ...estado, historia, periodos };
+}
+
 export function reducir(estado: PlanUsuario, accion: AccionPlan): PlanUsuario {
   switch (accion.tipo) {
     case "cargarHistoria":
       return { ...estado, historia: { ...accion.historia } };
 
-    // Marcarla aprobada la saca de todos los períodos planificados: una
-    // materia aprobada no se vuelve a cursar, y dejarla en la grilla la hacía
-    // chocar y sumar créditos contra sí misma. El color no se libera.
+    case "marcarEstado":
+      return conEstado(estado, [accion.codigo], accion.estado);
+
+    case "marcarVarias":
+      return conEstado(estado, accion.codigos, accion.estado);
+
     case "marcarAprobada":
-      return {
-        ...estado,
-        historia: {
-          ...estado.historia,
-          [accion.codigo]: { estado: "aprobada" },
-        },
-        periodos: sinMateriaEnTodos(estado.periodos, accion.codigo),
-      };
+      return conEstado(estado, [accion.codigo], "aprobada");
 
     case "agregarMateria": {
       const lista = estado.periodos[accion.periodo] ?? [];

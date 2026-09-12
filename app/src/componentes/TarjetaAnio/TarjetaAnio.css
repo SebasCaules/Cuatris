@@ -1,0 +1,119 @@
+/* Tarjeta blanca sobre el fondo arena, con el borde y la sombra de tokens.md. */
+.tarjeta-anio {
+  padding: 16px 12px 12px;
+  border: var(--borde-tarjeta);
+  border-radius: var(--radio-tarjeta);
+  background: var(--superficie);
+  box-shadow: var(--sombra-tarjeta);
+}
+
+.tarjeta-anio__cabecera {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 0 8px 12px;
+}
+
+.tarjeta-anio__identidad {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.tarjeta-anio__titulo {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--texto);
+}
+
+.tarjeta-anio__ciclo {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+}
+
+.tarjeta-anio__acciones {
+  flex: 1 1 auto;
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.tarjeta-anio__cabecera:hover .tarjeta-anio__acciones,
+.tarjeta-anio__cabecera:focus-within .tarjeta-anio__acciones {
+  opacity: 1;
+}
+
+.tarjeta-anio__accion {
+  padding: 0;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.04em;
+  color: var(--texto-secundario);
+  cursor: pointer;
+}
+
+.tarjeta-anio__accion:hover {
+  color: var(--acento);
+}
+
+.tarjeta-anio__accion:focus-visible {
+  outline: 1.5px solid var(--texto);
+  outline-offset: 2px;
+}
+
+.tarjeta-anio__progreso {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 160px;
+}
+
+.tarjeta-anio__cuenta {
+  margin: 0;
+  font-family: var(--fuente-mono);
+  font-size: 10px;
+  color: var(--texto-secundario);
+  white-space: nowrap;
+}
+
+/* Dos columnas separadas por la línea vertical clara de la captura. */
+.tarjeta-anio__cuerpo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.tarjeta-anio__cuerpo > * + * {
+  border-left: 1px solid var(--linea-columna);
+  padding-left: 20px;
+}
+
+/* Bajo 900 px las columnas se apilan y la línea vertical no tiene sentido. */
+@media (max-width: 900px) {
+  .tarjeta-anio__cuerpo {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjeta-anio__cuerpo > * + * {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .tarjeta-anio__cabecera {
+    flex-wrap: wrap;
+  }
+}

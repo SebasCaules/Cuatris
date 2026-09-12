@@ -5,6 +5,9 @@
  * y ninguna trae estilos en línea: todo sale de `tokens.css`.
  */
 
+export { BarraProgreso } from "./BarraProgreso";
+export type { PropsBarraProgreso } from "./BarraProgreso";
+
 export { Boton } from "./Boton";
 export type { PropsBoton, TamanoBoton, VarianteBoton } from "./Boton";
 

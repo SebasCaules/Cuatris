@@ -1,5 +1,5 @@
-export { PaginaPlan, PlanConDatos, reglaDeResaltado } from "./PaginaPlan";
-export type { PropsPaginaPlan, PropsPlanConDatos } from "./PaginaPlan";
+export { PaginaCursada, CursadaConDatos, reglaDeResaltado } from "./PaginaCursada";
+export type { PropsPaginaCursada, PropsCursadaConDatos } from "./PaginaCursada";
 export {
   creditosDelPeriodo,
   FUTUROS_VACIOS,
