@@ -65,6 +65,11 @@ MODALIDADES: dict[str, str] = {
     "Virtual Sinc.": "virtual_sincronica",
     "Virtual sincrónico": "virtual_sincronica",
     "Virtual Asinc.": "virtual_asincronica",
+    # Vistos en la corrida real del 2026-09-12: el detalle usa el adjetivo completo, en
+    # masculino y en femenino segun el curso.
+    "Virtual asincrónico": "virtual_asincronica",
+    "Virtual asincrónica": "virtual_asincronica",
+    "Virtual sincrónica": "virtual_sincronica",
     "Blended": "blended",
 }
 

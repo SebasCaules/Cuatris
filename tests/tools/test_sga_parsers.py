@@ -468,6 +468,9 @@ DIAS_Y_TABLAS = (
         ("Virtual Sinc.", "virtual_sincronica"),
         ("Virtual sincrónico", "virtual_sincronica"),
         ("Virtual Asinc.", "virtual_asincronica"),
+        ("Virtual asincrónica", "virtual_asincronica"),
+        ("Virtual asincrónico", "virtual_asincronica"),
+        ("Virtual sincrónica", "virtual_sincronica"),
         ("Blended", "blended"),
     ],
 )
