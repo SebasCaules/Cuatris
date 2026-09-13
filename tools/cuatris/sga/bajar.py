@@ -374,42 +374,64 @@ def hoy() -> str:
 Fallido = tuple[str, str, str]
 
 
+#: Dias de dictado a partir de los cuales un curso es anual, sea cual sea el periodo con
+#: que lo rotule el listado. Un cuatrimestre dura unos 160 dias (26/07–31/12: 158); las
+#: cohortes anuales vistas el 2026-09-13 duran 305, 336 y 363. El umbral queda a mitad de
+#: camino para que ni un cuatrimestre largo ni una cohorte corta lo crucen.
+ANUAL_DESDE_DIAS = 240
+
+
+def es_anual(desde: str, hasta: str) -> bool:
+    """¿Un dictado de `desde` a `hasta` dura mas que un cuatrimestre?"""
+    return (date.fromisoformat(hasta) - date.fromisoformat(desde)).days >= ANUAL_DESDE_DIAS
+
+
 def separar_anuales(
     registros: Iterable[Registro], *, periodo: str
 ) -> tuple[list[Registro], list[Registro], list[Fallido]]:
-    """Divide los registros del checkpoint en propios del periodo y anuales.
+    """Divide los registros del checkpoint en propios del cuatrimestre y anuales.
 
-    El listado filtrado por «Segundo Cuat.» trae tambien los cursos **anuales**, que el SGA
-    rotula con el periodo en que empiezan («Primer Cuat.») y con nombre «(Anual)» (caso real
-    del 2026-09-12: 41.34 Desarrollo de Yacimientos). Son legitimos: se dictan durante el
-    cuatrimestre pedido. La regla no mira el nombre sino las fechas: un curso de otro periodo
-    se acepta como anual si su dictado **se solapa** con el intervalo que cubren los cursos
-    propios; sus fechas se recortan a ese intervalo, porque este archivo describe el
-    cuatrimestre y no el ano.
+    El listado filtrado por «Segundo Cuat.» trae tambien los cursos **anuales**: los que el
+    SGA rotula con el periodo en que empiezan («Primer Cuat.», caso real del 2026-09-12: 41.34
+    Desarrollo de Yacimientos) y tambien las cohortes que empiezan en este cuatrimestre y
+    terminan el ano que viene (10.01 y 72.45 el 2026-09-13, rotuladas «2026-2C» con dictado
+    hasta julio de 2027). Son legitimos: se dictan durante el cuatrimestre pedido. La regla
+    no mira el nombre sino las fechas: es anual todo curso cuyo dictado dura mas que un
+    cuatrimestre (`es_anual`), venga con el periodo que venga. El intervalo del cuatrimestre
+    sale **solo de los propios no anuales**, para que una cohorte anual no lo estire hasta el
+    ano siguiente; los anuales entran con las fechas recortadas a ese intervalo, porque este
+    archivo describe el cuatrimestre y no el ano.
 
-    Si no hay ningun curso propio, el filtro no se aplico y se corta. Un curso ajeno que no
-    se solapa **no** corta la corrida: se anota como fallido y el resto se escribe igual, que
-    es lo mismo que se hace con un curso que no parsea.
+    Un curso de otro periodo que no se solapa con el cuatrimestre **no** corta la corrida: se
+    anota como fallido y el resto se escribe igual, que es lo mismo que se hace con un curso
+    que no parsea. Si no hay ningun propio, el filtro no se aplico y se corta.
 
     Un registro sin `listado` (los que escribieron versiones anteriores) se trata como propio
     del periodo: es lo unico que se puede afirmar de el.
     """
     propios: list[Registro] = []
+    largos: list[Registro] = []
     ajenos: list[Registro] = []
     for registro in registros:
-        propio = registro.periodo_del_listado in (None, periodo)
-        (propios if propio else ajenos).append(registro)
+        curso = registro.curso
+        if registro.periodo_del_listado not in (None, periodo):
+            ajenos.append(registro)
+        elif es_anual(curso["desde"], curso["hasta"]):
+            largos.append(registro)
+        else:
+            propios.append(registro)
     if not propios:
-        ejemplo = ajenos[0] if ajenos else None
+        ejemplo = (ajenos or largos or [None])[0]
         raise parsers.EstructuraInesperada(
-            f"Ninguna fila del listado es del periodo «{periodo}»; el filtro no se aplico.",
+            f"Ningun curso del listado es un curso cuatrimestral del periodo «{periodo}»; "
+            "el filtro no se aplico.",
             f"{ejemplo.codigo} ({ejemplo.periodo_del_listado})" if ejemplo else None,
         )
     desde = min(r.curso["desde"] for r in propios)
     hasta = max(r.curso["hasta"] for r in propios)
     anuales: list[Registro] = []
     fallidos: list[Fallido] = []
-    for registro in ajenos:
+    for registro in largos + ajenos:
         curso = registro.curso
         if curso["hasta"] < desde or curso["desde"] > hasta:
             fallidos.append(
@@ -432,12 +454,13 @@ def separar_anuales(
             },
         )
         REGISTRO.warning(
-            "%s %s es de «%s» pero se dicta tambien en %s (%s–%s): se incluye como anual, "
-            "con las fechas recortadas al cuatrimestre.",
+            "%s %s se dicta del %s al %s (%s): se incluye como anual, con las fechas "
+            "recortadas al cuatrimestre (%s–%s).",
             registro.codigo,
             curso.get("nombre", ""),
-            registro.periodo_del_listado,
-            periodo,
+            curso["desde"],
+            curso["hasta"],
+            registro.periodo_del_listado or periodo,
             recortado.curso["desde"],
             recortado.curso["hasta"],
         )
@@ -472,45 +495,131 @@ def periodo_de_registros(
     )
 
 
-def _comisiones_por_id(curso: Mapping[str, Any]) -> dict[str, Any]:
-    return {comision["id"]: comision for comision in curso.get("comisiones", [])}
+def _lo_estable(comision: Mapping[str, Any]) -> dict[str, Any]:
+    """La comision sin lo volatil ni el plantel: lo que define si es «la misma clase».
+
+    `cupo` y `ocupacion` cambian entre filas por definicion. Los `docentes` tambien: las dos
+    cohortes de 10.01 traen 23 y 13 nombres, y las de 72.45 los mismos siete en otro orden;
+    es la misma clase, con el plantel que cada cohorte declara.
+    """
+    return {k: v for k, v in comision.items() if k not in ("cupo", "ocupacion", "docentes")}
 
 
-def _fusionar_apariciones(cursos: Sequence[dict[str, Any]]) -> tuple[dict[str, Any] | None, str]:
+def _unir_docentes(primeros: Sequence[str], otros: Sequence[str]) -> list[str]:
+    """Union en orden: los de la comision que queda y despues los que solo trae la otra."""
+    vistos = {normalizar.clave(d) for d in primeros}
+    unidos = list(primeros)
+    for docente in otros:
+        if normalizar.clave(docente) not in vistos:
+            vistos.add(normalizar.clave(docente))
+            unidos.append(docente)
+    return unidos
+
+
+def _fechas_de(comision: Mapping[str, Any], curso: Mapping[str, Any]) -> tuple[str, str]:
+    return (comision.get("desde") or curso["desde"], comision.get("hasta") or curso["hasta"])
+
+
+def _id_libre(base: str, usados: set[str]) -> str:
+    """`A` → `A.2`, `A.3`… hasta encontrar un id que no este en uso."""
+    numero = 2
+    while f"{base}.{numero}" in usados:
+        numero += 1
+    return f"{base}.{numero}"
+
+
+def _fusionar_apariciones(
+    cursos: Sequence[dict[str, Any]], *, periodo: str
+) -> tuple[dict[str, Any] | None, str]:
     """Une las apariciones de un mismo codigo. Devuelve `(curso, motivo del descarte)`.
 
     El listado trae codigos repetidos (472 filas, 461 codigos distintos el 2026-09-12) y el
-    contrato los quiere unicos por archivo. Si las apariciones son identicas, queda una; si
-    traen comisiones distintas, se unen; si una misma comision viene con contenido distinto
-    en dos filas, no hay forma de elegir y el codigo se descarta con el motivo.
-    """
-    primero = cursos[0]
-    if all(curso == primero for curso in cursos[1:]):
-        return dict(primero), ""
+    contrato los quiere unicos por archivo. Las apariciones se recorren en orden de `desde` y
+    sus comisiones se van sumando; cuando un id ya esta tomado:
 
-    comisiones: dict[str, Any] = {}
-    for curso in cursos:
-        for identificador, comision in _comisiones_por_id(curso).items():
+    - **Misma comision, mismas fechas** (bloques iguales; `cupo`, `ocupacion` y `docentes`
+      pueden diferir): es la misma clase vista desde dos filas. Caso real: las dos cohortes
+      de un curso anual (10.01, 72.45: la que empezo en marzo y la que empieza ahora), que
+      recortadas al cuatrimestre coinciden en horario y aula. Queda la de la fila rotulada
+      con el periodo de la corrida —la que se puede cursar ahora—, o la primera si ninguna lo
+      esta, con la union de los docentes de las dos.
+    - **Fechas distintas**: son dos ediciones del curso dentro del cuatrimestre (81.73
+      Introduccion a la IOT, 03/08–11/09 y 14/09–23/10, las dos «A» en el SGA). Se conservan
+      las dos, cada una con sus `desde`/`hasta` propios (contrato 1.1.0) y la segunda con el
+      id `A.2` (`.3`…), que es la unica invencion: el SGA distingue las ediciones por las
+      fechas que agrega al nombre, no por el id.
+    - **Mismas fechas, contenido distinto**: no hay forma de elegir; el codigo se descarta
+      con el motivo y el resto del archivo se escribe igual.
+
+    El curso fusionado va del `desde` minimo al `hasta` maximo de sus apariciones; el nombre y
+    el departamento son los de la primera.
+    """
+    limpios = [{k: v for k, v in curso.items() if not k.startswith("_")} for curso in cursos]
+    if all(curso == limpios[0] for curso in limpios[1:]):
+        return limpios[0], ""
+    ordenados = sorted(
+        enumerate(cursos), key=lambda par: (par[1]["desde"], par[1]["hasta"], par[0])
+    )
+    primero = ordenados[0][1]
+    desde = min(curso["desde"] for curso in cursos)
+    hasta = max(curso["hasta"] for curso in cursos)
+    comisiones: dict[str, dict[str, Any]] = {}
+    origen: dict[str, str | None] = {}
+    renombradas: list[str] = []
+    for _indice, curso in ordenados:
+        rotulo = curso.get("_periodo_del_listado")
+        for comision in curso.get("comisiones", []):
+            identificador = comision["id"]
+            nueva = dict(comision)
+            fechas = _fechas_de(comision, curso)
+            if fechas != (desde, hasta):
+                nueva["desde"], nueva["hasta"] = fechas
+            else:
+                nueva.pop("desde", None)
+                nueva.pop("hasta", None)
             previa = comisiones.get(identificador)
-            if previa is not None and previa != comision:
+            if previa is None:
+                comisiones[identificador] = nueva
+                origen[identificador] = rotulo
+                continue
+            if _fechas_de(previa, {"desde": desde, "hasta": hasta}) != fechas:
+                libre = _id_libre(identificador, set(comisiones))
+                nueva["id"] = libre
+                comisiones[libre] = nueva
+                origen[libre] = rotulo
+                renombradas.append(f"{identificador}→{libre} ({fechas[0]}–{fechas[1]})")
+                continue
+            if _lo_estable(previa) != _lo_estable(nueva):
                 return None, (
                     f"aparece {len(cursos)} veces en el listado y la comision "
-                    f"«{identificador}» viene distinta en cada aparicion "
+                    f"«{identificador}» viene con horarios distintos en las mismas fechas "
                     f"({len(previa.get('bloques', []))} bloques contra "
-                    f"{len(comision.get('bloques', []))}); no hay forma de elegir una"
+                    f"{len(nueva.get('bloques', []))}); no hay forma de elegir una"
                 )
-            comisiones[identificador] = comision
+            if origen.get(identificador) != periodo and rotulo == periodo:
+                nueva["docentes"] = _unir_docentes(
+                    nueva.get("docentes", []), previa.get("docentes", [])
+                )
+                comisiones[identificador] = nueva
+                origen[identificador] = rotulo
+            else:
+                previa["docentes"] = _unir_docentes(
+                    previa.get("docentes", []), nueva.get("docentes", [])
+                )
 
-    fusionado = dict(primero)
+    fusionado = {k: v for k, v in primero.items() if not k.startswith("_")}
     fusionado["comisiones"] = [comisiones[i] for i in sorted(comisiones)]
-    fusionado["desde"] = min(curso["desde"] for curso in cursos)
-    fusionado["hasta"] = max(curso["hasta"] for curso in cursos)
-    juntas = " | ".join(", ".join(sorted(_comisiones_por_id(curso))) for curso in cursos)
+    fusionado["desde"] = desde
+    fusionado["hasta"] = hasta
+    juntas = " | ".join(
+        ", ".join(c["id"] for c in curso.get("comisiones", [])) for _i, curso in ordenados
+    )
     REGISTRO.warning(
-        "%s aparece %d veces en el listado: se unen sus comisiones (%s).",
+        "%s aparece %d veces en el listado: se unen sus comisiones (%s)%s.",
         primero["codigo"],
         len(cursos),
         juntas,
+        "; ediciones con fechas propias: " + ", ".join(renombradas) if renombradas else "",
     )
     return fusionado, ""
 
@@ -529,13 +638,16 @@ def armar_documento(
     documento = parsers.a_contrato((), periodo, capturado)
     por_codigo: dict[str, list[dict[str, Any]]] = {}
     for curso in cursos:
+        # Los checkpoints escritos antes del 2026-09-13 traen el nombre con la anotacion
+        # de fechas del detalle; limpiarla aqui es idempotente y evita rebajar 443 cursos.
+        curso = {**curso, "nombre": parsers.nombre_sin_fechas(curso["nombre"])}
         por_codigo.setdefault(curso["codigo"], []).append(curso)
 
     unicos: list[dict[str, Any]] = []
     fallidos: list[Fallido] = []
     for codigo in sorted(por_codigo):
         apariciones = por_codigo[codigo]
-        fusionado, motivo = _fusionar_apariciones(apariciones)
+        fusionado, motivo = _fusionar_apariciones(apariciones, periodo=periodo.id)
         if fusionado is None:
             fallidos.append((codigo, apariciones[0].get("nombre", ""), motivo))
             continue
@@ -563,7 +675,8 @@ def vincular_dictado_conjunto(cursos: list[dict[str, Any]]) -> None:
     comision, misma aula a la misma hora (caso real de la corrida del 2026-09-12: 23.05 y
     25.66 «Acustica para Ingenieros», comision K, jueves 16-19 en 604F). Sin la marca, C3 lo
     lee como una colision de aula y rechaza el archivo. La regla es estricta a proposito:
-    mismo nombre normalizado **y** al menos un bloque identico en una comision del mismo id.
+    mismo nombre normalizado **y** al menos un bloque identico (misma aula, sede, dia y
+    hora), sin mirar el id de comision, que puede diferir entre los dos codigos.
     Dos cursos con nombres distintos en la misma aula siguen siendo una colision que revisa
     una persona… salvo que compartan ademas un docente en esa misma comision: entonces es la
     misma clase con dos nombres (materias equivalentes entre carreras) y tambien se vincula.
@@ -576,7 +689,11 @@ def vincular_dictado_conjunto(cursos: list[dict[str, Any]]) -> None:
         for comision in curso.get("comisiones", []):
             plantel.update(normalizar.clave(d) for d in comision.get("docentes", []))
             for bloque in comision.get("bloques", []):
-                conjunto.add((comision.get("id"), *_huella_de_bloque(bloque)))
+                # Sin el id de comision: la misma clase se publica bajo dos codigos con ids
+                # distintos (12.84 com. Q y 17.15 com. A, martes 13-16 en 604F; 30.19 com. M
+                # y 30.38 com. A, corrida del 2026-09-13). Lo que la identifica es el aula, el
+                # dia y la hora, mas el nombre o el docente en comun.
+                conjunto.add(_huella_de_bloque(bloque))
         huellas[curso["codigo"]] = conjunto
         docentes[curso["codigo"]] = plantel
     for indice, uno in enumerate(cursos):
@@ -1062,7 +1179,12 @@ def ejecutar(args: argparse.Namespace) -> int:
     fallidos.extend(ajenos)
     periodo = periodo_de_registros(propios, anio=args.anio, cuatrimestre=args.cuatrimestre)
     documento, conflictos = armar_documento(
-        [registro.curso for registro in propios + anuales], periodo, capturado
+        [
+            {**registro.curso, "_periodo_del_listado": registro.periodo_del_listado or periodo_id}
+            for registro in propios + anuales
+        ],
+        periodo,
+        capturado,
     )
     fallidos.extend(conflictos)
 

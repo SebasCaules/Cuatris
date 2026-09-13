@@ -39,7 +39,6 @@ FIXTURES_C3 = {
     "c3-minor-inexistente.json": "minor-inexistente",
     "c3-periodo-incoherente.json": "periodo-incoherente",
     "c3-sede-desconocida.json": "sede-desconocida",
-    "c3-sede-nula-presencial.json": "sede-nula-presencial",
 }
 
 PERIODO = {
@@ -237,19 +236,53 @@ def test_sin_vocabulario_la_sede_queda_en_advertencia() -> None:
     assert hallazgos[0].nivel == WARNING
 
 
-def test_la_sede_nula_solo_vale_si_no_es_presencial() -> None:
-    """Un bloque virtual puede no tener sede; uno presencial siempre la declara."""
-    virtual = _curso(
-        "93.18",
-        [
-            _bloque(
-                "lunes", "08:00", "10:00", [], sede=None, modalidad="virtual_sincronica"
-            )
-        ],
-    )
-    assert _revisar_horarios([virtual], CONTEXTO) == []
-    presencial = _curso("93.18", [_bloque("lunes", "08:00", "10:00", [], sede=None)])
-    assert _revisar_horarios([presencial]) == ["sede-nula-presencial"]
+def test_la_sede_nula_vale_con_cualquier_modalidad() -> None:
+    """`sede: null` es «el SGA no publica sede para este bloque», sea cual sea la modalidad.
+
+    Casos reales del 2026-09-13: bloques presenciales sin aula asignada (74.61, 32.57 com. N,
+    17.06 com. C) y practicas de laboratorio (`laboratorio`, 25 cursos) que no traen aula.
+    """
+    for modalidad in ("virtual_sincronica", "presencial", "laboratorio"):
+        curso = _curso(
+            "93.18", [_bloque("lunes", "08:00", "10:00", [], sede=None, modalidad=modalidad)]
+        )
+        assert _revisar_horarios([curso], CONTEXTO) == [], modalidad
+
+
+def test_las_fechas_de_una_comision_van_juntas_ordenadas_y_dentro_del_curso() -> None:
+    """Contrato 1.1.0: una comision puede tener `desde`/`hasta` propios (dos ediciones de un
+    seminario bajo el mismo codigo: 81.73, 03/08–11/09 y 14/09–23/10)."""
+    bien = _curso("93.18", [_bloque("sabado", "20:00", "21:00", [], sede=None, modalidad="virtual")])
+    bien["comisiones"][0]["desde"] = "2026-08-03"
+    bien["comisiones"][0]["hasta"] = "2026-09-11"
+    assert _revisar_horarios([bien], CONTEXTO) == []
+
+    incompleta = _curso("93.18", [_bloque("sabado", "20:00", "21:00", [], sede=None)])
+    incompleta["comisiones"][0]["desde"] = "2026-08-03"
+    assert _revisar_horarios([incompleta], CONTEXTO) == ["comision-fecha-incompleta"]
+
+    invertida = _curso("93.18", [_bloque("sabado", "20:00", "21:00", [], sede=None)])
+    invertida["comisiones"][0]["desde"] = "2026-09-11"
+    invertida["comisiones"][0]["hasta"] = "2026-08-03"
+    assert _revisar_horarios([invertida], CONTEXTO) == ["comision-invertida"]
+
+    fuera = _curso("93.18", [_bloque("sabado", "20:00", "21:00", [], sede=None)])
+    fuera["comisiones"][0]["desde"] = "2026-07-01"
+    fuera["comisiones"][0]["hasta"] = "2026-09-11"
+    assert _revisar_horarios([fuera], CONTEXTO) == ["comision-fuera-del-curso"]
+
+
+def test_dos_ediciones_con_fechas_propias_no_chocan_con_lo_que_hay_entre_ellas() -> None:
+    """La colision de aula mira la vigencia de la comision, no la envolvente del curso."""
+    seminario = _curso("72.44", [_bloque("lunes", "08:00", "10:00", ["201R"])])
+    seminario["desde"], seminario["hasta"] = "2026-08-03", "2026-10-23"
+    seminario["comisiones"][0]["desde"] = "2026-08-03"
+    seminario["comisiones"][0]["hasta"] = "2026-09-11"
+    otro = _curso("93.18", [_bloque("lunes", "08:00", "10:00", ["201R"])])
+    otro["desde"], otro["hasta"] = "2026-09-14", "2026-10-23"
+    assert _revisar_horarios([seminario, otro], CONTEXTO) == []
+    del seminario["comisiones"][0]["desde"], seminario["comisiones"][0]["hasta"]
+    assert _revisar_horarios([seminario, otro], CONTEXTO) == ["colision-de-aula"]
 
 
 def test_el_domingo_y_la_modalidad_virtual_pasan_las_invariantes() -> None:

@@ -39,9 +39,6 @@ DURACION_MAXIMA_MINUTOS = 8 * 60
 MODALIDADES_CON_AULA = ("presencial", "blended")
 """Modalidades que ocupan fisicamente un aula: son las que pueden colisionar entre si."""
 
-MODALIDAD_PRESENCIAL = "presencial"
-"""Unica modalidad que exige una sede declarada."""
-
 __all__ = [
     "DURACION_MAXIMA_MINUTOS",
     "HORA_MAXIMA",
@@ -202,6 +199,7 @@ def _revisar_horarios(datos: Any, archivo: str, contexto: Contexto | None) -> li
     hallazgos.extend(_revisar_periodo(periodo, archivo))
     hallazgos.extend(_revisar_identidades(cursos, archivo))
     hallazgos.extend(_revisar_fechas_de_cursos(cursos, periodo, archivo))
+    hallazgos.extend(_revisar_fechas_de_comisiones(cursos, archivo))
     hallazgos.extend(_revisar_dictado_conjunto(cursos, archivo))
 
     bloques: list[_Bloque] = []
@@ -234,6 +232,12 @@ def _bloques_del_curso(curso: dict[str, Any]) -> list[_Bloque]:
         docentes = tuple(
             docente for docente in _lista(comision.get("docentes")) if isinstance(docente, str)
         )
+        # La vigencia del bloque es la de su comision cuando esta tiene fechas propias
+        # (contrato 1.1.0); si no, la del curso. Es lo que evita que dos ediciones de un
+        # seminario, una en agosto y otra en octubre, choquen con todo lo que haya en el
+        # aula entre una y otra.
+        vigencia_desde = _texto(comision.get("desde")) or curso_desde
+        vigencia_hasta = _texto(comision.get("hasta")) or curso_hasta
         for bloque in _lista(comision.get("bloques")):
             if not isinstance(bloque, dict):
                 continue
@@ -262,8 +266,8 @@ def _bloques_del_curso(curso: dict[str, Any]) -> list[_Bloque]:
                         aula for aula in _lista(bloque.get("aulas")) if isinstance(aula, str)
                     ),
                     docentes=docentes,
-                    curso_desde=curso_desde,
-                    curso_hasta=curso_hasta,
+                    curso_desde=vigencia_desde,
+                    curso_hasta=vigencia_hasta,
                 )
             )
     return bloques
@@ -401,6 +405,61 @@ def _revisar_fechas_de_cursos(
     return hallazgos
 
 
+def _revisar_fechas_de_comisiones(cursos: list[dict[str, Any]], archivo: str) -> list[Hallazgo]:
+    """`desde`/`hasta` de una comision: van juntos, ordenados y dentro del curso.
+
+    Son opcionales (contrato 1.1.0) y solo aparecen cuando una comision se dicta en fechas
+    distintas de las del curso: el SGA lista un mismo codigo con dos ediciones en el
+    cuatrimestre (81.73, 03/08–11/09 y 14/09–23/10, las dos «comision A» en el SGA).
+    """
+    hallazgos: list[Hallazgo] = []
+    for curso in cursos:
+        codigo = _texto(curso.get("codigo")) or "?"
+        curso_desde = _texto(curso.get("desde"))
+        curso_hasta = _texto(curso.get("hasta"))
+        for comision in _lista(curso.get("comisiones")):
+            if not isinstance(comision, dict):
+                continue
+            etiqueta = f"{codigo} com. {_texto(comision.get('id')) or '?'}"
+            desde = _texto(comision.get("desde"))
+            hasta = _texto(comision.get("hasta"))
+            if desde is None and hasta is None:
+                continue
+            if desde is None or hasta is None:
+                hallazgos.append(
+                    Hallazgo(
+                        ERROR,
+                        "comision-fecha-incompleta",
+                        archivo,
+                        f"{etiqueta}: «desde» y «hasta» de la comision van juntos o no van",
+                    )
+                )
+                continue
+            if desde > hasta:
+                hallazgos.append(
+                    Hallazgo(
+                        ERROR,
+                        "comision-invertida",
+                        archivo,
+                        f"{etiqueta}: empieza el {desde} y termina el {hasta}",
+                    )
+                )
+                continue
+            if curso_desde is None or curso_hasta is None:
+                continue
+            if desde < curso_desde or hasta > curso_hasta:
+                hallazgos.append(
+                    Hallazgo(
+                        ERROR,
+                        "comision-fuera-del-curso",
+                        archivo,
+                        f"{etiqueta}: va del {desde} al {hasta} y el curso va del "
+                        f"{curso_desde} al {curso_hasta}",
+                    )
+                )
+    return hallazgos
+
+
 def _revisar_franjas(bloques: list[_Bloque], archivo: str) -> list[Hallazgo]:
     """`desde < hasta`, ambos dentro del rango horario, y duracion razonable."""
     hallazgos: list[Hallazgo] = []
@@ -446,19 +505,14 @@ def _revisar_franjas(bloques: list[_Bloque], archivo: str) -> list[Hallazgo]:
 def _revisar_sedes(
     bloques: list[_Bloque], archivo: str, contexto: Contexto | None
 ) -> list[Hallazgo]:
-    """La sede existe en el vocabulario y solo es `null` si la modalidad no es presencial."""
+    """Toda sede declarada existe en el vocabulario.
+
+    `sede: null` vale con cualquier modalidad: es lo que el SGA publica cuando un bloque no
+    tiene aula asignada (virtual, laboratorio, o presencial sin aula todavia: 74.61, 32.57
+    com. N y 17.06 com. C en la corrida real del 2026-09-13). Rechazarlo seria rechazar datos
+    correctos.
+    """
     hallazgos: list[Hallazgo] = []
-    for bloque in bloques:
-        if bloque.sede is None and bloque.modalidad == MODALIDAD_PRESENCIAL:
-            hallazgos.append(
-                Hallazgo(
-                    ERROR,
-                    "sede-nula-presencial",
-                    archivo,
-                    f"{bloque.etiqueta}: el bloque del {bloque.dia} ({bloque.franja}) es "
-                    "presencial y no declara sede",
-                )
-            )
     declaradas = [bloque for bloque in bloques if bloque.sede is not None]
     if contexto is None or not declaradas:
         return hallazgos

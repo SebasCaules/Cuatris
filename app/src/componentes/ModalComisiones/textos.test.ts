@@ -23,6 +23,7 @@ import {
   sedesDeComision,
   subtituloDelModal,
   textoDeCupo,
+  textoDeFechas,
 } from "./textos";
 
 const SEDES: Record<string, string> = { rectorado: "Rectorado", sdt: "SDT" };
@@ -138,6 +139,23 @@ describe("cupo", () => {
         cupo: { capacidad: 30 },
       }),
     ).toBe("cupo — / 30");
+  });
+});
+
+describe("fechas propias de una comisión (contrato 1.1.0)", () => {
+  it("«03/08 – 11/09» cuando la comisión tiene sus fechas", () => {
+    const comision = {
+      id: "A",
+      desde: "2026-08-03",
+      hasta: "2026-09-11",
+      docentes: [],
+      bloques: [],
+    };
+    expect(textoDeFechas(comision)).toBe("03/08 – 11/09");
+  });
+
+  it("nada cuando se dicta en las fechas del curso", () => {
+    expect(textoDeFechas({ id: "A", docentes: [], bloques: [] })).toBeNull();
   });
 });
 

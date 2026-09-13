@@ -109,13 +109,21 @@ export interface Comision {
     capacidad: number;
   };
   /**
+   * Primer dia de dictado de la comision, solo si difiere del curso: el SGA lista un mismo codigo con ediciones en fechas distintas (1.1.0).
+   */
+  desde?: string;
+  /**
    * Docentes de la comision, como los lista el SGA; puede estar vacio.
    *
    * Items: Nombre del docente, en la forma «Apellido, Nombre».
    */
   docentes: string[];
   /**
-   * Identificador opaco de la comision; no se exige orden ni contiguidad.
+   * Ultimo dia de dictado de la comision, solo si difiere del curso; va junto con «desde» (1.1.0).
+   */
+  hasta?: string;
+  /**
+   * Identificador opaco de la comision, tal como lo publica el SGA: «A», «K», «S», pero tambien «Inglés», «Única», «Intensivo», «C - MECÁNICA y NAVAL» (corrida del 2026-09-13). Texto de 1 a 40 caracteres sin espacios en los bordes; no se exige orden ni contiguidad.
    */
   id: string;
   /**
@@ -162,16 +170,17 @@ export interface Bloque {
    */
   hasta: string;
   /**
-   * Modalidad del bloque; puede variar entre bloques de una misma comision. «virtual» es virtual sin especificar si es sincronica, tal como lo publica el SGA.
+   * Modalidad del bloque; puede variar entre bloques de una misma comision. «virtual» es virtual sin especificar si es sincronica y «laboratorio» es una practica de laboratorio sin aula ITBA asignada, tal como lo publica el SGA.
    */
   modalidad:
     | "presencial"
     | "virtual_sincronica"
     | "virtual_asincronica"
     | "virtual"
+    | "laboratorio"
     | "blended";
   /**
-   * Identificador de sede de vocabulario.json; null solo si no es presencial.
+   * Identificador de sede de vocabulario.json; null si el SGA no publica sede para el bloque (virtual, laboratorio, o presencial sin aula asignada todavia).
    */
   sede: string | null;
 }

@@ -360,3 +360,35 @@ def test_el_vocabulario_de_ejemplo_tiene_las_sedes_observadas(raiz: Path) -> Non
     sedes = [sede["id"] for sede in canon.cargar(ejemplo)["sedes"]]
     assert sedes == [sede["id"] for sede in canon.cargar(publicado)["sedes"]]
     assert sedes == ["rectorado", "sdf", "sdt"]
+
+
+def test_el_contrato_1_1_0_admite_laboratorio_sede_nula_presencial_y_fechas_de_comision(
+    fixtures: Path,
+) -> None:
+    """Corrida real del 2026-09-13: 93.41 con practicas `laboratorio`, 17.06 com. C presencial
+    sin aula (sede nula) y 81.73 con dos ediciones (`A` y `A.2`, cada una con sus fechas)."""
+    from cuatris import canon
+
+    ruta = fixtures / "deben-pasar" / "horarios-laboratorio-ediciones.json"
+    assert validar_archivo(ruta) == []
+
+    datos = canon.cargar(ruta)
+    assert datos["contrato"] == "1.1.0"
+    por_codigo = {curso["codigo"]: curso for curso in datos["cursos"]}
+    modalidades = {
+        b["modalidad"] for c in por_codigo["93.41"]["comisiones"] for b in c["bloques"]
+    }
+    assert "laboratorio" in modalidades
+    (presencial_sin_aula,) = [
+        b for b in por_codigo["17.06"]["comisiones"][0]["bloques"] if b["dia"] == "lunes"
+    ]
+    assert (presencial_sin_aula["modalidad"], presencial_sin_aula["sede"]) == ("presencial", None)
+    assert [(c["id"], c["desde"]) for c in por_codigo["81.73"]["comisiones"]] == [
+        ("A", "2026-08-03"),
+        ("A.2", "2026-09-14"),
+    ]
+
+    validador = compilar("horarios")
+    datos["cursos"][0]["comisiones"][0]["bloques"][0]["modalidad"] = "taller"
+    with pytest.raises(Exception, match="modalidad"):
+        validador(datos)

@@ -58,14 +58,15 @@ diferencia en `EXEC_STATE.md`.
 | `cursos[].departamento` | string, **opcional** | tal como lo muestra el SGA |
 | `cursos[].desde/hasta` | fecha | dentro del período (C3); períodos cortos son válidos |
 | `cursos[].dictado_conjunto` | array de códigos | requerido, puede ser `[]`; todo código es un curso del mismo archivo (C3, warning) |
-| `comisiones[].id` | string `^[A-Za-z0-9][A-Za-z0-9._-]{0,7}$` | opaco; único por curso (C3); sin chequeo de orden |
+| `comisiones[].id` | string, 1–40 caracteres sin espacios en los bordes (`^\S(?:.{0,38}\S)?$`) | opaco, tal como lo publica el SGA (`A`, `K`, `S`, `Inglés`, `Única`, `Intensivo`, `C - MECÁNICA y NAVAL`); único por curso; `A.2` = segunda edición de `A` (1.1.0) |
+| `comisiones[].desde` / `hasta` | fecha, **opcionales**, siempre juntos | solo si la comisión se dicta en fechas distintas de las del curso (dos ediciones bajo un código, 81.73); dentro del curso (C3) y son las fechas que C3 usa para colisiones |
 | `comisiones[].cupo` | objeto `{capacidad: int ≥ 0}`, **opcional** | estable |
 | `comisiones[].ocupacion` | objeto `{inscriptos: int ≥ 0, al: fecha}`, **opcional** | volátil; `inscriptos > capacidad` es warning |
 | `comisiones[].docentes` | array de strings | requerido, puede ser `[]`; colisión de docente = warning |
 | `bloques[].dia` | enum `lunes`, `martes`, `miercoles`, `jueves`, `viernes`, `sabado`, `domingo` | sin acentos; `domingo` entró en el contrato **1.1.0** (§8) |
 | `bloques[].desde/hasta` | hora | `desde < hasta`, entre `07:00` y `23:00`, y a lo sumo **8 h** de duración (C3: `bloque-demasiado-largo`, error) |
-| `bloques[].sede` | string o `null` | id de `vocabulario.json`; `null` solo si la modalidad no es presencial |
-| `bloques[].modalidad` | enum `presencial`, `virtual_sincronica`, `virtual_asincronica`, `virtual`, `blended` | el scraper mapea `Presencial` y `Presencial - SDR` → `presencial`; `Virtual Sinc.` → `virtual_sincronica`; `Virtual Asinc.` (también «Virtual asincrónica») → `virtual_asincronica`; `Virtual` a secas → `virtual`; `Blended` → `blended`. Otro valor = error ruidoso. `virtual` es «virtual sin decir si es sincrónica», tal como lo publica el SGA (**1.1.0**, §8) |
+| `bloques[].sede` | string o `null` | id de `vocabulario.json`; `null` = el SGA no publica sede para el bloque (virtual, laboratorio, o presencial sin aula asignada: 74.61, 32.57 com. N, 17.06 com. C) |
+| `bloques[].modalidad` | enum `presencial`, `virtual_sincronica`, `virtual_asincronica`, `virtual`, `laboratorio`, `blended` | el scraper mapea `Presencial` y `Presencial - SDR` → `presencial`; `Laboratorio` → `laboratorio` (práctica sin aula ITBA, 93.41); `Virtual Sinc.` → `virtual_sincronica`; `Virtual Asinc.` (también «Virtual asincrónica») → `virtual_asincronica`; `Virtual` a secas → `virtual`; `Blended` → `blended`. Otro valor = error ruidoso. `virtual` es «virtual sin decir si es sincrónica», tal como lo publica el SGA (**1.1.0**, §8) |
 | `bloques[].aulas` | array de strings de 1 a 40 caracteres sin espacios en los bordes (`^\S(?:.{0,38}\S)?$`) | requerido, puede ser `[]` (virtual o sin asignar); dos aulas simultáneas es válido; **nunca enum**: el ITBA nombra las aulas como quiere |
 
 Nota sobre `sabado` y `domingo`: el plan original proponía «sábado» como caso negativo; se
@@ -214,7 +215,7 @@ ser válido, pero todo lector tiene que aprender el valor nuevo (los mapas `Reco
 | Versión | Fecha | Qué agregó | Por qué es *minor* |
 |---|---|---|---|
 | 1.0.0 | 2026-09-09 | Los cinco tipos de `data/v1/`. | — |
-| 1.1.0 | 2026-09-12 | `dia` suma `domingo`; `modalidad` suma `virtual`. | Extender un enum no invalida nada de lo publicado: un documento `1.0.0` es válido bajo `1.1.0`. Los lectores viejos no rompen, pero tienen que aprender los dos valores nuevos. |
+| 1.1.0 | 2026-09-12 | `dia` suma `domingo`; `modalidad` suma `virtual` y `laboratorio`; `comisiones[].desde/hasta` opcionales; `sede: null` con cualquier modalidad; `comisiones[].id` libre. | Extender un enum no invalida nada de lo publicado: un documento `1.0.0` es válido bajo `1.1.0`. Los lectores viejos no rompen, pero tienen que aprender los dos valores nuevos. |
 
 Decisión **N0-28**. Los dos valores salieron de la corrida real del 2026-09-12, no de una
 previsión:
@@ -228,3 +229,25 @@ El caso está congelado en `tests/fixtures/deben-pasar/horarios-domingo-virtual.
 datos tal como los publica el SGA. En la SPA, `virtual` se trata **como
 `virtual_sincronica`** —tiene hora fija, cuenta para los choques y se dibuja en la grilla—;
 `virtual_asincronica` sigue como estaba.
+
+La corrida completa del **2026-09-13** (472 filas) agregó a 1.1.0, antes de publicar nada:
+
+- **`modalidad: laboratorio`**: «Aula externa: Laboratorio» en 25 cursos (Física I/II/III,
+  Química, Electrónica…): una práctica de laboratorio sin código de aula ITBA ni sede. Tiene
+  hora fija: la SPA la trata como presencial para los choques y la dibuja.
+- **`sede: null` con cualquier modalidad**: 74.61, 32.57 com. N y 17.06 com. C publican bloques
+  *presenciales* sin «Aula ITBA:» (el SGA no les asignó aula todavía). La regla «null solo si no
+  es presencial» rechazaba datos correctos y se retiró de C3.
+- **`comisiones[].desde` / `hasta`**, opcionales y siempre juntos: el SGA lista un mismo código
+  con dos ediciones en fechas distintas dentro del cuatrimestre (81.73 Introducción a la IOT,
+  03/08–11/09 y 14/09–23/10, las dos «comisión A»). El curso queda con la envolvente y cada
+  edición con sus fechas; la segunda pasa a id `A.2`. C3 exige que vayan juntas, ordenadas y
+  dentro del curso, y usa estas fechas —no las del curso— para las colisiones de aula y de
+  docente.
+- **`comisiones[].id` libre** (1–40 caracteres): el SGA publica `Inglés`, `Única`, `Intensivo`,
+  `C - MECÁNICA y NAVAL`; el patrón corto anterior los rechazaba.
+- El nombre del curso va **sin la anotación de fechas** que el detalle agrega («(Seminario -
+  03/08/2026 - 11/09/2026)», «(Anual - 01/03/2026 - 31/12/2026)»): repite `desde`/`hasta`.
+
+Los casos están congelados en `tests/fixtures/deben-pasar/horarios-laboratorio-ediciones.json`
+(93.41, 17.06 y 81.73 tal como los publica el SGA).

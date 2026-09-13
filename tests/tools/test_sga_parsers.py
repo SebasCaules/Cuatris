@@ -187,8 +187,10 @@ def test_bloque_con_modalidad_desconocida_falla_con_el_texto_original() -> None:
     assert "Holográfica" in str(error.value)
 
 
-def test_bloque_presencial_sin_aula_no_queda_sin_sede_en_silencio() -> None:
-    """CONTRATO-v1.md §1: `sede: null` solo si la modalidad no es presencial."""
+def test_bloque_presencial_sin_aula_queda_con_sede_nula_y_sin_aulas() -> None:
+    """Un bloque presencial sin «Aula ITBA:» es real (74.61, 32.57 com. N, 17.06 com. C el
+    2026-09-13): el SGA no le asigno aula todavia. Se publica tal cual: `sede: null`,
+    `aulas: []`, modalidad `presencial` (CONTRATO-v1.md §1, 1.1.0)."""
     html = """
     <table><thead><tr><th>Comisión</th><th>Horarios</th><th>Profesores</th>
     <th>Cupo</th></tr></thead><tbody><tr>
@@ -199,9 +201,9 @@ def test_bloque_presencial_sin_aula_no_queda_sin_sede_en_silencio() -> None:
       <td></td><td>1 / 20</td>
     </tr></tbody></table>
     """
-    with pytest.raises(parsers.EstructuraInesperada) as error:
-        parsers.parsear_comisiones(html)
-    assert "presencial" in str(error.value)
+    (comision,) = parsers.parsear_comisiones(html)
+    (bloque,) = comision.bloques
+    assert (bloque.modalidad, bloque.sede, bloque.aulas) == ("presencial", None, ())
 
 
 @pytest.mark.parametrize("cupo", ["lleno / -", "48 / 49 / 50", "sin datos", "- / 30"])
@@ -688,7 +690,7 @@ def test_a_contrato_no_serializa_un_bloque_con_contenido_sin_interpretar() -> No
     assert "Se dicta en linea la primera semana" in str(error.value)
 
 
-def test_a_contrato_no_serializa_un_bloque_presencial_sin_sede() -> None:
+def test_a_contrato_serializa_un_bloque_presencial_sin_sede_tal_cual() -> None:
     bloque = parsers.Bloque(
         dia="lunes",
         desde="08:00",
@@ -717,9 +719,16 @@ def test_a_contrato_no_serializa_un_bloque_presencial_sin_sede() -> None:
     )
     periodo = parsers.Periodo("2026-2C", 2026, "2C", "2026-07-26", "2026-12-31")
 
-    with pytest.raises(parsers.EstructuraInesperada) as error:
-        parsers.a_contrato([curso], periodo, CAPTURADO)
-    assert "sede" in str(error.value)
+    documento = parsers.a_contrato([curso], periodo, CAPTURADO)
+    (salida,) = documento["cursos"][0]["comisiones"][0]["bloques"]
+    assert salida == {
+        "dia": "lunes",
+        "desde": "08:00",
+        "hasta": "10:00",
+        "sede": None,
+        "modalidad": "presencial",
+        "aulas": [],
+    }
 
 
 def test_el_corpus_esta_anonimizado(corpus_sga: Path) -> None:
@@ -817,7 +826,9 @@ def test_una_modalidad_con_sufijo_desconocido_se_lee_y_se_avisa_una_sola_vez(
     assert "lo que sea" in avisos[1]
 
 
-def test_una_modalidad_sin_modalidad_conocida_adelante_sigue_siendo_desconocida() -> None:
+def test_una_modalidad_sin_modalidad_conocida_adelante_sigue_siendo_desconocida() -> (
+    None
+):
     """La regla del sufijo no es un colador: lo que no arranca con algo conocido, falla."""
     with pytest.raises(normalizar.ValorDesconocido):
         normalizar.modalidad("Holografica - SDR")
@@ -880,3 +891,83 @@ def test_73_67_lee_la_modalidad_con_sufijo_y_deja_el_aviso(
 def test_el_contrato_que_escribe_el_scraper_es_1_1_0() -> None:
     """Los dos enums nuevos (`domingo`, `virtual`) son una extension, o sea un minor."""
     assert parsers.CONTRATO == "1.1.0"
+
+
+# --------------------------------------------------------------------------------------
+# Corrida real del 2026-09-13: laboratorio, presencial sin aula, nombres con fechas
+# --------------------------------------------------------------------------------------
+
+
+def test_fisica_i_tiene_practicas_de_laboratorio_sin_aula(corpus: Path) -> None:
+    """93.41: «Aula externa: Laboratorio» → modalidad `laboratorio`, sin sede ni aulas."""
+    html = (corpus / "sga" / "detalle-comisiones-93.41.html").read_text(
+        encoding="utf-8"
+    )
+    curso = parsers.parsear_curso(html)
+    assert curso.codigo == "93.41"
+    assert [c.id for c in curso.comisiones] == [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "K",
+        "S",
+        "S1",
+    ]
+    comision_a = curso.comisiones[0]
+    assert [(b.dia, b.modalidad, b.sede, b.aulas) for b in comision_a.bloques] == [
+        ("lunes", "laboratorio", None, ()),
+        ("martes", "virtual_sincronica", None, ()),
+        ("miercoles", "laboratorio", None, ()),
+    ]
+
+
+def test_proyecto_final_de_carrera_i_tiene_una_comision_presencial_sin_aula(
+    corpus: Path,
+) -> None:
+    """17.06 com. C: «Aula externa: Presencial» sin «Aula ITBA:»; queda con sede nula."""
+    html = (corpus / "sga" / "detalle-comisiones-17.06.html").read_text(
+        encoding="utf-8"
+    )
+    curso = parsers.parsear_curso(html)
+    por_id = {c.id: c for c in curso.comisiones}
+    assert [(b.dia, b.modalidad, b.sede, b.aulas) for b in por_id["C"].bloques] == [
+        ("lunes", "presencial", None, ()),
+        ("jueves", "presencial", None, ()),
+    ]
+    assert por_id["A"].bloques[0].aulas == ("604F",)
+    assert por_id["A"].bloques[0].sede == "sdf"
+
+
+@pytest.mark.parametrize(
+    ("nombre", "esperado"),
+    [
+        (
+            "Introducción a la IOT (Seminario - 03/08/2026 - 11/09/2026)",
+            "Introducción a la IOT",
+        ),
+        (
+            "Proyecto Final (Anual) (Anual - 01/03/2026 - 31/12/2026)",
+            "Proyecto Final (Anual)",
+        ),
+        ("Internet de las Cosas (IoT)", "Internet de las Cosas (IoT)"),
+        ("Álgebra Lineal", "Álgebra Lineal"),
+    ],
+)
+def test_nombre_sin_fechas_quita_solo_la_anotacion_de_fechas(
+    nombre: str, esperado: str
+) -> None:
+    assert parsers.nombre_sin_fechas(nombre) == esperado
+
+
+def test_el_nombre_del_detalle_llega_sin_la_anotacion_de_fechas(corpus: Path) -> None:
+    html = (corpus / "sga" / "detalle-comisiones-73.67.html").read_text(
+        encoding="utf-8"
+    )
+    assert parsers.parsear_curso(html).nombre == (
+        "Análisis de series de tiempo con Inteligencia Artificial"
+    )

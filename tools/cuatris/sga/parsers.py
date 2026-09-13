@@ -38,6 +38,7 @@ __all__ = [
     "curso_a_dict",
     "extraer_formulario_login",
     "extraer_ids_filtro",
+    "nombre_sin_fechas",
     "parsear_comisiones",
     "parsear_curso",
     "parsear_listado",
@@ -56,11 +57,16 @@ ETIQUETA_AULA = "Aula ITBA:"
 ETIQUETA_MODALIDAD = "Aula externa:"
 #: Id de la modalidad presencial. CONTRATO-v1.md §1 solo admite `sede: null` cuando la
 #: modalidad no es presencial, asi que un bloque presencial sin sede es un error de lectura.
-PRESENCIAL = normalizar.MODALIDADES["Presencial"]
 
 _CODIGO = re.compile(r"^\d{2}\.\d{2}$")
 #: `002R #----> Sede Rectorado`. La cantidad de guiones no se fija.
 _AULA_SEDE = re.compile(r"^(?P<aula>.+?)\s*#-*>\s*(?P<sede>.+)$")
+#: Anotacion que el detalle del curso agrega al nombre: «(Seminario - 03/08/2026 -
+#: 11/09/2026)», «(Anual - 01/03/2026 - 31/12/2026)». Repite las fechas del listado (en la
+#: corrida del 2026-09-13, en los 57 casos) y no esta en el nombre del listado.
+_FECHAS_EN_EL_NOMBRE = re.compile(
+    r"\s*\([^()]*?\s*-\s*\d{2}/\d{2}/\d{4}\s*-\s*\d{2}/\d{2}/\d{4}\)\s*$"
+)
 #: `Página 1 a 20 de 472` (con o sin acento).
 _ETIQUETA_PAGINA = re.compile(
     r"P[áa]gina\s+(?P<desde>\d+)\s+a\s+(?P<hasta>\d+)\s+de\s+(?P<total>\d+)", re.IGNORECASE
@@ -370,12 +376,9 @@ def _parsear_bloque(div: Tag) -> Bloque:
         raise EstructuraInesperada("Un mismo bloque declara dos modalidades.", div)
     if len(set(sedes)) > 1:
         raise EstructuraInesperada("Un mismo bloque declara dos sedes.", div)
-    if modalidades[0] == PRESENCIAL and not sedes:
-        raise EstructuraInesperada(
-            f"Un bloque presencial no trae «{ETIQUETA_AULA}», que es de donde sale la sede; "
-            "el contrato no admite «sede: null» con modalidad presencial.",
-            div,
-        )
+    # Un bloque presencial sin «Aula ITBA:» es real (74.61, 32.57 com. N, 17.06 com. C en la
+    # corrida del 2026-09-13): el SGA todavia no le asigno aula. Queda con `sede: null` y
+    # `aulas: []`, que es exactamente lo que el SGA publica; CONTRATO-v1.md §1 lo admite.
 
     sobrantes = [
         texto
@@ -535,6 +538,18 @@ def _pestana_activa(sopa: BeautifulSoup) -> str | None:
     return _o_none(_texto(activa)) if activa else None
 
 
+def nombre_sin_fechas(nombre: str) -> str:
+    """Quita la anotacion de fechas que el detalle agrega al nombre del curso.
+
+    «Introducción a la IOT (Seminario - 03/08/2026 - 11/09/2026)» → «Introducción a la IOT».
+    Las fechas ya van en `desde`/`hasta` (son las mismas del listado, comprobado en los 57
+    casos de la corrida del 2026-09-13), y con dos ediciones fusionadas bajo un codigo el
+    nombre no puede llevar las de una sola. Un parentesis sin fechas —«Proyecto Final
+    (Anual)», «Internet de las Cosas (IoT)»— es parte del nombre y se conserva.
+    """
+    return _FECHAS_EN_EL_NOMBRE.sub("", nombre).strip()
+
+
 def parsear_curso(html_detalle: str | BeautifulSoup) -> Curso:
     """Detalle de un curso con la pestana Comisiones abierta."""
     sopa = _sopa(html_detalle)
@@ -574,7 +589,7 @@ def parsear_curso(html_detalle: str | BeautifulSoup) -> Curso:
 
     return Curso(
         codigo=codigo,
-        nombre=nombre,
+        nombre=nombre_sin_fechas(nombre),
         departamento=_valor_de_fila(sopa, "Departamento"),
         desde=normalizar.fecha(desde) if desde else None,
         hasta=normalizar.fecha(hasta) if hasta else None,
@@ -809,13 +824,6 @@ def _bloque_a_contrato(bloque: Bloque, curso: Curso, comision: Comision) -> dict
             f"El bloque de {curso.codigo} comision {comision.id} trae contenido que este "
             "parser no sabe interpretar; revise el HTML antes de publicar los datos.",
             bloque.extra,
-        )
-    if bloque.modalidad == PRESENCIAL and bloque.sede is None:
-        raise EstructuraInesperada(
-            f"El bloque de {curso.codigo} comision {comision.id} es presencial y no tiene "
-            "sede; CONTRATO-v1.md §1 solo admite «sede: null» cuando la modalidad no es "
-            "presencial.",
-            f"{bloque.dia} {bloque.desde}-{bloque.hasta} aulas={list(bloque.aulas)}",
         )
     return {
         "dia": bloque.dia,

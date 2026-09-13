@@ -107,6 +107,28 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
   `<modalidad conocida> - <sufijo>` → la modalidad con WARNING único por texto. Extender un
   enum es *minor*; la app trata `virtual` como sincrónica (hora fija: cuenta para choques).
 
+- **N0-29** (corrida completa 2026-09-13, 472 filas, 443 bajadas, 0 pantallas de error) Contrato
+  1.1.0 (aún no publicado) suma `modalidad: laboratorio` («Aula externa: Laboratorio», 25 cursos:
+  práctica sin aula ITBA ni sede; hora fija, cuenta para choques).
+- **N0-30** `sede: null` vale con cualquier modalidad: 74.61, 32.57 com. N y 17.06 com. C son
+  presenciales sin «Aula ITBA:» (sin aula asignada). La regla «null solo si no es presencial»
+  rechazaba datos reales: retirada del parser, de `a_contrato` y de C3 (`sede-nula-presencial`).
+- **N0-31** Anual por duración, no por rótulo: dictado ≥ 240 días (`es_anual`). Las cohortes que
+  empiezan en 2C y terminan en julio de 2027 (10.01, 72.45, 16.30, 25.32, 30.80, 31.58, 31.88)
+  vienen rotuladas «2026-2C» y estiraban el `periodo` hasta 2027-07-24; ahora el período sale de
+  los cuatrimestrales (2026-07-26 – 2026-12-31) y todo anual se recorta.
+- **N0-32** Fusión de apariciones por fechas: mismo id + mismas fechas + mismos bloques → una
+  (la de la fila del período pedido, con la unión de docentes: las cohortes de 10.01 traen 23 y
+  13 nombres); fechas distintas → dos ediciones, `comisiones[].desde/hasta` opcionales (1.1.0) y
+  la segunda como `A.2` (81.73, 81.72, 73.66, 94.65, 14.97, 15.06); mismas fechas con horarios
+  distintos → fallido. C3 usa las fechas de la comisión para colisiones. La app muestra las
+  fechas en el modal de comisiones y usa la vigencia de la comisión para choques.
+- **N0-33** `comisiones[].id` pasa a texto libre 1–40 (`Inglés`, `Única`, `Intensivo`,
+  `C - MECÁNICA y NAVAL`); el nombre del curso va sin la anotación «(Seminario - dd/mm/yyyy -
+  dd/mm/yyyy)» / «(Anual - …)» del detalle (repite `desde`/`hasta` en los 57 casos);
+  `dictado_conjunto` ya no exige el mismo id de comisión (12.84 Q / 17.15 A, 41.15 P / 46.66 A,
+  30.19 M / 30.38 A: misma clase, dos códigos, ids distintos).
+
 ## Pasos
 
 | Paso | Estado | Commit | Notas |
@@ -134,6 +156,8 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | Ola 5 · R2 plan compacto como StudyVaults, casillas propias, cierre automático del año, tooltips propios, ciclo cronológico | DONE | 101bc74 | ROJO→VERDE (wf_a2244e33-8de); 630 tests app; medidas verificadas en el navegador; cierra S-24 |
 
 | Ola 6 — scraper página por página + contrato 1.1.0 (W6-A, W6-B; verificación por N0 tras frenar el workflow a pedido del autor) | DONE | db123df | 518 tests Python, 637 app; parser probado sobre los 3 detalles reales y la pantalla de error real; checkpoint viejo (37) carga |
+
+| Ola 6b — segunda corrida completa: laboratorio, sede nula, anuales por duración, ediciones `A.2`, ids libres, nombres sin fechas (N0-29…N0-33; hecho por N0 sin workflow, a pedido del autor) | DONE | (este commit) | 535 tests Python, 641 app; el archivo armado offline desde el checkpoint real (432 cursos) valida sin errores |
 
 ## Fixes y tareas diferidas (S-nn)
 

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import type { Curso } from "../contrato/tipos";
 import type { BloqueUbicado } from "./horarios";
 import {
   bloquesDelPeriodo,
@@ -10,7 +11,7 @@ import {
   DIAS,
   ordenarComisiones,
   paresQueChocan,
-  seOfrece, HorariosDeOtroPeriodo } from "./horarios";
+  seOfrece, HorariosDeOtroPeriodo, vigenciaDe } from "./horarios";
 import {
   HORARIOS_DOMINGO_VIRTUAL,
   HORARIOS_RAROS,
@@ -407,5 +408,71 @@ describe("contrato 1.1.0: domingo y virtual", () => {
     expect(
       cambiosDeSede(PERIODO_RARO, plan, HORARIOS_DOMINGO_VIRTUAL),
     ).toEqual([]);
+  });
+});
+
+describe("contrato 1.1.0: fechas propias de una comisión", () => {
+  // 81.73 Introducción a la IOT (corrida real del 2026-09-13): el SGA lo lista
+  // dos veces, com. A del 03/08 al 11/09 y otra com. A del 14/09 al 23/10; el
+  // scraper deja A y A.2, cada una con sus fechas, y el curso con la envolvente.
+  const curso: Curso = {
+    codigo: "81.73",
+    nombre: "Introducción a la IOT",
+    desde: "2026-08-03",
+    hasta: "2026-10-23",
+    dictado_conjunto: [],
+    comisiones: [
+      {
+        id: "A",
+        desde: "2026-08-03",
+        hasta: "2026-09-11",
+        docentes: [],
+        bloques: [
+          { dia: "sabado", desde: "20:00", hasta: "21:00", sede: null, modalidad: "virtual", aulas: [] },
+        ],
+      },
+      {
+        id: "A.2",
+        desde: "2026-09-14",
+        hasta: "2026-10-23",
+        docentes: [],
+        bloques: [
+          { dia: "sabado", desde: "20:00", hasta: "21:00", sede: null, modalidad: "virtual", aulas: [] },
+        ],
+      },
+      { id: "B", docentes: [], bloques: [] },
+    ],
+  };
+
+  it("la comisión con fechas propias vale por ellas; la que no, por el curso", () => {
+    expect(vigenciaDe(curso, curso.comisiones[0]!)).toEqual({
+      desde: "2026-08-03",
+      hasta: "2026-09-11",
+    });
+    expect(vigenciaDe(curso, curso.comisiones[2]!)).toEqual({
+      desde: "2026-08-03",
+      hasta: "2026-10-23",
+    });
+  });
+
+  it("dos ediciones que no se pisan en el calendario no chocan entre sí", () => {
+    const primera = curso.comisiones[0]!;
+    const segunda = curso.comisiones[1]!;
+    const uno: BloqueUbicado = {
+      codigo: "81.73",
+      nombre: curso.nombre,
+      comision: "A",
+      vigencia: vigenciaDe(curso, primera),
+      bloque: primera.bloques[0]!,
+    };
+    const otro: BloqueUbicado = {
+      ...uno,
+      codigo: "81.72",
+      comision: "A.2",
+      vigencia: vigenciaDe(curso, segunda),
+    };
+    expect(paresQueChocan([uno, otro])).toEqual([]);
+    const mismasFechas: BloqueUbicado = { ...otro, vigencia: uno.vigencia };
+    expect(paresQueChocan([uno, mismasFechas])).toHaveLength(1);
   });
 });

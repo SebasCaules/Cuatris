@@ -32,15 +32,16 @@ JSON Schema draft-07 están en `schemas/v1/` y son el artefacto: no hay paso de 
 | `cursos[].departamento` | string, opcional | como lo muestra el SGA |
 | `cursos[].desde` / `hasta` | fecha | del curso, no del período: los períodos cortos son reales |
 | `cursos[].dictado_conjunto` | array de códigos | requerido, puede ser `[]`; códigos del mismo archivo (C3, warning) |
-| `comisiones[].id` | string `^[A-Za-z0-9][A-Za-z0-9._-]{0,7}$` | opaco: sin orden ni contigüidad |
+| `comisiones[].id` | string, 1–40 caracteres sin espacios en los bordes (`^\S(?:.{0,38}\S)?$`) | opaco, tal como lo publica el SGA: `A`, `K`, `S`, pero también `Inglés`, `Única`, `Intensivo`, `C - MECÁNICA y NAVAL`; sin orden ni contigüidad; `A.2` es la segunda edición de una comisión `A` (ver `desde`/`hasta` de comisión) |
+| `comisiones[].desde` / `hasta` | fecha, opcionales, siempre juntos | solo cuando la comisión se dicta en fechas distintas de las del curso (dos ediciones de un seminario bajo un código); dentro del curso; son las fechas que C3 usa para las colisiones (1.1.0) |
 | `comisiones[].cupo.capacidad` | entero >= 0, opcional | estable; separado del dato volátil |
 | `comisiones[].ocupacion` | `{inscriptos, al}`, opcional | volátil; `inscriptos > capacidad` es warning |
 | `comisiones[].docentes` | array de strings | requerido, puede ser `[]` |
 | `comisiones[].bloques` | array | puede ser `[]` si todavía no hay horario publicado |
 | `bloques[].dia` | enum | `lunes`…`sabado` y `domingo`, sin acentos; `domingo` entró en el contrato 1.1.0 |
 | `bloques[].desde` / `hasta` | hora | `desde < hasta`, entre 07:00 y 23:00, y nunca más de 8 h seguidas (C3) |
-| `bloques[].sede` | string o `null` | id de `vocabulario.json`; `null` solo si no es presencial |
-| `bloques[].modalidad` | enum | `presencial`, `virtual_sincronica`, `virtual_asincronica`, `virtual`, `blended`; `virtual` es «virtual sin decir si es sincrónica», tal como lo publica el SGA (1.1.0) |
+| `bloques[].sede` | string o `null` | id de `vocabulario.json`; `null` = el SGA no publica sede para ese bloque (virtual, laboratorio, o presencial sin aula asignada todavía) |
+| `bloques[].modalidad` | enum | `presencial`, `virtual_sincronica`, `virtual_asincronica`, `virtual`, `laboratorio`, `blended`; `virtual` es «virtual sin decir si es sincrónica» y `laboratorio` una práctica de laboratorio sin aula ITBA, tal como lo publica el SGA (1.1.0) |
 | `bloques[].aulas` | array de strings | **nunca enum**; puede ser `[]` o tener dos aulas |
 
 `cupo` va separado de `ocupacion` porque el primero es estable y el segundo cambia todos los
@@ -131,7 +132,7 @@ no cambia la forma.
 | Versión | Fecha | Qué agregó | Por qué es *minor* |
 |---|---|---|---|
 | 1.0.0 | 2026-09-09 | El contrato inicial: los cinco tipos de `data/v1/`. | — |
-| 1.1.0 | 2026-09-12 | `dia` suma `domingo`; `modalidad` suma `virtual`. | Extender un enum no invalida ningún archivo que ya esté publicado: todo documento `1.0.0` sigue siendo válido bajo `1.1.0`. Lo que sí cambia es el lector, que tiene que saber dibujar los dos valores nuevos. |
+| 1.1.0 | 2026-09-12 | `dia` suma `domingo`; `modalidad` suma `virtual` y `laboratorio`; `comisiones[].desde/hasta` opcionales; `sede: null` con cualquier modalidad; `comisiones[].id` libre. | Extender un enum no invalida ningún archivo que ya esté publicado: todo documento `1.0.0` sigue siendo válido bajo `1.1.0`. Lo que sí cambia es el lector, que tiene que saber dibujar los dos valores nuevos. |
 
 Los dos valores de 1.1.0 salieron de la corrida real del scraper del **2026-09-12**, no de una
 previsión:
@@ -146,6 +147,28 @@ previsión:
 El scraper mapea «Domingo» → `domingo`, «Virtual» → `virtual` y «Presencial - SDR» →
 `presencial`; los dos casos están congelados en
 `tests/fixtures/deben-pasar/horarios-domingo-virtual.json`.
+
+La corrida completa del **2026-09-13** (472 filas) agregó a 1.1.0, antes de publicar nada:
+
+- **`modalidad: laboratorio`**: «Aula externa: Laboratorio» en 25 cursos (Física I/II/III,
+  Química, Electrónica…): una práctica de laboratorio sin código de aula ITBA ni sede. Tiene
+  hora fija: la SPA la trata como presencial para los choques y la dibuja.
+- **`sede: null` con cualquier modalidad**: 74.61, 32.57 com. N y 17.06 com. C publican bloques
+  *presenciales* sin «Aula ITBA:» (el SGA no les asignó aula todavía). La regla «null solo si no
+  es presencial» rechazaba datos correctos y se retiró de C3.
+- **`comisiones[].desde` / `hasta`**, opcionales y siempre juntos: el SGA lista un mismo código
+  con dos ediciones en fechas distintas dentro del cuatrimestre (81.73 Introducción a la IOT,
+  03/08–11/09 y 14/09–23/10, las dos «comisión A»). El curso queda con la envolvente y cada
+  edición con sus fechas; la segunda pasa a id `A.2`. C3 exige que vayan juntas, ordenadas y
+  dentro del curso, y usa estas fechas —no las del curso— para las colisiones de aula y de
+  docente.
+- **`comisiones[].id` libre** (1–40 caracteres): el SGA publica `Inglés`, `Única`, `Intensivo`,
+  `C - MECÁNICA y NAVAL`; el patrón corto anterior los rechazaba.
+- El nombre del curso va **sin la anotación de fechas** que el detalle agrega («(Seminario -
+  03/08/2026 - 11/09/2026)», «(Anual - 01/03/2026 - 31/12/2026)»): repite `desde`/`hasta`.
+
+Los casos están congelados en `tests/fixtures/deben-pasar/horarios-laboratorio-ediciones.json`
+(93.41, 17.06 y 81.73 tal como los publica el SGA).
 
 ## Cómo agregar un campo
 

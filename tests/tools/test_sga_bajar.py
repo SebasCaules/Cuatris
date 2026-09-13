@@ -176,7 +176,9 @@ class SGAFalso:
             return httpx.Response(200, html=ERROR_SGA)
         secuencia = self.secuencias.get(url)
         if secuencia:
-            return httpx.Response(200, html=secuencia.pop(0) if len(secuencia) > 1 else secuencia[0])
+            return httpx.Response(
+                200, html=secuencia.pop(0) if len(secuencia) > 1 else secuencia[0]
+            )
         if url in self.paginas:
             return httpx.Response(200, html=self.paginas[url])
         return httpx.Response(404, text=f"sin ruta simulada para {url}")
@@ -388,7 +390,9 @@ def test_un_curso_anual_de_otro_periodo_se_incluye_recortado() -> None:
     """Caso real del 2026-09-12: 41.34 Desarrollo de Yacimientos (Anual) aparece en el
     listado de 2C rotulado «2026-1C»; se dicta todo el ano, asi que entra con las fechas
     recortadas al cuatrimestre."""
-    propio = _registro("30.28", periodo="2026-2C", desde="2026-07-26", hasta="2026-12-31")
+    propio = _registro(
+        "30.28", periodo="2026-2C", desde="2026-07-26", hasta="2026-12-31"
+    )
     anual = _registro(
         "41.34",
         periodo="2026-1C",
@@ -397,7 +401,9 @@ def test_un_curso_anual_de_otro_periodo_se_incluye_recortado() -> None:
         nombre="Desarrollo de Yacimientos (Anual)",
     )
 
-    propios, anuales, fallidos = bajar.separar_anuales([propio, anual], periodo="2026-2C")
+    propios, anuales, fallidos = bajar.separar_anuales(
+        [propio, anual], periodo="2026-2C"
+    )
 
     assert [r.codigo for r in propios] == ["30.28"]
     assert [r.codigo for r in anuales] == ["41.34"]
@@ -407,10 +413,16 @@ def test_un_curso_anual_de_otro_periodo_se_incluye_recortado() -> None:
 
 
 def test_un_curso_ajeno_que_no_se_solapa_va_a_fallidos_y_no_corta_la_corrida() -> None:
-    propio = _registro("30.28", periodo="2026-2C", desde="2026-07-26", hasta="2026-12-31")
-    ajeno = _registro("41.34", periodo="2026-1C", desde="2026-03-01", hasta="2026-07-01")
+    propio = _registro(
+        "30.28", periodo="2026-2C", desde="2026-07-26", hasta="2026-12-31"
+    )
+    ajeno = _registro(
+        "41.34", periodo="2026-1C", desde="2026-03-01", hasta="2026-07-01"
+    )
 
-    propios, anuales, fallidos = bajar.separar_anuales([propio, ajeno], periodo="2026-2C")
+    propios, anuales, fallidos = bajar.separar_anuales(
+        [propio, ajeno], periodo="2026-2C"
+    )
 
     assert [r.codigo for r in propios] == ["30.28"]
     assert anuales == []
@@ -419,7 +431,9 @@ def test_un_curso_ajeno_que_no_se_solapa_va_a_fallidos_y_no_corta_la_corrida() -
 
 
 def test_sin_ningun_curso_propio_el_filtro_no_se_aplico() -> None:
-    ajeno = _registro("41.34", periodo="2026-1C", desde="2026-03-01", hasta="2026-07-01")
+    ajeno = _registro(
+        "41.34", periodo="2026-1C", desde="2026-03-01", hasta="2026-07-01"
+    )
     with pytest.raises(parsers.EstructuraInesperada, match="filtro no se aplico"):
         bajar.separar_anuales([ajeno], periodo="2026-2C")
 
@@ -834,7 +848,9 @@ def test_periodo_de_registros_cubre_los_periodos_cortos(html_listado: str) -> No
     """15.09 va del 18/09 al 16/10: tiene que caer dentro del periodo, no ampliarlo."""
     filas = parsers.parsear_listado(html_listado).filas
     registros = [
-        _registro(f.codigo, periodo=f.periodo or "", desde=f.desde or "", hasta=f.hasta or "")
+        _registro(
+            f.codigo, periodo=f.periodo or "", desde=f.desde or "", hasta=f.hasta or ""
+        )
         for f in filas
     ]
     periodo = bajar.periodo_de_registros(registros, anio=2026, cuatrimestre="2C")
@@ -995,7 +1011,9 @@ def _detalle(html_algebra: str, codigo: str, nombre: str) -> str:
     if codigo == "93.18":
         return html_algebra
     cambiado = html_algebra.replace("93.18 - Álgebra Lineal", f"{codigo} - {nombre}", 1)
-    assert cambiado != html_algebra, "el corpus dejo de traer la fila «Materia:» esperada"
+    assert cambiado != html_algebra, (
+        "el corpus dejo de traer la fila «Materia:» esperada"
+    )
     return cambiado
 
 
@@ -1127,7 +1145,9 @@ def test_cinco_cursos_seguidos_irrecuperables_abortan_y_conservan_el_checkpoint(
     falso = _sga_con_paginas(html_listado, [pagina])
     filas = {c: _fila(html_listado, c) for c in codigos}
     # El primero sale bien (pone el contador en cero); los demas, error siempre.
-    falso.agregar(filas["30.28"].enlace_detalle or "", _detalle(html_algebra, "30.28", "x"))
+    falso.agregar(
+        filas["30.28"].enlace_detalle or "", _detalle(html_algebra, "30.28", "x")
+    )
     for codigo in codigos[1:]:
         falso.vencer(filas[codigo].enlace_detalle or "", veces=99)
 
@@ -1236,7 +1256,9 @@ def test_la_corrida_deja_un_log_en_el_cache_sin_el_identificador_de_sesion(
     assert log.is_file()
     texto = log.read_text(encoding="utf-8")
     assert texto.startswith("=== corrida ")
-    assert " DEBUG " in texto, "las peticiones se registran en DEBUG aunque la consola este en INFO"
+    assert " DEBUG " in texto, (
+        "las peticiones se registran en DEBUG aunque la consola este en INFO"
+    )
     assert "GET https://sga.itba.edu.ar/app2/" in texto
     assert "Resumen:" in texto
     assert "NODO1" not in texto
@@ -1326,7 +1348,10 @@ def test_dos_apariciones_con_comisiones_disjuntas_se_unen_con_aviso(
     assert [c["id"] for c in curso["comisiones"]] == ["A", "B", "C", "D"]
     assert (curso["desde"], curso["hasta"]) == ("2026-07-26", "2027-01-05")
     aviso = next(r.getMessage() for r in caplog.records if "aparece" in r.getMessage())
-    assert "93.18 aparece 2 veces en el listado: se unen sus comisiones (A, B | C, D)." == aviso
+    assert (
+        "93.18 aparece 2 veces en el listado: se unen sus comisiones (A, B | C, D)."
+        == aviso
+    )
 
 
 def test_una_comision_con_contenido_distinto_manda_ese_codigo_a_fallidos() -> None:
@@ -1489,3 +1514,184 @@ def test_si_ningun_curso_se_pudo_bajar_se_informa_en_vez_de_fechar_el_periodo(
     assert codigo == 1
     assert not (tmp_path / "2026-2C.json").exists()
     assert "Ningun curso quedo en el checkpoint" in capsys.readouterr().out
+
+
+# --------------------------------------------------------------------------------------
+# Corrida real del 2026-09-13: anuales por duracion, ediciones, cohortes, ids y nombres
+# --------------------------------------------------------------------------------------
+
+
+def test_una_cohorte_anual_rotulada_con_el_periodo_propio_no_estira_el_cuatrimestre() -> (
+    None
+):
+    """10.01 y 72.45 aparecen rotulados «2026-2C» con dictado hasta julio de 2027: son
+    anuales por duracion, entran recortados y el periodo sale de los cuatrimestrales."""
+    propio = _registro(
+        "30.28", periodo="2026-2C", desde="2026-07-26", hasta="2026-12-31"
+    )
+    cohorte = _registro(
+        "72.45", periodo="2026-2C", desde="2026-07-26", hasta="2027-06-27"
+    )
+
+    propios, anuales, fallidos = bajar.separar_anuales(
+        [propio, cohorte], periodo="2026-2C"
+    )
+    periodo = bajar.periodo_de_registros(propios, anio=2026, cuatrimestre="2C")
+
+    assert [r.codigo for r in propios] == ["30.28"]
+    assert [r.codigo for r in anuales] == ["72.45"]
+    assert fallidos == []
+    assert (periodo.desde, periodo.hasta) == ("2026-07-26", "2026-12-31")
+    assert (anuales[0].curso["desde"], anuales[0].curso["hasta"]) == (
+        "2026-07-26",
+        "2026-12-31",
+    )
+
+
+def test_es_anual_separa_un_cuatrimestre_largo_de_una_cohorte_corta() -> None:
+    assert not bajar.es_anual("2026-07-26", "2026-12-31")  # 158 dias: un cuatrimestre
+    assert bajar.es_anual(
+        "2026-03-01", "2026-12-31"
+    )  # 305 dias: la cohorte mas corta vista
+
+
+def _con_comision(
+    curso: dict,
+    identificador: str,
+    *,
+    docentes: list[str] | None = None,
+    inscriptos: int = 1,
+) -> dict:
+    copia = copy.deepcopy(curso)
+    copia["comisiones"][0]["id"] = identificador
+    copia["comisiones"][0]["docentes"] = docentes or []
+    copia["comisiones"][0]["ocupacion"] = {"inscriptos": inscriptos, "al": "2026-09-13"}
+    return copia
+
+
+_BLOQUE_SABADO = {
+    "dia": "sabado",
+    "desde": "20:00",
+    "hasta": "21:00",
+    "sede": None,
+    "modalidad": "virtual",
+    "aulas": [],
+}
+
+
+def test_dos_ediciones_del_mismo_codigo_quedan_como_a_y_a_punto_2_con_sus_fechas() -> (
+    None
+):
+    """81.73 Introduccion a la IOT: dos filas «comision A», del 03/08 al 11/09 y del 14/09
+    al 23/10. Las dos valen; la segunda pasa a `A.2` y cada una lleva sus fechas."""
+    primera = _curso_contrato(
+        "81.73", "Introducción a la IOT", "A", [dict(_BLOQUE_SABADO)]
+    )
+    primera["desde"], primera["hasta"] = "2026-08-03", "2026-09-11"
+    segunda = copy.deepcopy(primera)
+    segunda["desde"], segunda["hasta"] = "2026-09-14", "2026-10-23"
+
+    fusionado, motivo = bajar._fusionar_apariciones(
+        [segunda, primera], periodo="2026-2C"
+    )
+
+    assert motivo == ""
+    assert fusionado is not None
+    assert (fusionado["desde"], fusionado["hasta"]) == ("2026-08-03", "2026-10-23")
+    assert [(c["id"], c["desde"], c["hasta"]) for c in fusionado["comisiones"]] == [
+        ("A", "2026-08-03", "2026-09-11"),
+        ("A.2", "2026-09-14", "2026-10-23"),
+    ]
+
+
+def test_dos_cohortes_con_el_mismo_horario_quedan_como_una_con_los_docentes_unidos() -> (
+    None
+):
+    """72.45 Proyecto Final: la cohorte de marzo («2026-1C») y la de ahora («2026-2C»)
+    coinciden en horario tras el recorte; difieren en docentes y ocupacion. Queda la de la
+    corrida, con la union de los docentes."""
+    bloque = {**_BLOQUE_SABADO, "dia": "domingo", "desde": "15:00", "hasta": "16:00"}
+    base = _curso_contrato("72.45", "Proyecto Final", "S", [dict(bloque)])
+    marzo = _con_comision(
+        base, "S", docentes=["Leivi, Alejo", "Bolo, Mario"], inscriptos=35
+    )
+    marzo["_periodo_del_listado"] = "2026-1C"
+    ahora = _con_comision(
+        base, "S", docentes=["Bolo, Mario", "Huerta, Jorge"], inscriptos=60
+    )
+    ahora["_periodo_del_listado"] = "2026-2C"
+
+    fusionado, motivo = bajar._fusionar_apariciones([marzo, ahora], periodo="2026-2C")
+
+    assert motivo == ""
+    assert fusionado is not None
+    (comision,) = fusionado["comisiones"]
+    assert comision["id"] == "S"
+    assert comision["ocupacion"]["inscriptos"] == 60
+    assert comision["docentes"] == ["Bolo, Mario", "Huerta, Jorge", "Leivi, Alejo"]
+    assert "_periodo_del_listado" not in fusionado
+    assert "desde" not in comision
+
+
+def test_mismas_fechas_con_horarios_distintos_sigue_siendo_un_conflicto() -> None:
+    base = _curso_contrato("93.18", "Álgebra Lineal", "A", [dict(_BLOQUE_SABADO)])
+    otra = copy.deepcopy(base)
+    otra["comisiones"][0]["bloques"][0]["desde"] = "18:00"
+
+    fusionado, motivo = bajar._fusionar_apariciones([base, otra], periodo="2026-2C")
+
+    assert fusionado is None
+    assert "horarios distintos en las mismas fechas" in motivo
+
+
+def test_la_misma_clase_bajo_dos_codigos_con_ids_distintos_es_dictado_conjunto() -> (
+    None
+):
+    """12.84 com. Q y 17.15 com. A: mismo nombre, martes 13-16 en 604F (2026-09-13)."""
+    bloque = {
+        "dia": "martes",
+        "desde": "13:00",
+        "hasta": "16:00",
+        "sede": "sdf",
+        "modalidad": "presencial",
+        "aulas": ["604F"],
+    }
+    uno = _curso_contrato(
+        "12.84", "Introducción a la Ingeniería Ambiental", "Q", [dict(bloque)]
+    )
+    otro = _curso_contrato(
+        "17.15", "Introducción a la Ingeniería Ambiental", "A", [dict(bloque)]
+    )
+
+    bajar.vincular_dictado_conjunto([uno, otro])
+
+    assert uno["dictado_conjunto"] == ["17.15"]
+    assert otro["dictado_conjunto"] == ["12.84"]
+
+
+def test_armar_documento_limpia_la_anotacion_de_fechas_de_los_nombres_viejos() -> None:
+    curso = _curso_contrato(
+        "81.73", "Introducción a la IOT (Seminario - 03/08/2026 - 11/09/2026)", "A", []
+    )
+    periodo = parsers.Periodo("2026-2C", 2026, "2C", "2026-07-26", "2026-12-31")
+
+    documento, fallidos = bajar.armar_documento([curso], periodo, "2026-09-13")
+
+    assert fallidos == []
+    assert documento["cursos"][0]["nombre"] == "Introducción a la IOT"
+
+
+def test_el_archivo_con_laboratorio_sin_aula_y_dos_ediciones_pasa_el_validador(
+    raiz: Path,
+) -> None:
+    """El fixture sale de las paginas reales de 93.41, 17.06 y 81.73 (corrida del 2026-09-13)."""
+    archivo = (
+        raiz
+        / "tests"
+        / "fixtures"
+        / "deben-pasar"
+        / "horarios-laboratorio-ediciones.json"
+    )
+    contexto = validacion.contexto_de_datos(raiz / "data")
+    hallazgos = validacion.validar_archivo(archivo, "horarios", contexto)
+    assert not validacion.hay_errores(hallazgos), [h.linea() for h in hallazgos]

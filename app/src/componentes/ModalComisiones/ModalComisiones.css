@@ -52,6 +52,15 @@
   line-height: 1.25;
 }
 
+/* Fechas propias de una edición (contrato 1.1.0): «03/08 – 11/09», en mono. */
+.comisiones__fechas {
+  margin-left: 6px;
+  font-family: var(--fuente-mono);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--texto-secundario);
+}
+
 .comisiones__cupo {
   flex: none;
   font-family: var(--fuente-mono);

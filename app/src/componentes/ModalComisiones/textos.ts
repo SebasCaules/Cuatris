@@ -79,6 +79,18 @@ export function lineaDeBloque(
  * «cupo 48 / 48» y si está llena. Sin `cupo` ni `ocupacion` no hay línea: no
  * saber cuántos lugares quedan no es lo mismo que no quedar ninguno.
  */
+/** «03/08 – 11/09» si la comisión se dicta en fechas propias; `null` si no. */
+export function textoDeFechas(comision: Comision): string | null {
+  if (comision.desde === undefined || comision.hasta === undefined) {
+    return null;
+  }
+  const corta = (fecha: string): string => {
+    const [, mes, dia] = fecha.split("-");
+    return `${dia}/${mes}`;
+  };
+  return `${corta(comision.desde)} – ${corta(comision.hasta)}`;
+}
+
 export function textoDeCupo(comision: Comision): string | null {
   const capacidad = comision.cupo?.capacidad;
   const inscriptos = comision.ocupacion?.inscriptos;

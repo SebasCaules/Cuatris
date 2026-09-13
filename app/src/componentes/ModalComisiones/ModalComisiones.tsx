@@ -43,6 +43,7 @@ import {
   sedesDeComision,
   subtituloDelModal,
   textoDeCupo,
+  textoDeFechas,
   type Segmento,
 } from "./textos";
 import "./ModalComisiones.css";
@@ -326,6 +327,11 @@ export function ModalComisiones({
                 <header className="comisiones__cabecera">
                   <h3 className="comisiones__nombre">
                     Comisión {evaluada.comision.id}
+                    {textoDeFechas(evaluada.comision) === null ? null : (
+                      <span className="comisiones__fechas">
+                        {textoDeFechas(evaluada.comision)}
+                      </span>
+                    )}
                   </h3>
                   {evaluada.cupo === null ? null : (
                     <p

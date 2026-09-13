@@ -117,12 +117,27 @@ export function cupoLleno(comision: Comision): boolean {
   return inscriptos >= capacidad;
 }
 
+/**
+ * Fechas en las que se dicta una comisión: las suyas si las tiene (contrato
+ * 1.1.0: dos ediciones de un seminario bajo el mismo código, 81.73 com. A del
+ * 03/08 al 11/09 y com. A.2 del 14/09 al 23/10), si no las del curso.
+ */
+export function vigenciaDe(
+  curso: Curso,
+  comision: Comision,
+): { desde: Fecha; hasta: Fecha } {
+  return {
+    desde: comision.desde ?? curso.desde,
+    hasta: comision.hasta ?? curso.hasta,
+  };
+}
+
 function ubicar(curso: Curso, comision: Comision): BloqueUbicado[] {
   return comision.bloques.map((bloque) => ({
     codigo: curso.codigo,
     nombre: curso.nombre,
     comision: comision.id,
-    vigencia: { desde: curso.desde, hasta: curso.hasta },
+    vigencia: vigenciaDe(curso, comision),
     bloque,
   }));
 }

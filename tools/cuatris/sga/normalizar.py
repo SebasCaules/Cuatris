@@ -80,6 +80,9 @@ MODALIDADES: dict[str, str] = {
     # secas y **no aclara si es sincronica**. No se asume: el contrato 1.1.0 tiene el valor
     # `virtual` justamente para esto.
     "Virtual": "virtual",
+    # «Aula externa: Laboratorio» (corrida real del 2026-09-13; 25 cursos: Fisica I/II/III,
+    # Quimica, Electronica…): una practica de laboratorio, sin codigo de aula ITBA ni sede.
+    "Laboratorio": "laboratorio",
     "Blended": "blended",
 }
 

@@ -40,18 +40,19 @@
           "type": "string"
         },
         "modalidad": {
-          "description": "Modalidad del bloque; puede variar entre bloques de una misma comision. «virtual» es virtual sin especificar si es sincronica, tal como lo publica el SGA.",
+          "description": "Modalidad del bloque; puede variar entre bloques de una misma comision. «virtual» es virtual sin especificar si es sincronica y «laboratorio» es una practica de laboratorio sin aula ITBA asignada, tal como lo publica el SGA.",
           "enum": [
             "presencial",
             "virtual_sincronica",
             "virtual_asincronica",
             "virtual",
+            "laboratorio",
             "blended"
           ],
           "type": "string"
         },
         "sede": {
-          "description": "Identificador de sede de vocabulario.json; null solo si no es presencial.",
+          "description": "Identificador de sede de vocabulario.json; null si el SGA no publica sede para el bloque (virtual, laboratorio, o presencial sin aula asignada todavia).",
           "pattern": "^[a-z0-9_]+$",
           "type": [
             "string",
@@ -95,6 +96,11 @@
           ],
           "type": "object"
         },
+        "desde": {
+          "description": "Primer dia de dictado de la comision, solo si difiere del curso: el SGA lista un mismo codigo con ediciones en fechas distintas (1.1.0).",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
         "docentes": {
           "description": "Docentes de la comision, como los lista el SGA; puede estar vacio.",
           "items": {
@@ -104,9 +110,14 @@
           },
           "type": "array"
         },
+        "hasta": {
+          "description": "Ultimo dia de dictado de la comision, solo si difiere del curso; va junto con «desde» (1.1.0).",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "type": "string"
+        },
         "id": {
-          "description": "Identificador opaco de la comision; no se exige orden ni contiguidad.",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,7}$",
+          "description": "Identificador opaco de la comision, tal como lo publica el SGA: «A», «K», «S», pero tambien «Inglés», «Única», «Intensivo», «C - MECÁNICA y NAVAL» (corrida del 2026-09-13). Texto de 1 a 40 caracteres sin espacios en los bordes; no se exige orden ni contiguidad.",
+          "pattern": "^\\S(?:.{0,38}\\S)?$",
           "type": "string"
         },
         "ocupacion": {

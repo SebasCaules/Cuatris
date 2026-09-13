@@ -68,12 +68,15 @@ const DIA: Record<Dia, string> = {
  *
  * `virtual` es «Virtual» a secas, sin decir si es sincrónica (25.20 com. K):
  * la etiqueta repite lo que dice la fuente y no completa lo que no dijo.
+ * `laboratorio` es una práctica de laboratorio sin aula ITBA asignada (Física,
+ * Química, Electrónica): presencial en los hechos, con hora fija.
  */
 const MODALIDAD: Record<Modalidad, string> = {
   presencial: "Presencial",
   virtual_sincronica: "Virtual Sinc.",
   virtual_asincronica: "Virtual Asinc.",
   virtual: "Virtual",
+  laboratorio: "Laboratorio",
   blended: "Blended",
 };
 

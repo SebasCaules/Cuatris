@@ -219,8 +219,14 @@ la misma recuperación lo resuelve: las páginas de Wicket de la sesión anterio
   checkpoint (`93.18`, `93.18#2`), con un `WARNING` que muestra las dos filas. Al armar el
   archivo se fusionan por código: si son idénticas queda una; si sus comisiones tienen ids
   distintos se unen (con `desde` mínimo y `hasta` máximo, y otro `WARNING`); si una misma
-  comisión trae contenido distinto en las dos, ese código queda como fallido con los ids en
-  conflicto, porque el contrato quiere un curso por código y nadie debe decidirlo a ciegas.
+  comisión trae **horarios distintos en las mismas fechas**, ese código queda como fallido con
+  los ids en conflicto, porque el contrato quiere un curso por código y nadie debe decidirlo a
+  ciegas. Dos casos reales que sí se resuelven solos: (a) **dos ediciones** del mismo código en
+  fechas distintas (81.73, «A» del 03/08 al 11/09 y «A» del 14/09 al 23/10): quedan las dos,
+  cada comisión con sus `desde`/`hasta` propios y la segunda como `A.2`; (b) **dos cohortes**
+  de un curso anual (10.01, 72.45: la que empezó en marzo, rotulada «Primer Cuat.», y la que
+  empieza ahora) que tras el recorte al cuatrimestre coinciden en horario y aula: queda una,
+  la de la fila del período pedido, con la unión de los docentes de las dos.
 - **Que el archivo final valide** (C1, C2 y C3). Si hay errores, el archivo **se mueve** a
   `.cuatris-cache/<periodo>.invalido.json` —fuera de `data/`— y el comando sale con código 1,
   para que un archivo que no valida no se pueda confundir con uno publicable. Queda ahí solo
@@ -232,7 +238,11 @@ la misma recuperación lo resuelve: las páginas de Wicket de la sesión anterio
 que el SGA rotula con el período en que empiezan (por ejemplo «Primer Cuat.» y nombre
 «(Anual)»). El scraper los acepta si su dictado se solapa con el intervalo de fechas de los
 cursos propios del cuatrimestre, y **recorta sus fechas a ese intervalo**, porque el archivo
-describe el cuatrimestre, no el año; lo avisa con un `WARNING` por curso. Como el barrido va
+describe el cuatrimestre, no el año; lo avisa con un `WARNING` por curso. Es anual todo curso
+cuyo dictado dura **240 días o más** (`es_anual`), venga rotulado con el período que venga:
+las cohortes que empiezan este cuatrimestre y terminan el año que viene (10.01 y 72.45,
+rotuladas «Segundo Cuat.» con fin en julio de 2027) también lo son, y sin esa regla estirarían
+el `periodo` del archivo hasta 2027. Como el barrido va
 página por página, el intervalo se conoce recién al final: por eso el checkpoint guarda, junto
 con cada curso, el período y las fechas que decía su fila del listado (`listado`), y la
 separación se hace al terminar, leyendo esos registros. Un curso de otro período que no se
@@ -300,7 +310,7 @@ Pestaña Comisiones, la **única fuente de horarios** del SGA.
 | bloques | un `<div>` hijo directo de la celda `Horarios` por renglón |
 | `dia`, `desde`, `hasta` | los tres primeros `<span>` hijos directos del `<div>`; los días van de `Lunes` a `Domingo` (61.27 dicta en domingo un bloque virtual asincrónico) |
 | `aulas` y `sede` | `<span>` cuyo texto propio empieza con **`Aula ITBA:`**; el valor tiene la forma `001R #----> Sede Rectorado` |
-| `modalidad` | `<span>` cuyo texto propio empieza con **`Aula externa:`**. La etiqueta engaña: el valor es la modalidad (`Presencial`, `Virtual sincrónico/a`, `Virtual asincrónico/a`, `Virtual` a secas → `virtual`, `Blended`). Un valor con sufijo, como `Presencial - SDR` (73.67), se lee como la modalidad que lo encabeza y deja un `WARNING` con el sufijo, una vez por texto distinto |
+| `modalidad` | `<span>` cuyo texto propio empieza con **`Aula externa:`**. La etiqueta engaña: el valor es la modalidad (`Presencial`, `Virtual sincrónico/a`, `Virtual asincrónico/a`, `Virtual` a secas → `virtual`, `Laboratorio` → `laboratorio`, `Blended`). Un valor con sufijo, como `Presencial - SDR` (73.67), se lee como la modalidad que lo encabeza y deja un `WARNING` con el sufijo, una vez por texto distinto |
 | `docentes` | cada `<label>` de la celda `Profesores` |
 | `cupo` / `ocupacion` | celda `Cupo`, con la forma `inscriptos / capacidad` (`48 / 49` = 48 inscriptos sobre 49 lugares); `2 / Ilimitado` = 2 inscriptos y sin `cupo` |
 
@@ -316,9 +326,12 @@ Consecuencias que conviene tener presentes:
 - El tercer `<span>` del grupo está oculto y vacío en todo el material. Si alguna vez trae
   texto, queda en `Bloque.extra` y `a_contrato` se niega a serializar ese bloque: así un dato
   nuevo no se pierde en silencio.
-- **La sede solo sale de `Aula ITBA:`**, así que un bloque presencial sin aula asignada no
-  tiene de dónde sacarla. En vez de dejar `sede: null` con modalidad presencial —combinación
-  que CONTRATO-v1.md §1 prohíbe— el parser lanza `EstructuraInesperada` con el `<div>`.
+- **La sede solo sale de `Aula ITBA:`**. Un bloque sin ese `<span>` —virtual, `Laboratorio`,
+  o presencial al que el SGA todavía no asignó aula (74.61, 32.57 com. N, 17.06 com. C el
+  2026-09-13)— queda con `sede: null` y `aulas: []`, tal como lo publica el SGA.
+- **El nombre del detalle trae a veces una anotación de fechas** («(Seminario - 03/08/2026 -
+  11/09/2026)», «(Anual - 01/03/2026 - 31/12/2026)») que el listado no trae y que repite
+  `Comienzo`/`Fin`; `parsear_curso` la quita (`nombre_sin_fechas`).
 - **Si la celda `Horarios` tiene texto pero ningún `<div>` hijo directo**, el parser lanza
   `EstructuraInesperada` con la celda en vez de devolver la comisión con `bloques: []`. Es el
   escenario de un cambio de marcado de Wicket: sin este control, una corrida quedaría verde
