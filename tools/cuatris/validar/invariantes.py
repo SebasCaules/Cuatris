@@ -20,6 +20,7 @@ Niveles, tal como los fija `CONTRATO-v1.md` y la Fase 4 del plan de backend:
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import date
 from itertools import combinations
 from pathlib import Path
 from typing import Any
@@ -38,6 +39,17 @@ DURACION_MAXIMA_MINUTOS = 8 * 60
 
 MODALIDADES_CON_AULA = ("presencial", "blended")
 """Modalidades que ocupan fisicamente un aula: son las que pueden colisionar entre si."""
+
+COLISION_BREVE_DIAS = 7
+"""Solapamiento de fechas (en dias) hasta el cual una colision de aula es aviso, no error.
+
+El SGA publica cursos intensivos de una semana en aulas que un curso regular ocupa todo el
+cuatrimestre: 74.61 «Current AI techniques for scientific discovery» (24/08–28/08/2026,
+lunes a viernes 08–13) en 201R, donde 92.03 com. D esta los lunes 10–13, y en 204R, donde
+82.17 com. A esta los viernes 11–13 (corrida real del 2026-09-13). Es lo que el SGA dice, no
+un error de carga: se avisa y se publica. Dos cursos que se pisan mas de una semana siguen
+siendo un error, que es lo que detecta un bloque movido a un aula ocupada.
+"""
 
 __all__ = [
     "DURACION_MAXIMA_MINUTOS",
@@ -128,6 +140,16 @@ def _se_solapan(desde_a: int, hasta_a: int, desde_b: int, hasta_b: int) -> bool:
 def _se_solapan_fechas(desde_a: str, hasta_a: str, desde_b: str, hasta_b: str) -> bool:
     """Indica si dos periodos de dictado comparten al menos un dia (fechas ISO, inclusivas)."""
     return desde_a <= hasta_b and desde_b <= hasta_a
+
+
+def _dias_en_comun(desde_a: str, hasta_a: str, desde_b: str, hasta_b: str) -> int:
+    """Cuantos dias de calendario comparten dos periodos de dictado (0 si no se pisan)."""
+    try:
+        desde = max(date.fromisoformat(desde_a), date.fromisoformat(desde_b))
+        hasta = min(date.fromisoformat(hasta_a), date.fromisoformat(hasta_b))
+    except ValueError:
+        return 0
+    return max(0, (hasta - desde).days + 1)
 
 
 def _codigos_de_materias(plan: Any) -> list[str]:
@@ -588,6 +610,22 @@ def _revisar_colisiones_de_aula(
             if not _se_solapan_fechas(
                 uno.curso_desde, uno.curso_hasta, otro.curso_desde, otro.curso_hasta
             ):
+                continue
+            dias = _dias_en_comun(
+                uno.curso_desde, uno.curso_hasta, otro.curso_desde, otro.curso_hasta
+            )
+            if dias <= COLISION_BREVE_DIAS:
+                hallazgos.append(
+                    Hallazgo(
+                        WARNING,
+                        "colision-de-aula-breve",
+                        archivo,
+                        f"{uno.etiqueta} ({uno.franja}) y {otro.etiqueta} ({otro.franja}) "
+                        f"ocupan el aula «{aula}» de «{sede}» el mismo {dia} durante {dias} "
+                        f"dia(s) de calendario en comun: asi lo publica el SGA para un curso "
+                        "intensivo; se avisa, no se rechaza",
+                    )
+                )
                 continue
             hallazgos.append(
                 Hallazgo(

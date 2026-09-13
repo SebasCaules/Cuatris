@@ -1,0 +1,174 @@
+{
+  "contrato": "1.1.0",
+  "cursos": [
+    {
+      "codigo": "74.61",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "201R"
+              ],
+              "desde": "08:00",
+              "dia": "lunes",
+              "hasta": "13:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "205R"
+              ],
+              "desde": "08:00",
+              "dia": "martes",
+              "hasta": "13:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [],
+              "desde": "08:00",
+              "dia": "miercoles",
+              "hasta": "13:00",
+              "modalidad": "presencial",
+              "sede": null
+            },
+            {
+              "aulas": [
+                "003T",
+                "004T"
+              ],
+              "desde": "08:00",
+              "dia": "jueves",
+              "hasta": "13:00",
+              "modalidad": "presencial",
+              "sede": "sdt"
+            },
+            {
+              "aulas": [
+                "204R"
+              ],
+              "desde": "08:00",
+              "dia": "viernes",
+              "hasta": "13:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "docentes": [],
+          "id": "A",
+          "ocupacion": {
+            "al": "2026-09-13",
+            "inscriptos": 13
+          }
+        }
+      ],
+      "departamento": "Sistemas Digitales y Datos",
+      "desde": "2026-08-24",
+      "dictado_conjunto": [],
+      "hasta": "2026-08-28",
+      "nombre": "Current AI techniques for scientific discovery"
+    },
+    {
+      "codigo": "82.17",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "204R"
+              ],
+              "desde": "11:00",
+              "dia": "viernes",
+              "hasta": "13:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [],
+              "desde": "21:00",
+              "dia": "sabado",
+              "hasta": "22:00",
+              "modalidad": "virtual_asincronica",
+              "sede": null
+            }
+          ],
+          "cupo": {
+            "capacidad": 24
+          },
+          "docentes": [
+            "Pantazis, Lucio José"
+          ],
+          "id": "A",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 23
+          }
+        }
+      ],
+      "departamento": "Economía y Negocios",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Análisis Multivariado"
+    },
+    {
+      "codigo": "92.03",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "201R"
+              ],
+              "desde": "10:00",
+              "dia": "lunes",
+              "hasta": "13:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "110R"
+              ],
+              "desde": "08:00",
+              "dia": "jueves",
+              "hasta": "11:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 48
+          },
+          "docentes": [
+            "Guaraglia, Santiago Manuel",
+            "Gualtieri, Sergio Alberto"
+          ],
+          "id": "D",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 37
+          }
+        }
+      ],
+      "departamento": "Ciencias Exactas y Naturales",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Análisis Matemático III"
+    }
+  ],
+  "fuente": {
+    "capturado": "2026-09-13",
+    "sistema": "sga"
+  },
+  "periodo": {
+    "anio": 2026,
+    "cuatrimestre": "2C",
+    "desde": "2026-07-26",
+    "hasta": "2026-12-31",
+    "id": "2026-2C"
+  }
+}

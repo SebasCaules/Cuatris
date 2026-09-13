@@ -244,7 +244,8 @@ def test_la_sede_nula_vale_con_cualquier_modalidad() -> None:
     """
     for modalidad in ("virtual_sincronica", "presencial", "laboratorio"):
         curso = _curso(
-            "93.18", [_bloque("lunes", "08:00", "10:00", [], sede=None, modalidad=modalidad)]
+            "93.18",
+            [_bloque("lunes", "08:00", "10:00", [], sede=None, modalidad=modalidad)],
         )
         assert _revisar_horarios([curso], CONTEXTO) == [], modalidad
 
@@ -252,7 +253,10 @@ def test_la_sede_nula_vale_con_cualquier_modalidad() -> None:
 def test_las_fechas_de_una_comision_van_juntas_ordenadas_y_dentro_del_curso() -> None:
     """Contrato 1.1.0: una comision puede tener `desde`/`hasta` propios (dos ediciones de un
     seminario bajo el mismo codigo: 81.73, 03/08–11/09 y 14/09–23/10)."""
-    bien = _curso("93.18", [_bloque("sabado", "20:00", "21:00", [], sede=None, modalidad="virtual")])
+    bien = _curso(
+        "93.18",
+        [_bloque("sabado", "20:00", "21:00", [], sede=None, modalidad="virtual")],
+    )
     bien["comisiones"][0]["desde"] = "2026-08-03"
     bien["comisiones"][0]["hasta"] = "2026-09-11"
     assert _revisar_horarios([bien], CONTEXTO) == []
@@ -272,7 +276,9 @@ def test_las_fechas_de_una_comision_van_juntas_ordenadas_y_dentro_del_curso() ->
     assert _revisar_horarios([fuera], CONTEXTO) == ["comision-fuera-del-curso"]
 
 
-def test_dos_ediciones_con_fechas_propias_no_chocan_con_lo_que_hay_entre_ellas() -> None:
+def test_dos_ediciones_con_fechas_propias_no_chocan_con_lo_que_hay_entre_ellas() -> (
+    None
+):
     """La colision de aula mira la vigencia de la comision, no la envolvente del curso."""
     seminario = _curso("72.44", [_bloque("lunes", "08:00", "10:00", ["201R"])])
     seminario["desde"], seminario["hasta"] = "2026-08-03", "2026-10-23"
@@ -892,3 +898,33 @@ def test_no_se_promete_un_hash_estable_que_no_existe(raiz: Path, relativa: str) 
         "si existe, hay que volver a documentarla"
     )
     assert "fuera del hash estable" not in texto, relativa
+
+
+def test_un_intensivo_de_una_semana_en_un_aula_ocupada_es_aviso_y_no_error() -> None:
+    """74.61 (24/08–28/08/2026, lunes a viernes 08–13) usa 201R el lunes, donde 92.03 com. D
+    esta todo el cuatrimestre 10–13. Lo publica el SGA asi: se avisa (`colision-de-aula-breve`)
+    y el archivo se publica. Con mas de una semana en comun sigue siendo error."""
+    intensivo = _curso("72.44", [_bloque("lunes", "08:00", "13:00", ["201R"])])
+    intensivo["desde"], intensivo["hasta"] = "2026-08-24", "2026-08-28"
+    regular = _curso("93.18", [_bloque("lunes", "10:00", "13:00", ["201R"])])
+
+    hallazgos = revisar(_horarios([intensivo, regular]), "horarios", "x.json", CONTEXTO)
+    assert [(h.nivel, h.regla) for h in hallazgos] == [
+        (WARNING, "colision-de-aula-breve")
+    ]
+
+    intensivo["hasta"] = "2026-08-31"  # ocho dias en comun
+    assert _revisar_horarios([intensivo, regular], CONTEXTO) == ["colision-de-aula"]
+
+
+def test_el_fixture_del_intensivo_real_pasa_con_el_aviso(
+    fixtures: Path, raiz: Path
+) -> None:
+    contexto = contexto_de_datos(raiz / "data")
+    hallazgos = validar_archivo(
+        fixtures / "deben-pasar" / "horarios-intensivo-en-aula-ocupada.json",
+        contexto=contexto,
+    )
+    reglas = sorted({h.regla for h in hallazgos})
+    assert not any(h.nivel == ERROR for h in hallazgos), [h.linea() for h in hallazgos]
+    assert "colision-de-aula-breve" in reglas

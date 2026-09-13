@@ -3,9 +3,18 @@
     "archivo": "v1/abreviaciones.json",
     "hash": "sha256:dc1ab59a81868167d0f20a40a9d003737c6515716176653ebbd5a7eba460838b"
   },
-  "actualizado": "2026-09-12",
+  "actualizado": "2026-09-13",
   "contrato": "1.0.0",
-  "horarios": [],
+  "horarios": [
+    {
+      "archivo": "v1/horarios/2026-2C.json",
+      "desde": "2026-07-26",
+      "hash": "sha256:489e2ef6ce72e5ba39c690dc375e4f2954caf715cbc4b5166130180f3efa920f",
+      "hasta": "2026-12-31",
+      "periodo": "2026-2C",
+      "publicado": "2026-09-13"
+    }
+  ],
   "planes": [
     {
       "archivo": "v1/planes/S10-Rev23.json",

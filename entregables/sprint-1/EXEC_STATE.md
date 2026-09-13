@@ -129,6 +129,14 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
   `dictado_conjunto` ya no exige el mismo id de comisión (12.84 Q / 17.15 A, 41.15 P / 46.66 A,
   30.19 M / 30.38 A: misma clase, dos códigos, ids distintos).
 
+- **N0-34** Colisión de aula con ≤ 7 días de calendario en común = WARNING
+  (`colision-de-aula-breve`), no error: 74.61, intensivo de una semana, en aulas de 92.03 y 82.17
+  (tercera corrida, 2026-09-13 00:32). Con más días sigue siendo error.
+- **N0-35** Primer período real publicado: `data/v1/horarios/2026-2C.json` (461 cursos, 472
+  filas del SGA, contrato 1.1.0, capturado 2026-09-12/13) e `index.json` con `publicado`
+  2026-09-13. Verificado en `#/cursada` con datos reales (Física II: 11 comisiones, laboratorio,
+  cupo).
+
 ## Pasos
 
 | Paso | Estado | Commit | Notas |
@@ -158,6 +166,8 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | Ola 6 — scraper página por página + contrato 1.1.0 (W6-A, W6-B; verificación por N0 tras frenar el workflow a pedido del autor) | DONE | db123df | 518 tests Python, 637 app; parser probado sobre los 3 detalles reales y la pantalla de error real; checkpoint viejo (37) carga |
 
 | Ola 6b — segunda corrida completa: laboratorio, sede nula, anuales por duración, ediciones `A.2`, ids libres, nombres sin fechas (N0-29…N0-33; hecho por N0 sin workflow, a pedido del autor) | DONE | (este commit) | 535 tests Python, 641 app; el archivo armado offline desde el checkpoint real (432 cursos) valida sin errores |
+
+| Primer período real: `data/v1/horarios/2026-2C.json` + `index.json` (tercera corrida: 29 bajados, 0 fallidos; colisión breve → aviso, N0-34) | DONE | (este commit) | 537 tests Python; `cuatris validar` sobre todo `data/` sin errores; smoke en `#/cursada` |
 
 ## Fixes y tareas diferidas (S-nn)
 

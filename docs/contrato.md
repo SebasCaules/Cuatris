@@ -169,6 +169,12 @@ La corrida completa del **2026-09-13** (472 filas) agregó a 1.1.0, antes de pub
 
 Los casos están congelados en `tests/fixtures/deben-pasar/horarios-laboratorio-ediciones.json`
 (93.41, 17.06 y 81.73 tal como los publica el SGA).
+- **Colisión de aula breve = aviso** (`colision-de-aula-breve`): 74.61 «Current AI techniques for
+  scientific discovery» es un intensivo de una semana (24/08–28/08, lunes a viernes 08–13) en
+  aulas que 92.03 com. D y 82.17 com. A ocupan todo el cuatrimestre. Lo publica el SGA así. Si
+  los dos dictados comparten **7 días o menos** de calendario, C3 avisa y publica; con más,
+  sigue siendo error (es lo que detecta un bloque movido a un aula ocupada). Fixture:
+  `tests/fixtures/deben-pasar/horarios-intensivo-en-aula-ocupada.json`.
 
 ## Cómo agregar un campo
 
