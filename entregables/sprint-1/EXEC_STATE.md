@@ -82,6 +82,31 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
   el smoke y nunca se versiona: un `git add -A` lo coló en el commit de fixes y se retiró con
   un amend antes de cualquier push.
 
+- **N0-24** (corrida real 2026-09-12, 22:18–22:27) El barrido del listado va **página por
+  página**: los detalles de cada página se visitan antes de pedir la siguiente. Leer las 24
+  páginas primero (como hacía `list(recorrer_listado(...))`) hizo que Wicket desalojara del
+  almacén de páginas de la sesión a las páginas 3–24, nunca tocadas, y cada enlace a ellas
+  devolvió «El sistema halló un error inesperado» (filas 1–40 bien, 41–472 error, una petición
+  por curso). Consecuencia: el período y los cursos anuales se calculan al final, desde el
+  checkpoint, que guarda además el período y las fechas de la fila del listado.
+- **N0-25** La página de error del SGA es una excepción propia (`PaginaVencida`, ancla
+  «error inesperado» / «no pudo ser realizado») con recuperación automática: reabrir el listado
+  desde `/app2/` y paginar hasta la página actual, un reintento por curso, y abortar tras 5
+  cursos consecutivos irrecuperables (el SGA está caído o bloqueando). Sesión vencida → re-login
+  (ya existía) y cae en la misma recuperación.
+- **N0-26** El scraper escribe siempre un log en `.cuatris-cache/<periodo>.log` (DEBUG, con el
+  `jsessionid` tapado, con hora) además de la consola (INFO): el autor no tiene que pegar
+  salidas y el diagnóstico de la próxima corrida se lee del archivo.
+- **N0-27** Códigos repetidos en el listado (472 filas dieron 461 volcados distintos): se visita
+  cada aparición (claves `codigo`, `codigo#2`… en el checkpoint) y al armar se fusionan por
+  código: idénticos → uno; ids de comisión disjuntos → unión con `desde` mínimo y `hasta`
+  máximo y WARNING; mismo id con contenido distinto → ese código a `fallidos` con los dos ids.
+- **N0-28** Contrato **1.1.0**: `dia` suma `domingo` (61.27: bloques «Virtual asincrónica» en
+  domingo en sus cuatro comisiones) y `modalidad` suma `virtual` («Virtual» a secas en 25.20;
+  no se asume sincrónica). «Presencial - SDR» (73.67) → `presencial`, y en general
+  `<modalidad conocida> - <sufijo>` → la modalidad con WARNING único por texto. Extender un
+  enum es *minor*; la app trata `virtual` como sincrónica (hora fija: cuenta para choques).
+
 ## Pasos
 
 | Paso | Estado | Commit | Notas |
@@ -137,6 +162,7 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | S-23 | El período de prueba (fixture) no permite recorrer 13h → «Resolver» en el navegador: hace falta el período real | smoke | auditoría A4 | con la corrida del scraper |
 | S-24 | ~~Ciclo con «final» antes de «cursada»~~ Cerrado en R2: ciclo cronológico, «final» es el último paso | app Plan | R1 verificador | cerrado (101bc74) |
 | S-25 | `MenuPlan.elegirArchivo` crea un `<input type=file>` transitorio en `document.body`; si el navegador no dispara `cancel` (Safari viejo) queda hasta la próxima importación | app | R2 verificador | Sprint 2 |
+| S-27 | Scraper: segunda corrida real (2026-09-12 22:18) — 40 filas bien, 432 con «error inesperado» por el barrido no intercalado, 3 valores nuevos (`Domingo`, `Virtual`, `Presencial - SDR`) y códigos repetidos; se corrige en la ola 6 (W6-A, W6-B) | scraper, contrato 1.1.0, app | corrida real | ola 6 |
 | S-26 | Scraper: primera corrida real del autor (2026-09-12) destapó `js=1` obligatorio y el 404 de `/app2` sin barra tras el login; ambos corregidos (20b7ac5, ffd5e8e); falta confirmar la prueba de 3 cursos | scraper | corrida real | pendiente del autor |
 
 ## Veredicto final

@@ -13,7 +13,7 @@
  * sirve a 13b, 13d y 13h sin repetir reglas que ya están probadas en el motor.
  *
  * Lo que queda afuera de la grilla nunca desaparece: los bloques de sábado y
- * los que caen fuera de 08–22 se listan al pie con una Etiqueta.
+ * de domingo, y los que caen fuera de 08–22, se listan al pie con una Etiqueta.
  */
 
 import type { CSSProperties } from "react";
@@ -93,7 +93,7 @@ export interface PropsGrillaSemanal {
   alClic?: (codigo: Codigo) => void;
 }
 
-/** Columnas de la grilla; el sábado se lista al pie (CONTRATO-v1 §1). */
+/** Columnas de la grilla; sábado y domingo se listan al pie (CONTRATO-v1 §1). */
 const DIAS_GRILLA: readonly Dia[] = [
   "lunes",
   "martes",
@@ -109,6 +109,7 @@ const ENCABEZADO: Record<Dia, string> = {
   jueves: "JUE",
   viernes: "VIE",
   sabado: "SÁB",
+  domingo: "DOM",
 };
 
 const NOMBRE_DIA: Record<Dia, string> = {
@@ -118,6 +119,7 @@ const NOMBRE_DIA: Record<Dia, string> = {
   jueves: "jueves",
   viernes: "viernes",
   sabado: "sábado",
+  domingo: "domingo",
 };
 
 /** Abreviación del día al pie: «sáb 09–12 · 002R». */
@@ -128,6 +130,7 @@ const DIA_CORTO: Record<Dia, string> = {
   jueves: "jue",
   viernes: "vie",
   sabado: "sáb",
+  domingo: "dom",
 };
 
 /** Glifo de estado; «sin horario» no tiene bloques, pero el tipo lo admite. */
@@ -236,7 +239,7 @@ export function GrillaSemanal({
     "--grilla-alto": `${String(altoDeColumna(horaPx))}px`,
   } as CSSProperties;
 
-  /** Bloques que no entran en la grilla: sábado y horas fuera de 08–22. */
+  /** Bloques que no entran en la grilla: sábado, domingo y horas fuera de 08–22. */
   const alPie = bloques.flatMap((materia) =>
     materia.bloques
       .filter((bloque) => !dentroDeLaGrilla(bloque))

@@ -23,7 +23,14 @@ import type {
   PlanUsuario,
 } from "../contrato/tipos";
 
-/** Orden de la grilla semanal; `sabado` va al pie de la tarjeta. */
+/**
+ * Orden de la grilla semanal; `sabado` y `domingo` van al pie de la tarjeta.
+ *
+ * `domingo` entró con el contrato 1.1.0 y va último, después de sábado: 61.27
+ * dicta ahí un bloque virtual asincrónico. Es un día como cualquier otro para
+ * el motor —ordena choques y cambios de sede—, y como sábado para la grilla,
+ * que solo dibuja columnas de lunes a viernes.
+ */
 export const DIAS: readonly Dia[] = [
   "lunes",
   "martes",
@@ -31,6 +38,7 @@ export const DIAS: readonly Dia[] = [
   "jueves",
   "viernes",
   "sabado",
+  "domingo",
 ];
 
 /** Un bloque con la materia y la comisión a las que pertenece. */
@@ -301,6 +309,7 @@ const NOMBRE_DIA: Record<Dia, string> = {
   jueves: "jueves",
   viernes: "viernes",
   sabado: "sábado",
+  domingo: "domingo",
 };
 
 /**

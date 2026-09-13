@@ -20,6 +20,7 @@ const DIA_CORTO: Record<Dia, string> = {
   jueves: "Jue",
   viernes: "Vie",
   sabado: "Sáb",
+  domingo: "Dom",
 };
 
 /** «lun», el de la línea de consecuencias («▲ choque lun 15–16»). */
@@ -30,6 +31,7 @@ const DIA_MINUSCULA: Record<Dia, string> = {
   jueves: "jue",
   viernes: "vie",
   sabado: "sáb",
+  domingo: "dom",
 };
 
 /** «lunes», el de la línea de resultado («el choque del lunes desaparece»). */
@@ -40,6 +42,7 @@ const DIA_LARGO: Record<Dia, string> = {
   jueves: "jueves",
   viernes: "viernes",
   sabado: "sábado",
+  domingo: "domingo",
 };
 
 /**

@@ -88,6 +88,7 @@ const DIA_CORTO: Record<Dia, string> = {
   jueves: "Jue",
   viernes: "Vie",
   sabado: "Sáb",
+  domingo: "Dom",
 };
 
 export function estadoDeFila(

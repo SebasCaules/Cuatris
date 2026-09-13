@@ -15,11 +15,12 @@ import { choques as choquesDelPeriodo } from "../../motor";
 import {
   codigosDelCiclo,
   historiaCon,
+  HORARIOS_DOMINGO_VIRTUAL,
   HORARIOS_RAROS,
   PERIODO_RARO,
   planCon,
 } from "../../motor/fixtures/reales";
-import { GrillaSemanal } from "./GrillaSemanal";
+import { GrillaSemanal, type MateriaEnGrilla } from "./GrillaSemanal";
 import {
   ACCIONAMIENTOS_PEGADO,
   ALGEBRA,
@@ -192,6 +193,41 @@ describe("GrillaSemanal", () => {
       screen.getByLabelText(
         "72.44 Criptografía y Seguridad · comisión S · sábado 09:00–12:00 · 002R",
       ),
+    ).toBeInTheDocument();
+  });
+
+  it("los bloques de domingo también van al pie, y la sede nula no rompe", () => {
+    // 61.27 com. A tal como la publica el SGA: domingo 13:00–14:00 virtual
+    // asincrónico —sin sede ni aula— y miércoles 19:00–21:00 presencial en la
+    // Sede Distrito Financiero. La abreviación es el código: 61.27 no está en
+    // `abreviaciones.json` porque no es del plan S10-Rev23.
+    const curso = HORARIOS_DOMINGO_VIRTUAL.cursos.find(
+      (candidato) => candidato.codigo === "61.27",
+    );
+    const comision = curso?.comisiones.find((candidata) => candidata.id === "A");
+    expect(comision?.bloques).toHaveLength(2);
+    const coyuntura: MateriaEnGrilla = {
+      codigo: "61.27",
+      nombre: curso?.nombre ?? "",
+      abreviacion: "61.27",
+      color: 0,
+      comision: "A",
+      bloques: comision?.bloques ?? [],
+    };
+
+    render(<GrillaSemanal bloques={[coyuntura]} horaPx={15} />);
+    const pie = screen.getByRole("list", {
+      name: "Bloques fuera de la grilla",
+    });
+    expect(pie).toHaveTextContent("dom 13–14");
+    expect(
+      screen.getByLabelText(
+        "61.27 Análisis de Coyuntura Económica · comisión A · domingo 13:00–14:00",
+      ),
+    ).toBeInTheDocument();
+    // El bloque presencial del miércoles sí se dibuja en la grilla.
+    expect(
+      screen.getByRole("img", { name: /miércoles 19:00–21:00 · 801F/ }),
     ).toBeInTheDocument();
   });
 

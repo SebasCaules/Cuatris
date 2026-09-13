@@ -68,7 +68,7 @@ export type Cupo = NonNullable<Comision["cupo"]>;
 export type Ocupacion = NonNullable<Comision["ocupacion"]>;
 
 export type Cuatrimestre = Periodo["cuatrimestre"];
-/** Sin acentos; `domingo` no existe en el contrato. */
+/** Sin acentos; `domingo` entró con el contrato 1.1.0 (61.27 dicta ahí). */
 export type Dia = Bloque["dia"];
 export type Modalidad = Bloque["modalidad"];
 export type SistemaFuente = Fuente["sistema"];

@@ -10,6 +10,7 @@ Ningun test hace red.
 
 from __future__ import annotations
 
+import logging
 import re
 import unicodedata
 from pathlib import Path
@@ -511,7 +512,6 @@ def test_normalizar_fecha_y_periodo() -> None:
 @pytest.mark.parametrize(
     ("funcion", "texto"),
     [
-        (normalizar.dia, "Domingo"),
         (normalizar.dia, "Lunez"),
         (normalizar.modalidad, "Híbrido"),
         (normalizar.sede, "MADERO"),
@@ -570,7 +570,7 @@ def test_a_contrato_arma_el_json_de_horarios(
     )
 
     assert parsers.a_contrato([curso], periodo, CAPTURADO) == {
-        "contrato": "1.0.0",
+        "contrato": "1.1.0",
         "periodo": {
             "id": "2026-1C",
             "anio": 2026,
@@ -723,12 +723,23 @@ def test_a_contrato_no_serializa_un_bloque_presencial_sin_sede() -> None:
 
 
 def test_el_corpus_esta_anonimizado(corpus_sga: Path) -> None:
+    """Ninguna captura puede traer el nombre del usuario de la barra superior.
+
+    Las pantallas que **tienen** esa barra (`div.loggedUser`) tienen que traer el marcador
+    `APELLIDO, NOMBRE` en su lugar; la pantalla de error del SGA no la trae —llega con la
+    barra vacia— y por eso la comprobacion se hace sobre las que la tienen y no sobre todas.
+    """
     archivos = sorted(corpus_sga.glob("*.html"))
     assert archivos, "el corpus del SGA esta vacio"
+    con_barra = 0
     for archivo in archivos:
         texto = archivo.read_text(encoding="utf-8")
         assert "CAULES" not in texto.upper(), archivo.name
+        if BeautifulSoup(texto, "html.parser").select_one("div.loggedUser") is None:
+            continue
+        con_barra += 1
         assert "APELLIDO, NOMBRE" in texto, archivo.name
+    assert con_barra >= 5, "casi todas las capturas traen la barra con el usuario"
 
 
 def test_cupo_ilimitado_no_tiene_tope_pero_si_ocupacion() -> None:
@@ -747,3 +758,125 @@ def test_cupo_con_otra_forma_sigue_rompiendo() -> None:
     celda = _BS("<td>muchos</td>", "html.parser").td
     with pytest.raises(parsers.EstructuraInesperada):
         parsers._parsear_cupo(celda)
+
+
+# --------------------------------------------------------------------------------------
+# Valores nuevos vistos en la corrida real del 2026-09-12 (N0-28)
+# --------------------------------------------------------------------------------------
+
+
+@pytest.fixture
+def sin_avisos_de_sufijo():
+    """`normalizar` avisa una sola vez por texto; el test necesita el aviso de esta corrida."""
+    normalizar.SUFIJOS_AVISADOS.clear()
+    yield
+    normalizar.SUFIJOS_AVISADOS.clear()
+
+
+@pytest.fixture(scope="session")
+def html_25_20(corpus_sga: Path) -> str:
+    """25.20 comision K: un bloque «Virtual» a secas y otro «Blended» en SDT."""
+    return _leer(corpus_sga, "detalle-comisiones-25.20.html")
+
+
+@pytest.fixture(scope="session")
+def html_61_27(corpus_sga: Path) -> str:
+    """61.27: cuatro comisiones con una hora asincronica los **domingos**."""
+    return _leer(corpus_sga, "detalle-comisiones-61.27.html")
+
+
+@pytest.fixture(scope="session")
+def html_73_67(corpus_sga: Path) -> str:
+    """73.67 comision A: modalidad «Presencial - SDR», con sufijo."""
+    return _leer(corpus_sga, "detalle-comisiones-73.67.html")
+
+
+def test_normalizar_domingo(html_61_27: str) -> None:
+    """El domingo existe en el SGA: 61.27 dicta una hora asincronica ese dia."""
+    assert normalizar.dia("Domingo") == "domingo"
+    assert "Domingo" in html_61_27
+
+
+def test_normalizar_virtual_a_secas() -> None:
+    """«Virtual» sin adjetivo no se convierte en sincronica: el SGA no lo dice."""
+    assert normalizar.modalidad("Virtual") == "virtual"
+
+
+def test_una_modalidad_con_sufijo_desconocido_se_lee_y_se_avisa_una_sola_vez(
+    caplog: pytest.LogCaptureFixture, sin_avisos_de_sufijo: None
+) -> None:
+    caplog.set_level(logging.WARNING, logger="cuatris.sga")
+
+    assert normalizar.modalidad("Presencial - SDR") == "presencial"
+    assert normalizar.modalidad("Presencial - SDR") == "presencial"
+    assert normalizar.modalidad("Virtual Sinc. - lo que sea") == "virtual_sincronica"
+
+    avisos = [r.getMessage() for r in caplog.records if r.levelno == logging.WARNING]
+    assert len(avisos) == 2, "un aviso por texto distinto, no uno por curso"
+    assert "Presencial - SDR" in avisos[0] and "SDR" in avisos[0]
+    assert "lo que sea" in avisos[1]
+
+
+def test_una_modalidad_sin_modalidad_conocida_adelante_sigue_siendo_desconocida() -> None:
+    """La regla del sufijo no es un colador: lo que no arranca con algo conocido, falla."""
+    with pytest.raises(normalizar.ValorDesconocido):
+        normalizar.modalidad("Holografica - SDR")
+    with pytest.raises(normalizar.ValorDesconocido):
+        normalizar.modalidad("Semi-presencial")
+
+
+def test_25_20_mezcla_un_bloque_virtual_con_uno_blended(html_25_20: str) -> None:
+    curso = parsers.parsear_curso(html_25_20)
+    assert curso.codigo == "25.20"
+    assert [c.id for c in curso.comisiones] == ["K"]
+
+    bloques = {b.dia: b for b in curso.comisiones[0].bloques}
+    assert bloques["miercoles"].modalidad == "virtual"
+    assert bloques["miercoles"].sede is None
+    assert bloques["miercoles"].aulas == ()
+    assert bloques["viernes"].modalidad == "blended"
+    assert bloques["viernes"].sede == "sdt"
+    assert bloques["viernes"].aulas == ("102T",)
+    assert curso.comisiones[0].cupo == parsers.Cupo(capacidad=24)
+    assert curso.comisiones[0].ocupacion == parsers.Ocupacion(inscriptos=17, al=None)
+
+
+def test_61_27_dicta_los_domingos_en_sus_cuatro_comisiones(html_61_27: str) -> None:
+    curso = parsers.parsear_curso(html_61_27)
+    assert curso.codigo == "61.27"
+    assert [c.id for c in curso.comisiones] == ["A", "B", "C", "D"]
+
+    for comision in curso.comisiones:
+        domingos = [b for b in comision.bloques if b.dia == "domingo"]
+        assert len(domingos) == 1, comision.id
+        assert domingos[0].modalidad == "virtual_asincronica"
+        assert domingos[0].sede is None
+        assert domingos[0].aulas == ()
+        presenciales = [b for b in comision.bloques if b.modalidad == "presencial"]
+        assert len(presenciales) == 1, comision.id
+        assert presenciales[0].sede == "sdf"
+
+    cupos = {c.id: (c.ocupacion.inscriptos, c.cupo.capacidad) for c in curso.comisiones}
+    assert cupos == {"A": (41, 48), "B": (24, 24), "C": (48, 48), "D": (33, 41)}
+
+
+def test_73_67_lee_la_modalidad_con_sufijo_y_deja_el_aviso(
+    html_73_67: str, caplog: pytest.LogCaptureFixture, sin_avisos_de_sufijo: None
+) -> None:
+    caplog.set_level(logging.WARNING, logger="cuatris.sga")
+    curso = parsers.parsear_curso(html_73_67)
+
+    assert curso.codigo == "73.67"
+    assert [c.id for c in curso.comisiones] == ["A"]
+    bloque = curso.comisiones[0].bloques[0]
+    assert (bloque.dia, bloque.desde, bloque.hasta) == ("jueves", "10:00", "13:00")
+    assert bloque.modalidad == "presencial"
+    assert bloque.sede == "rectorado"
+    assert bloque.aulas == ("204R",)
+    assert curso.comisiones[0].docentes == ("Roitberg, Esteban Gabriel",)
+    assert any("Presencial - SDR" in r.getMessage() for r in caplog.records)
+
+
+def test_el_contrato_que_escribe_el_scraper_es_1_1_0() -> None:
+    """Los dos enums nuevos (`domingo`, `virtual`) son una extension, o sea un minor."""
+    assert parsers.CONTRATO == "1.1.0"

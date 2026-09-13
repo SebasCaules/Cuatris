@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 from cuatris.cli import main
-from cuatris.validar import TIPOS, deducir_tipo, hay_errores, validar_archivo
+from cuatris.validar import TIPOS, deducir_tipo, esquema, hay_errores, validar_archivo
 from cuatris.validar.esquema import DIRECTORIO_SCHEMAS, compilar, esquema_de
 
 # Reglas de C2 que cada fixture de `deben-fallar` tiene que disparar, y solo esa.
@@ -14,7 +14,7 @@ FIXTURES_C2 = {
     "aulas-string.json": ("schema", "aulas debe ser de tipo array"),
     "campo-desconocido.json": ("campo-desconocido", "campo desconocido «aula»"),
     "codigo-sin-punto.json": ("schema", "codigo no cumple el patron"),
-    "dia-domingo.json": ("schema", "dia debe ser uno de"),
+    "dia-invalido.json": ("schema", "dia debe ser uno de"),
     "fecha-con-hora.json": ("schema", "periodo.desde no cumple el patron"),
     "hora-mal-formada.json": ("schema", "bloques[0].desde no cumple el patron"),
 }
@@ -22,6 +22,40 @@ FIXTURES_C2 = {
 
 def _reglas(hallazgos) -> list[str]:
     return [hallazgo.regla for hallazgo in hallazgos]
+
+
+def _horarios_con(campo: str, valor: str) -> dict:
+    """Un documento de horarios minimo con `campo` puesto en `valor` en su unico bloque."""
+    bloque = {
+        "aulas": [],
+        "desde": "13:00",
+        "dia": "lunes",
+        "hasta": "14:00",
+        "modalidad": "virtual_asincronica",
+        "sede": None,
+    }
+    bloque[campo] = valor
+    return {
+        "contrato": "1.1.0",
+        "cursos": [
+            {
+                "codigo": "61.27",
+                "comisiones": [{"bloques": [bloque], "docentes": [], "id": "A"}],
+                "desde": "2026-07-26",
+                "dictado_conjunto": [],
+                "hasta": "2026-12-31",
+                "nombre": "Análisis de Coyuntura Económica",
+            }
+        ],
+        "fuente": {"capturado": "2026-09-12", "sistema": "sga"},
+        "periodo": {
+            "anio": 2026,
+            "cuatrimestre": "2C",
+            "desde": "2026-07-26",
+            "hasta": "2026-12-31",
+            "id": "2026-2C",
+        },
+    }
 
 
 @pytest.mark.parametrize("tipo", TIPOS)
@@ -127,6 +161,80 @@ def test_los_siete_casos_raros_validan_sin_advertencias(fixtures: Path) -> None:
     )
 
 
+def test_el_contrato_1_1_0_admite_domingo_y_virtual(fixtures: Path) -> None:
+    """N0-28: los dos valores que trajo la corrida real del 2026-09-12 validan sin ruido.
+
+    61.27 dicta en las cuatro comisiones un bloque virtual asincronico **en domingo**, y
+    25.20 com. K publica un bloque «Virtual» a secas, sin decir si es sincronica. Si el
+    schema los rechaza, el scraper no puede publicar el cuatrimestre.
+    """
+    from cuatris import canon
+
+    ruta = fixtures / "deben-pasar" / "horarios-domingo-virtual.json"
+    assert validar_archivo(ruta) == []
+
+    datos = canon.cargar(ruta)
+    assert datos["contrato"] == "1.1.0"
+    cursos = {curso["codigo"]: curso for curso in datos["cursos"]}
+
+    comisiones = {c["id"]: c for c in cursos["61.27"]["comisiones"]}
+    assert sorted(comisiones) == ["A", "B", "C", "D"]
+    for comision in comisiones.values():
+        domingos = [b for b in comision["bloques"] if b["dia"] == "domingo"]
+        assert len(domingos) == 1
+        assert domingos[0]["modalidad"] == "virtual_asincronica"
+        # Un bloque virtual no ocupa aula ni sede: por eso `sede` admite `null`.
+        assert domingos[0]["sede"] is None
+        assert domingos[0]["aulas"] == []
+
+    bloques = cursos["25.20"]["comisiones"][0]["bloques"]
+    virtual = [b for b in bloques if b["modalidad"] == "virtual"]
+    assert len(virtual) == 1
+    assert (virtual[0]["dia"], virtual[0]["desde"], virtual[0]["hasta"]) == (
+        "miercoles",
+        "15:00",
+        "18:00",
+    )
+    assert virtual[0]["sede"] is None
+
+
+@pytest.mark.parametrize(
+    ("campo", "valor"),
+    [
+        ("dia", "lunes"),
+        ("dia", "sabado"),
+        ("dia", "domingo"),
+        ("modalidad", "presencial"),
+        ("modalidad", "virtual_sincronica"),
+        ("modalidad", "virtual_asincronica"),
+        ("modalidad", "virtual"),
+        ("modalidad", "blended"),
+    ],
+)
+def test_los_enum_del_bloque_aceptan_todos_sus_valores(campo: str, valor: str) -> None:
+    """Cada valor del enum de `dia` y de `modalidad` pasa el schema."""
+    assert esquema.revisar(_horarios_con(campo, valor), "horarios", "prueba.json") == []
+
+
+@pytest.mark.parametrize(
+    ("campo", "valor"),
+    [
+        ("dia", "sábado"),
+        ("dia", "domingos"),
+        ("dia", "Domingo"),
+        ("modalidad", "Virtual"),
+        ("modalidad", "virtual_asincronico"),
+    ],
+)
+def test_un_valor_fuera_del_enum_del_bloque_sigue_rechazado(
+    campo: str, valor: str
+) -> None:
+    """Extender un enum no es abrirlo: lo que no esta en la lista sigue siendo error."""
+    hallazgos = esquema.revisar(_horarios_con(campo, valor), "horarios", "prueba.json")
+    assert _reglas(hallazgos) == ["schema"]
+    assert f"{campo} debe ser uno de" in hallazgos[0].mensaje
+
+
 @pytest.mark.parametrize(("nombre", "esperado"), sorted(FIXTURES_C2.items()))
 def test_fixture_que_debe_fallar_en_c2(
     fixtures: Path, nombre: str, esperado: tuple[str, str]
@@ -165,9 +273,9 @@ def test_deduccion_de_tipo_por_contenido(fixtures: Path) -> None:
     """Fuera de `data/`, el tipo se deduce de la forma del documento."""
     from cuatris import canon
 
-    datos = canon.cargar(fixtures / "deben-fallar" / "dia-domingo.json")
+    datos = canon.cargar(fixtures / "deben-fallar" / "dia-invalido.json")
     assert (
-        deducir_tipo(fixtures / "deben-fallar" / "dia-domingo.json", datos)
+        deducir_tipo(fixtures / "deben-fallar" / "dia-invalido.json", datos)
         == "horarios"
     )
     assert deducir_tipo("suelto.json") is None
@@ -192,7 +300,7 @@ def test_validar_sale_con_1_con_errores(
     fixtures: Path, capsys: pytest.CaptureFixture
 ) -> None:
     """Con errores sale con 1 e imprime una linea por hallazgo."""
-    ruta = fixtures / "deben-fallar" / "dia-domingo.json"
+    ruta = fixtures / "deben-fallar" / "dia-invalido.json"
     assert main(["validar", str(ruta)]) == 1
     salida = capsys.readouterr().out.strip().splitlines()
     assert len(salida) == 1

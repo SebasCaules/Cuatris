@@ -21,9 +21,11 @@ from cuatris.sga.cliente import (
     ClienteSGA,
     ErrorDeRed,
     ErrorDeSesion,
+    PaginaVencida,
     enlace_de_pestana,
     enlace_por_texto,
     esta_autenticada,
+    pagina_de_error,
     sesion_vencida,
 )
 from cuatris.sga.parsers import EstructuraInesperada
@@ -422,3 +424,85 @@ def test_cerrar_borra_las_credenciales_de_memoria(html_listado: str) -> None:
     cliente.iniciar_sesion(USUARIO, CLAVE)
     cliente.cerrar()
     assert CLAVE not in repr(vars(cliente))
+
+
+# --------------------------------------------------------------------------------------
+# Pantalla de error del SGA (pagina de Wicket desalojada)
+# --------------------------------------------------------------------------------------
+
+
+@pytest.fixture(scope="session")
+def html_error(corpus_sga: Path) -> str:
+    """La pantalla que el SGA devolvio a las filas 41 a 472 el 2026-09-12."""
+    return (corpus_sga / "error-inesperado.html").read_text(encoding="utf-8")
+
+
+def test_la_pantalla_de_error_se_reconoce_por_sus_dos_anclas(
+    html_error: str, html_listado: str
+) -> None:
+    assert pagina_de_error(html_error)
+    assert not pagina_de_error(html_listado)
+    assert not pagina_de_error(LOGIN)
+
+
+def test_cada_ancla_de_la_pantalla_de_error_alcanza_por_si_sola(html_error: str) -> None:
+    """Se anclan las dos porque cada una se rompe distinto; con una sola ya se reconoce."""
+    sin_titulo = html_error.replace(
+        "<h3>El sistema halló un error inesperado.</h3>", "<h3>Vaya</h3>"
+    )
+    sin_aviso = html_error.replace('id="notifications"', 'id="otra-cosa"')
+    assert sin_titulo != html_error and sin_aviso != html_error
+    assert pagina_de_error(sin_titulo), "queda el <h4> de div#notifications"
+    assert pagina_de_error(sin_aviso), "queda el <h3> del titulo"
+
+
+def test_la_pantalla_de_error_no_lleva_el_nombre_del_usuario(html_error: str) -> None:
+    """El volcado real llega con la barra superior vacia; el corpus tiene que quedar igual."""
+    assert "CAULES" not in html_error.upper()
+    assert "loggedUser" not in html_error
+
+
+def test_una_pagina_de_error_sale_como_pagina_vencida_sin_el_cuerpo(
+    html_listado: str, html_error: str
+) -> None:
+    url = "https://sga.itba.edu.ar/app2/detalle;jsessionid=ABC123SECRETO?0-1.-lupa"
+
+    def manejar(peticion: httpx.Request) -> httpx.Response:
+        if peticion.url.path == "/app2/":
+            return httpx.Response(200, html=LOGIN, headers=COOKIES)
+        if peticion.method == "POST":
+            return httpx.Response(200, html=html_listado)
+        return httpx.Response(200, html=html_error)
+
+    with _cliente(manejar) as cliente:
+        cliente.iniciar_sesion(USUARIO, CLAVE)
+        with pytest.raises(PaginaVencida) as fallo:
+            cliente.obtener(url)
+
+    mensaje = str(fallo.value)
+    assert "GET" in mensaje
+    assert ";jsessionid=…" in mensaje and "ABC123SECRETO" not in mensaje
+    assert "ya no existe en la sesion" in mensaje
+    assert "error inesperado" not in mensaje, "el cuerpo de la respuesta no se repite"
+
+
+def test_una_pagina_de_error_no_dispara_el_relogin(
+    html_listado: str, html_error: str
+) -> None:
+    """No es una sesion vencida: volver a entrar no arregla una pagina desalojada."""
+    entradas = {"n": 0}
+
+    def manejar(peticion: httpx.Request) -> httpx.Response:
+        if peticion.url.path == "/app2/":
+            entradas["n"] += 1
+            return httpx.Response(200, html=LOGIN, headers=COOKIES)
+        if peticion.method == "POST":
+            return httpx.Response(200, html=html_listado)
+        return httpx.Response(200, html=html_error)
+
+    with _cliente(manejar) as cliente:
+        cliente.iniciar_sesion(USUARIO, CLAVE)
+        with pytest.raises(PaginaVencida):
+            cliente.obtener("https://sga.itba.edu.ar/app2/detalle")
+
+    assert entradas["n"] == 1, "solo la entrada del login inicial"

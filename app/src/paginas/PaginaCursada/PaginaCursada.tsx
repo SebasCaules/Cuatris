@@ -91,6 +91,7 @@ const NOMBRE_DIA: Record<Dia, string> = {
   jueves: "jueves",
   viernes: "viernes",
   sabado: "sábado",
+  domingo: "domingo",
 };
 
 /**

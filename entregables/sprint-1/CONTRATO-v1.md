@@ -6,7 +6,8 @@ diferencia en `EXEC_STATE.md`.
 
 ## Convenciones globales
 
-- Todo archivo de datos lleva `"contrato": "1.0.0"` (SemVer, string). El corte de
+- Todo archivo de datos lleva su `"contrato"` en SemVer (string); la versión vigente es
+  **1.1.0** (§8) y los archivos `1.0.0` ya publicados siguen siendo válidos. El corte de
   compatibilidad es el directorio: C1 rechaza con `contrato-incompatible` cualquier archivo de
   `v1/` cuyo major no sea 1, porque un major distinto vive en `data/v2/` con `schemas/v2/`.
 - **Forma canónica**: `json.dumps(obj, ensure_ascii=False, indent=2, sort_keys=True) + "\n"`,
@@ -61,16 +62,22 @@ diferencia en `EXEC_STATE.md`.
 | `comisiones[].cupo` | objeto `{capacidad: int ≥ 0}`, **opcional** | estable |
 | `comisiones[].ocupacion` | objeto `{inscriptos: int ≥ 0, al: fecha}`, **opcional** | volátil; `inscriptos > capacidad` es warning |
 | `comisiones[].docentes` | array de strings | requerido, puede ser `[]`; colisión de docente = warning |
-| `bloques[].dia` | enum `lunes`, `martes`, `miercoles`, `jueves`, `viernes`, `sabado` | sin acentos; `domingo` no existe |
+| `bloques[].dia` | enum `lunes`, `martes`, `miercoles`, `jueves`, `viernes`, `sabado`, `domingo` | sin acentos; `domingo` entró en el contrato **1.1.0** (§8) |
 | `bloques[].desde/hasta` | hora | `desde < hasta`, entre `07:00` y `23:00`, y a lo sumo **8 h** de duración (C3: `bloque-demasiado-largo`, error) |
 | `bloques[].sede` | string o `null` | id de `vocabulario.json`; `null` solo si la modalidad no es presencial |
-| `bloques[].modalidad` | enum `presencial`, `virtual_sincronica`, `virtual_asincronica`, `blended` | el scraper mapea `Presencial`, `Virtual Sinc.`, `Virtual Asinc.`, `Blended`; otro valor = error ruidoso |
+| `bloques[].modalidad` | enum `presencial`, `virtual_sincronica`, `virtual_asincronica`, `virtual`, `blended` | el scraper mapea `Presencial` y `Presencial - SDR` → `presencial`; `Virtual Sinc.` → `virtual_sincronica`; `Virtual Asinc.` (también «Virtual asincrónica») → `virtual_asincronica`; `Virtual` a secas → `virtual`; `Blended` → `blended`. Otro valor = error ruidoso. `virtual` es «virtual sin decir si es sincrónica», tal como lo publica el SGA (**1.1.0**, §8) |
 | `bloques[].aulas` | array de strings de 1 a 40 caracteres sin espacios en los bordes (`^\S(?:.{0,38}\S)?$`) | requerido, puede ser `[]` (virtual o sin asignar); dos aulas simultáneas es válido; **nunca enum**: el ITBA nombra las aulas como quiere |
 
-Nota sobre `sabado`: el plan original proponía «sábado» como caso negativo; se cambia porque
-un día real que el schema rechaza es un falso positivo crónico (amenaza A10). El caso negativo
-de día pasa a ser `domingo`. La grilla de la SPA dibuja lunes–viernes y lista los bloques de
-sábado al pie de la tarjeta.
+Nota sobre `sabado` y `domingo`: el plan original proponía «sábado» como caso negativo; se
+cambió porque un día real que el schema rechaza es un falso positivo crónico (amenaza A10). El
+caso negativo pasó entonces a ser `domingo`… y la corrida real del scraper del **2026-09-12**
+mostró que el domingo también existe: **61.27 Análisis de Coyuntura Económica** dicta en sus
+cuatro comisiones un bloque `Domingo 13:00 - 14:00` (com. A) con modalidad «Virtual
+asincrónica», sin aula ni sede, además del presencial de la semana en la Sede Distrito
+Financiero. Por eso `domingo` entra en el enum en **1.1.0** (§8) y el caso negativo de día pasa
+a ser un día mal escrito (`"sábado"` con acento; fixture `deben-fallar/dia-invalido.json`).
+La grilla de la SPA dibuja lunes–viernes y lista los bloques de sábado y de domingo al pie de
+la tarjeta.
 
 ## 2. `data/v1/planes/S10-Rev23.json`
 
@@ -196,3 +203,28 @@ explícita; nunca se descarta un plan guardado sin exportarlo antes.
   Lo mismo con `dictado-conjunto-inexistente`: un código de `dictado_conjunto` que no es un
   curso del archivo es warning en el Sprint 1 y error cuando exista `no-plan.json`.
 - `catalogo/<codigo>.json` (Sprint 2), `no-plan.json` (Sprint 2), evidencia (Sprint 3).
+
+## 8. Versiones del contrato
+
+El major lo custodia el directorio (`v1`); el campo `contrato` de cada archivo declara la
+versión exacta. Agregar un valor a un enum es **minor**: ningún archivo ya publicado deja de
+ser válido, pero todo lector tiene que aprender el valor nuevo (los mapas `Record<Dia, …>` y
+`Record<Modalidad, …>` de la SPA dejan de compilar hasta que lo hagan).
+
+| Versión | Fecha | Qué agregó | Por qué es *minor* |
+|---|---|---|---|
+| 1.0.0 | 2026-09-09 | Los cinco tipos de `data/v1/`. | — |
+| 1.1.0 | 2026-09-12 | `dia` suma `domingo`; `modalidad` suma `virtual`. | Extender un enum no invalida nada de lo publicado: un documento `1.0.0` es válido bajo `1.1.0`. Los lectores viejos no rompen, pero tienen que aprender los dos valores nuevos. |
+
+Decisión **N0-28**. Los dos valores salieron de la corrida real del 2026-09-12, no de una
+previsión:
+
+- **61.27**, las cuatro comisiones, bloque virtual asincrónico en domingo (ver la nota de §1).
+- **25.20 Análisis de Señales y Sistemas Digitales**, comisión K: `Miércoles 15:00 - 18:00` con
+  modalidad **«Virtual»** a secas. El SGA no dice si es sincrónica y no se supone: el valor se
+  guarda como lo publica la fuente.
+
+El caso está congelado en `tests/fixtures/deben-pasar/horarios-domingo-virtual.json`, con los
+datos tal como los publica el SGA. En la SPA, `virtual` se trata **como
+`virtual_sincronica`** —tiene hora fija, cuenta para los choques y se dibuja en la grilla—;
+`virtual_asincronica` sigue como estaba.

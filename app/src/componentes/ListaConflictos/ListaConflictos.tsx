@@ -24,6 +24,7 @@ const DIA_CORTO: Record<Choque["dia"], string> = {
   jueves: "Jue",
   viernes: "Vie",
   sabado: "Sáb",
+  domingo: "Dom",
 };
 
 export interface PropsListaConflictos {

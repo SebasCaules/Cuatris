@@ -141,7 +141,8 @@ Opciones:
 | `--desde-cero` | Borra el checkpoint del período y vuelve a bajar todo |
 | `--ritmo` | Peticiones por segundo; por defecto **1.0** |
 | `--nivel` | Nivel del filtro del listado; por defecto `Grado` |
-| `--guardar-html` | Ante un error, vuelca la respuesta problemática en `.cuatris-cache/` |
+| `--guardar-html` | Ante un error, vuelca la respuesta problemática en `.cuatris-cache/` (una por curso fallido, `<periodo>-<codigo>.html`) |
+| `--verboso` | Muestra en la consola cada petición y cada redirección (el archivo de log las trae siempre) |
 | `--data` | Directorio de datos del que la capa C3 toma el plan y el vocabulario |
 | `--cache` | Directorio del checkpoint, de los volcados y de los descartes; por defecto `./.cuatris-cache` |
 
@@ -149,6 +150,39 @@ Sobre `--ritmo`: **no lo suba.** Una petición por segundo sobre ~500 peticiones
 ocho minutos, y el `User-Agent` que manda el scraper
 (`Cuatris/0.1 (+https://github.com/SebasCaules/Cuatris)`) lo identifica ante quien administre
 el sistema. Es la infraestructura de la universidad; el costo de ser cortés es un café.
+
+**El archivo de log.** Cada corrida escribe, además de lo que muestra la consola, un archivo
+`.cuatris-cache/<periodo>.log` en nivel DEBUG: cada petición con su método y su URL, cada
+redirección, cada aviso y el resumen final, con hora. Se abre en modo *append*, y cada corrida
+empieza con una línea `=== corrida <fecha> <hora> ===`. El identificador de sesión
+(`;jsessionid=…`) va tapado en todas las líneas, así que el archivo se puede compartir. Es lo
+que hay que mirar —o pegar— cuando algo salió mal: la terminal de un barrido de dieciséis
+minutos no alcanza.
+
+**Una corrida junta todos los errores.** Un curso que no se entiende (un valor nuevo, una
+forma de cupo distinta) no frena el barrido: se anota con su motivo, se sigue con los demás y
+al final se informan todos juntos. Los cursos buenos quedan en el checkpoint; lo que se pudo
+armar queda en `.cuatris-cache/<periodo>.parcial.json`, fuera de `data/`. Se corrigen los
+mapeos o el parser y se vuelve a correr **el mismo comando**: solo se repiten los fallidos.
+
+### Por qué el barrido va página por página
+
+El listado tiene ~24 páginas de 20 cursos. El scraper abre **una** página, visita los 20
+detalles de esa página y recién entonces pide la siguiente; nunca lee el listado entero antes
+de abrir un detalle. No es una preferencia: es lo único que funciona.
+
+Wicket guarda las páginas con estado de cada sesión en un almacén acotado (un anillo en disco
+de unos 10 MB). Cada detalle de curso que se abre crea páginas nuevas en ese almacén, y las
+páginas del listado que nadie volvió a tocar se desalojan para hacer lugar. Un enlace que
+salía de una página desalojada ya no apunta a nada: el SGA responde su pantalla de error
+genérica («El sistema halló un error inesperado. Su pedido no pudo ser realizado…»). Con el
+barrido página por página, cada clic sobre la página actual la vuelve a guardar, y la página
+siguiente se pide desde ella, así que nunca se desaloja.
+
+Se comprobó en la corrida real del 2026-09-12 (22:18–22:27): una versión anterior leía las 24
+páginas primero; las 40 filas de las páginas 1 y 2 salieron bien y las 432 restantes
+devolvieron la pantalla de error, una petición por curso. Es el síntoma a reconocer si alguien
+«optimiza» el recorrido en el futuro.
 
 ### Cuando se corta
 
@@ -163,13 +197,30 @@ pantalla de login en vez de lo pedido), vuelve a entrar **una vez** y reintenta 
 petición. Si vuelve a vencer inmediatamente, corta con un error: el checkpoint conserva todo
 lo bajado.
 
+Si el SGA responde su pantalla de error genérica a un clic (ver «Por qué el barrido va página
+por página»), el cliente lo detecta (`PaginaVencida`) y el barrido **se recupera solo**: vuelve
+a abrir el listado desde `/app2/` (menú «Cursos», filtros) y pagina hasta la página en la que
+estaba, toma el enlace nuevo del mismo curso y lo reintenta una vez. Cada recuperación cuesta
+tantas peticiones como páginas haya que volver a pasar. Si el curso vuelve a fallar, queda como
+fallido y se sigue; si **cinco cursos seguidos** terminan así, el problema es el SGA y no un
+curso: el barrido corta con un mensaje que lo dice, para no gastar 470 peticiones en vano. Se
+espera unos minutos y se vuelve a correr el mismo comando. Tras un re-login pasa lo mismo, y
+la misma recuperación lo resuelve: las páginas de Wicket de la sesión anterior ya no existen.
+
 ## Qué comprueba el scraper además de parsear
 
-- **Que el filtro se haya aplicado**: si una fila del listado trae un período distinto del
-  pedido, corta. Un filtro que no tomó produciría un archivo con dos cuatrimestres mezclados.
+- **Que el filtro se haya aplicado**: si ninguna fila de la **primera página** es del período
+  pedido, corta ahí mismo. Un filtro que no tomó produciría un archivo con dos cuatrimestres
+  mezclados, y descubrirlo al final costaría dieciséis minutos.
 - **Que el detalle sea el que se pidió**: si se abre la lupa de 30.28 y el SGA devuelve
   93.18, corta.
-- **Que no haya dos cursos con el mismo código** en el archivo.
+- **Códigos repetidos en el listado.** El SGA lista algunos códigos dos veces (en la corrida
+  del 2026-09-12, 472 filas para 461 códigos). Cada aparición se baja y se guarda aparte en el
+  checkpoint (`93.18`, `93.18#2`), con un `WARNING` que muestra las dos filas. Al armar el
+  archivo se fusionan por código: si son idénticas queda una; si sus comisiones tienen ids
+  distintos se unen (con `desde` mínimo y `hasta` máximo, y otro `WARNING`); si una misma
+  comisión trae contenido distinto en las dos, ese código queda como fallido con los ids en
+  conflicto, porque el contrato quiere un curso por código y nadie debe decidirlo a ciegas.
 - **Que el archivo final valide** (C1, C2 y C3). Si hay errores, el archivo **se mueve** a
   `.cuatris-cache/<periodo>.invalido.json` —fuera de `data/`— y el comando sale con código 1,
   para que un archivo que no valida no se pueda confundir con uno publicable. Queda ahí solo
@@ -181,9 +232,11 @@ lo bajado.
 que el SGA rotula con el período en que empiezan (por ejemplo «Primer Cuat.» y nombre
 «(Anual)»). El scraper los acepta si su dictado se solapa con el intervalo de fechas de los
 cursos propios del cuatrimestre, y **recorta sus fechas a ese intervalo**, porque el archivo
-describe el cuatrimestre, no el año; lo avisa con un `WARNING` por curso. Una fila de otro
-período que no se solapa —o un listado sin ninguna fila del período pedido— sigue siendo la
-señal de que el filtro no se aplicó, y corta.
+describe el cuatrimestre, no el año; lo avisa con un `WARNING` por curso. Como el barrido va
+página por página, el intervalo se conoce recién al final: por eso el checkpoint guarda, junto
+con cada curso, el período y las fechas que decía su fila del listado (`listado`), y la
+separación se hace al terminar, leyendo esos registros. Un curso de otro período que no se
+solapa queda como fallido con ese motivo (no corta el resto).
 
 ## Qué extrae cada parser y en qué se ancla
 
@@ -245,11 +298,11 @@ Pestaña Comisiones, la **única fuente de horarios** del SGA.
 | La tabla | primera `<table>` con los encabezados `Comisión`, `Horarios`, `Profesores` y `Cupo` |
 | `id` | texto de la celda `Comisión` (`A`, `K`, `S`: es opaco, no tiene orden) |
 | bloques | un `<div>` hijo directo de la celda `Horarios` por renglón |
-| `dia`, `desde`, `hasta` | los tres primeros `<span>` hijos directos del `<div>` |
+| `dia`, `desde`, `hasta` | los tres primeros `<span>` hijos directos del `<div>`; los días van de `Lunes` a `Domingo` (61.27 dicta en domingo un bloque virtual asincrónico) |
 | `aulas` y `sede` | `<span>` cuyo texto propio empieza con **`Aula ITBA:`**; el valor tiene la forma `001R #----> Sede Rectorado` |
-| `modalidad` | `<span>` cuyo texto propio empieza con **`Aula externa:`**. La etiqueta engaña: el valor es la modalidad (`Presencial`, `Virtual sincrónico`, `Blended`) |
+| `modalidad` | `<span>` cuyo texto propio empieza con **`Aula externa:`**. La etiqueta engaña: el valor es la modalidad (`Presencial`, `Virtual sincrónico/a`, `Virtual asincrónico/a`, `Virtual` a secas → `virtual`, `Blended`). Un valor con sufijo, como `Presencial - SDR` (73.67), se lee como la modalidad que lo encabeza y deja un `WARNING` con el sufijo, una vez por texto distinto |
 | `docentes` | cada `<label>` de la celda `Profesores` |
-| `cupo` / `ocupacion` | celda `Cupo`, con la forma `inscriptos / capacidad` (`48 / 49` = 48 inscriptos sobre 49 lugares) |
+| `cupo` / `ocupacion` | celda `Cupo`, con la forma `inscriptos / capacidad` (`48 / 49` = 48 inscriptos sobre 49 lugares); `2 / Ilimitado` = 2 inscriptos y sin `cupo` |
 
 Consecuencias que conviene tener presentes:
 
@@ -316,7 +369,8 @@ navegar, y valen la misma regla: texto visible o patrón de nombre de campo, nun
 | Campos que se envían | `user`, `password` y el botón `login` con valor `Ingresar`, más todos los ocultos del formulario, **con `js` forzado a `1`** (el HTML lo trae en `0` y el script de la página lo pone en `1`; enviado en `0`, el SGA entra en un bucle de redirecciones —«Exceeded maximum allowed redirects»— verificado el 2026-09-12) | si el ITBA renombra los campos, el login devuelve otra vez la pantalla de login; si vuelve el bucle de redirecciones, mirar primero qué hace el script de la pantalla de login con los ocultos |
 | **Sesión iniciada** | el enlace cuyo texto contiene **`Salir`** en la barra superior, y que **no** haya campo de contraseña | está en todas las pantallas del SGA una vez adentro; se comprueba con los dos a la vez, porque si renombran el enlace, el campo de contraseña sigue delatando el login |
 | **Sesión vencida** | reaparece el `<input type="password">` | cuando la sesión de Wicket caduca, el SGA responde el formulario de login a cualquier URL, incluso a una cifrada que antes funcionaba |
-| Menú → listado | el `<a>` cuyo texto visible es **`Cursos`** | está bajo «Académica»; si lo renombran, cambiar `ENLACE_CURSOS` en `bajar.py` |
+| **Pantalla de error del SGA** | un `<h3>` cuyo texto contiene **`error inesperado`**, o el `<h4>` de `div#notifications` con **`no pudo ser realizado`** (`pagina_de_error`); cualquiera de los dos alcanza | es la respuesta a un enlace de una página de Wicket desalojada; copia anonimizada en `tests/corpus/sga/error-inesperado.html` |
+| Menú → listado | el `<a>` cuyo texto visible es **`Cursos`** | está bajo «Académica»; si lo renombran, cambiar `ENLACE_CURSOS` en `bajar.py`. El barrido lo usa también al **reabrir** el listado tras una pantalla de error, partiendo de `/app2/` |
 | Pestaña de un curso | dentro de `div.tabpanel4`, el `<li>` cuyo texto es **`Comisiones`** | el detalle abre en «Plantel Docente»; el scraper salta a Comisiones salvo que ya esté activa |
 | Campos de filtro | `parsers.extraer_ids_filtro`: patrón `results:topToolbars:toolbars:<n>:filters:<i>:filter:filter`, asociado al **título visible** de su columna | el `<n>` rota; pedir el filtro por `campos["Período"]`, nunca por índice |
 | Valor de un desplegable | el `value` del `<option>` cuyo **texto visible** es `Grado` / `Segundo Cuat.` | los `value` son índices internos (`0`, `1`, `2`…) y pueden reordenarse; el texto es lo estable |
@@ -342,7 +396,9 @@ El orden de siempre: mirar el mensaje, mirar el HTML, comparar contra el corpus.
      --salida /tmp/prueba.json --limite 3 --guardar-html
    ```
 
-   Deja la última respuesta recibida en `.cuatris-cache/<periodo>-error.html`.
+   Deja la respuesta de cada curso fallido en `.cuatris-cache/<periodo>-<codigo>.html` y, si
+   el barrido entero se cortó, la última respuesta en `.cuatris-cache/<periodo>-error.html`.
+   El archivo `.cuatris-cache/<periodo>.log` trae la secuencia completa de peticiones.
 3. **Compararlo con el corpus.** En `tests/corpus/sga/` están las capturas anonimizadas
    sobre las que se escribieron los parsers:
 
@@ -353,6 +409,10 @@ El orden de siempre: mirar el mensaje, mirar el HTML, comparar contra el corpus.
    | `horarios-materia-detalle.html` | detalle de un curso, pestaña «Plantel Docente» |
    | `horarios-materia-detalle-comisiones.html` | detalle, pestaña «Comisiones», una comisión |
    | `horarios-materia-multiples-comisiones.html` | 93.18, nueve comisiones: el caso rico |
+   | `detalle-comisiones-25.20.html` | comisión con un bloque «Virtual» a secas y otro «Blended» |
+   | `detalle-comisiones-61.27.html` | cuatro comisiones con bloques virtuales asincrónicos en domingo |
+   | `detalle-comisiones-73.67.html` | modalidad con sufijo, «Presencial - SDR» |
+   | `error-inesperado.html` | la pantalla de error genérica del SGA (página de Wicket desalojada) |
 
    ```bash
    diff <(.venv/bin/python -c "import sys,bs4;print(bs4.BeautifulSoup(open(sys.argv[1]).read(),'html.parser').prettify())" .cuatris-cache/2026-2C-error.html) \
@@ -374,6 +434,9 @@ Síntomas frecuentes:
 | «La celda Horarios tiene texto pero no se pudo leer ningún bloque» | cambió el marcado de los bloques horarios: es el caso más caro, porque sin este control la corrida quedaría verde y con todos los cursos sin horarios |
 | «Valor de sede/modalidad no reconocido» | apareció una sede o una modalidad nueva: agregar el mapeo en `normalizar.py` |
 | Todo vuelve a la pantalla de login | se perdió `AWSALB`: el balanceador mandó la petición a otra instancia |
+| «El SGA respondió su pantalla de error» en un curso, y el barrido se recupera solo | normal: una página del listado desalojada por Wicket; solo importa si se repite en cinco cursos seguidos |
+| «5 cursos seguidos terminaron en la pantalla de error del SGA» | el SGA está caído o rechaza la sesión: esperar unos minutos y volver a correr el mismo comando |
+| «N de M cursos no se pudieron parsear» al final | la lista de abajo dice el motivo de cada uno; corregir todos los mapeos juntos y volver a correr: solo se repiten esos |
 
 ## Cómo se carga el resultado
 

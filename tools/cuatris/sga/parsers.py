@@ -35,6 +35,7 @@ __all__ = [
     "Paginacion",
     "Periodo",
     "a_contrato",
+    "curso_a_dict",
     "extraer_formulario_login",
     "extraer_ids_filtro",
     "parsear_comisiones",
@@ -42,7 +43,13 @@ __all__ = [
     "parsear_listado",
 ]
 
-CONTRATO = "1.0.0"
+CONTRATO = "1.1.0"
+"""Version del contrato que escribe el scraper.
+
+1.1.0 extiende dos enums con valores que el SGA publica de verdad (`domingo` en `dia`,
+`virtual` en `modalidad`, vistos el 2026-09-12): agregar valores a un enum es compatible
+hacia atras para quien lee, asi que es un cambio *minor*.
+"""
 
 ETIQUETA_AULA = "Aula ITBA:"
 #: La etiqueta dice «Aula externa» pero el valor es la modalidad (ver HALLAZGOS.md).
@@ -836,6 +843,33 @@ def _comision_a_contrato(comision: Comision, curso: Curso, capturado: str) -> di
     return salida
 
 
+def curso_a_dict(curso: Curso, capturado: str) -> dict[str, Any]:
+    """Un curso en la forma exacta que tiene dentro de `cursos[]` (CONTRATO-v1.md §1).
+
+    Esta separado de `a_contrato` porque el scraper convierte cada curso **apenas lo baja**,
+    para guardarlo en el checkpoint, y en ese momento todavia no conoce el intervalo del
+    cuatrimestre (sale de las fechas de todas las filas del listado, que recien se terminan
+    de leer al final del barrido). Las fechas que quedan aca son las de la fila, sin recortar.
+    """
+    if curso.desde is None or curso.hasta is None:
+        raise EstructuraInesperada(
+            f"El curso {curso.codigo} no tiene fechas de dictado; se toman del listado "
+            "de cursos, que es donde el SGA las publica.",
+            curso.codigo,
+        )
+    datos: dict[str, Any] = {
+        "codigo": curso.codigo,
+        "nombre": curso.nombre,
+        "desde": curso.desde,
+        "hasta": curso.hasta,
+        "dictado_conjunto": [],
+        "comisiones": [_comision_a_contrato(c, curso, capturado) for c in curso.comisiones],
+    }
+    if curso.departamento:
+        datos["departamento"] = curso.departamento
+    return datos
+
+
 def a_contrato(cursos: Iterable[Curso], periodo: Periodo, capturado: str) -> dict[str, Any]:
     """Arma el JSON de `data/v1/horarios/<periodo>.json` (CONTRATO-v1.md §1).
 
@@ -845,29 +879,9 @@ def a_contrato(cursos: Iterable[Curso], periodo: Periodo, capturado: str) -> dic
     """
     if not isinstance(periodo, Periodo):
         raise EstructuraInesperada("«periodo» tiene que ser un Periodo.", type(periodo).__name__)
-    salida_cursos: list[dict[str, Any]] = []
-    for curso in cursos:
-        if curso.desde is None or curso.hasta is None:
-            raise EstructuraInesperada(
-                f"El curso {curso.codigo} no tiene fechas de dictado; se toman del listado "
-                "de cursos, que es donde el SGA las publica.",
-                curso.codigo,
-            )
-        datos: dict[str, Any] = {
-            "codigo": curso.codigo,
-            "nombre": curso.nombre,
-            "desde": curso.desde,
-            "hasta": curso.hasta,
-            "dictado_conjunto": [],
-            "comisiones": [_comision_a_contrato(c, curso, capturado) for c in curso.comisiones],
-        }
-        if curso.departamento:
-            datos["departamento"] = curso.departamento
-        salida_cursos.append(datos)
-
     return {
         "contrato": CONTRATO,
         "periodo": periodo.a_dict(),
         "fuente": {"sistema": "sga", "capturado": capturado},
-        "cursos": salida_cursos,
+        "cursos": [curso_a_dict(curso, capturado) for curso in cursos],
     }

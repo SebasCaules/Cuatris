@@ -109,6 +109,10 @@ No se reabren sin pedido explícito del autor.
   `AWSALB`, `AWSALBCORS`).
 - Los horarios solo existen en la pestaña Comisiones de cada curso: un barrido completo son
   ~472 cursos y ~500 peticiones. Debe ser reanudable y con rate limit.
+- **Wicket desaloja las páginas del listado que no se tocan**: el scraper visita los
+  detalles de cada página antes de pedir la siguiente (leer el listado entero primero hizo
+  que 432 de 472 cursos devolvieran «error inesperado», 2026-09-12). La página de error se
+  detecta y el barrido se recupera reabriendo el listado.
 - «Ocupación de Aulas» no identifica la materia: no sirve como fuente, sí como validador
   cruzado offline.
 - Los PDFs de materias son nativos y tienen exactamente 11 secciones delimitadas por `➢`

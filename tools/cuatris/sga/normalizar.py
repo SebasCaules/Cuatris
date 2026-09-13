@@ -13,6 +13,7 @@ mano, despues de verlo en el material.
 
 from __future__ import annotations
 
+import logging
 import re
 import unicodedata
 from datetime import date
@@ -22,6 +23,7 @@ __all__ = [
     "DIAS",
     "MODALIDADES",
     "SEDES",
+    "SUFIJOS_AVISADOS",
     "ValorDesconocido",
     "clave",
     "cuatrimestre",
@@ -32,6 +34,8 @@ __all__ = [
     "periodo",
     "sede",
 ]
+
+REGISTRO = logging.getLogger("cuatris.sga")
 
 
 class ValorDesconocido(ValueError):
@@ -46,7 +50,8 @@ class ValorDesconocido(ValueError):
         )
 
 
-#: Dias de la semana. `domingo` no existe en el contrato y por eso no esta aqui.
+#: Dias de la semana. `Domingo` aparece de verdad en el SGA (61.27 en la corrida del
+#: 2026-09-12: una hora asincronica los domingos) y el contrato 1.1.0 lo admite.
 DIAS: dict[str, str] = {
     "Lunes": "lunes",
     "Martes": "martes",
@@ -54,6 +59,7 @@ DIAS: dict[str, str] = {
     "Jueves": "jueves",
     "Viernes": "viernes",
     "Sábado": "sabado",
+    "Domingo": "domingo",
 }
 
 #: Modalidades. La etiqueta del SGA dice «Aula externa» pero el valor es la modalidad.
@@ -70,8 +76,22 @@ MODALIDADES: dict[str, str] = {
     "Virtual asincrónico": "virtual_asincronica",
     "Virtual asincrónica": "virtual_asincronica",
     "Virtual sincrónica": "virtual_sincronica",
+    # Vista en la corrida real del 2026-09-12 (25.20 comision K): el SGA dice «Virtual» a
+    # secas y **no aclara si es sincronica**. No se asume: el contrato 1.1.0 tiene el valor
+    # `virtual` justamente para esto.
+    "Virtual": "virtual",
     "Blended": "blended",
 }
+
+_MODALIDAD_CON_SUFIJO = re.compile(r"^(?P<base>.+?)\s+-\s+(?P<sufijo>.+)$")
+
+SUFIJOS_AVISADOS: set[str] = set()
+"""Textos de modalidad con sufijo que ya se avisaron en esta corrida.
+
+Un barrido son ~472 cursos y el mismo texto («Presencial - SDR») aparece en decenas: el
+aviso sirve una vez, quinientas veces es ruido que tapa todo lo demas. Los tests que
+comprueban el aviso vacian este conjunto antes de correr.
+"""
 
 #: Sedes. Los ids son los de `data/v1/vocabulario.json`.
 SEDES: dict[str, str] = {
@@ -120,7 +140,32 @@ def dia(texto: str) -> str:
 
 
 def modalidad(texto: str) -> str:
-    """`Presencial` -> `presencial`, `Virtual sincrónico` -> `virtual_sincronica`."""
+    """`Presencial` -> `presencial`, `Virtual sincrónico` -> `virtual_sincronica`.
+
+    El SGA agrega a veces un sufijo a una modalidad conocida para decir donde se dicta
+    («Presencial - SDR», visto en 73.67 el 2026-09-12). Ese sufijo **no es parte de la
+    modalidad** —la sede sale de «Aula ITBA:»— y el contrato no lo representa: se devuelve la
+    modalidad conocida y se avisa una vez por texto distinto, para que quien mantenga el
+    scraper vea el valor nuevo sin que la corrida se caiga por el. Cualquier otro texto sigue
+    siendo `ValorDesconocido`: no se adivina.
+    """
+    if isinstance(texto, str):
+        indice = {clave(origen): destino for origen, destino in MODALIDADES.items()}
+        if clave(texto) not in indice:
+            coincidencia = _MODALIDAD_CON_SUFIJO.match(texto.strip())
+            base = clave(coincidencia.group("base")) if coincidencia else None
+            if coincidencia and base in indice:
+                if clave(texto) not in SUFIJOS_AVISADOS:
+                    SUFIJOS_AVISADOS.add(clave(texto))
+                    REGISTRO.warning(
+                        "La modalidad «%s» del SGA se lee como «%s»: el sufijo «%s» se "
+                        "ignora porque el contrato no lo representa. Si significa algo, "
+                        "agregue el mapeo en tools/cuatris/sga/normalizar.py.",
+                        texto.strip(),
+                        indice[base],
+                        coincidencia.group("sufijo").strip(),
+                    )
+                return indice[base]
     return _buscar(MODALIDADES, "modalidad", texto)
 
 

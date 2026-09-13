@@ -4,7 +4,14 @@ Corre **local, en la maquina del autor**, con la sesion del SGA: nunca en CI (ve
 `docs/scraping-sga.md`). El recorrido es el de `material-raw/02-sga/HALLAZGOS.md`:
 
     /app2/ → login → Académica → Cursos → filtrar por nivel, periodo y ano
-           → paginar de a 20 → por cada curso: lupa → pestana Comisiones
+           → pagina 1 → sus 20 cursos (lupa → pestana Comisiones) → pagina 2 → …
+
+El orden importa: los detalles de una pagina se visitan **antes** de pedir la siguiente.
+Wicket guarda las paginas con estado en un almacen por sesion de tamano acotado, y leer las
+24 paginas del listado de un tiron —lo que hacia este modulo hasta el 2026-09-12— hace que
+las paginas de detalle que se abren despues desalojen a las del listado: desde la fila 41 en
+adelante, cada enlace daba la pantalla de error del SGA. Navegar como una persona (una
+pagina, sus veinte cursos, la siguiente) mantiene los enlaces frescos.
 
 Cada curso terminado se guarda en el checkpoint apenas se parsea, asi que un corte de red o
 un vencimiento de sesion no obliga a empezar de nuevo. Al final se arma el JSON del contrato
@@ -27,8 +34,9 @@ import getpass
 import logging
 import os
 import shutil
-from collections.abc import Callable, Iterable, Iterator, Mapping
-from datetime import date
+import sys
+from collections.abc import Callable, Iterable, Mapping, Sequence
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin
@@ -39,10 +47,18 @@ from cuatris import canon
 from cuatris import validar as validacion
 
 from . import normalizar, parsers
-from .checkpoint import CACHE, Checkpoint
-from .cliente import REGISTRO, ClienteSGA, enlace_de_pestana, enlace_por_texto
+from .checkpoint import CACHE, Checkpoint, Registro, clave_de_curso
+from .cliente import (
+    ENTRADA,
+    REGISTRO,
+    ClienteSGA,
+    ErrorSGA,
+    PaginaVencida,
+    enlace_de_pestana,
+    enlace_por_texto,
+)
 
-__all__ = ["AYUDA", "configurar", "configurar_registro", "ejecutar"]
+__all__ = ["AYUDA", "Barrido", "configurar", "configurar_registro", "ejecutar"]
 
 AYUDA = "Baja del SGA los horarios de un cuatrimestre (corrida local, con sesion del autor)."
 
@@ -66,6 +82,11 @@ VAR_CLAVE = "SGA_CLAVE"
 
 #: Tope de paginas del listado, por si el «siguiente» del SGA quedara en un ciclo.
 MAXIMO_PAGINAS = 200
+
+#: Cursos irrecuperables **seguidos** que se toleran antes de abortar la corrida. Cinco
+#: alcanzan para distinguir un curso que falla de un SGA que responde su pantalla de error a
+#: todo; seguir seria gastar 470 peticiones para juntar 470 fallas iguales.
+MAXIMO_IRRECUPERABLES = 5
 
 
 # --------------------------------------------------------------------------------------
@@ -189,53 +210,130 @@ def filtrar_listado(
     return cliente.enviar(filtros.accion, datos)
 
 
-def recorrer_listado(
-    cliente: ClienteSGA, html: str, *, periodo: str, limite: int | None = None
-) -> Iterator[parsers.FilaListado]:
-    """Filas del listado filtrado, pagina por pagina, hasta el final o hasta `limite`.
+class Barrido:
+    """Recorre el listado filtrado, pagina por pagina, con enlaces siempre frescos.
 
-    Se sigue el enlace «siguiente» del navegador del SGA (`div.navigator a.next`); cuando no
-    esta, el barrido termino. Las filas de otro periodo se devuelven igual: `separar_anuales`
-    decide despues si son cursos anuales (validos) o la senal de que el filtro no se aplico.
+    El objeto guarda **una** pagina: la actual. Los detalles de sus filas se visitan antes de
+    pedir la siguiente, que es lo que mantiene viva la pagina del listado en el almacen de
+    Wicket (ver el encabezado del modulo). Cuando el SGA da por vencida una pagina,
+    `reabrir()` vuelve a navegar desde `/app2/` hasta la misma pagina y `fila()` devuelve la
+    fila con el enlace nuevo.
     """
-    vistas = 0
-    visitadas: set[str] = set()
-    for pagina in range(1, MAXIMO_PAGINAS + 1):
-        listado = parsers.parsear_listado(html)
-        # Los `href` del SGA son relativos a la pagina en la que aparecen. Se vuelven
-        # absolutos ahora, contra la URL del listado: cuando el barrido los use, la ultima
-        # pagina recibida sera el detalle de otro curso, con otra profundidad, y `../../..`
-        # resolveria fuera de `/app2/` (paso en la corrida real del 2026-09-12).
-        base = cliente.ultima_respuesta.url if cliente.ultima_respuesta else None
+
+    def __init__(
+        self, cliente: ClienteSGA, *, nivel: str, cuatrimestre_texto: str, anio: int
+    ) -> None:
+        self.cliente = cliente
+        self.nivel = nivel
+        self.cuatrimestre_texto = cuatrimestre_texto
+        self.anio = anio
+        #: Numero de la pagina actual, desde 1; 0 mientras el listado no se abrio.
+        self.pagina = 0
+        self._listado: parsers.Listado | None = None
+        self._siguientes: set[str] = set()
+
+    @property
+    def listado(self) -> parsers.Listado:
+        """La pagina actual, con los enlaces ya absolutos."""
+        if self._listado is None:
+            raise parsers.EstructuraInesperada("El barrido todavia no abrio el listado.")
+        return self._listado
+
+    def abrir(self) -> None:
+        """`/app2/` → «Cursos» → filtros → pagina 1, todo con la sesion ya iniciada."""
+        inicio = self.cliente.obtener(ENTRADA)
+        listado = self.cliente.obtener(enlace_por_texto(inicio, ENLACE_CURSOS))
+        html = filtrar_listado(
+            self.cliente,
+            listado,
+            nivel=self.nivel,
+            cuatrimestre_texto=self.cuatrimestre_texto,
+            anio=self.anio,
+        )
+        self._siguientes = set()
+        self.pagina = 1
+        self._listado = self._absolutizar(parsers.parsear_listado(html))
+
+    def siguiente(self) -> bool:
+        """Clic en el «siguiente» de la pagina actual. `False` si no hay siguiente."""
+        paginacion = self.listado.paginacion
+        enlace = paginacion.enlace_siguiente
+        if not paginacion.hay_siguiente or not enlace:
+            return False
+        if enlace in self._siguientes:
+            raise parsers.EstructuraInesperada(
+                "El navegador del listado repite el enlace «siguiente»; se corta el barrido "
+                "para no quedar en un ciclo.",
+                enlace,
+            )
+        if self.pagina >= MAXIMO_PAGINAS:
+            raise parsers.EstructuraInesperada(
+                f"El listado supero las {MAXIMO_PAGINAS} paginas; algo anda mal con la "
+                "paginacion."
+            )
+        self._siguientes.add(enlace)
+        html = self.cliente.obtener(enlace)
+        self.pagina += 1
+        self._listado = self._absolutizar(parsers.parsear_listado(html))
+        REGISTRO.info("Listado: pagina %d de %s.", self.pagina, paginacion.total_paginas)
+        return True
+
+    def reabrir(self) -> None:
+        """Vuelve a abrir el listado desde `/app2/` y pagina hasta la pagina actual."""
+        objetivo = max(self.pagina, 1)
+        self.abrir()
+        while self.pagina < objetivo:
+            if not self.siguiente():
+                raise parsers.EstructuraInesperada(
+                    f"Al reabrir el listado se llego hasta la pagina {self.pagina} y se "
+                    f"esperaba la {objetivo}; el listado cambio debajo del barrido."
+                )
+
+    def fila(self, codigo: str, aparicion: int = 1) -> parsers.FilaListado:
+        """La fila fresca de `codigo` en la **pagina actual**.
+
+        `aparicion` cuenta dentro de esta pagina, no en todo el listado: es lo unico que se
+        puede resolver mirando una sola pagina, y el barrido solo reabre para volver a la
+        pagina donde estaba la fila que fallo.
+        """
+        vistas = 0
+        for fila in self.listado.filas:
+            if fila.codigo != codigo:
+                continue
+            vistas += 1
+            if vistas == aparicion:
+                return fila
+        raise parsers.EstructuraInesperada(
+            f"La pagina {self.pagina} del listado ya no trae la aparicion {aparicion} de "
+            f"{codigo}; el listado cambio debajo del barrido.",
+            [f.codigo for f in self.listado.filas],
+        )
+
+    def _absolutizar(self, listado: parsers.Listado) -> parsers.Listado:
+        """Vuelve absolutos los `href` de la pagina, contra la URL de la pagina misma.
+
+        Los `href` del SGA son relativos a la pagina en la que aparecen. Se resuelven ahora y
+        no al usarlos: cuando el barrido los use, la ultima respuesta recibida sera el detalle
+        de otro curso, con otra profundidad, y `../../..` saldria de `/app2/` (paso en la
+        corrida real del 2026-09-12).
+        """
+        base = self.cliente.ultima_respuesta.url if self.cliente.ultima_respuesta else None
+        filas: list[parsers.FilaListado] = []
         for fila in listado.filas:
-            if base and fila.enlace_detalle:
-                fila = dataclasses.replace(fila, enlace_detalle=urljoin(base, fila.enlace_detalle))
             if fila.enlace_detalle is None:
                 raise parsers.EstructuraInesperada(
                     f"La fila del curso {fila.codigo} no trae el enlace al detalle (la lupa).",
                     fila.nombre,
                 )
-            yield fila
-            vistas += 1
-            if limite is not None and vistas >= limite:
-                return
-        siguiente = listado.paginacion.enlace_siguiente
-        if siguiente and base:
-            siguiente = urljoin(base, siguiente)
-        if not listado.paginacion.hay_siguiente or not siguiente:
-            return
-        if siguiente in visitadas:
-            raise parsers.EstructuraInesperada(
-                "El navegador del listado repite el enlace «siguiente»; se corta el barrido "
-                "para no quedar en un ciclo.",
-                siguiente,
+            if base:
+                fila = dataclasses.replace(fila, enlace_detalle=urljoin(base, fila.enlace_detalle))
+            filas.append(fila)
+        paginacion = listado.paginacion
+        if base and paginacion.enlace_siguiente:
+            paginacion = dataclasses.replace(
+                paginacion, enlace_siguiente=urljoin(base, paginacion.enlace_siguiente)
             )
-        visitadas.add(siguiente)
-        REGISTRO.info("Listado: pagina %d de %s.", pagina + 1, listado.paginacion.total_paginas)
-        html = cliente.obtener(siguiente)
-    raise parsers.EstructuraInesperada(
-        f"El listado supero las {MAXIMO_PAGINAS} paginas; algo anda mal con la paginacion."
-    )
+        return dataclasses.replace(listado, filas=tuple(filas), paginacion=paginacion)
 
 
 def _pestana_activa(html: str) -> str | None:
@@ -271,71 +369,95 @@ def hoy() -> str:
     return date.today().isoformat()
 
 
+#: Un curso que no se pudo publicar: codigo (con `#2` si es una fila repetida), nombre y
+#: motivo. Es lo que el resumen final imprime y lo que hace salir con `HAY_ERRORES`.
+Fallido = tuple[str, str, str]
+
+
 def separar_anuales(
-    filas: Iterable[parsers.FilaListado], *, periodo: str
-) -> tuple[list[parsers.FilaListado], list[parsers.FilaListado]]:
-    """Divide las filas del listado en propias del periodo y anuales, y detecta el filtro roto.
+    registros: Iterable[Registro], *, periodo: str
+) -> tuple[list[Registro], list[Registro], list[Fallido]]:
+    """Divide los registros del checkpoint en propios del periodo y anuales.
 
     El listado filtrado por «Segundo Cuat.» trae tambien los cursos **anuales**, que el SGA
     rotula con el periodo en que empiezan («Primer Cuat.») y con nombre «(Anual)» (caso real
     del 2026-09-12: 41.34 Desarrollo de Yacimientos). Son legitimos: se dictan durante el
-    cuatrimestre pedido. La regla no mira el nombre sino las fechas: una fila de otro periodo
-    se acepta como anual si su dictado **se solapa** con el intervalo que cubren las filas
-    propias; sus fechas se recortan a ese intervalo, porque este archivo describe el
-    cuatrimestre y no el ano. Si no hay ninguna fila propia, o una ajena no se solapa, el
-    filtro no se aplico y se corta.
+    cuatrimestre pedido. La regla no mira el nombre sino las fechas: un curso de otro periodo
+    se acepta como anual si su dictado **se solapa** con el intervalo que cubren los cursos
+    propios; sus fechas se recortan a ese intervalo, porque este archivo describe el
+    cuatrimestre y no el ano.
+
+    Si no hay ningun curso propio, el filtro no se aplico y se corta. Un curso ajeno que no
+    se solapa **no** corta la corrida: se anota como fallido y el resto se escribe igual, que
+    es lo mismo que se hace con un curso que no parsea.
+
+    Un registro sin `listado` (los que escribieron versiones anteriores) se trata como propio
+    del periodo: es lo unico que se puede afirmar de el.
     """
-    propias: list[parsers.FilaListado] = []
-    ajenas: list[parsers.FilaListado] = []
-    for fila in filas:
-        (propias if fila.periodo == periodo else ajenas).append(fila)
-    if not propias:
-        ejemplo = ajenas[0] if ajenas else None
+    propios: list[Registro] = []
+    ajenos: list[Registro] = []
+    for registro in registros:
+        propio = registro.periodo_del_listado in (None, periodo)
+        (propios if propio else ajenos).append(registro)
+    if not propios:
+        ejemplo = ajenos[0] if ajenos else None
         raise parsers.EstructuraInesperada(
             f"Ninguna fila del listado es del periodo «{periodo}»; el filtro no se aplico.",
-            f"{ejemplo.codigo} {ejemplo.nombre} ({ejemplo.periodo})" if ejemplo else None,
+            f"{ejemplo.codigo} ({ejemplo.periodo_del_listado})" if ejemplo else None,
         )
-    desde = min(f.desde for f in propias if f.desde)
-    hasta = max(f.hasta for f in propias if f.hasta)
-    anuales: list[parsers.FilaListado] = []
-    for fila in ajenas:
-        if not fila.desde or not fila.hasta or fila.hasta < desde or fila.desde > hasta:
-            raise parsers.EstructuraInesperada(
-                f"El listado trae el curso {fila.codigo} del periodo «{fila.periodo}» cuando "
-                f"se pidio «{periodo}», y su dictado ({fila.desde}–{fila.hasta}) no se solapa "
-                f"con el cuatrimestre ({desde}–{hasta}); el filtro no se aplico.",
-                fila.nombre,
+    desde = min(r.curso["desde"] for r in propios)
+    hasta = max(r.curso["hasta"] for r in propios)
+    anuales: list[Registro] = []
+    fallidos: list[Fallido] = []
+    for registro in ajenos:
+        curso = registro.curso
+        if curso["hasta"] < desde or curso["desde"] > hasta:
+            fallidos.append(
+                (
+                    registro.clave,
+                    curso.get("nombre", ""),
+                    f"el listado lo trae en el periodo «{registro.periodo_del_listado}» "
+                    f"cuando se pidio «{periodo}», y su dictado ({curso['desde']}–"
+                    f"{curso['hasta']}) no se solapa con el cuatrimestre ({desde}–{hasta}); "
+                    "el filtro no se aplico a esa fila",
+                )
             )
-        recortada = dataclasses.replace(
-            fila, desde=max(fila.desde, desde), hasta=min(fila.hasta, hasta)
+            continue
+        recortado = dataclasses.replace(
+            registro,
+            curso={
+                **curso,
+                "desde": max(curso["desde"], desde),
+                "hasta": min(curso["hasta"], hasta),
+            },
         )
         REGISTRO.warning(
             "%s %s es de «%s» pero se dicta tambien en %s (%s–%s): se incluye como anual, "
             "con las fechas recortadas al cuatrimestre.",
-            fila.codigo,
-            fila.nombre,
-            fila.periodo,
+            registro.codigo,
+            curso.get("nombre", ""),
+            registro.periodo_del_listado,
             periodo,
-            recortada.desde,
-            recortada.hasta,
+            recortado.curso["desde"],
+            recortado.curso["hasta"],
         )
-        anuales.append(recortada)
-    return propias, anuales
+        anuales.append(recortado)
+    return propios, anuales, fallidos
 
 
-def periodo_de_filas(
-    filas: Iterable[parsers.FilaListado], *, anio: int, cuatrimestre: str
+def periodo_de_registros(
+    registros: Iterable[Registro], *, anio: int, cuatrimestre: str
 ) -> parsers.Periodo:
-    """Cabecera `periodo` a partir de las fechas del listado.
+    """Cabecera `periodo` a partir de las fechas de los cursos propios del cuatrimestre.
 
     El SGA no publica en ningun lado las fechas del cuatrimestre: lo unico que hay son las
     columnas «Comienzo» y «Fin» de cada curso. El periodo se toma entonces como el intervalo
-    que cubre a todos los cursos del listado, que es lo que hace que los periodos cortos
-    (15.09, del 18/09 al 16/10) caigan dentro. Con `--limite` el intervalo sale de los pocos
-    cursos mirados y por eso esa corrida es una prueba, no un archivo publicable.
+    que cubre a todos los cursos propios, que es lo que hace que los periodos cortos (15.09,
+    del 18/09 al 16/10) caigan dentro. Con `--limite` el intervalo sale de los pocos cursos
+    mirados y por eso esa corrida es una prueba, no un archivo publicable.
     """
-    desde = [f.desde for f in filas if f.desde]
-    hasta = [f.hasta for f in filas if f.hasta]
+    desde = [r.curso["desde"] for r in registros if r.curso.get("desde")]
+    hasta = [r.curso["hasta"] for r in registros if r.curso.get("hasta")]
     if not desde or not hasta:
         raise parsers.EstructuraInesperada(
             "Ningun curso del listado trae fechas de «Comienzo» y «Fin»; sin ellas no se "
@@ -350,34 +472,78 @@ def periodo_de_filas(
     )
 
 
-def curso_a_contrato(
-    curso: parsers.Curso, periodo: parsers.Periodo, capturado: str
-) -> dict[str, Any]:
-    """Un curso en la forma del contrato, reusando `parsers.a_contrato`."""
-    return parsers.a_contrato([curso], periodo, capturado)["cursos"][0]
+def _comisiones_por_id(curso: Mapping[str, Any]) -> dict[str, Any]:
+    return {comision["id"]: comision for comision in curso.get("comisiones", [])}
+
+
+def _fusionar_apariciones(cursos: Sequence[dict[str, Any]]) -> tuple[dict[str, Any] | None, str]:
+    """Une las apariciones de un mismo codigo. Devuelve `(curso, motivo del descarte)`.
+
+    El listado trae codigos repetidos (472 filas, 461 codigos distintos el 2026-09-12) y el
+    contrato los quiere unicos por archivo. Si las apariciones son identicas, queda una; si
+    traen comisiones distintas, se unen; si una misma comision viene con contenido distinto
+    en dos filas, no hay forma de elegir y el codigo se descarta con el motivo.
+    """
+    primero = cursos[0]
+    if all(curso == primero for curso in cursos[1:]):
+        return dict(primero), ""
+
+    comisiones: dict[str, Any] = {}
+    for curso in cursos:
+        for identificador, comision in _comisiones_por_id(curso).items():
+            previa = comisiones.get(identificador)
+            if previa is not None and previa != comision:
+                return None, (
+                    f"aparece {len(cursos)} veces en el listado y la comision "
+                    f"«{identificador}» viene distinta en cada aparicion "
+                    f"({len(previa.get('bloques', []))} bloques contra "
+                    f"{len(comision.get('bloques', []))}); no hay forma de elegir una"
+                )
+            comisiones[identificador] = comision
+
+    fusionado = dict(primero)
+    fusionado["comisiones"] = [comisiones[i] for i in sorted(comisiones)]
+    fusionado["desde"] = min(curso["desde"] for curso in cursos)
+    fusionado["hasta"] = max(curso["hasta"] for curso in cursos)
+    juntas = " | ".join(", ".join(sorted(_comisiones_por_id(curso))) for curso in cursos)
+    REGISTRO.warning(
+        "%s aparece %d veces en el listado: se unen sus comisiones (%s).",
+        primero["codigo"],
+        len(cursos),
+        juntas,
+    )
+    return fusionado, ""
 
 
 def armar_documento(
     cursos: Iterable[dict[str, Any]], periodo: parsers.Periodo, capturado: str
-) -> dict[str, Any]:
+) -> tuple[dict[str, Any], list[Fallido]]:
     """Envoltorio del archivo de horarios con los cursos ya convertidos.
+
+    Devuelve tambien los codigos que hubo que descartar al fusionar las filas repetidas, para
+    que el que llama los sume a su lista de fallidos y el resto del archivo se escriba igual.
 
     El envoltorio (`contrato`, `periodo`, `fuente`) lo arma `parsers.a_contrato` con la lista
     vacia, para que exista una sola definicion de esa forma.
     """
     documento = parsers.a_contrato((), periodo, capturado)
-    ordenados = sorted(cursos, key=lambda curso: curso["codigo"])
-    codigos = [curso["codigo"] for curso in ordenados]
-    repetidos = sorted({c for c in codigos if codigos.count(c) > 1})
-    if repetidos:
-        raise parsers.EstructuraInesperada(
-            "El listado trae mas de un curso con el mismo codigo; el contrato los quiere "
-            "unicos por archivo.",
-            repetidos,
-        )
-    vincular_dictado_conjunto(ordenados)
-    documento["cursos"] = ordenados
-    return documento
+    por_codigo: dict[str, list[dict[str, Any]]] = {}
+    for curso in cursos:
+        por_codigo.setdefault(curso["codigo"], []).append(curso)
+
+    unicos: list[dict[str, Any]] = []
+    fallidos: list[Fallido] = []
+    for codigo in sorted(por_codigo):
+        apariciones = por_codigo[codigo]
+        fusionado, motivo = _fusionar_apariciones(apariciones)
+        if fusionado is None:
+            fallidos.append((codigo, apariciones[0].get("nombre", ""), motivo))
+            continue
+        unicos.append(fusionado)
+
+    vincular_dictado_conjunto(unicos)
+    documento["cursos"] = unicos
+    return documento, fallidos
 
 
 def _huella_de_bloque(bloque: Mapping[str, Any]) -> tuple[Any, ...]:
@@ -545,110 +711,387 @@ def _cuatrimestre_texto(cuatrimestre: str) -> str:
     raise normalizar.ValorDesconocido("cuatrimestre", cuatrimestre)
 
 
-def configurar_registro(verboso: bool = False) -> None:
-    """Deja el log del scraper en INFO (o DEBUG con `--verboso`) y calla al de `httpx`.
+class _ASalidaEstandar(logging.StreamHandler):
+    """`StreamHandler` que resuelve `sys.stdout` en cada emision.
+
+    El resumen del barrido tiene que salir por la salida estandar (es lo que lee quien corre
+    el comando, y lo que leen los tests). Resolver el flujo en cada emision y no al instalar
+    el handler evita quedarse escribiendo en un `sys.stdout` que ya no es el vigente.
+    """
+
+    def __init__(self) -> None:
+        super().__init__(sys.stdout)
+
+    @property
+    def stream(self):  # type: ignore[override]
+        return sys.stdout
+
+    @stream.setter
+    def stream(self, _valor: object) -> None:
+        """Se ignora a proposito: el flujo siempre sale de `sys.stdout`."""
+
+
+#: Marca de los handlers que instala este modulo, para poder quitarlos antes de reinstalar.
+_MARCA_HANDLER = "_de_cuatris"
+
+#: Logger raiz del paquete: `cliente`, `checkpoint`, `normalizar` y este modulo escriben
+#: todos bajo `cuatris.sga`, asi que alcanza con configurar el padre.
+_RAIZ = logging.getLogger("cuatris")
+
+
+def configurar_registro(verboso: bool = False, archivo: Path | None = None) -> None:
+    """Consola en INFO (DEBUG con `--verboso`) y, si se pide, un archivo de log en DEBUG.
+
+    El archivo (`<cache>/<periodo>.log`) se abre en modo **append** y lleva fecha, nivel y
+    mensaje: es lo que queda para mirar despues de un barrido de diez minutos, donde la
+    terminal ya no alcanza. Cada corrida empieza con una linea `=== corrida … ===` para poder
+    separarlas.
 
     El logger de `httpx` emite en INFO una linea «HTTP Request: …» con la URL entera, y las
-    URL del SGA llevan el identificador de sesion (`;jsessionid=<token>`): con el root logger
-    en INFO, un barrido escribiria ~500 veces el token vivo en la terminal. Todo lo que el
-    scraper muestra por su cuenta pasa antes por `cliente._sin_sesion()`.
+    URL del SGA llevan el identificador de sesion (`;jsessionid=<token>`): en INFO, un barrido
+    escribiria ~500 veces el token vivo en la terminal y en el archivo. Todo lo que el scraper
+    muestra por su cuenta pasa antes por `cliente._sin_sesion()`.
+
+    Es idempotente: los handlers que instala quedan marcados y se quitan antes de volver a
+    instalarlos, asi que llamarla varias veces en el mismo proceso —los tests lo hacen— no
+    duplica lineas ni deja archivos abiertos.
     """
-    logging.basicConfig(level=logging.DEBUG if verboso else logging.INFO, format="%(message)s")
+    for handler in list(_RAIZ.handlers):
+        if getattr(handler, _MARCA_HANDLER, False):
+            _RAIZ.removeHandler(handler)
+            handler.close()
+
+    _RAIZ.setLevel(logging.DEBUG)
+    consola = _ASalidaEstandar()
+    consola.setLevel(logging.DEBUG if verboso else logging.INFO)
+    consola.setFormatter(logging.Formatter("%(message)s"))
+    setattr(consola, _MARCA_HANDLER, True)
+    _RAIZ.addHandler(consola)
+
+    if archivo is not None:
+        archivo = Path(archivo)
+        archivo.parent.mkdir(parents=True, exist_ok=True)
+        a_disco = logging.FileHandler(archivo, mode="a", encoding="utf-8")
+        a_disco.setLevel(logging.DEBUG)
+        a_disco.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+        setattr(a_disco, _MARCA_HANDLER, True)
+        _RAIZ.addHandler(a_disco)
+        # La linea de apertura se escribe sin pasar por el formato: es un separador entre
+        # corridas, no un mensaje del scraper.
+        a_disco.stream.write(f"=== corrida {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===\n")
+        a_disco.flush()
+
     logging.getLogger("httpx").setLevel(logging.WARNING)
     logging.getLogger("httpcore").setLevel(logging.WARNING)
 
 
+@dataclasses.dataclass
+class Resumen:
+    """Lo que hay que poder contar al final de un barrido de diez minutos."""
+
+    filas: int = 0
+    codigos: set[str] = dataclasses.field(default_factory=set)
+    repetidos: set[str] = dataclasses.field(default_factory=set)
+    bajados: int = 0
+    ya_estaban: int = 0
+
+
+def _controlar_filtro(listado: parsers.Listado, periodo: str) -> None:
+    """Corta en la **pagina 1** si ninguna fila es del periodo pedido.
+
+    Es el mismo control de siempre, adelantado: con el barrido perezoso, esperar al final
+    significaria descubrir a los dieciseis minutos que el filtro no se aplico.
+    """
+    if any(fila.periodo == periodo for fila in listado.filas):
+        return
+    ejemplo = listado.filas[0] if listado.filas else None
+    raise parsers.EstructuraInesperada(
+        f"Ninguna fila de la primera pagina del listado es del periodo «{periodo}»; el "
+        "filtro no se aplico.",
+        f"{ejemplo.codigo} {ejemplo.nombre} ({ejemplo.periodo})" if ejemplo else None,
+    )
+
+
+def _avisar_repetido(
+    primera: parsers.FilaListado, otra: parsers.FilaListado, aparicion: int
+) -> None:
+    """Avisa que un codigo vuelve a aparecer en el listado, con las dos filas al lado."""
+    REGISTRO.warning(
+        "%s aparece por %da vez en el listado: 1a «%s» %s %s–%s (%s / %s), %da «%s» %s "
+        "%s–%s (%s / %s). Se baja tambien y se guarda aparte.",
+        otra.codigo,
+        aparicion,
+        primera.nombre,
+        primera.periodo,
+        primera.desde,
+        primera.hasta,
+        primera.nivel,
+        primera.departamento,
+        aparicion,
+        otra.nombre,
+        otra.periodo,
+        otra.desde,
+        otra.hasta,
+        otra.nivel,
+        otra.departamento,
+    )
+
+
+def _bajar_con_recuperacion(
+    cliente: ClienteSGA, barrido: Barrido, fila: parsers.FilaListado, *, en_la_pagina: int
+) -> parsers.Curso:
+    """Baja un curso; ante `PaginaVencida` reabre el listado y reintenta **una** vez."""
+    try:
+        return bajar_curso(cliente, fila)
+    except PaginaVencida as exc:
+        REGISTRO.warning(
+            "El SGA dio por vencida la pagina del listado al abrir %s; se reabre y se vuelve "
+            "a la pagina %d. Detalle: %s",
+            fila.codigo,
+            barrido.pagina,
+            exc,
+        )
+        barrido.reabrir()
+        return bajar_curso(cliente, barrido.fila(fila.codigo, en_la_pagina))
+
+
+def _siguiente_con_recuperacion(barrido: Barrido) -> bool:
+    """Pide la pagina siguiente; ante `PaginaVencida` reabre el listado y reintenta una vez."""
+    try:
+        return barrido.siguiente()
+    except PaginaVencida as exc:
+        REGISTRO.warning(
+            "El SGA dio por vencida la pagina %d del listado al pedir la siguiente; se "
+            "reabre y se vuelve a la pagina %d. Detalle: %s",
+            barrido.pagina,
+            barrido.pagina,
+            exc,
+        )
+        barrido.reabrir()
+        return barrido.siguiente()
+
+
+def _recorrer(
+    cliente: ClienteSGA,
+    barrido: Barrido,
+    punto: Checkpoint,
+    hechos: dict[str, dict[str, Any]],
+    *,
+    args: argparse.Namespace,
+    periodo_id: str,
+    capturado: str,
+    cache: Path,
+    fallidos: list[Fallido],
+    resumen: Resumen,
+) -> None:
+    """Barrido pagina por pagina: los detalles de cada pagina, y recien despues la siguiente.
+
+    Las filas se recorren **por posicion** y no sobre una copia, porque una recuperacion
+    reemplaza la pagina actual por una recien abierta: seguir con los enlaces viejos seria
+    volver a chocar con la pantalla de error en cada fila.
+    """
+    barrido.abrir()
+    _controlar_filtro(barrido.listado, periodo_id)
+    apariciones: dict[str, int] = {}
+    primeras: dict[str, parsers.FilaListado] = {}
+    irrecuperables = 0
+
+    while True:
+        en_pagina: dict[str, int] = {}
+        indice = 0
+        while indice < len(barrido.listado.filas):
+            if args.limite is not None and resumen.filas >= args.limite:
+                return
+            fila = barrido.listado.filas[indice]
+            indice += 1
+            resumen.filas += 1
+            resumen.codigos.add(fila.codigo)
+            apariciones[fila.codigo] = apariciones.get(fila.codigo, 0) + 1
+            en_pagina[fila.codigo] = en_pagina.get(fila.codigo, 0) + 1
+            aparicion = apariciones[fila.codigo]
+            if aparicion == 1:
+                primeras[fila.codigo] = fila
+            else:
+                resumen.repetidos.add(fila.codigo)
+                _avisar_repetido(primeras[fila.codigo], fila, aparicion)
+
+            clave = clave_de_curso(fila.codigo, aparicion)
+            total = barrido.listado.paginacion.total_filas or "?"
+            if clave in hechos:
+                resumen.ya_estaban += 1
+                continue
+            try:
+                curso = _bajar_con_recuperacion(
+                    cliente, barrido, fila, en_la_pagina=en_pagina[fila.codigo]
+                )
+                datos = parsers.curso_a_dict(curso, capturado)
+            except PaginaVencida as exc:
+                # El SGA sigue dando su pantalla de error despues de reabrir el listado: el
+                # curso queda pendiente para la proxima corrida. Si pasa cinco veces seguidas
+                # no es este curso, es el SGA, y seguir seria gastar 470 peticiones en vano.
+                fallidos.append((clave, fila.nombre, str(exc)))
+                REGISTRO.info(
+                    "[%d/%s] %s %s: ERROR %s", resumen.filas, total, clave, fila.nombre, exc
+                )
+                if args.guardar_html:
+                    cliente.volcar_html(cache, f"{periodo_id}-{fila.codigo}")
+                irrecuperables += 1
+                if irrecuperables >= MAXIMO_IRRECUPERABLES:
+                    raise ErrorSGA(
+                        f"{MAXIMO_IRRECUPERABLES} cursos seguidos terminaron en la pantalla "
+                        "de error del SGA: el SGA responde su pagina de error a todo. Espere "
+                        "unos minutos y vuelva a correr el mismo comando: el checkpoint "
+                        "conserva lo bajado."
+                    ) from exc
+                continue
+            except (parsers.EstructuraInesperada, normalizar.ValorDesconocido) as exc:
+                # Un curso que no se entiende no frena a los otros 471: se anota, se sigue, y
+                # al final se informan todos juntos. No entra al checkpoint, asi que la
+                # proxima corrida lo vuelve a intentar con el mapeo corregido.
+                fallidos.append((clave, fila.nombre, str(exc)))
+                REGISTRO.info(
+                    "[%d/%s] %s %s: ERROR %s", resumen.filas, total, clave, fila.nombre, exc
+                )
+                if args.guardar_html:
+                    cliente.volcar_html(cache, f"{periodo_id}-{fila.codigo}")
+                continue
+
+            punto.agregar(
+                fila.codigo,
+                datos,
+                listado={"periodo": fila.periodo, "desde": fila.desde, "hasta": fila.hasta},
+                aparicion=aparicion,
+            )
+            hechos[clave] = datos
+            resumen.bajados += 1
+            irrecuperables = 0
+            REGISTRO.info("[%d/%s] %s %s", resumen.filas, total, clave, fila.nombre)
+
+        if args.limite is not None and resumen.filas >= args.limite:
+            return
+        if not _siguiente_con_recuperacion(barrido):
+            return
+
+
+def _informar(resumen: Resumen, fallidos: Sequence[Fallido], parcial: Path | None) -> None:
+    """Resumen final, el mismo por consola y en el archivo de log."""
+    REGISTRO.info(
+        "\nResumen: %d filas del listado, %d codigos distintos (%d repetidos); %d cursos "
+        "bajados en esta corrida, %d ya estaban en el checkpoint, %d fallidos.",
+        resumen.filas,
+        len(resumen.codigos),
+        len(resumen.repetidos),
+        resumen.bajados,
+        resumen.ya_estaban,
+        len(fallidos),
+    )
+    if resumen.repetidos:
+        REGISTRO.info("Codigos repetidos en el listado: %s.", ", ".join(sorted(resumen.repetidos)))
+    for codigo, nombre, motivo in fallidos:
+        REGISTRO.info("  - %s %s: %s", codigo, nombre, motivo)
+    if parcial is not None:
+        REGISTRO.info(
+            "Lo que si se pudo armar quedo en %s (fuera de data/). Corrija los mapeos o el "
+            "parser y vuelva a correr: solo se repiten los fallidos.",
+            parcial,
+        )
+
+
 def ejecutar(args: argparse.Namespace) -> int:
     """Corre el barrido completo. Devuelve el codigo de salida del proceso."""
-    configurar_registro(bool(getattr(args, "verboso", False)))
     periodo_id = f"{args.anio}-{args.cuatrimestre}"
     cache = Path(args.cache) if args.cache else Path(CACHE)
+    configurar_registro(bool(getattr(args, "verboso", False)), cache / f"{periodo_id}.log")
     punto = Checkpoint(cache / f"{periodo_id}.jsonl", periodo_id)
     if args.desde_cero and punto.borrar():
-        print(f"Checkpoint borrado; se vuelve a bajar {periodo_id} completo.")
+        REGISTRO.info("Checkpoint borrado; se vuelve a bajar %s completo.", periodo_id)
 
     usuario, clave = credenciales()
     capturado = hoy()
     hechos = punto.cargar()
     if hechos:
-        print(f"El checkpoint ya tiene {len(hechos)} cursos de {periodo_id}; se saltean.")
+        REGISTRO.info(
+            "El checkpoint ya tiene %d cursos de %s; se saltean.", len(hechos), periodo_id
+        )
 
-    fallidos: list[tuple[str, str, str]] = []
+    fallidos: list[Fallido] = []
+    resumen = Resumen()
     with ClienteSGA(ritmo=args.ritmo) as cliente:
         try:
-            inicio = cliente.iniciar_sesion(usuario, clave)
+            cliente.iniciar_sesion(usuario, clave)
             del clave
-            listado = cliente.obtener(enlace_por_texto(inicio, ENLACE_CURSOS))
-            listado = filtrar_listado(
+            barrido = Barrido(
                 cliente,
-                listado,
                 nivel=args.nivel,
                 cuatrimestre_texto=_cuatrimestre_texto(args.cuatrimestre),
                 anio=args.anio,
             )
-            todas = list(recorrer_listado(cliente, listado, periodo=periodo_id, limite=args.limite))
-            propias, anuales = separar_anuales(todas, periodo=periodo_id)
-            periodo = periodo_de_filas(propias, anio=args.anio, cuatrimestre=args.cuatrimestre)
-            filas = propias + anuales
-            print(f"{len(filas)} cursos en el listado de {periodo_id}.")
-
-            for numero, fila in enumerate(filas, start=1):
-                if fila.codigo in hechos:
-                    continue
-                try:
-                    curso = bajar_curso(cliente, fila)
-                    datos = curso_a_contrato(curso, periodo, capturado)
-                except (parsers.EstructuraInesperada, normalizar.ValorDesconocido) as exc:
-                    # Un curso que no se entiende no frena a los otros 471: se anota, se
-                    # sigue, y al final se informan todos juntos. No entra al checkpoint,
-                    # asi que la proxima corrida lo vuelve a intentar con el mapeo corregido.
-                    fallidos.append((fila.codigo, fila.nombre, str(exc)))
-                    print(f"[{numero}/{len(filas)}] {fila.codigo} {fila.nombre}: ERROR {exc}")
-                    if args.guardar_html:
-                        cliente.volcar_html(cache, f"{periodo_id}-{fila.codigo}")
-                    continue
-                punto.agregar(fila.codigo, datos)
-                hechos[fila.codigo] = datos
-                print(f"[{numero}/{len(filas)}] {fila.codigo} {fila.nombre}")
+            _recorrer(
+                cliente,
+                barrido,
+                punto,
+                hechos,
+                args=args,
+                periodo_id=periodo_id,
+                capturado=capturado,
+                cache=cache,
+                fallidos=fallidos,
+                resumen=resumen,
+            )
         except Exception:
             if args.guardar_html:
                 cliente.volcar_html(cache, f"{periodo_id}-error")
             raise
 
+    # El periodo y los cursos anuales se resuelven recien ahora, sobre el checkpoint: con el
+    # barrido pagina por pagina, el intervalo del cuatrimestre no se conoce hasta el final.
+    registros = punto.registros()
+    if not registros:
+        if fallidos:
+            _informar(resumen, fallidos, None)
+            REGISTRO.info(
+                "Ningun curso quedo en el checkpoint: no hay archivo que escribir. Corrija "
+                "lo que se informa arriba y vuelva a correr el mismo comando."
+            )
+            return HAY_ERRORES
+        raise parsers.EstructuraInesperada(
+            f"El barrido no dejo ningun curso de {periodo_id} en el checkpoint; sin cursos "
+            "no se puede fechar el periodo ni escribir el archivo."
+        )
+    propios, anuales, ajenos = separar_anuales(registros, periodo=periodo_id)
+    fallidos.extend(ajenos)
+    periodo = periodo_de_registros(propios, anio=args.anio, cuatrimestre=args.cuatrimestre)
+    documento, conflictos = armar_documento(
+        [registro.curso for registro in propios + anuales], periodo, capturado
+    )
+    fallidos.extend(conflictos)
+
     if fallidos:
         parcial = cache / f"{periodo_id}.parcial.json"
-        parcial.parent.mkdir(parents=True, exist_ok=True)
-        documento = armar_documento(
-            (hechos[f.codigo] for f in filas if f.codigo in hechos), periodo, capturado
-        )
         escribir(documento, parcial)
-        print(
-            f"\n{len(fallidos)} de {len(filas)} cursos no se pudieron parsear; "
-            f"{len(hechos)} quedaron en el checkpoint y en {parcial} (fuera de data/)."
-        )
-        print("Corrija los mapeos o el parser y vuelva a correr: solo se repiten los fallidos.")
-        for codigo, nombre, motivo in fallidos:
-            print(f"  - {codigo} {nombre}: {motivo}")
+        _informar(resumen, fallidos, parcial)
         return HAY_ERRORES
 
-    documento = armar_documento((hechos[fila.codigo] for fila in filas), periodo, capturado)
     escribir(documento, args.salida)
     hallazgos, con_errores = validar(args.salida, args.data)
     for hallazgo in hallazgos:
-        print(hallazgo.linea())
+        REGISTRO.info("%s", hallazgo.linea())
     if con_errores:
         invalido = ruta_invalida(args.salida, cache)
         invalido.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(str(args.salida), str(invalido))
-        print(
-            f"El archivo no valida; quedo en {invalido}, fuera de data/, para que lo revise. "
-            "Es un descarte: borrelo cuando termine de mirarlo."
+        _informar(resumen, fallidos, None)
+        REGISTRO.info(
+            "El archivo no valida; quedo en %s, fuera de data/, para que lo revise. "
+            "Es un descarte: borrelo cuando termine de mirarlo.",
+            invalido,
         )
         return HAY_ERRORES
 
-    print(f"{len(documento['cursos'])} cursos escritos en {args.salida}.")
+    _informar(resumen, fallidos, None)
+    REGISTRO.info("%d cursos escritos en %s.", len(documento["cursos"]), args.salida)
     if args.limite is not None:
-        print(
+        REGISTRO.info(
             "Corrida con --limite: las fechas del periodo salen solo de esos cursos, asi que "
             "el archivo sirve para probar, no para publicar."
         )

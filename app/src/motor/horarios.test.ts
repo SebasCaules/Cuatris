@@ -7,10 +7,16 @@ import {
   choques,
   cupoLleno,
   cursoDe,
+  DIAS,
   ordenarComisiones,
   paresQueChocan,
   seOfrece, HorariosDeOtroPeriodo } from "./horarios";
-import { HORARIOS_RAROS, PERIODO_RARO, planCon } from "./fixtures/reales";
+import {
+  HORARIOS_DOMINGO_VIRTUAL,
+  HORARIOS_RAROS,
+  PERIODO_RARO,
+  planCon,
+} from "./fixtures/reales";
 import {
   horariosConSedeRepetida,
   horariosConSedesConsecutivas,
@@ -314,6 +320,92 @@ describe("ordenarComisiones", () => {
     const plan = conComisiones([]);
     expect(
       ordenarComisiones("72.45", PERIODO_RARO, plan, HORARIOS_RAROS),
+    ).toEqual([]);
+  });
+});
+
+
+describe("contrato 1.1.0: domingo y virtual", () => {
+  it("`domingo` va último, después de sábado", () => {
+    expect(DIAS).toEqual([
+      "lunes",
+      "martes",
+      "miercoles",
+      "jueves",
+      "viernes",
+      "sabado",
+      "domingo",
+    ]);
+  });
+
+  it("un bloque en domingo es un bloque más para el motor", () => {
+    // 61.27 com. A: domingo 13:00–14:00 virtual asincrónico (sin sede ni aula)
+    // y miércoles 19:00–21:00 presencial en la Sede Distrito Financiero.
+    const plan = planCon(
+      {},
+      { [PERIODO_RARO]: [{ codigo: "61.27", comision: "A" }] },
+    );
+    const bloques = bloquesDelPeriodo(
+      PERIODO_RARO,
+      plan,
+      HORARIOS_DOMINGO_VIRTUAL,
+    );
+    expect(bloques.map((ubicado) => ubicado.bloque.dia)).toEqual([
+      "domingo",
+      "miercoles",
+    ]);
+    expect(bloques[0]?.bloque.sede).toBeNull();
+    expect(bloques[0]?.bloque.modalidad).toBe("virtual_asincronica");
+  });
+
+  it("`virtual` cuenta para los choques, como `virtual_sincronica`", () => {
+    // Caso real del 2026-09-12: 25.20 com. K es «Virtual» los miércoles de
+    // 15:00 a 18:00 y 61.27 com. D es presencial de 16:00 a 18:00. Tiene hora
+    // fija: se pisan dos horas y eso es un choque.
+    const plan = planCon(
+      {},
+      {
+        [PERIODO_RARO]: [
+          { codigo: "25.20", comision: "K" },
+          { codigo: "61.27", comision: "D" },
+        ],
+      },
+    );
+    const pisados = choques(PERIODO_RARO, plan, HORARIOS_DOMINGO_VIRTUAL);
+    expect(pisados).toHaveLength(1);
+    expect(pisados[0]?.dia).toBe("miercoles");
+    expect([pisados[0]?.desde, pisados[0]?.hasta]).toEqual(["16:00", "18:00"]);
+    expect([pisados[0]?.a.codigo, pisados[0]?.b.codigo]).toEqual([
+      "25.20",
+      "61.27",
+    ]);
+  });
+
+  it("los bloques de domingo no chocan con los de otro día", () => {
+    // Los domingos de 61.27 com. D (12–13) y el miércoles de 25.20 com. K no
+    // comparten día: el día sigue mandando también para el valor nuevo.
+    const plan = planCon(
+      {},
+      {
+        [PERIODO_RARO]: [
+          { codigo: "25.20", comision: "K" },
+          { codigo: "61.27", comision: "B" },
+        ],
+      },
+    );
+    const pisados = choques(PERIODO_RARO, plan, HORARIOS_DOMINGO_VIRTUAL);
+    expect(pisados).toEqual([]);
+  });
+
+  it("un bloque sin sede no produce cambio de sede", () => {
+    // 61.27 com. A cruza del domingo virtual (sede `null`) al miércoles en la
+    // SDF: sin sede no hay a dónde viajar, y tampoco son el mismo día.
+    const plan = planCon(
+      {},
+      { [PERIODO_RARO]: [{ codigo: "61.27", comision: "A" }] },
+    );
+    expect(
+      cambiosDeSede(PERIODO_RARO, plan, HORARIOS_DOMINGO_VIRTUAL),
     ).toEqual([]);
   });
 });

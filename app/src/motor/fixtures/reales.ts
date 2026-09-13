@@ -9,6 +9,7 @@
 import planCrudo from "../../../../data/v1/planes/S10-Rev23.json";
 import abreviacionesCrudas from "../../../../data/v1/abreviaciones.json";
 import raroCrudo from "../../../../tests/fixtures/deben-pasar/horarios-casos-raros.json";
+import domingoVirtualCrudo from "../../../../tests/fixtures/deben-pasar/horarios-domingo-virtual.json";
 import type {
   Abreviaciones,
   Codigo,
@@ -33,6 +34,15 @@ export const ABREVIACIONES: Abreviaciones =
  * sedes, modalidades mixtas, período corto, homónimas, cupo completo).
  */
 export const HORARIOS_RAROS: Horarios = raroCrudo as unknown as Horarios;
+
+/**
+ * `tests/fixtures/deben-pasar/horarios-domingo-virtual.json`: los dos valores
+ * que trajo el contrato 1.1.0, tal como los publica el SGA. 61.27 dicta en sus
+ * cuatro comisiones un bloque **en domingo** (virtual asincrónico, sin sede ni
+ * aula) y 25.20 com. K tiene un bloque de modalidad **`virtual`** a secas.
+ */
+export const HORARIOS_DOMINGO_VIRTUAL: Horarios =
+  domingoVirtualCrudo as unknown as Horarios;
 
 /** El período del archivo de casos raros. */
 export const PERIODO_RARO: PeriodoId = HORARIOS_RAROS.periodo.id;

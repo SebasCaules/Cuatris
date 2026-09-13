@@ -59,16 +59,21 @@ const DIA: Record<Dia, string> = {
   jueves: "Jueves",
   viernes: "Viernes",
   sabado: "Sábado",
+  domingo: "Domingo",
 };
 
 /**
  * Etiquetas de modalidad: las mismas que publica el SGA y que el scraper mapea
  * al enum del contrato (CONTRATO-v1 §1). No se traducen ni se inventan.
+ *
+ * `virtual` es «Virtual» a secas, sin decir si es sincrónica (25.20 com. K):
+ * la etiqueta repite lo que dice la fuente y no completa lo que no dijo.
  */
 const MODALIDAD: Record<Modalidad, string> = {
   presencial: "Presencial",
   virtual_sincronica: "Virtual Sinc.",
   virtual_asincronica: "Virtual Asinc.",
+  virtual: "Virtual",
   blended: "Blended",
 };
 

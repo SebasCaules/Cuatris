@@ -147,18 +147,29 @@ export interface Bloque {
    */
   desde: string;
   /**
-   * Dia de la semana, sin acentos; el domingo no existe en la cursada.
+   * Dia de la semana, sin acentos; «domingo» entro en el contrato 1.1.0 (61.27 dicta bloques virtuales asincronicos en domingo).
    */
-  dia: "lunes" | "martes" | "miercoles" | "jueves" | "viernes" | "sabado";
+  dia:
+    | "lunes"
+    | "martes"
+    | "miercoles"
+    | "jueves"
+    | "viernes"
+    | "sabado"
+    | "domingo";
   /**
    * Hora de fin del bloque.
    */
   hasta: string;
   /**
-   * Modalidad del bloque; puede variar entre bloques de una misma comision.
+   * Modalidad del bloque; puede variar entre bloques de una misma comision. «virtual» es virtual sin especificar si es sincronica, tal como lo publica el SGA.
    */
   modalidad:
-    "presencial" | "virtual_sincronica" | "virtual_asincronica" | "blended";
+    | "presencial"
+    | "virtual_sincronica"
+    | "virtual_asincronica"
+    | "virtual"
+    | "blended";
   /**
    * Identificador de sede de vocabulario.json; null solo si no es presencial.
    */

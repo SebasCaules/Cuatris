@@ -45,11 +45,13 @@ __all__ = [
     "ErrorDeRed",
     "ErrorDeSesion",
     "ErrorSGA",
+    "PaginaVencida",
     "REGISTRO",
     "Respuesta",
     "enlace_de_pestana",
     "enlace_por_texto",
     "esta_autenticada",
+    "pagina_de_error",
     "sesion_vencida",
 ]
 
@@ -89,6 +91,10 @@ VALOR_JS = "1"
 #: esta en la barra superior de todas las pantallas del SGA y no depende de ningun id.
 ANCLA_AUTENTICADA = "Salir"
 
+#: Anclas de la pagina de error generica del SGA (ver `pagina_de_error`).
+ANCLA_ERROR_TITULO = "error inesperado"
+ANCLA_ERROR_AVISO = "no pudo ser realizado"
+
 REGISTRO = logging.getLogger("cuatris.sga")
 """Log del scraper. Solo se registran metodo, URL y codigo de estado: nunca el cuerpo."""
 
@@ -103,6 +109,16 @@ class ErrorDeSesion(ErrorSGA):
 
 class ErrorDeRed(ErrorSGA):
     """Se agotaron los reintentos ante errores 5xx o vencimientos de tiempo."""
+
+
+class PaginaVencida(ErrorSGA):
+    """El enlace apuntaba a una pagina de Wicket que la sesion ya no conserva.
+
+    Wicket guarda las paginas con estado en un almacen por sesion de tamano acotado; cuando
+    una pagina vieja sale de ese almacen, los enlaces que salian de ella dejan de existir y
+    el SGA responde su pantalla de error generica. No es un problema de red ni de sesion: se
+    arregla volviendo a abrir la pagina de la que salio el enlace (`Barrido.reabrir`).
+    """
 
 
 @dataclass(frozen=True)
@@ -149,6 +165,29 @@ def sesion_vencida(html: str) -> bool:
     funcionaba; ese campo no aparece en ninguna otra pantalla.
     """
     return _sopa(html).find("input", attrs={"type": "password"}) is not None
+
+
+def pagina_de_error(html: str) -> bool:
+    """¿El SGA devolvio su pantalla de error generica en vez de lo que se le pidio?
+
+    Anclas (las dos del volcado real del 2026-09-12, `.cuatris-cache/2026-2C-10.01.html`):
+    el `<h3>` que dice «El sistema halló un error inesperado.» y el `<h4>` de
+    `div#notifications` que dice «Su pedido no pudo ser realizado…». **Cualquiera de las dos
+    alcanza**: se miran las dos porque se rompen distinto —el titulo puede reescribirse, el
+    `div#notifications` puede cambiar de id— y con una sola que sobreviva el scraper sigue
+    reconociendo la pantalla.
+
+    El SGA usa esta misma pantalla para cualquier error interno, asi que reconocerla no dice
+    *por que* fallo; en el barrido la causa comprobada es la pagina de Wicket desalojada.
+    """
+    sopa = _sopa(html)
+    for titulo in sopa.find_all("h3"):
+        if ANCLA_ERROR_TITULO in normalizar.clave(titulo.get_text(" ", strip=True)):
+            return True
+    aviso = sopa.select_one("div#notifications h4")
+    if aviso is not None and ANCLA_ERROR_AVISO in normalizar.clave(aviso.get_text(" ", strip=True)):
+        return True
+    return False
 
 
 def enlace_por_texto(html: str, texto: str) -> str:
@@ -410,9 +449,15 @@ class ClienteSGA:
         return resultado
 
     def _con_sesion(self, metodo: str, url: str, datos: Mapping[str, str] | None) -> str:
-        """Hace la peticion y, si la sesion vencio, vuelve a entrar **una sola vez**."""
+        """Hace la peticion y, si la sesion vencio, vuelve a entrar **una sola vez**.
+
+        Despues del control de sesion, se mira si el SGA devolvio su pantalla de error
+        generica: eso no se arregla volviendo a entrar, sino reabriendo la pagina de la que
+        salio el enlace, y por eso sale como `PaginaVencida` y no como `ErrorDeSesion`.
+        """
         html = self._pedir(metodo, url, datos)
         if not sesion_vencida(html):
+            self._controlar_pagina_de_error(metodo, url, html)
             return html
         if self._relogueando:
             raise ErrorDeSesion("La sesion vencio mientras se volvia a iniciar sesion.")
@@ -434,7 +479,24 @@ class ClienteSGA:
                 "corrida venia avanzada, el checkpoint conserva lo bajado: vuelva a correr "
                 "el mismo comando sin --desde-cero."
             )
+        self._controlar_pagina_de_error(metodo, url, html)
         return html
+
+    @staticmethod
+    def _controlar_pagina_de_error(metodo: str, url: str, html: str) -> None:
+        """Levanta `PaginaVencida` si el SGA respondio su pantalla de error generica.
+
+        El mensaje lleva el metodo y la URL **tapada** (`_sin_sesion`) y nunca el cuerpo: el
+        cuerpo de una respuesta del SGA es justo donde puede volver lo que se envio.
+        """
+        if not pagina_de_error(html):
+            return
+        raise PaginaVencida(
+            f"El SGA respondio su pantalla de error a {metodo} {_sin_sesion(url)}: la pagina "
+            "de Wicket a la que apuntaba ese enlace ya no existe en la sesion (el almacen de "
+            "paginas por sesion es acotado y la desalojo). Hay que reabrir la pagina de la "
+            "que salio el enlace y volver a pedirlo."
+        )
 
     def obtener(self, url: str) -> str:
         """GET a una URL del SGA (absoluta o relativa a la pagina actual)."""

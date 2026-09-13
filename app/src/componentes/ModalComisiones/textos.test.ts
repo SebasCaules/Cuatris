@@ -11,7 +11,10 @@ import {
   type BloqueUbicado,
   type Choque,
 } from "../../motor";
-import { HORARIOS_RAROS } from "../../motor/fixtures/reales";
+import {
+  HORARIOS_DOMINGO_VIRTUAL,
+  HORARIOS_RAROS,
+} from "../../motor/fixtures/reales";
 import {
   consecuenciasDeComision,
   etiquetaDelColapsado,
@@ -83,6 +86,20 @@ describe("líneas de horario", () => {
     expect(lineaDeBloque(miercoles, nombreDeSede)).toBe(
       "Mié 10–12 · 003T 004T SDT",
     );
+  });
+
+  it("el domingo se abrevia «Dom», como los demás días", () => {
+    // 61.27 com. A tal como la publica el SGA: domingo 13:00–14:00, virtual
+    // asincrónico, sin sede ni aula (contrato 1.1.0).
+    const curso = cursoDe("61.27", HORARIOS_DOMINGO_VIRTUAL);
+    const domingo = curso?.comisiones
+      .find((candidata) => candidata.id === "A")
+      ?.bloques.find((bloque) => bloque.dia === "domingo");
+    if (domingo === undefined) {
+      throw new Error("61.27 com. A se quedó sin el domingo.");
+    }
+    expect(domingo.modalidad).toBe("virtual_asincronica");
+    expect(lineaDeBloque(domingo, nombreDeSede)).toBe("Dom 13–14");
   });
 
   it("un bloque sin sede ni aulas queda con la franja sola", () => {

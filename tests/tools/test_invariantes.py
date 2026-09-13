@@ -252,6 +252,32 @@ def test_la_sede_nula_solo_vale_si_no_es_presencial() -> None:
     assert _revisar_horarios([presencial]) == ["sede-nula-presencial"]
 
 
+def test_el_domingo_y_la_modalidad_virtual_pasan_las_invariantes() -> None:
+    """Contrato 1.1.0: ninguna regla de C3 mira el dia ni distingue «virtual» (N0-28).
+
+    61.27 dicta el domingo en modalidad virtual asincronica y 25.20 com. K publica un bloque
+    «Virtual» a secas: son dias y modalidades como cualquier otra, sin sede y sin aula.
+    """
+    domingo = _curso(
+        "61.27",
+        [
+            _bloque(
+                "domingo",
+                "13:00",
+                "14:00",
+                [],
+                sede=None,
+                modalidad="virtual_asincronica",
+            )
+        ],
+    )
+    virtual = _curso(
+        "25.20",
+        [_bloque("miercoles", "15:00", "18:00", [], sede=None, modalidad="virtual")],
+    )
+    assert _revisar_horarios([domingo, virtual]) == []
+
+
 # --- horarios: colisiones -----------------------------------------------------------------
 
 
@@ -607,7 +633,7 @@ def test_la_materia_sin_abreviacion_solo_se_advierte() -> None:
 
 def test_c3_no_corre_si_c1_o_c2_encontraron_errores(fixtures: Path) -> None:
     """Ninguna capa cara toca datos que una barata ya rechazo."""
-    hallazgos = validar_archivo(fixtures / "deben-fallar" / "dia-domingo.json")
+    hallazgos = validar_archivo(fixtures / "deben-fallar" / "dia-invalido.json")
     assert _reglas(hallazgos) == ["schema"]
 
 

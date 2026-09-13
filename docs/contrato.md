@@ -37,10 +37,10 @@ JSON Schema draft-07 están en `schemas/v1/` y son el artefacto: no hay paso de 
 | `comisiones[].ocupacion` | `{inscriptos, al}`, opcional | volátil; `inscriptos > capacidad` es warning |
 | `comisiones[].docentes` | array de strings | requerido, puede ser `[]` |
 | `comisiones[].bloques` | array | puede ser `[]` si todavía no hay horario publicado |
-| `bloques[].dia` | enum | `lunes`…`sabado`, sin acentos; `domingo` no existe |
+| `bloques[].dia` | enum | `lunes`…`sabado` y `domingo`, sin acentos; `domingo` entró en el contrato 1.1.0 |
 | `bloques[].desde` / `hasta` | hora | `desde < hasta`, entre 07:00 y 23:00, y nunca más de 8 h seguidas (C3) |
 | `bloques[].sede` | string o `null` | id de `vocabulario.json`; `null` solo si no es presencial |
-| `bloques[].modalidad` | enum | `presencial`, `virtual_sincronica`, `virtual_asincronica`, `blended` |
+| `bloques[].modalidad` | enum | `presencial`, `virtual_sincronica`, `virtual_asincronica`, `virtual`, `blended`; `virtual` es «virtual sin decir si es sincrónica», tal como lo publica el SGA (1.1.0) |
 | `bloques[].aulas` | array de strings | **nunca enum**; puede ser `[]` o tener dos aulas |
 
 `cupo` va separado de `ocupacion` porque el primero es estable y el segundo cambia todos los
@@ -121,6 +121,31 @@ estos, el validador está mal, no el dato**.
 | Comisiones con letras no contiguas | 93.18 tiene A–H y **K**; 72.44 usa **S** | `id` es un string opaco |
 | Homónimas con distinto código | 23.05 y 25.66, ambas «Acústica para Ingenieros» | la identidad es `codigo`, nunca el nombre |
 | Cupo completo | 93.18 com. A: 48 inscriptos sobre 48 de capacidad | `inscriptos == capacidad` es válido |
+
+## Versiones del contrato
+
+El `contrato` de cada archivo es SemVer y el major lo custodia el directorio (`v1`). Una versión
+**minor** agrega algo que los lectores viejos no rompen pero tienen que aprender; una **patch**
+no cambia la forma.
+
+| Versión | Fecha | Qué agregó | Por qué es *minor* |
+|---|---|---|---|
+| 1.0.0 | 2026-09-09 | El contrato inicial: los cinco tipos de `data/v1/`. | — |
+| 1.1.0 | 2026-09-12 | `dia` suma `domingo`; `modalidad` suma `virtual`. | Extender un enum no invalida ningún archivo que ya esté publicado: todo documento `1.0.0` sigue siendo válido bajo `1.1.0`. Lo que sí cambia es el lector, que tiene que saber dibujar los dos valores nuevos. |
+
+Los dos valores de 1.1.0 salieron de la corrida real del scraper del **2026-09-12**, no de una
+previsión:
+
+- **61.27 Análisis de Coyuntura Económica** dicta, en sus cuatro comisiones, un bloque **en
+  domingo** (`Domingo 13:00 - 14:00` en la A) con modalidad «Virtual asincrónica», sin aula ni
+  sede, además del bloque presencial de la semana en la Sede Distrito Financiero. El enum de
+  `dia` decía que el domingo no existía.
+- **25.20 Análisis de Señales y Sistemas Digitales**, comisión K, publica `Miércoles 15:00 -
+  18:00` con modalidad **«Virtual»** a secas: el SGA no dice si es sincrónica y no se supone.
+
+El scraper mapea «Domingo» → `domingo`, «Virtual» → `virtual` y «Presencial - SDR» →
+`presencial`; los dos casos están congelados en
+`tests/fixtures/deben-pasar/horarios-domingo-virtual.json`.
 
 ## Cómo agregar un campo
 
