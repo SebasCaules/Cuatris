@@ -414,6 +414,11 @@ def configurar(parser: argparse.ArgumentParser) -> None:
         help="Directorio de datos del que C3 toma el plan y el vocabulario (por defecto «data»).",
     )
     parser.add_argument(
+        "--verboso",
+        action="store_true",
+        help="Muestra cada peticion y cada redireccion (con el identificador de sesion tapado).",
+    )
+    parser.add_argument(
         "--cache",
         type=Path,
         default=None,
@@ -431,21 +436,22 @@ def _cuatrimestre_texto(cuatrimestre: str) -> str:
     raise normalizar.ValorDesconocido("cuatrimestre", cuatrimestre)
 
 
-def configurar_registro() -> None:
-    """Deja el log del scraper en INFO y calla al de `httpx`.
+def configurar_registro(verboso: bool = False) -> None:
+    """Deja el log del scraper en INFO (o DEBUG con `--verboso`) y calla al de `httpx`.
 
     El logger de `httpx` emite en INFO una linea «HTTP Request: …» con la URL entera, y las
     URL del SGA llevan el identificador de sesion (`;jsessionid=<token>`): con el root logger
     en INFO, un barrido escribiria ~500 veces el token vivo en la terminal. Todo lo que el
     scraper muestra por su cuenta pasa antes por `cliente._sin_sesion()`.
     """
-    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    logging.basicConfig(level=logging.DEBUG if verboso else logging.INFO, format="%(message)s")
     logging.getLogger("httpx").setLevel(logging.WARNING)
+    logging.getLogger("httpcore").setLevel(logging.WARNING)
 
 
 def ejecutar(args: argparse.Namespace) -> int:
     """Corre el barrido completo. Devuelve el codigo de salida del proceso."""
-    configurar_registro()
+    configurar_registro(bool(getattr(args, "verboso", False)))
     periodo_id = f"{args.anio}-{args.cuatrimestre}"
     cache = Path(args.cache) if args.cache else Path(CACHE)
     punto = Checkpoint(cache / f"{periodo_id}.jsonl", periodo_id)

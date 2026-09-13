@@ -297,6 +297,7 @@ class ClienteSGA:
                 self._dormir(espera)
             self._esperar_turno()
             self.peticiones += 1
+            REGISTRO.debug("%s %s", metodo, _sin_sesion(url))
             try:
                 respuesta = self._http.request(metodo, url, data=dict(datos) if datos else None)
             except httpx.TimeoutException as exc:
@@ -448,7 +449,19 @@ class ClienteSGA:
         if url.startswith(("http://", "https://", "/")):
             return url
         base = self.ultima_respuesta.url if self.ultima_respuesta else str(self._http.base_url)
-        return urljoin(base, url)
+        resuelta = urljoin(base, url)
+        REGISTRO.debug(
+            "  enlace %s sobre %s -> %s", url[:50], _sin_sesion(base), _sin_sesion(resuelta)
+        )
+        if ENTRADA not in resuelta:
+            REGISTRO.warning(
+                "El enlace «%s…» resuelto contra %s se sale de %s: %s",
+                url[:40],
+                _sin_sesion(base),
+                ENTRADA,
+                _sin_sesion(resuelta),
+            )
+        return resuelta
 
     # -- diagnostico --------------------------------------------------------------------
 
