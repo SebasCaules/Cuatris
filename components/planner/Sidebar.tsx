@@ -110,7 +110,12 @@ const REF_VIEWS: { view: ViewKey; label: string }[] = [
  * partes de minors/electivas de updateMetrics y los binds de
  * búsqueda/filtros/reset/vistas de bindUI.
  */
-export default function Sidebar() {
+export default function Sidebar({
+  onProgreso,
+}: {
+  /** Abre el modal «Guardar o cargar progreso» (lo monta PlannerApp). */
+  onProgreso?: () => void;
+}) {
   const { state, dispatch } = usePlanner();
   const { approved, areasOn, view, fDisp, fHor, search } = state;
 
@@ -359,6 +364,16 @@ export default function Sidebar() {
       >
         Referencias de abreviaturas
       </button>
+
+      {onProgreso && (
+        <button
+          type="button"
+          className="side__util"
+          onClick={onProgreso}
+        >
+          Guardar o cargar progreso
+        </button>
+      )}
 
       <p className="foot">
         Horarios del SGA, 2.<sup>do</sup> cuatrimestre 2026. El progreso se guarda

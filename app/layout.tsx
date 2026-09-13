@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Newsreader, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AmbientLayer, ThemeScript } from "@studyvaults/ui";
 import Header from "@/components/shell/Header";
 import Footer from "@/components/shell/Footer";
-import { SITE_URL } from "@/lib/content/slug";
+import { BASE_PATH, SITE_URL } from "@/lib/content/slug";
 
 // Serif editorial + mono para datos (self-hosted por next/font en el build).
 const newsreader = Newsreader({
@@ -38,6 +38,18 @@ export const metadata: Metadata = {
     description:
       "Correlativas, horarios sin choques, plan de cursada y finales para Ingeniería en Informática del ITBA. Sin cuenta: se guarda en tu navegador.",
   },
+  // Instalable como app en el teléfono (manifest + icono de iOS). Las rutas
+  // llevan basePath a mano: metadata no pasa por next/link.
+  manifest: `${BASE_PATH}/manifest.webmanifest`,
+  icons: { apple: `${BASE_PATH}/icons/apple-touch-icon.png` },
+  appleWebApp: { capable: true, title: "Cuatris", statusBarStyle: "default" },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#4c3b30" },
+    { media: "(prefers-color-scheme: light)", color: "#f6f6f5" },
+  ],
 };
 
 export default function RootLayout({

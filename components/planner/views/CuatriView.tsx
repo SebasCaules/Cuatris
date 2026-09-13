@@ -173,14 +173,21 @@ export default function CuatriView() {
     () => new Set([...completeByYear].filter(([, c]) => c).map(([a]) => a)),
   );
   const prevComplete = useRef(completeByYear);
+  // Años que acaban de completarse y esperan su plegado. Vive en un ref (no en
+  // el closure del timeout) para que dos años completados en menos de 260 ms
+  // —dos casillas seguidas— se plieguen los dos: el cleanup del effect solo
+  // cancela el timer, nunca lo pendiente.
+  const pendientes = useRef<Set<number>>(new Set());
   useEffect(() => {
     const prev = prevComplete.current;
     prevComplete.current = completeByYear;
-    const recien: number[] = [];
     const reabiertos: number[] = [];
     completeByYear.forEach((c, anio) => {
-      if (c && !prev.get(anio)) recien.push(anio);
-      if (!c && prev.get(anio)) reabiertos.push(anio);
+      if (c && !prev.get(anio)) pendientes.current.add(anio);
+      if (!c && prev.get(anio)) {
+        reabiertos.push(anio);
+        pendientes.current.delete(anio);
+      }
     });
     // un año que deja de estar completo (se quitó una marca) se despliega al instante
     if (reabiertos.length)
@@ -189,11 +196,12 @@ export default function CuatriView() {
         reabiertos.forEach((a) => n.delete(a));
         return n;
       });
-    if (!recien.length) return;
-    const id = setTimeout(
-      () => setCollapsed((s) => new Set([...s, ...recien])),
-      260,
-    );
+    if (pendientes.current.size === 0) return;
+    const id = setTimeout(() => {
+      const listos = [...pendientes.current];
+      pendientes.current.clear();
+      setCollapsed((s) => new Set([...s, ...listos]));
+    }, 260);
     return () => clearTimeout(id);
   }, [completeByYear]);
   const toggleYear = (anio: number) =>

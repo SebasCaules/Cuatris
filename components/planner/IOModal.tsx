@@ -39,19 +39,19 @@ const IconWarnTri = ({ size = 21 }: { size?: number }) => (
   </svg>
 );
 
-interface ImportSummary {
+export interface ImportSummary {
   aprobadas: number;
   electivas: number;
 }
 
-const summarize = (p: Persisted): ImportSummary => ({
+export const summarize = (p: Persisted): ImportSummary => ({
   aprobadas: p.approved?.length ?? 0,
   electivas: p.pool?.length ?? 0,
 });
 
 /** Confirmación previa al import: reemplazar el plan es destructivo e
  *  irreversible, así que sigue el mismo patrón (chrome + foco) que el reset. */
-function ImportConfirm({
+export function ImportConfirm({
   summary,
   onCancel,
   onConfirm,
@@ -127,7 +127,7 @@ function ImportConfirm({
 
 /** Acuse tras un import exitoso: sin él, el plan cambia detrás del modal sin
  *  ninguna señal de que se aplicó. */
-function ImportDone({ onClose }: { onClose: () => void }) {
+export function ImportDone({ onClose }: { onClose: () => void }) {
   const panelRef = useModalFocus<HTMLDivElement>();
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

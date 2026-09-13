@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PlannerProvider, usePlanner } from "./state";
 import PlannerErrorBoundary from "./PlannerErrorBoundary";
 import {
@@ -26,6 +26,8 @@ import { decodePlannerUrl, encodePlannerUrl } from "@/lib/planner/url-state";
 import { llamadoVigente } from "@/lib/planner/finalesData";
 import Topbar from "./Topbar";
 import Sidebar from "./Sidebar";
+import ProgresoModal from "./ProgresoModal";
+import { Tooltip } from "./Tooltip";
 import DetailDrawer from "./DetailDrawer";
 import FichaReader from "./FichaReader";
 import CuatriView from "./views/CuatriView";
@@ -47,8 +49,45 @@ const VIEWS = {
   ref: RefView,
 } as const;
 
+// Título de la pestaña del navegador por vista: en una app de una sola ruta el
+// historial y las pestañas abiertas se distinguen por acá, no por la URL.
+const VIEW_TITLES: Record<keyof typeof VIEWS, string> = {
+  cuatri: "Mis materias",
+  elect: "Electivas",
+  combo: "Combinador de horarios",
+  plan: "Plan de cursada",
+  grafo: "Correlativas",
+  finales: "Combinador de finales",
+  ref: "Referencias",
+};
+
 function PlannerInner() {
   const { state, dispatch } = usePlanner();
+  const [progresoOpen, setProgresoOpen] = useState(false);
+
+  // document.title = "<vista> · <sitio>". El sufijo se toma del título con el
+  // que llegó la página (lo que haya después del primer " · ", o todo si no
+  // hay separador), así funciona igual en el portal y en el standalone.
+  // Next streamea la metadata y vuelve a escribir <title> después de montar:
+  // el MutationObserver sobre <head> reaplica el nuestro cada vez que lo pisan
+  // (sin bucle: solo escribe cuando difiere).
+  const titleSuffix = useRef<string | null>(null);
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (titleSuffix.current == null) {
+      const t = document.title;
+      const i = t.indexOf(" · ");
+      titleSuffix.current = i >= 0 ? t.slice(i + 3) : t;
+    }
+    const want = `${VIEW_TITLES[state.view]} · ${titleSuffix.current}`;
+    const apply = () => {
+      if (document.title !== want) document.title = want;
+    };
+    apply();
+    const mo = new MutationObserver(apply);
+    mo.observe(document.head, { childList: true, subtree: true, characterData: true });
+    return () => mo.disconnect();
+  }, [state.view]);
 
   // hidratar desde localStorage tras montar (SSR no tiene localStorage), y
   // encima la vista/navegación que traiga la URL (mismo effect, mismo tick:
@@ -275,29 +314,39 @@ function PlannerInner() {
               Marcar mis aprobadas
             </button>
           )}
+          {/* segunda puerta de entrada: quien ya tiene un .json (otro
+              navegador, o el planner de StudyVaults) no tiene que marcar nada */}
           <button
             type="button"
-            className="first-run__x"
-            aria-label="Cerrar esta guía"
-            title="No volver a mostrar"
-            onClick={() => dispatch({ type: "DISMISS_INTRO" })}
+            className="first-run__load"
+            onClick={() => setProgresoOpen(true)}
           >
-            ×
+            o cargá un progreso guardado
           </button>
+          <Tooltip content="No volver a mostrar esta guía" width={170}>
+            <button
+              type="button"
+              className="first-run__x"
+              aria-label="Cerrar esta guía"
+              onClick={() => dispatch({ type: "DISMISS_INTRO" })}
+            >
+              ×
+            </button>
+          </Tooltip>
         </div>
       )}
       <div className="shell">
-        <Sidebar />
+        <Sidebar onProgreso={() => setProgresoOpen(true)} />
         <div className="main">
           <View />
         </div>
       </div>
       {state.sideCollapsed && (
+        <Tooltip content="Mostrar el panel de control" width={150}>
         <button
           type="button"
           className="side__reveal"
           aria-label="Mostrar el panel de control"
-          title="Mostrar panel"
           onClick={() => dispatch({ type: "TOGGLE_SIDEBAR" })}
         >
           <svg
@@ -316,9 +365,13 @@ function PlannerInner() {
             />
           </svg>
         </button>
+        </Tooltip>
       )}
       <DetailDrawer />
       <FichaReader />
+      {progresoOpen && (
+        <ProgresoModal onClose={() => setProgresoOpen(false)} />
+      )}
     </div>
   );
 }

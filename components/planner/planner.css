@@ -90,6 +90,16 @@
   font-family:var(--f-b);font-size:12.5px;cursor:pointer;transition:.15s;
 }
 .planner .first-run__go:hover{background:var(--brass);color:var(--block-ink)}
+/* segunda acción del banner: link discreto, no compite con el CTA */
+.planner .first-run__load{
+  flex:none;border:none;background:transparent;padding:6px 4px;
+  color:var(--muted);font-family:var(--f-b);font-size:12.5px;cursor:pointer;
+  text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:3px;
+  transition:color .15s;
+}
+.planner .first-run__load:hover{color:var(--ink)}
+.planner .first-run__go + .first-run__load{margin-left:-6px}
+.planner .first-run__txt + .first-run__load{margin-left:auto}
 .planner .first-run__x{
   flex:none;width:26px;height:26px;border:none;background:transparent;
   color:var(--muted);font-size:17px;line-height:1;cursor:pointer;border-radius:6px;
@@ -895,6 +905,14 @@
 @media (max-width:560px){
   .planner .plan2-io__grid{grid-template-columns:1fr}
 }
+
+/* modal Guardar o cargar progreso (ProgresoModal): una sola card, panel angosto.
+   Reusa .mnr-modal* y .plan2-io__card; la tira de cifras dice qué contiene el
+   archivo antes de bajarlo (misma cuenta que la confirmación del import). */
+.planner .mnr-modal__panel.prog-modal{width:min(460px,100%)}
+.planner .prog-modal__stats{display:flex;flex-wrap:wrap;gap:6px 16px}
+.planner .prog-modal__stats span{font-family:var(--f-m);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.planner .prog-modal__stats b{font-family:var(--f-d);font-weight:500;font-size:17px;line-height:1;letter-spacing:-.01em;color:var(--ink);margin-right:3px}
 
 /* =========================================================================
    ROADMAP — panorama de cuatrimestres lado a lado (vista general)
