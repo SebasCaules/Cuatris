@@ -76,6 +76,14 @@ CAMPO_USUARIO = "user"
 CAMPO_CLAVE = "password"
 CAMPO_ENVIO = "login"
 VALOR_ENVIO = "Ingresar"
+CAMPO_JS = "js"
+"""Campo oculto que el JavaScript de la pantalla de login pone en `1` al cargar.
+
+El HTML lo trae en `0`. Si se envia en `0`, el SGA entra en un bucle de redirecciones
+(verificado el 2026-09-12 contra el sistema real: con `1` responde la pantalla siguiente o el
+mensaje «Usuario o contrasena invalido»). El scraper imita al navegador y manda `1`.
+"""
+VALOR_JS = "1"
 
 #: Texto del enlace que solo aparece con la sesion iniciada. Es el ancla de autenticacion:
 #: esta en la barra superior de todas las pantallas del SGA y no depende de ningun id.
@@ -355,6 +363,7 @@ class ClienteSGA:
         destino = urljoin(pagina, accion)
 
         datos = dict(ocultos)
+        datos[CAMPO_JS] = VALOR_JS
         datos[CAMPO_USUARIO] = usuario
         datos[CAMPO_CLAVE] = clave
         datos[CAMPO_ENVIO] = VALOR_ENVIO
@@ -430,7 +439,9 @@ class ClienteSGA:
         seguro = "".join(c if c.isalnum() or c in "-_." else "-" for c in etiqueta)
         ruta = carpeta / f"{seguro}.html"
         ruta.write_text(self.ultima_respuesta.html, encoding="utf-8")
-        REGISTRO.warning("Respuesta guardada en %s (%s).", ruta, self.ultima_respuesta.url)
+        REGISTRO.warning(
+            "Respuesta guardada en %s (%s).", ruta, _sin_sesion(self.ultima_respuesta.url)
+        )
         return ruta
 
 

@@ -124,7 +124,9 @@ def test_login_postea_el_action_y_los_campos_ocultos_del_html(html_listado: str)
     assert "user=usuario.de.prueba" in cuerpo
     assert "login=Ingresar" in cuerpo
     assert "id1_hf_0=" in cuerpo  # campo oculto leido del HTML, no escrito a mano
-    assert "js=0" in cuerpo
+    # El HTML trae js=0, pero el scraper manda js=1 como el navegador: con 0 el SGA loopea.
+    assert "js=1" in cuerpo
+    assert "js=0" not in cuerpo
 
 
 def test_login_manda_las_tres_cookies_de_sesion(html_listado: str) -> None:
