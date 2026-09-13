@@ -400,11 +400,6 @@ export function GrillaSemanal({
                       top: `${String(desplazamiento(enHoras(cambio.hora), horaPx))}px`,
                     }}
                     role="img"
-                    title={
-                      `Cambio de sede a las ${cambio.hora}: ` +
-                      `${nombreDeSede(cambio.a.bloque.sede ?? "")} → ` +
-                      `${nombreDeSede(cambio.b.bloque.sede ?? "")}`
-                    }
                     aria-label={
                       `Cambio de sede el ${NOMBRE_DIA[dia]} a las ${cambio.hora}: ` +
                       `${nombreDeSede(cambio.a.bloque.sede ?? "")} → ` +

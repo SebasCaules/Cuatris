@@ -1,0 +1,18 @@
+.chevron {
+  display: block;
+  width: 12px;
+  height: 12px;
+  color: var(--texto-secundario);
+  transition: transform 160ms ease;
+}
+
+.chevron--abierto {
+  transform: rotate(180deg);
+}
+
+/* Quien pidió menos movimiento no quiere que la punta gire tampoco. */
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}

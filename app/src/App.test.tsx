@@ -83,10 +83,11 @@ describe("App", () => {
     expect(
       screen.getByRole("complementary", { name: "Progreso" }),
     ).toBeInTheDocument();
-    // Y la nota que dice por dónde empezar, con el atajo de pegar la historia.
+    // Y la leyenda de las marcas, con el atajo de pegar la historia (R2: ya no
+    // hay una nota con instrucciones).
     expect(
-      screen.getByText(/Marcá lo que ya aprobaste/),
-    ).toBeInTheDocument();
+      screen.getByRole("link", { name: "Pegar historia académica del SGA" }),
+    ).toHaveAttribute("href", "#/inicio");
   });
 
   it("el primer ingreso (13a) vive en #/inicio y no trae panel derecho", async () => {
@@ -226,7 +227,7 @@ describe("App", () => {
     expect(boton).toHaveAttribute("aria-disabled", "true");
     boton.focus();
     expect(boton).toHaveFocus();
-    expect(boton).toHaveAttribute("title", "Llega en el Sprint 3");
+    expect(boton).not.toHaveAttribute("title");
     const id = boton.getAttribute("aria-describedby");
     expect(id).not.toBeNull();
     const nota = document.getElementById(id ?? "");
@@ -237,23 +238,52 @@ describe("App", () => {
   });
 
   /**
-   * F4.13: `useMenuPlan` monta un `<input type="file">` recortado pero
-   * alcanzable; en el primer ingreso se montaba dos veces (App y PaginaInicio) y
-   * el foco desaparecía dos veces en puntos sin nada visible.
+   * F4.13 + R2: en el primer ingreso no hay ningún selector de archivo montado
+   * —antes se montaba uno recortado, y llegó a montarse dos veces (App y
+   * PaginaInicio)—. Nace uno solo al apretar «Importar un plan guardado», fuera
+   * de la cadena de tabulación, y se va al elegir o cancelar.
    */
-  it("en el primer ingreso hay un solo selector de archivo, fuera del Tab", async () => {
+  it("en el primer ingreso no hay selector de archivo hasta que se pide", async () => {
+    const usuario = userEvent.setup();
     window.location.hash = "#/inicio";
     montar();
     expect(
       await screen.findByText("Todavía no hay nada en tu plan"),
     ).toBeInTheDocument();
+    expect(
+      screen.queryAllByLabelText("Archivo de plan exportado"),
+    ).toHaveLength(0);
+
+    await usuario.click(
+      screen.getByRole("button", { name: "Importar un plan guardado" }),
+    );
     const selectores = screen.getAllByLabelText("Archivo de plan exportado");
     expect(selectores).toHaveLength(1);
     expect(selectores[0]).toHaveAttribute("tabindex", "-1");
-    // Los dos botones que lo abren siguen en la cadena de tabulación.
+    selectores[0]?.remove();
+  });
+
+  /**
+   * El criterio de aceptación de R2, medido sobre la aplicación entera y no
+   * sobre un subárbol: `#/plan` incluye la barra superior y los diálogos del
+   * menú «⋯», que eran justo donde quedaban los dos últimos controles nativos
+   * (el campo de búsqueda y el selector de archivo).
+   */
+  it("en #/plan no hay ni un control nativo ni un `title=`", async () => {
+    window.location.hash = "#/plan";
+    sembrarPlanConHistoria();
+    montar();
     expect(
-      screen.getByRole("button", { name: "Importar un plan guardado" }),
-    ).toBeEnabled();
+      await screen.findByRole("region", { name: "Año 5" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Ingeniería en Informática" }),
+    ).toBeInTheDocument();
+    expect(
+      document.querySelectorAll("input, select, progress, [title]"),
+    ).toHaveLength(0);
+    // Y la barra de progreso propia sí está: es la nuestra, no `<progress>`.
+    expect(screen.getAllByRole("progressbar").length).toBeGreaterThan(0);
   });
 
   /**

@@ -64,6 +64,55 @@ export function descargarPlan(plan: PlanUsuario, fecha: Fecha): void {
 }
 
 /**
+ * Abre el selector de archivo del sistema y resuelve con lo que se eligió.
+ *
+ * El `<input type="file">` se crea al abrirlo y se destruye apenas el usuario
+ * elige o cancela. Es el único control nativo que el navegador no deja
+ * reemplazar —no hay forma de abrir el selector sin uno—, pero así no queda en
+ * el documento: la regla del autor (R2) es que en la pantalla no haya ni un
+ * control nativo, y un `<input>` recortado seguía estando.
+ *
+ * Se agrega al documento porque Safari no dispara `change` sobre un elemento
+ * suelto. `cancel` es lo que avisa que el usuario cerró el selector sin elegir;
+ * donde no exista, el elemento se va igual con el `change` de la próxima vez.
+ */
+export function elegirArchivo(
+  accept: string = `${TIPO_JSON},.json`,
+): Promise<File | null> {
+  return new Promise((resolver) => {
+    const campo = document.createElement("input");
+    campo.type = "file";
+    campo.accept = accept;
+    campo.className = "menu-plan__archivo";
+    campo.tabIndex = -1;
+    campo.setAttribute("aria-label", "Archivo de plan exportado");
+
+    const cerrar = (elegido: File | null) => {
+      campo.remove();
+      resolver(elegido);
+    };
+
+    campo.addEventListener(
+      "change",
+      () => {
+        cerrar(campo.files?.[0] ?? null);
+      },
+      { once: true },
+    );
+    campo.addEventListener(
+      "cancel",
+      () => {
+        cerrar(null);
+      },
+      { once: true },
+    );
+
+    document.body.appendChild(campo);
+    campo.click();
+  });
+}
+
+/**
  * Lee un archivo elegido en el selector.
  *
  * `FileReader` y no `File.text()` a propósito: es lo que soportan todos los

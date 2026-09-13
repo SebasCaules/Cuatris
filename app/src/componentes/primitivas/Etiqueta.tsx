@@ -20,7 +20,10 @@ export interface PropsEtiqueta {
   variante?: VarianteEtiqueta;
   /** Color del contorno; por defecto, la línea de la grilla. */
   color?: string;
-  /** Nombre accesible cuando el texto abreviado no se entiende solo. */
+  /**
+   * Nombre accesible cuando el texto abreviado no se entiende solo. **No es un
+   * `title=`**: para que se vea con el mouse hay que envolverla en `Tooltip`.
+   */
   titulo?: string;
   children: ReactNode;
 }
@@ -39,7 +42,6 @@ export function Etiqueta({
     <span
       className={`etiqueta etiqueta--${variante}`}
       style={estilo}
-      title={titulo}
       aria-label={titulo}
     >
       {children}

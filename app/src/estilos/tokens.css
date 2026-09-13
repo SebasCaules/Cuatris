@@ -56,6 +56,25 @@
   --aprobada: #2f7a6a;
   --aprobada-texto: #ffffff;
 
+  /* Ámbar de «cursada aprobada, falta el final» (R2). Tampoco es un color
+     nuevo: es `--materia-3` (#A8762C), el único ámbar de la paleta 4a. Se le da
+     nombre propio por lo mismo que a `--aprobada`: acá significa un estado, no
+     identifica a una materia. `--cursada-fondo` es el relleno al 16 % que pide
+     la tabla de medidas de la referencia. */
+  --cursada: #a8762c;
+  --cursada-fondo: color-mix(in srgb, var(--cursada) 16%, var(--superficie));
+  --cursada-borde: color-mix(in srgb, var(--cursada) 55%, var(--superficie));
+
+  /* Dos pesos de línea (R2): la suave dibuja el borde de la tarjeta y la que
+     separa las columnas; la fuerte, el contorno de los controles —marca y
+     casilla—, que necesita verse contra el fondo de la fila. */
+  --linea-suave: #e3e0d8;
+  --linea-fuerte: #c4bfb4;
+
+  /* Fondo de la fila al pasar el mouse y de la marca pendiente. */
+  --fila-hover: #f5f3ee;
+  --superficie-2: #f5f3ee;
+
   /* Mezclas del bloque en la grilla (tokens.md: barra 3 px + relleno 14 %) */
   --materia-relleno-porcentaje: 14%;
   --materia-relleno-base: var(--superficie);
@@ -108,6 +127,15 @@
        al fondo oscuro para no perder contraste contra el verde claro. */
     --aprobada: #5abfa9;
     --aprobada-texto: #17161a;
+    /* Mismo criterio con el ámbar: el matiz de `--materia-3` aclarado para que
+       se lea sobre el fondo oscuro. */
+    --cursada: #d9a24e;
+    --cursada-fondo: color-mix(in srgb, var(--cursada) 16%, var(--superficie));
+    --cursada-borde: color-mix(in srgb, var(--cursada) 55%, var(--superficie));
+    --linea-suave: #34322e;
+    --linea-fuerte: #4d4a44;
+    --fila-hover: #2a2825;
+    --superficie-2: #2a2825;
     /* Mismo matiz aclarado un 62 % para la barra; el relleno sube al 34 %. */
     --materia-relleno-porcentaje: 34%;
     --materia-relleno-base: var(--superficie);
@@ -138,6 +166,13 @@
   );
   --aprobada: #5abfa9;
   --aprobada-texto: #17161a;
+  --cursada: #d9a24e;
+  --cursada-fondo: color-mix(in srgb, var(--cursada) 16%, var(--superficie));
+  --cursada-borde: color-mix(in srgb, var(--cursada) 55%, var(--superficie));
+  --linea-suave: #34322e;
+  --linea-fuerte: #4d4a44;
+  --fila-hover: #2a2825;
+  --superficie-2: #2a2825;
   --materia-relleno-porcentaje: 34%;
   --materia-relleno-base: var(--superficie);
   --borde-tarjeta: 1px solid rgba(255, 255, 255, 0.12);

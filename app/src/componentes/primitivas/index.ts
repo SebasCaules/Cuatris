@@ -14,6 +14,15 @@ export type { PropsBoton, TamanoBoton, VarianteBoton } from "./Boton";
 export { Campo } from "./Campo";
 export type { PropsCampo, TipoCampo } from "./Campo";
 
+export { CampoBusqueda } from "./CampoBusqueda";
+export type { PropsCampoBusqueda } from "./CampoBusqueda";
+
+export { Casilla } from "./Casilla";
+export type { EstadoCasilla, PropsCasilla } from "./Casilla";
+
+export { Chevron } from "./Chevron";
+export type { PropsChevron } from "./Chevron";
+
 export { Chip } from "./Chip";
 export type { PropsChip, VarianteChip } from "./Chip";
 
@@ -31,6 +40,9 @@ export type { PropsNota, VarianteNota } from "./Nota";
 
 export { PanelLateral } from "./PanelLateral";
 export type { PropsPanelLateral } from "./PanelLateral";
+
+export { RETARDO_TOOLTIP_MS, Tooltip } from "./Tooltip";
+export type { LadoTooltip, PropsTooltip } from "./Tooltip";
 
 export { useEscapeDeCapa, useFocoAtrapado } from "./foco";
 export type { OpcionesEscape, OpcionesFoco } from "./foco";

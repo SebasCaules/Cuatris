@@ -1,16 +1,17 @@
 /**
- * Una de las dos columnas de un año: el cuatrimestre y sus materias (R1).
+ * Una de las dos columnas de un año: el cuatrimestre y sus materias.
  *
- * El rótulo va en mono con tracking («1.º CUATRIMESTRE») y a la derecha la
- * cuenta de las que tienen final, también en mono. Las dos acciones —marcar el
- * cuatrimestre entero, desmarcarlo— solo se ven al pasar el mouse o al entrar
- * con el teclado, pero **siempre están en el DOM y en la cadena de tabulación**:
- * esconderlas con `display: none` las volvería inalcanzables sin mouse.
+ * La cabecera es una línea en mono («1.º CUATRIMESTRE» y «5/5» a la derecha)
+ * con la casilla del cuatrimestre a la izquierda. **No hay botones «Marcar» ni
+ * «Desmarcar»** (R2): marcar el cuatrimestre entero se descubre por la forma y
+ * la posición de la casilla, no por un texto que hay que leer.
  */
 
 import type { Codigo, Materia, Sigla } from "../../contrato/tipos";
 import { FilaMateriaPlan } from "../FilaMateriaPlan";
 import type { EstadoMarca } from "../MarcaMateria";
+import { Casilla, Tooltip } from "../primitivas";
+import { estadoDeCasilla, siguienteDeCasilla } from "./casilla";
 import "./ColumnaCuatrimestre.css";
 
 export interface ColumnaDelPlan {
@@ -18,7 +19,7 @@ export interface ColumnaDelPlan {
   id: string;
   /** Rótulo visible en mono: «1.º CUATRIMESTRE». */
   rotulo: string;
-  /** Cómo se nombra en las acciones: «1.º cuatrimestre de Año 1». */
+  /** Cómo se nombra en la casilla: «1.º cuatrimestre de Año 1». */
   nombre: string;
   materias: Materia[];
 }
@@ -39,9 +40,9 @@ export function ColumnaCuatrimestre({
   nombreDeMinor,
 }: PropsColumnaCuatrimestre) {
   const codigos = columna.materias.map((materia) => materia.codigo);
-  const conFinal = codigos.filter(
-    (codigo) => estadoDe(codigo) === "final",
-  ).length;
+  const estados = codigos.map(estadoDe);
+  const conFinal = estados.filter((estado) => estado === "final").length;
+  const casilla = estadoDeCasilla(estados);
 
   return (
     <div
@@ -50,29 +51,23 @@ export function ColumnaCuatrimestre({
       aria-label={columna.nombre}
     >
       <div className="columna-cuatrimestre__cabecera">
+        <Tooltip
+          texto={
+            casilla === true
+              ? "Quitar las marcas del cuatrimestre"
+              : "Marcar todo el cuatrimestre como aprobado con final"
+          }
+          lado="abajo"
+        >
+          <Casilla
+            marcada={casilla}
+            etiqueta={`Todo el ${columna.nombre} aprobado con final`}
+            alAccionar={() => {
+              alMarcarVarias(codigos, siguienteDeCasilla(casilla));
+            }}
+          />
+        </Tooltip>
         <p className="columna-cuatrimestre__rotulo">{columna.rotulo}</p>
-        <div className="columna-cuatrimestre__acciones">
-          <button
-            type="button"
-            className="columna-cuatrimestre__accion"
-            aria-label={`Marcar ${columna.nombre}`}
-            onClick={() => {
-              alMarcarVarias(codigos, "final");
-            }}
-          >
-            Marcar cuatrimestre
-          </button>
-          <button
-            type="button"
-            className="columna-cuatrimestre__accion"
-            aria-label={`Desmarcar ${columna.nombre}`}
-            onClick={() => {
-              alMarcarVarias(codigos, "pendiente");
-            }}
-          >
-            Desmarcar
-          </button>
-        </div>
         <p className="columna-cuatrimestre__cuenta">
           {conFinal}/{columna.materias.length}
         </p>

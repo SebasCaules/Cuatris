@@ -86,13 +86,21 @@ describe("PaginaInicio", () => {
     ).toHaveLength(0);
   });
 
-  it("ofrece importar un plan guardado", () => {
+  it("ofrece importar un plan guardado", async () => {
     montar();
+    const boton = screen.getByRole("button", {
+      name: "Importar un plan guardado",
+    });
+    expect(boton).toBeInTheDocument();
+    // R2: el selector de archivo no está montado; nace al apretar el botón y
+    // se destruye al elegir o cancelar.
     expect(
-      screen.getByRole("button", { name: "Importar un plan guardado" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByLabelText("Archivo de plan exportado"),
-    ).toBeInTheDocument();
+      screen.queryByLabelText("Archivo de plan exportado"),
+    ).not.toBeInTheDocument();
+
+    await userEvent.click(boton);
+    const selector = screen.getByLabelText("Archivo de plan exportado");
+    expect(selector).toBeInTheDocument();
+    selector.remove();
   });
 });

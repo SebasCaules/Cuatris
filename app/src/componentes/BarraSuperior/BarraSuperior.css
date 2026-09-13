@@ -74,9 +74,31 @@
   padding-bottom: 4px;
 }
 
-.barra-superior__acciones .campo--busqueda {
+/*
+ * El campo de búsqueda de la barra es `CampoBusqueda`, el propio, que viene en
+ * el tamaño compacto de las electivas (mono de 10 px). Acá recupera las
+ * medidas de 13b: 200 px de ancho, 26 px de alto y el texto de 11 px de la
+ * interfaz. El alto se arma con `line-height` y no con `height` para que el
+ * cursor quede centrado en la línea, como en el mockup.
+ */
+.barra-superior__acciones .campo-busqueda {
+  box-sizing: border-box;
   width: 200px;
   max-width: 40vw;
+  min-height: 26px;
+  padding: 4px 9px;
+  border-color: var(--linea-columna);
+  border-radius: var(--radio-chip);
+  background: var(--fondo);
+  font-family: var(--fuente-texto);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+/* tokens.md: «Campo de búsqueda activo: 1.5px solid». La caja es `border-box`,
+   así que el alto no cambia. */
+.barra-superior__acciones .campo-busqueda:focus {
+  border: var(--borde-campo-activo);
 }
 
 .barra-superior__menu {

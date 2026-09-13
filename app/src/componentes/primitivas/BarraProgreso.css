@@ -1,9 +1,11 @@
-/* Pista fina: la misma línea gris que separa las horas en la grilla. */
+/* 3 px de alto y radio 3: la barra de la referencia es una línea, no una caja. */
 .barra-progreso {
-  width: 100%;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--linea-hora);
+  display: flex;
+  width: var(--barra-progreso-ancho, 100%);
+  flex: 0 0 auto;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--linea-suave);
   overflow: hidden;
 }
 
@@ -11,6 +13,13 @@
   display: block;
   width: var(--barra-progreso-relleno, 0%);
   height: 100%;
-  border-radius: inherit;
   background: var(--aprobada);
+}
+
+/* Lo empezado y no terminado, pegado detrás de lo terminado. */
+.barra-progreso__parcial {
+  display: block;
+  width: var(--barra-progreso-parcial, 0%);
+  height: 100%;
+  background: var(--cursada);
 }

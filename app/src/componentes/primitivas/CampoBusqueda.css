@@ -1,0 +1,35 @@
+/* Compacto como la cabecera del cuatrimestre: mono chico, una sola línea. */
+.campo-busqueda {
+  display: block;
+  min-height: 15px;
+  padding: 4px 7px;
+  border: 1px solid var(--linea-suave);
+  border-radius: 5px;
+  background: var(--superficie);
+  font-family: var(--fuente-mono);
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--texto);
+  white-space: nowrap;
+  overflow-x: auto;
+  cursor: text;
+}
+
+.campo-busqueda:focus {
+  outline: none;
+  border-color: var(--texto);
+}
+
+/* El texto de ayuda se dibuja solo con el campo vacío: no es contenido, así
+   que va en un pseudoelemento y no lo copia nadie al seleccionar. */
+.campo-busqueda:empty::before {
+  content: attr(data-placeholder);
+  color: var(--texto-secundario);
+  pointer-events: none;
+}
+
+/* Apagado: se ve que está, se ve que no se puede usar, y no toma el cursor. */
+.campo-busqueda[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: default;
+}

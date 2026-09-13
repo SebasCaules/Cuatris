@@ -7,9 +7,10 @@
  *
  * Acá no se dibuja el menú «⋯»: eso ya lo hace `BarraSuperior`, que recibe las
  * tres acciones como callbacks. Este módulo aporta las acciones cableadas al
- * estado y los diálogos que necesitan (selector de archivo, confirmación de
- * borrado y el error exacto de una importación fallida). Quien las usa monta
- * `dialogos` una vez, donde sea.
+ * estado y los diálogos que necesitan (confirmación de borrado y el error
+ * exacto de una importación fallida). Quien las usa monta `dialogos` una vez,
+ * donde sea. El selector de archivo **no** está ahí: lo crea y lo destruye
+ * `elegirArchivo`, para no dejar un control nativo montado en la pantalla.
  *
  * Regla dura: **una importación que falla no toca el plan actual.** El
  * documento nuevo reemplaza al viejo recién cuando `importar` lo valida entero.
@@ -17,14 +18,7 @@
  * Los textos son los del mockup, en voseo.
  */
 
-import {
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-  type ChangeEvent,
-  type ReactNode,
-} from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 
 import { hoyIso } from "../../datos/useDatos";
 import { usePlanUsuario } from "../../estado/contexto";
@@ -34,9 +28,9 @@ import { Boton, Modal, Nota } from "../primitivas";
 import {
   borrarGuardado,
   descargarPlan,
+  elegirArchivo,
   leerArchivo,
   mensajeDeError,
-  TIPO_JSON,
 } from "./acciones";
 import "./MenuPlan.css";
 
@@ -52,7 +46,7 @@ export interface AccionesPlan {
 
 export interface MenuPlanCableado {
   acciones: AccionesPlan;
-  /** Selector de archivo y diálogos. Hay que montarlo una vez. */
+  /** Diálogos de borrado y de error. Hay que montarlos una vez. */
   dialogos: ReactNode;
 }
 
@@ -63,7 +57,6 @@ export interface MenuPlanCableado {
  */
 export function useMenuPlan(fecha?: string): MenuPlanCableado {
   const { plan, despachar } = usePlanUsuario();
-  const archivo = useRef<HTMLInputElement>(null);
   const [confirmandoBorrado, setConfirmandoBorrado] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -71,38 +64,34 @@ export function useMenuPlan(fecha?: string): MenuPlanCableado {
     descargarPlan(plan, fecha ?? hoyIso());
   }, [plan, fecha]);
 
-  const alImportar = useCallback(() => {
-    setError(null);
-    archivo.current?.click();
-  }, []);
-
   const alBorrarTodo = useCallback(() => {
     setConfirmandoBorrado(true);
   }, []);
 
-  const alElegirArchivo = useCallback(
-    (evento: ChangeEvent<HTMLInputElement>) => {
-      const elegido = evento.target.files?.[0];
-      // El mismo archivo dos veces seguidas tiene que volver a disparar
-      // `change`, así que el campo se vacía siempre.
-      evento.target.value = "";
-      if (elegido === undefined) {
-        return;
-      }
-      leerArchivo(elegido)
-        .then((texto) => {
-          // Si `importar` lanza, el plan actual queda como estaba.
-          const importado = importar(texto);
-          setError(null);
-          despachar({ tipo: "reemplazar", plan: importado });
-          navegar({ vista: "plan" });
-        })
-        .catch((falla: unknown) => {
-          setError(mensajeDeError(falla));
-        });
-    },
-    [despachar],
-  );
+  /*
+   * El selector se crea al abrirlo y se destruye al elegir o cancelar (ver
+   * `elegirArchivo`): un `<input type="file">` montado siempre era el último
+   * control nativo que quedaba en la pantalla. El mismo archivo dos veces
+   * seguidas vuelve a disparar `change` porque el elemento es nuevo cada vez.
+   */
+  const alImportar = useCallback(() => {
+    setError(null);
+    elegirArchivo()
+      .then(async (elegido) => {
+        if (elegido === null) {
+          return;
+        }
+        const texto = await leerArchivo(elegido);
+        // Si `importar` lanza, el plan actual queda como estaba.
+        const importado = importar(texto);
+        setError(null);
+        despachar({ tipo: "reemplazar", plan: importado });
+        navegar({ vista: "plan" });
+      })
+      .catch((falla: unknown) => {
+        setError(mensajeDeError(falla));
+      });
+  }, [despachar]);
 
   const acciones = useMemo<AccionesPlan>(
     () => ({
@@ -115,22 +104,6 @@ export function useMenuPlan(fecha?: string): MenuPlanCableado {
 
   const dialogos = (
     <>
-      {/*
-        Fuera de la cadena de tabulación: es un control que no se dibuja y al
-        que solo se llega por «Importar plan», que sí está en la cadena. Con
-        `tabIndex` por omisión el foco desaparecía en un punto sin nada visible
-        y sin indicación de foco.
-      */}
-      <input
-        className="menu-plan__archivo"
-        ref={archivo}
-        type="file"
-        accept={`${TIPO_JSON},.json`}
-        aria-label="Archivo de plan exportado"
-        tabIndex={-1}
-        onChange={alElegirArchivo}
-      />
-
       <Modal
         abierto={confirmandoBorrado}
         titulo="¿Borrar todo?"

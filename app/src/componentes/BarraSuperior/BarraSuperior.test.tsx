@@ -73,9 +73,11 @@ describe("BarraSuperior", () => {
 
   it("sin callbacks, búsqueda y «Sugerir corrección» quedan inertes", () => {
     montar();
-    expect(
-      screen.getByLabelText("Buscar materia, código o docente"),
-    ).toBeDisabled();
+    // El campo es propio (`CampoBusqueda`), así que «apagado» es
+    // `aria-disabled` y `contenteditable="false"`, no el `disabled` nativo.
+    const campo = screen.getByLabelText("Buscar materia, código o docente");
+    expect(campo).toHaveAttribute("aria-disabled", "true");
+    expect(campo).toHaveAttribute("contenteditable", "false");
     const boton = screen.getByRole("button", { name: "Sugerir corrección" });
     expect(boton).toHaveAttribute("aria-disabled", "true");
     expect(boton).not.toHaveAttribute("onclick");
@@ -83,13 +85,14 @@ describe("BarraSuperior", () => {
 
   /**
    * F4.11: mientras 13j no exista el botón sigue apagado, pero deja de ser un
-   * control muerto y mudo: dice cuándo llega, en el `title` y en una nota que
-   * `aria-describedby` enlaza (igual que en la ficha de materia).
+   * control muerto y mudo: dice cuándo llega en una nota a la vista que
+   * `aria-describedby` enlaza (igual que en la ficha de materia). Sin `title=`:
+   * la regla del autor lo prohíbe en toda la aplicación (R2).
    */
   it("«Sugerir corrección» apagado explica cuándo llega", () => {
     montar();
     const boton = screen.getByRole("button", { name: "Sugerir corrección" });
-    expect(boton).toHaveAttribute("title", "Llega en el Sprint 3");
+    expect(boton).not.toHaveAttribute("title");
     const id = boton.getAttribute("aria-describedby");
     expect(id).not.toBeNull();
     expect(document.getElementById(id ?? "")).toHaveTextContent(
@@ -154,9 +157,23 @@ describe("BarraSuperior", () => {
     montar({ onBuscar });
 
     const campo = screen.getByLabelText("Buscar materia, código o docente");
-    expect(campo).toBeEnabled();
+    expect(campo).not.toHaveAttribute("aria-disabled");
     await usuario.type(campo, "alg");
     expect(onBuscar).toHaveBeenLastCalledWith("alg");
+  });
+
+  /**
+   * R2, regla permanente: ni un control nativo en la cáscara de la aplicación.
+   * El campo de búsqueda era el último `<input>` que quedaba en la barra.
+   */
+  it("no dibuja ni un control nativo ni un `title=`", () => {
+    montar({ onBuscar: () => undefined, onExportar: () => {} });
+    expect(
+      document.querySelectorAll("input, select, progress, [title]"),
+    ).toHaveLength(0);
+    expect(
+      screen.getByLabelText("Buscar materia, código o docente"),
+    ).toHaveAttribute("role", "searchbox");
   });
 
   it("el menú ⋯ trae las tres acciones del plan y llama a la elegida", async () => {

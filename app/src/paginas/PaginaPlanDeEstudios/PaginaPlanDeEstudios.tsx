@@ -1,10 +1,14 @@
 /**
- * Pestaña «Plan»: el plan de estudios completo (R1).
+ * Pestaña «Plan»: el plan de estudios completo.
  *
  * Años 1 a 5 con sus dos cuatrimestres, y al final las electivas. Lo que ya se
  * aprobó se marca acá mismo, materia por materia o un año entero de un saque:
  * es la pantalla que reemplaza al paso «Marcar materias a mano» del primer
  * ingreso, que era una lista aparte que no se parecía al plan de nadie.
+ *
+ * **Arriba no hay instrucciones** (R2), solo la leyenda de las cuatro marcas y
+ * el atajo a la historia académica. La nota de estado vacío de R1 se fue con
+ * ella: explicar con texto lo que la forma ya dice era decirlo dos veces.
  *
  * La página no calcula reglas de dominio: `armado.ts` ordena el plan y el motor
  * cuenta los créditos de electivas. Acá solo se traduce entre la marca de la
@@ -15,6 +19,7 @@
 
 import { useMemo, useState } from "react";
 
+import { LeyendaPlan } from "../../componentes/LeyendaPlan";
 import { TarjetaAnio } from "../../componentes/TarjetaAnio";
 import { TarjetaElectivas } from "../../componentes/TarjetaElectivas";
 import {
@@ -26,7 +31,6 @@ import {
   PantallaCargando,
   PantallaError,
 } from "../../componentes/PantallaEstado";
-import { Nota } from "../../componentes/primitivas";
 import type { Abreviaciones, Codigo, Plan, Sigla } from "../../contrato/tipos";
 import { hoyIso, useDatos } from "../../datos/useDatos";
 import { usePlanUsuario } from "../../estado/contexto";
@@ -94,26 +98,10 @@ export function PlanDeEstudiosConDatos({
   };
 
   const tarjetas = sinCuatrimestre === null ? anios : [...anios, sinCuatrimestre];
-  const sinNadaMarcado = Object.keys(historia).length === 0;
 
   return (
     <div className="plan-estudios">
-      {/*
-        Sin nada marcado el plan se ve igual: no hay una pantalla de bienvenida
-        que lo tape (R1). Lo único que se agrega es la nota que dice qué hacer y
-        que existe el atajo de pegar la historia académica.
-      */}
-      {sinNadaMarcado ? (
-        <div className="plan-estudios__aviso">
-          <Nota variante="caja">
-            Marcá lo que ya aprobaste. Si tenés la historia académica del SGA,
-            podés pegarla.{" "}
-            <a className="plan-estudios__aviso-enlace" href="#/inicio">
-              Pegar historia
-            </a>
-          </Nota>
-        </div>
-      ) : null}
+      <LeyendaPlan />
 
       {tarjetas.map((anio) => (
         <TarjetaAnio

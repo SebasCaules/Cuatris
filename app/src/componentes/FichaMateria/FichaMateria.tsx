@@ -379,14 +379,12 @@ export function FichaMateria({
         */}
         <Boton
           aria-disabled="true"
-          title={SPRINT_MOVER}
           aria-describedby={idMover}
         >
           Mover a otro cuatrimestre
         </Boton>
         <Boton
           aria-disabled="true"
-          title={SPRINT_SUGERIR}
           aria-describedby={idSugerir}
         >
           Sugerir corrección

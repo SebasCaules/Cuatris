@@ -29,7 +29,11 @@ export interface PropsChip {
   pastilla?: boolean;
   /** Si viene, el chip es un botón. */
   onClick?: () => void;
-  /** Nombre accesible cuando el texto visible no alcanza (una sigla, por caso). */
+  /**
+   * Nombre accesible cuando el texto visible no alcanza (una sigla, por caso).
+   * **No es un `title=`**: la regla del autor prohíbe el tooltip del navegador.
+   * Si además hace falta verlo con el mouse, se envuelve el chip en `Tooltip`.
+   */
   titulo?: string;
   disabled?: boolean;
   children: ReactNode;
@@ -53,7 +57,7 @@ export function Chip({
 
   if (onClick === undefined) {
     return (
-      <span className={clases} title={titulo} aria-label={titulo}>
+      <span className={clases} aria-label={titulo}>
         {children}
       </span>
     );
@@ -66,7 +70,6 @@ export function Chip({
       onClick={onClick}
       disabled={disabled}
       aria-pressed={variante === "seleccionado"}
-      title={titulo}
       aria-label={titulo}
     >
       {children}

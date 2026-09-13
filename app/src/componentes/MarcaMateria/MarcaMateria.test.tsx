@@ -1,5 +1,6 @@
 /**
- * El control propio de R1: cuatro estados, un ciclo y ni una casilla nativa.
+ * El control propio: cuatro estados, el ciclo cronológico de R2, tooltip propio
+ * y ni una casilla nativa.
  */
 
 import { render, screen } from "@testing-library/react";
@@ -8,6 +9,7 @@ import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  ayudaDeMarca,
   CICLO_MARCA,
   ESTADO_GUARDADO,
   MarcaMateria,
@@ -55,33 +57,68 @@ describe("MarcaMateria", () => {
     }
   });
 
-  it("lleva la ayuda de qué hace el clic", () => {
+  /** La regla de R2: la ayuda es una burbuja propia, jamás el `title`. */
+  it("al foco muestra un tooltip propio con el estado y el próximo clic", async () => {
+    const usuario = userEvent.setup();
     render(<MarcaViva />);
-    expect(marca()).toHaveAttribute("title", "Clic: cambia el estado");
+
+    expect(marca()).not.toHaveAttribute("title");
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+
+    await usuario.tab();
+    expect(marca()).toHaveFocus();
+    const burbuja = screen.getByRole("tooltip");
+    expect(burbuja).toHaveTextContent("Pendiente · clic: cursando");
+    expect(marca()).toHaveAttribute("aria-describedby", burbuja.id);
+
+    await usuario.tab();
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 
-  it("el clic cicla pendiente → final → cursada → cursando → pendiente", async () => {
+  it("el texto del tooltip nombra los cuatro pasos del ciclo", () => {
+    expect(ayudaDeMarca("pendiente")).toBe("Pendiente · clic: cursando");
+    expect(ayudaDeMarca("cursando")).toBe("Cursando · clic: cursada aprobada");
+    expect(ayudaDeMarca("cursada")).toBe(
+      "Cursada aprobada, falta el final · clic: aprobada con final",
+    );
+    expect(ayudaDeMarca("final")).toBe(
+      "Aprobada con final · clic: pendiente",
+    );
+  });
+
+  it("el clic cicla pendiente → cursando → cursada → final → pendiente", async () => {
     const usuario = userEvent.setup();
     render(<MarcaViva />);
 
     expect(marca()).toHaveClass("marca-materia--pendiente");
     await usuario.click(marca());
-    expect(marca()).toHaveClass("marca-materia--final");
+    expect(marca()).toHaveClass("marca-materia--cursando");
     await usuario.click(marca());
     expect(marca()).toHaveClass("marca-materia--cursada");
     await usuario.click(marca());
-    expect(marca()).toHaveClass("marca-materia--cursando");
+    expect(marca()).toHaveClass("marca-materia--final");
     await usuario.click(marca());
     expect(marca()).toHaveClass("marca-materia--pendiente");
+  });
+
+  /** Con el ciclo cronológico, llegar a *final* cuesta exactamente tres clics. */
+  it("marcar el final desde pendiente son tres clics", async () => {
+    const usuario = userEvent.setup();
+    render(<MarcaViva />);
+    for (let clic = 0; clic < 3; clic += 1) {
+      await usuario.click(marca());
+    }
+    expect(marca()).toHaveClass("marca-materia--final");
   });
 
   it("Enter y Espacio hacen lo mismo que el clic", async () => {
     const usuario = userEvent.setup();
     render(<MarcaViva />);
 
-    marca().focus();
+    await usuario.tab();
+    expect(marca()).toHaveFocus();
     await usuario.keyboard("{Enter}");
-    expect(marca()).toHaveClass("marca-materia--final");
+    expect(marca()).toHaveClass("marca-materia--cursando");
     await usuario.keyboard(" ");
     expect(marca()).toHaveClass("marca-materia--cursada");
   });
@@ -98,7 +135,23 @@ describe("MarcaMateria", () => {
       />,
     );
     await usuario.click(marca());
-    expect(alCambiar).toHaveBeenCalledWith("cursada");
+    expect(alCambiar).toHaveBeenCalledWith("pendiente");
+  });
+
+  /** Sin `alCambiar` es un dibujo: lo que necesita la leyenda. */
+  it("sin `alCambiar` no es un control", () => {
+    render(
+      <MarcaMateria
+        codigo="31.08"
+        nombre="Sistemas de Representación"
+        estado="final"
+        tamano={16}
+      />,
+    );
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    const dibujo = document.querySelector(".marca-materia");
+    expect(dibujo).toHaveAttribute("aria-hidden", "true");
+    expect(dibujo).toHaveStyle({ "--marca-lado": "16px" });
   });
 
   it("dibuja sus glifos en SVG propio, sin casilla ni tipografía de iconos", () => {
@@ -121,9 +174,8 @@ describe("MarcaMateria", () => {
         circulos:
           document.querySelectorAll(".marca-materia__glifo circle").length,
         glifo: document.querySelector(".marca-materia__glifo") !== null,
-        nativos: document.querySelectorAll(
-          'input[type="checkbox"], select, progress',
-        ).length,
+        nativos: document.querySelectorAll("input, select, progress, [title]")
+          .length,
       };
       unmount();
       return cuenta;
@@ -155,6 +207,24 @@ describe("MarcaMateria", () => {
       nativos: 0,
     });
   });
+
+  /** La doble tilde es la de la referencia, con su lienzo apaisado. */
+  it("la doble tilde usa el lienzo 24×16 y los trazos de la referencia", () => {
+    render(
+      <MarcaMateria
+        codigo="31.08"
+        nombre="Sistemas de Representación"
+        estado="final"
+        alCambiar={() => undefined}
+      />,
+    );
+    const svg = document.querySelector(".marca-materia__glifo--doble");
+    expect(svg).toHaveAttribute("viewBox", "0 0 24 16");
+    expect(svg).toHaveAttribute("width", "19");
+    const trazos = [...document.querySelectorAll(".marca-materia__glifo path")]
+      .map((path) => path.getAttribute("d"));
+    expect(trazos).toEqual(["M2.5 8.5L6 12L11.5 4.5", "M9.5 8.5L13 12L18.5 4.5"]);
+  });
 });
 
 describe("traducción entre la marca y lo guardado", () => {
@@ -174,13 +244,13 @@ describe("traducción entre la marca y lo guardado", () => {
     expect(marcaDeHistoria(undefined)).toBe("pendiente");
   });
 
-  it("el ciclo recorre los cuatro estados y cierra", () => {
+  it("el ciclo recorre los cuatro estados en orden cronológico y cierra", () => {
     let estado: EstadoMarca = "pendiente";
     const recorrido: EstadoMarca[] = [];
     for (let paso = 0; paso < 4; paso += 1) {
       estado = CICLO_MARCA[estado];
       recorrido.push(estado);
     }
-    expect(recorrido).toEqual(["final", "cursada", "cursando", "pendiente"]);
+    expect(recorrido).toEqual(["cursando", "cursada", "final", "pendiente"]);
   });
 });

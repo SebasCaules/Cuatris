@@ -19,7 +19,7 @@ import {
   descargarTexto,
   nombreDeArchivoIlegible,
 } from "./MenuPlan/acciones";
-import { Boton } from "./primitivas";
+import { Boton, Tooltip } from "./primitivas";
 import "./PantallaEstado.css";
 
 export function PantallaCargando() {
@@ -155,16 +155,28 @@ export function PantallaPlanCorrupto({
               Descargar el plan guardado
             </Boton>
           ) : null}
-          <Boton
-            variante="secundario"
-            disabled={hayCopia && !descargado}
-            {...(hayCopia && !descargado
-              ? { title: "Descargá la copia antes de perder lo guardado" }
-              : {})}
-            onClick={alEmpezarDeCero}
+          {/*
+            El motivo del botón apagado va en una burbuja propia y nunca en un
+            `title=`: el envoltorio del `Tooltip` sigue recibiendo el mouse
+            aunque el botón esté deshabilitado. El envoltorio está siempre —con
+            el texto vacío no dibuja nada— para que el botón no se desmonte al
+            habilitarse.
+          */}
+          <Tooltip
+            texto={
+              hayCopia && !descargado
+                ? "Descargá la copia antes de perder lo guardado"
+                : ""
+            }
           >
-            Empezar de cero
-          </Boton>
+            <Boton
+              variante="secundario"
+              disabled={hayCopia && !descargado}
+              onClick={alEmpezarDeCero}
+            >
+              Empezar de cero
+            </Boton>
+          </Tooltip>
         </div>
       </div>
     </div>

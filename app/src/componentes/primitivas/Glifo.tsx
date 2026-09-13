@@ -6,6 +6,7 @@
  * nada en un lector de pantalla.
  */
 
+import { Tooltip } from "./Tooltip";
 import "./Glifo.css";
 
 export type NombreGlifo =
@@ -39,11 +40,16 @@ export interface PropsGlifo {
   nombre: NombreGlifo;
   /** Reemplaza el nombre accesible por uno más específico del contexto. */
   etiqueta?: string;
+  /**
+   * Texto de la burbuja que explica el estado (R2). Sin él el glifo no lleva
+   * tooltip: en una lista de nueve glifos iguales, nueve burbujas serían ruido.
+   */
+  descripcion?: string;
 }
 
-export function Glifo({ nombre, etiqueta }: PropsGlifo) {
+export function Glifo({ nombre, etiqueta, descripcion }: PropsGlifo) {
   const glifo = GLIFOS[nombre];
-  return (
+  const signo = (
     <span
       className={`glifo glifo--${nombre}`}
       role="img"
@@ -52,4 +58,8 @@ export function Glifo({ nombre, etiqueta }: PropsGlifo) {
       {glifo.signo}
     </span>
   );
+  if (descripcion === undefined) {
+    return signo;
+  }
+  return <Tooltip texto={descripcion}>{signo}</Tooltip>;
 }

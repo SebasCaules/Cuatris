@@ -1,11 +1,16 @@
 /**
- * La tarjeta de electivas del plan de estudios (R1).
+ * La tarjeta de electivas del plan de estudios.
  *
- * Va al final, después de los cinco años, y tiene la misma forma que una
- * `TarjetaAnio`: cabecera con el progreso a la derecha y filas iguales. Lo que
- * cambia es qué se mide —créditos contra los 27 que exige el plan, no materias
- * contra el total, porque las electivas no se cuentan por cabeza— y que trae un
- * buscador: son más de ochenta y sin filtro no se encuentra ninguna.
+ * Va al final, después de los cinco años, y tiene la misma forma y la misma
+ * densidad que una `TarjetaAnio`: cabecera compacta con el progreso a la
+ * derecha y filas de 36 px. Lo que cambia es qué se mide —créditos contra los
+ * 27 que exige el plan, no materias contra el total, porque las electivas no se
+ * cuentan por cabeza— y que trae un buscador: son más de ochenta y sin filtro
+ * no se encuentra ninguna.
+ *
+ * **Sin casilla** (R2): marcar «todas las electivas» no quiere decir nada, así
+ * que en su lugar no va nada. El buscador es propio y no un `<input>`, por la
+ * misma regla que el resto de los controles.
  *
  * Los textos son los del mockup, en voseo.
  */
@@ -20,7 +25,7 @@ import type {
 } from "../../contrato/tipos";
 import { FilaMateriaPlan } from "../FilaMateriaPlan";
 import type { EstadoMarca } from "../MarcaMateria";
-import { BarraProgreso, Campo } from "../primitivas";
+import { BarraProgreso, CampoBusqueda } from "../primitivas";
 import "./TarjetaElectivas.css";
 
 export interface PropsTarjetaElectivas {
@@ -55,27 +60,28 @@ export function TarjetaElectivas({
   return (
     <section className="tarjeta-electivas" aria-label="Electivas">
       <header className="tarjeta-electivas__cabecera">
-        <div className="tarjeta-electivas__identidad">
-          <h3 className="tarjeta-electivas__titulo">Electivas</h3>
-          <p className="tarjeta-electivas__rotulo">
-            {creditosRequeridos} CR REQUERIDOS
-          </p>
-        </div>
+        <h3 className="tarjeta-electivas__titulo">Electivas</h3>
+        <p className="tarjeta-electivas__rotulo">
+          {creditosRequeridos} CR REQUERIDOS
+        </p>
         <div className="tarjeta-electivas__progreso">
           <BarraProgreso
             valor={creditosAprobados}
             maximo={creditosRequeridos}
+            ancho={96}
             etiqueta={`Electivas: ${creditosAprobados} de ${creditosRequeridos} créditos`}
           />
           <p className="tarjeta-electivas__cuenta">
-            {creditosAprobados}/{creditosRequeridos} cr
+            <span className="tarjeta-electivas__cuenta-hechos">
+              {creditosAprobados}
+            </span>
+            /{creditosRequeridos} cr
           </p>
         </div>
       </header>
 
       <div className="tarjeta-electivas__buscador">
-        <Campo
-          tipo="busqueda"
+        <CampoBusqueda
           etiqueta="Buscar electiva por nombre, código o abreviación"
           placeholder="Buscar electiva por nombre, código o abreviación"
           valor={busqueda}

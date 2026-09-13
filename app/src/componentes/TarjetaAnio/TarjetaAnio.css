@@ -1,32 +1,66 @@
-/* Tarjeta blanca sobre el fondo arena, con el borde y la sombra de tokens.md. */
+/*
+ * Tarjeta sin relleno propio: el aire lo ponen la cabecera y las columnas.
+ *
+ * El recorte del plegado vive en `.tarjeta-anio__plegable > *` y **no** acá:
+ * un `overflow: hidden` en la tarjeta le cortaba la burbuja a cualquier
+ * tooltip que naciera cerca del borde, que es justo donde están el chevron y
+ * la casilla.
+ */
 .tarjeta-anio {
-  padding: 16px 12px 12px;
-  border: var(--borde-tarjeta);
-  border-radius: var(--radio-tarjeta);
+  border: 1px solid var(--linea-suave);
+  border-radius: 8px;
   background: var(--superficie);
-  box-shadow: var(--sombra-tarjeta);
 }
 
+/*
+ * 49 px de alto, como la referencia. El relleno solo llega a 42; los 7 que
+ * faltan son aire que la referencia le da a la línea del título, y se piden
+ * como `min-height` en vez de inflar el `line-height`, que arrastraría también
+ * al rótulo del ciclo.
+ */
 .tarjeta-anio__cabecera {
   display: flex;
   align-items: baseline;
-  gap: 14px;
-  padding: 0 8px 12px;
+  gap: 12px;
+  min-height: 49px;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--linea-suave);
+  cursor: pointer;
 }
 
-.tarjeta-anio__identidad {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
+/*
+ * La cabecera es la que se lleva el foco (el chevron quedó fuera del Tab), así
+ * que tiene que verse enfocada.
+ */
+.tarjeta-anio__cabecera:focus-visible {
+  outline: 2px solid var(--texto);
+  outline-offset: -2px;
+  border-radius: 8px 8px 0 0;
+}
+
+/* La casilla y el chevron se alinean al centro de la línea, no a la base. */
+.tarjeta-anio__cabecera > .tooltip {
+  align-self: center;
+}
+
+/*
+ * La casilla del año se alinea con la columna de marcas, como pide el
+ * entregable 2. Con el relleno de la cabecera sola (16 px) su centro caía en
+ * 25 px y el de la primera marca en 30 —10 de la columna + 8 de la fila + 11
+ * de media marca—: los 5 px que faltan se los pone la casilla, para no tocar
+ * el `padding: 11px 16px` que la referencia fija para la cabecera.
+ */
+.tarjeta-anio__cabecera > .tooltip:first-child {
+  margin-left: 5px;
 }
 
 .tarjeta-anio__titulo {
   margin: 0;
   font-family: var(--fuente-texto);
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 1.1;
+  font-size: 16.5px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
   color: var(--texto);
 }
 
@@ -35,82 +69,93 @@
   font-family: var(--fuente-mono);
   font-size: 9px;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--texto-secundario);
 }
 
-.tarjeta-anio__acciones {
-  flex: 1 1 auto;
-  display: flex;
-  gap: 10px;
-  opacity: 0;
-  transition: opacity 120ms ease;
-}
-
-.tarjeta-anio__cabecera:hover .tarjeta-anio__acciones,
-.tarjeta-anio__cabecera:focus-within .tarjeta-anio__acciones {
-  opacity: 1;
-}
-
-.tarjeta-anio__accion {
-  padding: 0;
-  appearance: none;
-  border: 0;
-  background: transparent;
-  font-family: var(--fuente-mono);
-  font-size: 8.5px;
-  letter-spacing: 0.04em;
-  color: var(--texto-secundario);
-  cursor: pointer;
-}
-
-.tarjeta-anio__accion:hover {
-  color: var(--acento);
-}
-
-.tarjeta-anio__accion:focus-visible {
-  outline: 1.5px solid var(--texto);
-  outline-offset: 2px;
-}
-
+/* El progreso se empuja a la derecha; el chevron queda después. */
 .tarjeta-anio__progreso {
+  margin-left: auto;
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 8px;
-  width: 160px;
+  gap: 9px;
+  align-self: center;
 }
 
 .tarjeta-anio__cuenta {
   margin: 0;
   font-family: var(--fuente-mono);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--texto-secundario);
   white-space: nowrap;
 }
 
-/* Dos columnas separadas por la línea vertical clara de la captura. */
+.tarjeta-anio__cuenta-hechas {
+  font-weight: 500;
+  color: var(--texto);
+}
+
+.tarjeta-anio__chevron {
+  display: inline-flex;
+  padding: 2px;
+  appearance: none;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tarjeta-anio__chevron:focus-visible {
+  outline: 2px solid var(--texto);
+  outline-offset: 1px;
+}
+
+/*
+ * El plegado se anima con las filas de una grilla —de `1fr` a `0fr`—: es la
+ * única forma de interpolar «el alto que tenga» sin medirlo en JavaScript.
+ */
+.tarjeta-anio__plegable {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 220ms ease;
+}
+
+.tarjeta-anio__plegable[data-plegado="si"] {
+  grid-template-rows: 0fr;
+}
+
+.tarjeta-anio__plegable > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta-anio__plegable {
+    transition: none;
+  }
+}
+
+/* Dos columnas separadas por la línea vertical de la referencia. */
 .tarjeta-anio__cuerpo {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
+  grid-template-columns: 1fr 1fr;
 }
 
 .tarjeta-anio__cuerpo > * + * {
-  border-left: 1px solid var(--linea-columna);
-  padding-left: 20px;
+  border-left: 1px solid var(--linea-suave);
 }
 
-/* Bajo 900 px las columnas se apilan y la línea vertical no tiene sentido. */
-@media (max-width: 900px) {
+/* Bajo 700 px las columnas se apilan y la línea pasa a ser horizontal. */
+@media (max-width: 700px) {
   .tarjeta-anio__cuerpo {
     grid-template-columns: 1fr;
   }
 
   .tarjeta-anio__cuerpo > * + * {
     border-left: 0;
-    padding-left: 0;
+    border-top: 1px solid var(--linea-suave);
   }
 
   .tarjeta-anio__cabecera {

@@ -4,9 +4,10 @@
  */
 
 /*
- * El selector de archivo no se dibuja —lo abre el menú «⋯»— pero sigue en el
- * árbol para que el teclado y los lectores de pantalla lo alcancen. Por eso se
- * recorta en vez de usar `display: none`.
+ * El selector de archivo no se dibuja: lo crea `elegirArchivo` al vuelo, lo
+ * usa el sistema y se destruye apenas el usuario elige o cancela. Mientras
+ * existe se recorta en vez de usar `display: none`, porque un elemento con
+ * `display: none` no abre el selector en todos los navegadores.
  */
 .menu-plan__archivo {
   position: absolute;

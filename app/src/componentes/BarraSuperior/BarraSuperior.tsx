@@ -14,7 +14,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 
 import type { Ruta } from "../../rutas";
-import { Boton, Campo, useEscapeDeCapa } from "../primitivas";
+import { Boton, CampoBusqueda, useEscapeDeCapa } from "../primitivas";
 import "./BarraSuperior.css";
 
 export interface PropsBarraSuperior {
@@ -145,6 +145,12 @@ export function BarraSuperior({
   onBorrarTodo,
 }: PropsBarraSuperior) {
   const idNota = useId();
+  /*
+   * El texto tipeado vive acá: `CampoBusqueda` no lo guarda solo (es un
+   * editable sin controlar, a propósito) y la barra tiene que poder volver a
+   * dibujarse sin perder lo que el usuario venía escribiendo.
+   */
+  const [consulta, setConsulta] = useState("");
   return (
     <header className="barra-superior">
       <div className="barra-superior__identidad">
@@ -177,12 +183,22 @@ export function BarraSuperior({
       </nav>
 
       <div className="barra-superior__acciones">
-        <Campo
-          tipo="busqueda"
+        {/*
+          El campo es `CampoBusqueda`, el propio: un `<input type="search">`
+          traía el aspecto del navegador (la crucecita de WebKit, el alto que
+          cada uno decide) y era, junto con el selector de archivo del menú, el
+          último control nativo que quedaba en `#/plan`. Las medidas de 13b
+          —240×26, texto de 11 px— las repone `BarraSuperior.css`.
+        */}
+        <CampoBusqueda
           etiqueta="Buscar materia, código o docente"
           placeholder="Buscar materia, código o docente"
-          disabled={onBuscar === undefined}
-          {...(onBuscar === undefined ? {} : { onCambio: onBuscar })}
+          valor={consulta}
+          deshabilitado={onBuscar === undefined}
+          onCambio={(texto) => {
+            setConsulta(texto);
+            onBuscar?.(texto);
+          }}
         />
         {/*
           Sin 13j el botón está apagado, pero con el mismo trato que los del pie
@@ -198,7 +214,6 @@ export function BarraSuperior({
             {...(onSugerir === undefined
               ? {
                   "aria-disabled": "true",
-                  title: NOTA_SUGERIR,
                   "aria-describedby": idNota,
                 }
               : { onClick: onSugerir })}

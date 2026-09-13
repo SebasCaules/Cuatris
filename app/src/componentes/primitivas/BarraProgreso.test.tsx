@@ -60,6 +60,33 @@ describe("BarraProgreso", () => {
     );
   });
 
+  it("el segundo segmento cuenta lo empezado y no pisa lo terminado", () => {
+    const { rerender } = render(
+      <BarraProgreso valor={1} parcial={2} maximo={4} etiqueta="mitad" />,
+    );
+    expect(pista().style.getPropertyValue("--barra-progreso-relleno")).toBe(
+      "25%",
+    );
+    expect(pista().style.getPropertyValue("--barra-progreso-parcial")).toBe(
+      "50%",
+    );
+    // `aria-valuenow` sigue midiendo solo lo terminado.
+    expect(pista()).toHaveAttribute("aria-valuenow", "1");
+
+    // Lo empezado nunca desborda: se recorta a lo que queda libre.
+    rerender(<BarraProgreso valor={3} parcial={9} maximo={4} etiqueta="tope" />);
+    expect(pista().style.getPropertyValue("--barra-progreso-parcial")).toBe(
+      "25%",
+    );
+  });
+
+  it("acepta un ancho fijo en píxeles", () => {
+    render(<BarraProgreso valor={1} maximo={2} etiqueta="fija" ancho={96} />);
+    expect(pista().style.getPropertyValue("--barra-progreso-ancho")).toBe(
+      "96px",
+    );
+  });
+
   /** La regla del autor: ningún control nativo con aspecto por defecto. */
   it("no usa el `<progress>` del navegador", () => {
     render(<BarraProgreso valor={5} maximo={10} etiqueta="propia" />);

@@ -51,6 +51,8 @@ import {
   BarraProgreso,
   Boton,
   Campo,
+  CampoBusqueda,
+  Casilla,
   Chip,
   Etiqueta,
   Glifo,
@@ -58,6 +60,7 @@ import {
   Nota,
   NOMBRES_GLIFO,
   PanelLateral,
+  Tooltip,
 } from "../componentes/primitivas";
 import type { Codigo, PeriodoId, Visibles } from "../contrato/tipos";
 import type { Ruta } from "../rutas";
@@ -141,17 +144,21 @@ function Fila({ children }: { children: ReactNode }) {
   return <div className="muestrario__fila">{children}</div>;
 }
 
-/** Los cuatro estados de la marca, en el orden en que los recorre el clic. */
+/** Los cuatro estados de la marca, en el orden cronológico del ciclo (R2). */
 const ESTADOS_MARCA: readonly EstadoMarca[] = [
   "pendiente",
-  "final",
-  "cursada",
   "cursando",
+  "cursada",
+  "final",
 ];
 
+/** Los tres estados de la casilla de grupo. */
+const ESTADOS_CASILLA: readonly (boolean | "mixed")[] = [false, "mixed", true];
+
 /**
- * La pestaña «Plan» en chico: la marca en sus cuatro estados, la barra en tres
- * llenados y una `TarjetaAnio` completa con el año 1 del plan real.
+ * La pestaña «Plan» en chico: la marca en sus cuatro estados con el tamaño
+ * nuevo, la casilla en los tres suyos, un tooltip, la barra con dos segmentos y
+ * dos `TarjetaAnio` —una desplegada y otra ya terminada, que aparece plegada—.
  *
  * Tiene estado propio porque la tarjeta no lo guarda: así se puede ciclar una
  * materia acá mismo y ver los cuatro aspectos sin montar el plan del usuario.
@@ -189,6 +196,24 @@ function SeccionPlanDeEstudios() {
         ))}
       </Fila>
 
+      <Fila>
+        {ESTADOS_CASILLA.map((marcada) => (
+          <div className="muestrario__marca" key={String(marcada)}>
+            <Casilla
+              marcada={marcada}
+              etiqueta={`Casilla ${String(marcada)}`}
+              alAccionar={() => undefined}
+            />
+            <p className="muestrario__dato">
+              {marcada === true ? "marcada" : marcada === "mixed" ? "mixta" : "vacía"}
+            </p>
+          </div>
+        ))}
+        <Tooltip texto="Marcar todo el año como aprobado con final" lado="abajo">
+          <Boton variante="secundario">Con tooltip propio</Boton>
+        </Tooltip>
+      </Fila>
+
       <div className="muestrario__barras">
         {[0, 50, 100].map((porcentaje) => (
           <div className="muestrario__barra" key={porcentaje}>
@@ -200,6 +225,15 @@ function SeccionPlanDeEstudios() {
             <p className="muestrario__dato">{porcentaje} %</p>
           </div>
         ))}
+        <div className="muestrario__barra">
+          <BarraProgreso
+            valor={4}
+            parcial={3}
+            maximo={9}
+            etiqueta="Ejemplo con dos segmentos"
+          />
+          <p className="muestrario__dato">4+3/9</p>
+        </div>
       </div>
 
       <TarjetaAnio
@@ -212,6 +246,16 @@ function SeccionPlanDeEstudios() {
         }}
         alMarcarVarias={marcar}
       />
+
+      {/* Un año terminado: arranca plegado, como en la pantalla real. */}
+      <TarjetaAnio
+        titulo="Año 2"
+        ciclo="CICLO BÁSICO"
+        columnas={COLUMNAS_ANIO_1}
+        estadoDe={() => "final"}
+        alCambiar={() => undefined}
+        alMarcarVarias={() => undefined}
+      />
     </Seccion>
   );
 }
@@ -219,6 +263,7 @@ function SeccionPlanDeEstudios() {
 export function Muestrario() {
   const [ruta, setRuta] = useState<Ruta>({ vista: "plan" });
   const [buscado, setBuscado] = useState("");
+  const [buscadoElectiva, setBuscadoElectiva] = useState("");
   const [ultimaAccion, setUltimaAccion] = useState("—");
   const [visibles, setVisibles] = useState<Visibles>(2);
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -345,6 +390,16 @@ export function Muestrario() {
             placeholder="análisis"
             disabled
           />
+        </Fila>
+        {/* El buscador propio del plan: sin `<input>` y sin aspecto heredado. */}
+        <Fila>
+          <CampoBusqueda
+            etiqueta="Buscar electiva (muestrario)"
+            placeholder="Buscar electiva por nombre, código o abreviación"
+            valor={buscadoElectiva}
+            onCambio={setBuscadoElectiva}
+          />
+          <p className="muestrario__dato">{buscadoElectiva || "—"}</p>
         </Fila>
       </Seccion>
 

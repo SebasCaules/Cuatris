@@ -171,7 +171,8 @@ describe("GrillaSemanal", () => {
     });
     // Las 16:00 son ocho horas después de las 08:00.
     expect(marca.style.top).toBe("120px");
-    expect(marca.title).toBe("Cambio de sede a las 16:00: Rectorado → SDT");
+    // Sin `title=` (R2): el nombre accesible ya dice de qué sede a cuál.
+    expect(marca).not.toHaveAttribute("title");
     // No bloquea: los dos bloques siguen dibujados enteros.
     expect(
       caja(screen.getByRole("img", { name: /93\.18.*jueves 14:00–16:00/ })),

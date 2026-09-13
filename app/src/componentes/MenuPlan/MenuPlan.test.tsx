@@ -131,8 +131,21 @@ function archivo(contenido: string, nombre = "cuatris-plan.json"): File {
   return new File([contenido], nombre, { type: "application/json" });
 }
 
-function selector(): HTMLInputElement {
-  return screen.getByLabelText("Archivo de plan exportado");
+/**
+ * Abre el selector y devuelve el `<input type="file">` que `elegirArchivo`
+ * acaba de crear.
+ *
+ * El selector ya no está montado en el árbol: nace al apretar «Importar plan»
+ * y se destruye al elegir o cancelar, así en la pantalla no queda ni un
+ * control nativo (R2).
+ */
+async function abrirSelector(): Promise<HTMLInputElement> {
+  await userEvent.click(screen.getByRole("button", { name: "Importar plan" }));
+  const campo = screen.getByLabelText("Archivo de plan exportado");
+  if (!(campo instanceof HTMLInputElement)) {
+    throw new Error("El selector de archivo no es un input.");
+  }
+  return campo;
 }
 
 describe("nombreDeArchivo", () => {
@@ -162,18 +175,45 @@ describe("MenuPlan · exportar", () => {
 describe("MenuPlan · importar", () => {
   it("un plan válido reemplaza el actual y va al plan", async () => {
     montar(PLAN_VACIO);
-    await userEvent.upload(selector(), archivo(exportar(PLAN_CON_ALGO)));
+    await userEvent.upload(
+      await abrirSelector(),
+      archivo(exportar(PLAN_CON_ALGO)),
+    );
     await waitFor(() => {
       expect(sonda()).toContain("93.58");
     });
     expect(window.location.hash).toBe("#/plan");
   });
 
+  /**
+   * R2, regla permanente: en la pantalla no queda ni un control nativo. El
+   * `<input type="file">` recortado que estaba siempre montado se cambió por
+   * uno que nace al abrir el selector y se destruye al elegir o cancelar.
+   */
+  it("el selector no queda montado antes ni después de importar", async () => {
+    montar(PLAN_VACIO);
+    expect(document.querySelectorAll("input, select, progress")).toHaveLength(
+      0,
+    );
+
+    await userEvent.upload(
+      await abrirSelector(),
+      archivo(exportar(PLAN_CON_ALGO)),
+    );
+
+    expect(document.querySelectorAll("input, select, progress")).toHaveLength(
+      0,
+    );
+    await waitFor(() => {
+      expect(sonda()).toContain("93.58");
+    });
+  });
+
   it("un JSON con version 99 muestra el error y no cambia el estado", async () => {
     montar(PLAN_CON_ALGO);
     const antes = sonda();
     await userEvent.upload(
-      selector(),
+      await abrirSelector(),
       archivo(JSON.stringify({ ...PLAN_CON_ALGO, version: 99 })),
     );
     expect(
@@ -186,7 +226,7 @@ describe("MenuPlan · importar", () => {
   it("un JSON roto muestra el error y no cambia el estado", async () => {
     montar(PLAN_CON_ALGO);
     const antes = sonda();
-    await userEvent.upload(selector(), archivo("{ esto no es json"));
+    await userEvent.upload(await abrirSelector(), archivo("{ esto no es json"));
     expect(
       await screen.findByText(/El plan guardado no se puede leer \(raiz\)/),
     ).toBeInTheDocument();

@@ -1,40 +1,54 @@
-/* Filas de ~60 px de la captura: marca, código, nombre y créditos a la derecha. */
+/*
+ * Fila de 36 px: 22 de la marca más 7 arriba y 7 abajo. Es la medida de la
+ * referencia y la razón de que un año entre entero en pantalla.
+ */
 .fila-materia-plan {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-height: 58px;
-  padding: 6px 8px;
-  border-radius: var(--radio-chip);
+  height: 36px;
+  padding: 7px 8px;
+  border-radius: 6px;
   list-style: none;
 }
 
 .fila-materia-plan:hover {
-  /* Resaltado suave: la misma arena del fondo sobre la superficie blanca. */
-  background: color-mix(in srgb, var(--fondo) 60%, var(--superficie));
+  background: var(--fila-hover);
 }
 
 .fila-materia-plan__codigo {
-  flex: 0 0 auto;
-  min-width: 38px;
+  flex: 0 0 40px;
+  width: 40px;
+  font-family: var(--fuente-mono);
+  font-size: 10px;
   color: var(--texto-secundario);
 }
 
 .fila-materia-plan__nombre {
   flex: 1 1 auto;
   min-width: 0;
+  overflow: hidden;
   font-family: var(--fuente-texto);
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.25;
   color: var(--texto);
   text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Lo aprobado con final pasa a segundo plano: ya no hay nada que hacer con él. */
+.fila-materia-plan--final .fila-materia-plan__nombre {
+  color: var(--texto-secundario);
 }
 
 .fila-materia-plan__nombre:hover,
 .fila-materia-plan__nombre:focus-visible {
   color: var(--acento);
   text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
 }
 
 .fila-materia-plan__minors {
@@ -43,10 +57,16 @@
   gap: 4px;
 }
 
+/* Los chips de minor van a 9 px acá, un punto más que en 13c: en una fila de
+   36 px el chip de 8.5 px se perdía contra el nombre. */
+.fila-materia-plan__minors .chip--minor {
+  font-size: 9px;
+}
+
 .fila-materia-plan__creditos {
   flex: 0 0 auto;
   font-family: var(--fuente-mono);
-  font-size: 9px;
+  font-size: 10.5px;
   color: var(--texto-secundario);
   white-space: nowrap;
 }

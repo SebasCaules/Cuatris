@@ -230,12 +230,14 @@ describe("FichaMateria", () => {
     // teclado y por lector de pantalla, y un botón `disabled` no recibe foco.
     expect(mover).toHaveAttribute("aria-disabled", "true");
     expect(mover).not.toBeDisabled();
-    expect(mover).toHaveAttribute("title", "Llega en el Sprint 2");
+    // Sin `title=` (R2): el motivo lo lleva la nota a la vista que enlaza
+    // `aria-describedby`, no el tooltip del navegador.
+    expect(mover).not.toHaveAttribute("title");
 
     const sugerir = screen.getByRole("button", { name: "Sugerir corrección" });
     expect(sugerir).toHaveAttribute("aria-disabled", "true");
     expect(sugerir).not.toBeDisabled();
-    expect(sugerir).toHaveAttribute("title", "Llega en el Sprint 3");
+    expect(sugerir).not.toHaveAttribute("title");
 
     // El motivo está a la vista y enlazado desde cada botón.
     for (const [boton, texto] of [
