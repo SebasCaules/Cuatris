@@ -1,0 +1,203 @@
+/*
+ * Tokens de diseño — paleta del Plan de cursada de StudyVaults («Technical
+ * Split»). Fuente: `components/planner/DESIGN.md` de StudyVaultsITBA, §1 (hex
+ * base), §2 (roles por tema), §4 (estados), §5 (paleta de materias) y §6
+ * (minors). Este archivo es el único lugar con hex: el resto de las hojas se
+ * resuelve por estos roles.
+ *
+ * Principios que se conservan de DESIGN.md §0:
+ *   - un estado = un color (`--status-*`) en toda la aplicación;
+ *   - el tinte nunca es texto: los rellenos a baja opacidad usan `--status-*` y
+ *     el texto usa `--status-*-text` (AA);
+ *   - sobre un relleno sólido de color, el texto es `--tinta-bloque`.
+ *
+ * Los roles se definen tres veces:
+ *   1. `:root`               → tema claro, siempre presente.
+ *   2. `prefers-color-scheme` → tema del sistema, salvo que haya `data-tema="claro"`.
+ *   3. `[data-tema="oscuro"]` → elección explícita del usuario, gana en ambos sentidos.
+ */
+
+:root {
+  /* Roles base — claro (DESIGN.md §2, columna Light) */
+  --fondo: #f6f6f5;
+  --superficie: #ffffff;
+  --superficie-2: #f2f1f0;
+  --fila-hover: #f2f1f0;
+  --texto: #241208;
+  --texto-secundario: #7c716b;
+  --texto-secundario-fuerte: #6e635c;
+
+  /* Líneas: la suave dibuja bordes y separadores; la fuerte, contornos de
+     controles. Son la tinta a baja opacidad, como `--hairline` del sitio. */
+  --linea-suave: color-mix(in srgb, var(--texto) 12%, transparent);
+  --linea-fuerte: color-mix(in srgb, var(--texto) 20%, transparent);
+  --linea-columna: var(--linea-suave);
+  --linea-hora: color-mix(in srgb, var(--texto) 8%, transparent);
+
+  /* Acento coral: CTA, pestaña activa, electivas. Como texto sobre claro se
+     usa la variante oscurecida (5.3:1). */
+  --acento: #f47c59;
+  --acento-texto: #a5543a;
+  --acento-contraste: var(--tinta-bloque);
+  --acento-suave: #fde7e1;
+  --acento-hover: color-mix(in srgb, var(--acento) 85%, var(--texto));
+
+  /* Acento secundario azul: obligatorias (troncales), planificado, foco. */
+  --primario: #92cff2;
+  --primario-texto: #617a89;
+  --primario-suave: #e7f4fc;
+
+  /* Tinta sobre rellenos sólidos de color (DESIGN.md §0.4). */
+  --tinta-bloque: #241208;
+
+  /* Estados semánticos (DESIGN.md §4). En claro relleno y texto coinciden. */
+  --status-go: #2e7d52;
+  --status-go-text: #2e7d52;
+  --status-promo: #16745c;
+  --status-promo-text: #16745c;
+  --status-warn: #8a591c;
+  --status-warn-text: #8a591c;
+  --status-caution: #b23a28;
+  --status-caution-text: #b23a28;
+
+  /* Alias históricos de la aplicación, ahora atados a los estados. */
+  --aprobada: var(--status-go);
+  --aprobada-texto: #ffffff;
+  --cursada: var(--status-warn);
+  --cursada-fondo: color-mix(in srgb, var(--cursada) 16%, var(--superficie));
+  --cursada-borde: color-mix(in srgb, var(--cursada) 55%, var(--superficie));
+  --choque: var(--status-caution);
+
+  /* Nota «sin horario publicado» y trama de materia bloqueada: tinta diluida,
+     sin color propio. */
+  --sin-horario-borde: var(--linea-fuerte);
+  --sin-horario-fondo: var(--superficie-2);
+  --bloqueada-trama: repeating-linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--texto) 9%, transparent) 0 3px,
+    transparent 3px 6px
+  );
+
+  /* Doce colores de materia (DESIGN.md §5): se asignan por orden de agregado
+     al plan y quedan fijos para toda la carrera. El estado nunca cambia el
+     color. El relleno es `--materia-relleno-porcentaje` sobre la superficie y
+     la barra izquierda va en el color pleno. */
+  --materia-0: #7fb0e0;
+  --materia-1: #f0a878;
+  --materia-2: #6fc7bd;
+  --materia-3: #f09ab8;
+  --materia-4: #8fd08f;
+  --materia-5: #b8a5e8;
+  --materia-6: #f0cf7a;
+  --materia-7: #7fc3e8;
+  --materia-8: #f0958f;
+  --materia-9: #6fd0a8;
+  --materia-10: #d99ad9;
+  --materia-11: #c0d489;
+  --materia-relleno-porcentaje: 18%;
+  --materia-relleno-base: var(--superficie);
+
+  /* Colores de minor (DESIGN.md §6), por sigla de `plan.minors`. Identifican,
+     no son texto: se usan como relleno al 16 % y borde al 42 %. */
+  --minor-cd: #85a2c2;
+  --minor-irv: #c592ab;
+  --minor-ia: #a9b27e;
+  --minor-arq: #a497c0;
+
+  /* Tooltip: tinta profunda con texto blanco en los dos temas. */
+  --tooltip-fondo: #241208;
+  --tooltip-texto: #ffffff;
+
+  /* Tipografía */
+  --fuente-texto: "Newsreader", Georgia, "Times New Roman", serif;
+  --fuente-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
+
+  /* Radios, bordes y sombras (DESIGN.md §2, `--shadow-1/2`) */
+  --radio-tarjeta: 8px;
+  --radio-chip: 4px;
+  --radio-bloque: 2px;
+  --sombra-1: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --sombra-2: 0 6px 18px rgba(0, 0, 0, 0.1);
+  --borde-tarjeta: 1px solid var(--linea-suave);
+  --sombra-tarjeta: var(--sombra-1);
+  --borde-campo-activo: 1.5px solid var(--acento);
+
+  /* Grilla semanal: 18 px por hora con una tarjeta sola, 15 px con dos lado a
+     lado. Es un token, no una constante. */
+  --hora-px: 15px;
+  --hora-px-tarjeta-sola: 18px;
+  --grilla-desde-hora: 8;
+  --grilla-hasta-hora: 22;
+}
+
+/* Tema del sistema. `:not([data-tema="claro"])` deja que la elección explícita
+   de tema claro gane sobre el sistema. Los valores son la columna Dark de
+   DESIGN.md §2 y §4; lo que no cambia (acento, primario, paleta de materias y
+   de minors) se hereda de `:root`. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    --fondo: #4c3b30;
+    --superficie: #58483e;
+    --superficie-2: #685950;
+    --fila-hover: #685950;
+    --texto: #ffffff;
+    --texto-secundario: #a1a1aa;
+    --texto-secundario-fuerte: #d9d9dd;
+    --linea-suave: rgba(255, 255, 255, 0.1);
+    --linea-fuerte: rgba(255, 255, 255, 0.18);
+    --linea-columna: var(--linea-suave);
+    --linea-hora: rgba(255, 255, 255, 0.08);
+    --acento-texto: #f47c59;
+    --acento-suave: color-mix(in srgb, var(--acento) 16%, var(--superficie));
+    --acento-hover: color-mix(in srgb, var(--acento) 85%, var(--texto));
+    --primario-texto: #92cff2;
+    --primario-suave: color-mix(in srgb, var(--primario) 14%, var(--superficie));
+    --status-go: #46a86e;
+    --status-go-text: #86d3a2;
+    --status-promo: #2f9f8f;
+    --status-promo-text: #6fd0c1;
+    --status-warn: #d8b279;
+    --status-warn-text: #e0be86;
+    --status-caution: #d68f85;
+    --status-caution-text: #edb5ad;
+    --sombra-1: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --sombra-2: 0 6px 18px rgba(0, 0, 0, 0.12);
+    --sombra-tarjeta: var(--sombra-1);
+    --borde-tarjeta: 1px solid var(--linea-suave);
+    --borde-campo-activo: 1.5px solid var(--acento);
+  }
+}
+
+/* Elección explícita del usuario. */
+:root[data-tema="oscuro"] {
+  --fondo: #4c3b30;
+  --superficie: #58483e;
+  --superficie-2: #685950;
+  --fila-hover: #685950;
+  --texto: #ffffff;
+  --texto-secundario: #a1a1aa;
+  --texto-secundario-fuerte: #d9d9dd;
+  --linea-suave: rgba(255, 255, 255, 0.1);
+  --linea-fuerte: rgba(255, 255, 255, 0.18);
+  --linea-columna: var(--linea-suave);
+  --linea-hora: rgba(255, 255, 255, 0.08);
+  --acento-texto: #f47c59;
+  --acento-suave: color-mix(in srgb, var(--acento) 16%, var(--superficie));
+  --acento-hover: color-mix(in srgb, var(--acento) 85%, var(--texto));
+  --primario-texto: #92cff2;
+  --primario-suave: color-mix(in srgb, var(--primario) 14%, var(--superficie));
+  --status-go: #46a86e;
+  --status-go-text: #86d3a2;
+  --status-promo: #2f9f8f;
+  --status-promo-text: #6fd0c1;
+  --status-warn: #d8b279;
+  --status-warn-text: #e0be86;
+  --status-caution: #d68f85;
+  --status-caution-text: #edb5ad;
+  --sombra-1: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --sombra-2: 0 6px 18px rgba(0, 0, 0, 0.12);
+  --sombra-tarjeta: var(--sombra-1);
+  --borde-tarjeta: 1px solid var(--linea-suave);
+  --borde-campo-activo: 1.5px solid var(--acento);
+}

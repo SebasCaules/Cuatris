@@ -1,0 +1,139 @@
+/*
+ * Anchos del carrusel.
+ *
+ * Con `v` tarjetas visibles y un hueco `g`, cada tarjeta mide
+ *   A = (ventana − (v − 1)·g) / v
+ * y correr una posición desplaza el scroll `A + g`, que es lo que calcula el
+ * componente (`pasoDe`) con el mismo `HUECO_PX` que `--carrusel-hueco`.
+ *
+ * El desplazamiento es el nativo: la ventana tiene `overflow-x: auto` con
+ * `scroll-snap`, así que el trackpad y la rueda horizontal la mueven solos y
+ * cada tarjeta encaja al soltar. La barra del navegador se esconde porque las
+ * flechas ya avisan que hay más.
+ */
+
+.carrusel {
+  --carrusel-hueco: 10px;
+}
+
+.carrusel__controles {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.carrusel__cuenta {
+  flex: none;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto-secundario);
+}
+
+.carrusel__acciones {
+  flex: none;
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+/* El marco es el ancla de las flechas, que flotan sobre los bordes. */
+.carrusel__marco {
+  position: relative;
+}
+
+.carrusel__ventana {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+.carrusel__ventana::-webkit-scrollbar {
+  display: none;
+}
+
+.carrusel__ventana:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+/* Mientras se arrastra con el mouse el snap se apaga: si no, la ventana pelea
+   con el puntero por cada tarjeta. */
+.carrusel__ventana--arrastrando {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+
+.carrusel__pista {
+  display: flex;
+  /* `stretch` es lo que iguala el alto de las tarjetas entre sí. */
+  align-items: stretch;
+  gap: var(--carrusel-hueco);
+}
+
+.carrusel__tarjeta {
+  flex: 0 0
+    calc(
+      (100% - (var(--carrusel-visibles, 2) - 1) * var(--carrusel-hueco)) /
+        var(--carrusel-visibles, 2)
+    );
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  border-radius: var(--radio-tarjeta);
+  transition: box-shadow 120ms ease;
+}
+
+/* Destino de un arrastre de materia (`PaginaCursada`): anillo verde si entra,
+   rojo si no. Es forma además de color: el anillo lo dibuja `box-shadow`. */
+.carrusel__tarjeta--destino-valido {
+  box-shadow: 0 0 0 2px var(--status-go);
+}
+
+.carrusel__tarjeta--destino-invalido {
+  box-shadow: 0 0 0 2px var(--status-caution);
+}
+
+/*
+ * Flechas: flotan a media altura sobre el borde de la ventana. Solo existen
+ * cuando hay más tarjetas en ese sentido, así que su presencia es el aviso.
+ */
+.carrusel__flecha {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--texto);
+  box-shadow: var(--sombra-2);
+  transform: translateY(-50%);
+  transition:
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.carrusel__flecha:hover {
+  border-color: var(--acento);
+  color: var(--acento-texto);
+}
+
+.carrusel__flecha--anterior {
+  left: -14px;
+}
+
+.carrusel__flecha--siguiente {
+  right: -14px;
+}

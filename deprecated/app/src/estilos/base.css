@@ -1,0 +1,74 @@
+/* Reset breve y estilos de documento. Todo lo visual sale de tokens.css. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#raiz {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--fuente-texto);
+  font-size: 12px;
+  line-height: 1.5;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+a {
+  color: var(--acento-texto);
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--fuente-mono);
+}
+
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}

@@ -1,0 +1,206 @@
+/* 13i: dos columnas, la de minors de ancho fijo (330 px en el mockup). */
+.progreso {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.progreso__columna {
+  flex: 1;
+  min-width: 0;
+}
+
+.progreso__columna,
+.progreso__minors {
+  padding: 13px;
+  border: var(--borde-tarjeta);
+  border-radius: 6px;
+  background: var(--superficie);
+}
+
+.progreso__minors {
+  flex: 0 0 330px;
+  width: 330px;
+}
+
+.progreso__encabezado {
+  margin: 0 0 10px;
+  font-family: var(--fuente-texto);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.progreso__titulo,
+.progreso__minor {
+  margin-bottom: 13px;
+}
+
+.progreso__fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.progreso__nombre {
+  font-family: var(--fuente-texto);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--texto);
+}
+
+.progreso__tipo,
+.progreso__cifra,
+.progreso__pie,
+.progreso__codigo,
+.progreso__estado {
+  font-family: var(--fuente-mono);
+  color: var(--texto-secundario);
+}
+
+.progreso__tipo {
+  font-size: 9px;
+  font-weight: 400;
+}
+
+.progreso__cifra {
+  font-size: 9.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.progreso__cifra--listo,
+.progreso__estado--aprobada {
+  color: var(--status-go-text);
+}
+
+.progreso__barra {
+  height: 8px;
+  margin-top: 5px;
+  overflow: hidden;
+  background: var(--sin-horario-fondo);
+  border: 1px solid var(--linea-columna);
+  border-radius: 4px;
+}
+
+.progreso__barra--minor {
+  height: 5px;
+  border-radius: 3px;
+}
+
+.progreso__barra-relleno {
+  height: 100%;
+  background: var(--primario);
+}
+
+.progreso__barra-relleno--listo {
+  background: var(--status-go);
+}
+
+.progreso__barra-relleno--minor {
+  background: var(--status-warn);
+}
+
+.progreso__pie {
+  margin: 4px 0 0;
+  font-size: 9px;
+}
+
+.progreso__seccion {
+  margin-top: 4px;
+  padding-top: 11px;
+  border-top: 1px solid var(--linea-columna);
+}
+
+.progreso__electivas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.progreso__electiva {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 4px 0;
+  border-top: 1px solid var(--fondo);
+}
+
+.progreso__codigo {
+  width: 34px;
+  flex: none;
+  font-size: 9px;
+}
+
+.progreso__materia {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--fuente-texto);
+  font-size: 10px;
+  color: var(--texto);
+}
+
+.progreso__estado {
+  width: 84px;
+  flex: none;
+  font-size: 9px;
+  font-weight: 500;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.progreso__intro,
+.progreso__vacio {
+  margin: 0 0 10px;
+  font-family: var(--fuente-texto);
+  font-size: 9.5px;
+  line-height: 1.45;
+  color: var(--texto-secundario);
+}
+
+.progreso__minor {
+  padding: 8px 9px;
+  border: 1px solid var(--linea-columna);
+  border-radius: 5px;
+  background: var(--superficie);
+}
+
+/* El minor en el que ya hay créditos se destaca, como en 13i. */
+.progreso__minor--empezado {
+  border: 1.5px solid var(--texto);
+  background: var(--sin-horario-fondo);
+}
+
+/* El mockup es de 1280 px; por debajo de 900 las dos columnas no entran. */
+@media (max-width: 900px) {
+  .progreso {
+    flex-direction: column;
+  }
+
+  .progreso__minors {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+}
+
+/*
+ * Los ítems que le faltan al título. Van enteros y no resumidos: es la pantalla
+ * de lectura, y la regla del plan —el título se alcanza aprobando todos los
+ * ítems de sus ciclos, incluidos los de 0 créditos— solo se puede seguir si se
+ * ve cuáles son.
+ */
+.progreso__faltantes {
+  margin: 4px 0 0;
+  font-size: 9.5px;
+  line-height: 1.6;
+  color: var(--texto-secundario);
+}
+
+.progreso__faltantes-rotulo {
+  color: var(--texto);
+}
+
+.progreso__faltante-codigo {
+  font-family: var(--fuente-mono);
+}

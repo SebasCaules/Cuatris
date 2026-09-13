@@ -1,0 +1,21 @@
+.insignia {
+  --insignia-color: var(--linea-fuerte);
+
+  display: inline-flex;
+  align-items: center;
+  padding: 0 4px;
+  border: 1px solid color-mix(in srgb, var(--insignia-color) 42%, transparent);
+  border-radius: var(--radio-bloque);
+  background: color-mix(in srgb, var(--insignia-color) 16%, transparent);
+  font-family: var(--fuente-mono);
+  font-size: 8px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--texto);
+}
+
+.insignia--troncal {
+  --insignia-color: var(--primario);
+}

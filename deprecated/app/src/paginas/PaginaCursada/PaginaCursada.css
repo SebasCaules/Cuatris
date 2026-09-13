@@ -1,0 +1,115 @@
+/* El banner de progreso va arriba del carrusel, con el mismo margen que el
+   banner de conflictos. */
+.cursada__progreso {
+  margin-bottom: 10px;
+}
+
+.cursada__banner {
+  margin-bottom: 10px;
+}
+
+/* Controles a la derecha de la cabecera del carrusel (13b). */
+.cursada__acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cursada__visibles {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--linea-columna);
+  border-radius: var(--radio-chip);
+  background: var(--superficie);
+}
+
+.cursada__visible {
+  min-width: 20px;
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto-secundario);
+  cursor: pointer;
+}
+
+.cursada__visible:hover:not(:disabled) {
+  color: var(--texto);
+}
+
+.cursada__visible--activo {
+  background: var(--texto);
+  color: var(--fondo);
+}
+
+.cursada__visible:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Aviso de «todavía no marcaste nada en el Plan» (R1), arriba del carrusel. */
+.cursada__aviso {
+  margin-bottom: 10px;
+}
+
+.cursada__aviso-enlace {
+  font-family: var(--fuente-texto);
+  font-weight: 500;
+  color: var(--acento-texto);
+}
+
+.cursada__aviso-enlace:hover {
+  text-decoration: underline;
+}
+
+/*
+ * Arrastre de materias. Mientras dura, la página entera pone el cursor de
+ * agarre y evita seleccionar texto; el fantasma sigue al puntero y cambia de
+ * borde según la tarjeta de abajo acepte o no la materia (verde/rojo de
+ * estado, DESIGN.md §4, además de la forma: el anillo de la tarjeta).
+ */
+.cursada--arrastrando,
+.cursada--arrastrando * {
+  cursor: grabbing !important;
+  user-select: none;
+}
+
+.cursada__fantasma {
+  position: fixed;
+  z-index: 50;
+  max-width: 240px;
+  padding: 4px 8px;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: var(--radio-chip);
+  background: var(--superficie);
+  box-shadow: var(--sombra-2);
+  font-family: var(--fuente-texto);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--texto);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  transform: translate(12px, 12px);
+}
+
+.cursada__fantasma--valido {
+  border-color: var(--status-go);
+  box-shadow:
+    0 0 0 1px var(--status-go),
+    var(--sombra-2);
+}
+
+.cursada__fantasma--invalido {
+  border-color: var(--status-caution);
+  box-shadow:
+    0 0 0 1px var(--status-caution),
+    var(--sombra-2);
+  text-decoration: line-through;
+  text-decoration-color: var(--status-caution);
+}

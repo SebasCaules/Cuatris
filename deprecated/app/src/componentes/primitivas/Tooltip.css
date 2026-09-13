@@ -1,0 +1,65 @@
+/*
+ * La burbuja vive en un portal con posición fija: `top`/`left` los calcula el
+ * componente a partir del control, y `--tooltip-flecha` es la distancia del
+ * borde izquierdo de la burbuja al centro del control, para que la flecha
+ * siga apuntándolo cuando la burbuja se corrió para no salirse del viewport.
+ */
+.tooltip {
+  display: inline-flex;
+}
+
+.tooltip__burbuja {
+  position: fixed;
+  z-index: 60;
+  max-width: min(280px, calc(100vw - 16px));
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: var(--tooltip-fondo);
+  color: var(--tooltip-texto);
+  box-shadow: var(--sombra-2);
+  font-family: var(--fuente-mono);
+  font-size: 9.5px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+  animation: tooltip-aparecer 90ms ease-out;
+}
+
+@keyframes tooltip-aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip__burbuja {
+    animation: none;
+  }
+}
+
+/* La flecha: un cuadrado girado 45° que asoma por el borde de la burbuja. */
+.tooltip__burbuja::after {
+  content: "";
+  position: absolute;
+  left: var(--tooltip-flecha, 50%);
+  width: 7px;
+  height: 7px;
+  background: inherit;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.tooltip__burbuja--arriba::after {
+  bottom: -3px;
+}
+
+.tooltip__burbuja--abajo::after {
+  top: -3px;
+}

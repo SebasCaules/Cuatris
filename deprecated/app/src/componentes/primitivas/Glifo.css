@@ -1,0 +1,20 @@
+.glifo {
+  display: inline-block;
+  font-family: var(--fuente-mono);
+  font-size: 10px;
+  line-height: 1;
+  color: var(--texto-secundario);
+}
+
+/* Los tres estados que el mockup colorea; el resto va en texto secundario. */
+.glifo--aprobada {
+  color: var(--status-go-text);
+}
+
+.glifo--choque {
+  color: var(--choque);
+}
+
+.glifo--cupoLleno {
+  color: var(--status-warn-text);
+}

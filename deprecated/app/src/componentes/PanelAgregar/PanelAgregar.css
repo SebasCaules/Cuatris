@@ -1,0 +1,224 @@
+/*
+ * Medidas de 13c, con la tarjeta de materia rediseñada: nombre y aula
+ * grandes, código chico, insignias de minor y de troncal. Todo el color sale
+ * de los tokens de estado (DESIGN.md §4) y de minor (§6).
+ */
+
+.panel-agregar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* El campo de 13c ocupa el ancho del panel; la primitiva viene con el ancho
+   fijo de la barra superior. */
+.panel-agregar__busqueda {
+  margin-bottom: 9px;
+}
+
+.panel-agregar__busqueda .campo {
+  width: 100%;
+}
+
+.panel-agregar__filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 9px;
+}
+
+.panel-agregar__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* --- Tarjeta de materia ------------------------------------------------ */
+
+.fila-materia {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 5px;
+  padding: 7px 8px;
+  border: 1px solid var(--linea-columna);
+  border-left: 3px solid var(--linea-fuerte);
+  border-radius: var(--radio-chip);
+  background: var(--superficie);
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease,
+    opacity 120ms ease;
+}
+
+.fila-materia:hover {
+  border-color: var(--linea-fuerte);
+  background: var(--fila-hover);
+}
+
+.fila-materia__cuerpo {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Nombre grande: es lo que se lee primero. */
+.fila-materia__nombre {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--texto);
+  overflow-wrap: anywhere;
+}
+
+.fila-materia__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+/* Código chico, en mono. */
+.fila-materia__codigo {
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+/* Marca de estado: glifo + palabra, en el color de texto de su estado. */
+.fila-materia__estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+.fila-materia__estado--aprobada {
+  color: var(--status-go-text);
+}
+
+.fila-materia__estado--cursando {
+  color: var(--status-warn-text);
+}
+
+.fila-materia__estado--en-plan {
+  color: var(--primario-texto);
+}
+
+/* Oferta del cuatrimestre: la franja normal y la aula grande. */
+.fila-materia__oferta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  margin: 4px 0 0;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto-secundario);
+}
+
+.fila-materia__oferta--sin-horario {
+  font-style: italic;
+}
+
+.fila-materia__aula {
+  font-family: var(--fuente-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--texto);
+}
+
+.fila-materia__cupo {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--status-warn-text);
+}
+
+.fila-materia__acciones {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.fila-materia__creditos {
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  color: var(--texto-secundario);
+  white-space: nowrap;
+}
+
+.fila-materia__agregada {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--fuente-texto);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--status-go-text);
+  white-space: nowrap;
+}
+
+/* --- Estados de la tarjeta --------------------------------------------- */
+
+/* Aprobada: tachada y atenuada, con el verde de estado en el borde. */
+.fila-materia--aprobada {
+  border-left-color: var(--status-go);
+  background: color-mix(in srgb, var(--status-go) 6%, var(--superficie));
+  opacity: 0.6;
+}
+
+.fila-materia--aprobada .fila-materia__nombre {
+  text-decoration: line-through;
+  text-decoration-color: var(--status-go);
+}
+
+/* Cursando: ámbar en el borde, sin tachar. */
+.fila-materia--cursando {
+  border-left-color: var(--status-warn);
+}
+
+/* Ya en el plan: atenuada. */
+.fila-materia--enElPlan {
+  border-left-color: var(--primario);
+  opacity: 0.55;
+}
+
+/* Bloqueada: la trama, nunca otro color de texto. */
+.fila-materia--bloqueada {
+  background: var(--bloqueada-trama);
+}
+
+.fila-materia--bloqueada .fila-materia__nombre {
+  color: var(--texto-secundario);
+}
+
+/* --- Resto del panel --------------------------------------------------- */
+
+.panel-agregar__vacio {
+  margin: 4px 0 0;
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: var(--texto-secundario);
+}
+
+.panel-agregar__leyenda {
+  margin: 8px 0 0;
+  padding-top: 7px;
+  border-top: 1px solid var(--linea-columna);
+  font-family: var(--fuente-texto);
+  font-size: 9.5px;
+  line-height: 1.5;
+  color: var(--texto-secundario);
+}

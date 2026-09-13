@@ -1,0 +1,216 @@
+/*
+ * Medidas de la tarjeta de 13b/13g: caja de 11 px de relleno, título de 12.5 px
+ * y resumen en mono a la derecha, alineados por la línea de base.
+ *
+ * El alto lo iguala el contenedor (el carrusel estira sus tarjetas), así que
+ * acá solo hace falta ocupar todo lo que el contenedor dé.
+ */
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 11px;
+  border: var(--borde-tarjeta);
+  border-radius: var(--radio-tarjeta);
+  background: var(--superficie);
+}
+
+.tarjeta__cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tarjeta__titulo {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--texto);
+}
+
+.tarjeta__resumen {
+  margin: 0;
+  flex: none;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+  color: var(--texto);
+}
+
+/* Materia que se ofrece sin comisión publicada: baja al pie, nunca desaparece. */
+.tarjeta__sin-horario {
+  margin-top: 7px;
+}
+
+.tarjeta__publicado {
+  margin-top: 7px;
+}
+
+.tarjeta__materias {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tarjeta__materias--pie {
+  margin-top: 7px;
+}
+
+/*
+ * Fila de materia (rediseño): barra de color de la materia, abreviación
+ * grande, código chico con las insignias, créditos a la derecha. Se arrastra
+ * de un cuatrimestre a otro (`PaginaCursada`), de ahí el cursor y el
+ * `touch-action: none`, que deja el arrastre táctil para la materia y no para
+ * el carrusel.
+ */
+.tarjeta__materia {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 5px;
+  padding: 5px 7px 5px 6px;
+  border: 1px solid var(--linea-columna);
+  border-radius: var(--radio-chip);
+  background: color-mix(
+    in srgb,
+    var(--materia) var(--materia-relleno-porcentaje),
+    var(--materia-relleno-base)
+  );
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  transition:
+    box-shadow 120ms ease,
+    opacity 120ms ease;
+}
+
+.tarjeta__materia:hover {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--materia) 36%, transparent);
+}
+
+.tarjeta__materia:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+/* Fantasma de la previsualización: borde de puntos y a media tinta. No es
+   arrastrable ni se anuncia. */
+.tarjeta__materia--fantasma {
+  border: 1.5px dashed color-mix(in srgb, var(--materia) 60%, var(--linea-fuerte));
+  background: transparent;
+  cursor: default;
+  opacity: 0.7;
+}
+
+/* Lo que se está arrastrando queda marcado en su lugar de origen. */
+.tarjeta__materia--arrastrando {
+  opacity: 0.35;
+}
+
+.tarjeta__barra {
+  flex: none;
+  width: 3px;
+  height: 22px;
+  border-radius: var(--radio-bloque);
+  background: var(--materia);
+}
+
+.tarjeta__materia-cuerpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* La abreviación grande: es el identificador de la materia. */
+.tarjeta__abreviacion {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--fuente-texto);
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--texto);
+}
+
+.tarjeta__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.tarjeta__codigo {
+  font-family: var(--fuente-mono);
+  font-size: 8px;
+  color: var(--texto-secundario);
+}
+
+/* «sin comisión elegida»: aviso en mono, a media tinta. */
+.tarjeta__nota {
+  font-family: var(--fuente-mono);
+  font-size: 8px;
+  font-style: italic;
+  color: var(--texto-secundario);
+}
+
+.tarjeta__creditos {
+  flex: none;
+  white-space: nowrap;
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  color: var(--texto-secundario);
+}
+
+/* Materia sin comisión publicada al pie de la grilla: también se arrastra. */
+.tarjeta__sin-horario[data-arrastre-codigo] {
+  cursor: grab;
+  touch-action: none;
+}
+
+.tarjeta__agregar {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  border: 1.5px dashed var(--sin-horario-borde);
+  border-radius: var(--radio-chip);
+  background: transparent;
+  font-family: var(--fuente-mono);
+  font-size: 9.5px;
+  color: var(--texto-secundario);
+  cursor: pointer;
+}
+
+.tarjeta__agregar:hover:not(:disabled) {
+  border-color: var(--texto);
+  color: var(--texto);
+}
+
+.tarjeta__agregar:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+/*
+ * Hito del plan: la nota verde de 13g, con el verde de estado `go` (DESIGN.md
+ * §4): borde al 34 % y relleno al 12 %, como las pills «ok» del sitio.
+ */
+.tarjeta__hito {
+  margin: 8px 0 0;
+  padding: 6px 8px;
+  border: 1px solid color-mix(in srgb, var(--status-go) 34%, transparent);
+  border-radius: var(--radio-chip);
+  background: color-mix(in srgb, var(--status-go) 12%, var(--superficie));
+  font-family: var(--fuente-texto);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--texto);
+}

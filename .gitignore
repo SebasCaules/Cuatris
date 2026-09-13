@@ -1,27 +1,32 @@
+# ---- app standalone (Next.js, static export) ----
+node_modules/
+.next/
+out/
+tsconfig.tsbuildinfo
+next-env.d.ts
+.preview/
+*.log
+npm-debug.log*
+
+# generado por scripts/build-planner-data.mjs a partir de data/plan/data.js
+lib/planner/data.json
+
+# ---- proyecto anterior, congelado en deprecated/ ----
 # material crudo: nunca entra al repositorio
 material-raw/
-
 # entornos y caches
 .venv/
 __pycache__/
 *.pyc
 .pytest_cache/
 .ruff_cache/
-node_modules/
-app/dist/
-app/.vite/
-*.log
-
-# sistema
-.DS_Store
-
-# artefactos de empaquetado y caches del scraper
 *.egg-info/
 .cuatris-cache/
-
-# salida de `cuatris pr triage --salida triage.json`: la genera el workflow en el runner
-# (.github/workflows/pr-datos.yml) y tambien queda al correrlo a mano; nunca se versiona
+deprecated/app/dist/
+deprecated/app/.vite/
+deprecated/app/coverage/
+deprecated/.impeccable/hook.cache.json
 triage.json
 
-# cache del hook de diseño (la configuración sí se versiona)
-.impeccable/hook.cache.json
+# ---- sistema ----
+.DS_Store

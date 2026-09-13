@@ -1,0 +1,69 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radio-chip);
+  font-family: var(--fuente-texto);
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  background: transparent;
+  color: var(--texto-secundario);
+}
+
+.chip--pastilla {
+  border-radius: 999px;
+  font-family: var(--fuente-mono);
+  font-size: 9px;
+}
+
+.chip--relleno {
+  background: var(--sin-horario-fondo);
+  border-color: var(--linea-columna);
+}
+
+.chip--contorno {
+  background: var(--superficie);
+  border-color: var(--linea-columna);
+}
+
+.chip--seleccionado {
+  background: var(--texto);
+  border-color: var(--texto);
+  /* Relleno de tinta: el texto toma el fondo de la página. */
+  color: var(--fondo);
+}
+
+/*
+ * Marca de minor (DESIGN.md §6): la sigla en mono sobre el color del minor al
+ * 16 %, con borde al 42 %. `--minor-color` lo pone quien la dibuja (una custom
+ * property en línea, como el contrato `MinorBadge` de StudyVaults); sin él se
+ * cae al contorno neutro.
+ */
+.chip--minor {
+  --minor-color: var(--linea-fuerte);
+
+  padding: 1px 5px;
+  border-color: color-mix(in srgb, var(--minor-color) 42%, transparent);
+  border-radius: var(--radio-bloque);
+  background: color-mix(in srgb, var(--minor-color) 16%, transparent);
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  color: var(--texto);
+}
+
+button.chip:not(:disabled):hover {
+  border-color: var(--texto);
+  color: var(--texto);
+}
+
+button.chip--seleccionado:not(:disabled):hover {
+  color: var(--fondo);
+}
+
+button.chip:disabled {
+  opacity: 0.55;
+}

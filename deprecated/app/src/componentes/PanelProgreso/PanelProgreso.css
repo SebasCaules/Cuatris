@@ -1,0 +1,171 @@
+/*
+ * Banner de progreso: una fila de altura mínima (≈ 34 px) sobre el carrusel.
+ * Rótulos en mono de 8.5 px, cifras de 10 px, barras de 4 px. Nada acá compite
+ * con los calendarios: no hay títulos ni prosa, la explicación va en tooltips.
+ */
+
+.banner-progreso {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 18px;
+  min-height: 34px;
+  padding: 5px 12px;
+  border: var(--borde-tarjeta);
+  border-radius: var(--radio-tarjeta);
+  background: var(--superficie);
+}
+
+.banner-progreso__bloque {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  min-width: 0;
+  border-radius: var(--radio-chip);
+}
+
+.banner-progreso__bloque:focus-visible,
+.banner-progreso__minor:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
+
+.banner-progreso__bloque--egreso {
+  margin-left: auto;
+}
+
+.banner-progreso__rotulo {
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+  white-space: nowrap;
+}
+
+.banner-progreso__valor {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.banner-progreso__cifra {
+  font-family: var(--fuente-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--texto);
+  white-space: nowrap;
+}
+
+.banner-progreso__cifra--listo {
+  color: var(--status-go-text);
+}
+
+.banner-progreso__cifra--pendiente {
+  color: var(--texto-secundario);
+  font-weight: 400;
+}
+
+.banner-progreso__unidad {
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  color: var(--texto-secundario);
+}
+
+/* Barra de dos tonos: lo planificado por debajo, lo aprobado encima. El color
+   lo pone cada bloque; por defecto es el azul de «planificado». */
+.banner-progreso__barra {
+  --barra-color: var(--primario);
+
+  position: relative;
+  display: inline-block;
+  width: 72px;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--superficie-2);
+  vertical-align: middle;
+}
+
+.banner-progreso__barra--listo {
+  --barra-color: var(--status-go);
+}
+
+.banner-progreso__relleno {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--barra-color);
+}
+
+.banner-progreso__relleno--planificado {
+  background: color-mix(in srgb, var(--barra-color) 40%, transparent);
+}
+
+.banner-progreso__minors {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.banner-progreso__minor {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: var(--radio-chip);
+}
+
+.banner-progreso__minor .banner-progreso__barra {
+  width: 40px;
+}
+
+/* La sigla lleva el color del minor como pill (DESIGN.md §6): relleno al 16 %
+   y borde al 42 %. El texto sigue siendo tinta. */
+.banner-progreso__sigla {
+  padding: 0 4px;
+  border: 1px solid color-mix(in srgb, var(--minor-color) 42%, transparent);
+  border-radius: var(--radio-bloque);
+  background: color-mix(in srgb, var(--minor-color) 16%, transparent);
+  font-family: var(--fuente-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  color: var(--texto);
+}
+
+.banner-progreso__rotulo--corto {
+  display: none;
+}
+
+/* Por debajo de ~1200 px la fila no entra con el nombre del título: se
+   acortan rótulos y barras antes que partir la fila en dos. */
+@media (max-width: 1200px) {
+  .banner-progreso {
+    gap: 6px 12px;
+  }
+
+  .banner-progreso__rotulo--largo {
+    display: none;
+  }
+
+  .banner-progreso__rotulo--corto {
+    display: inline;
+  }
+
+  .banner-progreso__barra {
+    width: 56px;
+  }
+
+  .banner-progreso__minors {
+    gap: 8px;
+  }
+
+  .banner-progreso__minor .banner-progreso__barra {
+    width: 30px;
+  }
+}
