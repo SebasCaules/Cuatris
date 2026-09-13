@@ -329,8 +329,54 @@ def armar_documento(
             "unicos por archivo.",
             repetidos,
         )
+    vincular_dictado_conjunto(ordenados)
     documento["cursos"] = ordenados
     return documento
+
+
+def _huella_de_bloque(bloque: Mapping[str, Any]) -> tuple[Any, ...]:
+    return (
+        bloque.get("dia"),
+        bloque.get("desde"),
+        bloque.get("hasta"),
+        bloque.get("sede"),
+        tuple(bloque.get("aulas") or ()),
+    )
+
+
+def vincular_dictado_conjunto(cursos: list[dict[str, Any]]) -> None:
+    """Marca como `dictado_conjunto` a los cursos homonimos que comparten aula y horario.
+
+    El SGA publica una misma materia bajo dos codigos (uno por carrera): mismo nombre, misma
+    comision, misma aula a la misma hora (caso real de la corrida del 2026-09-12: 23.05 y
+    25.66 «Acustica para Ingenieros», comision K, jueves 16-19 en 604F). Sin la marca, C3 lo
+    lee como una colision de aula y rechaza el archivo. La regla es estricta a proposito:
+    mismo nombre normalizado **y** al menos un bloque identico en una comision del mismo id.
+    Dos cursos con nombres distintos en la misma aula siguen siendo una colision que revisa
+    una persona.
+    """
+    huellas: dict[str, set[tuple[Any, ...]]] = {}
+    for curso in cursos:
+        conjunto: set[tuple[Any, ...]] = set()
+        for comision in curso.get("comisiones", []):
+            for bloque in comision.get("bloques", []):
+                conjunto.add((comision.get("id"), *_huella_de_bloque(bloque)))
+        huellas[curso["codigo"]] = conjunto
+    for indice, uno in enumerate(cursos):
+        for otro in cursos[indice + 1 :]:
+            if normalizar.clave(uno["nombre"]) != normalizar.clave(otro["nombre"]):
+                continue
+            if not huellas[uno["codigo"]] & huellas[otro["codigo"]]:
+                continue
+            for curso, par in ((uno, otro), (otro, uno)):
+                vinculados = set(curso.get("dictado_conjunto", []))
+                vinculados.add(par["codigo"])
+                curso["dictado_conjunto"] = sorted(vinculados)
+            REGISTRO.info(
+                "%s y %s se dictan juntos (mismo nombre, misma aula y horario): dictado_conjunto.",
+                uno["codigo"],
+                otro["codigo"],
+            )
 
 
 def ruta_invalida(salida: Path, cache: Path | None = None) -> Path:

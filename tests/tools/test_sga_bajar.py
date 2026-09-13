@@ -675,3 +675,81 @@ def test_los_enlaces_del_listado_se_resuelven_contra_la_pagina_del_listado(
         )
         assert "/../" not in fila.enlace_detalle
         assert fila.enlace_detalle != base
+
+
+def _curso_contrato(
+    codigo: str, nombre: str, comision: str, bloques: list[dict]
+) -> dict:
+    return {
+        "codigo": codigo,
+        "nombre": nombre,
+        "desde": "2026-07-26",
+        "hasta": "2026-12-31",
+        "dictado_conjunto": [],
+        "comisiones": [{"id": comision, "docentes": [], "bloques": bloques}],
+    }
+
+
+def test_los_homonimos_con_la_misma_aula_y_horario_quedan_como_dictado_conjunto() -> (
+    None
+):
+    """Caso real del 2026-09-12: 23.05 y 25.66 «Acustica para Ingenieros», comision K,
+    jueves 16-19 en 604F (sdf). Sin la marca, C3 lo tomaba por una colision de aula."""
+    bloque = {
+        "dia": "jueves",
+        "desde": "16:00",
+        "hasta": "19:00",
+        "sede": "sdf",
+        "modalidad": "presencial",
+        "aulas": ["604F"],
+    }
+    acustica_a = _curso_contrato(
+        "23.05", "Acústica para Ingenieros", "K", [dict(bloque)]
+    )
+    acustica_b = _curso_contrato(
+        "25.66", "Acústica para Ingenieros", "K", [dict(bloque)]
+    )
+    otro = _curso_contrato("30.28", "Accionamientos Industriales", "A", [dict(bloque)])
+    cursos = [acustica_a, acustica_b, otro]
+
+    bajar.vincular_dictado_conjunto(cursos)
+
+    assert acustica_a["dictado_conjunto"] == ["25.66"]
+    assert acustica_b["dictado_conjunto"] == ["23.05"]
+    # Misma aula y horario pero otro nombre: sigue siendo una colision para C3.
+    assert otro["dictado_conjunto"] == []
+
+
+def test_los_homonimos_sin_bloque_en_comun_no_se_vinculan() -> None:
+    a = _curso_contrato(
+        "23.05",
+        "Acústica para Ingenieros",
+        "K",
+        [
+            {
+                "dia": "jueves",
+                "desde": "16:00",
+                "hasta": "19:00",
+                "sede": "sdf",
+                "modalidad": "presencial",
+                "aulas": ["604F"],
+            }
+        ],
+    )
+    b = _curso_contrato(
+        "25.66",
+        "Acústica para Ingenieros",
+        "K",
+        [
+            {
+                "dia": "martes",
+                "desde": "16:00",
+                "hasta": "19:00",
+                "sede": "sdf",
+                "modalidad": "presencial",
+                "aulas": ["604F"],
+            }
+        ],
+    )
+    bajar.vincular_dictado_conjunto([a, b])
+    assert a["dictado_conjunto"] == [] and b["dictado_conjunto"] == []
