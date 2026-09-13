@@ -306,6 +306,14 @@ class ClienteSGA:
                 ultimo_fallo = exc
                 continue
             REGISTRO.debug("%s %s -> %d", metodo, _sin_sesion(respuesta.url), respuesta.status_code)
+            for salto in respuesta.history:
+                REGISTRO.debug(
+                    "  redireccion %d desde %s hacia %s",
+                    salto.status_code,
+                    _sin_sesion(salto.url),
+                    _sin_sesion(salto.headers.get("location", "")),
+                )
+            respuesta = self._corregir_contexto_sin_barra(respuesta)
             if respuesta.status_code >= 500:
                 ultimo_fallo = httpx.HTTPStatusError(
                     f"el SGA respondio {respuesta.status_code}",
@@ -316,7 +324,7 @@ class ClienteSGA:
             if respuesta.status_code >= 400:
                 raise ErrorDeRed(
                     f"El SGA respondio {respuesta.status_code} a {metodo} "
-                    f"{_sin_sesion(respuesta.url)}."
+                    f"{_sin_sesion(respuesta.url)}.{_describir_saltos(respuesta)}"
                 )
             self.ultima_respuesta = Respuesta(
                 url=str(respuesta.url), html=respuesta.text, estado=respuesta.status_code
@@ -326,6 +334,25 @@ class ClienteSGA:
             f"No se pudo completar {metodo} {_sin_sesion(url)} tras {self.reintentos} "
             f"reintentos: {ultimo_fallo}"
         )
+
+    def _corregir_contexto_sin_barra(self, respuesta: httpx.Response) -> httpx.Response:
+        """Si una redireccion termino en `/app2` (sin barra), pide `/app2/`.
+
+        El contenedor del SGA responde 404 a la raiz del contexto sin la barra final, y
+        tras un login correcto el SGA redirige justamente ahi (verificado el 2026-09-12).
+        El navegador llega al mismo 404 salvo por lo que haga su script; el scraper toma
+        el atajo evidente: la entrada estable con su barra, ya con la sesion iniciada.
+        """
+        if respuesta.status_code != 404 or not respuesta.history:
+            return respuesta
+        if respuesta.url.path.rstrip("/") != ENTRADA.rstrip("/") or respuesta.url.path == ENTRADA:
+            return respuesta
+        REGISTRO.info(
+            "La redireccion termino en %s (404); se pide %s.", respuesta.url.path, ENTRADA
+        )
+        self._esperar_turno()
+        self.peticiones += 1
+        return self._http.request("GET", ENTRADA)
 
     # -- sesion -------------------------------------------------------------------------
 
@@ -443,6 +470,17 @@ class ClienteSGA:
             "Respuesta guardada en %s (%s).", ruta, _sin_sesion(self.ultima_respuesta.url)
         )
         return ruta
+
+
+def _describir_saltos(respuesta: httpx.Response) -> str:
+    """Las redirecciones que llevaron a esta respuesta, para el mensaje de error."""
+    if not respuesta.history:
+        return ""
+    lineas = []
+    for salto in respuesta.history:
+        destino = _sin_sesion(salto.headers.get("location", ""))
+        lineas.append(f"\n  {salto.status_code} {_sin_sesion(salto.url)} -> {destino}")
+    return " Redirecciones previas:" + "".join(lineas)
 
 
 def _sin_sesion(url: object) -> str:
