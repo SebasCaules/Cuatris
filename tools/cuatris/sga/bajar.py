@@ -31,6 +31,7 @@ from collections.abc import Callable, Iterable, Iterator, Mapping
 from datetime import date
 from pathlib import Path
 from typing import Any
+from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 
@@ -201,7 +202,14 @@ def recorrer_listado(
     visitadas: set[str] = set()
     for pagina in range(1, MAXIMO_PAGINAS + 1):
         listado = parsers.parsear_listado(html)
+        # Los `href` del SGA son relativos a la pagina en la que aparecen. Se vuelven
+        # absolutos ahora, contra la URL del listado: cuando el barrido los use, la ultima
+        # pagina recibida sera el detalle de otro curso, con otra profundidad, y `../../..`
+        # resolveria fuera de `/app2/` (paso en la corrida real del 2026-09-12).
+        base = cliente.ultima_respuesta.url if cliente.ultima_respuesta else None
         for fila in listado.filas:
+            if base and fila.enlace_detalle:
+                fila = dataclasses.replace(fila, enlace_detalle=urljoin(base, fila.enlace_detalle))
             if fila.periodo != periodo:
                 raise parsers.EstructuraInesperada(
                     f"El listado trae el curso {fila.codigo} del periodo «{fila.periodo}» "
@@ -218,6 +226,8 @@ def recorrer_listado(
             if limite is not None and vistas >= limite:
                 return
         siguiente = listado.paginacion.enlace_siguiente
+        if siguiente and base:
+            siguiente = urljoin(base, siguiente)
         if not listado.paginacion.hay_siguiente or not siguiente:
             return
         if siguiente in visitadas:

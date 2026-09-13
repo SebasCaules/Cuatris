@@ -652,3 +652,26 @@ def test_credenciales_pregunta_lo_que_falta() -> None:
         preguntar_clave=lambda _p: CLAVE,
     )
     assert (usuario, clave) == (USUARIO, CLAVE)
+
+
+def test_los_enlaces_del_listado_se_resuelven_contra_la_pagina_del_listado(
+    html_listado: str,
+) -> None:
+    """Regresion de la corrida real del 2026-09-12: los `href` del listado son relativos a
+    la pagina del listado, no a la ultima pagina recibida (el detalle de otro curso, mas
+    corto): resolverlos tarde sacaba el enlace de `/app2/` y el SGA respondia 404."""
+    pagina = recortar(html_listado, {"30.28", "23.05"})
+    falso = SGAFalso(html_listado, {})
+    with falso.cliente() as cliente:
+        cliente.iniciar_sesion("usuario.de.prueba", "clave")
+        filas = list(bajar.recorrer_listado(cliente, pagina, periodo="2026-2C"))
+
+    assert cliente.ultima_respuesta is not None
+    base = cliente.ultima_respuesta.url
+    for fila in filas:
+        assert fila.enlace_detalle is not None
+        assert fila.enlace_detalle.startswith("https://sga.itba.edu.ar/app2/"), (
+            fila.enlace_detalle
+        )
+        assert "/../" not in fila.enlace_detalle
+        assert fila.enlace_detalle != base
