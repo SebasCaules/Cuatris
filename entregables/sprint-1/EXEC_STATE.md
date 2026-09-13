@@ -133,6 +133,8 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 | Ola 5 · R1 reformulación: pestaña Plan = plan de estudios interactivo (4 estados, marcar años/cuatrimestres), carrusel → «Cursada», componentes propios | DONE | eb0e26e | VERDE (wf_c9c2f512-68a); 591 tests app |
 | Ola 5 · R2 plan compacto como StudyVaults, casillas propias, cierre automático del año, tooltips propios, ciclo cronológico | DONE | 101bc74 | ROJO→VERDE (wf_a2244e33-8de); 630 tests app; medidas verificadas en el navegador; cierra S-24 |
 
+| Ola 6 — scraper página por página + contrato 1.1.0 (W6-A, W6-B; verificación por N0 tras frenar el workflow a pedido del autor) | DONE | db123df | 518 tests Python, 637 app; parser probado sobre los 3 detalles reales y la pantalla de error real; checkpoint viejo (37) carga |
+
 ## Fixes y tareas diferidas (S-nn)
 
 | S | Qué | Superficie | Origen | Cuándo |
