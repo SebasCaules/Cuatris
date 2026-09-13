@@ -1,0 +1,205 @@
+/* Fila compartida de materia recomendada/sugerida (RecRow.tsx).
+   La consumen el Combinador («Sugeridas») y el Plan («Recomendadas»);
+   visual heredado de la fila slim aprobada del combinador. */
+
+/* lista contenedora (una <ul> por grupo/panel) */
+.planner .recrow-list {
+  list-style: none;
+  margin: 0;
+  padding: 2px 0 7px;
+}
+
+.planner .recrow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+}
+.planner .recrow:hover,
+.planner .recrow:focus-within {
+  background: var(--panel-2);
+}
+/* vista previa activa (hover en el plan): tinte brass, sin empujar el layout */
+.planner .recrow.is-active {
+  background: var(--brass-soft);
+}
+
+/* marca de la fila: slot de ancho fijo para que los nombres alineen aunque
+   haya 0, 1 o 3 señales. Varios minors se APILAN con offset (se ve que hay
+   más de uno y de qué color, sin gastar tres espacios). */
+.planner .recrow__mark {
+  flex: none;
+  width: 16px;
+  display: inline-flex;
+  align-items: center;
+}
+.planner .recrow__mark .minor-dot {
+  /* anillo del color del panel: separa los dots apilados con borde nítido */
+  box-shadow: 0 0 0 1.5px var(--panel);
+  position: relative;
+}
+.planner .recrow__mark .minor-dot + .minor-dot {
+  margin-left: -4px;
+}
+/* el PRIMER minor queda entero arriba; los siguientes asoman por atrás */
+.planner .recrow__mark .minor-dot:nth-child(1) {
+  z-index: 3;
+}
+.planner .recrow__mark .minor-dot:nth-child(2) {
+  z-index: 2;
+}
+.planner .recrow__mark .minor-dot:nth-child(3) {
+  z-index: 1;
+}
+/* troncal (obligatoria): CUADRADITO slate — la forma (no el color) la
+   distingue de cualquier dot de minor y del aro vacío (electiva sin minor). */
+.planner .recrow__ob {
+  width: 7.5px;
+  height: 7.5px;
+  border-radius: 2px;
+  background: var(--slate);
+  flex: none;
+}
+.planner .recrow__nodot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--line-2);
+  flex: none;
+}
+
+/* cuerpo clickeable (abre el drawer): botón desnudo que hereda la fila */
+.planner .recrow__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+.planner .recrow__main:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 1px;
+  border-radius: 4px;
+}
+.planner .recrow__name {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--f-b);
+  font-size: 12.5px;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* fila atenuada (se pisa / no entra / sin horario): sigue siendo operable */
+.planner .recrow.is-muted {
+  opacity: 0.72;
+}
+.planner .recrow.is-muted .recrow__name {
+  color: var(--muted);
+}
+.planner .recrow.is-muted:hover,
+.planner .recrow.is-muted.is-active {
+  opacity: 1;
+}
+
+.planner .recrow__sig {
+  display: inline-flex;
+  gap: 4px;
+  flex: none;
+  min-width: 0;
+}
+.planner .recrow__cr {
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  color: var(--muted);
+  flex: none;
+  white-space: nowrap;
+}
+
+.planner .recrow__add {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1px solid var(--line-2);
+  background: var(--panel);
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.planner .recrow__add:hover:not(:disabled) {
+  border-color: var(--brass);
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 12%, var(--panel));
+}
+.planner .recrow__add:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 1px;
+}
+.planner .recrow__add:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+/* señal compacta de encaje. Las señales "de dato" (when/soft) van SIN caja
+   para no robarle ancho al nombre en el panel angosto; las de estado
+   (ok/warn/bad) llevan caja porque marcan una condición, no un dato. */
+.planner .recsig {
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.planner .recsig--when {
+  color: var(--slate);
+}
+.planner .recsig--soft {
+  color: var(--faint);
+}
+.planner .recsig--ok,
+.planner .recsig--warn,
+.planner .recsig--bad {
+  font-size: 9px;
+  padding: 0.5px 5px;
+  border: 1px solid var(--line-2);
+  border-radius: 4px;
+}
+.planner .recsig--ok {
+  color: var(--sage);
+  border-color: color-mix(in srgb, var(--sage) 38%, transparent);
+  background: color-mix(in srgb, var(--sage) 10%, transparent);
+}
+.planner .recsig--warn {
+  color: var(--brass-2);
+  border-color: color-mix(in srgb, var(--brass) 40%, transparent);
+  background: var(--brass-soft);
+}
+.planner .recsig--bad {
+  color: var(--oxblood);
+  border-color: color-mix(in srgb, var(--oxblood) 40%, transparent);
+}
+
+/* touch: target del + más generoso (mismo criterio que el combinador) */
+@media (pointer: coarse) {
+  .planner .recrow__add {
+    width: 26px;
+    height: 26px;
+  }
+}

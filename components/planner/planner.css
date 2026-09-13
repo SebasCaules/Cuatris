@@ -1,0 +1,1968 @@
+/* =========================================================================
+   Plan de Estudios · ITBA — registro académico
+   Port scopeado de Electivas/planner.css para el portal StudyVaults.
+   Todas las reglas viven bajo `.planner`. Sin reglas globales (html/body/
+   theme las maneja el portal). Las variables locales del planner se definen
+   una sola vez en `.planner`, mapeadas a los role tokens §12 del sitio, de
+   modo que auto-tematizan con [data-theme]. Los colores semánticos de
+   dominio (conflicto, ok, áreas, block-ink) se mantienen como literales.
+   ========================================================================= */
+.planner{
+  /* ---- vars locales del planner → role tokens del sitio (auto-theme) ---- */
+  --bg:var(--background);
+  --bg-2:var(--background);
+  --panel:var(--surface-2);
+  --panel-2:var(--surface-3);
+  --panel-3:var(--surface-3);
+  --ink:var(--ink-strong);
+  --ink-soft:var(--text-primary);
+  --muted:var(--text-secondary);
+  --faint:var(--text-secondary);
+  --line:var(--hairline);
+  --line-2:var(--hairline-strong);
+
+  --brass:var(--accent);
+  --brass-2:color-mix(in srgb, var(--accent) 80%, #fff);
+  --brass-soft:var(--accent-soft);
+  --slate:var(--primary);
+  --slate-soft:var(--primary-soft);
+
+  /* ---- colores semánticos de dominio → tokens de estado del sistema ----
+     Alias legacy hacia --status-* (conmutan por tema y se recalibran en light),
+     igual que --slate/--brass-soft arriba. Para TEXTO usar las variantes
+     --status-*-text (AA sobre las superficies). */
+  --oxblood:var(--status-caution);  /* rojo · conflicto */
+  --sage:var(--status-go);          /* verde · disponible / ok */
+  --block-ink:#241208;    /* texto oscuro sobre rellenos de color */
+
+  --selbg:var(--accent-soft);
+  --scroll:var(--hairline-strong);
+  --topbar:color-mix(in srgb, var(--background) 86%, transparent);
+  --scrim:color-mix(in srgb,#241208 55%,transparent);
+
+  --r:8px;
+  --r-lg:8px;
+
+  --f-d:var(--font-display);
+  --f-b:var(--font-display);
+  --f-m:var(--font-mono);
+
+  /* despeja el navbar fijo del portal */
+  padding-top:var(--nav-h);
+  color:var(--ink);
+}
+
+/* h1 único de la página (el resto de los headings del planner arranca en h2);
+   oculto visualmente pero disponible para lectores de pantalla/navegación. */
+.planner .sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+
+.planner .mono{font-family:var(--f-m)}
+.planner .sep{color:var(--faint);margin:0 .15em}
+.planner .muted{color:var(--muted);font-size:13px;margin:0}
+.planner .hk{float:right;font-family:var(--f-m);font-size:10px;color:var(--faint);font-weight:400;text-transform:none;letter-spacing:0}
+
+/* ===================== TOP BAR (stat line) ===================== */
+.planner .topbar{
+  position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;padding:9px clamp(16px,3vw,44px);
+  background:var(--topbar);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+}
+
+/* ===================== BANNER DE PRIMER USO ===================== */
+/* Una sola línea entre topbar y shell; visible solo sin materias marcadas
+   y hasta que el usuario la cierre (persistido). */
+.planner .first-run{
+  display:flex;align-items:center;gap:14px;
+  margin:12px clamp(16px,3vw,44px) 0;padding:10px 14px;
+  border:1px solid var(--line);border-left:2px solid var(--brass);
+  border-radius:var(--r);background:var(--panel);
+}
+.planner .first-run__txt{margin:0;font-size:13px;color:var(--ink-soft)}
+.planner .first-run__txt b{color:var(--ink)}
+.planner .first-run__go{
+  flex:none;margin-left:auto;padding:7px 12px;white-space:nowrap;
+  border-radius:var(--r);border:1px solid var(--brass);
+  background:var(--brass-soft);color:var(--ink);
+  font-family:var(--f-b);font-size:12.5px;cursor:pointer;transition:.15s;
+}
+.planner .first-run__go:hover{background:var(--brass);color:var(--block-ink)}
+.planner .first-run__x{
+  flex:none;width:26px;height:26px;border:none;background:transparent;
+  color:var(--muted);font-size:17px;line-height:1;cursor:pointer;border-radius:6px;
+}
+.planner .first-run__x:hover{background:var(--panel-2);color:var(--ink)}
+/* sin botón "ir" (ya estás en Mis materias), la × va al borde derecho */
+.planner .first-run__txt + .first-run__x{margin-left:auto}
+@media (max-width:640px){
+  .planner .first-run{flex-wrap:wrap}
+  .planner .first-run__go{margin-left:0}
+}
+
+/* Tira de métricas inline en una fila (~37px de alto) — reemplaza las 4
+   tarjetas .stats/.stat: mismo dato, mucho menos alto vertical. */
+.planner .statline{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 20px}
+.planner .statline__it{font-family:var(--f-m);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);white-space:nowrap}
+.planner .statline__it b{font-family:var(--f-d);font-weight:500;font-size:19px;line-height:1;letter-spacing:-.01em;color:var(--ink);margin-right:2px}
+.planner .statline__it--elec b{color:var(--brass-2);margin-right:0}
+.planner .statline__of{font-style:normal;font-family:var(--f-m);font-size:12px;color:var(--faint);margin-right:2px}
+.planner .statline__sep{flex:none;align-self:center;width:1px;height:14px;background:var(--line)}
+
+/* F10: copia window.location.href (la URL ya refleja vista/filtros/drawer).
+   Icon-only, cuadrado compacto; el check + borde sage avisan que copió. */
+.planner .share-btn{
+  display:inline-grid;place-items:center;width:30px;height:30px;padding:0;flex:none;
+  border:1px solid var(--line);border-radius:var(--r);background:var(--panel);color:var(--ink-soft);
+  cursor:pointer;transition:.15s;
+}
+.planner .share-btn:hover{border-color:var(--line-2);color:var(--ink)}
+.planner .share-btn.is-copied{border-color:var(--sage);color:var(--sage)}
+
+/* ===================== SHELL ===================== */
+.planner .shell{position:relative;z-index:2;display:grid;grid-template-columns:230px 1fr;gap:clamp(16px,2.4vw,34px);
+  padding:clamp(16px,2.4vw,32px) clamp(16px,3vw,44px) 36px;align-items:start}
+.planner .side{position:sticky;top:calc(var(--nav-h) + 52px);display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - var(--nav-h) - 64px);overflow:auto;padding-right:5px}
+.planner .side>*{flex:0 0 auto}
+.planner.side-collapsed .shell{grid-template-columns:1fr}
+.planner.side-collapsed .side{display:none}
+.planner .sidetoggle{width:34px;height:34px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);color:var(--ink-soft);cursor:pointer;display:inline-grid;place-items:center;flex:none;transition:.15s}
+.planner .sidetoggle:hover{border-color:var(--line-2);color:var(--ink)}
+.planner .panelshow{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 13px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);color:var(--ink-soft);font-family:var(--f-b);font-weight:500;font-size:13px;cursor:pointer;flex:none;transition:.15s}
+.planner .panelshow:hover{border-color:var(--line-2);color:var(--ink)}
+.planner .icon-btn{border:1px solid var(--line);background:var(--panel-2);color:var(--ink-soft);border-radius:3px;font-family:var(--f-b);font-size:11px;padding:4px 9px;cursor:pointer;transition:.15s}
+.planner .icon-btn:hover{border-color:var(--line-2);color:var(--ink)}
+.planner .qg-actions{display:flex;align-items:center;gap:9px}
+.planner .side::-webkit-scrollbar,.planner .main ::-webkit-scrollbar{width:8px;height:8px}
+.planner .side::-webkit-scrollbar-thumb,.planner .main ::-webkit-scrollbar-thumb{background:var(--scroll);border-radius:20px}
+
+.planner .field{position:relative;display:flex;align-items:center}
+.planner .field__ic{position:absolute;left:12px;color:var(--faint)}
+.planner .field input{width:100%;padding:11px 12px 11px 34px;border-radius:var(--r);background:var(--panel);border:1px solid var(--line);color:var(--ink);font-family:var(--f-b);font-size:14px;transition:.18s}
+.planner .field input:focus{outline:none;border-color:var(--line-2);background:var(--panel-2)}
+
+.planner .views{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:var(--panel)}
+.planner .view{position:relative;padding:11px 15px 11px 18px;background:transparent;border:none;border-bottom:1px solid var(--line);
+  color:var(--ink-soft);font-family:var(--f-b);font-weight:500;font-size:13.5px;cursor:pointer;text-align:left;transition:.16s;letter-spacing:.01em}
+.planner .view:last-child{border-bottom:none}
+.planner .view::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--brass);transform:scaleY(0);transition:transform .18s}
+.planner .view:hover{background:var(--panel-2);color:var(--ink)}
+.planner .view.is-active{background:var(--panel-2);color:var(--ink)}
+.planner .view.is-active::before{transform:scaleY(1)}
+
+.planner .block{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px 15px}
+.planner .block__h{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:12px;font-weight:600;overflow:hidden}
+.planner .chk{display:flex;align-items:center;gap:9px;padding:5px 0;cursor:pointer;font-size:13.5px;color:var(--ink-soft)}
+.planner .chk input,.planner .ctl input{appearance:none;width:16px;height:16px;border-radius:3px;border:1px solid var(--line-2);background:var(--panel-3);cursor:pointer;position:relative;transition:.15s;flex:none}
+.planner .chk input:checked,.planner .ctl input:checked{background:var(--brass);border-color:var(--brass)}
+.planner .chk input:checked::after,.planner .ctl input:checked::after{content:"";position:absolute;left:5px;top:2px;width:4px;height:8px;border:solid var(--block-ink);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.planner .chk:hover{color:var(--ink)}
+
+.planner .areas{display:flex;flex-wrap:wrap;gap:7px}
+.planner .area-pill{font-size:12px;padding:6px 10px;border-radius:3px;cursor:pointer;border:1px solid var(--line);background:var(--panel-2);color:var(--ink-soft);transition:.15s;display:flex;align-items:center;gap:7px}
+.planner .area-pill .swatch{width:8px;height:8px;border-radius:2px;flex:none}
+.planner .area-pill.off{opacity:.4}
+
+.planner .minors{display:flex;flex-direction:column;gap:11px}
+.planner .minor__top{display:flex;justify-content:space-between;margin-bottom:5px;color:var(--ink-soft);font-size:12.5px}
+.planner .minor__top b{font-family:var(--f-m);font-weight:400;color:var(--muted);font-size:11px}
+.planner .minibar{height:3px;border-radius:3px;background:var(--panel-3);overflow:hidden}
+.planner .minibar i{display:block;height:100%;transition:width .5s}
+
+.planner .bar{height:4px;border-radius:3px;background:var(--panel-3);overflow:hidden;margin-bottom:8px}
+.planner .bar__fill{height:100%;width:0;background:linear-gradient(90deg,var(--brass),var(--brass-2));transition:width .6s}
+
+.planner .reset{padding:11px;border-radius:var(--r);background:transparent;border:1px solid var(--line);color:var(--muted);cursor:pointer;font-family:var(--f-b);font-size:12.5px;transition:.15s}
+.planner .reset:hover{color:var(--oxblood);border-color:var(--line-2)}
+.planner .foot{color:var(--faint);font-size:11px;line-height:1.55;margin:0}
+.planner .foot sup{font-size:8px}
+
+/* ===================== PANELS ===================== */
+.planner .main{min-width:0}
+.planner .hidden{display:none !important}
+.planner .panel-head{margin-bottom:14px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.planner .panel-head h2{font-family:var(--f-d);font-weight:500;font-size:clamp(20px,2.4vw,28px);letter-spacing:-.015em;margin:0}
+.planner .panel-head p{color:var(--muted);font-size:13px;margin:6px 0 0;max-width:68ch;line-height:1.55}
+.planner .hor-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--brass);vertical-align:middle;margin:0 1px}
+.planner .view-panel{animation:planner-rise .35s ease both}
+@keyframes planner-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ===================== CARDS (electivas) ===================== */
+.planner .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(256px,1fr));gap:13px}
+.planner .card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;cursor:pointer;transition:border-color .18s,background .18s;overflow:hidden}
+.planner .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--brass);transform:scaleY(0);transform-origin:top;transition:transform .2s}
+.planner .card.t-obligatoria::before{background:var(--slate)}
+.planner .card:hover{border-color:var(--line-2);background:var(--panel-2)}
+.planner .card:hover::before{transform:scaleY(1)}
+.planner .card.appr{opacity:.55}
+.planner .card.appr .card__name{text-decoration:line-through;text-decoration-color:var(--faint)}
+.planner .card__top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:4px}
+.planner .code{font-family:var(--f-m);font-size:11.5px;color:var(--brass);letter-spacing:.02em}
+.planner .card.t-obligatoria .code{color:var(--slate)}
+.planner .card__cred{font-family:var(--f-m);font-size:11px;color:var(--muted)}
+.planner .card__abbr{font-family:var(--f-m);font-size:10px;color:var(--faint);letter-spacing:.04em}
+.planner .card__name{font-family:var(--f-d);font-weight:500;font-size:16px;line-height:1.18;letter-spacing:-.01em;margin:6px 0 12px;color:var(--ink)}
+.planner .card__meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:13px;min-height:18px}
+.planner .tag{font-size:10.5px;padding:3px 8px;border-radius:3px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel-3);white-space:nowrap;letter-spacing:.02em}
+.planner .tag--area{border:none;color:var(--block-ink);font-weight:600}
+.planner .tag--hor{color:var(--brass-2);border-color:color-mix(in srgb,var(--brass) 38%,transparent);background:var(--brass-soft)}
+.planner .tag--ok{color:var(--status-go-text);border-color:color-mix(in srgb,var(--sage) 34%,transparent);background:color-mix(in srgb,var(--sage) 12%,transparent)}
+.planner .tag--lock{color:var(--muted);border-color:var(--line)}
+/* ---- chips de características del programa analítico (ProgramaChips) ---- */
+.planner .prog-chips{display:flex;flex-wrap:wrap;gap:5px}
+.planner .prog-chip{font-size:10px;line-height:1.4;padding:2px 7px;border-radius:3px;border:1px solid var(--line);color:var(--ink-soft);background:var(--panel-3);white-space:nowrap;letter-spacing:.02em;font-weight:600;cursor:default}
+.planner .prog-chip--promo{color:var(--status-go-text);border-color:color-mix(in srgb,var(--sage) 34%,transparent);background:color-mix(in srgb,var(--sage) 12%,transparent)}
+.planner .prog-chip--final{color:var(--brass-2);border-color:color-mix(in srgb,var(--brass) 38%,transparent);background:var(--brass-soft)}
+.planner .prog-chip--asist{color:var(--status-caution-text);border-color:color-mix(in srgb,var(--oxblood) 34%,transparent);background:color-mix(in srgb,var(--oxblood) 11%,transparent)}
+.planner .prog-chip--eval{color:var(--muted);border-color:var(--line);background:transparent;font-weight:500}
+.planner .prog-soon{display:inline-flex;align-items:center;font-size:10px;padding:2px 8px;border-radius:3px;border:1px dashed color-mix(in srgb,var(--muted) 45%,transparent);color:var(--muted);background:transparent;white-space:nowrap;letter-spacing:.02em;font-weight:500}
+.planner .card__acts{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+.planner .mini{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;padding:7px;border-radius:3px;background:transparent;border:1px solid var(--line);color:var(--muted);cursor:pointer;transition:.15s;font-weight:500;font-family:var(--f-b)}
+.planner .mini:hover{color:var(--ink);border-color:var(--line-2)}
+.planner .mini.on{color:var(--block-ink);background:var(--sage);border-color:var(--sage)}
+.planner .mini.on.plan{background:var(--brass);border-color:var(--brass)}
+.planner .mini:disabled{opacity:.4;cursor:not-allowed}
+
+/* ===================== CUATRIMESTRES ===================== */
+.planner .cuatri-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(296px,1fr));gap:16px;align-items:start}
+.planner .qcol{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.planner .qcol__h{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--line)}
+.planner .qcol__h h3{font-family:var(--f-d);font-weight:500;font-size:16px;margin:0}
+.planner .qcol__h .ciclo{font-size:9.5px;text-transform:uppercase;letter-spacing:.13em;color:var(--faint);margin-bottom:3px}
+.planner .qcol__h .qc{font-family:var(--f-m);font-size:11px;color:var(--muted)}
+.planner .qcol__body{padding:11px;display:flex;flex-direction:column;gap:9px}
+.planner .qcard{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;cursor:pointer;transition:.15s;border-left:2px solid var(--slate)}
+.planner .qcard:hover{border-color:var(--line-2);background:var(--panel-3)}
+.planner .qcard.appr{border-left-color:var(--sage);opacity:.55}
+.planner .qcard.appr .qcard__n{text-decoration:line-through;text-decoration-color:var(--faint)}
+.planner .qcard.locked{border-left-color:var(--faint)}
+.planner .qcard__top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
+.planner .qcard__n{font-family:var(--f-d);font-weight:500;font-size:14.5px;line-height:1.18;margin:0 0 9px}
+.planner .qcard__f{display:flex;gap:9px;align-items:center}
+.planner .qcard__f label{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);cursor:pointer}
+
+/* ===================== COMBINADOR ===================== */
+.planner .dot{width:8px;height:8px;border-radius:50%}
+.planner .dot--ob{background:var(--slate)} .planner .dot--el{background:var(--brass)}
+.planner .ctl{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft);cursor:pointer}
+.planner .ctl-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.planner .ctl-sep{width:1px;height:18px;background:var(--line)}
+.planner .btn{font-family:var(--f-m);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;padding:9px 16px;border-radius:var(--r);cursor:pointer;border:1px solid var(--line);background:var(--panel-2);color:var(--ink-soft);transition:.15s}
+.planner .btn--ghost:hover{color:var(--ink);border-color:var(--line-2)}
+.planner .btn--go{background:var(--brass);color:var(--block-ink);border-color:var(--brass);font-weight:700}
+.planner .btn--go:hover{background:var(--brass-2);box-shadow:0 8px 22px color-mix(in srgb,var(--brass) 40%,transparent)}
+.planner .btn--sm{padding:7px 12px;font-size:10.5px;letter-spacing:.05em}
+.planner .btn:disabled{opacity:.4;cursor:not-allowed}
+
+.planner .pill{display:inline-block;font-family:var(--f-m);font-size:11.5px;padding:3px 9px;border-radius:3px;margin-right:8px}
+.planner .pill.ok{background:color-mix(in srgb,var(--sage) 14%,transparent);color:var(--status-go-text)}
+.planner .pill.bad{background:color-mix(in srgb,var(--oxblood) 14%,transparent);color:var(--status-caution-text)}
+.planner .pill.warn{background:var(--brass-soft);color:var(--brass-2)}
+.planner .conflict-list{margin-top:11px;display:flex;flex-direction:column;gap:6px}
+.planner .conflict{font-size:12.5px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--oxblood);border-radius:3px;padding:8px 11px}
+
+.planner .cn-txt{font-family:var(--f-m);font-size:12.5px;color:var(--ink-soft)}
+.planner .cn-chips{display:flex;gap:6px;flex-wrap:wrap}
+
+/* WEEKLY GRID */
+.planner .grid{display:none}
+.planner .grid.show{display:block;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;overflow:auto}
+.planner .gtable{display:grid;gap:0}
+.planner #grid .gtable{min-width:640px}
+.planner .ghead{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);text-align:center;padding:0 0 9px;font-weight:600}
+.planner .gtime{font-family:var(--f-m);font-size:10px;color:var(--faint);text-align:right;padding-right:9px;display:flex;align-items:flex-start;justify-content:flex-end;transform:translateY(-5px)}
+.planner .gcol{position:relative;border-left:1px solid var(--line)}
+.planner .gcol:last-child{border-right:1px solid var(--line)}
+.planner .gcell{border-top:1px solid color-mix(in srgb,var(--line) 50%,transparent)}
+.planner .gblock{position:absolute;left:2px;right:2px;border-radius:3px;padding:5px 7px;overflow:hidden;font-size:10.5px;line-height:1.25;color:var(--block-ink)}
+.planner .gblock b{font-family:var(--f-m);font-weight:600;font-size:10px;display:block;letter-spacing:.01em}
+.planner .gblock .gb-n{font-weight:600;display:block;font-size:10px;opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.planner .gblock .gb-h{font-family:var(--f-m);font-size:9px;opacity:.72}
+.planner .gblock.conf{outline:2px solid var(--oxblood);outline-offset:-2px}
+.planner .async-row{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px solid var(--line);padding-top:12px}
+.planner .async-row .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.planner .async-chip{font-size:11px;font-family:var(--f-m);padding:4px 9px;border-radius:3px;background:var(--panel-3);border:1px solid var(--line);color:var(--ink-soft)}
+
+/* LEGEND */
+.planner .legend{margin-top:14px;display:flex;flex-wrap:wrap;gap:7px 16px}
+.planner .legend .lg{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft)}
+.planner .legend .sw{width:10px;height:10px;border-radius:2px;flex:none}
+.planner .legend .lg b{font-family:var(--f-m);font-weight:500;font-size:11px;color:var(--ink)}
+.planner .legend .lg span{color:var(--muted)}
+
+.planner .empty{padding:46px 20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:var(--r-lg);font-size:14px}
+
+/* ===================== PLAN DE CURSADA =====================
+   (toda la UI del Plan vive en las secciones HERO / CONTROLES / ROADMAP /
+    POOL más abajo, scopeadas con `plan2-*` y `rmap-*`. La versión v1 que
+    vivía acá se removió por estar sin uso.) */
+
+/* ===================== CORRELATIVAS ===================== */
+.planner .network{height:640px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg)}
+
+/* ===================== REFERENCIAS ===================== */
+.planner .ref-search{margin-bottom:14px}
+.planner .ref-search input{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:var(--r);padding:10px 13px;font-family:var(--f-b);font-size:14px}
+.planner .ref-table{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.planner .ref-row{display:grid;grid-template-columns:84px 56px 1fr 70px 1fr;gap:14px;padding:9px 16px;border-bottom:1px solid var(--line);font-size:13px;align-items:center}
+.planner .ref-row:last-child{border-bottom:none}
+.planner .ref-row.head{background:var(--panel-2);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.planner .ref-row .rab{font-family:var(--f-m);color:var(--brass-2);font-weight:500}
+.planner .ref-row .rc{font-family:var(--f-m);color:var(--muted);font-size:12px}
+.planner .ref-row .rn{color:var(--ink)}
+.planner .ref-row .rcr{font-family:var(--f-m);color:var(--muted);font-size:12px}
+.planner .ref-row .rar{color:var(--muted);font-size:11.5px}
+
+/* ===================== DRAWER ===================== */
+.planner .drawer{position:fixed;inset:0;z-index:50;display:none}
+.planner .drawer.open{display:block}
+@keyframes planner-fade{from{opacity:0}to{opacity:1}}
+.planner .dr-code{font-family:var(--f-m);font-size:12px;color:var(--brass);letter-spacing:.03em}
+.planner .dr-code.ob{color:var(--slate)}
+.planner .dr-title{font-family:var(--f-d);font-weight:500;font-size:25px;letter-spacing:-.01em;margin:10px 0 5px;line-height:1.12}
+.planner .dr-sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+.planner .dr-sec{margin-top:22px}
+.planner .dr-sec h4{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin:0 0 11px;border-bottom:1px solid var(--line);padding-bottom:7px}
+.planner .dr-chips{display:flex;flex-wrap:wrap;gap:7px}
+.planner .dr-com{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:9px}
+.planner .dr-com__h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.planner .dr-com__h b{font-family:var(--f-m);font-size:12.5px}
+.planner .dr-com__cupo{font-family:var(--f-m);font-size:11px;color:var(--muted)}
+.planner .dr-slot{display:flex;gap:10px;font-size:12.5px;color:var(--ink-soft);padding:3px 0;align-items:baseline}
+.planner .dr-slot .d{font-weight:600;min-width:70px}
+.planner .dr-slot .h{font-family:var(--f-m);color:var(--brass-2);font-size:11.5px}
+.planner .dr-slot .au{color:var(--muted);font-size:11px}
+.planner .dr-slotmod{font-family:var(--f-m);font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;padding:1px 5px;border-radius:2px;border:1px solid var(--line)}
+
+/* ---- Detalle de materia como MODAL centrado (antes: drawer lateral) ----
+   z-index > 1000: el navbar del portal es fixed con z:1000; con menos, el
+   panel (hasta 90vh) queda tapado por la barra en pantallas bajas.
+   Capa de overlays del planner = 1100 (misma que .fr-overlay; search usa 2000). */
+.planner .dr-modal{position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:24px}
+.planner .dr-modal__bg{position:absolute;inset:0;background:var(--scrim);backdrop-filter:blur(2px);animation:planner-fade .22s}
+.planner .dr-modal__panel{
+  position:relative;z-index:1;width:min(560px,100%);max-height:88vh;overflow:auto;
+  background:var(--panel);border:1px solid var(--line-2);border-radius:var(--r-lg);
+  box-shadow:0 24px 60px color-mix(in srgb,#000 32%,transparent);
+  padding:28px;animation:mnr-pop .26s var(--ease,ease) both;
+}
+/* modalidad de evaluación: bloque visible, no colapsado */
+.planner .dr-eval{border-left:2px solid color-mix(in srgb,var(--brass) 55%,transparent);padding-left:11px}
+.planner .dr-eval>h5{color:var(--brass)}
+
+/* ---- descripción inline + ficha (programa analítico) ---- */
+.planner .dr-desc{margin:16px 0 0;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.planner .dr-prose{margin:0 0 8px;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.planner .dr-prose:last-child{margin-bottom:0}
+.planner .dr-ficha__meta{font-family:var(--f-m);font-size:11px;color:var(--muted);margin:0 0 12px}
+.planner .dr-carga{display:flex;flex-direction:column;gap:3px;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;font-size:12.5px;color:var(--ink-soft);margin-bottom:14px}
+.planner .dr-carga b{font-family:var(--f-m);color:var(--brass-2);font-weight:500}
+.planner .dr-ficha__block{margin-bottom:14px}
+.planner .dr-ficha h5,.planner .dr-details__body h5{font-size:11px;font-weight:600;color:var(--ink);margin:0 0 5px;letter-spacing:.01em}
+.planner .dr-details{border:1px solid var(--line);border-radius:var(--r);margin-bottom:9px;background:var(--panel-2)}
+.planner .dr-details>summary{cursor:pointer;list-style:none;padding:9px 12px;font-family:var(--f-m);font-size:11.5px;color:var(--brass);user-select:none}
+.planner .dr-details>summary::-webkit-details-marker{display:none}
+.planner .dr-details>summary::before{content:"▸ ";color:var(--muted)}
+.planner .dr-details[open]>summary::before{content:"▾ "}
+.planner .dr-details[open]>summary{border-bottom:1px solid var(--line)}
+.planner .dr-details__body{padding:11px 12px}
+.planner .dr-units{margin:0;padding:11px 12px 11px 14px;list-style:none;display:flex;flex-direction:column;gap:8px}
+.planner .dr-units li{font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+.planner .dr-units li b{color:var(--ink);font-weight:600}
+.planner .dr-biblio{margin:0 0 10px;padding-left:16px;display:flex;flex-direction:column;gap:5px}
+.planner .dr-biblio li{font-size:12px;line-height:1.45;color:var(--ink-soft)}
+.planner .dr-biblio:last-child{margin-bottom:0}
+.planner .dr-ficha__acts{display:flex;gap:9px;align-items:center;margin-top:14px}
+.planner .dr-pdf{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-m);font-size:11.5px;color:var(--brass);text-decoration:none;
+  border:1px solid var(--line);border-radius:var(--r);padding:8px 13px;cursor:pointer;background:none;
+  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}
+.planner .dr-pdf:hover{color:var(--brass-2);background:var(--panel-2);border-color:var(--line-2)}
+.planner .dr-pdf:active{transform:translateY(1px)}
+.planner .dr-pdf--primary{flex:1;justify-content:center;color:var(--block-ink);background:var(--brass);border-color:var(--brass)}
+.planner .dr-pdf--primary:hover{color:var(--block-ink);background:var(--brass-2);border-color:var(--brass-2)}
+
+/* ===================== PRINT ===================== */
+@media print{
+  .planner .topbar,.planner .side,.planner .views,.planner .plan2-pool,.planner .drawer,.planner .dr-modal{display:none !important}
+  .planner .shell{grid-template-columns:1fr;padding:0}
+  .planner .panel{border-color:#bbb}
+}
+
+/* ===================== RESPONSIVE ===================== */
+/* El rail mobile (≤1080) se consolida al FINAL del archivo, tras el restyle del
+   sidebar, para ganar en orden de fuente (misma especificidad). Acá solo
+   colapsamos el grid del shell a una columna. */
+@media (max-width:1080px){
+  .planner .shell{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  /* la tira inline envuelve sola en varias filas; achico el gap horizontal
+     para que entren más métricas por línea antes de saltar */
+  .planner .statline{gap:5px 14px}
+  .planner .panelshow{width:100%;justify-content:center}
+  .planner .pool-cols{grid-template-columns:1fr}.planner .pool-col:first-child{border-right:none;border-bottom:1px solid var(--line)}
+  /* F06: en angosto el grid fijo de 5 columnas clipea texto (ref-table tenía
+     overflow:hidden sin @media) — se habilita scroll horizontal en vez de
+     achicar columnas, así ninguna celda corta su contenido. */
+  .planner .ref-table{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .planner .ref-row{min-width:560px}
+}
+
+/* =========================================================================
+   COMBINADOR — rework UX "Armá tu cuatrimestre"
+   Buscar → agregar a una bandeja → cursadas generadas en vivo.
+   ========================================================================= */
+.planner .cmb{
+  display:grid;grid-template-columns:340px minmax(0,1fr);gap:18px;align-items:start;
+  margin-top:4px;
+}
+@media (max-width:880px){ .planner .cmb{grid-template-columns:1fr} }
+
+/* ---------- panel base ---------- */
+.planner .cmb__picker,
+.planner .cmb-prefs{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
+}
+
+/* ---------- PICKER ---------- */
+.planner .cmb__picker{
+  display:flex;flex-direction:column;overflow:hidden;
+  position:sticky;top:calc(var(--nav-h) + 52px);max-height:calc(100vh - var(--nav-h) - 84px);
+}
+@media (max-width:880px){ .planner .cmb__picker{position:static;max-height:420px} }
+.planner .cmb-search{
+  position:relative;display:flex;align-items:center;gap:9px;padding:12px 13px;
+  border-bottom:1px solid var(--line);color:var(--faint);flex:none;
+}
+.planner .cmb-search svg{flex:none}
+.planner .cmb-search input{
+  flex:1;background:none;border:none;outline:none;color:var(--ink);
+  font-family:var(--f-b);font-size:14px;
+}
+.planner .cmb-search input::placeholder{color:var(--faint)}
+.planner .cmb-search__clear{
+  width:20px;height:20px;border-radius:50%;border:none;background:var(--panel-3);
+  color:var(--muted);cursor:pointer;font-size:14px;line-height:1;flex:none;
+  display:grid;place-items:center;transition:.15s;
+}
+.planner .cmb-search__clear:hover{background:var(--brass);color:var(--block-ink)}
+.planner .cmb-list{overflow-y:auto;padding:8px;flex:1;display:flex;flex-direction:column;gap:10px}
+.planner .cmb-group{display:flex;flex-direction:column;gap:2px}
+.planner .cmb-grouph{
+  display:flex;align-items:center;gap:8px;padding:6px 8px 7px;
+  font-family:var(--f-m);font-size:10px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+}
+.planner .cmb-grouph i{margin-left:auto;font-style:normal;color:var(--faint);font-size:10px}
+.planner .cmb-grouph .dot{width:7px;height:7px;border-radius:50%}
+.planner .cmb-row{
+  display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  padding:9px 10px;border:1px solid transparent;border-radius:var(--r);
+  background:transparent;color:var(--ink-soft);cursor:pointer;transition:.16s var(--ease,ease);
+}
+.planner .cmb-row:hover{background:var(--panel-2);border-color:var(--line);transform:translateX(2px)}
+.planner .cmb-row__plus{
+  width:24px;height:24px;flex:none;border-radius:7px;display:grid;place-items:center;
+  border:1px solid var(--line-2);background:var(--panel-2);color:var(--muted);
+  font-size:15px;line-height:1;transition:.16s;
+}
+.planner .cmb-row:hover .cmb-row__plus{border-color:var(--brass);color:var(--brass)}
+.planner .cmb-row__main{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.planner .cmb-row__name{
+  font-size:13.5px;color:var(--ink);line-height:1.25;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.planner .cmb-row__meta{
+  display:flex;flex-wrap:wrap;gap:6px;font-family:var(--f-m);font-size:10.5px;color:var(--faint);
+}
+.planner .cmb-row__code{color:var(--brass)}
+.planner .cmb-row__cr{
+  font-family:var(--f-m);font-size:12px;color:var(--muted);flex:none;
+}
+.planner .cmb-row.is-added{background:var(--brass-soft);border-color:transparent}
+.planner .cmb-row.is-added .cmb-row__plus{background:var(--brass);border-color:var(--brass);color:var(--block-ink)}
+.planner .cmb-row.is-added .cmb-row__name{color:var(--ink)}
+.planner .cmb-row.is-added:hover{background:var(--brass-soft);transform:translateX(2px)}
+.planner .cmb-noresults{color:var(--muted);font-size:13px;text-align:center;padding:24px 12px;margin:0}
+
+/* ---------- WORKSPACE ---------- */
+.planner .cmb__work{display:flex;flex-direction:column;gap:14px;min-width:0}
+
+/* (los chips de materias elegidas viven en combinador.css: .cmb9-matgrid/.cmb9-mchip) */
+
+/* preferencias */
+.planner .cmb-prefs{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;padding:13px 16px;
+}
+.planner .cmb-switch{
+  display:inline-flex;align-items:center;gap:10px;border:none;background:none;cursor:pointer;
+  font-family:var(--f-b);font-size:13px;color:var(--ink-soft);transition:color .15s;
+}
+.planner .cmb-switch:hover{color:var(--ink)}
+.planner .cmb-switch__track{
+  width:38px;height:22px;border-radius:11px;background:var(--panel-3);border:1px solid var(--line-2);
+  position:relative;transition:background .2s,border-color .2s;flex:none;
+}
+.planner .cmb-switch__knob{
+  position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
+  background:var(--muted);transition:transform .2s var(--ease,ease),background .2s;
+}
+.planner .cmb-switch.on .cmb-switch__track{background:var(--brass);border-color:var(--brass)}
+.planner .cmb-switch.on .cmb-switch__knob{transform:translateX(16px);background:var(--block-ink)}
+.planner .cmb-prefs__modal{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.planner .cmb-prefs__lbl{
+  font-family:var(--f-m);font-size:10px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);margin-right:2px;
+}
+.planner .cmb-pill{
+  font-family:var(--f-m);font-size:11.5px;padding:5px 11px;border-radius:999px;
+  border:1px solid var(--line-2);background:var(--panel-2);color:var(--muted);cursor:pointer;transition:.15s;
+}
+.planner .cmb-pill:hover{color:var(--ink);border-color:var(--brass)}
+.planner .cmb-pill.on{background:var(--brass-soft);border-color:var(--brass);color:var(--ink)}
+
+/* resultados */
+.planner .cmb-grid{
+  background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:12px;
+  animation:cmb-grid-in .3s var(--ease,ease) both;
+}
+.planner .cmb-grid .legend{margin-top:10px}
+
+/* sin solución */
+.planner .cmb-nosol{
+  text-align:center;padding:24px 18px;border:1px dashed color-mix(in srgb,var(--oxblood) 40%,var(--line));
+  border-radius:var(--r);background:color-mix(in srgb,var(--oxblood) 6%,transparent);
+}
+.planner .cmb-nosol__icon{font-size:24px;color:var(--oxblood);margin-bottom:4px}
+.planner .cmb-nosol h4{margin:0 0 6px;font-family:var(--f-d);font-weight:600;font-size:17px;color:var(--ink)}
+.planner .cmb-nosol p{margin:0 auto 14px;max-width:46ch;color:var(--muted);font-size:13.5px;line-height:1.5}
+.planner .cmb-nosol__cta{
+  border:none;border-radius:var(--r);background:var(--brass);color:var(--block-ink);
+  font-family:var(--f-m);font-size:12px;font-weight:600;letter-spacing:.04em;
+  padding:9px 16px;cursor:pointer;transition:.15s;
+}
+.planner .cmb-nosol__cta:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.planner .cmb-conflicts{margin-top:18px;text-align:left;display:flex;flex-direction:column;gap:6px}
+.planner .cmb-conflicts__h{
+  font-family:var(--f-m);font-size:10px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+}
+.planner .cmb-conflict{
+  font-size:12.5px;color:var(--ink-soft);background:var(--panel);border:1px solid var(--line);
+  border-radius:6px;padding:7px 11px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+}
+.planner .cmb-conflict b{color:var(--ink);font-family:var(--f-d);font-weight:600}
+.planner .cmb-conflict__x{color:var(--status-caution-text);font-weight:700;margin:0 2px}
+
+@keyframes cmb-grid-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .planner .cmb-grid{animation:none}
+  .planner .cmbx-picker,.planner .cmbx-stage{animation:none}
+  .planner .cmb-row:hover,.planner .cmb-row.is-added:hover{transform:none}
+}
+
+/* =========================================================================
+   COMBINADOR v2 — flujo guiado en 3 pasos, calendario-first
+   ========================================================================= */
+/* ===== LAYOUT apilado: header compacto (selector) + calendario full-width =====
+   El selector de materias es un header horizontal y bajo; debajo, el escenario
+   ocupa TODO el ancho con el calendario deszoomeado (denso verticalmente). */
+.planner .cmbx{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+
+/* buscador desplegable debajo del header */
+.planner .cmbx-picker{
+  border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;
+  background:var(--panel-2);animation:cmb-grid-in .22s var(--ease,ease) both;
+}
+.planner .cmbx-picker .cmb-search{border-bottom:1px solid var(--line)}
+.planner .cmbx-picker .cmb-list{max-height:288px}
+
+/* ---------- filtrar por características (régimen/asistencia/programa) ---------- */
+/* botón del topbar que abre/cierra el panel; el punto avisa que hay filtros activos */
+.planner .cmbx-charbtn{
+  position:relative;display:inline-flex;align-items:center;gap:7px;
+  padding:7px 12px;border-radius:999px;border:1px solid var(--line-2);
+  background:var(--panel-2);color:var(--ink-soft);cursor:pointer;
+  font-family:var(--f-b);font-size:12.5px;transition:.15s;white-space:nowrap;
+}
+.planner .cmbx-charbtn:hover{color:var(--ink);border-color:var(--brass)}
+.planner .cmbx-charbtn.is-open{background:var(--brass-soft);border-color:var(--brass);color:var(--ink)}
+.planner .cmbx-charbtn__dot{width:6px;height:6px;border-radius:50%;background:var(--brass);flex:none}
+
+.planner .cmbx-suggest-btn{
+  display:inline-flex;align-items:center;gap:7px;border:none;border-radius:var(--r);
+  background:var(--brass);color:var(--block-ink);font-family:var(--f-m);font-size:12px;
+  font-weight:600;letter-spacing:.03em;padding:8px 14px;cursor:pointer;transition:.15s;
+}
+.planner .cmbx-suggest-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.planner .cmbx-suggest-btn:disabled{background:var(--panel-3);color:var(--faint);cursor:not-allowed;transform:none;filter:none}
+.planner .cmbx-suggest-btn b{font-family:var(--f-d);font-weight:700}
+.planner .cmbx-suggest-msg{font-size:12px;color:var(--muted);white-space:nowrap}
+
+/* escenario full-width con atmósfera sutil */
+.planner .cmbx-stage{
+  position:relative;overflow:hidden;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:15px 18px 17px;animation:cmb-grid-in .32s var(--ease,ease) both;
+}
+.planner .cmbx-stage::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(50% 70% at 97% -12%, color-mix(in srgb,var(--brass) 8%,transparent), transparent 64%),
+    radial-gradient(38% 60% at 1% 112%, color-mix(in srgb,var(--slate) 6%,transparent), transparent 70%);
+}
+.planner .cmbx-stage > *{position:relative}
+
+@media (max-width:640px){
+  /* F07: `.cmbcal` recibe 6 columnas `minmax(0,1fr)` inline (CursadaCalendar) sin
+     piso — en angosto se comprimen hasta ilegible. El wrapper scrollea horizontal
+     y `.cmbcal` mantiene un ancho mínimo que le da aire a cada columna; el
+     overflow:hidden de `.cmbcal` solo clipea sus esquinas redondeadas, no scrollea. */
+  .planner .cmbcal-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .planner .cmbcal{min-width:660px}
+}
+
+/* paso (header con número) */
+.planner .cmb2-step{
+  display:flex;align-items:center;gap:11px;margin-bottom:14px;
+}
+.planner .cmb2-step__n{
+  width:24px;height:24px;flex:none;border-radius:50%;display:grid;place-items:center;
+  background:var(--brass);color:var(--block-ink);
+  font-family:var(--f-m);font-size:12px;font-weight:700;
+}
+.planner .cmb2-step__t{
+  font-family:var(--f-d);font-weight:600;font-size:17px;color:var(--ink);letter-spacing:-.01em;
+}
+.planner .cmb2-step__count{
+  margin-left:auto;font-family:var(--f-m);font-size:11.5px;color:var(--muted);
+}
+
+/* buscador desplegable */
+.planner .cmb2-picker{
+  margin-top:14px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--panel-2);animation:cmb-grid-in .24s var(--ease,ease) both;
+}
+.planner .cmb2-picker .cmb-search{border-bottom:1px solid var(--line)}
+.planner .cmb2-picker .cmb-list{max-height:300px}
+
+/* estado vacío del stage */
+.planner .cmb2-empty{
+  display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;
+  padding:34px 18px 28px;color:var(--faint);
+}
+.planner .cmb2-empty svg{color:var(--line-2)}
+.planner .cmb2-empty p{margin:0;color:var(--muted);font-size:14px;max-width:34ch;line-height:1.5}
+
+/* ---------- barra de resultado (slim): contador + tag + métricas + paginador ---------- */
+.planner .cmbx-resultbar{
+  display:flex;align-items:center;gap:10px 18px;flex-wrap:wrap;margin-bottom:13px;
+}
+.planner .cmbx-resultbar__lead{display:flex;align-items:center;gap:11px;flex-wrap:wrap;min-width:0}
+.planner .cmbx-rcount{display:flex;align-items:baseline;gap:9px}
+.planner .cmbx-rcount b{
+  font-family:var(--f-d);font-weight:600;font-size:30px;line-height:.9;letter-spacing:-.02em;
+}
+.planner .cmbx-rcount.ok b{color:var(--status-go-text)}
+.planner .cmbx-rcount.warn b{color:var(--brass)}
+.planner .cmbx-rcount span{
+  font-family:var(--f-m);font-size:11.5px;letter-spacing:.02em;color:var(--muted);
+  max-width:16ch;line-height:1.25;
+}
+.planner .cmbx-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--f-m);font-size:10.5px;font-weight:600;letter-spacing:.02em;color:var(--status-go-text);
+  background:color-mix(in srgb,var(--sage) 13%,transparent);
+  border:1px solid color-mix(in srgb,var(--sage) 32%,transparent);
+  border-radius:999px;padding:4px 10px;white-space:nowrap;
+}
+/* tira de métricas inline (número serif + rótulo mono) */
+.planner .cmbx-statstrip{
+  display:flex;align-items:center;flex-wrap:wrap;gap:5px 16px;margin-left:auto;
+  font-family:var(--f-m);font-size:11px;color:var(--muted);
+}
+.planner .cmbx-statstrip>span{display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap}
+.planner .cmbx-statstrip b{font-family:var(--f-d);font-weight:600;font-size:16px;color:var(--ink);line-height:1}
+.planner .cmbx-statstrip__range{color:var(--ink-soft);letter-spacing:.02em}
+
+.planner .cmbx-pager{
+  display:inline-flex;align-items:center;gap:4px;flex:none;
+  background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:3px;
+}
+.planner .cmbx-pager__btn{
+  width:32px;height:32px;flex:none;border-radius:50%;border:1px solid transparent;
+  background:var(--panel);color:var(--ink-soft);font-size:18px;line-height:1;cursor:pointer;
+  display:grid;place-items:center;transition:border-color .15s,color .15s,background .15s,transform .1s;
+}
+.planner .cmbx-pager__btn:hover{border-color:var(--brass);color:var(--brass);background:var(--panel-3)}
+.planner .cmbx-pager__btn:active{transform:scale(.94)}
+.planner .cmbx-pager__txt{
+  font-family:var(--f-m);color:var(--muted);padding:0 8px;white-space:nowrap;
+  display:flex;flex-direction:column;line-height:1.15;text-align:center;
+}
+.planner .cmbx-pager__txt b{color:var(--ink);font-weight:600;font-size:13px}
+.planner .cmbx-pager__txt i{font-style:normal;color:var(--faint);font-size:10px}
+/* footer bajo el calendario del combinador: hint + botón "Descargar programa" */
+.planner .cmbx-dlfoot{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-top:14px;padding-top:13px;border-top:1px solid var(--line);
+}
+.planner .cmbx-dlfoot__hint{
+  font-family:var(--f-m);font-size:10.5px;line-height:1.45;color:var(--muted);
+  max-width:52ch;flex:1;min-width:180px;
+}
+.planner .cmbx-dlfoot .btn{flex:none}
+
+/* ---------- timetable diseñado ---------- */
+.planner .cmbcal-wrap{animation:cmb-grid-in .32s var(--ease,ease) both}
+.planner .cmbcal{
+  border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;
+  background:var(--panel-2);box-shadow:0 1px 0 color-mix(in srgb,#fff 4%,transparent) inset;
+}
+.planner .cmbcal__head{display:grid;border-bottom:1px solid var(--line-2)}
+.planner .cmbcal__corner{border-right:1px solid var(--line)}
+.planner .cmbcal__day{
+  padding:9px 6px;text-align:center;font-family:var(--f-m);font-size:10.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
+  border-right:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.planner .cmbcal__day:last-child{border-right:none}
+.planner .cmbcal__day i{
+  font-style:normal;font-size:9px;color:var(--block-ink);background:var(--brass);
+  border-radius:999px;min-width:15px;padding:1px 4px;line-height:1.3;
+}
+.planner .cmbcal__day.is-free{color:var(--faint)}
+.planner .cmbcal__body{display:grid;position:relative}
+.planner .cmbcal__gutter{position:relative;border-right:1px solid var(--line)}
+.planner .cmbcal__hour{position:relative}
+.planner .cmbcal__hour span{
+  position:absolute;top:-7px;right:7px;font-family:var(--f-m);font-size:9.5px;color:var(--faint);
+}
+.planner .cmbcal__col{position:relative;border-right:1px solid var(--line)}
+.planner .cmbcal__col:last-child{border-right:none}
+.planner .cmbcal__col.is-free{
+  background:repeating-linear-gradient(135deg,transparent,transparent 9px,color-mix(in srgb,var(--ink) 3%,transparent) 9px,color-mix(in srgb,var(--ink) 3%,transparent) 10px);
+}
+.planner .cmbcal__cell{border-top:1px solid var(--line)}
+.planner .cmbcal__cell:first-child{border-top:none}
+.planner .cmbcal__freelbl{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-90deg);
+  font-family:var(--f-m);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--faint);opacity:.5;
+}
+.planner .cmbcal-blk{
+  position:absolute;left:4px;right:4px;border-radius:7px;overflow:hidden;
+  background:color-mix(in srgb,var(--blk) 18%,var(--panel));
+  border:1px solid color-mix(in srgb,var(--blk) 36%,transparent);
+  border-left:3px solid var(--blk);
+  box-shadow:0 2px 7px color-mix(in srgb,var(--blk) 22%,transparent);
+  padding:5px 7px;display:flex;flex-direction:column;gap:1px;min-height:0;
+  transition:transform .15s var(--ease,ease),box-shadow .15s,filter .15s;cursor:default;
+  animation:cmbcal-blk-in .34s var(--ease,ease) both;animation-delay:calc(var(--i,0) * 26ms);
+}
+.planner .cmbcal-blk:hover{transform:translateY(-2px);box-shadow:0 7px 18px color-mix(in srgb,var(--blk) 34%,transparent);filter:brightness(1.04);z-index:3}
+.planner .cmbcal-blk__abbr{
+  font-family:var(--f-d);font-weight:600;font-size:13px;line-height:1.12;color:var(--ink);
+  /* Se envuelve por palabra y clampa con … a la cantidad de líneas que caben en
+     el bloque (`--abbr-lines`, que CursadaCalendar calcula según la altura real).
+     Así los nombres largos ("Sist. Representación", "Intro a la Info") saltan de
+     línea sin agrandar ni desbordar el bloque; una palabra sola que no entra se
+     parte como último recurso. Responsive: las líneas se ajustan a cada escala. */
+  display:-webkit-box;-webkit-box-orient:vertical;
+  -webkit-line-clamp:var(--abbr-lines,2);line-clamp:var(--abbr-lines,2);
+  overflow:hidden;overflow-wrap:break-word;min-width:0;
+}
+.planner .cmbcal-blk__time{font-family:var(--f-m);font-size:10px;color:var(--ink-soft);line-height:1.2}
+.planner .cmbcal-blk__room{font-family:var(--f-m);font-size:9px;color:var(--muted);margin-top:auto}
+/* Vista previa (hover sobre una materia de la lista): bloque fantasma, punteado,
+   sin animación de entrada ni hover — aparece y desaparece sin mover nada. */
+.planner .cmbcal-blk.is-preview{
+  animation:none;pointer-events:none;
+  background:color-mix(in srgb,var(--blk) 10%,var(--panel));
+  border:1px dashed color-mix(in srgb,var(--blk) 70%,transparent);
+  border-left:3px solid var(--blk);box-shadow:none;opacity:.9;
+}
+.planner .cmbcal-blk.is-preview::after{
+  content:"vista previa";position:absolute;top:3px;right:4px;font-family:var(--f-m);font-size:8px;
+  color:var(--brass-2);letter-spacing:.04em;
+}
+.planner .cmbcal-blk.is-conf{
+  border-color:var(--oxblood);border-left-color:var(--oxblood);
+  box-shadow:0 0 0 1px var(--oxblood),0 2px 7px color-mix(in srgb,var(--oxblood) 30%,transparent);
+}
+.planner .cmbcal-blk.is-conf::after{
+  content:"se pisa";position:absolute;top:3px;right:4px;font-family:var(--f-m);font-size:8px;
+  color:var(--status-caution-text);letter-spacing:.04em;
+}
+.planner .cmbcal-wrap .legend{margin-top:12px}
+
+@keyframes cmbcal-blk-in{from{opacity:0;transform:translateY(7px) scale(.97)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .planner .cmbcal-wrap,.planner .cmbcal-blk{animation:none}
+  .planner .cmbcal-blk:hover{transform:none}
+}
+
+/* =========================================================================
+   PLAN DE CURSADA v2 — roadmap a recibirte
+   ========================================================================= */
+.planner .cmbcal--compact .cmbcal__day{padding:5px 3px;font-size:8.5px;gap:3px}
+.planner .cmbcal--compact .cmbcal__day i{font-size:8px;min-width:13px;padding:0 3px}
+.planner .cmbcal--compact .cmbcal__hour span{font-size:8px;right:5px}
+.planner .cmbcal--compact .cmbcal__freelbl{font-size:8.5px;letter-spacing:.2em}
+.planner .cmbcal--compact .cmbcal-blk{padding:2px 4px;border-radius:5px;gap:1px;left:2px;right:2px}
+.planner .cmbcal--compact .cmbcal-blk__abbr{font-size:10px}
+/* sin rango horario en compacto → el aula es el dato protagonista del bloque */
+.planner .cmbcal--compact .cmbcal-blk__room{
+  margin-top:auto;align-self:flex-start;font-size:8.5px;font-weight:600;
+  color:var(--ink);letter-spacing:.01em;
+  background:color-mix(in srgb,var(--blk) 26%,var(--panel));
+  border-radius:4px;padding:0 4px;
+  max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+/* denso: escala intermedia del Combinador full-width — más bajo y ajustado */
+.planner .cmbcal--dense .cmbcal__day{padding:6px 4px;font-size:9.5px}
+.planner .cmbcal--dense .cmbcal__day i{font-size:8.5px;min-width:14px}
+.planner .cmbcal--dense .cmbcal__hour span{font-size:8.5px}
+.planner .cmbcal--dense .cmbcal-blk{padding:3px 7px;gap:0;border-radius:6px}
+.planner .cmbcal--dense .cmbcal-blk__abbr{font-size:11.5px}
+.planner .cmbcal--dense .cmbcal-blk__time{font-size:9px}
+.planner .cmbcal--dense .cmbcal-blk__room{font-size:8.5px}
+
+/* =========================================================================
+   CONTROLES — toolbar editorial con fieldsets agrupados
+   ========================================================================= */
+.planner .plan2-field{display:flex;flex-direction:column;gap:5px}
+.planner .plan2-field label{
+  font-family:var(--f-m);font-size:10px;letter-spacing:.05em;color:var(--muted);
+}
+.planner .plan2-field select,.planner .plan2-field input{
+  background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink);
+  border-radius:var(--r);padding:8px 10px;font-family:var(--f-m);font-size:13px;transition:border-color .15s,box-shadow .15s;
+}
+.planner .plan2-field select{min-width:148px}
+.planner .plan2-field input{width:74px}
+.planner .plan2-field select:hover,.planner .plan2-field input:hover{border-color:var(--brass)}
+.planner .plan2-field select:focus,.planner .plan2-field input:focus{
+  outline:none;border-color:var(--brass);box-shadow:0 0 0 3px var(--brass-soft);
+}
+
+/* nota de optimización: la explicación del método vive colapsada en el
+   <details> .plan2-optnote-d (planview.css); acá queda solo la tipografía
+   base del texto. */
+.planner .plan2-method{
+  font-family:var(--f-m);font-size:11.5px;line-height:1.6;color:var(--muted);margin:0;
+}
+.planner .plan2-method b{color:var(--ink-soft);font-family:var(--f-d);font-weight:500}
+
+/* modal Exportar / importar: hub con dos cards (Documento · Preferencias).
+   Reusa el chrome .mnr-modal*; esto es solo el cuerpo. */
+.planner .plan2-io__grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.planner .plan2-io__card{
+  display:flex;flex-direction:column;gap:14px;
+  background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:16px 16px 15px;
+}
+.planner .plan2-io__cardtop{display:flex;flex-direction:column;gap:5px}
+.planner .plan2-io__kick{
+  font-family:var(--f-m);font-size:9px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--brass);
+}
+.planner .plan2-io__card h4{
+  margin:1px 0 0;font-family:var(--f-d);font-weight:600;font-size:15px;
+  letter-spacing:-.01em;color:var(--ink);
+}
+.planner .plan2-io__card p{margin:0;font-size:12px;line-height:1.5;color:var(--muted)}
+.planner .plan2-io__card p b{color:var(--ink-soft);font-weight:600}
+.planner .plan2-io__acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+/* selector de cuatrimestres a incluir en el documento */
+.planner .plan2-io__pick{display:flex;flex-direction:column;gap:7px}
+.planner .plan2-io__pickhead{display:flex;align-items:center;justify-content:space-between}
+.planner .plan2-io__minilbl{font-family:var(--f-m);font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.planner .plan2-io__all{font-family:var(--f-m);font-size:10px;color:var(--brass);background:none;border:none;cursor:pointer;letter-spacing:.02em;padding:2px 2px}
+.planner .plan2-io__all:hover{color:var(--brass-2);text-decoration:underline}
+.planner .plan2-io__chips{display:flex;flex-wrap:wrap;gap:6px}
+.planner .plan2-io__chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-m);font-size:11px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+.planner .plan2-io__chip:hover{border-color:var(--line-2);color:var(--ink-soft)}
+.planner .plan2-io__chip.is-on{background:var(--brass-soft);border-color:color-mix(in srgb,var(--brass) 45%,transparent);color:var(--brass-2);font-weight:600}
+.planner .plan2-io__chip i{font-style:normal;font-size:9px;opacity:.8;background:color-mix(in srgb,currentColor 14%,transparent);border-radius:999px;min-width:15px;text-align:center;padding:0 4px;line-height:1.6}
+.planner .plan2-io__note{
+  font-family:var(--f-m);font-size:10.5px;color:var(--faint);line-height:1.4;margin:0;
+}
+.planner .plan2-io__err{
+  font-family:var(--f-m);font-size:11px;line-height:1.4;color:var(--status-caution-text);margin:0;
+}
+@media (max-width:560px){
+  .planner .plan2-io__grid{grid-template-columns:1fr}
+}
+
+/* =========================================================================
+   ROADMAP — panorama de cuatrimestres lado a lado (vista general)
+   ========================================================================= */
+.planner .plan2-board{margin-top:4px}
+
+/* board a la izquierda + recomendaciones en sidebar derecha sticky: así los
+   calendarios/roadmap se ven actualizarse en vivo al pasar el cursor por una
+   recomendación. container-type → los calendarios se adaptan al ancho real de
+   esta columna (no del viewport) y no se aprietan al ceder espacio al sidebar. */
+.planner .plan2-split{
+  display:grid;grid-template-columns:minmax(0,1fr) clamp(228px,23%,312px);
+  gap:16px;align-items:stretch;margin-top:4px;
+}
+.planner .plan2-split--solo{grid-template-columns:1fr}
+.planner .plan2-split__main{min-width:0;container-type:inline-size}
+/* El panel de recomendaciones ESPEJA el alto de la grilla de calendarios:
+   la celda no aporta alto propio (el panel es absoluto adentro), así una fila
+   de calendarios ⇒ panel de una fila, dos filas ⇒ dos, con scroll interno. */
+.planner .plan2-split__side{
+  position:relative;min-width:0;
+}
+.planner .plan2-split__side .plan2-recs{
+  margin-top:0;
+  position:absolute;inset:0;overflow:auto;padding-right:4px;
+}
+.planner .plan2-split__side .plan2-recs::-webkit-scrollbar{width:8px}
+.planner .plan2-split__side .plan2-recs::-webkit-scrollbar-thumb{background:var(--scroll);border-radius:20px}
+/* mismo umbral que el sidebar principal (.shell/.side, 1080px): así todo el
+   layout pasa a una columna a la vez y no queda el board apretado en la franja
+   981–1080 con el panel principal ya apilado arriba */
+@media (max-width:1080px){
+  .planner .plan2-split{grid-template-columns:1fr}
+  .planner .plan2-split__side{position:static}
+  /* apilado en una columna: el panel vuelve al flujo normal, sin espejo de alto */
+  .planner .plan2-split__side .plan2-recs{
+    position:static;inset:auto;overflow:visible;padding-right:0;
+  }
+}
+/* grilla que mete la mayor cantidad de cuatrimestres por fila y envuelve.
+   El height de cada tarjeta no importa: priorizamos ver todos de un vistazo. */
+.planner .rmap{
+  list-style:none;margin:0;padding:0;
+  display:grid;gap:12px;
+  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+}
+.planner .rmap-stop{margin:0;min-width:0}
+
+/* tarjeta de cuatrimestre — compacta, con las materias siempre desplegadas */
+.planner .rmap-stop__card{
+  height:100%;display:flex;flex-direction:column;gap:9px;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:12px 13px;animation:cmb-grid-in .3s var(--ease,ease) both;transition:border-color .18s,box-shadow .18s;
+}
+.planner .rmap-stop__card:hover{border-color:var(--line-2);box-shadow:0 6px 20px color-mix(in srgb,var(--ink) 6%,transparent)}
+.planner .rmap-stop__head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+}
+.planner .rmap-stop__when{display:flex;flex-direction:column;gap:4px;min-width:0}
+.planner .rmap-stop__when h3{
+  font-family:var(--f-d);font-weight:600;font-size:16px;color:var(--ink);margin:0;letter-spacing:-.015em;
+}
+/* numerito de orden del cuatrimestre */
+.planner .rmap-stop__step{
+  flex:none;width:23px;height:23px;border-radius:50%;display:grid;place-items:center;
+  background:var(--panel-2);border:1px solid var(--line);color:var(--slate);
+  font-family:var(--f-d);font-weight:600;font-size:12px;
+}
+.planner .rmap-stop__ledger{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap}
+.planner .rmap-stop__metric{font-family:var(--f-m);font-size:10.5px;color:var(--muted)}
+.planner .rmap-stop__metric b{font-family:var(--f-d);font-weight:600;font-size:15px;color:var(--ink);margin-right:2px}
+.planner .rmap-stop__metric--soft b{font-size:13px;color:var(--ink-soft)}
+
+/* barra de carga del cuatrimestre */
+.planner .rmap-stop__load{
+  height:4px;border-radius:999px;background:var(--panel-3);overflow:hidden;
+}
+.planner .rmap-stop__load i{
+  display:block;height:100%;border-radius:999px;
+  background:linear-gradient(90deg,var(--brass),var(--brass-2));transition:width .5s var(--ease,ease);
+}
+
+.planner .rmap-stop__mats{display:flex;flex-wrap:wrap;gap:6px}
+.planner .rmap-mat{
+  position:relative;display:inline-flex;align-items:center;
+  background:color-mix(in srgb,var(--blk,var(--brass)) 12%,var(--panel-2));
+  border:1px solid color-mix(in srgb,var(--blk,var(--brass)) 28%,transparent);
+  border-left:3px solid var(--blk,var(--brass));border-radius:8px;
+  transition:transform .14s var(--ease,ease),box-shadow .14s;
+}
+.planner .rmap-mat:hover{transform:translateY(-2px);box-shadow:0 6px 16px color-mix(in srgb,var(--blk) 28%,transparent);z-index:5}
+/* handle: identidad clickeable (abre el detalle) + zona de arrastre */
+.planner .rmap-mat__main{
+  display:inline-flex;align-items:center;gap:7px;padding:5px 9px 5px 8px;
+  background:none;border:none;font:inherit;color:inherit;cursor:pointer;border-radius:8px;
+}
+.planner .rmap-mat__main:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.planner .rmap-mat__abbr{font-family:var(--f-d);font-weight:600;font-size:12.5px;color:var(--ink)}
+.planner .rmap-mat__cr{font-family:var(--f-m);font-size:10px;color:var(--muted)}
+/* popover al hover: cambiar cuatrimestre / comisión / quitar del plan */
+.planner .rmap-mat__tools{
+  position:absolute;top:100%;left:0;z-index:20;margin-top:3px;
+  display:flex;align-items:center;gap:5px;padding:6px;white-space:nowrap;
+  background:var(--panel);border:1px solid var(--line-2);border-radius:8px;
+  box-shadow:0 10px 26px color-mix(in srgb,#000 24%,transparent);
+  opacity:0;visibility:hidden;transform:translateY(-4px);pointer-events:none;
+  transition:opacity .14s var(--ease,ease),transform .14s var(--ease,ease),visibility .14s;
+}
+/* puente invisible chip↔popover para que el hover no se corte */
+.planner .rmap-mat__tools::before{content:"";position:absolute;left:0;right:0;top:-5px;height:5px}
+.planner .rmap-mat:hover .rmap-mat__tools,
+.planner .rmap-mat:focus-within .rmap-mat__tools{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.planner .rmap-mat__sel{
+  max-width:160px;background:var(--panel-3);border:1px solid var(--line-2);color:var(--ink-soft);
+  border-radius:6px;padding:4px 6px;font-family:var(--f-m);font-size:10.5px;cursor:pointer;transition:border-color .15s;
+}
+.planner .rmap-mat__sel:hover{border-color:var(--brass)}
+.planner .rmap-mat__sel:focus{outline:none;border-color:var(--brass);box-shadow:0 0 0 3px var(--brass-soft)}
+.planner .rmap-mat__rm{
+  width:22px;height:22px;flex:none;border-radius:6px;border:1px solid transparent;background:none;
+  color:var(--faint);font-size:15px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:.15s;
+}
+.planner .rmap-mat__rm:hover{color:#fff;background:var(--oxblood);border-color:var(--oxblood)}
+
+/* pie: créditos acumulados, anclado al fondo para alinear entre tarjetas */
+.planner .rmap-stop__foot{
+  display:flex;align-items:center;gap:13px;margin-top:auto;padding-top:9px;
+  border-top:1px solid var(--line);
+}
+.planner .rmap-stop__acc{font-family:var(--f-m);font-size:10.5px;color:var(--muted)}
+.planner .rmap-stop__acc b{font-family:var(--f-d);font-weight:600;color:var(--ink-soft);font-size:13px}
+
+/* empty */
+.planner .plan2-empty{
+  display:flex;flex-direction:column;align-items:center;gap:13px;text-align:center;
+  padding:46px 18px;color:var(--faint);border:1px dashed var(--line);border-radius:var(--r-lg);
+}
+.planner .plan2-empty svg{color:var(--line-2)}
+.planner .plan2-empty p{margin:0;color:var(--muted);font-size:14px}
+
+/* warnings — <details> plegado por default; el summary lleva el contador */
+.planner .plan2-warns{
+  margin-top:18px;padding:14px 16px;display:flex;flex-direction:column;gap:7px;
+  border:1px solid color-mix(in srgb,var(--oxblood) 30%,var(--line));border-radius:var(--r);
+  background:color-mix(in srgb,var(--oxblood) 5%,transparent);
+  border-left:3px solid var(--oxblood);
+}
+.planner .plan2-warns:not([open]){padding:10px 16px}
+.planner .plan2-warns__h{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--f-m);font-size:10px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--status-caution-text);
+  cursor:pointer;list-style:none;user-select:none;
+}
+.planner .plan2-warns__h::-webkit-details-marker{display:none}
+.planner .plan2-warns__h::after{
+  content:"";width:6px;height:6px;margin-left:2px;
+  border-right:1.4px solid currentColor;border-bottom:1.4px solid currentColor;
+  transform:rotate(45deg) translateY(-1px);transition:transform .18s;
+}
+.planner .plan2-warns[open] .plan2-warns__h::after{transform:rotate(-135deg)}
+.planner .plan2-warns__h i{
+  font-style:normal;background:color-mix(in srgb,var(--oxblood) 16%,transparent);
+  border-radius:999px;min-width:16px;text-align:center;padding:1px 6px;font-size:9.5px;
+}
+.planner .plan2-warn{font-size:12.5px;color:var(--ink-soft);line-height:1.45;padding-left:2px}
+
+/* =========================================================================
+   POOL — editor del plan (agregar electivas · fijar cuatrimestres)
+   ========================================================================= */
+.planner .plan2-pool{
+  margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
+  overflow:hidden;
+}
+.planner .plan2-pool>summary{
+  cursor:pointer;list-style:none;padding:14px 18px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+}
+.planner .plan2-pool>summary::-webkit-details-marker{display:none}
+.planner .plan2-pool>summary::before{
+  content:"▸";color:var(--brass);font-size:11px;align-self:center;transition:transform .2s;
+}
+.planner .plan2-pool[open]>summary::before{content:"▾"}
+.planner .plan2-pool[open]>summary{border-bottom:1px solid var(--line)}
+.planner .plan2-pool__title{font-family:var(--f-d);font-weight:600;font-size:15px;color:var(--ink)}
+.planner .plan2-pool__hint{font-family:var(--f-m);font-size:11px;color:var(--muted);letter-spacing:.02em}
+
+.planner .plan2-pool .pool-cols{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.planner .plan2-pool .pool-col{padding:16px 18px}
+.planner .plan2-pool .pool-col:first-child{border-right:1px solid var(--line)}
+/* ----- Agregar materias: UNA lista, dos toggles (Obligatorias / Electivas) ----- */
+.planner .pv-pool{padding:14px 18px 16px}
+.planner .pv-pool__bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.planner .pv-pool__bar .pool-add{flex:1 1 260px;margin-bottom:0}
+.planner .pv-toggles{display:inline-flex;gap:6px}
+.planner .pv-toggle{
+  display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;
+  border:1px solid var(--line-2);background:var(--panel);color:var(--muted);
+  font-family:var(--f-m);font-size:11px;letter-spacing:.02em;cursor:pointer;
+  transition:color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out);
+}
+.planner .pv-toggle:hover{color:var(--ink);border-color:var(--brass)}
+.planner .pv-toggle:focus-visible{outline:none;box-shadow:var(--ring)}
+.planner .pv-toggle i{width:8px;height:8px;border-radius:50%;background:var(--line-2);flex:none}
+.planner .pv-toggle--ob[aria-pressed="true"] i{background:var(--slate)}
+.planner .pv-toggle--el[aria-pressed="true"] i{background:var(--brass)}
+.planner .pv-toggle[aria-pressed="true"]{color:var(--ink);border-color:var(--line-2);background:var(--panel-2)}
+.planner .pv-toggle b{font-weight:600;color:var(--ink);margin-left:2px}
+.planner .pv-pool__count{margin-left:auto;font-family:var(--f-m);font-size:10.5px;color:var(--faint);letter-spacing:.02em}
+.planner .pv-cards{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;
+  max-height:420px;overflow:auto;padding:2px;margin:-2px;
+  scrollbar-width:thin;scrollbar-color:var(--scroll) transparent;
+}
+/* Tarjeta de materia (badge): código chico arriba; nombre y horario/aula grandes;
+   abajo, junto al código, hasta 4 badges de minor + el badge de obligatoria. */
+.planner .pv-card{
+  position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;
+  padding:9px 10px 9px 12px;border-radius:var(--r);
+  background:var(--panel-2);border:1px solid var(--line);border-left:3px solid var(--line-2);
+  cursor:grab;transition:border-color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out);
+}
+.planner .pv-card.t-obligatoria{border-left-color:var(--slate)}
+.planner .pv-card.t-electiva{border-left-color:var(--brass)}
+.planner .pv-card:hover{border-color:var(--line-2);box-shadow:var(--shadow-1)}
+.planner .pv-card:focus-within{border-color:var(--brass)}
+.planner .pv-card__main{grid-column:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.planner .pv-card__code{font-family:var(--f-m);font-size:9.5px;letter-spacing:.06em;color:var(--faint)}
+.planner .pv-card__name{
+  font-family:var(--f-d);font-weight:600;font-size:14.5px;line-height:1.2;color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.planner .pv-card__where{font-family:var(--f-m);font-size:12px;line-height:1.3;color:var(--ink-soft)}
+.planner .pv-card__where.is-none{color:var(--muted)}
+.planner .pv-card__badges{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:2px;min-height:16px}
+.planner .pv-card__badges .minor-badges{gap:3px}
+.planner .pv-ob{
+  display:inline-flex;align-items:center;height:16px;padding:0 6px;border-radius:var(--r-pill);
+  font-family:var(--f-m);font-size:9px;font-weight:600;letter-spacing:.06em;
+  color:var(--slate);background:color-mix(in srgb,var(--slate) 14%,transparent);
+  border:1px solid color-mix(in srgb,var(--slate) 40%,transparent);
+}
+.planner .pv-card__acts{grid-column:2;grid-row:1 / span 2;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:6px}
+.planner .pv-card__acts select{
+  background:var(--panel-3);border:1px solid var(--line-2);color:var(--ink-soft);border-radius:6px;
+  padding:4px 6px;font-family:var(--f-m);font-size:10.5px;cursor:pointer;max-width:132px;
+}
+.planner .pv-card__acts select:hover{border-color:var(--brass)}
+.planner .pv-card__acts select:focus{outline:none;border-color:var(--brass);box-shadow:0 0 0 3px var(--brass-soft)}
+.planner .pv-card__add{
+  display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;
+  border:1px solid color-mix(in srgb,var(--brass) 40%,transparent);background:var(--brass-soft);color:var(--brass-2);
+  font-family:var(--f-m);font-size:10.5px;cursor:pointer;white-space:nowrap;
+}
+.planner .pv-card__add:hover{background:var(--brass);color:var(--block-ink);border-color:var(--brass)}
+.planner .pv-card__rm{
+  width:22px;height:22px;border-radius:6px;border:1px solid transparent;background:none;color:var(--faint);
+  display:grid;place-items:center;cursor:pointer;
+}
+.planner .pv-card__rm:hover{color:var(--block-ink);background:var(--oxblood);border-color:var(--oxblood)}
+.planner .pv-card__cr{font-family:var(--f-m);font-size:10.5px;color:var(--muted);white-space:nowrap}
+/* estados: en el plan (seleccionada) → atenuada; aprobada → tachada + verde */
+.planner .pv-card.is-selected{opacity:.62}
+.planner .pv-card.is-selected:hover,.planner .pv-card.is-selected:focus-within{opacity:1}
+.planner .pv-card.is-fixed{background:var(--brass-soft);border-color:color-mix(in srgb,var(--brass) 22%,transparent)}
+.planner .pv-card.is-approved{
+  opacity:.6;cursor:default;
+  background:color-mix(in srgb,var(--sage) 8%,var(--panel-2));
+  border-color:color-mix(in srgb,var(--sage) 30%,transparent);border-left-color:var(--sage);
+}
+.planner .pv-card.is-approved .pv-card__name{text-decoration:line-through;text-decoration-color:var(--sage);color:var(--muted)}
+.planner .pv-card__ok{display:inline-flex;align-items:center;gap:4px;font-family:var(--f-m);font-size:10px;color:var(--status-go-text)}
+.planner .pv-card.is-previewing{border-color:var(--brass);box-shadow:0 0 0 2px color-mix(in srgb,var(--brass) 25%,transparent)}
+.planner .pv-cards__none{grid-column:1 / -1;margin:6px 2px;color:var(--faint);font-size:12.5px}
+.planner .pool-h{
+  display:flex;align-items:center;gap:8px;margin-bottom:13px;
+  font-family:var(--f-m);font-size:10px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);
+}
+.planner .pool-h__dot{width:8px;height:8px;border-radius:50%;flex:none}
+.planner .pool-h__dot--ob{background:var(--slate)}
+.planner .pool-h__dot--el{background:var(--brass)}
+.planner .pool-h i{font-style:normal;font-family:var(--f-m);color:var(--ink);margin-left:auto;
+  background:var(--panel-3);border:1px solid var(--line);border-radius:999px;min-width:18px;text-align:center;padding:1px 7px;font-size:10.5px}
+.planner .pool-list{display:flex;flex-direction:column;max-height:330px;overflow:auto;margin:0 -4px;padding:0 4px}
+.planner .pool-none{margin:4px 0;color:var(--faint);font-size:12.5px}
+
+.planner .pool-item{
+  display:flex;align-items:center;gap:10px;padding:8px 9px;border-radius:var(--r);
+  border:1px solid transparent;transition:background .14s,border-color .14s;
+}
+.planner .pool-item:hover{background:var(--panel-2);border-color:var(--line)}
+.planner .pool-item.is-fixed{background:var(--brass-soft);border-color:color-mix(in srgb,var(--brass) 22%,transparent)}
+.planner .pool-item{cursor:grab;user-select:none}
+/* arrastrar un bloque no debe seleccionar texto */
+.planner .cmbcal-blk.is-clickable,.planner .async-chip{user-select:none}
+.planner .pool-item.is-previewing{border-color:var(--brass);box-shadow:0 0 0 2px color-mix(in srgb,var(--brass) 25%,transparent)}
+.planner .pool-item.is-dragging{opacity:.35}
+.planner .plan2-preview-slot__hint:empty{display:none}
+.planner .pool-item .pab{
+  font-family:var(--f-d);font-weight:600;font-size:13px;color:var(--ink);width:58px;flex:none;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.planner .pool-item .pn{
+  flex:1;min-width:0;font-size:13px;color:var(--ink-soft);line-height:1.25;
+  display:flex;flex-direction:column;gap:1px;overflow:hidden;
+}
+.planner .pool-item .pn>:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.planner .pool-item .pc{font-family:var(--f-m);font-size:10px;color:var(--faint);letter-spacing:.02em}
+.planner .pool-item .pno-hor{font-family:var(--f-m);font-size:9.5px;color:var(--muted)}
+.planner .pool-item select{
+  background:var(--panel-3);border:1px solid var(--line-2);color:var(--ink-soft);border-radius:6px;
+  padding:5px 7px;font-family:var(--f-m);font-size:11px;flex:none;cursor:pointer;transition:border-color .15s;
+}
+.planner .pool-item select:hover{border-color:var(--brass)}
+.planner .pool-item select:focus{outline:none;border-color:var(--brass);box-shadow:0 0 0 3px var(--brass-soft)}
+.planner .pool-item.is-fixed select{border-color:var(--brass);color:var(--ink)}
+.planner .pool-item .rm{
+  width:24px;height:24px;flex:none;border-radius:6px;border:1px solid transparent;background:none;
+  color:var(--faint);font-size:17px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:.15s;
+}
+.planner .pool-item .rm:hover{color:#fff;background:var(--oxblood);border-color:var(--oxblood)}
+
+.planner .pool-add{display:flex;align-items:center;gap:9px;position:relative;margin-bottom:11px;
+  background:var(--panel-2);border:1px solid var(--line-2);border-radius:var(--r);padding:0 11px;transition:border-color .15s,box-shadow .15s}
+.planner .pool-add:focus-within{border-color:var(--brass);box-shadow:0 0 0 3px var(--brass-soft)}
+.planner .pool-add__ic{color:var(--faint);flex:none}
+.planner .pool-add input{
+  flex:1;min-width:0;background:none;border:none;color:var(--ink);
+  border-radius:0;padding:9px 0;font-family:var(--f-b);font-size:13px;
+}
+.planner .pool-add input:focus{outline:none}
+.planner .pool-add input::placeholder{color:var(--faint)}
+.planner .pool-sugg{
+  position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--panel-2);
+  border:1px solid var(--line-2);border-radius:var(--r);max-height:240px;overflow:auto;z-index:5;
+  box-shadow:0 12px 30px color-mix(in srgb,var(--ink) 14%,transparent);
+}
+.planner .pool-sugg>div{padding:9px 12px;font-size:12.5px;cursor:pointer;color:var(--ink-soft);display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--line)}
+.planner .pool-sugg>div:last-child{border-bottom:none}
+.planner .pool-sugg>div:hover{background:var(--brass-soft)}
+.planner .pool-sugg .sc{font-family:var(--f-m);font-size:10.5px;color:var(--brass);flex:none;width:42px}
+.planner .pool-sugg .sn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* =========================================================================
+   RESPONSIVE — Plan de cursada
+   ========================================================================= */
+@media (max-width:680px){
+  .planner .rmap{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+  .planner .plan2-pool .pool-cols{grid-template-columns:1fr}
+  .planner .plan2-pool .pool-col:first-child{border-right:none;border-bottom:1px solid var(--line)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .planner .rmap-stop__card{animation:none}
+  .planner .rmap-mat:hover{transform:none}
+  .planner .rmap-stop__load i{transition:none}
+}
+
+/* =========================================================================
+   RECOMENDACIONES DE ELECTIVAS + PREVIEW
+   ========================================================================= */
+.planner .plan2-recs{margin-top:20px}
+.planner .plan2-recs__h{display:flex;flex-direction:column;gap:3px;margin-bottom:10px}
+.planner .plan2-recs__title{font-family:var(--f-d);font-weight:600;font-size:16px;color:var(--ink);letter-spacing:-.01em}
+.planner .plan2-recs__sub{font-family:var(--f-m);font-size:11px;color:var(--muted);line-height:1.5}
+/* progreso de créditos electivos: una línea mono + barra brass (reemplaza al
+   párrafo de ayuda y a la barra de filtros: el panel es la lista) */
+.planner .plan2-recs__prog{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.planner .plan2-recs__progtxt{font-family:var(--f-m);font-size:11px;color:var(--muted);letter-spacing:.01em}
+.planner .plan2-recs__progtxt b{font-weight:600;color:var(--ink)}
+.planner .plan2-recs__progbar{display:block;height:4px;border-radius:999px;background:var(--panel-3);overflow:hidden}
+.planner .plan2-recs__progbar>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--brass),var(--brass-2));transition:width var(--dur-base) var(--ease-out)}
+/* fila de encabezado: título a la izquierda + chevron de ocultar a la derecha,
+   mismo patrón (y estilo) que `.side__head`/`.side__collapse` del rail principal */
+.planner .plan2-recs__hrow{display:flex;align-items:center;justify-content:space-between;gap:9px}
+.planner .plan2-recs__collapse{
+  width:24px;height:24px;flex:none;display:inline-grid;place-items:center;
+  border:none;background:var(--panel-2);color:var(--ink-soft);border-radius:6px;cursor:pointer;
+  opacity:1;transition:opacity .15s,color .15s,background .15s;
+}
+.planner .plan2-recs__collapse:hover{color:var(--brass);background:var(--brass-soft)}
+/* pestañita para reabrir el panel colapsado: espejo de `.side__reveal`, pero en
+   el borde DERECHO de la pantalla (el panel de electivas vive a la derecha).
+   Fixed → no la mueve el scroll; discreta, se aviva en hover con acento brass. */
+.planner .plan2-recs-reveal{
+  position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:30;
+  width:26px;height:48px;display:grid;place-items:center;
+  border:1px solid var(--line-2);border-right:none;border-radius:10px 0 0 10px;
+  background:var(--panel);color:var(--brass);cursor:pointer;opacity:1;
+  box-shadow:0 2px 8px color-mix(in srgb,var(--brass) 12%,transparent);
+  transition:opacity .16s,color .16s,width .16s,border-color .16s,box-shadow .16s;
+}
+.planner .plan2-recs-reveal:hover{color:var(--brass);border-color:var(--brass);width:31px;box-shadow:0 3px 12px color-mix(in srgb,var(--brass) 22%,transparent)}
+
+/* Flechas de ambos sidebars más gruesas y un pelín más grandes → más visibles
+   (se sube el stroke por CSS para no tocar los 4 SVG del markup). */
+.planner .side__collapse svg,.planner .side__reveal svg,
+.planner .plan2-recs__collapse svg,.planner .plan2-recs-reveal svg{width:16px;height:16px}
+.planner .side__collapse svg path,.planner .side__reveal svg path,
+.planner .plan2-recs__collapse svg path,.planner .plan2-recs-reveal svg path{stroke-width:2.2}
+/* grupos desplegables: por si alargan o no la carrera */
+.planner .plan2-recgrp{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
+  overflow:hidden;margin-top:11px;
+}
+.planner .plan2-recgrp>summary{
+  cursor:pointer;list-style:none;padding:10px 13px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.planner .plan2-recgrp>summary::-webkit-details-marker{display:none}
+.planner .plan2-recgrp>summary::after{
+  content:"▸";color:var(--brass);font-size:11px;margin-left:auto;transition:transform .2s;
+}
+.planner .plan2-recgrp[open]>summary::after{content:"▾"}
+.planner .plan2-recgrp[open]>summary{border-bottom:1px solid var(--line)}
+.planner .plan2-recgrp__dot{width:8px;height:8px;border-radius:50%;flex:none}
+.planner .plan2-recgrp__dot--ok{background:var(--sage)}
+.planner .plan2-recgrp__dot--warn{background:var(--brass-2)}
+.planner .plan2-recgrp__dot--bad{background:var(--oxblood)}
+.planner .plan2-recgrp__title{font-family:var(--f-d);font-weight:600;font-size:13px;color:var(--ink)}
+.planner .plan2-recgrp__count{
+  font-family:var(--f-m);font-size:10.5px;font-weight:600;color:var(--muted);
+  background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:1px 8px;
+}
+.planner .plan2-recgrp__hint{font-family:var(--f-m);font-size:11px;color:var(--muted);letter-spacing:.02em}
+/* el body de cada grupo es una .recrow-list (RecRow compartida, rec-row.css);
+   el padding del body lo da planview.css */
+
+/* preview en el roadmap */
+/* Slot de vista previa: espacio RESERVADO y persistente encima del board.
+   No se monta/desmonta por hover (eso hacía saltar la página): la altura
+   queda fija (min-height) y solo cambia el CONTENIDO. `hint` y `msg` se
+   apilan en la MISMA celda de grid → crossfade sin reflow. La animación
+   del pill es solo opacity (sin transform) para no mover nada. */
+.planner .plan2-preview-slot{
+  display:grid;min-height:36px;align-items:center;margin:2px 0 12px;
+}
+.planner .plan2-preview-slot>*{grid-area:1/1;min-width:0}
+.planner .plan2-preview-slot__hint{
+  font-family:var(--f-m);font-size:11.5px;line-height:1.4;color:var(--faint);
+  letter-spacing:.01em;padding:0 4px;
+  opacity:1;transition:opacity .16s var(--ease,ease);
+}
+.planner .plan2-preview-slot.is-on .plan2-preview-slot__hint{opacity:0}
+.planner .plan2-preview-slot__msg{
+  justify-self:start;display:inline-flex;align-items:center;gap:9px;
+  padding:8px 14px;border-radius:var(--r);
+  border:1px dashed color-mix(in srgb,var(--brass) 50%,var(--line));background:var(--brass-soft);
+  color:var(--ink-soft);font-family:var(--f-m);font-size:12px;line-height:1.2;
+  animation:preview-slot-in .16s var(--ease,ease) both;
+}
+.planner .plan2-preview-slot__msg b{color:var(--ink);font-weight:600}
+@keyframes preview-slot-in{from{opacity:0}to{opacity:1}}
+.planner .plan2-preview-banner__dot{
+  width:8px;height:8px;border-radius:50%;background:var(--brass);flex:none;
+  box-shadow:0 0 0 3px var(--brass-soft);
+}
+.planner .rmap-stop.has-preview .rmap-stop__card{
+  border-color:color-mix(in srgb,var(--brass) 45%,var(--line));
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--brass) 30%,transparent);
+}
+.planner .rmap-mat.is-preview{
+  border-color:var(--brass);
+  background:color-mix(in srgb,var(--brass) 24%,var(--panel-2));
+  box-shadow:0 0 0 1px var(--brass);
+}
+.planner .rmap-mat__new{
+  font-family:var(--f-m);font-size:8px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--block-ink);background:var(--brass);border-radius:4px;padding:1px 4px;margin-left:1px;
+}
+@media (prefers-reduced-motion:reduce){
+  .planner .plan2-preview-slot__msg{animation:none}
+  .planner .plan2-preview-slot__hint{transition:none}
+}
+
+/* =========================================================================
+   BOARD SWITCH (Roadmap / Calendarios) + PANORAMA DE CALENDARIOS
+   ========================================================================= */
+.planner .plan2-minors-btn{
+  display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+  border:1px solid var(--line);border-radius:999px;background:var(--panel);
+  padding:5px 13px 5px 9px;font-family:var(--f-m);font-size:11.5px;font-weight:600;
+  letter-spacing:.02em;color:var(--ink-soft);transition:.16s var(--ease,ease);
+}
+.planner .plan2-minors-btn:hover{
+  border-color:color-mix(in srgb,var(--brass) 45%,var(--line));
+  color:var(--ink);box-shadow:0 1px 0 color-mix(in srgb,var(--brass) 18%,transparent);
+}
+.planner .plan2-minors-btn__dots{display:inline-flex;gap:2px}
+.planner .plan2-minors-btn__dots i{width:7px;height:7px;border-radius:999px}
+
+/* grilla compacta: 3 por fila si entran, si no 2, y 1 en pantallas chicas.
+   Reacciona al ancho real de la columna (.plan2-split__main), no del viewport. */
+.planner .plan2-cals{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;
+  padding:2px;animation:cmb-grid-in .3s var(--ease,ease) both;
+}
+/* la grilla reacciona al ancho real de la columna del board
+   (.plan2-split__main, container-type:inline-size): 3 por fila cuando entra,
+   2 cuando se angosta y 1 en pantallas muy chicas. */
+@container (max-width:650px){
+  .planner .plan2-cals{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@container (max-width:410px){
+  .planner .plan2-cals{grid-template-columns:1fr}
+}
+
+/* =========================================================================
+   MODAL — créditos de minors acumulados por cuatrimestre
+   ========================================================================= */
+/* z-index 1100: sobre el navbar fijo del portal (z:1000) — ver .dr-modal */
+.planner .mnr-modal{position:fixed;inset:0;z-index:1100;display:flex;
+  align-items:center;justify-content:center;padding:24px}
+.planner .mnr-modal__bg{position:absolute;inset:0;background:var(--scrim);
+  backdrop-filter:blur(2px);animation:planner-fade .22s}
+.planner .mnr-modal__panel{
+  position:relative;z-index:1;width:min(640px,100%);max-height:88vh;overflow:auto;
+  background:var(--panel);border:1px solid var(--line-2);border-radius:var(--r-lg);
+  box-shadow:0 24px 60px color-mix(in srgb,#000 32%,transparent);
+  padding:26px 26px 20px;animation:mnr-pop .26s var(--ease,ease) both;
+}
+@keyframes mnr-pop{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+.planner .mnr-close{position:absolute;top:16px;right:16px;width:30px;height:30px;
+  border-radius:6px;border:1px solid var(--line);background:var(--panel-2);
+  color:var(--ink);cursor:pointer;font-size:15px;line-height:1}
+.planner .mnr-close:hover{background:var(--panel);border-color:var(--line-2)}
+.planner .mnr-head{margin:0 0 18px;padding-right:30px}
+.planner .mnr-kick{font-family:var(--f-m);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--brass)}
+.planner .mnr-head h3{font-family:var(--f-d);font-weight:600;font-size:21px;
+  letter-spacing:-.01em;margin:5px 0 6px;line-height:1.15;color:var(--ink)}
+.planner .mnr-head p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.5}
+.planner .mnr-head p b{color:var(--ink-soft)}
+
+.planner .mnr-tablewrap{border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.planner .mnr-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.planner .mnr-table th,.planner .mnr-table td{padding:9px 10px;text-align:center}
+.planner .mnr-table thead th{
+  font-family:var(--f-m);font-size:10px;letter-spacing:.04em;font-weight:600;
+  color:var(--ink-soft);background:var(--panel-2);border-bottom:1px solid var(--line);
+  white-space:nowrap;
+}
+.planner .mnr-th-cu{text-align:left !important}
+.planner .mnr-th-area{vertical-align:middle}
+.planner .mnr-swatch{display:inline-block;width:8px;height:8px;border-radius:999px;
+  margin-right:5px;vertical-align:baseline}
+.planner .mnr-table tbody tr{border-top:1px solid var(--line)}
+.planner .mnr-table tbody tr.is-base{background:var(--panel-2)}
+.planner .mnr-cu{text-align:left !important;white-space:nowrap}
+.planner .mnr-cu__name{font-family:var(--f-d);font-weight:600;color:var(--ink);font-size:12.5px}
+.planner .mnr-cu__tag{font-family:var(--f-m);font-size:9.5px;color:var(--muted);
+  margin-left:7px;letter-spacing:.03em}
+.planner .mnr-cell{font-family:var(--f-m);position:relative;color:var(--ink-soft)}
+.planner .mnr-cell__n{font-size:13px;font-weight:600}
+.planner .mnr-cell.is-empty .mnr-cell__n{color:var(--faint);font-weight:400}
+.planner .mnr-cell.is-done{background:color-mix(in srgb,var(--sage) 14%,transparent)}
+.planner .mnr-cell.is-done .mnr-cell__n{color:var(--status-go-text)}
+.planner .mnr-cell__chk{color:var(--sage);font-size:11px;margin-left:3px}
+.planner .mnr-cell__d{font-size:9.5px;color:var(--brass);margin-left:3px;vertical-align:top}
+
+.planner .mnr-foot{margin-top:14px;font-size:12px;line-height:1.5}
+.planner .mnr-foot__ok{color:var(--ink-soft)}
+.planner .mnr-foot__none{color:var(--muted)}
+
+/* =========================================================================
+   MOVIMIENTO & COHESIÓN — capa transversal (overseer-owned)
+   Tokens de motion + entradas de vista + hover/press/focus + scrollbar +
+   affordances de drag + bloques de calendario clickeables + lector full-screen.
+   Todo respeta prefers-reduced-motion al final.
+   ========================================================================= */
+.planner{
+  --ease-out:cubic-bezier(.22,.61,.36,1);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-fast:.14s;
+  --dur-base:.26s;
+  --dur-slow:.42s;
+  --shadow-1:0 1px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.05);
+  --shadow-2:0 4px 14px rgba(0,0,0,.10),0 12px 36px rgba(0,0,0,.12);
+  --ring:0 0 0 2px var(--background),0 0 0 4px var(--accent);
+}
+@keyframes planner-fade-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes planner-scale-in{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+@keyframes planner-fade{from{opacity:0}to{opacity:1}}
+@keyframes planner-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* entrada de cada vista al cambiar de pestaña */
+.planner .main>*{animation:planner-fade-up var(--dur-base) var(--ease-out) both}
+
+/* foco accesible consistente para todo control del planner */
+.planner button:focus-visible,.planner a:focus-visible,.planner select:focus-visible,
+.planner input:focus-visible,.planner [tabindex]:focus-visible,.planner summary:focus-visible{
+  outline:none;box-shadow:var(--ring);border-radius:var(--r)}
+
+/* presión sutil en botones (sin pisar estados existentes) */
+.planner .btn,.planner .mini,
+.planner .plan2-recs__collapse,.planner .plan2-minors-btn{
+  transition:transform var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}
+.planner .btn:active,.planner .mini:active{transform:translateY(1px) scale(.985)}
+
+/* tarjetas (electivas): elevación al hover */
+.planner .card{transition:transform var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out)}
+.planner .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-2);border-color:var(--line-2)}
+
+/* scrollbar afinada dentro del planner */
+.planner .dr-modal__panel,.planner .fr-panel,.planner .pool-list{scrollbar-width:thin;scrollbar-color:var(--scroll) transparent}
+.planner .dr-modal__panel::-webkit-scrollbar,.planner .fr-panel::-webkit-scrollbar{width:9px}
+.planner .dr-modal__panel::-webkit-scrollbar-thumb,.planner .fr-panel::-webkit-scrollbar-thumb{background:var(--scroll);border-radius:9px;border:3px solid transparent;background-clip:content-box}
+
+/* ---- afordances de DRAG en el roadmap del plan ---- */
+.planner .rmap-mat__main[draggable="true"]{cursor:grab}
+.planner .rmap-mat.is-dragging{opacity:.35}
+.planner .rmap-mat.is-dragging .rmap-mat__main{cursor:grabbing}
+.planner .rmap-stop__card{transition:box-shadow var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out),background var(--dur-base) var(--ease-out)}
+.planner .rmap-stop.drop-over .rmap-stop__card{border-color:var(--brass);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 45%,transparent);background:var(--accent-soft)}
+.planner .rmap-stop.drop-over .rmap-stop__mats::after{content:"soltar acá";display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-m);font-size:10.5px;color:var(--brass);border:1px dashed var(--brass);border-radius:var(--r);padding:8px;margin-top:4px}
+.planner .rmap-drophint{font-family:var(--f-m);font-size:10px;color:var(--faint);letter-spacing:.03em}
+
+/* ---- bloques de calendario clickeables (→ drawer de specs) ---- */
+.planner .cmbcal-blk.is-clickable{cursor:pointer;transition:filter var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.planner .cmbcal-blk.is-clickable:hover{filter:brightness(1.06) saturate(1.05);box-shadow:0 3px 10px rgba(0,0,0,.18);z-index:5}
+.planner .cmbcal-blk.is-clickable:active{transform:scale(.98)}
+.planner .gblock.is-clickable{cursor:pointer;transition:filter var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}
+.planner .gblock.is-clickable:hover{filter:brightness(1.06);box-shadow:0 3px 10px rgba(0,0,0,.18);z-index:5}
+
+/* =========================================================================
+   LECTOR FULL-SCREEN DE FICHAS (.fr-*)  — apartado de lectura de electivas
+   DOM canónico (lo construye FichaReader.tsx):
+   .fr-overlay > (.fr-scrim + .fr-panel > (header.fr-bar + article.fr-doc))
+   ========================================================================= */
+/* wrapper del portal: sin caja (no afecta layout), solo reestablece las vars del planner */
+.planner.fr-portal{display:contents}
+/* z-index por encima del navbar fijo del portal (z 1000) → lector realmente full-screen */
+.planner .fr-overlay{position:fixed;inset:0;z-index:1100;display:flex;justify-content:center;align-items:center;
+  padding:clamp(24px,4vh,56px) clamp(18px,4vw,64px);animation:planner-fade var(--dur-fast) var(--ease-out) both}
+.planner .fr-scrim{position:absolute;inset:0;background:var(--scrim);backdrop-filter:blur(2px)}
+.planner .fr-panel{position:relative;width:min(1080px,100%);height:100%;max-height:100%;background:var(--panel);
+  border:1px solid var(--line-2);border-radius:var(--r-lg);display:flex;flex-direction:column;
+  overflow:hidden;box-shadow:0 24px 60px color-mix(in srgb,#000 32%,transparent);animation:planner-rise var(--dur-base) var(--ease-out) both}
+.planner .fr-bar{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px clamp(18px,3vw,40px);background:color-mix(in srgb,var(--panel) 88%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.planner .fr-bar__nav{display:flex;align-items:center;gap:8px}
+.planner .fr-navbtn{width:34px;height:34px;border-radius:var(--r);border:1px solid var(--line);background:var(--panel-2);
+  color:var(--ink);cursor:pointer;font-size:15px;display:inline-flex;align-items:center;justify-content:center;
+  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.planner .fr-navbtn:hover:not(:disabled){background:var(--panel-3);border-color:var(--line-2)}
+.planner .fr-navbtn:active:not(:disabled){transform:translateY(1px)}
+.planner .fr-navbtn:disabled{opacity:.35;cursor:not-allowed}
+.planner .fr-bar__pos{font-family:var(--f-m);font-size:11.5px;color:var(--muted);letter-spacing:.03em;margin-left:4px}
+.planner .fr-bar__title{font-family:var(--f-m);font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.13em;margin-left:auto;margin-right:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40%}
+.planner .fr-close{width:36px;height:36px;border-radius:var(--r);border:1px solid var(--line);background:var(--panel-2);color:var(--ink);cursor:pointer;font-size:17px;flex:none;
+  transition:background var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.planner .fr-close:hover{background:var(--panel-3)}.planner .fr-close:active{transform:scale(.94)}
+.planner .fr-doc{overflow:auto;padding:clamp(28px,5vw,64px) clamp(20px,5vw,56px) 80px;flex:1}
+.planner .fr-head{max-width:680px;margin:0 auto 8px;padding-bottom:26px;border-bottom:1px solid var(--line)}
+.planner .fr-head__code{font-family:var(--f-m);font-size:13px;color:var(--brass);letter-spacing:.05em}
+.planner .fr-title{font-family:var(--f-d);font-weight:500;font-size:clamp(28px,4vw,40px);line-height:1.08;letter-spacing:-.015em;margin:10px 0 14px;color:var(--ink)}
+.planner .fr-head__meta{font-size:13.5px;color:var(--muted);margin:0 0 16px;line-height:1.5}
+.planner .fr-chips{display:flex;flex-wrap:wrap;gap:8px}
+.planner .fr-chip{font-family:var(--f-m);font-size:11px;color:var(--ink-soft);background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:5px 10px}
+.planner .fr-chip b{color:var(--brass-2);font-weight:500}
+.planner .fr-body{max-width:680px;margin:0 auto}
+.planner .fr-sec{margin-top:38px;animation:planner-fade-up var(--dur-base) var(--ease-out) both}
+.planner .fr-sec>h2{font-family:var(--f-d);font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--brass);margin:0 0 14px}
+.planner .fr-sec p{font-size:15.5px;line-height:1.72;color:var(--ink-soft);margin:0 0 14px}
+.planner .fr-sec p:last-child{margin-bottom:0}
+.planner .fr-units{list-style:none;counter-reset:u;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+.planner .fr-units>li{counter-increment:u;position:relative;padding-left:42px}
+.planner .fr-units>li::before{content:counter(u,decimal-leading-zero);position:absolute;left:0;top:1px;font-family:var(--f-m);font-size:12px;color:var(--brass);
+  border:1px solid var(--line);border-radius:var(--r);width:28px;height:24px;display:flex;align-items:center;justify-content:center}
+.planner .fr-units__t{display:block;font-family:var(--f-d);font-weight:600;font-size:15.5px;color:var(--ink);margin-bottom:3px}
+.planner .fr-units__d{font-size:14px;line-height:1.6;color:var(--ink-soft)}
+.planner .fr-biblio{margin:0 0 16px;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.planner .fr-biblio li{font-size:14px;line-height:1.55;color:var(--ink-soft)}
+.planner .fr-biblio__lbl{font-family:var(--f-m);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:0 0 8px}
+.planner .fr-pdf{display:inline-flex;align-items:center;gap:8px;margin-top:6px;font-family:var(--f-m);font-size:12.5px;color:var(--brass);
+  text-decoration:none;border:1px solid var(--line);border-radius:var(--r);padding:9px 16px;
+  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.planner .fr-pdf:hover{background:var(--panel-2);border-color:var(--line-2)}
+.planner .fr-pdf:active{transform:translateY(1px)}
+.planner .fr-empty{max-width:680px;margin:60px auto;text-align:center;color:var(--muted);font-size:14px}
+/* botón "leer ficha" en la card de electiva */
+.planner .card__read{display:inline-flex;align-items:center;gap:5px;margin-top:9px;width:100%;justify-content:center;
+  font-family:var(--f-m);font-size:11px;color:var(--brass);background:none;border:1px solid var(--line-2);border-radius:var(--r);padding:7px;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}
+.planner .card__read:hover{background:var(--accent-soft);border-color:var(--brass);color:var(--brass-2)}
+
+@media (max-width:640px){
+  .planner .fr-overlay{padding:12px}
+  .planner .fr-panel{width:100%;height:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  .planner .main>*,.planner .fr-overlay,.planner .fr-panel,.planner .fr-sec{animation:none !important}
+  .planner *{transition-duration:.001ms !important}
+}
+
+/* =========================================================================
+   SIDEBAR — rework "ultra-limpio"
+   Restyle 100% scopeado bajo `.planner .side` (no toca .block/.minor/.chk/
+   .foot que comparten DetailDrawer/PlanView/CuatriView/MinorsModal).
+   Menos es más: sin cajas, sin reglas largas, aire entre secciones y un solo
+   acento (brass). Nav borderless con activo en pill brass suave; Minors =
+   toggle de área + progreso fusionados en una fila. Se quitaron los checkboxes
+   muertos (Obligatorias/Electivas) en el markup.
+   ========================================================================= */
+
+/* — Rail: mucho aire entre secciones + scroll limpio.
+     Barra fina que se revela en hover; scrollbar-gutter:stable evita el salto
+     de layout al aparecer/desaparecer (nada de padding asimétrico). — */
+.planner .side{gap:24px;padding-right:0;overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:transparent transparent}
+.planner .side:hover{scrollbar-color:var(--scroll) transparent}
+.planner .side::-webkit-scrollbar{width:7px}
+.planner .side::-webkit-scrollbar-thumb{background:transparent;border-radius:20px}
+.planner .side:hover::-webkit-scrollbar-thumb{background:var(--scroll)}
+
+/* — Header: sin kicker visible (el título vive en el aria-label del <aside>);
+     queda solo la flechita chica de ocultar, anclada a la derecha (discreta,
+     "que no se note", se aviva en hover) — */
+.planner .side__head{display:flex;align-items:center;justify-content:flex-end;padding:0 4px 0 11px}
+.planner .side__collapse{width:24px;height:24px;flex:none;display:inline-grid;place-items:center;border:none;background:var(--panel-2);color:var(--ink-soft);border-radius:6px;cursor:pointer;opacity:1;transition:opacity .15s,color .15s,background .15s}
+.planner .side__collapse:hover{color:var(--brass);background:var(--brass-soft)}
+
+/* — Handle para reabrir el panel colapsado: pestañita en el borde izq de la
+     pantalla (fixed → no la afecta el scroll), discreta y con reveal en hover — */
+.planner .side__reveal{position:fixed;left:0;top:calc(var(--nav-h) + 67px);z-index:30;width:26px;height:48px;display:grid;place-items:center;border:1px solid var(--line-2);border-left:none;border-radius:0 10px 10px 0;background:var(--panel);color:var(--brass);cursor:pointer;opacity:1;box-shadow:0 2px 8px color-mix(in srgb,var(--brass) 12%,transparent);transition:opacity .16s,color .16s,width .16s,border-color .16s,box-shadow .16s}
+.planner .side__reveal:hover{color:var(--brass);border-color:var(--brass);width:31px;box-shadow:0 3px 12px color-mix(in srgb,var(--brass) 22%,transparent)}
+
+/* — División sidebar ↔ contenido + acercar el rail al borde de pantalla.
+     Solo en desktop (≥1081px): abajo el layout pasa a fila apilada. — */
+@media (min-width:1081px){
+  .planner .topbar{padding-left:clamp(12px,1.4vw,20px)}
+  .planner .shell{padding-left:clamp(12px,1.4vw,20px);gap:clamp(16px,1.6vw,24px)}
+  /* CPT-03: en las 5 vistas donde el rail solo navega, se angosta y devuelve el
+     ancho al contenido; la nav sigue clavada a la izquierda (misma posición,
+     sin la tira horizontal que rompía la consistencia espacial). Excluye el
+     estado colapsado (ahí el reclamo del ancho es total, no compacto). */
+  .planner.rail-nav-only:not(.side-collapsed) .shell{grid-template-columns:190px 1fr}
+  .planner:not(.side-collapsed) .main{
+    border-left:1px solid var(--line-2);
+    padding-left:clamp(18px,1.8vw,26px);
+  }
+  /* Pin exacto del rail: nace justo debajo del topbar (nav 68 + topbar 52 —
+     ahora la tira inline de métricas, no las tarjetas — + padding-top del shell)
+     → queda clavado desde scroll 0 y el scroll de la pantalla principal NO lo mueve. */
+  .planner .side{
+    top:calc(var(--nav-h) + 52px + clamp(16px,2.4vw,32px));
+    max-height:calc(100vh - var(--nav-h) - 52px - clamp(16px,2.4vw,32px) - 18px);
+  }
+}
+
+
+/* — Búsqueda: campo limpio relleno suave, foco brass — */
+.planner .side .field input{padding:10px 12px 10px 34px;border-radius:8px;border-color:transparent;background:var(--panel-2);font-size:13.5px}
+.planner .side .field input::placeholder{color:var(--faint)}
+.planner .side .field input:focus{border-color:var(--brass);background:var(--panel);box-shadow:0 0 0 3px var(--brass-soft)}
+.planner .side .field:focus-within .field__ic{color:var(--brass)}
+
+/* — Navegación por nombre, sin caja (el héroe, limpio) — */
+.planner .side .views{display:flex;flex-direction:column;gap:1px;border:none;border-radius:0;background:transparent;overflow:visible}
+/* rótulos de grupo del nav: "Tu plan" (flujo) / "Consultar" (utilidades) */
+.planner .side .views__h{display:block;padding-left:11px;margin-bottom:6px;font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.16em;color:var(--faint)}
+.planner .side .views__h--sep{margin-top:16px}
+.planner .side .view{display:flex;align-items:center;gap:11px;padding:9px 11px;border:none;border-radius:7px;font-size:13.5px;color:var(--muted)}
+.planner .side .view::before{display:none}
+.planner .side .view__lb{transition:color .16s}
+.planner .side .view:hover{background:var(--panel-2)}
+.planner .side .view:hover .view__lb{color:var(--ink)}
+.planner .side .view.is-active{background:var(--brass-soft)}
+.planner .side .view.is-active .view__lb{color:var(--ink);font-weight:600}
+
+/* — Columna izquierda única: TODO el contenido arranca a 11px del borde
+     izquierdo (labels, filas de nav, checkboxes, minors, gauge, reset, foot).
+     Nada se ancla a la derecha. — */
+.planner .side .block{background:transparent;border:none;border-radius:0;padding:0}
+.planner .side .block__h{display:block;margin-bottom:11px;padding-left:11px;font-size:9.5px;font-weight:600;letter-spacing:.16em;color:var(--faint)}
+.planner .side .block__h::after{content:none}
+
+/* — Filtros: filas limpias, ancladas a la izquierda — */
+.planner .side .chk{font-size:13.5px;padding:5px 0 5px 11px;color:var(--ink-soft)}
+.planner .side .chk:hover{color:var(--ink)}
+
+/* — Minors: toggle de área + progreso; valor pegado al nombre (izquierda),
+     NO empujado al borde derecho — */
+.planner .side .minors{display:flex;flex-direction:column;gap:3px}
+.planner .side .minrow{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;background:transparent;border:none;border-radius:7px;padding:7px 11px;cursor:pointer;transition:background .15s,opacity .15s}
+.planner .side .minrow:hover{background:var(--panel-2)}
+.planner .side .minrow__top{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft)}
+.planner .side .minrow .swatch{width:9px;height:9px;border-radius:2px;flex:none}
+.planner .side .minrow__name{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.planner .side .minrow b{font-family:var(--f-m);font-weight:400;font-size:11px;color:var(--muted);flex:none}
+.planner .side .minrow .minibar{height:3px;border-radius:3px;background:var(--panel-3);overflow:hidden}
+.planner .side .minrow.off{opacity:.4}
+.planner .side .minrow.off:hover{opacity:.7}
+
+/* — Reset: texto fantasma discreto, anclado a la izquierda — */
+.planner .side .reset{align-self:flex-start;padding:7px 0 7px 11px;border:none;background:transparent;color:var(--faint);font-size:12px}
+.planner .side .reset:hover{color:var(--oxblood);border:none}
+
+/* — Referencias: acceso secundario al pie del rail (link de utilidad, no un
+     ítem de nav hermano). Sigue deep-linkeable con ?view=ref. — */
+.planner .side__util{align-self:flex-start;padding:7px 0 7px 11px;border:none;background:transparent;color:var(--faint);font-family:var(--f-b);font-size:12px;text-align:left;cursor:pointer;transition:color .15s}
+.planner .side__util:hover{color:var(--ink-soft)}
+.planner .side__util.is-active{color:var(--brass)}
+
+/* — Footer: nota mínima, anclada a la izquierda — */
+.planner .side .foot{font-family:var(--f-m);font-size:9.5px;letter-spacing:.02em;color:var(--faint);padding-top:2px;padding-left:11px}
+
+/* — Reveal escalonado al montar / al expandir el panel — */
+@media (prefers-reduced-motion:no-preference){
+  .planner .side>*{animation:side-in .45s cubic-bezier(.2,.7,.2,1) both}
+  .planner .side>*:nth-child(1){animation-delay:.02s}
+  .planner .side>*:nth-child(2){animation-delay:.06s}
+  .planner .side>*:nth-child(3){animation-delay:.10s}
+  .planner .side>*:nth-child(4){animation-delay:.14s}
+  .planner .side>*:nth-child(5){animation-delay:.18s}
+  .planner .side>*:nth-child(6){animation-delay:.22s}
+  .planner .side>*:nth-child(7){animation-delay:.26s}
+}
+@keyframes side-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* =========================================================================
+   MOBILE — rail compacto (PLN-A04 / ACC-03 / ACC-07 / ACC-08)
+   Antes: a ≤1080 el rail pasaba a fila con cada bloque `flex:1 1 240px`, así que
+   a ~390px todo se apilaba vertical y enterraba la vista bajo ~515px de rail.
+   Ahora la navegación es una TIRA HORIZONTAL de una sola línea (scrolleable) y
+   el resto de los controles fluye compacto — la vista asoma apenas debajo de un
+   nav corto. Va tras el restyle del sidebar para ganar en orden de fuente.
+   ========================================================================= */
+@media (max-width:1080px){
+  /* rail estático que fluye (no sticky con scroll interno como en desktop).
+     min-width:0 en .side y .views: sin él, el min-content de la tira nowrap
+     (~927px) revienta el track del grid y fuerza scroll horizontal del body. */
+  .planner .side{
+    position:static;max-height:none;overflow:visible;min-width:0;
+    flex-direction:column;gap:16px;padding-right:0;scrollbar-gutter:auto;
+  }
+  .planner .side>*{flex:0 0 auto}
+
+  /* navegación: una sola línea horizontal, scroll propio (NO empuja el body) */
+  .planner .side .views{
+    min-width:0;
+    flex-direction:row;flex-wrap:nowrap;align-items:stretch;gap:6px;
+    overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;padding-bottom:6px;margin:0 -2px;
+    border-bottom:1px solid var(--line);
+  }
+  .planner .side .views::-webkit-scrollbar{display:none}
+  .planner .side .views__h{
+    flex:none;align-self:center;margin:0;padding:0 2px 0 9px;white-space:nowrap;
+  }
+  .planner .side .views__h--sep{margin:0;padding-left:6px}
+  .planner .side .view{flex:none;white-space:nowrap;padding:9px 13px}
+}
+
+@media (max-width:640px){
+  /* ACC-08: ningún hijo del planner fuerza scroll horizontal del body a ~640px
+     (proxy de zoom 200%, WCAG 1.4.10 reflow) — el nav scrollea dentro de sí. */
+  .planner .shell,.planner .main{min-width:0;max-width:100%}
+
+  /* ACC-03: el hit-target del toggle de estado llega a 44×44 vía pseudo-elemento
+     (el dibujo sigue compacto a 22px). Solo el control real (button), no las
+     muestras decorativas del legend (span). */
+  .planner button.estado-ctl{position:relative}
+  .planner button.estado-ctl::after{
+    content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:44px;height:44px;
+  }
+
+  /* ACC-07: las acciones del plan a ≥44px de alto; el destructivo (Restablecer
+     plan — el único .pv-iconbtn sin label) queda cercado con una divisoria del
+     resto de las acciones no-destructivas. */
+  .planner .pv-iconbtn,.planner .pv-rec-toggle{min-height:44px}
+  .planner .pv-tabs__actions>.pv-iconbtn:not(.pv-iconbtn--label){
+    position:relative;margin-left:15px;margin-right:9px;
+  }
+  .planner .pv-tabs__actions>.pv-iconbtn:not(.pv-iconbtn--label)::before{
+    content:"";position:absolute;left:-8px;top:50%;transform:translateY(-50%);
+    width:1px;height:22px;background:var(--line);
+  }
+}
+
+/* =========================================================================
+   PLAN DE CURSADA v3 — integración (overseer-owned)
+   Estilos de las features nuevas de la vista Plan de cursada + el modal de
+   detalle: iconos finos en botones, selector de método de optimización, caps
+   por cuatrimestre, grupos de acción (plan/preferencias), grip de drag, y el
+   modal de detalle a dos columnas. Scopeado a las clases plan2- · rmap- ·
+   cal-card · dr- — no toca la lane del sidebar (side · topbar · panel-toggle).
+   ========================================================================= */
+
+/* ---- iconos dentro de controles: alineación + no interceptan el drag ---- */
+.planner .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.planner button svg,.planner a svg,.planner summary svg{flex:none}
+.planner .rmap-mat__grip svg,.planner button svg{pointer-events:none}
+/* botones-glyph que ahora llevan icono: garantizar centrado */
+.planner .rm,.planner .pool-item .rm{display:inline-flex;align-items:center;justify-content:center}
+.planner .mnr-cell__chk{display:inline-flex;align-items:center;vertical-align:middle}
+
+/* ---- caps por cuatrimestre (CuatriCaps: <details> discreto en cada tarjeta) ---- */
+.planner .rmap-caps{margin:0}
+.planner .rmap-caps>summary{
+  display:inline-flex;align-items:center;gap:6px;cursor:pointer;list-style:none;user-select:none;
+  font-family:var(--f-m);font-size:10px;letter-spacing:.03em;color:var(--faint);
+  padding:2px 0;transition:color .15s;
+}
+.planner .rmap-caps>summary::-webkit-details-marker{display:none}
+.planner .rmap-caps>summary:hover{color:var(--muted)}
+.planner .rmap-caps.is-capped>summary{color:var(--brass)}
+.planner .rmap-caps__dot{width:6px;height:6px;border-radius:999px;background:var(--brass);flex:none}
+.planner .rmap-caps__body{
+  display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;padding:9px 0 3px;
+}
+.planner .rmap-caps__body .plan2-field label{font-size:9px}
+.planner .rmap-caps__body .plan2-field input{width:62px}
+.planner .rmap-caps__auto{
+  height:34px;padding:0 11px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--panel-2);color:var(--muted);font-family:var(--f-m);font-size:10px;
+  cursor:pointer;transition:.15s;
+}
+.planner .rmap-caps__auto:hover:not(:disabled){border-color:var(--brass);color:var(--ink)}
+.planner .rmap-caps__auto:disabled{opacity:.4;cursor:not-allowed}
+/* la tarjeta entera marca el override activo con un borde tenue de acento */
+.planner .rmap-stop.is-capped .rmap-stop__card{border-color:color-mix(in srgb,var(--brass) 38%,var(--line))}
+
+/* ---- grip de drag & drop (afordancia visual dentro de .rmap-mat__main) ---- */
+.planner .rmap-mat__grip{
+  display:inline-flex;align-items:center;color:var(--faint);flex:none;cursor:grab;
+  opacity:0;margin-left:-2px;transition:opacity .15s;
+}
+.planner .rmap-mat:hover .rmap-mat__grip,
+.planner .rmap-mat:focus-within .rmap-mat__grip{opacity:.6}
+
+/* ---- modal de detalle: panel ancho + cuerpo a dos columnas ---- */
+.planner .dr-modal__panel--wide{width:min(940px,100%)}
+@media (max-width:820px){
+  .planner .dr-modal__panel--wide{width:min(560px,100%)}
+}
+
+/* ---- centrado de iconos en los botones de cierre de los otros modales ---- */
+.planner .mnr-close{display:inline-flex;align-items:center;justify-content:center}
+
+@media (prefers-reduced-motion:reduce){
+  .planner .rmap-mat__grip{transition:none}
+}
+
+/* ============================================================
+   Contratos compartidos (overseer, Fase 0 del overhaul):
+   MinorBadge · EstadoControl. Los usan varias vistas; se definen
+   una sola vez acá para no divergir. Colores de rol (tokens).
+   ============================================================ */
+
+/* ----- MinorBadge: pill de sigla / punto de color ----- */
+.planner .minor-badges{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
+.planner .minor-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:26px;height:16px;padding:0 5px;
+  font-family:var(--font-mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.02em;line-height:1;white-space:nowrap;
+  color:var(--minor-color);
+  background:color-mix(in srgb, var(--minor-color) 16%, transparent);
+  border:1px solid color-mix(in srgb, var(--minor-color) 42%, transparent);
+  border-radius:var(--r-pill);
+}
+.planner .minor-dot{
+  display:inline-block;width:8px;height:8px;flex:none;border-radius:var(--r-pill);
+  background:var(--minor-color);
+  box-shadow:0 0 0 1px color-mix(in srgb, var(--minor-color) 45%, transparent);
+}
+
+/* ----- EstadoControl: doble-check tri-estado (pestaña aprobadas) ----- */
+.planner .estado-ctl{
+  --_c:var(--text-secondary);
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;flex:none;padding:0;
+  color:var(--_c);
+  background:var(--surface-2);
+  border:1px solid var(--hairline-strong);
+  border-radius:6px;cursor:pointer;
+  transition:border-color var(--dur-fast) var(--ease),
+    background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.planner .estado-ctl:hover{border-color:var(--accent-line)}
+.planner .estado-ctl:focus-visible{
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-soft);
+}
+.planner .estado-ctl svg{width:14px;height:14px}
+.planner .estado-ctl.st-pending{color:transparent}
+/* "cursada — debe final": ÁMBAR, unificado con .seg-mid, .qrow__due y las pills
+   "falta final" (rol --status-warn). Mismo estado = mismo color en todo el
+   planner, sea el control o cualquier otra superficie. */
+.planner .estado-ctl.st-regular{
+  --_c:var(--status-warn-text);
+  border-color:color-mix(in srgb, var(--status-warn) 55%, transparent);
+  background:color-mix(in srgb, var(--status-warn) 16%, var(--surface-2));
+}
+.planner .estado-ctl.st-final{
+  --_c:#fff;
+  border-color:color-mix(in srgb, var(--status-go) 60%, transparent);
+  background:color-mix(in srgb, var(--status-go) 85%, transparent);
+}
+.planner .estado-ctl.st-final svg{width:19px}
+.planner .estado-ctl.st-promo{
+  --_c:#fff;
+  border-color:color-mix(in srgb, var(--status-promo) 60%, transparent);
+  background:color-mix(in srgb, var(--status-promo) 82%, transparent);
+}
+
+/* ============================ TOOLTIP (components/planner/Tooltip.tsx) ==== */
+/* Portaleado en <body> con position:fixed (lo posiciona el componente); lleva
+   la clase .planner solo para heredar los tokens: se anula su padding. */
+.planner.pv-tooltip {
+  padding: 10px 12px;
+  z-index: 90;
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid var(--line-2);
+  box-shadow: var(--shadow-2);
+  border-radius: 8px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  text-align: left;
+  pointer-events: none;
+  animation: pv-tooltip-in var(--dur-fast) var(--ease-out) both;
+}
+.planner.pv-tooltip b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.planner.pv-tooltip::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 4.5px);
+  width: 9px;
+  height: 9px;
+  background: var(--panel);
+  border-left: 1px solid var(--line-2);
+  border-top: 1px solid var(--line-2);
+  transform: rotate(45deg);
+}
+.planner.pv-tooltip--bottom::before {
+  top: -5px;
+}
+.planner.pv-tooltip--top::before {
+  bottom: -5px;
+  transform: rotate(225deg);
+}
+@keyframes pv-tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================ ESTADO «CURSANDO» ============================ */
+/* En curso: punto en el acento secundario (slate), forma propia (no tilde).
+   Mismo color en el control, la fila y el segmento de la barra del año. */
+.planner .estado-ctl.st-cursando{
+  --_c:var(--link);
+  border-color:color-mix(in srgb, var(--slate) 60%, transparent);
+  background:color-mix(in srgb, var(--slate) 16%, var(--surface-2));
+}
+.planner .estado-ctl.st-cursando svg{width:14px;height:14px}

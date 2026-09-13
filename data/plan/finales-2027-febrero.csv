@@ -1,0 +1,480 @@
+Cód,Materia,Primer llamado,Hora
+10.01,Proyecto Final de Ingeniería Industrial,"lunes, 22 de febrero de 2027",19:00
+10.02,Gestión Ambiental,"jueves, 18 de febrero de 2027",19:00
+10.04,Plantas Industriales,"miércoles, 17 de febrero de 2027",19:00
+10.07,Creatividad,"jueves, 18 de febrero de 2027",14:00
+10.08,Energías Renovables,"miércoles, 10 de febrero de 2027",19:00
+10.09,Formación para Emprendedores,"lunes, 22 de febrero de 2027",18:00
+10.12,Energías Convencionales,"miércoles, 10 de febrero de 2027",16:00
+10.15,Agroindustria,"miércoles, 3 de febrero de 2027",18:00
+10.16,Machine Learning para Negocios,"jueves, 4 de febrero de 2027",16:00
+10.23,Agroindustria II,"miércoles, 10 de febrero de 2027",16:00
+10.24,Economía de la transición energética,"jueves, 18 de febrero de 2027",19:00
+11.10,Organización de la Producción I,"jueves, 4 de febrero de 2027",19:00
+11.14,Diseño de Producto,"miércoles, 10 de febrero de 2027",16:00
+11.15,Organización Industrial,"jueves, 18 de febrero de 2027",16:00
+11.16,Materiales y Procesos,"martes, 16 de febrero de 2027",19:00
+11.19,Prototipado e Impresión 3D,"jueves, 18 de febrero de 2027",16:00
+11.20,Supply Chain,"viernes, 12 de febrero de 2027",18:00
+11.28,Sistemas Complejos,"lunes, 1 de febrero de 2027",15:00
+11.39,Marketing,"miércoles, 10 de febrero de 2027",13:00
+11.46,Planeamiento Estratégico,"miércoles, 17 de febrero de 2027",18:00
+11.51,Investigación Operativa,"jueves, 11 de febrero de 2027",15:00
+11.59,Logística,"viernes, 19 de febrero de 2027",19:00
+11.63,Simulación,"martes, 23 de febrero de 2027",19:00
+11.67,Estadística Aplicada,"jueves, 18 de febrero de 2027",10:00
+11.73,Teoría de la Decisión,"miércoles, 10 de febrero de 2027",19:00
+11.75,Tecnologías y Procesos de Producción,"lunes, 22 de febrero de 2027",16:00
+11.76,Gestión de Calidad,"jueves, 11 de febrero de 2027",19:00
+11.83,Gestión de Operaciones,"martes, 16 de febrero de 2027",12:00
+11.84,Gestión de Proyectos,"lunes, 15 de febrero de 2027",15:00
+11.85,Toma de Decisiones,"viernes, 19 de febrero de 2027",13:00
+11.86,Investigación de Operaciones I,"jueves, 11 de febrero de 2027",19:00
+11.87,Investigación de Operaciones II,"jueves, 11 de febrero de 2027",19:00
+11.89,Formulación y Evaluación de Proyectos,"miércoles, 17 de febrero de 2027",15:00
+12.09,Química,"viernes, 5 de febrero de 2027",8:00
+12.11,Operaciones Unitarias I,"miércoles, 17 de febrero de 2027",19:00
+12.12,Operaciones Unitarias II,"jueves, 18 de febrero de 2027",19:00
+12.13,Operaciones Unitarias III,"viernes, 19 de febrero de 2027",13:00
+12.19,Química Analítica,"lunes, 22 de febrero de 2027",15:00
+12.20,Química-Física,"miércoles, 17 de febrero de 2027",12:00
+12.24,Ingenieria de Reacciones y Reactores I,"viernes, 19 de febrero de 2027",19:00
+12.25,Ingeniería de Reacciones y Reactores II,"lunes, 15 de febrero de 2027",11:00
+12.26,Termodinámica,"miércoles, 17 de febrero de 2027",9:00
+12.27,Simulación de Procesos,"lunes, 22 de febrero de 2027",19:00
+12.33,Química Orgánica II,"viernes, 12 de febrero de 2027",8:00
+12.34,Química Orgánica para Petroleo,"miércoles, 10 de febrero de 2027",8:00
+12.36,Química de Macromoléculas,"martes, 16 de febrero de 2027",13:00
+12.46,Introducción al Proceso de Fabricación de Aceros,"jueves, 18 de febrero de 2027",19:00
+12.51,Tecnología de los Alimentos,"miércoles, 10 de febrero de 2027",16:00
+12.52,Bioquímica de los Alimentos,"jueves, 11 de febrero de 2027",16:00
+12.53,Introducción a la Ing de los Alimentos,"martes, 23 de febrero de 2027",13:00
+12.57,Seguridad e Inocuidad Alimentaria,"miércoles, 10 de febrero de 2027",14:00
+12.66,Gestión de la Salud y Seguridad en el Trabajo,"viernes, 19 de febrero de 2027",13:00
+12.67,Química General,"martes, 2 de febrero de 2027",8:00
+12.83,Seguridad Ocupacional y Ambiental,"viernes, 19 de febrero de 2027",19:00
+12.84,Introducción a la Ingeniería Ambiental,"martes, 23 de febrero de 2027",13:00
+12.85,Diseño Conceptual de Procesos,"viernes, 19 de febrero de 2027",19:00
+12.87,Tratamiento de Efluentes,"viernes, 19 de febrero de 2027",13_00
+12.90,Proyecto de Plantas (Anual),"lunes, 22 de febrero de 2027",18:00
+12.94,Introducción a la Ing. Nuclear,"jueves, 4 de febrero de 2027",19:00
+12.97,Trabajo de Investigación Dirigido II,"miércoles, 17 de febrero de 2027",16:00
+13.01,Química Inorgánica,"viernes, 5 de febrero de 2027",8:00
+13.02,Fundamentos de Química Orgánica,"jueves, 11 de febrero de 2027",11:00
+13.03,Química Orgánica I,"viernes, 12 de febrero de 2027",11:00
+15.89,Mejora continua de procesos,"viernes, 12 de febrero de 2027",10:00
+16.01,Biología Molecular y Celular,"jueves, 11 de febrero de 2027",19:00
+16.02,Histología y Anatomía,"miércoles, 10 de febrero de 2027",19:00
+16.03,Fisiología,"jueves, 11 de febrero de 2027",19:00
+16.04,Neurociencias y Desarrollo Productivo,"jueves, 4 de febrero de 2027",16:00
+16.09,Ventilación Mecánica,"miércoles, 10 de febrero de 2027",14:00
+16.14,Fisiología Cuantitativa,"jueves, 11 de febrero de 2027",13:00
+16.17,Instrumentación Biomédica I,"lunes, 22 de febrero de 2027",18:00
+16.18,Instrumentación Biomédica II,"martes, 23 de febrero de 2027",19:00
+16.19,Biosensores,"viernes, 12 de febrero de 2027",16:00
+16.20,Biomedicina Estructural y Computacional,"miércoles, 10 de febrero de 2027",8:00
+16.21,Bioinformática,"miércoles, 10 de febrero de 2027",8:00
+16.22,Informática Médica,"miércoles, 17 de febrero de 2027",19:00
+16.23,Órganos Artificiales,"martes, 23 de febrero de 2027",16:00
+16.24,Ingeniería de Rehabilitación,"miércoles, 17 de febrero de 2027",14:00
+16.25,Ingeniería Clínica,"martes, 23 de febrero de 2027",16:00
+16.27,Ingeniería de Tejidos,"viernes, 12 de febrero de 2027",10:00
+16.27,Ingeniería de Tejidos,"viernes, 12 de febrero de 2027",10:00
+16.29,Diseño de Fármacos,"viernes, 19 de febrero de 2027",16:00
+16.32,Redes Neuronales en BIO,"miércoles, 17 de febrero de 2027",16:00
+16.33,Ingeniería Hospitalaria,"martes, 23 de febrero de 2027",16:00
+16.43,Bioestadística,"miércoles, 10 de febrero de 2027",16:00
+16.44,Física Médica,"viernes, 19 de febrero de 2027",10:00
+16.50,Introducción de la Bioinformática,"jueves, 11 de febrero de 2027",8:00
+16.52,Inmunología Biológica,"jueves, 4 de febrero de 2027",8:00
+16.53,Biotecnología Aplicada,"miércoles, 10 de febrero de 2027",16:00
+16.55,Biología,"miércoles, 3 de febrero de 2027",14:00
+16.57,Robótica Bioinspirada,"jueves, 11 de febrero de 2027",13:00
+16.63,Procesamiento de Señales e Imágenes Biomédicas,"miércoles, 17 de febrero de 2027",19:00
+16.64,Mecánica de biomateriales y tejidos,"martes, 23 de febrero de 2027",16:00
+16.68,Señales y Sistemas,"miércoles, 10 de febrero de 2027",13:00
+16.79,Neurociencias,"miércoles, 17 de febrero de 2027",10:00
+16.80,Microfluídica,"miércoles, 10 de febrero de 2027",19:00
+16.81,Neurobiología del Aprendizaje y Control del Movimiento,"martes, 23 de febrero de 2027",13:00
+16.85,Procesamiento Avanzado de Imágenes en Biología y Biomedicina,"lunes, 22 de febrero de 2027",10:00
+16.97,Modelado en mecánica cardiovascular,"martes, 16 de febrero de 2027",16:00
+16.98,Glicobiología Funcional,"jueves, 4 de febrero de 2027",16:00
+17.01,Introducción a la Ingeniería Química,"miércoles, 3 de febrero de 2027",9:00
+17.02,Procesos Industriales,"miércoles, 10 de febrero de 2027",13:00
+17.03,Bioquímica y Microbiología Aplicadas,"jueves, 18 de febrero de 2027",8:00
+17.04,Fenómenos de Transporte,"jueves, 18 de febrero de 2027",19:00
+17.05,Control de Procesos,"martes, 23 de febrero de 2027",17:00
+17.06,Proyecto Final de Carrera I,"martes, 23 de febrero de 2027",17:00
+17.07,Proyecto Final de Carrera II,"lunes, 22 de febrero de 2027",17:00
+17.08,Seguridad de Procesos,"jueves, 18 de febrero de 2027",19:00
+17.09,Industrias Químicas,"miércoles, 10 de febrero de 2027",19:00
+17.10,"Desarrollo de Yacimientos, Producción, Tratamiento y Comercialización de Gas y Petróleo","miércoles, 10 de febrero de 2027",19:00
+17.15,Introducción a la Ingeniería Ambiental,"martes, 23 de febrero de 2027",13:00
+17.16,Introducción a la Nanotecnología,"miércoles, 17 de febrero de 2027",19:00
+17.19,Calidad de Aire,"viernes, 5 de febrero de 2027",13:00
+17.20,Agua y Efluentes Líquidos,"viernes, 12 de febrero de 2027",11:00
+17.23,Triple Impacto: Estrategias para el Desarrollo Sostenible,"jueves, 11 de febrero de 2027",19:00
+17.24,Introducción al Proceso de Producción de Cerveza,"jueves, 18 de febrero de 2027",16:00
+18.01,Introducción a la Biotecnología,"jueves, 4 de febrero de 2027",16:00
+18.02,Fisiología y Genética de Microorganismos,"viernes, 12 de febrero de 2027",19:00
+19.01,Fundamentos del comportamiento humano,"miércoles, 10 de febrero de 2027",16:00
+19.02,Filosofía de la mente,"viernes, 12 de febrero de 2027",13:00
+21.06,Electrotecnia,"jueves, 11 de febrero de 2027",9:00
+21.08,Electrotecnia,"jueves, 11 de febrero de 2027",16:00
+21.09,Máquinas Eléctricas,"jueves, 11 de febrero de 2027",19:00
+21.10,Instalaciones Eléctricas,"miércoles, 10 de febrero de 2027",13:00
+21.30,Principios y Aplicaciones Eléctricas,"miércoles, 10 de febrero de 2027",16:00
+21.44,Instalaciones Eléctricas,"miércoles, 10 de febrero de 2027",13:00
+22.10,Electrónica e Instrumentación,"miércoles, 10 de febrero de 2027",19:00
+22.12,Electrónica II,"jueves, 18 de febrero de 2027",19:00
+22.14,Electrónica IV,"viernes, 19 de febrero de 2027",14:00
+22.15,Electrónica V,"martes, 23 de febrero de 2027",13:00
+22.21,Electromagnetismo,"jueves, 11 de febrero de 2027",16:00
+22.22,Antenas y Radioprogramación,"martes, 23 de febrero de 2027",18:00
+22.28,Electrónica de Potencia,"viernes, 19 de febrero de 2027",14:00
+22.29,Microondas,"viernes, 19 de febrero de 2027",18:00
+22.31,Diseño de Equipos Electrónicos (Anual),"miércoles, 17 de febrero de 2027",
+22.37,Electromagnetismo,"lunes, 22 de febrero de 2027",16:00
+22.46,Procesamiento Adaptativo de Señales,"jueves, 11 de febrero de 2027",10:00
+22.47,Procesamiento de Voz,"miércoles, 17 de febrero de 2027",15:00
+22.48,Procesamiento de imágenes,"miércoles, 17 de febrero de 2027",17:00
+22.56,Sensores y Actuadores,"martes, 23 de febrero de 2027",15:00
+22.57,Microprocesadores y Control,"martes, 23 de febrero de 2027",12:00
+22.61,Transmisión de la Información,"martes, 23 de febrero de 2027",18:00
+22.64,Comunicaciones Digitales,"viernes, 19 de febrero de 2027",15:00
+22.66,Redes Digitales,"martes, 16 de febrero de 2027",15:00
+22.67,Señales Aleatorias,"jueves, 18 de febrero de 2027",15:00
+22.88,Sensores y Actuadores,"martes, 23 de febrero de 2027",18:00
+22.90,Automación Industrial,"viernes, 19 de febrero de 2027",19:00
+22.93,Control Automático,"lunes, 22 de febrero de 2027",17:00
+22.94,Control Discreto,"lunes, 22 de febrero de 2027",19:00
+23.02,Electrónica Analógica y Digital,"lunes, 15 de febrero de 2027",8:00
+23.03,Sistemas de Control,"jueves, 18 de febrero de 2027",9:00
+23.07,Electrónica Industrial,"viernes, 12 de febrero de 2027",18:00
+23.08,Control Avanzado,"jueves, 11 de febrero de 2027",16:00
+23.15,Realidad Virtual,"viernes, 19 de febrero de 2027",15:00
+23.16,Sistemas de Control,"jueves, 18 de febrero de 2027",9:00
+23.17,Electrónica e Instrumentación,"miércoles, 10 de febrero de 2027",19:00
+23.18,Electrónica e Instrumentación,"lunes, 22 de febrero de 2027",16:00
+25.01,Fundamentos de Electrónica,"jueves, 11 de febrero de 2027",8:00
+25.02,Programación I,"martes, 23 de febrero de 2027",8:00
+25.03,Algoritmos y Estructuras de Datos,"viernes, 5 de febrero de 2027",18:00
+25.04,Computación Cuántica,"jueves, 11 de febrero de 2027",15:00
+25.10,Teoría de Circuitos 1,"viernes, 12 de febrero de 2027",9:00
+25.12,Tecnología de Materiales Electrónicos,"viernes, 19 de febrero de 2027",14:00
+25.13,Laboratorio de Electrónica 1,"viernes, 19 de febrero de 2027",14:00
+25.14,Teoría de Circuitos 2,"jueves, 18 de febrero de 2027",16:00
+25.15,Electrónica I,"viernes, 12 de febrero de 2027",15:00
+25.16,Laboratorio de Electrónica 2,"jueves, 18 de febrero de 2027",19:00
+25.17,Electrónica II,"lunes, 15 de febrero de 2027",18:00
+25.18,Física Electrónica,"lunes, 15 de febrero de 2027",19:00
+25.20,Análisis de Señales y Sistemas Digitales,"miércoles, 17 de febrero de 2027",14:00
+25.21,Electrónica III,"jueves, 18 de febrero de 2027",19:00
+25.22,Electromagnetismo,"jueves, 11 de febrero de 2027",16:00
+25.23,Sistemas de control,"lunes, 15 de febrero de 2027",18:00
+25.24,Laboratorio de Electrónica 3,"jueves, 18 de febrero de 2027",18:00
+25.26,Transmisión de la Información,"martes, 23 de febrero de 2027",18:00
+25.27,Sistemas Embebidos,"lunes, 22 de febrero de 2027",17:00
+25.28,Electrónica IV,"viernes, 19 de febrero de 2027",14:00
+25.30,Electrónica V,"martes, 23 de febrero de 2027",13:00
+25.31,Proyectos Electrónicos,"jueves, 11 de febrero de 2027",19:00
+25.43,Laboratorio de Procesamiento de Señales,"martes, 16 de febrero de 2027",16:00
+25.53,Señales Aleatorias,"jueves, 18 de febrero de 2027",15:00
+25.55,Microelectrónica,"miércoles, 17 de febrero de 2027",19:00
+25.62,Electrónica Aeroespacial,"martes, 23 de febrero de 2027",15:00
+25.63,Redes Neuronales,"miércoles, 17 de febrero de 2027",10:00
+25.66,Acústica para Ingenieros,"jueves, 4 de febrero de 2027",16:00
+25.74,Verificación de Sistemas Digitales,"lunes, 15 de febrero de 2027",19:00
+25.87,Redes Neuronales II,"viernes, 12 de febrero de 2027",13:00
+25.88,Redes Neuronales III,"viernes, 19 de febrero de 2027",13:00
+25.90,Sistemas de energía espaciales,"miércoles, 3 de febrero de 2027",16:00
+30.01,Mecánica y Mecanismos,"lunes, 22 de febrero de 2027",16:00
+30.03,Instalaciones Térmicas,"jueves, 11 de febrero de 2027",16:00
+30.06,Motores de Combustión Interna,"miércoles, 17 de febrero de 2027",13:00
+30.07,Elementos Finitos I,"martes, 23 de febrero de 2027",14:00
+30.09,Motores de Combustión Interna,"miércoles, 17 de febrero de 2027",13:00
+30.12,Diseño Mecánico Avanzado,"martes, 16 de febrero de 2027",16:00
+30.14,Mecánica de Fluidos Computacional,"jueves, 11 de febrero de 2027",13:00
+30.19,Introducción a la Dinámica del Autómovil,"viernes, 19 de febrero de 2027",16:00
+30.20,Dinámica del Autómovil Avanzada,"viernes, 19 de febrero de 2027",16:00
+30.22,Proceso de Combustión en Motores de Combustión Interna,"viernes, 12 de febrero de 2027",19:00
+30.23,Mantenimiento Industrial,"lunes, 22 de febrero de 2027",15:00
+30.24,Metalurgia Física I,"lunes, 22 de febrero de 2027",19:00
+30.25,Ciencia de Materiales II,"viernes, 5 de febrero de 2027",13:00
+30.26,Ciencia de Materiales I,"jueves, 4 de febrero de 2027",8:00
+30.28,Accionamientos Industriales,"viernes, 12 de febrero de 2027",8:00
+30.32,Termodinámica y sus aplicaciones,"jueves, 11 de febrero de 2027",16:00
+30.36,Diseño de Motores de Combustión Interna,"viernes, 12 de febrero de 2027",19:00
+30.37,Diseño de Motores de Combustión Interna,"lunes, 15 de febrero de 2027",16:00
+30.38,Dinámica del Automóvil,"viernes, 19 de febrero de 2027",16:00
+30.39,Dinámica del Automóvil,"viernes, 19 de febrero de 2027",16:00
+30.40,Sistemas Mecatrónicos del Autómovil,"jueves, 18 de febrero de 2027",19:00
+30.41,Diseño Mecánico I,"jueves, 11 de febrero de 2027",13:00
+30.42,Diseño Mecánico II,"jueves, 11 de febrero de 2027",18:00
+30.43,Diseño Mecánico III A,"viernes, 12 de febrero de 2027",9:00
+30.44,Diseño Mecánico III B,"jueves, 11 de febrero de 2027",13:00
+30.45,Diseño Mecánico IV,"viernes, 19 de febrero de 2027",11:00
+30.46,Laboratorio de Diseño Mecánico,"viernes, 12 de febrero de 2027",9:00
+30.47,Termofluidos I,"jueves, 18 de febrero de 2027",16:00
+30.48,Termofluidos II,"lunes, 15 de febrero de 2027",16:00
+30.49,Máquinas Térmicas e Hidráulicas,"jueves, 17 de diciembre de 2026",13:00
+30.50,Mecánica del Continuo,"viernes, 12 de febrero de 2027",9:00
+30.51,Introducción a la Ingeniería Mecánica,"jueves, 18 de febrero de 2027",9:00
+30.52,Mecánica Aplicada,"lunes, 22 de febrero de 2027",19:00
+30.53,Mecánica de Sólidos Computacional,"martes, 23 de febrero de 2027",14:00
+30.54,Mecánica de Sólidos Computacional Avanzada,"jueves, 11 de febrero de 2027",18:00
+30.61,Instalaciones Mecánicas en Plantas de Proceso,"miércoles, 10 de febrero de 2027",11:00
+30.62,Materiales para la Industria Química,"jueves, 11 de febrero de 2027",13:00
+30.70,Introducción a Mecánica de Rocas,"martes, 16 de febrero de 2027",16:00
+30.89,Mecánica de Sólidos,"miércoles, 10 de febrero de 2027",11:00
+31.08,Sistemas de Representación,"viernes, 12 de febrero de 2027",11:00
+31.19,Estática y Resistencia de Materiales,"miércoles, 10 de febrero de 2027",11:00
+31.21,Termodinámica,"jueves, 11 de febrero de 2027",16:00
+31.22,Mecánica de Fluidos,"miércoles, 10 de febrero de 2027",15:00
+31.24,Mecánica de Fluidos,"miércoles, 10 de febrero de 2027",15:00
+31.26,Mecánica de Fluidos,"jueves, 18 de febrero de 2027",16:00
+31.30,Materiales Poliméricos,"lunes, 22 de febrero de 2027",11:00
+31.37,Transferencia de Calor,"lunes, 15 de febrero de 2027",16:00
+31.38,Turbomáquinas,"miércoles, 17 de febrero de 2027",13:00
+31.65,Procesos de Manufactura II,"jueves, 18 de febrero de 2027",16:00
+31.66,"Hidráulica, Neumática y PLC","jueves, 11 de febrero de 2027",16:00
+31.67,Procesos de Manufactura I,"lunes, 22 de febrero de 2027",19:00
+31.68,Instalaciones Industriales,"martes, 23 de febrero de 2027",19:00
+31.73,Aire Acondicionado y Refrigeración,"viernes, 19 de febrero de 2027",16:00
+31.82,Sistemas Mecatrónicos,"viernes, 19 de febrero de 2027",13:00
+31.84,Estructuras Automotrices,"martes, 23 de febrero de 2027",13:00
+31.85,Transmisiones Automotrices,"jueves, 18 de febrero de 2027",19:00
+31.90,Integridad Estructural,"martes, 23 de febrero de 2027",19:00
+31.92,Elementos Finitos II,"martes, 23 de febrero de 2027",14:00
+31.94,Tecnología de Materiales Compuestos,"miércoles, 17 de febrero de 2027",19:00
+31.95,Física y Mecánica de Aceros,"miércoles, 10 de febrero de 2027",16:00
+31.96,Deformación y Fractura de Materiales,"martes, 23 de febrero de 2027",16:00
+31.97,Corrosión y Degradación de Materiales,"miércoles, 17 de febrero de 2027",16:00
+31.98,Laboratorio Avanzado de Materiales,"viernes, 19 de febrero de 2027",8:00
+31.99,Mecatrónica Aplicada,"viernes, 19 de febrero de 2027",13:00
+32.03,Motores Marinos,"viernes, 12 de febrero de 2027",18:00
+32.06,Introducción a la Ing. Naval,"miércoles, 10 de febrero de 2027",16:00
+32.54,Construcción Naval,"viernes, 12 de febrero de 2027",16:00
+32.64,Plantas Propulsoras Marinas,"lunes, 15 de febrero de 2027",11:00
+32.66,Hidrostática y Estabilidad,"jueves, 11 de febrero de 2027",9:00
+32.69,Resistencia y Propulsión,"viernes, 19 de febrero de 2027",16:00
+32.71,Proyecto de Embarcaciones de Trabajo,"miércoles, 17 de febrero de 2027",18:00
+32.72,Proyecto de Buques,"jueves, 11 de febrero de 2027",13:00
+33.04,Astrodinámica y misiones espaciales,"lunes, 15 de febrero de 2027",19:00
+33.12,Sistemas de Propulsión II,"jueves, 11 de febrero de 2027",14:00
+41.04,Perforación Petrolera II,"miércoles, 10 de febrero de 2027",16:00
+41.05,Geología del Petróleo,"jueves, 11 de febrero de 2027",17:00
+41.09,Ingeniería de Reservorios,"martes, 23 de febrero de 2027",16:00
+41.10,Recuperación asistida de Petróleo,"jueves, 18 de febrero de 2027",16:00
+41.12,Proyecto de Instalaciones de Superficie,"miércoles, 10 de febrero de 2027",18:00
+41.15,Gas y Gasolina Natural,"miércoles, 17 de febrero de 2027",18:00
+41.16,Análisis de Transientes de Presión,"lunes, 22 de febrero de 2027",19:00
+41.19,Desarrollo de Negocios,"martes, 23 de febrero de 2027",19:00
+41.34,Desarrollo de Yacimientos (Anual),"viernes, 19 de febrero de 2027",13:00
+41.35,Simulación de Reservorios,"jueves, 18 de febrero de 2027",19:00
+41.38,Formación General II,"lunes, 22 de febrero de 2027",16:00
+41.97,Trabajo de Investigación Dirigido en Petróleo,"miércoles, 17 de febrero de 2027",16:00
+46.01,Introducción a la Ingeniería en Petróleo,"lunes, 1 de febrero de 2027",16:00
+46.21,Geología I,"jueves, 11 de febrero de 2027",17:00
+46.22,Geofísica de Reservorios,"miércoles, 10 de febrero de 2027",16:00
+46.23,Geología II,"jueves, 11 de febrero de 2027",17:00
+46.41,Petrofísica y Fluidos de Reservorio,"viernes, 12 de febrero de 2027",18:00
+46.42,Registros de Pozo I,"viernes, 19 de febrero de 2027",19:00
+46.44,Análisis de Transientes de Presión,"lunes, 22 de febrero de 2027",19:00
+46.46,Ingeniería de Reservorios,"martes, 23 de febrero de 2027",16:00
+46.61,Ingeniería de Perforación I,"miércoles, 10 de febrero de 2027",19:00
+46.63,Ingeniería de Workover I,"viernes, 19 de febrero de 2027",16:00
+46.65,Instalaciones de Superficie,"miércoles, 10 de febrero de 2027",18:00
+46.66,Gas y Gasolina Natural,"miércoles, 17 de febrero de 2027",18:00
+46.67,Ingeniería de Producción I,"jueves, 18 de febrero de 2027",19:00
+46.69,Transporte y Cadena de Valor de los Hidrocarburos,"martes, 23 de febrero de 2027",13:00
+46.70,Industrialización y Economía de los Hidrocarburos,"lunes, 22 de febrero de 2027",19:00
+46.81,Gestión Ambiental en la Industria,"viernes, 19 de febrero de 2027",19:00
+46.82,Evaluación de Proyectos,"lunes, 15 de febrero de 2027",16:00
+46.83,Desarrollo de Yacimientos,"viernes, 19 de febrero de 2027",13:00
+47.47,Recuperación Asistida de Petróleo,"jueves, 11 de febrero de 2027",19:00
+47.48,Simulación de Reservorios,"jueves, 18 de febrero de 2027",19:00
+47.49,Recursos y Reservas,"miércoles, 17 de febrero de 2027",16:00
+47.62,Ingeniería de Perforación II,"miércoles, 10 de febrero de 2027",16:00
+47.64,Ingeniería de Workover II,"viernes, 19 de febrero de 2027",16:00
+47.72,Geomecánica y Diseño de Fracturas,"lunes, 22 de febrero de 2027",18:00
+47.73,Operaciones Offshore - Petróleo y LNG,"jueves, 18 de febrero de 2027",16:00
+47.87,Desarrollo de Negocios,"martes, 23 de febrero de 2027",19:00
+48.04,"El Gas Natural Licuado - Tecnología, Mercados y Negocios","martes, 16 de febrero de 2027",15:00
+48.05,La Cadena de valor del Gas Natural,"jueves, 11 de febrero de 2027",15:00
+61.02,Economía del Mercado Laboral,"jueves, 11 de febrero de 2027",14:00
+61.04,Sistema Monetario y Financiero en Argentina,"miércoles, 3 de febrero de 2027",19:00
+61.05,Economía de la Salud,"jueves, 11 de febrero de 2027",11:00
+61.09,Economía Empresaria,"miércoles, 10 de febrero de 2027",18:00
+61.12,Gestión Financiera (español),"lunes, 15 de febrero de 2027",8:00
+61.12,Gestión Financiera (inglés),"lunes, 15 de febrero de 2027",8:00
+61.14,Economía Internacional Real,"miércoles, 17 de febrero de 2027",17:00
+61.15,Economía Internacional Monetaria,"miércoles, 17 de febrero de 2027",11:00
+61.16,Introducción a las Finanzas,"miércoles, 17 de febrero de 2027",16:00
+61.20,Presupuesto y Control,"miércoles, 10 de febrero de 2027",18:00
+61.23,Economía para Ingenieros,"lunes, 22 de febrero de 2027",13:00
+61.27,Análisis de Coyuntura Económica,"miércoles, 17 de febrero de 2027",19:00
+61.28,Economía,"miércoles, 17 de febrero de 2027",16:00
+61.30,Econometría Aplicada,"jueves, 4 de febrero de 2027",16:00
+61.31,Derecho para Ingenieros,"jueves, 11 de febrero de 2027",16:00
+61.32,Derecho para Ingenieros,"jueves, 11 de febrero de 2027",16:00
+61.50,Finanzas de la Empresa,"miércoles, 10 de febrero de 2027",15:00
+61.81,Microeconomía,"miércoles, 10 de febrero de 2027",10:00
+61.82,Macroeconomía,"jueves, 11 de febrero de 2027",13:00
+61.87,Derecho Público y Privado I,"jueves, 11 de febrero de 2027",16:00
+67.01,Tecnología de materiales,"jueves, 11 de febrero de 2027",13:00
+67.02,Estática,"jueves, 11 de febrero de 2027",11:00
+67.03,Resistencia de Materiales,"viernes, 12 de febrero de 2027",8:00
+67.04,Instrucción a la temática social,"miércoles, 10 de febrero de 2027",15:00
+67.05,Tecnología del Hormigón,"martes, 16 de febrero de 2027",8:00
+67.06,Construcciones,"martes, 23 de febrero de 2027",14:00
+67.07,Geotopografía,"viernes, 12 de febrero de 2027",13:00
+67.08,Análisis Estructural,"miércoles, 17 de febrero de 2027",13:00
+67.09,Instalaciones,"lunes, 15 de febrero de 2027",8:00
+67.10,Hormigón I,"miércoles, 10 de febrero de 2027",16:00
+67.11,Evaluación de Impacto Ambiental y Social,"lunes, 15 de febrero de 2027",15:00
+67.12,Geotecnia,"viernes, 12 de febrero de 2027",13:00
+67.13,Hidrología y obras hidráulicas,"jueves, 11 de febrero de 2027",18:00
+71.20,Informática General,"viernes, 5 de febrero de 2027",8:00
+71.22,Sistemas de Inteligencia Artificial,"lunes, 22 de febrero de 2027",14:00
+71.30,Introducción a la tecnología informática,"miércoles, 3 de febrero de 2027",8:00
+71.38,Programación web,"jueves, 18 de febrero de 2027",13:00
+71.45,Estructura de Datos y Programación,"miércoles, 17 de febrero de 2027",17:00
+71.58,Informática General,"miércoles, 3 de febrero de 2027",8:00
+71.59,Estructura de Datos y Programación,"miércoles, 10 de febrero de 2027",10:00
+71.78,Gestión de Datos,"miércoles, 10 de febrero de 2027",18:00
+71.80,Utilitarios en Informática,"lunes, 15 de febrero de 2027",8:00
+71.88,Gestión de Datos,"miércoles, 10 de febrero de 2027",18:00
+71.90,Certificaciones Tecnológicas,"jueves, 4 de febrero de 2027",8:00
+71.93,Principios de Informática,"viernes, 5 de febrero de 2027",11:00
+71.94,Introducción al Diseño de Bases de Datos Relacionales y No-Relacionales,"martes, 2 de febrero de 2027",14:00
+72.03,Introducción a la Informática,"miércoles, 10 de febrero de 2027",17:00
+72.07,Protocolos de Comunicación,"jueves, 11 de febrero de 2027",19:00
+72.08,Arquitectura de Computadoras,"jueves, 11 de febrero de 2027",11:00
+72.11,Sistemas Operativos,"jueves, 11 de febrero de 2027",18:00
+72.18,Programación Funcional,"lunes, 15 de febrero de 2027",18:00
+72.20,Redes de Información,"martes, 23 de febrero de 2027",18:00
+72.25,Simulación de Sistemas,"viernes, 19 de febrero de 2027",9:00
+72.27,Sistemas de Inteligencia Artificial,"jueves, 18 de febrero de 2027",9:00
+72.31,Programación Imperativa,"miércoles, 10 de febrero de 2027",8:00
+72.32,Diseño y Procesamiento de Documentos XML,"miércoles, 10 de febrero de 2027",8:00
+72.33,Programación Orientada a Objetos,"miércoles, 10 de febrero de 2027",13:00
+72.34,Estructura de Datos y Algoritmos,"jueves, 11 de febrero de 2027",9:00
+72.35,Ingenieria de Software I,"lunes, 15 de febrero de 2027",16:00
+72.36,Interacción Hombre-Computadora (HCI),"miércoles, 17 de febrero de 2027",19:00
+72.37,Base de Datos I,"jueves, 11 de febrero de 2027",8:00
+72.38,Proyecto de Aplicaciones Web,"martes, 23 de febrero de 2027",19:00
+72.39,"Autómatas, Teoría de Lenguajes y Compiladores","miércoles, 17 de febrero de 2027",16:00
+72.40,Ingenieria del Software II,"jueves, 18 de febrero de 2027",19:00
+72.41,Base de Datos II,"martes, 23 de febrero de 2027",19:00
+72.42,Programación de Objetos Distribuidos,"miércoles, 17 de febrero de 2027",19:00
+72.43,Gestión de Proyectos Informáticos,"miércoles, 10 de febrero de 2027",15:00
+72.44,Criptografía y Seguridad,"lunes, 22 de febrero de 2027",15:00
+72.52,Análisis y Tratamiento de Imágenes,"jueves, 4 de febrero de 2027",16:00
+72.54,OLAP y Explotación de Datos,"miércoles, 10 de febrero de 2027",10:00
+72.58,Computación Gráfica,"martes, 23 de febrero de 2027",8:00
+72.60,Programación Funcional,"lunes, 22 de febrero de 2027",18:00
+72.71,Integración de Sistemas de Información,"jueves, 11 de febrero de 2027",15:00
+72.74,Visualización de Información,"viernes, 5 de febrero de 2027",10:00
+72.75,Aprendizaje Automático (Machine Learning),"miércoles, 17 de febrero de 2027",16:00
+72.79,Sistemas Multiagentes I,"miércoles, 10 de febrero de 2027",18:00
+72.80,Big Data,"miércoles, 10 de febrero de 2027",18:00
+72.87,Diseño Sonoro para Animación y Videojuegos,"martes, 23 de febrero de 2027",9:00
+72.90,Internet de las Cosas (IoT),"miércoles, 10 de febrero de 2027",19:00
+72.92,El Paradigma NoSQL - Bases de Datos de Grafos,"miércoles, 17 de febrero de 2027",14:00
+72.97,Introducción a la Programación de Videojuegos,"miércoles, 10 de febrero de 2027",18:00
+73.21,Desarrollo de Aplicaciones Móviles Multiplataforma,"lunes, 22 de febrero de 2027",18:00
+73.22,Fundamentos de DevOps,"jueves, 18 de febrero de 2027",18:00
+73.30,Desarrollo profesional de software: del código al producto,"miércoles, 10 de febrero de 2027",19:00
+73.40,Arquitectura de Microservicios,"viernes, 19 de febrero de 2027",17:00
+73.64,Temas Avanzados en Deep Learning,"viernes, 12 de febrero de 2027",18:00
+73.69,Large Language Models,"miércoles, 10 de febrero de 2027",19:00
+73.70,Análisis de datos en neurociencias,"viernes, 12 de febrero de 2027",13:00
+73.81,Ciberseguridad Ofensiva y Defensiva,"lunes, 15 de febrero de 2027",16:00
+73.82,Bases de Datos Espaciales y de Movilidad,"miércoles, 10 de febrero de 2027",14:00
+73.84,Ciencia de Datos Aplicada,"miércoles, 17 de febrero de 2027",19:00
+73.89,Introducción a Blockchain y Criptomonedas,"martes, 23 de febrero de 2027",18:00
+73.98,Desarrollo Integral de Videojuegos,"lunes, 14 de diciembre de 2026",18:00
+74.60,Visión por Computadora (Computer Vision),"lunes, 22 de febrero de 2027",16:00
+81.03,Sistemas de Información,"miércoles, 10 de febrero de 2027",16:00
+81.04,Teoría de Juegos y Estrategia,"miércoles, 3 de febrero de 2027",19:00
+81.07,Sistemas Contables,"miércoles, 10 de febrero de 2027",16:00
+81.11,Contabilidad Gerencial,"jueves, 11 de febrero de 2027",8:00
+81.18,Taller de Simulación Comercial,"miércoles, 10 de febrero de 2027",13:00
+81.19,Marketing Digital,"jueves, 11 de febrero de 2027",17:00
+81.20,Comercialización ,"miércoles, 10 de febrero de 2027",13:00
+81.20,Comercialización (Inglés),"miércoles, 10 de febrero de 2027",13:00
+81.21,Gestión de Ventas,"miércoles, 10 de febrero de 2027",19:00
+81.23,Comercio Electrónico,"miércoles, 17 de febrero de 2027",16:00
+81.26,Comercio Exterior,"miércoles, 10 de febrero de 2027",13:00
+81.28,Tecnologías exponenciales,"jueves, 18 de febrero de 2027",9:00
+81.29,Gestión organizacional basada en procesos de negocio,"miércoles, 10 de febrero de 2027",19:00
+81.32,Análisis funcional de aplicaciones informáticas,"jueves, 11 de febrero de 2027",19:00
+81.33,Diseño de aplicaciones informáticas,"jueves, 4 de febrero de 2027",19:00
+81.34,Arquitectura empresarial,"lunes, 22 de febrero de 2027",19:00
+81.42,Estrategia Empresarial,"miércoles, 17 de febrero de 2027",14:00
+81.46,Auditoría General y de Sistemas,"martes, 23 de febrero de 2027",19:00
+81.47,Impuestos para la toma de decisiones I,"miércoles, 10 de febrero de 2027",19:00
+81.48,Impuestos para la toma de decisiones II,"lunes, 15 de febrero de 2027",19:00
+81.49,Branding y Comunicación,"miércoles, 17 de febrero de 2027",8:00
+81.53,Negocios en Internet,"miércoles, 10 de febrero de 2027",19:00
+81.54,Aplicaciones en Internet,"miércoles, 10 de febrero de 2027",19:00
+81.57,Arquitectura de soluciones digitales,"lunes, 22 de febrero de 2027",19:00
+81.58,Service Design,"miércoles, 17 de febrero de 2027",19:00
+81.59,Gestión de Servicios,"jueves, 11 de febrero de 2027",19:00
+81.65,Logística Internacional,"miércoles, 10 de febrero de 2027",13:00
+81.68,Sistemas Integrados de Gestión I,"martes, 23 de febrero de 2027",19:00
+81.71,Marketing avanzado,"jueves, 18 de febrero de 2027",13:00
+81.85,CRM Action Lab,"miércoles, 10 de febrero de 2027",17:00
+81.86,"Gestión de la Experiencia del Usuario (CX, UX, UI)","miércoles, 10 de febrero de 2027",19:00
+81.91,Inteligencia Artificial Aplicada a los Negocios,"viernes, 12 de febrero de 2027",9:00
+81.95,Proyecto de lanzamiento de productos o servicios (Trabajo Final),"jueves, 11 de febrero de 2027",16:00
+81.97,Diagnóstico Empresario y Plan de Acción ( Trabajo Final ),"jueves, 18 de febrero de 2027",16:00
+82.01,Proyecto I,"miércoles, 17 de febrero de 2027",11:00
+82.02,Proyecto Final - Analítica,"lunes, 22 de febrero de 2027",19:00
+82.03,Gestión del Ciclo de Vida de la Información,"lunes, 22 de febrero de 2027",10:00
+82.07,Blockchain (Moneda digital descentralizada),"viernes, 19 de febrero de 2027",19:00
+82.08,Cloud Computing,"miércoles, 10 de febrero de 2027",19:00
+82.10,Analítica en Transporte y Logística,"miércoles, 10 de febrero de 2027",13:00
+82.15,Matemática Aplicada,"miércoles, 10 de febrero de 2027",8:00
+82.17,Análisis Multivariado,"viernes, 5 de febrero de 2027",11:00
+82.18,Procesamiento del Lenguaje Natural,"lunes, 22 de febrero de 2027",8:00
+82.20,Análisis Predictivo Avanzado,"miércoles, 17 de febrero de 2027",19:00
+82.23,Marketing Analytics,"jueves, 18 de febrero de 2027",19:00
+82.81,Analítica de Big Data con Spark,"jueves, 18 de febrero de 2027",8:00
+92.01,Análisis Matemático I,"jueves, 4 de febrero de 2027",8:00
+92.02,Análisis Matemático II,"jueves, 11 de febrero de 2027",11:00
+92.03,Análisis Matemático III,"viernes, 5 de febrero de 2027",11:00
+92.04,Análisis Matemático IV,"jueves, 11 de febrero de 2027",14:00
+92.05,Análisis Matemático IV,"jueves, 11 de febrero de 2027",14:00
+92.07,Análisis Matemático V,"lunes, 15 de febrero de 2027",9:00
+93.07,Métodos Numéricos,"viernes, 12 de febrero de 2027",18:00
+93.16,Matemática Discreta,"viernes, 12 de febrero de 2027",8:00
+93.18,Álgebra Lineal,"viernes, 5 de febrero de 2027",8:00
+93.20,Análisis Matemático,"jueves, 4 de febrero de 2027",11:00
+93.21,Álgebra,"viernes, 5 de febrero de 2027",16:00
+93.24,Probabilidad y Estadística,"viernes, 5 de febrero de 2027",14:00
+93.26,Análisis Matemático I,"jueves, 4 de febrero de 2027",8:00
+93.28,Análisis Matemático II,"jueves, 4 de febrero de 2027",11:00
+93.35,Lógica Computacional,"jueves, 11 de febrero de 2027",14:00
+93.36,Probabilidad,"viernes, 12 de febrero de 2027",14:00
+93.39,Estadística,"viernes, 12 de febrero de 2027",9:00
+93.41,Física I,"viernes, 5 de febrero de 2027",11:00
+93.42,Física II,"miércoles, 10 de febrero de 2027",8:00
+93.43,Física III,"jueves, 11 de febrero de 2027",8:00
+93.44,Física IV,"jueves, 11 de febrero de 2027",11:00
+93.54,Métodos Numéricos,"martes, 23 de febrero de 2027",14:00
+93.58,Álgebra,"jueves, 11 de febrero de 2027",11:00
+93.59,Matemática Discreta,"viernes, 5 de febrero de 2027",11:00
+93.61,Física IV ,"jueves, 11 de febrero de 2027",11:00
+93.75,Métodos Numéricos Avanzados,"viernes, 19 de febrero de 2027",19:00
+94.11,Sociología Política,"miércoles, 17 de febrero de 2027",8:00
+94.12,Antropología,"miércoles, 10 de febrero de 2027",14:00
+94.13,Gestión de Organizaciones Sociales,"jueves, 3 de diciembre de 2026",14:00
+94.23,Formación General III,"jueves, 18 de febrero de 2027",14:00
+94.24,Metodología del Aprendizaje,"martes, 23 de febrero de 2027",19:00
+94.27,Administración de Recursos Humanos,"jueves, 18 de febrero de 2027",16:00
+94.40,Estructura de las Organizaciones,"jueves, 18 de febrero de 2027",14:00
+94.62,Ética en los Negocios,"jueves, 11 de febrero de 2027",18:00
+94.63,Epistemología y Heurística,"martes, 23 de febrero de 2027",19:00
+94.64,Prácticas Expositivas,"miércoles, 17 de febrero de 2027",9:00

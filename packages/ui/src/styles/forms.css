@@ -1,0 +1,60 @@
+/* ============================================================
+   @studyvaults/ui — formularios compartidos.
+   CommissionSelect: selector de comisión unificado del planner
+   (mono, compacto, truncado, foco coral). Deriva de tokens de rol.
+   ============================================================ */
+
+.commission-select {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.2;
+  width: 100%;
+  max-width: 160px;
+  padding: 5px 26px 5px 9px;
+  color: var(--text-primary);
+  background-color: var(--surface-2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-ctrl);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition:
+    border-color var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+}
+
+.commission-select:hover {
+  border-color: var(--accent-line);
+}
+
+.commission-select:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.commission-select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.commission-select--sm {
+  font-size: 10px;
+  max-width: 122px;
+  padding: 4px 22px 4px 7px;
+  background-size: 10px;
+  background-position: right 6px center;
+}
+
+.commission-select option {
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  background: var(--surface-2);
+}

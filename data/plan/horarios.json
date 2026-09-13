@@ -1,0 +1,4283 @@
+[
+ {
+  "codigo": "10.07",
+  "nombre": "Creatividad",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 301F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 302F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Alfasso, IgnacioArcagni, Adolfo",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "10:00",
+      "hasta": "13:00",
+      "aula": "Aula ITBA: 302F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Miculitzki, JaninaBellingeri, LunaAcorinti, Mariela Vanina",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 301F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 302F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Miculitzki, JaninaRenault, FabianaLucino, Priscila",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "10.09",
+  "nombre": "Formación para Emprendedores",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 902F · Sede Distrito Financiero Aula externa: Blended"
+     }
+    ],
+    "profesores": "Draier, Fernando JavierZuker, MartínGarcía Poitevin, CatalinaVarela Paez, Hernan MatiasBovio, Mateo RodrigoAnsaldi, Ezequiel MartínIribarren, Rodrigo IñakiGayoso, JulietaCastagnino, Nicolas",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 903F · Sede Distrito Financiero Aula externa: Blended"
+     }
+    ],
+    "profesores": "Draier, Fernando JavierZuker, MartínGarcía Poitevin, CatalinaVarela Paez, Hernan MatiasBovio, Mateo RodrigoAnsaldi, Ezequiel MartínIribarren, Rodrigo IñakiGayoso, JulietaCastagnino, Nicolas",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "12.09",
+  "nombre": "Química",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Viernes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 003T · SDT Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 004T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Testa Fernandez, JuanZimmerman, Luciana Mariel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S1",
+    "slots": [
+     {
+      "dia": "Viernes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 201T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Meich, Veronica Cecilia",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "12.83",
+  "nombre": "Seguridad Ocupacional y Ambiental",
+  "depto": "Ambiente y Movilidad",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 801F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Ordoñez, Hernan DarioAffranchino, Gustavo OsvaldoFernandez Velasco, Santiago Andres",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Viernes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 401F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Ordoñez, Hernan Dario",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 501F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Ordoñez, Hernan DarioAffranchino, Gustavo OsvaldoFernandez Velasco, Santiago Andres",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "16.04",
+  "nombre": "Neurociencias y Desarrollo Productivo",
+  "depto": "Ciencias de la Vida",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "BIO",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "15:00",
+      "hasta": "18:00",
+      "aula": "Aula ITBA: 102R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Herrero, NereaLeón, CandelaForcato, Cecilia",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "16.50",
+  "nombre": "Introducción a la Bioinformática",
+  "depto": "Ciencias de la Vida",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "16.57",
+  "nombre": "Robótica Bioinspirada",
+  "depto": "Ciencias de la Vida",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 001T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Gleiser, Pablo MartínPLUSS, Ramiro",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "22.48",
+  "nombre": "Procesamiento de Imágenes",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "K",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     }
+    ],
+    "profesores": "Jacoby, DanielPedrosa, Carola",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "23.15",
+  "nombre": "Realidad Virtual",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "K",
+    "slots": [
+     {
+      "dia": "Viernes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     }
+    ],
+    "profesores": "Ressl, Marc S.",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "25.04",
+  "nombre": "Computación Cuántica",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "15:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 700F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "31.08",
+  "nombre": "Sistemas de Representación",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "11:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 101T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "A1",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "11:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 102T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 101T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "11:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 101T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Claret, Pedro",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "D",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "14:00",
+      "hasta": "17:00",
+      "aula": "Aula ITBA: 101T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "D1",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "14:00",
+      "hasta": "17:00",
+      "aula": "Aula ITBA: 102T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "E",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "11:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 101T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "F",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 101T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "G",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 102T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "H",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 101T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "K",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "14:00",
+      "hasta": "17:00",
+      "aula": "Aula ITBA: 101T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "K1",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "14:00",
+      "hasta": "17:00",
+      "aula": "Aula ITBA: 102T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "14:00",
+      "hasta": "17:00",
+      "aula": "Aula ITBA: 101T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S1",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "14:00",
+      "hasta": "17:00",
+      "aula": "Aula ITBA: 102T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Claret, Pedro",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "61.08",
+  "nombre": "Derecho Digital",
+  "depto": "Economía y Negocios",
+  "periodo": "Primer Cuat.",
+  "anio": "2026",
+  "comienzo": "13/04/2026",
+  "fin": "22/05/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "15:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Blended"
+     }
+    ],
+    "profesores": "Perego, Pablo Alejandro",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "61.11",
+  "nombre": "Derecho Laboral y Seguridad Social en la Empresa",
+  "depto": "Economía y Negocios",
+  "periodo": "Primer Cuat.",
+  "anio": "2026",
+  "comienzo": "25/05/2026",
+  "fin": "26/06/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula externa: Blended"
+     }
+    ],
+    "profesores": "Perego, Pablo Alejandro",
+    "cupo": "2 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "61.23",
+  "nombre": "Economía para Ingenieros",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 801F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Coccolo, Pablo BartolomeAbayu, Jorge AlejandroPalandella, Mauricio Guillermo",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 301F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 302F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Coccolo, Pablo BartolomeAñes, Pablo BlasAbayu, Jorge AlejandroPalandella, Mauricio Guillermo",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "61.32",
+  "nombre": "Derecho para Ingenieros",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 601F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 801F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 501F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "D",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 801F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "E",
+    "slots": [
+     {
+      "dia": "Viernes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 601F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "F",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 601F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "KS",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 902F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Perego, Pablo AlejandroBlazquez, Oscar Gustavo",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "SK",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 501F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Perego, Pablo AlejandroBlazquez, Oscar Gustavo",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "61.50",
+  "nombre": "Finanzas de la Empresa",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 301F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 302F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Coccolo, Pablo BartolomeLelic, RifatPalandella, Mauricio Guillermo",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.03",
+  "nombre": "Introducción a la Informática",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 202R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S1",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 009R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.07",
+  "nombre": "Protocolos de Comunicación",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 202R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 203R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 003R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Axt Roberto Oscar, Roberto OscarStupenengo Faus, Hugo Javier",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.08",
+  "nombre": "Arquitectura de Computadoras",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 008R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 201T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Ramos, Federico Gabriel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S2",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 005T · SDT Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 005T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Guagliano, Celeste GabrielaRamos, Federico Gabriel",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.11",
+  "nombre": "Sistemas Operativos",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "17:00",
+      "hasta": "20:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "18:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Godio, Ariel",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.18",
+  "nombre": "Programación Funcional",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.20",
+  "nombre": "Redes de Información",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "18:00",
+      "hasta": "21:00",
+      "aula": "Aula ITBA: 104R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "18:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Rodriguez Bilardo, Marisabel",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.25",
+  "nombre": "Simulación de Sistemas",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 108R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Martin, Rafael FernandoSalgado Corrado, Ariel Olaf",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S2",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 009R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.27",
+  "nombre": "Sistemas de Inteligencia Artificial",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "15:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "09:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Fuster, MarinaRamele, RodrigoPiñeiro, Eugenia SolPierri, AlanBianchi, Luciano Gustavo",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.31",
+  "nombre": "Programación Imperativa",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 003T · SDT Aula externa: Presencial"
+     },
+     {
+      "dia": "Lunes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 004T · SDT Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 003T · SDT Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 004T · SDT Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 101T · SDT Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 102T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Hadad, SantiagoSerpe, Octavio JavierBaus, Christian German",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S1",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 008R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 008R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "17:00",
+      "hasta": "20:00",
+      "aula": "Aula ITBA: 001R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Serpe, Octavio JavierBaus, Christian German",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.32",
+  "nombre": "Diseño y Procesamiento de Documentos XML",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Fontanella De Santis, Teresa Natalia",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S2",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 101R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.33",
+  "nombre": "Programación Orientada a Objetos",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 201T · SDT Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "18:00",
+      "hasta": "21:00",
+      "aula": "Aula ITBA: 201T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Bagini, Matias EugenioBaus, Christian German",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S2",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 102R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "18:00",
+      "hasta": "21:00",
+      "aula": "Aula ITBA: 006R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Dizenhaus, Manuel",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.34",
+  "nombre": "Estructura de Datos y Algoritmos",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "09:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 301F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "09:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 302F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "11:00",
+      "hasta": "14:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Peñaloza, Dario Alejandro",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S1",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "09:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 701F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "11:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 801F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.35",
+  "nombre": "Ingenieria de Software I",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 301F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 302F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Bond, FedericoBotti, Federico José",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S2",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     },
+     {
+      "dia": "Martes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 901F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.36",
+  "nombre": "Interacción Hombre-Computadora (HCI)",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 002R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Fleischer, LucasBanfi, Malena",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.37",
+  "nombre": "Base de Datos I",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 501F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 006R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Rodriguez Babino, Cecilia",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.38",
+  "nombre": "Proyecto de Aplicaciones Web",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 006R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 007R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Quesada, FranciscoD'' Onofrio, NicolasRitorto, Bianca",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S1",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 201R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.39",
+  "nombre": "Autómatas, Teoría de Lenguajes y Compiladores",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 002R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 003R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 003R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Golmar, Mario Agustin",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.40",
+  "nombre": "Ingenieria del Software II",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 601F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S2",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 110R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.41",
+  "nombre": "Base de Datos II",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     },
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 301F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Rodriguez, GuillermoRodriguez Babino, Cecilia",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.42",
+  "nombre": "Programación de Objetos Distribuidos",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 301F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 302F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.43",
+  "nombre": "Gestión de Proyectos Informáticos",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 002R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Carrodani, Luz María Isabel",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.44",
+  "nombre": "Criptografía y Seguridad",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 008R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Ramele, Rodrigo",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.45",
+  "nombre": "Proyecto Final  (Anual)",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "27/06/2027",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "15:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual asincrónico"
+     }
+    ],
+    "profesores": "Botti, Federico JoséFontanella De Santis, Teresa Natalia",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.52",
+  "nombre": "Análisis y Tratamiento de Imágenes",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Primer Cuat.",
+  "anio": "2026",
+  "comienzo": "01/03/2026",
+  "fin": "25/07/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 404F · Sede Distrito Financiero Aula externa: Blended"
+     }
+    ],
+    "profesores": "Bibián, CarlosCORFDIR, Yohann",
+    "cupo": "4 / 18"
+   }
+  ]
+ },
+ {
+  "codigo": "72.58",
+  "nombre": "Computación Gráfica",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 400F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Marino, Federico Jorge",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.74",
+  "nombre": "Visualización de Información",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "10:00",
+      "hasta": "13:00",
+      "aula": "Aula ITBA: 902F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S2",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "10:00",
+      "hasta": "13:00",
+      "aula": "Aula ITBA: 901F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.75",
+  "nombre": "Aprendizaje Automático (Machine Learning)",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 700F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Perez Sammartino, Francisco",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.79",
+  "nombre": "Sistemas Multiagente I",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "18:00",
+      "hasta": "21:00",
+      "aula": "Aula ITBA: 800F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.80",
+  "nombre": "Big Data",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.90",
+  "nombre": "Internet de las Cosas (IoT)",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 904F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Michelli, Cristian Mariano",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.92",
+  "nombre": "El Paradigma NoSQL - Bases de Datos de Grafos",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "72.97",
+  "nombre": "Introducción a la Programación de Videojuegos",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Iervasi Scokin, Juan José",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "73.22",
+  "nombre": "Fundamentos de DevOps",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "18:00",
+      "hasta": "21:00",
+      "aula": "Aula ITBA: 201F · Sede Distrito Financiero Aula externa: Blended"
+     }
+    ],
+    "profesores": "Bond, FedericoBotti, Federico José",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "73.30",
+  "nombre": "Desarrollo profesional de software: del código al producto",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 005R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "73.40",
+  "nombre": "ARQUITECTURA DE MICROSERVICIOS",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Viernes",
+      "desde": "17:00",
+      "hasta": "20:00",
+      "aula": "Aula ITBA: 502F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Maceira García Coni, Carlos AlbertoRupnik, Franco David",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "73.69",
+  "nombre": "Large Language Models",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "73.70",
+  "nombre": "Análisis de Datos en Neurociencias",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Viernes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "73.81",
+  "nombre": "Ciberseguridad Ofensiva y Defensiva",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 403F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "73.82",
+  "nombre": "Bases de Datos Espaciales y de Movilidad",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Primer Cuat.",
+  "anio": "2026",
+  "comienzo": "01/03/2026",
+  "fin": "25/07/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "14:00",
+      "hasta": "17:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Vaisman, Alejandro Ariel",
+    "cupo": "4 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "73.84",
+  "nombre": "Ciencia de Datos Aplicada",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "73.89",
+  "nombre": "Introducción a Blockchain y Criptomonedas",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 201R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Lavarello, AgustinGalende, Lautaro",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "73.98",
+  "nombre": "Desarrollo Integral de Videojuegos",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     }
+    ],
+    "profesores": "Borzino, Gonzalo Esteban",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "74.60",
+  "nombre": "Visión por Computadora",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "81.57",
+  "nombre": "Arquitectura de soluciones digitales",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 501F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Couce, Luis AlejandroPetitti, Hernan JulioEscobar, Gastón Daniel",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "81.76",
+  "nombre": "Tecnología para las Finanzas",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "82.08",
+  "nombre": "Cloud Computing",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "AWS",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 701F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Apat, JavierPannunzio Putignano, Faustino MarioBorinsky, CamilaWinkel, Sol Alejandra",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "82.18",
+  "nombre": "Procesamiento del Lenguaje Natural",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 504F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Caravaggio, Leonardo AndresValentini, Francisco Tomas",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "82.21",
+  "nombre": "Factibilidad de Proyectos Data Driven",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 804F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Combet, Mercedes Cecilia",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "93.07",
+  "nombre": "Métodos Numéricos",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Viernes",
+      "desde": "09:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Epstein, Julián",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Paez, Sebastián Matías",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "17:00",
+      "hasta": "20:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Epstein, Julián",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "D",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "14:00",
+      "hasta": "17:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Epstein, Julián",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "93.24",
+  "nombre": "Probabilidad y Estadística",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "09:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Virtual asincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 202R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 203R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Lopez, Lucas MartinPantazis, Lucio José",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "09:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Virtual asincrónico"
+     },
+     {
+      "dia": "Lunes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 202R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Lunes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 203R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 202R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Pantazis, Lucio José",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "09:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Virtual asincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula ITBA: 202R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula ITBA: 002R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Pantazis, Lucio José",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "D",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "09:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Virtual asincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 004R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 005R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Pantazis, Lucio José",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "E",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "09:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Virtual asincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula ITBA: 202R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula ITBA: 201R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Pantazis, Lucio JoséCastro, Maria Jose",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "F",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "09:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Virtual asincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "15:00",
+      "aula": "Aula ITBA: 202R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "13:00",
+      "hasta": "15:00",
+      "aula": "Aula ITBA: 001T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Lopez, Lucas MartinPantazis, Lucio José",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "93.26",
+  "nombre": "Análisis Matemático I",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 102R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 102R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Mancilla Aguilar, Jose Luis",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula ITBA: 004R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 004R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula ITBA: 004R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Fernández Sau, MercedesBlanco Vitorero, Maria Patricia",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 005R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 104R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "93.28",
+  "nombre": "Análisis Matemático II",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 203R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "15:00",
+      "aula": "Aula ITBA: 103R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "11:00",
+      "hasta": "13:00",
+      "aula": "Aula ITBA: 002T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 202R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "15:00",
+      "aula": "Aula ITBA: 102R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 201T · SDT Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "93.35",
+  "nombre": "Lógica Computacional",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "11:00",
+      "hasta": "13:00",
+      "aula": "Aula ITBA: 101R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "09:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 101R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 203R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Fernández Sau, Mercedes",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "11:00",
+      "hasta": "13:00",
+      "aula": "Aula ITBA: 003R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "09:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 003R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "15:00",
+      "hasta": "17:00",
+      "aula": "Aula ITBA: 102R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Poggi, Facundo SebastianOviedo, Martina Guadalupe",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 104R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "11:00",
+      "hasta": "13:00",
+      "aula": "Aula ITBA: 005R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "11:00",
+      "hasta": "13:00",
+      "aula": "Aula ITBA: 004R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Poggi, Facundo Sebastian",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "93.41",
+  "nombre": "Física I",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Martes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "09:00",
+      "hasta": "11:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Martes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "11:00",
+      "hasta": "13:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "González, Gustavo Javier",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "11:00",
+      "hasta": "13:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "Vergara, MartínGonzález, Gustavo Javier",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "D",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "09:00",
+      "hasta": "11:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "Lobo Poblet, Matías Alejandro",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "E",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "09:00",
+      "hasta": "11:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "González, Gustavo Javier",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "F",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "González, Gustavo Javier",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "G",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "13:00",
+      "hasta": "15:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "H",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "11:00",
+      "hasta": "13:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Martes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "González, Gustavo Javier",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "K",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "13:00",
+      "hasta": "15:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "González, Gustavo Javier",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "Vergara, MartínLobo Poblet, Matías Alejandro",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S1",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "González, Gustavo Javier",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "93.42",
+  "nombre": "Física II",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula ITBA: 002R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Failache, Lucia NuriaFeo, Dario Gabriel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "13:00",
+      "hasta": "15:00",
+      "aula": "Aula ITBA: 101R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 103R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "D",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula ITBA: 103R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "E",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 103R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "F",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 002R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Failache, Lucia NuriaFeo, Dario Gabriel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "G",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 002R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Feo, Dario Gabriel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "H",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Martes",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Feo, Dario Gabriel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "K",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Martes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Failache, Lucia NuriaFeo, Dario Gabriel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "MN",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Martes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Failache, Lucia NuriaFeo, Dario Gabriel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "11:00",
+      "hasta": "13:00",
+      "aula": "Aula ITBA: 101R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "93.43",
+  "nombre": "Física III",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "15:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 103R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "D Ambrosio, Cristian Nahuel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "15:00",
+      "hasta": "17:00",
+      "aula": "Aula ITBA: 001R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "11:00",
+      "hasta": "13:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "18:00",
+      "hasta": "20:00",
+      "aula": "Aula ITBA: 103R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Cornes, Fernando Ezequiel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "D",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula ITBA: 006R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "19:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "E",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula ITBA: 203R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "Cornes, Fernando EzequielD Ambrosio, Cristian NahuelMarachlian, Emiliano",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "F",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula ITBA: 001R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "Urquia, Gonzalo MartinMarachlian, Emiliano",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "G",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Martes",
+      "desde": "15:00",
+      "hasta": "17:00",
+      "aula": "Aula ITBA: 103R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "Urquia, Gonzalo MartinMarachlian, Emiliano",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "MNP",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "17:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 001R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Laboratorio"
+     }
+    ],
+    "profesores": "D Ambrosio, Cristian Nahuel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "Q",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "19:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 002R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "13:00",
+      "hasta": "15:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "17:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 001R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "D Ambrosio, Cristian Nahuel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "T",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "17:00",
+      "hasta": "19:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "17:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 104R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "93.58",
+  "nombre": "Álgebra",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 203R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 203R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "11:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 003R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 102R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Epstein, Julián",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "11:00",
+      "hasta": "13:00",
+      "aula": "Aula ITBA: 104R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Martes",
+      "desde": "13:00",
+      "hasta": "15:00",
+      "aula": "Aula ITBA: 104R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "11:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 005R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "12:00",
+      "hasta": "14:00",
+      "aula": "Aula ITBA: 004R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Fages, Luciano Rodolfo",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "15:00",
+      "hasta": "17:00",
+      "aula": "Aula ITBA: 104R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 005R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula ITBA: 005R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "14:00",
+      "hasta": "17:00",
+      "aula": "Aula ITBA: 104R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Oviedo, Martina GuadalupeEpstein, Julián",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "93.59",
+  "nombre": "Matemática Discreta",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "S",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "08:00",
+      "hasta": "11:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "11:00",
+      "hasta": "14:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "CATOLINO, LUCASCapitelli, Nicolas ArielBonucci, Pablo Leandro",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "S2",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "09:00",
+      "hasta": "12:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "CATOLINO, LUCASTortella, María Soraya,Capitelli, Nicolas Ariel",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "93.75",
+  "nombre": "Métodos Numéricos Avanzados",
+  "depto": "Ciencias Exactas y Naturales",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Jueves",
+      "desde": "13:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "15:00",
+      "hasta": "18:00",
+      "aula": "Aula externa: Virtual sincrónico"
+     }
+    ],
+    "profesores": "Paez, Sebastián Matías",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "94.21",
+  "nombre": "Formación General I",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "20:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 102R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 103R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Diaz Leimbacher, EnriqueRoldan, Juan Eduardo",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "20:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula ITBA: 202R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Diaz Leimbacher, EnriqueRoldan, Juan Eduardo",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "20:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula ITBA: 102R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula ITBA: 103R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Diaz Leimbacher, EnriqueRoldan, Juan Eduardo",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "D",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "20:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula ITBA: 103R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Diaz Leimbacher, EnriqueRoldan, Juan Eduardo",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "E",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "20:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula ITBA: 002R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Cravino, Ana MariaDiaz Leimbacher, Enrique",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "F",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "20:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula ITBA: 201R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Diaz Leimbacher, Enrique",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "G",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "20:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 002R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 003R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Diaz Leimbacher, EnriqueRoldan, Juan Eduardo",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "H",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "20:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "16:00",
+      "hasta": "18:00",
+      "aula": "Aula ITBA: 007R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Diaz Leimbacher, EnriqueRoldan, Juan Eduardo",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "94.23",
+  "nombre": "Formación General III",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "AB",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 503F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Pedro, Cecilia AngelicaCalamante, Romina",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Jueves",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 801F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Pedro, Cecilia AngelicaCalamante, Romina",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C2",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 502F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Pedro, Cecilia AngelicaCalamante, Romina",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "D",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 602F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Pedro, Cecilia AngelicaCalamante, Romina",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "KMP",
+    "slots": [
+     {
+      "dia": "Domingo",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     },
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "21:00",
+      "aula": "Aula ITBA: 402F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Yacusso, Ileana AgustinaPedro, Cecilia AngelicaCalamante, Romina",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "94.24",
+  "nombre": "Metodología del Aprendizaje",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "17:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 301F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Manterola, Sergio Daniel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "C",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "19:00",
+      "hasta": "21:00",
+      "aula": "Aula ITBA: 202F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Manterola, Sergio Daniel",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "DF",
+    "slots": [
+     {
+      "dia": "Viernes",
+      "desde": "09:00",
+      "hasta": "11:00",
+      "aula": "Aula ITBA: 009R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Manterola, Sergio Daniel",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "94.42",
+  "nombre": "Comunicación Estratégica",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "17:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 501F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Sábado",
+      "desde": "12:00",
+      "hasta": "13:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     }
+    ],
+    "profesores": "Magro, Adriana EdithGallo Haddad, DanielaFranco, Veronica Griselda",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "14:00",
+      "hasta": "16:00",
+      "aula": "Aula ITBA: 502F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Sábado",
+      "desde": "12:00",
+      "hasta": "13:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     }
+    ],
+    "profesores": "",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "94.62",
+  "nombre": "Ética en los Negocios",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "19:00",
+      "hasta": "22:00",
+      "aula": "Aula ITBA: 601F · Sede Distrito Financiero Aula externa: Presencial"
+     }
+    ],
+    "profesores": "Perego, Pablo AlejandroBlazquez, Oscar Gustavo",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "94.64",
+  "nombre": "Prácticas Expositivas",
+  "depto": "Economía y Negocios",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "08:00",
+      "hasta": "10:00",
+      "aula": "Aula ITBA: 502F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Sábado",
+      "desde": "20:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     }
+    ],
+    "profesores": "Rodríguez, AnalíaAlemán, María AraceliDiaz Leimbacher, Enrique",
+    "cupo": "0 / Ilimitado"
+   },
+   {
+    "comision": "B",
+    "slots": [
+     {
+      "dia": "Miércoles",
+      "desde": "10:00",
+      "hasta": "12:00",
+      "aula": "Aula ITBA: 601F · Sede Distrito Financiero Aula externa: Presencial"
+     },
+     {
+      "dia": "Sábado",
+      "desde": "20:00",
+      "hasta": "21:00",
+      "aula": "Aula externa: Virtual asincrónica"
+     }
+    ],
+    "profesores": "Rodríguez, AnalíaAlemán, María AraceliDiaz Leimbacher, Enrique",
+    "cupo": "0 / Ilimitado"
+   }
+  ]
+ },
+ {
+  "codigo": "16.68",
+  "nombre": "Señales y Sistemas",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "A",
+    "slots": [
+     {
+      "dia": "Martes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula ITBA: 108R · Sede Rectorado Aula externa: Presencial"
+     },
+     {
+      "dia": "Miércoles",
+      "desde": "17:00",
+      "hasta": "20:00",
+      "aula": "Aula ITBA: 009R · Sede Rectorado Aula externa: Presencial"
+     }
+    ],
+    "profesores": "",
+    "cupo": "38 / 48"
+   }
+  ]
+ },
+ {
+  "codigo": "25.27",
+  "nombre": "Sistemas Embebidos",
+  "depto": "Sistemas Digitales y Datos",
+  "periodo": "Segundo Cuat.",
+  "anio": "2026",
+  "comienzo": "26/07/2026",
+  "fin": "31/12/2026",
+  "comisiones": [
+   {
+    "comision": "K",
+    "slots": [
+     {
+      "dia": "Lunes",
+      "desde": "16:00",
+      "hasta": "19:00",
+      "aula": "Aula externa: Laboratorio"
+     },
+     {
+      "dia": "Viernes",
+      "desde": "10:00",
+      "hasta": "13:00",
+      "aula": "Aula externa: Virtual sincrónica"
+     }
+    ],
+    "profesores": "Jacoby, DanielMagliola, NicolasBergerman, Matías",
+    "cupo": "11 / 30"
+   }
+  ]
+ }
+]

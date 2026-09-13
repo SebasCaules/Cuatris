@@ -1,0 +1,16 @@
+/* ============================================================
+   BREADCRUMBS — migas de pan mono.
+   ============================================================ */
+.crumbs {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 0;
+}
+.crumbs a:hover { color: var(--link); }
+.crumbs__sep { margin: 0 8px; opacity: 0.5; }
+.crumbs [aria-current="page"] { color: var(--ink-strong); }

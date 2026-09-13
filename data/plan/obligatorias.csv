@@ -1,0 +1,72 @@
+﻿"Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática ) 
+Requisito: Aprobar todos los items (suma 147 créditos)";;;
+Año 1 - Cuatrimestre 1;;;
+Materia;Créditos;Créditos requeridos;Correlativas
+31.08 - Sistemas de Representación;3;0;
+72.03 - Introducción a la Informática;3;0;
+93.26 - Análisis Matemático I;6;0;
+93.58 - Álgebra;9;0;
+94.24 - Metodología del Aprendizaje;3;0;
+Año 1 - Cuatrimestre 2;;;
+Materia;Créditos;Créditos requeridos;Correlativas
+72.31 - Programación Imperativa;9;0;93.58  72.03  
+93.28 - Análisis Matemático II;6;0;93.58  93.26  
+93.41 - Física I;6;0;93.26  
+93.59 - Matemática Discreta;6;0;93.58  
+Año 2 - Cuatrimestre 1;;;
+Materia;Créditos;Créditos requeridos;Correlativas
+12.09 - Química;3;0;
+72.32 - Diseño y Procesamiento de Documentos XML;3;0;72.31  
+72.33 - Programación Orientada a Objetos;6;0;72.31  
+93.35 - Lógica Computacional;6;0;93.58  
+93.42 - Física II;6;0;93.28  
+Año 2 - Cuatrimestre 2;;;
+Materia;Créditos;Créditos requeridos;Correlativas
+72.08 - Arquitectura de Computadoras;6;0;72.31  
+72.34 - Estructura de Datos y Algoritmos;6;0;93.59  72.33  
+93.24 - Probabilidad y Estadística;6;0;93.28  
+93.43 - Física III;6;0;93.28  93.41  
+Año 3 - Cuatrimestre 1;;;
+Materia;Créditos;Créditos requeridos;Correlativas
+72.11 - Sistemas Operativos;6;0;72.08  72.34  
+72.35 - Ingenieria de Software I;6;0;72.33  
+72.36 - Interacción Hombre-Computadora (HCI);6;0;72.33  72.32  
+72.37 - Base de Datos I;6;0;72.34  93.35  
+Año 3 - Cuatrimestre 2;;;
+Materia;Créditos;Créditos requeridos;Correlativas
+72.07 - Protocolos de Comunicación;6;0;72.11  
+72.38 - Proyecto de Aplicaciones Web;6;0;72.11  72.37  72.36  72.35  
+72.39 - Autómatas, Teoría de Lenguajes y Compiladores;6;0;72.34  
+93.07 - Métodos Numéricos;3;0;93.28  
+94.21 - Formación General I;3;0;
+94.51 - Inglés I;0;0;
+"Ciclo Profesional (Título Otorgado: Ingeniero en Informática)
+Requisito: Aprobar todos los items (suma 96 créditos)";;;
+Año 4 - Cuatrimestre 1;;;
+Materia;Créditos;Créditos requeridos;Correlativas
+61.23 - Economía para Ingenieros;3;120;
+61.32 - Derecho para Ingenieros;3;120;
+72.40 - Ingenieria del Software II;3;0;72.35  
+72.41 - Base de Datos II;6;0;72.11  72.37  
+72.42 - Programación de Objetos Distribuidos;3;0;72.07  72.37
+93.75 - Métodos Numéricos Avanzados;6;0;93.07  
+Año 4 - Cuatrimestre 2;;;
+Materia;Créditos;Créditos requeridos;Correlativas
+72.25 - Simulación de Sistemas;6;140;72.34  93.07  
+72.27 - Sistemas de Inteligencia Artificial;6;140;93.24  72.34  
+72.43 - Gestión de Proyectos Informáticos;3;0;
+72.44 - Criptografía y Seguridad;6;0;72.07  
+Año 5 - Cuatrimestre 1;;;
+Materia;Créditos;Créditos requeridos;Correlativas
+72.20 - Redes de Información;6;0;72.07  
+12.83 - Seguridad Ocupacional y Ambiental;3;140;
+72.45 - Proyecto Final;12;160;
+Año 5 - Cuatrimestre 2;;;
+Materia;Créditos;Créditos requeridos;Correlativas
+72.98 - Práctica Laboral;0;192;
+94.23 - Formación General III;3;168;
+94.52 - Inglés II;0;0;94.51  
+;;;
+Materias Electivas - Requisito: Completar 27 créditos;;;
+Se requiere completar 27 créditos de las materias que figuran en la pestaña de Electivas.;;;
+Si un alumno obtiene además un mínimo de 14 créditos correspondientes a uno de los minors de la carrera, obtendrá dicho minor.;;;

@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "cuatris",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "--port", "3100"],
+      "port": 3100
+    },
+    {
+      "name": "cuatris-static",
+      "runtimeExecutable": "./run.sh",
+      "runtimeArgs": ["build"],
+      "port": 3101,
+      "url": "http://localhost:3101"
+    }
+  ]
+}

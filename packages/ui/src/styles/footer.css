@@ -1,0 +1,80 @@
+/* ============================================================
+   FOOTER — pie compacto del portal: marca + columnas de enlaces + strip.
+   Presente en TODAS las rutas (lo monta ConditionalFooter en el layout).
+   ============================================================ */
+.footer {
+  position: relative;
+  z-index: 1;
+  /* respiro corto: la página debe "cortar" cerca del footer, no lejos */
+  margin-top: var(--s-3);
+  background: var(--surface-2);
+  border-top: 1px solid var(--border);
+}
+.footer__top {
+  padding: 30px 0 20px;
+  display: grid;
+  grid-template-columns: 1.6fr 1.1fr 0.9fr;
+  gap: 24px 44px;
+  align-items: start;
+}
+.footer__brand .brand { margin-bottom: 10px; }
+.footer__brand p {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 40ch;
+  margin: 0;
+}
+
+.footer__col h4 {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 10px;
+}
+.footer__col a {
+  display: block;
+  width: fit-content;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 3px 0;
+  transition: color var(--dur-fast) var(--ease);
+}
+/* hover sin reflow (antes empujaba con padding-left) */
+.footer__col a:hover { color: var(--accent-text); }
+
+/* La columna de Materias (2ª div del grid) trae 7 enlaces: la fluimos en dos
+   columnas para que el footer no se estire de más. El título ocupa el ancho. */
+.footer__col:nth-of-type(2) {
+  columns: 2;
+  column-gap: 32px;
+}
+.footer__col:nth-of-type(2) h4 { column-span: all; }
+
+.footer__bottom {
+  border-top: 1px solid var(--hairline);
+  padding: 13px 0 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+}
+.footer__bottom b { color: var(--link); font-weight: 600; }
+
+@media (max-width: 760px) {
+  .footer__top { grid-template-columns: 1fr 1fr; gap: 22px 32px; }
+  .footer__brand { grid-column: 1 / -1; }
+}
+@media (max-width: 460px) {
+  .footer__top { grid-template-columns: 1fr; gap: 20px; }
+  .footer__col:nth-of-type(2) { columns: 2; }
+}

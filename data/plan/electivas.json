@@ -1,0 +1,1413 @@
+{
+  "areas": [
+    "Ciencia de  Datos",
+    "Imágenes y Realidad Virtual",
+    "Inteligencia Artificial",
+    "Arqitectura de Software"
+  ],
+  "materias": [
+    {
+      "codigo": "10.07",
+      "nombre": "Creatividad",
+      "creditos": 3,
+      "creditos_requeridos": 96,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "10.09",
+      "nombre": "Formación para Emprendedores",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "11.36",
+      "nombre": "Innovación y Competitividad",
+      "creditos": 3,
+      "creditos_requeridos": 192,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "16.04",
+      "nombre": "Neurociencias y Desarrollo Productivo",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "16.50",
+      "nombre": "Introducción a la Bioinformática",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.37"
+      ],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "16.57",
+      "nombre": "Robótica Bioinspirada",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.08"
+      ],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "16.82",
+      "nombre": "Neurociencia Computacional",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.28",
+        "72.34",
+        "93.24"
+      ],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "22.48",
+      "nombre": "Procesamiento de Imágenes",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.75"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "23.15",
+      "nombre": "Realidad Virtual",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.58",
+        "72.34"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual",
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "25.04",
+      "nombre": "Computación Cuántica",
+      "creditos": 6,
+      "creditos_requeridos": 144,
+      "correlativas": [],
+      "areas": [
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "61.08",
+      "nombre": "Derecho Digital",
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "61.32"
+      ],
+      "areas": []
+    },
+    {
+      "codigo": "61.11",
+      "nombre": "Derecho Laboral y Seguridad Social en la Empresa",
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "61.32"
+      ],
+      "areas": []
+    },
+    {
+      "codigo": "61.13",
+      "nombre": "Práctica Contractual",
+      "creditos": 1,
+      "creditos_requeridos": null,
+      "correlativas": [
+        "61.32"
+      ],
+      "areas": []
+    },
+    {
+      "codigo": "61.50",
+      "nombre": "Finanzas de la Empresa",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "61.23"
+      ],
+      "areas": []
+    },
+    {
+      "codigo": "71.48",
+      "nombre": "Introducción a la Realidad Aumentada",
+      "creditos": 1,
+      "creditos_requeridos": 51,
+      "correlativas": [],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "72.22",
+      "nombre": "Sistemas Tolerantes a Fallas",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "72.23",
+      "nombre": "Diseño y Construcción de Compiladores",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.29",
+      "nombre": "Tipos para Lenguajes de Programación",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34"
+      ],
+      "areas": []
+    },
+    {
+      "codigo": "72.46",
+      "nombre": "Robótica Basada en Comportamiento",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.27"
+      ],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.49",
+      "nombre": "Sistemas Tolerantes a Fallas",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.42"
+      ],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "72.50",
+      "nombre": "Introducción al Desarrollo de Videojuegos",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "72.51",
+      "nombre": "Tecnologías para Web 2.0 y Redes Sociales",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.42"
+      ],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "72.52",
+      "nombre": "Análisis y Tratamiento de Imágenes",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.75",
+        "72.34"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual",
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.53",
+      "nombre": "Visión Computacional 3D",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual",
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.54",
+      "nombre": "OLAP y Explotación de Datos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.24",
+        "72.41"
+      ],
+      "areas": [
+        "Ciencia de  Datos",
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.55",
+      "nombre": "Ontologías en la Web",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.32",
+        "72.37"
+      ],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "72.58",
+      "nombre": "Computación Gráfica",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "72.59",
+      "nombre": "Sistemas de Inteligencia Artificial II",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.27"
+      ],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.18",
+      "nombre": "Programación Funcional",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34"
+      ],
+      "areas": [
+        "Ciencia de  Datos",
+        "Inteligencia Artificial",
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "72.61",
+      "nombre": "Taller de Diseño de Videojuegos",
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "72.65",
+      "nombre": "Desarrollo de Videojuegos 2D en Iphone OS",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "72.66",
+      "nombre": "Sistemas Embebidos",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.67",
+      "nombre": "Robótica Cinemática Computacional",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.68",
+      "nombre": "Arte y Ciencia Interactivos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "72.69",
+      "nombre": "Seguridad de Software basada en Flujo de Información",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "72.70",
+      "nombre": "Modelos e Imágenes Fractales",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "72.71",
+      "nombre": "Integración de Sistemas de Información",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.07",
+        "72.35",
+        "72.37"
+      ],
+      "areas": [
+        "Ciencia de  Datos",
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "72.72",
+      "nombre": "Análisis y Verificación de Modelos y Códigos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Ciencia de  Datos",
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "72.73",
+      "nombre": "Aprendizaje por Refuerzo en Robótica",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.74",
+      "nombre": "Visualización de Información",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.31"
+      ],
+      "areas": [
+        "Ciencia de  Datos",
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "72.75",
+      "nombre": "Aprendizaje Automático (Machine Learning)",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.75",
+        "72.34",
+        "93.24"
+      ],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.77",
+      "nombre": "Técnicas Automáticas para Testing de Software",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Ciencia de  Datos",
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "72.78",
+      "nombre": "OLAP Espacial",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Ciencia de  Datos",
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.79",
+      "nombre": "Sistemas Multiagente I",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.27"
+      ],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.80",
+      "nombre": "Big Data",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.41"
+      ],
+      "areas": [
+        "Ciencia de  Datos",
+        "Imágenes y Realidad Virtual",
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.82",
+      "nombre": "Tópicos de NoSQL",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.41"
+      ],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "72.84",
+      "nombre": "Bases de Datos Espaciales y Sist de Info Geográfica",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.37"
+      ],
+      "areas": [
+        "Ciencia de  Datos",
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "72.85",
+      "nombre": "Análisis de Datos en la Web Semántica",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.32",
+        "72.37"
+      ],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "72.86",
+      "nombre": "Técnicas Avanzadas en Videojuegos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.97"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "72.87",
+      "nombre": "Diseño Sonoro para Animación y Videojuegos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "72.88",
+      "nombre": "Introducción a la Neurociencia Computacional",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.75",
+        "72.34",
+        "93.24"
+      ],
+      "areas": [
+        "Ciencia de  Datos",
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.89",
+      "nombre": "Moneda Digital Descentralizada",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.44"
+      ],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "72.90",
+      "nombre": "Internet de las Cosas",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.07",
+        "93.43"
+      ],
+      "areas": [
+        "Ciencia de  Datos",
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.92",
+      "nombre": "El Paradigma NoSQL - Bases de Datos de Grafos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.41"
+      ],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "72.94",
+      "nombre": "Introducción a los Sistemas Embebidos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.08"
+      ],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "72.95",
+      "nombre": "Proyecto de Innovación Científico-Tecnológico",
+      "creditos": 12,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "72.96",
+      "nombre": "Proyecto de Aplicaciones Móviles",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.38"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual",
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "72.97",
+      "nombre": "Introducción a la Programación de Videojuegos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "73.21",
+      "nombre": "Desarrollo de Aplicaciones Móviles Multiplataforma",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.38"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual",
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "73.22",
+      "nombre": "Fundamentos de DevOps",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.35"
+      ],
+      "areas": [
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "73.23",
+      "nombre": "Programación Orientada a Datos",
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34"
+      ],
+      "areas": [
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "73.30",
+      "nombre": "Desarrollo Profesional de Software",
+      "creditos": 3,
+      "creditos_requeridos": null,
+      "correlativas": [
+        "72.38"
+      ],
+      "areas": [
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "73.40",
+      "nombre": "Arquitectura de Microservicios",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.40",
+        "72.41"
+      ],
+      "areas": [
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "73.50",
+      "nombre": "Infraestructura de Cómputo: Data Center, Cloud y Edge",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.20",
+        "72.41"
+      ],
+      "areas": [
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "73.60",
+      "nombre": "Introducción a la Robótica Empresarial",
+      "creditos": 1,
+      "creditos_requeridos": 140,
+      "correlativas": [],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "73.61",
+      "nombre": "Neurorobótica",
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "73.62",
+      "nombre": "Introducción a la Programación Paralela",
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.33",
+        "72.11"
+      ],
+      "areas": [
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "73.63",
+      "nombre": "Redes Equivariantes",
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.27"
+      ],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "73.64",
+      "nombre": "Temas Avanzados en Deep Learning",
+      "creditos": 2,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.27"
+      ],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "73.65",
+      "nombre": "Procesamiento del Lenguaje Natural",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.07"
+      ],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "73.66",
+      "nombre": "Procesamiento de Imágenes Satelitales",
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "73.80",
+      "nombre": "Seguridad Ofensiva",
+      "creditos": 1,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.44"
+      ],
+      "areas": []
+    },
+    {
+      "codigo": "73.81",
+      "nombre": "Cibersguridad Ofensiva y Defensiva",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.44"
+      ],
+      "areas": []
+    },
+    {
+      "codigo": "73.82",
+      "nombre": "Bases de Datos Espaciales y de Movilidad",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.37"
+      ],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "73.84",
+      "nombre": "Ciencia de Datos Aplicada",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.27"
+      ],
+      "areas": [
+        "Ciencia de  Datos",
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "73.89",
+      "nombre": "Introducción a Blockchain y a Criptomonedas",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.44"
+      ],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "73.98",
+      "nombre": "Desarrollo Integral de Videojuegos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.97"
+      ],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "81.13",
+      "nombre": "Futuros Posibles",
+      "creditos": 1,
+      "creditos_requeridos": 140,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "81.14",
+      "nombre": "Product Management",
+      "creditos": 3,
+      "creditos_requeridos": 120,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "81.16",
+      "nombre": "Negociación",
+      "creditos": 1,
+      "creditos_requeridos": 140,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "81.57",
+      "nombre": "Arquitectura de Soluciones Digitales",
+      "creditos": 3,
+      "creditos_requeridos": null,
+      "correlativas": [
+        "72.07",
+        "72.35",
+        "72.37"
+      ],
+      "areas": [
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "81.74",
+      "nombre": "Introducción a la Realidad Aumentada",
+      "creditos": 1,
+      "creditos_requeridos": 51,
+      "correlativas": [],
+      "areas": [
+        "Imágenes y Realidad Virtual"
+      ]
+    },
+    {
+      "codigo": "82.08",
+      "nombre": "Cloud Computing",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.32"
+      ],
+      "areas": [
+        "Ciencia de  Datos",
+        "Inteligencia Artificial",
+        "Arqitectura de Software"
+      ]
+    },
+    {
+      "codigo": "82.18",
+      "nombre": "Procesamiento del Lenguaje Natural",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.07"
+      ],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "82.21",
+      "nombre": "Factibilidad de Proyectos Data-Driven",
+      "creditos": 3,
+      "creditos_requeridos": null,
+      "correlativas": [
+        "61.23"
+      ],
+      "areas": [
+        "Ciencia de  Datos"
+      ]
+    },
+    {
+      "codigo": "94.26",
+      "nombre": "Comunicación Organizacional",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "94.42",
+      "nombre": "Comunicación Estratégica",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "94.62",
+      "nombre": "Ética en los Negocios",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "94.64",
+      "nombre": "Prácticas Expositivas",
+      "creditos": 3,
+      "creditos_requeridos": 120,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "94.65",
+      "nombre": "Práctica Profesional Supervisada",
+      "creditos": 0,
+      "creditos_requeridos": 144,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "94.92",
+      "nombre": "Escritura Académica",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "73.69",
+      "nombre": "Large Language Models",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "73.70",
+      "nombre": "Análisis de Datos en Neurociencias",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Ciencia de Datos"
+      ]
+    },
+    {
+      "codigo": "74.60",
+      "nombre": "Visión por Computadora",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": [
+        "Imágenes y Realidad Virtual",
+        "Inteligencia Artificial"
+      ]
+    },
+    {
+      "codigo": "81.76",
+      "nombre": "Tecnología para las Finanzas",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "areas": []
+    },
+    {
+      "codigo": "16.68",
+      "nombre": "Señales y Sistemas",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.75"
+      ],
+      "areas": []
+    },
+    {
+      "codigo": "25.27",
+      "nombre": "Sistemas Embebidos",
+      "creditos": 3,
+      "creditos_requeridos": 144,
+      "correlativas": [],
+      "areas": []
+    }
+  ],
+  "aristas_correlativas": [
+    {
+      "from": "61.23",
+      "to": "61.50"
+    },
+    {
+      "from": "61.23",
+      "to": "82.21"
+    },
+    {
+      "from": "61.32",
+      "to": "61.08"
+    },
+    {
+      "from": "61.32",
+      "to": "61.11"
+    },
+    {
+      "from": "61.32",
+      "to": "61.13"
+    },
+    {
+      "from": "72.07",
+      "to": "72.71"
+    },
+    {
+      "from": "72.07",
+      "to": "81.57"
+    },
+    {
+      "from": "72.08",
+      "to": "16.57"
+    },
+    {
+      "from": "72.08",
+      "to": "72.94"
+    },
+    {
+      "from": "72.11",
+      "to": "73.62"
+    },
+    {
+      "from": "72.20",
+      "to": "73.50"
+    },
+    {
+      "from": "72.27",
+      "to": "72.46"
+    },
+    {
+      "from": "72.27",
+      "to": "72.59"
+    },
+    {
+      "from": "72.27",
+      "to": "72.79"
+    },
+    {
+      "from": "72.27",
+      "to": "73.63"
+    },
+    {
+      "from": "72.27",
+      "to": "73.64"
+    },
+    {
+      "from": "72.27",
+      "to": "73.84"
+    },
+    {
+      "from": "72.31",
+      "to": "72.74"
+    },
+    {
+      "from": "72.32",
+      "to": "72.55"
+    },
+    {
+      "from": "72.32",
+      "to": "72.85"
+    },
+    {
+      "from": "72.32",
+      "to": "82.08"
+    },
+    {
+      "from": "72.33",
+      "to": "73.62"
+    },
+    {
+      "from": "72.34",
+      "to": "16.82"
+    },
+    {
+      "from": "72.34",
+      "to": "23.15"
+    },
+    {
+      "from": "72.34",
+      "to": "72.29"
+    },
+    {
+      "from": "72.34",
+      "to": "72.50"
+    },
+    {
+      "from": "72.34",
+      "to": "72.52"
+    },
+    {
+      "from": "72.34",
+      "to": "72.53"
+    },
+    {
+      "from": "72.34",
+      "to": "72.58"
+    },
+    {
+      "from": "72.34",
+      "to": "72.18"
+    },
+    {
+      "from": "72.34",
+      "to": "72.61"
+    },
+    {
+      "from": "72.34",
+      "to": "72.65"
+    },
+    {
+      "from": "72.34",
+      "to": "72.75"
+    },
+    {
+      "from": "72.34",
+      "to": "72.87"
+    },
+    {
+      "from": "72.34",
+      "to": "72.88"
+    },
+    {
+      "from": "72.34",
+      "to": "72.97"
+    },
+    {
+      "from": "72.34",
+      "to": "73.23"
+    },
+    {
+      "from": "72.35",
+      "to": "72.71"
+    },
+    {
+      "from": "72.35",
+      "to": "73.22"
+    },
+    {
+      "from": "72.35",
+      "to": "81.57"
+    },
+    {
+      "from": "72.37",
+      "to": "16.50"
+    },
+    {
+      "from": "72.37",
+      "to": "72.55"
+    },
+    {
+      "from": "72.37",
+      "to": "72.71"
+    },
+    {
+      "from": "72.37",
+      "to": "72.84"
+    },
+    {
+      "from": "72.37",
+      "to": "72.85"
+    },
+    {
+      "from": "72.37",
+      "to": "73.82"
+    },
+    {
+      "from": "72.37",
+      "to": "81.57"
+    },
+    {
+      "from": "72.38",
+      "to": "72.96"
+    },
+    {
+      "from": "72.38",
+      "to": "73.21"
+    },
+    {
+      "from": "72.38",
+      "to": "73.30"
+    },
+    {
+      "from": "72.40",
+      "to": "73.40"
+    },
+    {
+      "from": "72.41",
+      "to": "72.54"
+    },
+    {
+      "from": "72.41",
+      "to": "72.80"
+    },
+    {
+      "from": "72.41",
+      "to": "72.82"
+    },
+    {
+      "from": "72.41",
+      "to": "72.92"
+    },
+    {
+      "from": "72.41",
+      "to": "73.40"
+    },
+    {
+      "from": "72.41",
+      "to": "73.50"
+    },
+    {
+      "from": "72.42",
+      "to": "72.49"
+    },
+    {
+      "from": "72.42",
+      "to": "72.51"
+    },
+    {
+      "from": "72.44",
+      "to": "72.89"
+    },
+    {
+      "from": "72.44",
+      "to": "73.80"
+    },
+    {
+      "from": "72.44",
+      "to": "73.81"
+    },
+    {
+      "from": "72.44",
+      "to": "73.89"
+    },
+    {
+      "from": "72.97",
+      "to": "72.86"
+    },
+    {
+      "from": "72.97",
+      "to": "73.98"
+    },
+    {
+      "from": "93.07",
+      "to": "72.90"
+    },
+    {
+      "from": "93.07",
+      "to": "73.65"
+    },
+    {
+      "from": "93.07",
+      "to": "82.18"
+    },
+    {
+      "from": "93.24",
+      "to": "16.82"
+    },
+    {
+      "from": "93.24",
+      "to": "72.54"
+    },
+    {
+      "from": "93.24",
+      "to": "72.75"
+    },
+    {
+      "from": "93.24",
+      "to": "72.88"
+    },
+    {
+      "from": "93.28",
+      "to": "16.82"
+    },
+    {
+      "from": "93.43",
+      "to": "72.90"
+    },
+    {
+      "from": "93.58",
+      "to": "23.15"
+    },
+    {
+      "from": "93.75",
+      "to": "22.48"
+    },
+    {
+      "from": "93.75",
+      "to": "72.52"
+    },
+    {
+      "from": "93.75",
+      "to": "72.75"
+    },
+    {
+      "from": "93.75",
+      "to": "72.88"
+    },
+    {
+      "from": "93.75",
+      "to": "16.68"
+    }
+  ]
+}

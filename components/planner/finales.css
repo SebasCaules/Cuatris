@@ -1,0 +1,1282 @@
+/* =========================================================================
+   Combinación de finales — estilos de la pestaña nueva del planner.
+   Spec visual: _design-review/module-f-combinador.html.
+   Todas las reglas viven bajo `.planner` y usan los tokens locales del planner
+   (auto-tematizan con [data-theme]) + la familia global --status-* para los
+   roles semánticos (go/warn/caution/promo). Sin hex de rol hardcodeado; el color
+   por-final es categórico (viene inline como --c-color desde PALETTE).
+   NO editar planner.css: este archivo se importa aparte desde la vista.
+   ========================================================================= */
+
+/* ---- barra: llamado + año + acciones ---- */
+.planner .fin__bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.planner .fin__bar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex: 1 1 320px;
+  min-width: 0;
+}
+.planner .fin__bar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: auto;
+  justify-content: flex-end;
+}
+.planner .fin__lbl {
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* segmentado de período */
+.planner .fin__seg {
+  display: inline-flex;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px;
+}
+.planner .fin__seg-b {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--f-m);
+  font-size: 11px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s var(--ease, ease);
+  white-space: nowrap;
+}
+.planner .fin__seg-b:hover {
+  color: var(--ink);
+}
+.planner .fin__seg-b.is-active {
+  background: var(--brass);
+  color: var(--block-ink);
+  font-weight: 700;
+}
+
+/* selects del combinador (año / margen / reminder) */
+.planner .fin select {
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: var(--f-m);
+  font-size: 11px;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 7px 26px 7px 10px;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: right 13px center, right 9px center;
+  background-size: 4px 4px, 4px 4px;
+  background-repeat: no-repeat;
+  transition: border-color 0.16s var(--ease, ease), background-color 0.16s;
+}
+.planner .fin select:hover {
+  border-color: color-mix(in srgb, var(--brass) 55%, var(--line));
+  background-color: var(--panel-3);
+}
+.planner .fin select:focus-visible {
+  outline: none;
+  border-color: var(--brass);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brass) 26%, transparent);
+}
+.planner .fin__year {
+  display: inline-flex;
+}
+
+/* botones de header */
+.planner .fin__hbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 7px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.16s var(--ease, ease);
+  white-space: nowrap;
+}
+.planner .fin__hbtn:hover:not(:disabled) {
+  background: var(--panel-3);
+  border-color: color-mix(in srgb, var(--brass) 55%, var(--line));
+}
+.planner .fin__hbtn[aria-pressed="true"] {
+  border-color: var(--brass);
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 12%, var(--panel));
+}
+.planner .fin__hbtn.is-primary {
+  background: var(--brass);
+  border-color: var(--brass);
+  color: var(--block-ink);
+  font-weight: 700;
+}
+.planner .fin__hbtn.is-primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--brass) 86%, #000);
+}
+.planner .fin__hbtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- empty state focalizado (sin finales pendientes) ---- */
+.planner .fin__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  max-width: 420px;
+  margin: 8px auto 0;
+  padding: 34px 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: color-mix(in srgb, var(--brass) 5%, var(--panel));
+}
+.planner .fin__empty-ico {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 14%, transparent);
+}
+.planner .fin__empty-title {
+  margin: 2px 0 0;
+  font-family: var(--f-d);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.planner .fin__empty-body {
+  margin: 0;
+  font-family: var(--f-m);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.planner .fin__empty .fin__hbtn {
+  margin-top: 6px;
+}
+
+/* ---- resumen ---- */
+.planner .fin__resumen {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: color-mix(in srgb, var(--brass) 6%, var(--panel));
+  margin-bottom: 14px;
+}
+.planner .fin__resumen-ico {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--brass) 16%, transparent);
+  color: var(--brass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.planner .fin__resumen-body {
+  flex: 1;
+  min-width: 220px;
+}
+.planner .fin__resumen-main {
+  font-family: var(--f-d);
+  font-size: 15.5px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.planner .fin__resumen-sub {
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+/* ---- flags de conflicto ---- */
+.planner .fin__flags {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.planner .fin__flag {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 13px;
+  border-radius: 6px;
+  border-left: 3px solid var(--tone);
+  background: color-mix(in srgb, var(--tone) 10%, var(--panel));
+}
+.planner .fin__flag.caution {
+  --tone: var(--status-caution);
+}
+.planner .fin__flag.warn {
+  --tone: var(--status-warn);
+}
+.planner .fin__flag-ico {
+  color: var(--tone);
+  margin-top: 1px;
+  flex: none;
+  display: flex;
+}
+.planner .fin__flag-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink);
+}
+.planner .fin__flag-body {
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+  margin-top: 2px;
+  line-height: 1.5;
+}
+
+/* dot categórico por final (panel de pendientes + editor de mesas) */
+.planner .fin__fin-dot,
+.planner .fin__mesa-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c-color);
+  flex: none;
+}
+
+/* ---- fila: calendario + panel de pendientes ---- */
+.planner .fin__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--panel);
+  overflow: hidden;
+}
+.planner .fin__cal-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 14px 16px;
+}
+.planner .fin__cal-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  row-gap: 8px;
+  margin-bottom: 10px;
+}
+.planner .fin__cal-title {
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+}
+.planner .fin__cal-hint {
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--muted);
+}
+/* nudge: elegidos sin mesa (no entran al calendario) */
+.planner .fin__nudge {
+  margin: 0 0 10px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--status-warn);
+}
+.planner .fin__cal-scroll {
+  overflow-x: auto;
+}
+
+/* ---- controles del calendario (fantasmas + descargar) ---- */
+.planner .fin__cal-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+/* chip de feedback del .ics: no empuja el layout (se ubica junto al botón,
+   con nowrap y ancho acotado; en angosto baja de línea con el grupo). */
+.planner .fin__dl-ok {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--status-go);
+  white-space: nowrap;
+  max-width: 210px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.planner .fin__dl-ok svg {
+  flex: none;
+}
+
+/* wrapper del botón «Descargar» (ancla del popover) */
+.planner .fin__dl {
+  position: relative;
+  display: inline-flex;
+}
+/* mini menú de descarga: mismo idioma visual que .pv-menu (panel + línea +
+   sombra), labels mono uppercase. */
+.planner .fin__dl-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 30;
+  min-width: 224px;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.3));
+  padding: 6px;
+}
+.planner .fin__dl-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--ink);
+  font-family: var(--f-d);
+  font-size: 12.5px;
+  padding: 8px 9px;
+  border-radius: 6px;
+  transition: background 0.14s var(--ease, ease);
+}
+.planner .fin__dl-item:hover:not(:disabled) {
+  background: var(--panel-3);
+}
+.planner .fin__dl-item:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.planner .fin__dl-item svg {
+  color: var(--muted);
+  flex: none;
+}
+.planner .fin__dl-sep {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 5px 4px;
+}
+/* fila «Aviso» (select de recordatorio, movido de la sección de export) */
+.planner .fin__dl-aviso {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 3px 9px 5px;
+}
+.planner .fin__dl-aviso > span {
+  font-family: var(--f-m);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex: none;
+}
+.planner .fin__dl-aviso select {
+  flex: 1;
+  min-width: 0;
+}
+
+/* agenda mensual */
+.planner .fin__agenda {
+  min-width: 640px;
+  display: grid;
+  grid-template-columns: 56px repeat(6, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--panel);
+}
+.planner .fin__ag-corner {
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.planner .fin__ag-daylabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  padding: 6px 0;
+}
+.planner .fin__ag-week {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--f-m);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  padding: 6px 4px;
+}
+.planner .fin__ag-week.is-dim {
+  opacity: 0.6;
+}
+.planner .fin__ag-day {
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  min-height: 100px;
+  padding: 5px 5px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.planner .fin__ag-day.is-out {
+  background: color-mix(in srgb, var(--bg) 55%, var(--panel));
+}
+.planner .fin__ag-day.is-dim {
+  background: color-mix(in srgb, var(--bg) 35%, var(--panel));
+}
+.planner .fin__ag-num {
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--muted);
+  align-self: flex-start;
+}
+.planner .fin__day-conflict {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  align-self: flex-start;
+  font-family: var(--f-m);
+  font-size: 8.5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--status-caution);
+  background: color-mix(in srgb, var(--status-caution) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--status-caution) 45%, transparent);
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+/* bloque de examen dentro de un día */
+.planner .fin__exam {
+  border-radius: 5px;
+  border-left: 2.5px solid var(--c-color);
+  background: color-mix(in srgb, var(--c-color) 16%, var(--panel));
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+.planner .fin__exam.is-conflict {
+  box-shadow: inset 0 0 0 1.5px var(--status-caution);
+}
+.planner .fin__exam-name {
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.planner .fin__exam-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  font-family: var(--f-m);
+  font-size: 9px;
+  color: var(--muted);
+}
+
+/* chip fantasma: mesa disponible NO elegida (toggle «Otras fechas»). Mismo
+   layout que .fin__exam pero más tenue + sombra + borde dashed; es un botón
+   (reset de estilos nativos) que al clic agrega/mueve el final a ese llamado. */
+.planner button.fin__exam.is-ghost {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  opacity: 0.5;
+  border: 1px dashed color-mix(in srgb, var(--c-color) 55%, var(--line));
+  border-left: 2.5px dashed var(--c-color);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--c-color) 22%, transparent);
+  transition: opacity 0.16s var(--ease, ease),
+    box-shadow 0.16s var(--ease, ease);
+}
+.planner button.fin__exam.is-ghost:hover {
+  opacity: 0.85;
+  box-shadow: 0 3px 12px color-mix(in srgb, var(--c-color) 32%, transparent);
+}
+.planner button.fin__exam.is-ghost:focus-visible {
+  opacity: 0.9;
+  outline: 2px solid var(--brass);
+  outline-offset: 1px;
+}
+
+/* badges oficial / manual */
+.planner .fin__badge {
+  font-family: var(--f-m);
+  font-size: 8.5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.planner .fin__badge.is-oficial {
+  color: var(--muted);
+  background: var(--panel-3);
+  border: 1px solid var(--line);
+}
+.planner .fin__badge.is-manual {
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--brass) 40%, transparent);
+}
+/* badge «ejemplo»: fecha NO oficial (todavía sin planilla real). Tenue y
+   dashed para distinguirse claramente de is-oficial (sólido). */
+.planner .fin__badge.is-ejemplo {
+  color: var(--muted);
+  background: transparent;
+  border: 1px dashed var(--line);
+  opacity: 0.85;
+}
+
+/* editor de fechas de mesa */
+.planner .fin__mesas {
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.planner .fin__mesas-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: 13px;
+  background: var(--bg);
+}
+.planner .fin__mesas-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.planner .fin__mesa-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.planner .fin__mesa-row:last-child {
+  border-bottom: none;
+}
+.planner .fin__mesa-name {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--f-d);
+  font-size: 13px;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.planner .fin__mesa-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.planner .fin__mesa-oficial {
+  font-family: var(--f-m);
+  font-size: 11px;
+  color: var(--ink);
+}
+.planner .fin input[type="date"],
+.planner .fin input[type="time"] {
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 3px 6px;
+  max-width: 132px;
+}
+.planner .fin input[type="date"]:hover,
+.planner .fin input[type="time"]:hover {
+  border-color: color-mix(in srgb, var(--brass) 50%, var(--line));
+}
+.planner .fin input[type="date"]:focus-visible,
+.planner .fin input[type="time"]:focus-visible {
+  outline: none;
+  border-color: var(--brass);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brass) 24%, transparent);
+}
+.planner .fin__addfecha {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 11px;
+  cursor: pointer;
+  transition: all 0.16s var(--ease, ease);
+}
+.planner .fin__addfecha:hover {
+  border-color: var(--brass);
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 12%, var(--panel));
+}
+/* variante compacta del «＋ fecha» dentro de la fila del panel de pendientes */
+.planner .fin__addfecha.is-sm {
+  gap: 4px;
+  padding: 3px 8px;
+  font-size: 9px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.planner .fin__mesa-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  cursor: pointer;
+  flex: none;
+  transition: all 0.16s var(--ease, ease);
+}
+.planner .fin__mesa-clear:hover {
+  border-color: var(--status-caution);
+  color: var(--status-caution);
+}
+
+/* ---- panel de finales pendientes ---- */
+.planner .fin__side {
+  flex: 0 0 288px;
+  align-self: stretch;
+  border-left: 1px solid var(--line);
+}
+.planner .fin__side-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 13px;
+  border-bottom: 1px solid var(--line);
+}
+.planner .fin__side-title {
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--ink);
+  flex: 1;
+  min-width: 0;
+}
+.planner .fin__side-count {
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.planner .fin__group {
+  border-bottom: 1px solid var(--line);
+  border-left: 2px solid var(--tone);
+  background: color-mix(in srgb, var(--tone) 5%, transparent);
+}
+.planner .fin__group.is-muted {
+  border-left-color: var(--line);
+  background: transparent;
+}
+.planner .fin__group-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px 3px;
+}
+.planner .fin__g-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tone);
+  flex: none;
+}
+.planner .fin__group-title {
+  font-family: var(--f-m);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--tone);
+  font-weight: 700;
+}
+.planner .fin__group.is-muted .fin__group-title {
+  color: var(--muted);
+}
+.planner .fin__group-n {
+  margin-left: auto;
+  font-family: var(--f-m);
+  font-size: 9px;
+  color: var(--muted);
+}
+.planner .fin__list {
+  list-style: none;
+  margin: 0;
+  padding: 2px 0 7px;
+}
+.planner .fin__srow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+}
+.planner .fin__srow:hover,
+.planner .fin__srow:focus-within {
+  background: var(--panel-3);
+}
+.planner .fin__srow:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: -2px;
+}
+.planner .fin__srow-empty {
+  padding: 8px 12px;
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.planner .fin__fin-dot {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-color) 22%, transparent);
+}
+.planner .fin__lock {
+  color: var(--muted);
+  flex: none;
+  display: flex;
+}
+.planner .fin__srow-name {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--f-d);
+  font-size: 12.5px;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.planner .fin__srow-name.is-muted {
+  color: var(--muted);
+}
+.planner .fin__srow-cr {
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  color: var(--muted);
+  flex: none;
+}
+.planner .fin__short {
+  font-family: var(--f-m);
+  font-size: 8.5px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex: none;
+}
+.planner .fin__short.is-pisa {
+  color: var(--status-caution);
+}
+.planner .fin__toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.16s var(--ease, ease);
+}
+.planner .fin__toggle:hover:not(:disabled) {
+  border-color: var(--brass);
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 12%, var(--panel));
+}
+.planner .fin__toggle[aria-pressed="true"] {
+  border-color: var(--brass);
+  background: var(--brass);
+  color: var(--block-ink);
+}
+.planner .fin__toggle:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* tooltip por fila */
+.planner .fin__tip {
+  position: absolute;
+  left: 12px;
+  top: 100%;
+  margin-top: 4px;
+  z-index: 30;
+  max-width: 232px;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.3));
+  padding: 8px 10px;
+  font-family: var(--f-m);
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--muted);
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.15s var(--ease, ease), transform 0.15s var(--ease, ease);
+}
+.planner .fin__srow:hover .fin__tip,
+.planner .fin__srow:focus-within .fin__tip {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* pie ejemplo */
+.planner .fin__foot {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 16px 0 0;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.planner .fin__foot svg {
+  color: var(--brass);
+  flex: none;
+  margin-top: 1px;
+}
+
+/* ---- responsive ---- */
+@media (max-width: 900px) {
+  .planner .fin__row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .planner .fin__side {
+    flex: none;
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+  .planner .fin__cal-wrap {
+    width: 100%;
+  }
+}
+@media (max-width: 560px) {
+  .planner .fin__bar-right {
+    margin-left: 0;
+  }
+  /* en angosto los controles del calendario bajan a su propia línea completa,
+     alineados a la izquierda, y el menú de descarga se ancla a la izquierda
+     para no desbordar el borde derecho. */
+  .planner .fin__cal-controls {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .planner .fin__dl {
+    margin-left: auto;
+  }
+  .planner .fin__dl-menu {
+    right: auto;
+    left: 0;
+  }
+}
+
+/* ============================================================
+   Ingesta de la planilla oficial de finales (FinalesIngesta.tsx)
+   ============================================================ */
+/* wrapper colapsable: la ingesta ahora vive debajo del área de trabajo,
+   detrás de un summary discreto («Cargar fechas oficiales ▾»). */
+.planner .fin__ing-wrap {
+  margin-top: 16px;
+}
+.planner .fin__ing-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  transition: all 0.16s var(--ease, ease);
+}
+.planner .fin__ing-summary::-webkit-details-marker {
+  display: none;
+}
+.planner .fin__ing-summary::after {
+  content: "▾";
+  font-size: 9px;
+  transition: transform 0.16s var(--ease, ease);
+}
+.planner .fin__ing-wrap[open] > .fin__ing-summary {
+  margin-bottom: 10px;
+}
+.planner .fin__ing-wrap[open] > .fin__ing-summary::after {
+  transform: rotate(180deg);
+}
+.planner .fin__ing-summary:hover {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--brass) 45%, var(--line));
+}
+/* dentro del wrapper el espaciado lo maneja el details, no la sección */
+.planner .fin__ing-wrap .fin__ing {
+  margin-bottom: 0;
+}
+.planner .fin__ing {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: color-mix(in srgb, var(--brass) 5%, var(--panel));
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+.planner .fin__ing-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.planner .fin__ing-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 8px;
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--brass) 26%, transparent);
+}
+.planner .fin__ing-title {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.planner .fin__ing-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-left: auto;
+}
+/* input file estilizado como el resto de botones pill */
+.planner .fin__ing-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 7px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.16s var(--ease, ease);
+}
+.planner .fin__ing-file:hover {
+  border-color: color-mix(in srgb, var(--brass) 45%, var(--line));
+}
+.planner .fin__ing-file input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.planner .fin__ing-link {
+  background: none;
+  border: none;
+  padding: 4px 2px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.planner .fin__ing-link:hover {
+  color: var(--ink);
+}
+.planner .fin__ing-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--link);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.planner .fin__ing-open:hover {
+  text-decoration: underline;
+}
+.planner .fin__ing-paste {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 11px;
+}
+.planner .fin__ing-paste textarea {
+  width: 100%;
+  resize: vertical;
+  font-family: var(--f-m);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 11px;
+}
+.planner .fin__ing-paste textarea:focus {
+  outline: none;
+  border-color: var(--brass);
+}
+.planner .fin__ing-paste .fin__hbtn {
+  align-self: flex-start;
+}
+.planner .fin__ing-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 11px 0 0;
+  padding: 8px 11px;
+  border-radius: 8px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--status-caution);
+  background: color-mix(in srgb, var(--status-caution) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--status-caution) 30%, transparent);
+}
+.planner .fin__ing-loaded {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-top: 13px;
+}
+.planner .fin__ing-badge {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-family: var(--f-m);
+  font-size: 11px;
+  color: var(--ink);
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--status-go) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--status-go) 30%, transparent);
+}
+.planner .fin__ing-badge b {
+  font-weight: 700;
+}
+.planner .fin__ing-match {
+  color: var(--muted);
+}
+.planner .fin__ing-loaded-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.planner .fin__ing-quitar {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 2px 0;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.planner .fin__ing-quitar:hover {
+  color: var(--status-caution);
+}
+.planner .fin__ing-warn {
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--status-warn);
+}
+
+/* ==== llamados 1º/2º (combinador multi-fecha) ==== */
+/* Extiende el combinador para elegir 1.º/2.º mesa por materia y asignar cada
+   final a un período. Reusa los tokens y patrones existentes (.fin__badge,
+   .fin__seg, .fin__toggle). Solo agrega — no pisa reglas de arriba. */
+
+/* badge chico de llamado (1º/2º) junto al badge oficial/manual. Manual no lleva. */
+.planner .fin__badge.is-llamado {
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--brass) 28%, transparent);
+}
+
+/* badge-botón del chip del calendario: con ambos llamados, el 1º/2º alterna de
+   mesa al clic. Target ≥18px + hover/focus sobre el reset de .fin__badge. */
+.planner button.fin__llbtn {
+  cursor: pointer;
+  min-height: 18px;
+  line-height: 1;
+  padding: 2px 7px;
+  transition: color 0.14s var(--ease, ease),
+    background 0.14s var(--ease, ease), border-color 0.14s var(--ease, ease);
+}
+.planner button.fin__llbtn:hover {
+  color: var(--block-ink);
+  background: var(--brass);
+  border-color: var(--brass);
+}
+.planner button.fin__llbtn:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 1px;
+}
+
+/* mini segmentado 1º|2º por fila del editor «Fechas de mesa» (elige la mesa). */
+.planner .fin__llseg {
+  display: inline-flex;
+  flex: none;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px;
+}
+.planner .fin__llseg-b {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  line-height: 1;
+  padding: 4px 9px;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.16s var(--ease, ease);
+}
+.planner .fin__llseg-b:hover:not(.is-active) {
+  color: var(--ink);
+}
+.planner .fin__llseg-b.is-active {
+  background: var(--brass);
+  color: var(--block-ink);
+  font-weight: 700;
+}
+
+/* chip «en <período>» del panel: un final asignado a otro llamado. Click = mover. */
+.planner .fin__movehere {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--f-m);
+  font-size: 9px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--muted);
+  background: var(--panel-3);
+  border: 1px dashed var(--line);
+  border-radius: 999px;
+  padding: 4px 9px;
+  cursor: pointer;
+  transition: all 0.16s var(--ease, ease);
+}
+.planner .fin__movehere:hover {
+  color: var(--brass);
+  border-style: solid;
+  border-color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 12%, var(--panel));
+}
+.planner .fin__movehere:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+/* chips de período de la ingesta: los labels son largos («Diciembre 2026 ·
+   468 mesas · 1º y 2º») — que envuelvan en pantallas angostas en vez de
+   desbordar la píldora del segmentado. */
+.planner .fin__ing .fin__seg {
+  flex-wrap: wrap;
+  row-gap: 2px;
+}

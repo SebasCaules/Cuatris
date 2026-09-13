@@ -1,0 +1,759 @@
+/* ============================================================
+   HOJAS DE ESTUDIO (.sheet-*) — hojas de fórmulas / conceptos
+   densas, color-coded e imprimibles, separadas por unidad. En
+   pantalla se ven como un "papel" multi-columna; @media print
+   aísla solo .sheet-print-root y fuerza color en B/N.
+   Personalización: densidad (--sf), columnas (--sheet-cols) y
+   filtros (unidades/categorías, resueltos en React) — afectan
+   vista, impresión y export por igual.
+   ============================================================ */
+
+.sheet {
+  margin-top: 8px;
+  /* ── PALETA SEMÁNTICA "refinada" — valores del TEMA CLARO (default; también print).
+     SINCRONIZADA BYTE-A-BYTE con KIND_META (types.ts, `light`) y TEX_COLOR_DEFS
+     (exporters.ts). Los 6 también viven en DESIGN.md §12 (lo replica el overseer).
+     `--sheet-code-kind` es neutral y NO forma parte de los 6. Contraste AA
+     verificado (light/print sobre blanco ≥4.6:1). ── */
+  --sheet-def: #275C8C; /* definición — azul */
+  --sheet-theorem: #5A3897; /* teorema — violeta */
+  --sheet-formula: #16745C; /* fórmula — verde/teal */
+  --sheet-method: #8A591C; /* técnica — ámbar */
+  --sheet-caution: #B23A28; /* cuidado — coral/rojo */
+  --sheet-example: #695D51; /* ejemplo — topo cálido */
+  --sheet-code-kind: #5D5D65; /* código — neutral */
+}
+/* tema oscuro: variantes más luminosas (los hex `dark` de KIND_META) */
+[data-theme="dark"] .sheet {
+  --sheet-def: #9AC7EA;
+  --sheet-theorem: #C4B0E8;
+  --sheet-formula: #85CFB0;
+  --sheet-method: #E1B878;
+  --sheet-caution: #EDA08D;
+  --sheet-example: #C4BAB0;
+  --sheet-code-kind: #B4B4BC;
+}
+
+.sheet__intro {
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: 70ch;
+  margin: 0 0 22px;
+}
+
+/* ---- toolbar: toggle de modo + acciones ---- */
+.sheet-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.sheet-seg {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctrl);
+}
+.sheet-seg__btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 7px 16px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+.sheet-seg__btn:hover { color: var(--ink-strong); }
+.sheet-seg__btn.is-active {
+  color: var(--ink-strong);
+  background: var(--surface-3);
+  border-color: var(--hairline-strong);
+}
+.sheet-seg--sm .sheet-seg__btn { padding: 5px 11px; font-size: 11px; }
+.sheet-seg__solo {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.sheet-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.sheet-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  background: var(--surface-2);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-ctrl);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+    background var(--dur-fast) var(--ease);
+}
+.sheet-btn:hover { color: var(--ink-strong); border-color: var(--ring); }
+.sheet-btn svg { opacity: 0.85; }
+.sheet-btn--primary {
+  color: var(--ink-strong);
+  background: color-mix(in srgb, var(--vault-tint) 16%, var(--surface-2));
+  border-color: color-mix(in srgb, var(--vault-tint) 42%, transparent);
+}
+.sheet-btn--primary:hover {
+  background: color-mix(in srgb, var(--vault-tint) 24%, var(--surface-2));
+}
+
+/* ---- panel de personalización ---- */
+.sheet-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-sm);
+}
+.sheet-opts__row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.sheet-opts__label {
+  flex: 0 0 78px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.sheet-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.sheet-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  background: var(--surface-3);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  padding: 4px 11px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+    background var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
+}
+.sheet-chip:hover { color: var(--ink-strong); border-color: var(--hairline-strong); }
+.sheet-chip:not(.is-active) { opacity: 0.5; }
+.sheet-chip.is-active {
+  color: var(--ink-strong);
+  border-color: color-mix(in srgb, var(--vault-tint) 45%, transparent);
+  background: color-mix(in srgb, var(--vault-tint) 12%, var(--surface-3));
+}
+.sheet-chip--all.is-active {
+  background: color-mix(in srgb, var(--vault-tint) 20%, var(--surface-3));
+}
+.sheet-chip--kind { --k: var(--sheet-example); }
+.sheet-chip--kind[data-kind="def"] { --k: var(--sheet-def); }
+.sheet-chip--kind[data-kind="theorem"] { --k: var(--sheet-theorem); }
+.sheet-chip--kind[data-kind="formula"] { --k: var(--sheet-formula); }
+.sheet-chip--kind[data-kind="method"] { --k: var(--sheet-method); }
+.sheet-chip--kind[data-kind="caution"] { --k: var(--sheet-caution); }
+.sheet-chip--kind[data-kind="example"] { --k: var(--sheet-example); }
+.sheet-chip--kind[data-kind="code"] { --k: var(--sheet-code-kind); }
+.sheet-chip--kind.is-active {
+  border-color: color-mix(in srgb, var(--k) 50%, transparent);
+  background: color-mix(in srgb, var(--k) 12%, var(--surface-3));
+}
+.sheet-chip__dot { width: 8px; height: 8px; border-radius: 3px; background: var(--k); }
+
+/* ---- documento "papel" ---- */
+.sheet-print-root { display: block; }
+.sheet-doc {
+  --sf: 1; /* factor de densidad: lo setea data-density y escala fuentes/espacios */
+  font-size: calc(var(--sf) * 13px); /* base para KaTeX (usa em) */
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: 26px 28px 22px;
+  box-shadow: var(--shadow-sm);
+}
+.sheet-doc[data-density="compact"] { --sf: 0.88; }
+.sheet-doc[data-density="wide"] { --sf: 1.16; }
+.sheet-doc[data-density="book"] { --sf: 1.18; padding: 34px 40px 30px; }
+
+.sheet-doc__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  border-bottom: 2px solid var(--ink-strong);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+.sheet-doc__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 1.1;
+  color: var(--ink-strong);
+  margin: 0;
+}
+.sheet-doc__sub { margin: 4px 0 0; color: var(--text-secondary); font-size: 13px; }
+.sheet-doc__kind {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  white-space: nowrap;
+}
+.sheet-doc__notation {
+  font-size: calc(var(--sf) * 12.5px);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0 0 16px;
+  padding: 9px 13px;
+  background: var(--surface-3);
+  border-radius: var(--r-ctrl);
+  border-left: 3px solid var(--vault-tint);
+}
+.sheet-doc__notation b { color: var(--ink-strong); }
+.sheet-doc__empty {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 24px 0;
+  text-align: center;
+}
+
+/* columnas — controladas por --sheet-cols (override o default por densidad) */
+.sheet-doc__cols {
+  columns: var(--sheet-cols, 3);
+  column-gap: 28px;
+}
+
+/* ---- modo "Libro": lectura tipo libro de texto (menos denso, una columna,
+   fórmulas centradas y con aire, cuerpo de texto amplio) ---- */
+.sheet-doc[data-density="book"] .sheet-doc__cols {
+  columns: var(--sheet-cols, 1);
+  column-gap: 44px;
+  max-width: 80ch;
+  margin-inline: auto;
+}
+.sheet-doc[data-density="book"] .sheet-group { margin-bottom: 30px; }
+.sheet-doc[data-density="book"] .sheet-group__title {
+  font-size: calc(var(--sf) * 11.5px);
+  padding-bottom: 6px;
+  margin-bottom: 16px;
+}
+.sheet-doc[data-density="book"] .sheet-group__hint {
+  font-size: calc(var(--sf) * 12.5px);
+  margin: -8px 0 14px;
+}
+.sheet-doc[data-density="book"] .sheet-entry {
+  padding: calc(var(--sf) * 16px) calc(var(--sf) * 20px);
+}
+.sheet-doc[data-density="book"] .sheet-entry + .sheet-entry {
+  margin-top: calc(var(--sf) * 16px);
+}
+.sheet-doc[data-density="book"] .sheet-entry__label { font-size: calc(var(--sf) * 15px); }
+.sheet-doc[data-density="book"] .sheet-entry__body {
+  font-size: calc(var(--sf) * 14.5px);
+  line-height: 1.72;
+  margin-top: 6px;
+}
+/* fórmula display: centrada y con margen vertical, como en un libro */
+.sheet-doc[data-density="book"] .sheet-entry__tex {
+  margin: 14px 0 12px;
+  text-align: center;
+}
+.sheet-doc[data-density="book"] .sheet-entry__tex .katex-display { margin: 0; text-align: center; }
+.sheet-doc[data-density="book"] .sheet-entry__vars {
+  margin-top: 10px;
+  padding-left: 12px;
+}
+.sheet-doc[data-density="book"] .sheet-entry__vars-cap {
+  font-size: calc(var(--sf) * 10px);
+  margin-bottom: 5px;
+}
+.sheet-doc[data-density="book"] .sheet-entry__vars-list { row-gap: 4px; column-gap: 12px; }
+.sheet-doc[data-density="book"] .sheet-entry__var-sym,
+.sheet-doc[data-density="book"] .sheet-entry__var-desc {
+  font-size: calc(var(--sf) * 13px);
+  line-height: 1.6;
+}
+.sheet-doc[data-density="book"] .sheet-entry__cond,
+.sheet-doc[data-density="book"] .sheet-entry__note {
+  font-size: calc(var(--sf) * 13px);
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+/* ---- encabezado de unidad (atraviesa todas las columnas) ----
+   Unidad → Sub-unidad → entradas: número acento + kicker + título + desc. */
+.sheet-unit {
+  column-span: all;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin: 22px 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--hairline-strong);
+  break-after: avoid;
+  break-inside: avoid;
+}
+.sheet-doc__cols > .sheet-unit:first-child { margin-top: 0; }
+.sheet-unit__num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: calc(var(--sf) * 30px);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--ink-strong);
+  flex: none;
+  padding-top: 2px;
+}
+.sheet-unit__titles { flex: 1; min-width: 0; }
+.sheet-unit__kicker {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: calc(var(--sf) * 10px);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 3px;
+}
+.sheet-unit__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: calc(var(--sf) * 20px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: var(--ink-strong);
+  margin: 0;
+}
+.sheet-unit__desc {
+  margin: 5px 0 0;
+  font-size: calc(var(--sf) * 12.5px);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  max-width: 74ch;
+}
+
+/* ---- sub-unidad / sección — encabezado (código mono acento + nombre serif) ---- */
+.sheet-group { break-inside: auto; margin: 0 0 16px; }
+.sheet-group__head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  border-bottom: 1px solid var(--hairline-strong);
+  padding-bottom: 6px;
+  margin: 0 0 12px;
+  break-after: avoid;
+  break-inside: avoid;
+}
+.sheet-group__code {
+  font-family: var(--font-mono);
+  font-size: calc(var(--sf) * 11px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink-strong);
+  flex: none;
+}
+.sheet-group__title {
+  font-family: var(--font-display);
+  font-size: calc(var(--sf) * 14.5px);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--ink-strong);
+  margin: 0;
+}
+.sheet-group__hint {
+  font-size: calc(var(--sf) * 11.5px);
+  font-style: italic;
+  color: var(--text-secondary);
+  margin: -6px 0 10px;
+}
+.sheet-group__entries { display: block; }
+
+/* ---- entrada — recuadro con RELLENO tenue de toda la celda + BORDE parejo
+   en los 4 lados (mock módulo D). El tinte y el borde se derivan del color de
+   la categoría (--k) por color-mix, sin hardcodear hex. ---- */
+.sheet-entry {
+  --k: var(--sheet-example);
+  break-inside: avoid;
+  background: color-mix(in srgb, var(--k) 7%, var(--surface-2));
+  border: 1.5px solid color-mix(in srgb, var(--k) 30%, var(--border));
+  border-radius: var(--r-card);
+  padding: calc(var(--sf) * 13px) calc(var(--sf) * 15px);
+  margin: 0;
+}
+.sheet-entry + .sheet-entry { margin-top: calc(var(--sf) * 10px); }
+.sheet-entry[data-kind="def"] { --k: var(--sheet-def); }
+.sheet-entry[data-kind="theorem"] { --k: var(--sheet-theorem); }
+.sheet-entry[data-kind="formula"] { --k: var(--sheet-formula); }
+.sheet-entry[data-kind="method"] { --k: var(--sheet-method); }
+.sheet-entry[data-kind="caution"] { --k: var(--sheet-caution); }
+.sheet-entry[data-kind="example"] { --k: var(--sheet-example); }
+.sheet-entry[data-kind="code"] { --k: var(--sheet-code-kind); }
+
+.sheet-entry__head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: calc(var(--sf) * 6px);
+}
+.sheet-entry__label {
+  font-family: var(--font-mono);
+  font-size: calc(var(--sf) * 12.5px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink-strong);
+}
+.sheet-entry__inline { font-size: calc(var(--sf) * 12.5px); color: var(--text-primary); }
+.sheet-entry__tag {
+  font-family: var(--font-mono);
+  font-size: calc(var(--sf) * 8.5px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--k);
+  background: color-mix(in srgb, var(--k) 15%, var(--surface-2));
+  border: 1px solid color-mix(in srgb, var(--k) 42%, transparent);
+  border-radius: var(--r-pill);
+  padding: 1.5px 7px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+/* En dark, surface-2 es un marrón cálido claro: tintar el pill hacia el color
+   (claro) lo aclararía y bajaría el contraste del texto (mismo tono). Se ancla
+   sobre --surface (marrón profundo) para que el texto brillante quede AA (≥5.2:1). */
+[data-theme="dark"] .sheet-entry__tag {
+  background: color-mix(in srgb, var(--k) 14%, var(--surface));
+}
+/* fórmula display — recuadro tenue y CENTRADA (deliverable #4) */
+.sheet-entry__tex {
+  margin: calc(var(--sf) * 9px) 0 0;
+  padding: calc(var(--sf) * 9px) calc(var(--sf) * 11px);
+  background: color-mix(in srgb, var(--k) 5%, var(--background));
+  border: 1px solid color-mix(in srgb, var(--k) 16%, transparent);
+  border-radius: var(--r-ctrl);
+  overflow: hidden;
+}
+/* wrapper interno sin padding: FitMath mide SU clientWidth (ancho real
+   disponible, sin el padding del recuadro) y centra el bloque medible. */
+.sheet-entry__tex-inner { display: block; text-align: center; }
+.sheet-math--fit { display: inline-block; vertical-align: top; }
+.sheet-entry__tex .katex-display { margin: 0; text-align: center; }
+.sheet-entry__body {
+  margin: calc(var(--sf) * 6px) 0 0;
+  font-size: calc(var(--sf) * 12.5px);
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* ---- bloque de código (entradas kind:"code") — terminal neutral, sin
+   resaltado de sintaxis. Usa los tokens fijos --code-* del design system. ---- */
+.sheet-code-block {
+  margin: calc(var(--sf) * 9px) 0 0;
+  border: 1px solid var(--code-hairline);
+  border-radius: var(--r-ctrl);
+  overflow: hidden;
+  background: var(--code-bg);
+}
+.sheet-code-block__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 10px;
+  background: var(--code-bar);
+  border-bottom: 1px solid var(--code-hairline);
+}
+.sheet-code-block__file {
+  font-family: var(--font-mono);
+  font-size: calc(var(--sf) * 10px);
+  color: var(--code-fg);
+  letter-spacing: 0.02em;
+}
+.sheet-code-block__lang {
+  font-family: var(--font-mono);
+  font-size: calc(var(--sf) * 9px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--sheet-code-kind) 78%, var(--code-fg));
+}
+.sheet-code-block__pre {
+  margin: 0;
+  padding: calc(var(--sf) * 11px) calc(var(--sf) * 12px);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: calc(var(--sf) * 12px);
+  line-height: 1.6;
+  color: var(--code-fg);
+  tab-size: 2;
+  white-space: pre;
+}
+.sheet-code-block__pre code { font-family: inherit; color: inherit; }
+
+/* ---- figura / gráfico (SVG inline) — un dibujo vale más que un párrafo:
+   campana, boxplot, oferta/demanda, convergencia. El SVG usa currentColor
+   (hereda de --k, atenuado) + tokens de rol, así respeta tema e impresión. ---- */
+.sheet-figure {
+  margin: calc(var(--sf) * 9px) 0 0;
+  padding: calc(var(--sf) * 10px) calc(var(--sf) * 12px);
+  background: color-mix(in srgb, var(--k) 4%, var(--background));
+  border: 1px solid color-mix(in srgb, var(--k) 16%, transparent);
+  border-radius: var(--r-ctrl);
+  color: color-mix(in srgb, var(--k) 55%, var(--text-secondary));
+}
+.sheet-figure svg {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin-inline: auto;
+  overflow: visible;
+}
+.sheet-figure figcaption {
+  margin: calc(var(--sf) * 7px) 0 0;
+  font-family: var(--font-mono);
+  font-size: calc(var(--sf) * 10px);
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: var(--text-secondary);
+}
+.sheet-figure figcaption b { color: var(--ink-strong); font-weight: 600; }
+/* helpers reutilizables para el marcado SVG de las figuras */
+.sheet-fig-axis { stroke: var(--hairline-strong); stroke-width: 1; fill: none; }
+.sheet-fig-grid { stroke: var(--hairline); stroke-width: 1; fill: none; }
+.sheet-fig-curve { stroke: var(--k); stroke-width: 2; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.sheet-fig-area { fill: color-mix(in srgb, var(--k) 20%, transparent); stroke: none; }
+.sheet-fig-mark { stroke: var(--k); stroke-width: 1.5; fill: none; }
+.sheet-fig-dot { fill: var(--k); stroke: none; }
+.sheet-fig-label { fill: var(--text-secondary); font-family: var(--font-mono); font-size: 10px; }
+.sheet-fig-label--ink { fill: var(--ink-strong); }
+
+/* ---- leyenda de variables ("donde …") — una variable por renglón ---- */
+.sheet-entry__vars {
+  margin: 3px 0 0;
+  padding-left: 8px;
+  border-left: 1px solid color-mix(in srgb, var(--k) 35%, transparent);
+}
+.sheet-entry__vars-cap {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: calc(var(--sf) * 9px);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--k) 70%, var(--text-secondary));
+  margin-bottom: 1px;
+}
+.sheet-entry__vars-list {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 8px;
+  row-gap: 1px;
+  margin: 0;
+}
+.sheet-entry__var-sym {
+  margin: 0;
+  text-align: right;
+  font-size: calc(var(--sf) * 11.5px);
+  color: var(--ink-strong);
+  white-space: nowrap;
+}
+.sheet-entry__var-desc {
+  margin: 0;
+  font-size: calc(var(--sf) * 11.5px);
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+.sheet-entry__cond {
+  margin: 2px 0 0;
+  font-size: calc(var(--sf) * 11.5px);
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+.sheet-entry__note {
+  margin: 2px 0 0;
+  font-size: calc(var(--sf) * 11.5px);
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--sheet-caution) 72%, var(--text-secondary));
+}
+
+.sheet-math-err {
+  color: var(--sheet-caution);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+/* negrita de texto enriquecido (**término**) — resalta términos definidos */
+.sheet-strong { font-weight: 700; color: var(--ink-strong); }
+
+/* código inline (identificadores, comandos) — para vaults sin matemática */
+.sheet-code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--surface-3);
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  padding: 0.5px 5px;
+  color: var(--ink-strong);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   IMPRESIÓN — aísla la hoja, fuerza papel blanco, conserva color.
+   Respeta densidad (--sf) y columnas (--sheet-cols) elegidas.
+   ============================================================ */
+@media print {
+  @page { size: A4 portrait; margin: 9mm; }
+  :root, html, body { background: #ffffff !important; }
+
+  /* paleta "refinada" clara sobre papel blanco (mismos hex que el bloque light /
+     TEX_COLOR_DEFS; sincronizada byte-a-byte). Además fuerzo las superficies a
+     claro: las entradas ahora tienen RELLENO (color-mix sobre --surface-2), así
+     que imprimir desde el tema oscuro no debe teñir las celdas de marrón. */
+  .sheet, .sheet-doc {
+    --sheet-def: #275C8C;
+    --sheet-theorem: #5A3897;
+    --sheet-formula: #16745C;
+    --sheet-method: #8A591C;
+    --sheet-caution: #B23A28;
+    --sheet-example: #695D51;
+    --sheet-code-kind: #5D5D65;
+    --surface-2: #ffffff;
+    --background: #ffffff;
+    --border: #d1d5db;
+  }
+
+  /* ocultar todo el chrome de la app */
+  .nav, .footer, .ambient, .rail, .crumbs, .wiki__head,
+  .sheet-toolbar, .sheet-opts, .sheet__intro,
+  [data-noprint] { display: none !important; }
+
+  /* aislar la hoja: todo invisible salvo el print-root */
+  body * { visibility: hidden !important; }
+  .sheet-print-root, .sheet-print-root * { visibility: visible !important; }
+  .sheet-print-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color-adjust: exact;
+  }
+
+  .sheet-doc {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    font-size: calc(var(--sf) * 11px);
+    line-height: 1.3;
+  }
+  .sheet-doc__head { border-bottom-color: #111827 !important; padding-bottom: 6px; margin-bottom: 9px; }
+  .sheet-doc__title { font-size: 15pt; color: #111827 !important; }
+  .sheet-doc__sub { font-size: 8pt; color: #374151 !important; }
+  .sheet-doc__kind { color: #6b7280 !important; }
+  .sheet-doc__notation {
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+    font-size: calc(var(--sf) * 7.6pt);
+    padding: 5px 8px;
+    margin-bottom: 9px;
+  }
+  .sheet-doc__cols { columns: var(--sheet-cols, 3); column-gap: 6mm; }
+
+  .sheet-unit { margin: 8px 0 6px; padding-bottom: 4px; border-bottom-color: #111827 !important; gap: 10px; }
+  .sheet-unit__num { font-size: calc(var(--sf) * 16pt); color: #111827 !important; }
+  .sheet-unit__kicker { font-size: calc(var(--sf) * 6.4pt); color: #4b5563 !important; }
+  .sheet-unit__title { font-size: calc(var(--sf) * 11pt); color: #111827 !important; }
+  .sheet-unit__desc { font-size: calc(var(--sf) * 7.4pt); color: #374151 !important; }
+
+  .sheet-group { margin-bottom: 8px; }
+  .sheet-group__head { border-bottom-color: #d1d5db !important; padding-bottom: 2px; margin-bottom: 5px; }
+  .sheet-group__code { font-size: calc(var(--sf) * 7.6pt); }
+  .sheet-group__title { font-size: calc(var(--sf) * 9.4pt); color: #111827 !important; }
+  .sheet-group__hint { font-size: calc(var(--sf) * 7.4pt); }
+  /* recuadro con relleno + borde parejo, compacto para papel (el tinte imprime
+     porque .sheet-print-root fuerza print-color-adjust:exact) */
+  .sheet-entry {
+    padding: 4px 7px;
+    border-width: 0.75pt;
+    border-radius: 3pt;
+    margin: 0;
+  }
+  .sheet-entry + .sheet-entry { margin-top: 5px; }
+  .sheet-entry__head { margin-bottom: 3px; }
+  .sheet-entry__label { font-size: calc(var(--sf) * 8.3pt); color: #111827 !important; }
+  .sheet-entry__inline { font-size: calc(var(--sf) * 8.3pt); }
+  .sheet-entry__body { font-size: calc(var(--sf) * 8pt); color: #1f2937 !important; line-height: 1.3; }
+  .sheet-entry__vars-cap { font-size: calc(var(--sf) * 6.4pt); color: #4b5563 !important; }
+  .sheet-entry__var-sym { font-size: calc(var(--sf) * 7.6pt); color: #111827 !important; }
+  .sheet-entry__var-desc { font-size: calc(var(--sf) * 7.6pt); color: #374151 !important; line-height: 1.3; }
+  .sheet-entry__cond { font-size: calc(var(--sf) * 7.4pt); color: #4b5563 !important; }
+  .sheet-entry__note { font-size: calc(var(--sf) * 7.4pt); }
+  .sheet-entry__tag { font-size: calc(var(--sf) * 6.4pt); }
+  .sheet-entry__tex { padding: 3px 5px; margin-top: 4px; }
+  .sheet-entry__tex .katex { font-size: 1em !important; }
+  .sheet-entry__tex .katex-display { margin: 1px 0 !important; text-align: center; }
+  /* bloque de código en papel: fondo claro para no gastar tinta */
+  .sheet-code-block {
+    background: #f6f7f9 !important;
+    border-color: #d1d5db !important;
+  }
+  .sheet-code-block__bar { background: #eceef1 !important; border-bottom-color: #d1d5db !important; }
+  .sheet-code-block__file { color: #374151 !important; }
+  .sheet-code-block__lang { color: #4b5563 !important; }
+  .sheet-code-block__pre { color: #1f2937 !important; font-size: calc(var(--sf) * 7.6pt); padding: 5px 7px; }
+  .sheet-code {
+    background: #f3f4f6 !important;
+    border-color: #d1d5db !important;
+    color: #111827 !important;
+    font-size: 0.88em;
+    padding: 0 3px;
+  }
+  /* figura en papel: fondo blanco, trazos oscuros (el SVG hereda currentColor) */
+  .sheet-figure {
+    background: #ffffff !important;
+    border-color: #d1d5db !important;
+    color: #374151 !important;
+    padding: 4px 6px;
+    break-inside: avoid;
+  }
+  .sheet-figure svg { max-width: 240px; }
+  .sheet-figure figcaption { font-size: calc(var(--sf) * 7pt); color: #4b5563 !important; margin-top: 4px; }
+  .sheet-fig-axis { stroke: #6b7280 !important; }
+  .sheet-fig-grid { stroke: #d1d5db !important; }
+  .sheet-fig-label { fill: #4b5563 !important; }
+  .sheet-fig-label--ink { fill: #111827 !important; }
+}

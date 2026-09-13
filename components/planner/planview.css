@@ -1,0 +1,1498 @@
+/* ============================================================================
+   PlanView — overhaul "Plan de cursada" (Módulo E)
+   ----------------------------------------------------------------------------
+   CSS nuevo y aislado del rediseño del plan de cursada. NO tocar planner.css:
+   este archivo se importa al tope de PlanView.tsx y define solo clases con
+   prefijo `pv-` (más algunos add-ons a `.rmap-mat` para los badges de minor).
+
+   Todo se scopea bajo `.planner` para (a) resolver las vars locales del planner
+   (--brass, --line, --ink, --panel, …, definidas en planner.css sobre `.planner`)
+   y (b) no filtrar estilos fuera del planner. Cero hex hardcodeado salvo los
+   colores de minor, que viajan inline por `--minor-color` (contrato MinorBadge).
+   ============================================================================ */
+
+/* ============================ CONFIGURACIÓN GENERAL ======================= */
+/* Un panel: parámetros del optimizador a la izquierda, resultado (egreso,
+   créditos, minors) a la derecha tras una divisoria. Compacto y sin héroe: el
+   protagonista es el calendario de abajo. */
+.planner .pv-config {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px 24px;
+  align-items: center;
+  padding: 12px 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+}
+.planner .pv-result {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding-left: 24px;
+  border-left: 1px solid var(--line);
+}
+.planner .pv-result__grad {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.planner .pv-result__grad > svg {
+  flex: none;
+  color: var(--brass);
+}
+.planner .pv-result__lbl {
+  display: block;
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.planner .pv-result__val {
+  display: block;
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.planner .pv-result__sub {
+  display: block;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.planner .pv-result__cred {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.planner .pv-strip__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-family: var(--f-m);
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.planner .pv-strip__item b {
+  font-weight: 600;
+  color: var(--ink);
+}
+.planner .pv-strip__item > svg {
+  flex: none;
+  color: var(--brass);
+}
+.planner .pv-strip__lbl {
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+/* barra de créditos: 72×4, brass → brass-2 como la barra de electivas */
+.planner .pv-strip__bar {
+  width: 72px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--panel-3);
+  overflow: hidden;
+  flex: none;
+}
+.planner .pv-strip__bar > i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--brass), var(--brass-2));
+  transition: width var(--dur-base) var(--ease-out);
+}
+.planner .pv-strip__pct {
+  color: var(--brass);
+  font-weight: 600;
+}
+.planner .pv-strip__sep {
+  width: 1px;
+  align-self: stretch;
+  background: var(--line);
+  flex: none;
+}
+/* minors: pill de sigla + barrita en el color del minor + n/14 */
+.planner .pv-strip__minors {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.planner .pv-strip__minor {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.planner .pv-strip__minor.is-done {
+  color: var(--status-go-text);
+}
+.planner .pv-strip__minor .minor-badge {
+  min-width: 24px;
+  height: 15px;
+  font-size: 9px;
+}
+.planner .pv-strip__mbar {
+  width: 34px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--panel-3);
+  overflow: hidden;
+  flex: none;
+}
+.planner .pv-strip__mbar > i {
+  display: block;
+  height: 100%;
+  background: var(--minor-color);
+  border-radius: 999px;
+}
+.planner .pv-strip__minor.is-done .pv-strip__mbar > i {
+  background: var(--sage);
+}
+.planner .pv-bctl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: flex-end;
+  min-width: 0;
+}
+.planner .pv-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+.planner .pv-field__lbl {
+  font-family: var(--f-m);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+/* el <select> de "empiezo a cursar" reusa el look de CommissionSelect
+   (@studyvaults/ui) pero en tamaño banner: padding-derecho holgado y la flecha
+   separada del borde para que NUNCA pise el texto (fix B13). */
+.planner .pv-field .commission-select {
+  min-width: 176px;
+  max-width: none;
+  height: 36px;
+  font-size: 12px;
+  padding: 0 38px 0 13px;
+  background-position: right 14px center;
+  background-size: 12px;
+}
+/* NumField (máx cr / máx mat) llega con su propio .plan2-field: se le unifica
+   el label (mismo uppercase/tracking que .pv-field__lbl) y el alto del input,
+   para que la fila no mezcle dos estilos de campo */
+.planner .pv-field--num .plan2-field {
+  gap: 7px;
+}
+.planner .pv-field--num .plan2-field label {
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.planner .pv-field--num .plan2-field input {
+  height: 36px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* segmentado del método de optimización (lo reusa .plan2-opt, bajo el board) */
+.planner .pv-seg {
+  display: inline-flex;
+  background: var(--panel-3);
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+.planner .pv-seg__opt {
+  font-family: var(--f-m);
+  font-size: 11px;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 7px 13px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.planner .pv-seg__opt:hover {
+  color: var(--ink);
+}
+.planner .pv-seg__opt[aria-pressed="true"] {
+  background: var(--brass);
+  color: var(--block-ink);
+  font-weight: 700;
+}
+/* sin label "Horario" (redundante): el switch ocupa un slot de la misma fila,
+   con el mismo alto de control (36px) para alinear con selects e inputs. */
+.planner .pv-field--sw {
+  justify-content: flex-end;
+}
+.planner .pv-field--sw .cmb-switch {
+  min-height: 36px;
+}
+
+/* ============================ TAB STRIP ==================================== */
+/* sticky: el navbar del portal es position:fixed (alto = --nav-h) y .planner lo
+   despeja con padding-top:var(--nav-h); la tab-strip queda pegada justo debajo,
+   así los íconos (Calendario/Roadmap/Minors) y las acciones de la derecha
+   (Recomendador, Restablecer, Importar/Exportar) NO se mueven con el scroll. */
+.planner .pv-tabs {
+  position: sticky;
+  top: var(--nav-h, 0px);
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 22px 0 var(--r);
+  padding-top: 3px;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.planner .pv-tablist {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+}
+.planner .pv-tab {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--f-m);
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  padding: 13px 12px 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.planner .pv-tab svg {
+  width: 15px;
+  height: 15px;
+}
+.planner .pv-tab:hover {
+  color: var(--ink);
+}
+.planner .pv-tab[aria-selected="true"] {
+  color: var(--ink);
+  font-weight: 700;
+  border-bottom-color: var(--brass);
+}
+.planner .pv-tab__new {
+  font-family: var(--f-m);
+  font-size: 8.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--block-ink);
+  background: var(--brass);
+  border-radius: 999px;
+  padding: 2px 6px;
+  font-weight: 700;
+}
+.planner .pv-tabs__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  flex-wrap: wrap;
+}
+
+/* toggle recomendador (switch) */
+.planner .pv-rec-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  user-select: none;
+  background: none;
+  border: none;
+  padding: 6px 4px;
+  font-family: var(--f-m);
+  font-size: 11px;
+  color: var(--muted);
+}
+.planner .pv-switch {
+  position: relative;
+  width: 36px;
+  height: 21px;
+  flex: none;
+  background: var(--panel-3);
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  transition: background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.planner .pv-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: left var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.planner .pv-rec-toggle[aria-checked="true"] {
+  color: var(--ink);
+}
+.planner .pv-rec-toggle[aria-checked="true"] .pv-switch {
+  background: var(--brass);
+  border-color: var(--brass);
+}
+.planner .pv-rec-toggle[aria-checked="true"] .pv-switch::after {
+  left: 17px;
+  background: var(--block-ink);
+}
+
+/* botones de ícono (reset / import-export) */
+.planner .pv-iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 8px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+  font-family: var(--f-m);
+  font-size: 11px;
+}
+.planner .pv-iconbtn--label {
+  padding: 8px 13px 8px 10px;
+}
+.planner .pv-iconbtn:hover {
+  color: var(--ink);
+  border-color: var(--brass);
+  background: var(--panel-2);
+}
+
+/* ============================ SEM GRID (Calendario) ======================== */
+/* Carrusel de cuatrimestres: scroll nativo horizontal con snap, sin barra
+   visible (trackpad / rueda horizontal / arrastre con mouse); las flechas
+   desplazan una tarjeta y se ocultan cuando no hay más en ese sentido. Es el
+   ÚNICO elemento de la vista que se desplaza en X. */
+.planner .pv-carousel {
+  position: relative;
+}
+.planner .pv-track {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 2px;
+  scrollbar-width: none;
+  padding: 2px 2px 6px;
+  margin: -2px -2px 0;
+  cursor: grab;
+}
+.planner .pv-track::-webkit-scrollbar {
+  display: none;
+}
+.planner .pv-track.is-scrolling {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+/* dos cuatrimestres "en foco" por vista (uno en angosto); el resto queda fuera */
+.planner .pv-track > .pv-sem {
+  flex: 0 0 calc(50% - 8px);
+  scroll-snap-align: start;
+}
+.planner .pv-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 6;
+  width: 34px;
+  height: 34px;
+  margin-top: -17px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  background: var(--panel);
+  color: var(--ink);
+  box-shadow: var(--shadow-2);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+.planner .pv-arrow:hover {
+  border-color: var(--brass);
+  color: var(--brass);
+}
+.planner .pv-arrow:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+.planner .pv-arrow--prev {
+  left: -14px;
+}
+.planner .pv-arrow--next {
+  right: -14px;
+}
+.planner .pv-arrow[hidden] {
+  display: none;
+}
+@media (hover: none), (pointer: coarse) {
+  .planner .pv-track {
+    cursor: auto;
+  }
+}
+.planner .pv-sem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 100%;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+  padding: 15px 15px 13px;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+.planner .pv-sem.is-preview {
+  border-color: var(--brass);
+  box-shadow: var(--shadow-1), 0 0 0 2px color-mix(in srgb, var(--brass) 30%, transparent);
+}
+/* drag & drop entre cuatrimestres: destino válido (sage) / inválido (oxblood).
+   Solo color + anillo: la tarjeta no cambia de tamaño (sin reflow). */
+.planner .pv-sem.is-drop-ok {
+  border-color: var(--sage);
+  box-shadow: var(--shadow-1), 0 0 0 2px color-mix(in srgb, var(--sage) 35%, transparent);
+  background: color-mix(in srgb, var(--sage) 6%, var(--panel));
+}
+.planner .pv-sem.is-drop-bad {
+  border-color: var(--oxblood);
+  box-shadow: var(--shadow-1), 0 0 0 2px color-mix(in srgb, var(--oxblood) 30%, transparent);
+  background: color-mix(in srgb, var(--oxblood) 5%, var(--panel));
+}
+.planner .pv-sem.is-drop-warn {
+  border-color: var(--status-warn);
+  box-shadow: var(--shadow-1), 0 0 0 2px color-mix(in srgb, var(--status-warn) 35%, transparent);
+  background: color-mix(in srgb, var(--status-warn) 7%, var(--panel));
+}
+.planner .pv-sem.is-drop-bad .pv-sem__cal {
+  opacity: 0.7;
+}
+.planner .pv-sem.is-drop-ok .pv-sem__head::after,
+.planner .pv-sem.is-drop-warn .pv-sem__head::after,
+.planner .pv-sem.is-drop-bad .pv-sem__head::after {
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+.planner .pv-sem.is-drop-ok .pv-sem__head::after {
+  content: "soltar acá";
+  color: var(--status-go-text);
+  background: color-mix(in srgb, var(--sage) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sage) 34%, transparent);
+}
+.planner .pv-sem.is-drop-warn .pv-sem__head::after {
+  content: "se fija igual · excede el tope o se pisa";
+  color: var(--status-warn-text);
+  background: color-mix(in srgb, var(--status-warn) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--status-warn) 40%, transparent);
+}
+.planner .pv-sem.is-drop-bad .pv-sem__head::after {
+  content: "no se puede";
+  color: var(--status-caution-text);
+  background: color-mix(in srgb, var(--oxblood) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--oxblood) 34%, transparent);
+}
+/* fantasma que sigue al puntero durante el arrastre (portal fixed) */
+.planner.pv-dragghost {
+  position: fixed;
+  z-index: 95;
+  padding: 6px 10px;
+  pointer-events: none;
+  transform: translate(-50%, -120%);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--blk, var(--brass)) 22%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--blk, var(--brass)) 45%, transparent);
+  border-left: 3px solid var(--blk, var(--brass));
+  box-shadow: var(--shadow-2);
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.planner .cmbcal-blk.is-dragging,
+.planner .pv-card.is-dragging {
+  opacity: 0.35;
+}
+.planner .pv-sem.is-menu-open {
+  z-index: 20;
+}
+.planner .pv-sem.is-locked {
+  background: color-mix(in srgb, var(--panel) 82%, var(--bg));
+  border-color: var(--line-2);
+}
+.planner .pv-sem.is-locked .pv-sem__cal,
+.planner .pv-sem.is-locked .pv-sem__title {
+  opacity: 0.74;
+}
+/* espejo en el Roadmap: un stop finalizado se atenúa igual que su card */
+.planner .rmap-stop.is-locked {
+  opacity: 0.82;
+}
+/* Pista de arrastre: UNA sola vez, en el intro del Roadmap (antes se repetía por
+   tarjeta). El gesto no existe en touch → se oculta ahí, donde prima el selector
+   inline de cada materia. */
+.planner .rmap-intro {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 10px;
+  font-family: var(--f-m);
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--faint);
+  letter-spacing: 0.02em;
+}
+.planner .rmap-intro svg {
+  flex: none;
+  opacity: 0.8;
+}
+@media (hover: none), (pointer: coarse) {
+  .planner .rmap-intro {
+    display: none;
+  }
+}
+.planner .pv-sem__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.planner .pv-sem__when {
+  display: flex;
+  flex-direction: column;
+}
+.planner .pv-sem__title {
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+.planner .pv-sem__tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+
+/* botón 3-puntos */
+.planner .pv-dotbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 26px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.planner .pv-dotbtn:hover,
+.planner .pv-dotbtn[aria-expanded="true"] {
+  color: var(--ink);
+  background: var(--panel-2);
+  border-color: var(--line);
+}
+.planner .pv-dotbtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* lock siempre visible (toggle finalizar/desbloquear). Reusa el look del ⋯:
+   candado abierto = muted; cerrado = acento brass. */
+.planner .pv-dotbtn--lock.is-locked {
+  color: var(--brass);
+}
+.planner .pv-dotbtn--lock.is-locked:hover {
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 12%, transparent);
+  border-color: color-mix(in srgb, var(--brass) 40%, var(--line));
+}
+
+.planner .pv-sem__cal {
+  flex: 1 1 auto;
+}
+.planner .pv-sem__empty {
+  color: var(--muted);
+  font-size: 12.5px;
+  padding: 8px 2px;
+}
+
+/* pie: barra de carga + métricas + chip de finalizado */
+.planner .pv-sem__foot {
+  margin-top: 11px;
+}
+.planner .pv-loadbar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--panel-3);
+  overflow: hidden;
+}
+.planner .pv-loadbar > i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brass) 62%, var(--line-2));
+  transition: width var(--dur-base) var(--ease-out);
+}
+.planner .pv-sem.is-locked .pv-loadbar > i {
+  background: var(--muted);
+}
+.planner .pv-load-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 7px;
+}
+.planner .pv-load-meta .cr {
+  font-family: var(--f-m);
+  font-size: 11px;
+  color: var(--ink);
+}
+.planner .pv-load-meta .aux {
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+/* chip finalizado + desbloquear */
+.planner .pv-lockcap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.planner .pv-lockchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--f-m);
+  font-size: 10.5px;
+}
+.planner .pv-lockchip svg {
+  width: 12px;
+  height: 12px;
+  flex: none;
+}
+.planner .pv-lockchip b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ============================ MENÚ 3-PUNTOS =============================== */
+.planner .pv-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 25;
+  min-width: 244px;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-2);
+  padding: 8px;
+}
+.planner .pv-menu__sec {
+  padding: 4px 8px 8px;
+}
+.planner .pv-menu__lbl {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--f-m);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.planner .pv-menu__caps {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+/* NumField dentro del menú: compactamos el .plan2-field */
+.planner .pv-menu__caps .plan2-field {
+  flex: 1 1 92px;
+  gap: 5px;
+}
+.planner .pv-menu__caps .plan2-field label {
+  font-size: 9.5px;
+}
+.planner .pv-menu__auto {
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 11px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.planner .pv-menu__auto:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--brass);
+}
+.planner .pv-menu__auto:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.planner .pv-menu__sep {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 4px 4px;
+}
+.planner .pv-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--ink);
+  font-family: var(--f-b);
+  font-size: 13.5px;
+  padding: 9px 10px;
+  border-radius: 6px;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.planner .pv-menu__item:hover {
+  background: var(--panel-2);
+}
+.planner .pv-menu__item svg {
+  width: 15px;
+  height: 15px;
+  color: var(--muted);
+  flex: none;
+}
+.planner .pv-menu__item .sub {
+  margin-left: auto;
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--muted);
+}
+.planner .pv-menu__dl {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 2px 2px 0;
+}
+.planner .pv-menu__dl .pv-menu__lbl {
+  padding: 6px 8px 2px;
+  margin: 0;
+}
+
+/* popover de confirmación "finalizar cuatrimestre" */
+.planner .pv-confirm-pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 26;
+  width: min(300px, 84vw);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-2);
+  padding: 16px 17px;
+}
+.planner .pv-confirm-pop__t {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  margin: 0 0 7px;
+}
+.planner .pv-confirm-pop__b {
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.55;
+  margin: 0 0 14px;
+}
+.planner .pv-confirm-pop__acts {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* ============================ ROADMAP add-ons ============================== */
+/* dot de minor + tag recomendada dentro de las filas de materia del roadmap
+   (`.rmap-mat` vive en planner.css; solo agregamos estos sub-elementos) */
+.planner .rmap-mat__minor {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex: none;
+}
+.planner .rmap-mat__rec {
+  font-family: var(--f-m);
+  font-size: 8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brass);
+  border: 1px solid color-mix(in srgb, var(--brass) 45%, transparent);
+  background: color-mix(in srgb, var(--brass) 12%, transparent);
+  padding: 1px 5px;
+  border-radius: 999px;
+  flex: none;
+}
+
+/* ============================ MINORS (tab) ================================= */
+.planner .pv-minors {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+.planner .pv-minor-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 15px 18px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.planner .pv-minor-row:first-child {
+  border-top: none;
+}
+.planner .pv-minor-row.is-done {
+  background: color-mix(in srgb, var(--sage) 10%, transparent);
+}
+.planner .pv-minor-name {
+  flex: 0 0 190px;
+  min-width: 140px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+}
+.planner .pv-minor-name span {
+  display: block;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.planner .pv-minor-prog {
+  flex: 1 1 140px;
+  min-width: 120px;
+}
+.planner .pv-minor-track {
+  height: 7px;
+  border-radius: 999px;
+  background: var(--panel-3);
+  overflow: hidden;
+}
+.planner .pv-minor-track > i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--minor-color);
+  transition: width var(--dur-base) var(--ease-out);
+}
+.planner .pv-minor-count {
+  flex: none;
+  min-width: 96px;
+  text-align: right;
+  font-family: var(--f-m);
+  font-size: 11px;
+  color: var(--muted);
+}
+.planner .pv-minor-count.is-done {
+  color: var(--ink);
+  font-weight: 600;
+}
+.planner .pv-minor-count svg {
+  width: 12px;
+  height: 12px;
+  color: var(--sage);
+  vertical-align: -1px;
+  margin-right: 3px;
+}
+.planner .pv-minors__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 13px 18px;
+  border-top: 1px solid var(--line);
+  background: var(--panel-2);
+}
+.planner .pv-minors__note {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.planner .pv-minors__note b {
+  color: var(--ink);
+}
+
+/* ============================ RESET CONFIRM (modal) ======================== */
+/* reusa el shell portaleado de MinorsModal (.mnr-modal*) para el scrim/centrado;
+   solo estilamos el panel de confirmación */
+.planner .pv-reset {
+  position: relative;
+  z-index: 1;
+  width: min(440px, 100%);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-2);
+  padding: 24px 24px 20px;
+}
+.planner .pv-reset__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--brass) 16%, var(--panel));
+  color: var(--brass);
+  margin-bottom: 15px;
+}
+.planner .pv-reset__icon svg {
+  width: 21px;
+  height: 21px;
+}
+.planner .pv-reset h3 {
+  font-family: var(--f-d);
+  font-weight: 500;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 0 9px;
+}
+.planner .pv-reset p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0 0 20px;
+}
+.planner .pv-reset__acts {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* ============================ FILTROS DEL RECOMENDADOR ==================== */
+/* Barra de chips SIEMPRE visible (una fila con wrap, sin labels de grupo):
+   con filas densas de electivas el plegable "Filtros" ya no se justifica. */
+.planner .plan2-recbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+/* separador sutil entre familias de chips (minors · régimen · horario) */
+.planner .plan2-recbar__sep {
+  width: 1px;
+  height: 14px;
+  flex: none;
+  background: var(--line);
+}
+.planner .plan2-fchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  line-height: 1;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.planner .plan2-fchip:hover {
+  color: var(--ink);
+  border-color: var(--line-2);
+  background: var(--panel);
+}
+.planner .plan2-fchip__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--fchip-color, var(--brass));
+  flex: none;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--block-ink) 20%, transparent);
+}
+.planner .plan2-fchip.is-on {
+  color: var(--ink);
+  border-color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 12%, var(--panel));
+  font-weight: 600;
+}
+.planner .plan2-fchip.is-on .plan2-fchip__dot {
+  box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--brass) 42%, transparent);
+}
+/* "Limpiar" al final de la barra, empujado al borde derecho de su línea */
+.planner .plan2-recbar__clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--brass);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px 4px;
+  margin-left: auto;
+}
+.planner .plan2-recbar__clear:hover {
+  text-decoration: underline;
+}
+.planner .plan2-recbar__clear svg {
+  width: 11px;
+  height: 11px;
+}
+.planner .plan2-recbar__empty {
+  font-size: 12.5px;
+  color: var(--muted);
+  padding: 14px 2px 4px;
+}
+.planner .plan2-recbar__empty button {
+  font-family: var(--f-m);
+  font-size: 12px;
+  color: var(--brass);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.planner .plan2-recbar__empty button:hover {
+  text-decoration: underline;
+}
+/* listado de filas dentro de cada grupo (reemplaza el padding que antes
+   aportaba la grilla de cartas) */
+.planner .plan2-recgrp .recrow-list {
+  padding: 3px 0 7px;
+}
+/* ≤1080px el panel lateral pierde su sticky+scroll (pasa al flujo de la
+   página): sin este tope, el grupo abierto volcaría ~90 filas entre el board
+   y lo que sigue. Cada grupo scrollea adentro suyo. */
+@media (max-width: 1080px) {
+  .planner .plan2-recgrp .recrow-list {
+    max-height: 48vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scroll) transparent;
+  }
+}
+
+/* ============================ OPTIMIZAR PARA (bajo el board) =============== */
+/* El segmentado del método salió del banner: vive acá SIEMPRE visible, con la
+   nota "Cómo se armó este plan" plegada debajo. */
+.planner .plan2-opt {
+  margin-top: 2px;
+}
+.planner .plan2-opt__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.planner .plan2-opt__lbl {
+  font-family: var(--f-m);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+/* la nota queda pegada al segmentado, no colgando del board */
+.planner .plan2-opt .plan2-optnote-d {
+  margin-top: 6px;
+}
+
+/* ============================ NOTA DEL MÉTODO (colapsable) ================ */
+/* "Cómo se armó este plan": plegado por default, discreto (mono muted) para no
+   competir con el board. El detalle vive en el <p class="plan2-method">. */
+.planner .plan2-optnote-d {
+  margin-top: 2px;
+}
+.planner .plan2-optnote-d > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--f-m);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  padding: 4px 0;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.planner .plan2-optnote-d > summary::-webkit-details-marker {
+  display: none;
+}
+.planner .plan2-optnote-d > summary:hover {
+  color: var(--ink);
+}
+.planner .plan2-optnote-d > summary::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 1.4px solid currentColor;
+  border-bottom: 1.4px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.planner .plan2-optnote-d[open] > summary::after {
+  transform: rotate(-135deg);
+}
+.planner .plan2-optnote-d .plan2-method {
+  font-family: var(--f-m);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+.planner .plan2-optnote-d .plan2-method b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* El selector "Optimizar para" vive DENTRO de "Cómo se armó este plan"
+   (.plan2-opt__ctl): no es una decisión frecuente, así que queda guardado
+   ahí junto a la nota del método. */
+.planner .plan2-opt__ctl {
+  display: flex;
+  align-items: center;
+  gap: 8px 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+/* ======================= PRIMERA CORRIDA (carrera plegada) ================ */
+/* Con 0 aprobadas la proyección de toda la carrera no es protagonista: queda
+   en un renglón secundario + botón para desplegarla, y debajo el próximo
+   cuatrimestre real (el paso concreto). El prompt «marcá tus aprobadas» ya lo
+   da el banner de primer uso arriba (una sola voz). */
+.planner .pv-firstrun {
+  margin-top: 10px;
+}
+.planner .pv-firstrun__proj {
+  display: flex;
+  align-items: center;
+  gap: 8px 14px;
+  flex-wrap: wrap;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  border-radius: var(--r);
+}
+.planner .pv-firstrun__projtxt {
+  flex: 1 1 240px;
+  min-width: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+.planner .pv-firstrun__projtxt b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.planner .pv-firstrun__more {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--brass) 40%, var(--line));
+  color: var(--brass);
+  font-family: var(--f-m);
+  font-size: 11.5px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.planner .pv-firstrun__more:hover {
+  background: color-mix(in srgb, var(--brass) 12%, transparent);
+  border-color: var(--brass);
+}
+.planner .pv-firstrun__next {
+  margin-top: 14px;
+}
+.planner .pv-firstrun__nextlbl {
+  display: block;
+  margin: 0 2px 8px;
+  font-family: var(--f-m);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ============================ TAG "FIJADA" =============================== */
+/* Distingue "lo puse yo" (cuatri fijado) de "lo puso el optimizador". En el
+   roadmap: tono neutro para NO confundirse con los tags brass "rec"/"nueva". */
+.planner .rmap-mat__fixed {
+  font-family: var(--f-m);
+  font-size: 8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border: 1px solid var(--line-2);
+  background: var(--panel-3);
+  padding: 1px 5px;
+  border-radius: 999px;
+  flex: none;
+}
+/* En el pool la fila ya tiene fondo brass (.is-fixed): el chip lo hace explícito. */
+.planner .pool-item .pfix {
+  flex: none;
+  align-self: center;
+  font-family: var(--f-m);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--brass);
+  border: 1px solid color-mix(in srgb, var(--brass) 40%, transparent);
+  background: color-mix(in srgb, var(--brass) 12%, transparent);
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+/* ============================ BOTÓN FINALIZAR (legible) ================== */
+/* Reemplaza el candado icon-only del header de la SemCard por un botón chico con
+   texto: "Finalizar" (abierto) / "Finalizado" (cerrado, acento brass). */
+.planner .pv-lockbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--f-m);
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.planner .pv-lockbtn svg {
+  width: 13px;
+  height: 13px;
+  flex: none;
+}
+.planner .pv-lockbtn:hover {
+  color: var(--ink);
+  border-color: var(--brass);
+  background: var(--panel-2);
+}
+.planner .pv-lockbtn.is-locked {
+  color: var(--brass);
+  border-color: color-mix(in srgb, var(--brass) 40%, var(--line));
+  background: color-mix(in srgb, var(--brass) 8%, transparent);
+}
+.planner .pv-lockbtn.is-locked:hover {
+  background: color-mix(in srgb, var(--brass) 14%, transparent);
+}
+
+/* ============================ + AGREGAR ELECTIVA (CTA) ================== */
+/* El llamado a la acción de la página: botón sólido brass, más alto que el
+   resto de la barra. Texto sobre color sólido = --block-ink (DESIGN §8). */
+.planner .pv-addelec {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 18px 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--brass);
+  background: var(--brass);
+  color: var(--block-ink);
+  font-family: var(--f-b);
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--brass) 28%, transparent);
+  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.planner .pv-addelec:hover {
+  background: var(--brass-2);
+  border-color: var(--brass-2);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--brass) 40%, transparent);
+}
+.planner .pv-addelec:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+.planner .pv-addelec svg {
+  color: currentColor;
+}
+
+/* ============================ AVISO (abajo a la derecha) ================= */
+.planner.pv-toast {
+  padding-top: 12px;
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 60;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 340px;
+  padding: 12px 12px 12px 14px;
+  background: var(--panel);
+  border: 1px solid color-mix(in srgb, var(--status-warn) 45%, transparent);
+  border-left: 3px solid var(--status-warn);
+  border-radius: 10px;
+  box-shadow: var(--shadow-2);
+  font-family: var(--f-m);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  animation: pv-tooltip-in var(--dur-base) var(--ease-out) both;
+}
+.planner.pv-toast > svg {
+  flex: none;
+  margin-top: 1px;
+  color: var(--status-warn-text);
+}
+.planner.pv-toast .pv-toast__x {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin: -3px -3px 0 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--faint);
+  cursor: pointer;
+}
+.planner.pv-toast .pv-toast__x:hover {
+  color: var(--ink);
+  background: var(--panel-2);
+}
+
+/* ============================ RESPONSIVE ================================== */
+/* el grid del banner colapsa temprano: entre ~640 y ~950px los tracks mínimos
+   (280px de controles + 300px de egreso) ya desbordarían lado a lado */
+@media (max-width: 980px) {
+  .planner .pv-config {
+    grid-template-columns: 1fr;
+  }
+  .planner .pv-result {
+    padding-left: 0;
+    border-left: 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+}
+@media (max-width: 640px) {
+  .planner .pv-track > .pv-sem {
+    flex-basis: 100%;
+  }
+  .planner .pv-arrow--prev {
+    left: -6px;
+  }
+  .planner .pv-arrow--next {
+    right: -6px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .planner .pv-seg__opt,
+  .planner .pv-switch,
+  .planner .pv-switch::after,
+  .planner .pv-strip__bar > i,
+  .planner .pv-loadbar > i,
+  .planner .pv-minor-track > i,
+  .planner .pv-dotbtn,
+  .planner .pv-iconbtn,
+  .planner .pv-menu__item,
+  .planner .pv-arrow,
+  .planner .plan2-fchip {
+    transition: none;
+  }
+}

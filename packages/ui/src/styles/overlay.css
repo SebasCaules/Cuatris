@@ -1,0 +1,84 @@
+/* ============================================================
+   OVERLAY — Modal / Drawer genéricos (scrim + panel).
+   Primitivo reutilizable construido sobre los tokens.
+   ============================================================ */
+.sv-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: color-mix(in srgb, var(--hex-brown) 55%, transparent);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  display: flex;
+}
+.sv-overlay--center {
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 20px 20px;
+}
+.sv-overlay--right { justify-content: flex-end; }
+
+/* modal centrado */
+.sv-modal {
+  width: 100%;
+  max-width: var(--sv-modal-w, 620px);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: drop-in var(--dur) var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .sv-modal { animation: none; }
+}
+
+/* drawer lateral */
+.sv-drawer {
+  width: min(92vw, var(--sv-drawer-w, 420px));
+  height: 100%;
+  background: var(--surface-2);
+  border-left: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  overflow-y: auto;
+  animation: slide-in var(--dur) var(--ease);
+}
+@keyframes slide-in {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sv-drawer { animation: none; }
+}
+
+/* header común de overlay */
+.sv-overlay__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--hairline);
+}
+.sv-overlay__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--ink-strong);
+  margin: 0;
+}
+.sv-overlay__close {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--r-ctrl);
+  background: transparent;
+  color: var(--text-secondary);
+  display: grid;
+  place-items: center;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.sv-overlay__close:hover { color: var(--ink-strong); border-color: var(--ring); }
+.sv-overlay__close svg { width: 16px; height: 16px; }
+.sv-overlay__body { padding: 20px; }

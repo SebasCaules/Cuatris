@@ -1,0 +1,322 @@
+/* ============================================================
+   Cards del planner — capa de presentación (overhaul, ronda 2).
+   Objetivo: que cada card se lea DE UN VISTAZO. Cada señal tiene su
+   propio lenguaje visual, distinto de las otras (nada de "puntitos iguales"):
+     · Minor  → insignia con LOGO propio + sigla, en el color del minor.
+     · Dispon.→ candado (abierto = cursable / cerrado = requisitos).
+     · Régimen→ ícono en cuadro (promociona / con final).
+   Una leyenda colapsable arriba de la grilla (cerrada por defecto) decodifica
+   las tres familias una sola vez, sin empujar el contenido.
+   Presentación 100% por roles/tokens §12 + color-mix() — sin hex hardcodeado.
+   Clases NUEVAS: no pisan planner.css (los badges/dots de minor y el
+   EstadoControl base viven allá). Se importa desde ElectivasView + CuatriView.
+   ============================================================ */
+
+/* ----- ícono/logo de minor (glyph propio por área) ----- */
+.planner .minor-icon{display:block}
+
+/* variante "logo" del MinorBadge: glyph + sigla en el color del minor.
+   Reusa el color/fondo/borde de .minor-badge (planner.css); sólo cambia el
+   layout para meter el ícono a la izquierda de la sigla. */
+/* Doble clase para ganarle por especificidad al height:16px base de
+   .planner .minor-badge (planner.css), que carga después en la cascada. */
+.planner .minor-badge.minor-badge--logo{
+  min-width:0;height:19px;gap:3px;padding:0 7px 0 6px;
+}
+.planner .minor-badge__glyph{width:12px;height:12px;flex:none}
+.planner .minor-badge__ini{font-size:10.5px;line-height:1}
+
+/* ----- disponibilidad: candado (silueta propia, ni punto ni pill) ----- */
+.planner .avail-lock{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:17px;height:17px;flex:none;
+}
+.planner .avail-lock svg{width:16px;height:16px}
+.planner .avail-lock--go{color:var(--status-go)}
+.planner .avail-lock--wait{color:var(--status-warn)}
+
+/* ----- ícono de régimen — uno solo por card (promociona / con final) ----- */
+.planner .regime-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:20px;height:20px;flex:none;border-radius:5px;
+  border:1px solid transparent;
+}
+.planner .regime-icon svg{width:12px;height:12px}
+.planner .regime-icon--promo{
+  color:var(--status-promo);
+  background:color-mix(in srgb, var(--status-promo) 15%, transparent);
+  border-color:color-mix(in srgb, var(--status-promo) 30%, transparent);
+}
+.planner .regime-icon--final{
+  color:var(--text-secondary);
+  background:color-mix(in srgb, var(--text-secondary) 14%, transparent);
+  border-color:color-mix(in srgb, var(--text-secondary) 26%, transparent);
+}
+
+/* ----- leyenda colapsable compartida (Electivas + Cuatri) -----
+   La leyenda se lee una sola vez, así que va en un <details> discreto,
+   cerrado por defecto: no empuja la grilla hasta que la abrís. El chrome
+   (borde/fondo/margin) vive acá; el cuerpo interno (cl-* / el-*) queda igual. */
+.planner .legend-details{
+  margin:0 0 18px;
+  border:1px solid var(--line);border-radius:8px;background:var(--surface-2);
+}
+.planner .legend-details > summary{
+  list-style:none;cursor:pointer;user-select:none;
+  display:flex;align-items:center;gap:8px;padding:8px 15px;
+  font-family:var(--f-m);font-size:10px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);
+}
+.planner .legend-details > summary::-webkit-details-marker{display:none}
+/* chevron custom sutil: ▸ cerrado → ▾ abierto */
+.planner .legend-details > summary::before{
+  content:"";width:6px;height:6px;flex:none;
+  border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(-45deg);transition:transform .15s ease;
+}
+.planner .legend-details[open] > summary::before{transform:rotate(45deg)}
+.planner .legend-details > summary:hover{color:var(--ink)}
+
+/* ----- cuerpo: grilla de electivas (decodifica las 3 señales) ----- */
+.planner .card-legend{
+  display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px 26px;
+  padding:2px 15px 14px;
+  font-family:var(--f-m);font-size:11px;color:var(--muted);
+}
+.planner .cl-group{display:flex;flex-direction:column;gap:7px;min-width:0}
+.planner .cl-h{
+  font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);
+}
+.planner .cl-items{display:flex;flex-wrap:wrap;align-items:center;gap:7px 12px}
+.planner .cl-row{display:inline-flex;align-items:center;gap:5px;color:var(--muted)}
+
+/* la leyenda muestra controles de estado no interactivos */
+.planner .card-legend .estado-ctl{cursor:default}
+
+/* ----- affordance del control pendiente: "+" fantasma -----
+   La base .estado-ctl vive en planner.css (NO editable). En "pendiente" ese
+   archivo pone color:transparent (círculo hueco), así que el "+" no puede
+   heredar el color: fija el suyo. Señaliza "clickeable / agrega": opacidad baja
+   en reposo, sube al hover. Solo se renderiza cuando estado === "pendiente"
+   (EstadoControl), así que no hace falta acotar por .st-pending. */
+.planner .estado-ctl .ctl-plus{
+  width:11px;height:11px;flex:none;
+  color:var(--muted);
+  opacity:.45;
+  transition:opacity var(--dur-fast) var(--ease);
+}
+.planner .estado-ctl:hover .ctl-plus{opacity:.8}
+
+/* ============================================================
+   Plan por cuatrimestre — timeline por año (rework HCI 2026-07).
+   Un año = UNA carta partida en sus dos cuatrimestres (split vertical
+   literal del DS); cada materia es una fila checklist:
+     [EstadoControl] código nombre ………… (falta final | candado) créditos
+   Una sola codificación por estado: el control colorea, el texto solo se
+   atenúa (nada de tachado + opacidad + tag). El avance del año se lee en
+   la micro-barra de dos segmentos (terminadas / cursadas que deben final).
+   Sin .tag acá: muere de paso el "#" que filtraba badge.css del DS.
+   ============================================================ */
+.planner .cq-years{display:flex;flex-direction:column;gap:14px}
+.planner .cq-year{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.planner .cq-year__h{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--line);cursor:pointer;user-select:none}
+.planner .cq-year__h:hover{background:var(--row-hover)}
+.planner .cq-year.is-collapsed .cq-year__h{border-bottom-color:transparent}
+/* casilla propia de grupo (año / cuatrimestre): vacía · mixta (guion) · marcada (tilde) */
+.planner .cq-check{
+  width:16px;height:16px;flex:none;padding:0;display:inline-grid;place-items:center;
+  border-radius:4px;border:1px solid var(--hairline-strong);background:var(--surface-2);
+  color:var(--block-ink);cursor:pointer;
+  transition:border-color var(--dur-fast) var(--ease),background var(--dur-fast) var(--ease);
+}
+.planner .cq-check svg{width:11px;height:11px}
+.planner .cq-check:hover{border-color:var(--accent-line)}
+.planner .cq-check:focus-visible{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.planner .cq-check.is-on,.planner .cq-check.is-mixed{
+  background:var(--status-go);border-color:color-mix(in srgb, var(--status-go) 70%, transparent);color:var(--block-ink);
+}
+.planner .cq-check.is-mixed{background:color-mix(in srgb, var(--status-go) 55%, var(--surface-2))}
+.planner .cq-year__toggle{
+  margin-left:2px;width:26px;height:26px;flex:none;display:grid;place-items:center;padding:0;
+  border:1px solid transparent;border-radius:6px;background:none;color:var(--muted);cursor:pointer;
+}
+.planner .cq-year__toggle:hover{color:var(--ink);border-color:var(--line)}
+.planner .cq-year__toggle:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+.planner .cq-year__chev{transition:transform var(--dur-base) var(--ease)}
+.planner .cq-year.is-collapsed .cq-year__chev{transform:rotate(-90deg)}
+.planner .cq-year__cols[hidden]{display:none}
+.planner .cq-year__t{font-family:var(--f-d);font-weight:500;font-size:16.5px;letter-spacing:-.01em;color:var(--ink);margin:0}
+.planner .cq-year__ciclo{font-family:var(--f-m);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.planner .cq-year__prog{margin-left:auto;display:flex;align-items:center;gap:9px}
+.planner .cq-year__bar{display:flex;width:96px;height:3px;border-radius:3px;background:var(--panel-3);overflow:hidden}
+.planner .cq-year__bar i{display:block;height:100%}
+.planner .cq-year__bar .seg-done{background:var(--status-go)}
+.planner .cq-year__bar .seg-mid{background:var(--status-warn)}
+.planner .cq-year__bar .seg-doing{background:var(--slate)}
+.planner .cq-year__n{font-family:var(--f-m);font-size:11px;color:var(--faint)}
+.planner .cq-year__n b{color:var(--ink);font-weight:500}
+
+.planner .cq-year__cols{display:grid;grid-template-columns:1fr 1fr}
+.planner .cq-year__cols--solo{grid-template-columns:1fr}
+.planner .cq-sem{min-width:0;padding:4px 10px 10px}
+.planner .cq-sem + .cq-sem{border-left:1px solid var(--line)}
+.planner .cq-sem__h{display:flex;align-items:center;gap:8px;margin:0;padding:8px 8px 5px;
+  font-family:var(--f-m);font-weight:400;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+.planner .cq-sem__n{margin-left:auto;color:var(--faint);letter-spacing:.04em}
+.planner .cq-sem__h .cq-check{margin-right:2px;width:14px;height:14px}
+.planner .cq-sem__h .cq-check svg{width:10px;height:10px}
+.planner .cq-list{list-style:none;margin:0;padding:0}
+
+.planner .qrow{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:6px;
+  transition:background var(--dur-fast) var(--ease)}
+.planner .qrow:hover{background:var(--row-hover)}
+.planner .qrow__open{display:flex;align-items:baseline;gap:10px;flex:1;min-width:0;
+  padding:0;border:0;background:none;color:inherit;cursor:pointer;text-align:left;font:inherit}
+.planner .qrow__open:focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:4px}
+.planner .qrow__code{flex:none;width:40px;font-family:var(--f-m);font-size:10px;color:var(--faint)}
+.planner .qrow__name{font-family:var(--f-d);font-size:14px;line-height:1.25;color:var(--ink-soft);min-width:0}
+.planner .qrow__open:hover .qrow__name{color:var(--ink);text-decoration:underline;
+  text-decoration-color:color-mix(in srgb, var(--ink) 30%, transparent);text-underline-offset:3px}
+.planner .qrow__cr{flex:none;font-family:var(--f-m);font-size:10.5px;color:var(--muted)}
+.planner .qrow__due{flex:none;font-family:var(--f-m);font-size:9.5px;letter-spacing:.03em;
+  color:var(--status-warn-text)}
+.planner .qrow .avail-lock svg{width:14px;height:14px}
+
+/* estados: el control ya es la señal fuerte; acá solo se atenúa el texto */
+.planner .qrow.is-done .qrow__name{color:var(--muted)}
+.planner .qrow.is-done .qrow__cr{color:var(--faint)}
+.planner .qrow.is-locked .qrow__name{color:var(--muted)}
+.planner .qrow.is-cursando{background:color-mix(in srgb, var(--slate) 7%, transparent)}
+
+@media (max-width:700px){
+  .planner .cq-year__cols{grid-template-columns:1fr}
+  .planner .cq-sem + .cq-sem{border-left:0;border-top:1px solid var(--line)}
+}
+
+/* ============================================================
+   Mosaico de electivas — rework densidad + uniformidad (2026-07).
+   Diagnóstico: la grilla base (planner.css) usa auto-fill minmax(256px)
+   + align-items:stretch → pocas columnas anchas y, sobre todo, cada card
+   se ESTIRA al alto de la más alta de su fila, dejando un hueco entre el
+   meta y el footer flotante. Ese era el "lugar muerto".
+   Fix: overrides scopeados a .card-grid--el (selector COMPUESTO → gana a
+   planner.css por especificidad, sin editar el archivo compartido). Todas
+   las cards MIDEN IGUAL vía slots de alto fijo — nada de stretch ragged:
+     código·créditos │ nombre a 2 líneas (clamp) │ señales (1 renglón) │
+     acciones en 1 fila (estado · combinar · ficha↗ a la derecha).
+   Columnas más angostas (~205px) → ~6-7 en vez de ~5; menos ancho muerto.
+   ============================================================ */
+.planner .card-grid.card-grid--el{
+  grid-template-columns:repeat(auto-fill,minmax(205px,1fr));
+  gap:10px;align-items:start;
+}
+/* empty state a todo el ancho de la grilla (antes ocupaba 1 columna) */
+.planner .card-grid--el .empty{grid-column:1/-1}
+
+/* card: columna flex con slots de alto fijo → altura idéntica en todas */
+.planner .card-grid--el .card{
+  display:flex;flex-direction:column;padding:13px 13px 11px;
+}
+.planner .card-grid--el .card__top{margin-bottom:3px}
+/* CPT-04: el código es un identificador de búsqueda, no la señal decisiva —
+   baja a mono muteado (mismo peso que «N cr»), liberando el único acento
+   cromático de la card para la acción «combinar». */
+.planner .card-grid--el .card__top .code{
+  color:var(--muted);font-size:11px;letter-spacing:.02em;
+}
+.planner .card-grid--el .card__name{
+  font-size:15px;line-height:1.16;margin:4px 0 0;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+  min-height:calc(15px * 1.16 * 2);   /* 2 líneas fijas → todos los títulos alinean */
+}
+/* señales en 1 renglón reservado (sin wrap): así el alto no varía card a card */
+.planner .card-grid--el .card__meta{
+  flex-wrap:nowrap;overflow:hidden;gap:5px;margin:8px 0 0;min-height:19px;
+}
+/* CPT-12: horario estampado en el renglón de señales (franjas «Lu 18–21 · Ju
+   18–21» o «N comisiones»). Ocupa el ancho sobrante y se trunca con title, así
+   el choque de días se detecta escaneando la grilla sin abrir el drawer. */
+.planner .card-grid--el .card__hor{
+  flex:1 1 auto;min-width:0;margin-left:auto;text-align:right;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-family:var(--f-m);font-size:10px;letter-spacing:.01em;color:var(--muted);
+}
+/* PLN-A09: motivo visible del «combinar» inoperable — no vive solo en el
+   tooltip; es el target de aria-describedby del botón. */
+.planner .card-grid--el .card__hor--none{color:var(--faint)}
+/* acciones: una sola fila compacta; combinar deja de estirarse (flex:1) y la
+   ficha se vuelve un botón inline empujado a la derecha (antes: renglón extra) */
+.planner .card-grid--el .card__acts{
+  align-items:center;gap:8px;margin-top:10px;padding-top:9px;
+}
+.planner .card-grid--el .mini{
+  flex:0 0 auto;padding:5px 10px;border-radius:6px;font-size:11.5px;
+  white-space:nowrap;   /* el estado activo «en tu plan ✓» no debe partirse */
+}
+/* CPT-04: «combinar» operable (aún no en el plan) = control primario de la fila.
+   Borde + texto de acento, sin relleno pleno: un solo foco cromático por card,
+   sin sobre-saturar la grilla de 95. Los estados activos (.on/.on.plan) y el
+   inoperable (.is-off) conservan su tratamiento y ganan por especificidad. */
+.planner .card-grid--el .mini.btn-co:not(.on):not(.is-off){
+  color:var(--brass-2);border-color:var(--accent-line);
+}
+.planner .card-grid--el .mini.btn-co:not(.on):not(.is-off):hover{
+  color:var(--brass-2);border-color:var(--brass);background:var(--accent-soft);
+}
+/* PLN-A09: sin horario NO se deshabilita nativo (perdería foco y el motivo solo
+   viviría en el title). Look de inactivo pero focusable por teclado; el porqué
+   es el «sin horario» visible enlazado por aria-describedby. */
+.planner .card-grid--el .mini.btn-co.is-off{
+  opacity:.5;cursor:not-allowed;
+  color:var(--muted);border-color:var(--line);background:transparent;
+}
+.planner .card-grid--el .mini.btn-co.is-off:hover{
+  color:var(--muted);border-color:var(--line);
+}
+/* CPT-04: «ficha ↗» = ghost neutro en reposo (el acento se reserva a combinar);
+   el hover ya revela el acento vía la regla de abajo. */
+.planner .card-grid--el .card__read{
+  width:auto;margin:0 0 0 auto;padding:5px 8px;color:var(--muted);
+  border:1px solid transparent;border-radius:6px;font-size:10.5px;
+}
+.planner .card-grid--el .card__read:hover{
+  background:var(--accent-soft);border-color:var(--accent-line);color:var(--brass-2);
+}
+
+/* ----- chip "falta final" en la card de electiva -----
+   Cursada aprobada que todavía debe el final; mismo microcopy y color que el
+   qrow__due de CuatriView (rol --status-warn), para leerse igual entre vistas. */
+.planner .card__due{
+  flex:none;font-family:var(--f-m);font-size:9.5px;letter-spacing:.03em;
+  color:var(--status-warn-text);
+}
+
+/* ----- empty state accionable: atajo "Limpiar filtros" -----
+   .empty vive en planner.css (NO editable); acá solo estilamos el botón inline
+   que restaura búsqueda/filtros/áreas. Va en su renglón, centrado bajo el texto. */
+.planner .empty__clear{
+  display:block;margin:12px auto 0;
+  padding:6px 14px;
+  font-family:var(--f-m);font-size:12px;
+  color:var(--ink-soft);background:var(--surface-2);
+  border:1px solid var(--line);border-radius:8px;cursor:pointer;
+  transition:border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.planner .empty__clear:hover{border-color:var(--accent-line);color:var(--ink)}
+.planner .empty__clear:focus-visible{
+  outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);
+}
+
+/* ----- ProgramaChips (modal/drawer): ícono por concepto ----- */
+.planner .prog-chips .prog-chip{display:inline-flex;align-items:center;gap:4px}
+.planner .prog-chip__ico{width:11px;height:11px;flex:none}
+
+/* ----- ProgramaChips: "Promociona" en teal (alineación Módulo C/F) -----
+   Override de mayor especificidad (.prog-chips scope) que planner.css para no
+   editar el archivo compartido. El color sale del rol --status-promo (teal),
+   consistente con el EstadoControl st-promo y el .promo-tag del plan de finales. */
+.planner .prog-chips .prog-chip--promo{
+  color:var(--status-promo-text);
+  border-color:color-mix(in srgb, var(--status-promo) 40%, transparent);
+  background:color-mix(in srgb, var(--status-promo) 13%, transparent);
+}

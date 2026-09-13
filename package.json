@@ -1,0 +1,31 @@
+{
+  "name": "cuatris",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Planificador de cursada para Ingeniería en Informática del ITBA — versión standalone del planner de StudyVaults.",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "predev": "node scripts/build-planner-data.mjs",
+    "dev": "next dev",
+    "prebuild": "node scripts/build-planner-data.mjs",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "node scripts/build-planner-data.mjs && tsc --noEmit",
+    "datos": "node scripts/build-planner-data.mjs && node scripts/build-finales-flags-data.mjs && node scripts/build-mesas-finales-data.mjs",
+    "sync": "bash scripts/sync-desde-studyvaults.sh"
+  },
+  "dependencies": {
+    "@studyvaults/ui": "*",
+    "next": "16.2.9",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  }
+}

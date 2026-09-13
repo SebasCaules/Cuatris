@@ -1,0 +1,28 @@
+{
+  "name": "@studyvaults/ui",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Librería privada de componentes de StudyVaults ITBA — el sistema de diseño 'Technical Split' como package consumible.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles/index.css",
+    "./icons": "./src/primitives/Icon.tsx",
+    "./tokens": "./src/tokens.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "next": ">=15",
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

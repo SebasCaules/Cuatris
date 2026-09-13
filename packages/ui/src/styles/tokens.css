@@ -1,0 +1,221 @@
+/* ============================================================
+   STUDYVAULTS · TOKENS — sistema de diseño "Technical Split".
+   Canvas editorial oscuro / superficies elevadas / coral de acento.
+   Las 6 hex base son la única fuente de verdad; todo neutro deriva
+   por color-mix. Los tokens de ROL se conmutan por [data-theme].
+   Movido aquí desde app/globals.css §12 — ahora lo posee @studyvaults/ui.
+   ============================================================ */
+
+:root {
+  /* ---- paleta base (6 hex + brown suave) ---- */
+  --hex-brown: #241208; /* marrón casi negro: ancla de tinta / texto light / sombras */
+  --hex-brown-soft: #382519; /* marrón cálido aclarado: superficies del tema oscuro */
+  --hex-zinc: #27272a; /* gris estructural (borde base) */
+  --hex-blue: #92cff2; /* azul: links, focos, acento secundario */
+  --hex-gray: #a1a1aa; /* gris medio */
+  --hex-coral: #f47c59; /* coral: acento (CTA, realces, objeto focal) */
+  --hex-white: #ffffff;
+
+  /* acentos de marca: estables en ambos temas */
+  --primary: var(--hex-blue);
+  --accent: var(--hex-coral);
+
+  /* ---- tipografía (next/font expone --font-newsreader / --font-jetbrains) ---- */
+  --font-display: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", Menlo,
+    Consolas, monospace;
+
+  /* ---- espaciado (escala de 8) ---- */
+  --s-1: 8px;
+  --s-2: 16px;
+  --s-3: 24px;
+  --s-4: 32px;
+  --s-5: 48px;
+  --s-6: 64px;
+  --s-7: 80px;
+
+  /* ---- radios ---- */
+  --r-card: 8px;
+  --r-ctrl: 8px;
+  --r-pill: 9999px;
+
+  /* ---- motion ---- */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 240ms;
+  --dur: 420ms;
+  --dur-slow: 680ms;
+
+  --nav-h: 68px;
+
+  /* ---- terminal del code block (fijo: mismos valores en dark y light) ---- */
+  --code-bg: #1b1f24;
+  --code-bar: #22272e;
+  --code-fg: #adbac7;
+  --code-hairline: color-mix(in srgb, #ffffff 9%, transparent);
+
+  /* ---- estados semánticos (leen bien sobre canvas dark y light) ----
+     Se usan como relleno/borde/ícono a baja opacidad, no como texto sobre
+     superficie. Coherentes con la paleta de hojas (method/caution). */
+  --status-go: #46a86e; /* verde: final aprobado / éxito */
+  --status-promo: #2f9f8f; /* teal: promociona / sin final */
+  --status-warn: #d8b279; /* ámbar: aviso (poco margen de repaso) */
+  --status-caution: #d68f85; /* rojo suave: conflicto (se pisan) */
+
+  /* Variante de TEXTO de los estados: los --status-* de arriba se calibran
+     como relleno/borde/ícono (umbral 3:1) y no llegan a AA 4.5:1 como texto
+     sobre las superficies dark. Estos aclaran el tono para rendir ≥4.5:1 sobre
+     --surface-2 en dark; en [data-theme="light"] conmutan a los --status-*
+     profundos (ya AA sobre blanco). Se usan SOLO donde el estado es texto. */
+  --status-go-text: #86d3a2;
+  --status-promo-text: #6fd0c1;
+  --status-warn-text: #e0be86;
+  --status-caution-text: #edb5ad;
+}
+
+/* ============================================================
+   TEMA OSCURO (default de marca) — canvas marrón suave
+   ============================================================ */
+[data-theme="dark"] {
+  /* canvas y superficies del tema oscuro: marrón cálido aclarado y parejo
+     (~#4c3a30 canvas / #382519 cards / #54463e elevado). La tinta profunda
+     #241208 se reserva para sombras / on-accent. */
+  --background: color-mix(in srgb, var(--hex-brown-soft) 90%, var(--hex-white));
+  --surface: var(--hex-brown-soft);
+  --secondary: var(--hex-brown-soft);
+
+  --text-primary: var(--hex-white);
+  --text-secondary: var(--hex-gray);
+  /* variante AA de --text-secondary: rinde ≥4.5:1 sobre --surface-2/3 dark
+     (el --hex-gray plano queda ~2.6:1 sobre --surface-3). Para texto
+     informativo que sí necesita AA: contadores/índice de navegación. */
+  --text-secondary-strong: color-mix(in srgb, var(--hex-gray) 40%, var(--hex-white));
+  --ink-strong: var(--hex-white);
+  --border: var(--hex-zinc);
+  --on-accent-ink: var(--hex-brown);
+
+  --surface-2: color-mix(in srgb, var(--hex-brown-soft) 84%, var(--hex-white));
+  --surface-3: color-mix(in srgb, var(--hex-brown-soft) 76%, var(--hex-white));
+  --nav-bg: color-mix(in srgb, var(--background) 86%, transparent);
+
+  --hairline: color-mix(in srgb, var(--hex-white) 10%, transparent);
+  --hairline-strong: color-mix(in srgb, var(--hex-white) 18%, transparent);
+  --hover-tint: color-mix(in srgb, var(--hex-white) 30%, transparent);
+  --row-hover: color-mix(in srgb, var(--hex-white) 4%, transparent);
+
+  --primary-soft: color-mix(in srgb, var(--hex-blue) 14%, transparent);
+  --accent-soft: color-mix(in srgb, var(--hex-coral) 16%, transparent);
+  --primary-line: color-mix(in srgb, var(--hex-blue) 40%, transparent);
+  --accent-line: color-mix(in srgb, var(--hex-coral) 40%, transparent);
+  --accent-text: var(--hex-coral);
+  --link: var(--hex-blue);
+  --ring: var(--hex-blue);
+  --ring-soft: color-mix(in srgb, var(--hex-blue) 30%, transparent);
+
+  --shadow-sm: 0 2px 8px color-mix(in srgb, var(--hex-brown) 28%, transparent);
+  --shadow-md: 0 10px 30px color-mix(in srgb, var(--hex-brown) 42%, transparent);
+  --shadow-lg: 0 24px 60px color-mix(in srgb, var(--hex-brown) 52%, transparent);
+  --shadow-primary: 0 12px 28px color-mix(in srgb, var(--hex-blue) 40%, transparent);
+  --shadow-accent: 0 12px 28px color-mix(in srgb, var(--hex-coral) 45%, transparent);
+
+  --glow-coral: color-mix(in srgb, var(--hex-coral) 16%, transparent);
+  --glow-blue: color-mix(in srgb, var(--hex-blue) 16%, transparent);
+  --glow-blue-2: color-mix(in srgb, var(--hex-blue) 10%, transparent);
+  --particle-blue: color-mix(in srgb, var(--hex-blue) 55%, transparent);
+  --particle-coral: color-mix(in srgb, var(--hex-coral) 50%, transparent);
+  --particle-link: color-mix(in srgb, var(--hex-white) 14%, transparent);
+
+  color-scheme: dark;
+}
+
+/* ============================================================
+   TEMA CLARO — off-white cálido, paneles blancos elevados
+   ============================================================ */
+[data-theme="light"] {
+  --background: color-mix(in srgb, var(--hex-white) 96%, var(--hex-brown) 4%);
+  --surface: var(--hex-brown);
+  --secondary: var(--hex-brown);
+
+  --text-primary: var(--hex-brown);
+  --text-secondary: color-mix(in srgb, var(--hex-brown) 60%, var(--hex-white));
+  /* variante AA (≥4.5:1 sobre --surface-3 light; el 60% queda ~4.2:1 ahí) */
+  --text-secondary-strong: color-mix(in srgb, var(--hex-brown) 66%, var(--hex-white));
+  --ink-strong: var(--hex-brown);
+  --border: color-mix(in srgb, var(--hex-zinc) 14%, var(--hex-white));
+  --on-accent-ink: var(--hex-brown);
+
+  --surface-2: var(--hex-white);
+  --surface-3: color-mix(in srgb, var(--hex-white) 94%, var(--hex-brown) 6%);
+  --nav-bg: color-mix(in srgb, var(--hex-white) 82%, transparent);
+
+  --hairline: color-mix(in srgb, var(--hex-brown) 12%, transparent);
+  --hairline-strong: color-mix(in srgb, var(--hex-brown) 20%, transparent);
+  --hover-tint: color-mix(in srgb, var(--hex-brown) 30%, transparent);
+  --row-hover: color-mix(in srgb, var(--hex-brown) 4%, transparent);
+
+  --primary-soft: color-mix(in srgb, var(--hex-blue) 22%, var(--hex-white));
+  --accent-soft: color-mix(in srgb, var(--hex-coral) 18%, var(--hex-white));
+  --primary-line: color-mix(in srgb, var(--hex-blue) 55%, var(--hex-brown));
+  --accent-line: color-mix(in srgb, var(--hex-coral) 50%, var(--hex-white));
+  --accent-text: color-mix(in srgb, var(--hex-coral) 62%, var(--hex-brown));
+  --link: color-mix(in srgb, var(--hex-blue) 55%, var(--hex-brown));
+  --ring: color-mix(in srgb, var(--hex-blue) 55%, var(--hex-brown));
+  --ring-soft: color-mix(in srgb, var(--hex-blue) 45%, transparent);
+
+  --shadow-sm: 0 2px 8px color-mix(in srgb, var(--hex-brown) 8%, transparent);
+  --shadow-md: 0 10px 30px color-mix(in srgb, var(--hex-brown) 12%, transparent);
+  --shadow-lg: 0 24px 60px color-mix(in srgb, var(--hex-brown) 16%, transparent);
+  --shadow-primary: 0 12px 28px color-mix(in srgb, var(--hex-blue) 30%, transparent);
+  --shadow-accent: 0 12px 28px color-mix(in srgb, var(--hex-coral) 35%, transparent);
+
+  --glow-coral: color-mix(in srgb, var(--hex-coral) 8%, transparent);
+  --glow-blue: color-mix(in srgb, var(--hex-blue) 9%, transparent);
+  --glow-blue-2: color-mix(in srgb, var(--hex-blue) 6%, transparent);
+  --particle-blue: color-mix(in srgb, var(--hex-blue) 38%, transparent);
+  --particle-coral: color-mix(in srgb, var(--hex-coral) 34%, transparent);
+  --particle-link: color-mix(in srgb, var(--hex-brown) 9%, transparent);
+
+  /* Estados semánticos, variante clara: los valores de :root están calibrados
+     para el canvas oscuro (p.ej. --status-warn #d8b279 rinde ~1.9:1 sobre
+     blanco, bajo el umbral 3:1 no-texto). Acá se oscurecen, alineados a la
+     paleta light de las hojas (formula/method/caution). */
+  --status-go: #2e7d52; /* verde profundo: final aprobado / éxito */
+  --status-promo: #16745c; /* teal profundo (= formula light) */
+  --status-warn: #8a591c; /* ámbar profundo (= method light) */
+  --status-caution: #b23a28; /* rojo profundo (= caution light) */
+  /* En light los --status-* profundos ya rinden ≥5:1 como texto sobre blanco:
+     la variante de texto reusa esos mismos valores. */
+  --status-go-text: var(--status-go);
+  --status-promo-text: var(--status-promo);
+  --status-warn-text: var(--status-warn);
+  --status-caution-text: var(--status-caution);
+
+  color-scheme: light;
+}
+
+/* Fallback: si el script anti-flash no corrió, asumir dark. */
+:root:not([data-theme]) {
+  color-scheme: dark;
+}
+
+/* ===== tint por materia — derivado de las 6 hex base (vale en dark y light) =====
+   Se usa SOLO como fondo a baja opacidad, borde o relleno de SVG/nodo (umbral 3:1).
+   Nunca como texto sobre superficie (ahí van --link / --ink-strong, que pasan AA).
+   Los valores deben coincidir con VTINT en app/graph.json/route.ts. */
+:root {
+  --vt-mna: var(--hex-blue);
+  --vt-derecho: color-mix(in srgb, var(--hex-coral) 72%, var(--hex-brown));
+  --vt-economia: color-mix(in srgb, var(--hex-coral) 58%, var(--hex-blue));
+  --vt-proba: color-mix(in srgb, var(--hex-blue) 60%, var(--hex-gray));
+  --vt-paw: color-mix(in srgb, var(--hex-blue) 52%, var(--hex-gray));
+  --vt-sds: color-mix(in srgb, var(--hex-coral) 50%, var(--hex-gray));
+  --vt-inge2: color-mix(in srgb, var(--hex-gray) 68%, var(--hex-blue));
+  --vault-tint: var(--accent);
+}
+[data-vault="mna"] { --vault-tint: var(--vt-mna); }
+[data-vault="derecho"] { --vault-tint: var(--vt-derecho); }
+[data-vault="economia"] { --vault-tint: var(--vt-economia); }
+[data-vault="proba"] { --vault-tint: var(--vt-proba); }
+[data-vault="paw"] { --vault-tint: var(--vt-paw); }
+[data-vault="sds"] { --vault-tint: var(--vt-sds); }
+[data-vault="inge2"] { --vault-tint: var(--vt-inge2); }

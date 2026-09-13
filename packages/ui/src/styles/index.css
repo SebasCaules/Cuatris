@@ -1,0 +1,25 @@
+/* ============================================================
+   @studyvaults/ui — hoja de estilos del sistema de diseño.
+   Importá esto una sola vez en el entry de la app:
+     @import "@studyvaults/ui/styles.css";
+   El orden importa: tokens → base → primitivos → chrome.
+   ============================================================ */
+
+@import "./tokens.css";
+@import "./base.css";
+@import "./layout.css";
+@import "./reveal.css";
+@import "./button.css";
+@import "./badge.css";
+@import "./card.css";
+@import "./nav.css";
+@import "./footer.css";
+@import "./ambient.css";
+@import "./breadcrumbs.css";
+@import "./overlay.css";
+@import "./toolkit.css";
+@import "./parcial.css";
+@import "./sheets.css";
+@import "./library.css";
+@import "./diagram.css";
+@import "./forms.css";

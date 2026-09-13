@@ -1,0 +1,50 @@
+/* ============================================================
+   BUTTONS — .btn + variantes / tamaños.
+   ============================================================ */
+.btn {
+  --btn-pad-y: 12px;
+  --btn-pad-x: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border-radius: var(--r-ctrl);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink-strong);
+  line-height: 1;
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+  white-space: nowrap;
+}
+.btn svg { width: 15px; height: 15px; }
+.btn:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.btn:active { transform: translateY(-1px); }
+.btn--primary { background: var(--accent); color: var(--on-accent-ink); }
+.btn--primary:hover { box-shadow: var(--shadow-accent); }
+.btn--blue { background: var(--primary); color: var(--on-accent-ink); }
+.btn--blue:hover { box-shadow: var(--shadow-primary); }
+.btn--secondary { background: var(--surface-2); color: var(--ink-strong); border-color: var(--hairline-strong); }
+.btn--secondary:hover { background: var(--surface-3); }
+.btn--ghost { background: transparent; color: var(--ink-strong); border-color: var(--border); }
+.btn--ghost:hover { background: var(--hairline); border-color: var(--hairline-strong); }
+.btn--pill { border-radius: var(--r-pill); }
+.btn--sm { --btn-pad-y: 8px; --btn-pad-x: 14px; font-size: 11px; }
+.btn--lg { --btn-pad-y: 16px; --btn-pad-x: 28px; font-size: 13px; }
+.btn[disabled],
+.btn[aria-disabled="true"] { opacity: 0.45; pointer-events: none; transform: none; box-shadow: none; }
+.btn--monolabel {
+  background: transparent;
+  color: var(--link);
+  border-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+.btn--monolabel:hover { transform: none; box-shadow: none; color: var(--ink-strong); gap: 14px; }
+.btn--monolabel svg { transition: transform var(--dur-fast) var(--ease); }
+.btn--monolabel:hover svg { transform: translateX(4px); }

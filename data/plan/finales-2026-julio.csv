@@ -1,0 +1,473 @@
+Cód,Materia,Primer llamado,Hora,Segundo llamado,Hora
+10.01,Proyecto Final de Ingeniería Industrial,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+10.98,Apoyo Proyecto Final de Carrera,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+10.02,Gestión Ambiental,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+10.04,Plantas Industriales,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+10.07,Creatividad,"jueves, 2 de julio de 2026",14:00,"jueves, 16 de julio de 2026",14:00
+10.08,Energías Renovables,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+10.09,Formación para Emprendedores,"lunes, 13 de julio de 2026",16:00,"lunes, 20 de julio de 2026",16:00
+10.12,Energías Convencionales,"miércoles, 8 de julio de 2026",18:00,"miércoles, 22 de julio de 2026",18:00
+10.15,Agroindustria,"martes, 7 de julio de 2026",16:00,"martes, 14 de julio de 2026",16:00
+10.16,Machine Learning para Negocios,"jueves, 16 de julio de 2026",13:00,"jueves, 23 de julio de 2026",13:00
+10.23,Agroindustria II,"martes, 7 de julio de 2026",16:00,"martes, 14 de julio de 2026",16:00
+10.24,Economía de la transición energética,"miércoles, 8 de julio de 2026",17:00,"miércoles, 15 de julio de 2026",17:00
+11.10,Organización de la Producción I,"jueves, 2 de julio de 2026",19:00,"jueves, 16 de julio de 2026",19:00
+11.14,Diseño de Producto,"miércoles, 8 de julio de 2026",16:00,"jueves, 16 de julio de 2026",16:00
+11.15,Organización Industrial,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+11.16,Materiales y Procesos,"martes, 7 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+11.19,Prototipado e Impresión 3D,"miércoles, 8 de julio de 2026",16:00,"jueves, 16 de julio de 2026",16:00
+11.20,Supply Chain,"jueves, 2 de julio de 2026",17:00,"jueves, 16 de julio de 2026",17:00
+11.28,Sistemas Complejos,"lunes, 6 de julio de 2026",15:00,"lunes, 20 de julio de 2026",15:00
+11.39,Marketing,"martes, 14 de julio de 2026",13:00,"martes, 21 de julio de 2026",13:00
+11.46,Planeamiento Estratégico,"lunes, 13 de julio de 2026",18:00,"lunes, 20 de julio de 2026",18:00
+11.51,Investigación Operativa,"viernes, 10 de julio de 2026",13:00,"viernes, 17 de julio de 2026",13:00
+11.59,Logística,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+11.63,Simulación,"martes, 14 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+11.67,Estadística Aplicada,"martes, 7 de julio de 2026",11:00,"martes, 14 de julio de 2026",11:00
+11.73,Teoría de la Decisión,"martes, 14 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+11.75,Tecnologías y Procesos de Producción,"lunes, 13 de julio de 2026",16:00,"lunes, 20 de julio de 2026",16:00
+11.76,Gestión de Calidad,"miércoles, 8 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+11.83,Gestión de Operaciones,"miércoles, 8 de julio de 2026",18:00,"miércoles, 22 de julio de 2026",18:00
+11.84,Gestión de Proyectos,"lunes, 13 de julio de 2026",15:00,"martes, 21 de julio de 2026",15:00
+11.85,Toma de Decisiones,"jueves, 16 de julio de 2026",13:00,"jueves, 23 de julio de 2026",13:00
+11.86,Investigación de Operaciones I,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+11.87,Investigación de Operaciones II,"martes, 7 de julio de 2026",16:00,"martes, 21 de julio de 2026",16:00
+11.89,Formulación y Evaluación de Proyectos,"miércoles, 15 de julio de 2026",15:00,"miércoles, 22 de julio de 2026",15:00
+12.09,Química,"martes, 14 de julio de 2026",8:00,"martes, 21 de julio de 2026",8:00
+12.11,Operaciones Unitarias I,"miércoles, 8 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+12.12,Operaciones Unitarias II,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+12.13,Operaciones Unitarias III,"viernes, 10 de julio de 2026",13:00,"viernes, 17 de julio de 2026",13:00
+12.19,Química Analítica,"martes, 7 de julio de 2026",13:00,"martes, 14 de julio de 2026",13:00
+12.20,Química-Física,"miércoles, 8 de julio de 2026",15:00,"miércoles, 22 de julio de 2026",15:00
+12.24,Ingenieria de Reacciones y Reactores I,"viernes, 10 de julio de 2026",18:00,"viernes, 24 de julio de 2026",18:00
+12.25,Ingeniería de Reacciones y Reactores II,"jueves, 2 de julio de 2026",11:00,"jueves, 23 de julio de 2026",11:00
+12.26,Termodinámica,"martes, 7 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+12.27,Simulación de Procesos,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+12.33,Química Orgánica II,"martes, 7 de julio de 2026",8:00,"martes, 14 de julio de 2026",8:00
+12.34,Química Orgánica para Petroleo,"viernes, 3 de julio de 2026",10:00,"miércoles, 8 de julio de 2026",10:00
+12.46,Introducción al Proceso de Fabricación de Aceros,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+12.51,Tecnología de los Alimentos,"martes, 7 de julio de 2026",19:00,"martes, 14 de julio de 2026",19:00
+12.52,Bioquímica de los Alimentos,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+12.53,Introducción a la Ing de los Alimentos,"martes, 14 de julio de 2026",13:00,"martes, 21 de julio de 2026",13:00
+12.66,Gestión de la Salud y Seguridad en el Trabajo,"viernes, 10 de julio de 2026",13:00,"viernes, 17 de julio de 2026",13:00
+12.67,Química General,"viernes, 3 de julio de 2026",8:00,"viernes, 10 de julio de 2026",8:00
+12.83,Seguridad Ocupacional y Ambiental,"viernes, 10 de julio de 2026",16:00,"lunes, 20 de julio de 2026",19:00
+12.84,Introducción a la Ingeniería Ambiental,"martes, 14 de julio de 2026",13:00,"martes, 21 de julio de 2026",13:00
+12.85,Diseño Conceptual de Procesos,"viernes, 17 de julio de 2026",16:00,"viernes, 24 de julio de 2026",16:00
+12.87,Tratamiento de Efluentes,"viernes, 10 de julio de 2026",13:00,"viernes, 17 de julio de 2026",13:00
+12.90,Proyecto de Plantas (Anual),"lunes, 20 de julio de 2026",19:00,"lunes, 27 de julio de 2026",19:00
+12.94,Introducción a la Ing. Nuclear,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+12.97,Trabajo de Investigación Dirigido II,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",16:00
+13.01,Química Inorgánica,"lunes, 6 de julio de 2026",11:00,"lunes, 13 de julio de 2026",11:00
+13.02,Fundamentos de Química Orgánica,"martes, 7 de julio de 2026",8:00,"martes, 14 de julio de 2026",8:00
+13.03,Química Orgánica I,"martes, 7 de julio de 2026",8:00,"martes, 14 de julio de 2026",8:00
+15.89,Mejora continua de procesos,"viernes, 10 de julio de 2026",10:00,"viernes, 17 de julio de 2026",10:00
+16.01,Biología Molecular y Celular,"lunes, 6 de julio de 2026",19:00,"jueves, 16 de julio de 2026",9:00
+16.02,Histología y Anatomía,"lunes, 6 de julio de 2026",16:00,"miércoles, 15 de julio de 2026",16:00
+16.03,Fisiología,"martes, 7 de julio de 2026",19:00,"martes, 14 de julio de 2026",19:00
+16.04,Neurociencias y Desarrollo Productivo,"jueves, 2 de julio de 2026",16:00,"jueves, 16 de julio de 2026",16:00
+16.09,Ventilación Mecánica,"lunes, 13 de julio de 2026",13:00,"lunes, 20 de julio de 2026",13:00
+16.14,Fisiología Cuantitativa,"jueves, 2 de julio de 2026",19:00,"jueves, 16 de julio de 2026",19:00
+16.17,Instrumentación Biomédica I,"martes, 7 de julio de 2026",18:00,"martes, 21 de julio de 2026",18:00
+16.18,Instrumentación Biomédica II,"martes, 14 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+16.19,Biosensores,"viernes, 10 de julio de 2026",16:00,"jueves, 16 de julio de 2026",16:00
+16.20,Biomedicina Estructural y Computacional,"miércoles, 8 de julio de 2026",8:00,"miércoles, 15 de julio de 2026",8:00
+16.21,Bioinformática,"lunes, 13 de julio de 2026",8:00,"lunes, 20 de julio de 2026",8:00
+16.22,Informática Médica,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+16.23,Órganos Artificiales,"martes, 14 de julio de 2026",16:00,"martes, 21 de julio de 2026",16:00
+16.24,Ingeniería de Rehabilitación,"miércoles, 8 de julio de 2026",14:00,"miércoles, 15 de julio de 2026",14:00
+16.25,Ingeniería Clínica,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",16:00
+16.27,Ingeniería de Tejidos,"viernes, 10 de julio de 2026",10:00,"viernes, 17 de julio de 2026",10:00
+16.29,Diseño de Fármacos,"viernes, 10 de julio de 2026",16:00,"viernes, 17 de julio de 2026",16:00
+16.32,Redes Neuronales en BIO,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",16:00
+16.33,Ingeniería Hospitalaria,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",16:00
+16.43,Bioestadística,"martes, 7 de julio de 2026",16:00,"martes, 14 de julio de 2026",16:00
+16.44,Física Médica,"viernes, 10 de julio de 2026",13:00,"viernes, 17 de julio de 2026",13:00
+16.50,Introducción de la Bioinformática,"jueves, 2 de julio de 2026",8:00,"jueves, 16 de julio de 2026",8:00
+16.53,Biotecnología Aplicada,"miércoles, 8 de julio de 2026",16:00,"miércoles, 15 de julio de 2026",16:00
+16.55,Biología,"miércoles, 8 de julio de 2026",14:00,"miércoles, 15 de julio de 2026",14:00
+16.57,Robótica Bioinspirada,"martes, 7 de julio de 2026",13:00,"martes, 14 de julio de 2026",13:00
+16.63,Procesamiento de Señales e Imágenes Biomédicas,"miércoles, 8 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+16.64,Mecánica de biomateriales y tejidos,"lunes, 13 de julio de 2026",16:00,"jueves, 16 de julio de 2026",16:00
+16.68,Señales y Sistemas,"martes, 7 de julio de 2026",17:00,"martes, 21 de julio de 2026",17:00
+16.79,Neurociencias,"miércoles, 8 de julio de 2026",10:00,"miércoles, 15 de julio de 2026",10:00
+16.81,Neurobiología del Aprendizaje y Control del Movimiento,"martes, 14 de julio de 2026",13:00,"martes, 21 de julio de 2026",13:00
+16.85,Procesamiento Avanzado de Imágenes en Biología y Biomedicina,"lunes, 6 de julio de 2026",10:00,"lunes, 20 de julio de 2026",10:00
+17.01,Introducción a la Ingeniería Química,"miércoles, 8 de julio de 2026",10:00,"miércoles, 15 de julio de 2026",10:00
+17.02,Procesos Industriales,"miércoles, 8 de julio de 2026",13:00,"miércoles, 15 de julio de 2026",13:00
+17.03,Bioquímica y Microbiología Aplicadas,"martes, 14 de julio de 2026",8:00,"martes, 21 de julio de 2026",8:00
+17.04,Fenómenos de Transporte,"miércoles, 15 de julio de 2026",13:00,"miércoles, 22 de julio de 2026",13:00
+17.05,Control de Procesos,"martes, 7 de julio de 2026",17:00,"martes, 21 de julio de 2026",17:00
+17.06,Proyecto Final de Carrera I,"lunes, 20 de julio de 2026",19:00,"lunes, 27 de julio de 2026",19:00
+17.07,Proyecto Final de Carrera II,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+17.08,Seguridad de Procesos,"jueves, 2 de julio de 2026",19:00,"jueves, 16 de julio de 2026",19:00
+17.09,Industrias Químicas,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+17.10,"Desarrollo de Yacimientos, Producción, Tratamiento y Comercialización de Gas y Petróleo","martes, 7 de julio de 2026",19:00,"martes, 14 de julio de 2026",19:00
+17.15,Introducción a la Ingeniería Ambiental,"martes, 14 de julio de 2026",13:00,"martes, 21 de julio de 2026",13:00
+17.16,Introducción a la Nanotecnología,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+17.19,Calidad de Aire,"lunes, 6 de julio de 2026",16:00,"lunes, 13 de julio de 2026",16:00
+17.23,Triple Impacto: Estrategias para el Desarrollo Sostenible,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+17.24,Introducción al Proceso de Producción de Cerveza,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+18.01,Introducción a la Biotecnología,"viernes, 3 de julio de 2026",13:00,"viernes, 10 de julio de 2026",13:00
+21.06,Electrotecnia,"jueves, 2 de julio de 2026",9:00,"jueves, 16 de julio de 2026",9:00
+21.07,Máquinas e Instalaciones Eléctricas,"lunes, 6 de julio de 2026",16:00,"lunes, 13 de julio de 2026",16:00
+21.08,Electrotecnia,"lunes, 6 de julio de 2026",16:00,"lunes, 13 de julio de 2026",16:00
+21.09,Máquinas Eléctricas,"martes, 7 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+21.10,Instalaciones Eléctricas,"miércoles, 15 de julio de 2026",13:00,"miércoles, 22 de julio de 2026",13:00
+21.30,Principios y Aplicaciones Eléctricas,"miércoles, 8 de julio de 2026",16:00,"miércoles, 15 de julio de 2026",16:00
+21.44,Instalaciones Eléctricas,"miércoles, 15 de julio de 2026",13:00,"miércoles, 22 de julio de 2026",13:00
+22.10,Electrónica e Instrumentación,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+22.14,Electrónica IV,"viernes, 10 de julio de 2026",15:00,"viernes, 24 de julio de 2026",15:00
+22.15,Electrónica V,"jueves, 16 de julio de 2026",15:00,"jueves, 23 de julio de 2026",15:00
+22.21,Electromagnetismo,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+22.22,Antenas y Radioprogramación,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",16:00
+22.28,Electrónica de Potencia,"viernes, 10 de julio de 2026",15:00,"viernes, 24 de julio de 2026",15:00
+22.29,Microondas,"viernes, 17 de julio de 2026",18:00,"viernes, 24 de julio de 2026",18:00
+22.31,Diseño de Equipos Electrónicos (Anual),"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+22.33,Microelectrónica,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+22.37,Electromagnetismo,"lunes, 13 de julio de 2026",16:00,"lunes, 20 de julio de 2026",16:00
+22.45,Redes Neuronales,"martes, 14 de julio de 2026",10:00,"martes, 21 de julio de 2026",10:00
+22.46,Procesamiento Adaptativo de Señales,"martes, 7 de julio de 2026",10:00,"martes, 14 de julio de 2026",10:00
+22.47,Procesamiento de Voz,"miércoles, 15 de julio de 2026",15:00,"miércoles, 22 de julio de 2026",15:00
+22.48,Procesamiento de imágenes,"miércoles, 15 de julio de 2026",17:00,"miércoles, 22 de julio de 2026",17:00
+22.49,Laboratorio de Dsp_fpga,"lunes, 13 de julio de 2026",17:00,"lunes, 27 de julio de 2026",17:00
+22.56,Sensores y Actuadores,"martes, 14 de julio de 2026",15:00,"martes, 21 de julio de 2026",15:00
+22.57,Microprocesadores y Control,"martes, 14 de julio de 2026",12:00,"martes, 21 de julio de 2026",12:00
+22.61,Transmisión de la Información,"martes, 14 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+22.64,Comunicaciones Digitales,"jueves, 16 de julio de 2026",15:00,"jueves, 23 de julio de 2026",15:00
+22.66,Redes Digitales,"jueves, 16 de julio de 2026",15:00,"jueves, 23 de julio de 2026",15:00
+22.67,Señales Aleatorias,"jueves, 16 de julio de 2026",15:00,"jueves, 23 de julio de 2026",15:00
+22.73,Instrumentación y Control Industrial,"jueves, 16 de julio de 2026",9:00,"jueves, 23 de julio de 2026",9:00
+22.88,Sensores y Actuadores,"martes, 14 de julio de 2026",18:00,"martes, 21 de julio de 2026",18:00
+22.90,Automación Industrial,"viernes, 17 de julio de 2026",19:00,"viernes, 24 de julio de 2026",19:00
+22.93,Control Automático,"lunes, 20 de julio de 2026",17:00,"lunes, 27 de julio de 2026",17:00
+22.94,Control Discreto,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+23.02,Electrónica Analógica y Digital,"miércoles, 8 de julio de 2026",8:00,"miércoles, 22 de julio de 2026",8:00
+23.03,Sistemas de Control,"jueves, 16 de julio de 2026",9:00,"jueves, 23 de julio de 2026",9:00
+23.05,Acústica para Ingenieros,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+23.07,Electrónica Industrial,"viernes, 17 de julio de 2026",18:00,"viernes, 24 de julio de 2026",18:00
+23.08,Control Avanzado,"martes, 7 de julio de 2026",16:00,"martes, 14 de julio de 2026",16:00
+23.15,Realidad Virtual,"viernes, 10 de julio de 2026",15:00,"viernes, 17 de julio de 2026",15:00
+23.16,Sistemas de Control,"jueves, 16 de julio de 2026",9:00,"jueves, 23 de julio de 2026",9:00
+23.17,Electrónica e Instrumentación,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+23.18,Electrónica e Instrumentación,"lunes, 13 de julio de 2026",16:00,"lunes, 20 de julio de 2026",16:00
+25.01,Fundamentos de Electrónica,"martes, 7 de julio de 2026",8:00,"martes, 14 de julio de 2026",8:00
+25.02,Programación I,"lunes, 6 de julio de 2026",11:00,"miércoles, 22 de julio de 2026",11:00
+25.03,Algoritmos y Estructuras de Datos,"viernes, 3 de julio de 2026",17:00,"viernes, 17 de julio de 2026",17:00
+25.04,Computación Cuántica,"martes, 7 de julio de 2026",15:00,"martes, 14 de julio de 2026",15:00
+25.10,Teoría de Circuitos 1,"viernes, 10 de julio de 2026",8:00,"viernes, 17 de julio de 2026",8:00
+25.12,Tecnología de Materiales Electrónicos,"viernes, 10 de julio de 2026",10:00,"viernes, 24 de julio de 2026",10:00
+25.13,Laboratorio de Electrónica 1,"viernes, 10 de julio de 2026",18:00,"viernes, 17 de julio de 2026",18:00
+25.14,Teoría de Circuitos 2,"martes, 7 de julio de 2026",12:00,"martes, 21 de julio de 2026",12:00
+25.15,Electrónica I,"viernes, 10 de julio de 2026",15:00,"viernes, 17 de julio de 2026",15:00
+25.16,Laboratorio de Electrónica 2,"martes, 14 de julio de 2026",15:00,"martes, 21 de julio de 2026",15:00
+25.17,Electrónica II,"lunes, 13 de julio de 2026",18:00,"viernes, 24 de julio de 2026",18:00
+25.18,Física Electrónica,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+25.20,Análisis de Señales y Sistemas Digitales,"miércoles, 8 de julio de 2026",14:00,"miércoles, 22 de julio de 2026",14:00
+25.21,Electrónica III,"martes, 7 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+25.22,Electromagnetismo,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+25.23,Sistemas de control,"lunes, 20 de julio de 2026",17:00,"lunes, 27 de julio de 2026",17:00
+25.24,Laboratorio de Electrónica 3,"lunes, 13 de julio de 2026",9:00,"lunes, 20 de julio de 2026",9:00
+25.26,Transmisión de la Información,"martes, 14 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+25.27,Sistemas Embebidos,"lunes, 13 de julio de 2026",14:00,"lunes, 20 de julio de 2026",14:00
+25.28,Electrónica IV,"viernes, 10 de julio de 2026",15:00,"viernes, 24 de julio de 2026",15:00
+25.30,Electrónica V,"jueves, 16 de julio de 2026",15:00,"jueves, 23 de julio de 2026",15:00
+25.31,Proyectos Electrónicos,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+25.53,Señales Aleatorias,"jueves, 16 de julio de 2026",15:00,"jueves, 23 de julio de 2026",15:00
+25.55,Microelectrónica,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+25.62,Electrónica Aeroespacial,"martes, 14 de julio de 2026",15:00,"martes, 21 de julio de 2026",15:00
+25.63,Redes Neuronales,"miércoles, 8 de julio de 2026",10:00,"miércoles, 15 de julio de 2026",10:00
+25.87,Redes Neuronales II,"viernes, 10 de julio de 2026",13:00,"viernes, 17 de julio de 2026",13:00
+25.88,Redes Neuronales III,"viernes, 17 de julio de 2026",13:00,"viernes, 24 de julio de 2026",13:00
+30.01,Mecánica y Mecanismos,"lunes, 13 de julio de 2026",16:00,"lunes, 20 de julio de 2026",16:00
+30.02,Máquinas Térmicas,"miércoles, 8 de julio de 2026",16:00,"miércoles, 15 de julio de 2026",16:00
+30.03,Instalaciones Térmicas,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+30.06,Motores de Combustión Interna,"miércoles, 8 de julio de 2026",13:00,"miércoles, 22 de julio de 2026",13:00
+30.07,Elementos Finitos I,"jueves, 16 de julio de 2026",14:00,"jueves, 23 de julio de 2026",14:00
+30.09,Motores de Combustión Interna,"miércoles, 8 de julio de 2026",13:00,"miércoles, 22 de julio de 2026",13:00
+30.12,Diseño mecánico avanzado,"martes, 7 de julio de 2026",16:00,"martes, 14 de julio de 2026",16:00
+30.14,Mecánica de Fluidos Computacional,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+30.19,Introducción a la Dinámica del Autómovil,"viernes, 10 de julio de 2026",19:00,"viernes, 24 de julio de 2026",19:00
+30.21,Ciclos Reales en Motores de Combustión Interna,"viernes, 17 de julio de 2026",16:00,"viernes, 24 de julio de 2026",16:00
+30.23,Mantenimiento Industrial,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+30.24,Metalurgia Física I,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+30.25,Ciencia de Materiales II,"viernes, 3 de julio de 2026",13:00,"viernes, 10 de julio de 2026",13:00
+30.26,Ciencia de Materiales I,"martes, 7 de julio de 2026",8:00,"martes, 14 de julio de 2026",8:00
+30.32,Termodinámica y sus aplicaciones,"lunes, 6 de julio de 2026",16:00,"martes, 14 de julio de 2026",13:00
+30.36,Diseño de Motores de Combustión Interna,"viernes, 17 de julio de 2026",16:00,"viernes, 24 de julio de 2026",16:00
+30.37,Diseño de Motores de Combustión Interna,"viernes, 17 de julio de 2026",16:00,"viernes, 24 de julio de 2026",16:00
+30.38,Dinámica del Automóvil,"viernes, 10 de julio de 2026",19:00,"viernes, 24 de julio de 2026",19:00
+30.39,Dinámica del Automóvil,"viernes, 10 de julio de 2026",19:00,"viernes, 24 de julio de 2026",19:00
+30.40,Sistemas Mecatrónicos del Autómovil,"jueves, 16 de julio de 2026",15:00,"jueves, 23 de julio de 2026",15:00
+30.41,Diseño Mecánico I,"jueves, 2 de julio de 2026",9:00,"jueves, 16 de julio de 2026",9:00
+30.42,Diseño Mecánico II,"jueves, 2 de julio de 2026",16:00,"miércoles, 15 de julio de 2026",16:00
+30.43,Diseño Mecánico III A,"viernes, 10 de julio de 2026",9:00,"viernes, 17 de julio de 2026",9:00
+30.44,Diseño Mecánico III B,"martes, 7 de julio de 2026",11:00,"jueves, 16 de julio de 2026",13:00
+30.45,Diseño Mecánico IV,"martes, 7 de julio de 2026",19:00,"martes, 14 de julio de 2026",19:00
+30.46,Laboratorio de Diseño Mecánico,"viernes, 3 de julio de 2026",14:00,"viernes, 10 de julio de 2026",14:00
+30.47,Termofluidos I,"lunes, 6 de julio de 2026",9:00,"lunes, 13 de julio de 2026",9:00
+30.48,Termofluidos II,"lunes, 13 de julio de 2026",14:00,"lunes, 20 de julio de 2026",14:00
+30.49,Máquinas Térmicas e Hidráulicas,"viernes, 17 de julio de 2026",15:00,"viernes, 24 de julio de 2026",15:00
+30.50,Mecánica del Continuo,"viernes, 10 de julio de 2026",13:00,"viernes, 17 de julio de 2026",13:00
+30.51,Introducción a la Ingeniería Mecánica,"jueves, 2 de julio de 2026",14:00,"jueves, 16 de julio de 2026",14:00
+30.52,Mecánica Aplicada,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+30.53,Mecánica de Sólidos Computacional,"jueves, 16 de julio de 2026",14:00,"jueves, 23 de julio de 2026",14:00
+30.61,Instalaciones Mecánicas en Plantas de Proceso,"lunes, 6 de julio de 2026",8:00,"lunes, 13 de julio de 2026",8:00
+30.62,Materiales para la Industria Química,"jueves, 2 de julio de 2026",13:00,"jueves, 16 de julio de 2026",13:00
+30.70,Introducción a Mecánica de Rocas,"martes, 7 de julio de 2026",19:00,"martes, 14 de julio de 2026",19:00
+30.89,Mecánica de Sólidos,"lunes, 6 de julio de 2026",8:00,"lunes, 13 de julio de 2026",8:00
+31.08,Sistemas de Representación,"sábado, 4 de julio de 2026",8:00,"martes, 14 de julio de 2026",11:00
+31.19,Estática y Resistencia de Materiales,"lunes, 6 de julio de 2026",8:00,"lunes, 13 de julio de 2026",8:00
+31.21,Termodinámica,"lunes, 6 de julio de 2026",16:00,"martes, 14 de julio de 2026",13:00
+31.22,Mecánica de Fluidos,"miércoles, 8 de julio de 2026",15:00,"miércoles, 15 de julio de 2026",15:00
+31.24,Mecánica de Fluidos,"miércoles, 8 de julio de 2026",15:00,"miércoles, 15 de julio de 2026",15:00
+31.26,Mecánica de Fluidos,"jueves, 2 de julio de 2026",16:00,"jueves, 16 de julio de 2026",16:00
+31.30,Materiales Poliméricos,"lunes, 13 de julio de 2026",11:00,"lunes, 20 de julio de 2026",11:00
+31.33,Mecanismos,"martes, 7 de julio de 2026",19:00,"martes, 14 de julio de 2026",19:00
+31.37,Transferencia de Calor,"lunes, 13 de julio de 2026",14:00,"lunes, 20 de julio de 2026",14:00
+31.38,Turbomáquinas,"viernes, 17 de julio de 2026",15:00,"viernes, 24 de julio de 2026",15:00
+31.65,Procesos de Manufactura II,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+31.66,"Hidráulica, Neumática y PLC","jueves, 16 de julio de 2026",10:00,"jueves, 23 de julio de 2026",10:00
+31.67,Procesos de Manufactura I,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+31.68,Instalaciones Industriales,"martes, 7 de julio de 2026",18:00,"miércoles, 15 de julio de 2026",18:00
+31.73,Aire Acondicionado y Refrigeración,"viernes, 17 de julio de 2026",16:00,"viernes, 24 de julio de 2026",16:00
+31.81,Tecnología de Máquinas,"miércoles, 15 de julio de 2026",11:00,"miércoles, 22 de julio de 2026",11:00
+31.82,Sistemas Mecatrónicos,"viernes, 3 de julio de 2026",14:00,"viernes, 17 de julio de 2026",14:00
+31.84,Estructuras Automotrices,"martes, 7 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+31.85,Transmisiones Automotrices,"jueves, 16 de julio de 2026",13:00,"jueves, 23 de julio de 2026",13:00
+31.90,Integridad Estructural,"martes, 14 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+31.92,Elementos Finitos II,"jueves, 16 de julio de 2026",14:00,"jueves, 23 de julio de 2026",14:00
+31.94,Tecnología de Materiales Compuestos,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+31.95,Física y Mecánica de Aceros,"martes, 14 de julio de 2026",16:00,"martes, 21 de julio de 2026",16:00
+31.96,Deformación y Fractura de Materiales,"martes, 14 de julio de 2026",16:00,"martes, 21 de julio de 2026",16:00
+31.97,Corrosión y Degradación de Materiales,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",16:00
+31.98,Laboratorio Avanzado de Materiales,"viernes, 17 de julio de 2026",8:00,"viernes, 24 de julio de 2026",8:00
+31.99,Mecatrónica Aplicada,"viernes, 3 de julio de 2026",14:00,"viernes, 17 de julio de 2026",14:00
+32.03,Motores Marinos,"viernes, 10 de julio de 2026",18:00,"viernes, 17 de julio de 2026",18:00
+32.49,Estructura de Buques,"lunes, 13 de julio de 2026",17:00,"lunes, 20 de julio de 2026",17:00
+32.54,Construcción Naval,"viernes, 10 de julio de 2026",15:00,"viernes, 17 de julio de 2026",15:00
+32.56,Alistamiento Naval,"miércoles, 8 de julio de 2026",17:00,"miércoles, 15 de julio de 2026",17:00
+32.64,Plantas Propulsoras Marinas,"lunes, 13 de julio de 2026",18:00,"lunes, 20 de julio de 2026",18:00
+32.66,Hidrostática y Estabilidad,"lunes, 6 de julio de 2026",15:00,"lunes, 20 de julio de 2026",15:00
+32.71,Proyecto de Embarcaciones de Trabajo,"jueves, 16 de julio de 2026",18:00,"jueves, 23 de julio de 2026",18:00
+32.72,Proyecto de Buques,"martes, 14 de julio de 2026",18:00,"martes, 21 de julio de 2026",18:00
+33.12,Sistemas de Propulsión II,"martes, 7 de julio de 2026",15:00,"martes, 14 de julio de 2026",15:00
+41.04,Perforación Petrolera II,"martes, 14 de julio de 2026",16:00,"martes, 21 de julio de 2026",16:00
+41.05,Geología del Petróleo,"jueves, 2 de julio de 2026",17:00,"jueves, 16 de julio de 2026",17:00
+41.09,Ingeniería de Reservorios,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+41.10,Recuperación asistida de Petróleo,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+41.12,Proyecto de Instalaciones de Superficie,"martes, 14 de julio de 2026",18:00,"martes, 21 de julio de 2026",18:00
+41.15,Gas y Gasolina Natural,"miércoles, 15 de julio de 2026",18:00,"miércoles, 22 de julio de 2026",18:00
+41.16,Análisis de Transientes de Presión,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+41.19,Desarrollo de Negocios,"martes, 14 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+41.34,Desarrollo de Yacimientos (Anual),"viernes, 17 de julio de 2026",13:00,"viernes, 24 de julio de 2026",13:00
+41.35,Simulación de Reservorios,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+41.38,Formación General II,"lunes, 13 de julio de 2026",16:00,"lunes, 20 de julio de 2026",16:00
+41.96,Trabajo Supervisado en Petróleo,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",16:00
+41.97,Trabajo de Investigación Dirigido en Petróleo,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",16:00
+46.01,Introducción a la Ingeniería en Petróleo,"martes, 7 de julio de 2026",16:00,"martes, 14 de julio de 2026",16:00
+46.21,Geología I,"jueves, 2 de julio de 2026",17:00,"jueves, 16 de julio de 2026",17:00
+46.22,Geofísica de Reservorios,"lunes, 13 de julio de 2026",16:00,"lunes, 20 de julio de 2026",16:00
+46.23,Geología II,"jueves, 2 de julio de 2026",17:00,"jueves, 16 de julio de 2026",17:00
+46.41,Petrofísica y Fluidos de Reservorio,"viernes, 10 de julio de 2026",18:00,"viernes, 17 de julio de 2026",18:00
+46.42,Registros de Pozo I,"viernes, 10 de julio de 2026",19:00,"viernes, 17 de julio de 2026",19:00
+46.44,Análisis de Transientes de Presión,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+46.46,Ingeniería de Reservorios,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+46.61,Ingeniería de Perforación I,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+46.63,Ingeniería de Workover I,"viernes, 10 de julio de 2026",16:00,"viernes, 17 de julio de 2026",16:00
+46.65,Instalaciones de Superficie,"martes, 14 de julio de 2026",18:00,"martes, 21 de julio de 2026",18:00
+46.66,Gas y Gasolina Natural,"miércoles, 15 de julio de 2026",18:00,"miércoles, 22 de julio de 2026",18:00
+46.67,Ingeniería de Producción I,"miércoles, 8 de julio de 12026",19:00,"jueves, 23 de julio de 2026",19:00
+46.69,Transporte y Cadena de Valor de los Hidrocarburos,"martes, 14 de julio de 2026",13:00,"martes, 21 de julio de 2026",13:00
+46.70,Industrialización y Economía de los Hidrocarburos,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+46.81,Gestión Ambiental en la Industria,"viernes, 10 de julio de 2026",19:00,"viernes, 17 de julio de 2026",19:00
+46.82,Evaluación de Proyectos,"lunes, 13 de julio de 2026",16:00,"lunes, 20 de julio de 2026",16:00
+46.83,Desarrollo de Yacimientos,"viernes, 17 de julio de 2026",13:00,"viernes, 24 de julio de 2026",13:00
+47.48,Simulación de Reservorios,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+47.49,Recursos y Reservas,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",16:00
+47.62,Ingeniería de Perforación II,"martes, 14 de julio de 2026",16:00,"martes, 21 de julio de 2026",16:00
+47.64,Ingeniería de Workover II,"viernes, 10 de julio de 2026",16:00,"viernes, 17 de julio de 2026",16:00
+47.72,Geomecánica y Diseño de Fracturas,"lunes, 13 de julio de 2026",18:00,"lunes, 20 de julio de 2026",18:00
+47.73,Operaciones Offshore - Petróleo y LNG,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+47.86,Transición Energética y Sustentabilidad,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+47.87,Desarrollo de Negocios,"martes, 14 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+61.02,Economía del Mercado Laboral,"miércoles, 8 de julio de 2026",14:00,"miércoles, 15 de julio de 2026",14:00
+61.03,Economía de las Infraestructuras,"miércoles, 8 de julio de 2026",14:00,"miércoles, 15 de julio de 2026",14:00
+61.04,Sistema Monetario y Financiero en Argentina,"martes, 7 de julio de 2026",19:00,"martes, 14 de julio de 2026",19:00
+61.05,Economía de la Salud,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+61.09,Economía Empresaria,"martes, 7 de julio de 2026",18:00,"martes, 21 de julio de 2026",18:00
+61.12,Gestión Financiera (español),"martes, 7 de julio de 2026",16:00,"lunes, 20 de julio de 2026",16:00
+61.12,Gestión Financiera (inglés),"martes, 7 de julio de 2026",16:15,"lunes, 20 de julio de 2026",16:15
+61.14,Economía Internacional Real,"miércoles, 8 de julio de 2026",17:00,"miércoles, 15 de julio de 2026",17:00
+61.15,Economía Internacional Monetaria,"miércoles, 8 de julio de 2026",11:00,"miércoles, 15 de julio de 2026",11:00
+61.16,Introducción a las Finanzas,"miércoles, 8 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+61.20,Presupuesto y Control,"martes, 7 de julio de 2026",18:00,"martes, 21 de julio de 2026",18:00
+61.23,Economía para Ingenieros,"martes, 7 de julio de 2026",13:00,"lunes, 20 de julio de 2026",13:00
+61.27,Análisis de Coyuntura Económica,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",16:00
+61.28,Economía,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",19:00
+61.30,Econometría Aplicada,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+61.31,Derecho para Ingenieros,"viernes, 10 de julio de 2026",17:00,"viernes, 17 de julio de 2026",17:00
+61.32,Derecho para Ingenieros,"viernes, 10 de julio de 2026",17:00,"viernes, 17 de julio de 2026",17:00
+61.50,Finanzas de la Empresa,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",16:00
+61.81,Microeconomía,"miércoles, 8 de julio de 2026",8:00,"martes, 14 de julio de 2026",8:00
+61.82,Macroeconomía,"lunes, 13 de julio de 2026",13:00,"lunes, 20 de julio de 2026",13:00
+61.87,Derecho Público y Privado I,"viernes, 10 de julio de 2026",17:00,"viernes, 17 de julio de 2026",17:00
+67.01,Tecnología de materiales,"jueves, 2 de julio de 2026",9:00,"jueves, 16 de julio de 2026",9:00
+67.02,Estática,"martes, 7 de julio de 2026",8:00,"jueves, 16 de julio de 2026",18:00
+67.03,Resistencia de Materiales,"viernes, 10 de julio de 2026",8:00,"viernes, 17 de julio de 2026",8:00
+67.04,Instrucción a la temática social,"miércoles, 8 de julio de 2026",14:00,"miércoles, 22 de julio de 2026",14:00
+67.05,Tecnología del Hormigón,"martes, 7 de julio de 2026",10:00,"martes, 14 de julio de 2026",10:00
+67.06,Construcciones,"martes, 7 de julio de 2026",14:00,"martes, 14 de julio de 2026",14:00
+67.07,Geotopografía,"viernes, 10 de julio de 2026",10:00,"viernes, 17 de julio de 2026",10:00
+67.08,Análisis Estructural,"miércoles, 8 de julio de 2026",13:00,"miércoles, 15 de julio de 2026",13:00
+71.20,Informática General,"martes, 7 de julio de 2026",18:00,"martes, 14 de julio de 2026",18:00
+71.22,Sistemas de Inteligencia Artificial,"lunes, 13 de julio de 2026",14:00,"lunes, 20 de julio de 2026",14:00
+71.30,Introducción a la tecnología informática,"martes, 7 de julio de 2026",8:00,"martes, 14 de julio de 2026",8:00
+71.38,Programación web,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+71.45,Estructura de Datos y Programación,"miércoles, 8 de julio de 2026",17:00,"miércoles, 15 de julio de 2026",17:00
+71.58,Informática General,"martes, 7 de julio de 2026",8:00,"martes, 14 de julio de 2026",8:00
+71.59,Estructura de Datos y Programación,"miércoles, 8 de julio de 2026",10:00,"miércoles, 15 de julio de 2026",10:00
+71.80,Utilitarios en Informática,"martes, 7 de julio de 2026",17:00,"martes, 14 de julio de 2026",17:00
+71.88,Gestión de Datos,"lunes, 6 de julio de 2026",18:00,"lunes, 20 de julio de 2026",18:00
+71.90,Certificaciones Tecnológicas,"viernes, 10 de julio de 2026",8:00,"viernes, 17 de julio de 2026",8:00
+71.93,Principios de Informática,"viernes, 3 de julio de 2026",11:00,"viernes, 10 de julio de 2026",11:00
+71.94,Introducción al Diseño de Bases de Datos Relacionales y No-Relacionales,"martes, 7 de julio de 2026",8:00,"martes, 14 de julio de 2026",8:00
+72.03,Introducción a la Informática,"lunes, 6 de julio de 2026",16:00,"lunes, 13 de julio de 2026",16:00
+72.07,Protocolos de Comunicación,"martes, 14 de julio de 2026",16:00,"martes, 21 de julio de 2026",16:00
+72.08,Arquitectura de Computadoras,"martes, 7 de julio de 2026",16:00,"martes, 14 de julio de 2026",16:00
+72.11,Sistemas Operativos,"martes, 14 de julio de 2026",18:00,"martes, 21 de julio de 2026",18:00
+72.20,Redes de Información,"martes, 14 de julio de 2026",18:00,"martes, 21 de julio de 2026",18:00
+72.25,Simulación de Sistemas,"viernes, 10 de julio de 2026",9:00,"viernes, 24 de julio de 2026",9:00
+72.27,Sistemas de Inteligencia Artificial,"jueves, 16 de julio de 2026",9:00,"jueves, 23 de julio de 2026",9:00
+72.31,Programación Imperativa,"lunes, 13 de julio de 2026",8:00,"lunes, 20 de julio de 2026",8:00
+72.32,Diseño y Procesamiento de Documentos XML,"miércoles, 8 de julio de 2026",8:00,"miércoles, 15 de julio de 2026",8:00
+72.33,Programación Orientada a Objetos,"miércoles, 15 de julio de 2026",13:00,"miércoles, 22 de julio de 2026",13:00
+72.34,Estructura de Datos y Algoritmos,"miércoles, 8 de julio de 2026",9:00,"jueves, 16 de julio de 2026",11:00
+72.35,Ingenieria de Software I,"martes, 7 de julio de 2026",8:00,"martes, 14 de julio de 2026",8:00
+72.36,Interacción Hombre-Computadora (HCI),"miércoles, 8 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+72.37,Base de Datos I,"martes, 7 de julio de 2026",13:00,"jueves, 16 de julio de 2026",8:00
+72.38,Proyecto de Aplicaciones Web,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+72.39,"Autómatas, Teoría de Lenguajes y Compiladores","miércoles, 8 de julio de 2026",16:00,"miércoles, 15 de julio de 2026",16:00
+72.40,Ingenieria del Software II,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+72.41,Base de Datos II,"martes, 7 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+72.42,Programación de Objetos Distribuidos,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+72.43,Gestión de Proyectos Informáticos,"lunes, 13 de julio de 2026",15:00,"lunes, 20 de julio de 2026",15:00
+72.44,Criptografía y Seguridad,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+72.52,Análisis y Tratamiento de Imágenes,"jueves, 2 de julio de 2026",16:00,"jueves, 16 de julio de 2026",16:00
+72.54,OLAP y Explotación de Datos,"miércoles, 8 de julio de 2026",8:00,"miércoles, 15 de julio de 2026",8:00
+72.58,Computación Gráfica,"miércoles, 8 de julio de 2026",16:00,"miércoles, 15 de julio de 2026",16:00
+72.60,Programación Funcional,"lunes, 13 de julio de 2026",18:00,"lunes, 20 de julio de 2026",18:00
+72.71,Integración de Sistemas de Información,"martes, 7 de julio de 2026",15:00,"martes, 14 de julio de 2026",15:00
+72.74,Visualización de Información,"lunes, 13 de julio de 2026",10:00,"lunes, 20 de julio de 2026",10:00
+72.75,Aprendizaje Automático (Machine Learning),"miércoles, 8 de julio de 2026",15:00,"miércoles, 15 de julio de 2026",15:00
+72.80,Big Data,"lunes, 13 de julio de 2026",18:00,"lunes, 20 de julio de 2026",18:00
+72.87,Diseño Sonoro para Animación y Videojuegos,"martes, 14 de julio de 2026",9:00,"martes, 21 de julio de 2026",9:00
+72.89,Moneda Digital Descentralizada,"martes, 7 de julio de 2026",18:00,"martes, 14 de julio de 2026",18:00
+72.90,Internet de las Cosas (IoT),"martes, 14 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+72.92,El Paradigma NoSQL - Bases de Datos de Grafos,"miércoles, 15 de julio de 2026",14:00,"miércoles, 22 de julio de 2026",14:00
+72.97,Introducción a la Programación de Videojuegos,"miércoles, 15 de julio de 2026",18:00,"miércoles, 22 de julio de 2026",18:00
+73.21,Desarrollo de Aplicaciones Móviles Multiplataforma,"lunes, 13 de julio de 2026",18:00,"lunes, 20 de julio de 2026",18:00
+73.22,Fundamentos de DevOps,"jueves, 16 de julio de 2026",18:00,"jueves, 23 de julio de 2026",18:00
+73.30,Desarrollo profesional de software: del código al producto,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+73.40,Arquitectura de Microservicios,"viernes, 10 de julio de 2026",17:00,"viernes, 17 de julio de 2026",17:00
+73.64,Temas Avanzados en Deep Learning,"viernes, 10 de julio de 2026",18:00,"viernes, 17 de julio de 2026",18:00
+73.81,Ciberseguridad Ofensiva y Defensiva,"lunes, 13 de julio de 2026",16:00,"lunes, 20 de julio de 2026",16:00
+73.82,Bases de Datos Espaciales y de Movilidad,"miércoles, 15 de julio de 2026",14:00,"miércoles, 22 de julio de 2026",14:00
+73.84,Ciencia de Datos Aplicada,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+73.89,Introducción a Blockchain y Criptomonedas,"martes, 7 de julio de 2026",18:00,"martes, 14 de julio de 2026",18:00
+73.98,Desarrollo Integral de Videojuegos,"lunes, 13 de julio de 2026",18:00,"lunes, 20 de julio de 2026",18:00
+81.03,Sistemas de Información,"miércoles, 15 de julio de 2026",16:00,"miércoles, 22 de julio de 2026",16:00
+81.04,Teoría de Juegos y Estrategia,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+81.05,Responsabilidad Social Empresaria,"martes, 14 de julio de 2026",17:00,"martes, 21 de julio de 2026",17:00
+81.06,Introducción a la Administración,"jueves, 2 de julio de 2026",11:00,"miércoles, 8 de julio de 2026",8:00
+81.07,Sistemas Contables,"miércoles, 8 de julio de 2026",11:00,"miércoles, 15 de julio de 2026",11:00
+81.11,Contabilidad Gerencial,"martes, 7 de julio de 2026",8:00,"martes, 14 de julio de 2026",8:00
+81.14,Product Management,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+81.18,Taller de Simulación Comercial,"lunes, 13 de julio de 2026",13:00,"lunes, 20 de julio de 2026",13:00
+81.19,Marketing Digital,"lunes, 6 de julio de 2026",17:00,"lunes, 13 de julio de 2026",17:00
+81.20,Comercialización ,"miércoles, 8 de julio de 2026",13:00,"miércoles, 15 de julio de 2026",13:00
+81.20,Comercialización (inglés),"miércoles, 8 de julio de 2026",13:15,"miércoles, 15 de julio de 2026",13:15
+81.21,Gestión de Ventas,"martes, 14 de julio de 2026",19:00,"martes, 21 de julio de 2026",19:00
+81.23,Comercio Electrónico,"miércoles, 8 de julio de 2026",16:00,"miércoles, 15 de julio de 2026",16:00
+81.26,Comercio Exterior,"martes, 14 de julio de 2026",13:00,"martes, 21 de julio de 2026",13:00
+81.28,Tecnologías exponenciales,"jueves, 16 de julio de 2026",9:00,"jueves, 23 de julio de 2026",9:00
+81.29,Gestión organizacional basada en procesos de negocio,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+81.32,Análisis funcional de aplicaciones informáticas,"jueves, 2 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+81.33,Diseño de aplicaciones informáticas,"jueves, 2 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+81.34,Arquitectura empresarial,"lunes, 20 de julio de 2026",19:00,"lunes, 27 de julio de 2026",19:00
+81.42,Estrategia Empresarial,"miércoles, 15 de julio de 2026",13:00,"miércoles, 22 de julio de 2026",13:00
+81.46,Auditoría General y de Sistemas,"martes, 7 de julio de 2026",19:00,"martes, 14 de julio de 2026",19:00
+81.47,Impuestos para la toma de decisiones I,"viernes, 10 de julio de 2026",19:00,"viernes, 24 de julio de 2026",19:00
+81.48,Impuestos para la toma de decisiones II,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+81.49,Branding y Comunicación,"miércoles, 8 de julio de 2026",8:00,"miércoles, 15 de julio de 2026",8:00
+81.51,Gestión de Empresas Familiares,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+81.53,Negocios en Internet,"miércoles, 8 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+81.54,Aplicaciones en Internet,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+81.57,Arquitectura de soluciones digitales,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+81.58,Service Design,"miércoles, 15 de julio de 2026",17:00,"miércoles, 22 de julio de 2026",17:00
+81.59,Gestión de Servicios,"martes, 7 de julio de 2026",19:00,"martes, 14 de julio de 2026",19:00
+81.65,Logística Internacional,"miércoles, 15 de julio de 2026",13:00,"miércoles, 22 de julio de 2026",13:00
+81.68,Sistemas Integrados de Gestión I,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+81.71,Marketing avanzado,"jueves, 16 de julio de 2026",13:00,"jueves, 23 de julio de 2026",13:00
+81.84,ERP Action Lab,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+81.85,CRM Action Lab,"miércoles, 8 de julio de 2026",17:00,"miércoles, 22 de julio de 2026",17:00
+81.95,Proyecto de lanzamiento de productos o servicios (Trabajo Final),"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+81.97,Diagnóstico Empresario y Plan de Acción ( Trabajo Final ),"jueves, 2 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+82.01,Proyecto I,"miércoles, 15 de julio de 2026",8:00,"miércoles, 22 de julio de 2026",8:00
+82.02,Proyecto Final - Analítica,"lunes, 20 de julio de 2026",19:00,"lunes, 27 de julio de 2026",19:00
+82.03,Gestión del Ciclo de Vida de la Información,"jueves, 2 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+82.04,Analítica Descriptiva,"miércoles, 15 de julio de 2026",19:00,"miércoles, 22 de julio de 2026",19:00
+82.05,Análisis Predictivo,"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+82.06,Plataformas de Computación Cognitiva,"viernes, 10 de julio de 2026",9:00,"viernes, 17 de julio de 2026",9:00
+82.07,Blockchain (Moneda digital descentralizada),"lunes, 13 de julio de 2026",19:00,"lunes, 20 de julio de 2026",19:00
+82.08,Cloud Computing,"miércoles, 8 de julio de 2026",19:00,"miércoles, 15 de julio de 2026",19:00
+82.10,Analítica en Transporte y Logística,"miércoles, 8 de julio de 2026",16:00,"miércoles, 15 de julio de 2026",16:00
+82.14,Analítica en Recursos Humanos,"jueves, 2 de julio de 2026",16:00,"jueves, 16 de julio de 2026",19:00
+82.15,Matemática Aplicada,"lunes, 6 de julio de 2026",8:00,"lunes, 13 de julio de 2026",8:00
+82.17,Análisis Multivariado,"miércoles, 8 de julio de 2026",12:00,"miércoles, 15 de julio de 2026",15:00
+82.18,Procesamiento del Lenguaje Natural,"lunes, 6 de julio de 2026",8:00,"lunes, 13 de julio de 2026",8:00
+82.20,Análisis Predictivo Avanzado,"miércoles, 22 de julio de 2026",19:00,"lunes, 27 de julio de 2026",19:00
+82.23,Marketing Analytics,"jueves, 16 de julio de 2026",19:00,"jueves, 23 de julio de 2026",19:00
+82.81,Analítica de Big Data con Spark,"jueves, 2 de julio de 2026",8:00,"jueves, 16 de julio de 2026",8:00
+92.01,Análisis Matemático I,"jueves, 2 de julio de 2026",8:00,"miércoles, 8 de julio de 2026",8:00
+92.02,Análisis Matemático II,"jueves, 2 de julio de 2026",11:00,"viernes, 10 de julio de 2026",11:00
+92.03,Análisis Matemático III,"martes, 7 de julio de 2026",11:00,"martes, 14 de julio de 2026",14:00
+92.04,Análisis Matemático IV,"viernes, 10 de julio de 2026",14:00,"viernes, 17 de julio de 2026",11:00
+92.05,Análisis Matemático IV,"viernes, 10 de julio de 2026",14:00,"viernes, 17 de julio de 2026",11:00
+92.07,Análisis Matemático V,"lunes, 13 de julio de 2026",9:00,"lunes, 20 de julio de 2026",9:00
+93.07,Métodos Numéricos,"viernes, 3 de julio de 2026",9:00,"jueves, 16 de julio de 2026",17:00
+93.16,Matemática Discreta,"viernes, 3 de julio de 2026",8:00,"viernes, 10 de julio de 2026",8:00
+93.18,Álgebra Lineal,"lunes, 6 de julio de 2026",8:00,"lunes, 13 de julio de 2026",8:00
+93.20,Análisis Matemático,"jueves, 2 de julio de 2026",8:00,"miércoles, 8 de julio de 2026",8:00
+93.21,Álgebra,"viernes, 3 de julio de 2026",11:00,"viernes, 10 de julio de 2026",11:00
+93.24,Probabilidad y Estadística,"viernes, 3 de julio de 2026",14:00,"miércoles, 15 de julio de 2026",11:00
+93.26,Análisis Matemático I,"jueves, 2 de julio de 2026",8:00,"miércoles, 8 de julio de 2026",11:00
+93.28,Análisis Matemático II,"martes, 7 de julio de 2026",13:00,"jueves, 16 de julio de 2026",13:00
+93.35,Lógica Computacional,"martes, 7 de julio de 2026",8:00,"jueves, 16 de julio de 2026",11:00
+93.36,Probabilidad,"viernes, 3 de julio de 2026",14:00,"viernes, 10 de julio de 2026",14:00
+93.39,Estadística,"viernes, 10 de julio de 2026",10:00,"viernes, 17 de julio de 2026",10:00
+93.41,Física I,"viernes, 3 de julio de 2026",11:00,"miércoles, 8 de julio de 2026",8:00
+93.42,Física II,"lunes, 6 de julio de 2026",11:00,"jueves, 16 de julio de 2026",8:00
+93.43,Física III,"lunes, 6 de julio de 2026",14:00,"lunes, 13 de julio de 2026",14:00
+93.44,Física IV,"martes, 7 de julio de 2026",14:00,"miércoles, 15 de julio de 2026",8:00
+93.54,Métodos Numéricos,"martes, 7 de julio de 2026",14:00,"martes, 14 de julio de 2026",14:00
+93.58,Álgebra,"martes, 7 de julio de 2026",11:00,"martes, 14 de julio de 2026",11:00
+93.59,Matemática Discreta,"viernes, 3 de julio de 2026",14:00,"viernes, 17 de julio de 2026",14:00
+93.61,Física IV ,"martes, 7 de julio de 2026",14:00,"miércoles, 15 de julio de 2026",8:00
+93.75,Métodos Numéricos Avanzados,"viernes, 3 de julio de 2026",13:00,"viernes, 17 de julio de 2026",13:00
+94.07,Cultura Latinoamericana,"martes, 7 de julio de 2026",13:00,"martes, 14 de julio de 2026",13:00
+94.09,"Cultura, Identidad y Política","miércoles, 8 de julio de 2026",14:00,"miércoles, 15 de julio de 2026",14:00
+94.11,Sociología Política,"miércoles, 15 de julio de 2026",8:00,"miércoles, 22 de julio de 2026",8:00
+94.12,Antropología,"martes, 14 de julio de 2026",14:00,"martes, 21 de julio de 2026",14:00
+94.13,Gestión de Organizaciones Sociales,"jueves, 2 de julio de 2026",19:00,"jueves, 16 de julio de 2026",19:00
+94.19,Comportamiento organizacional,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+94.23,Formación General III,"jueves, 2 de julio de 2026",14:00,"jueves, 23 de julio de 2026",14:00
+94.24,Metodología del Aprendizaje,"viernes, 3 de julio de 2026",11:00,"viernes, 17 de julio de 2026",11:00
+94.27,Administración de Recursos Humanos,"viernes, 17 de julio de 2026",16:00,"viernes, 24 de julio de 2026",16:00
+94.28,Formación General II,"jueves, 16 de julio de 2026",16:00,"jueves, 23 de julio de 2026",16:00
+94.40,Estructura de las Organizaciones,"jueves, 2 de julio de 2026",14:00,"miércoles, 15 de julio de 2026",14:00
+94.42,Comunicación Estratégica,"martes, 14 de julio de 2026",17:00,"martes, 21 de julio de 2026",17:00
+94.61,Filosofía,"jueves, 2 de julio de 2026",8:00,"jueves, 16 de julio de 2026",8:00
+94.62,Ética en los Negocios,"lunes, 6 de julio de 2026",17:00,"lunes, 13 de julio de 2026",17:00
+94.63,Epistemología y Heurística,"lunes, 6 de julio de 2026",19:00,"lunes, 13 de julio de 2026",19:00
+94.64,Prácticas Expositivas,"miércoles, 15 de julio de 2026",10:00,"miércoles, 22 de julio de 2026",10:00

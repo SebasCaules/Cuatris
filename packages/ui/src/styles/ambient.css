@@ -1,0 +1,37 @@
+/* ============================================================
+   AMBIENT — gradiente animado + campo de partículas (canvas).
+   Va detrás de todo el contenido (.page lo cubre con z-index).
+   ============================================================ */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.ambient__grad {
+  position: absolute;
+  inset: -30%;
+  background:
+    radial-gradient(38% 38% at 16% 18%, var(--glow-blue), transparent 62%),
+    radial-gradient(44% 44% at 84% 26%, var(--glow-coral), transparent 64%),
+    radial-gradient(48% 48% at 50% 92%, var(--glow-blue-2), transparent 62%);
+  filter: blur(10px);
+  animation: ambient-drift 26s var(--ease) infinite alternate;
+  will-change: transform;
+}
+@keyframes ambient-drift {
+  0% { transform: translate3d(-3%, -2%, 0) scale(1.02); }
+  50% { transform: translate3d(2%, 1%, 0) scale(1.06); }
+  100% { transform: translate3d(3%, -1%, 0) scale(1.03); }
+}
+.ambient__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient__grad { animation: none; }
+}

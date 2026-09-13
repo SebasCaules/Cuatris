@@ -1,0 +1,49 @@
+/* ============================================================
+   LAYOUT — contenedores, secciones, eyebrow, capa de página.
+   ============================================================ */
+
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+.section {
+  padding-top: var(--s-7);
+  padding-bottom: var(--s-7);
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+/* título de sección (display serif) — lo emite SectionHeading */
+.section__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 10px 0 0;
+  color: var(--text-primary);
+}
+
+/* contenido por encima del ambient */
+.page {
+  position: relative;
+  z-index: 1;
+}
+
+/* pila / fila utilitarias (composición genérica) */
+.sv-stack { display: grid; gap: var(--sv-stack-gap, 14px); }
+.sv-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sv-row-gap, 10px);
+  align-items: center;
+}

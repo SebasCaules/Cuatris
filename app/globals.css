@@ -1,0 +1,27 @@
+/* ============================================================
+   Cuatris — entry de estilos de la app.
+   El SISTEMA DE DISEÑO (tokens + primitivos + chrome) vive en el package
+   privado @studyvaults/ui, copiado tal cual de StudyVaults. Acá quedan solo
+   los ajustes del cascarón standalone (header/footer) y el layout de página.
+   Los estilos del planner viajan con sus componentes (components/planner/*.css).
+   ============================================================ */
+@import "@studyvaults/ui/styles.css";
+
+/* layout de página: el footer cierra la página al final del contenido */
+html { height: 100%; }
+body { min-height: 100%; display: flex; flex-direction: column; }
+main.page { flex: 1 1 auto; display: flex; flex-direction: column; }
+main.page > .planner { flex: 1 1 auto; }
+
+/* header standalone: sin burger, el toggle de tema queda siempre visible */
+.cuatris-nav .nav__inner .theme-toggle--desktop { display: inline-flex !important; }
+.cuatris-nav .nav__link { white-space: nowrap; }
+@media (max-width: 560px) {
+  .cuatris-nav .nav__inner .nav__link { display: none; }
+}
+
+/* footer de una sola franja */
+.cuatris-footer .footer__bottom { border-top: none; padding: 16px 0; }
+.cuatris-footer__links { display: inline-flex; gap: 16px; }
+.cuatris-footer__links a { color: var(--text-secondary); }
+.cuatris-footer__links a:hover { color: var(--ink-strong); }

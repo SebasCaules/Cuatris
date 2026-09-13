@@ -1,0 +1,880 @@
+/* ============================================================================
+   Combinador de horarios — capa NUEVA del overhaul (Módulo E).
+   Complementa a planner.css (NO lo reemplaza): sólo define el layout propio del
+   rediseño — header compacto con controles fijos a la derecha, calendario a todo
+   el ancho, menú de descarga de 3 opciones y el recomendador slim lateral.
+   El calendario, la leyenda, los switches/pills, los chips y el buscador siguen
+   viniendo de planner.css (reusados como consumidor). Todo bajo `.planner` para
+   heredar sus tokens de rol — nada de hex hardcodeado (excepto pasar por roles).
+   ============================================================================ */
+
+/* ---------- container ---------- */
+.planner .cmb9 {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* el cuerpo (barra de resultado + calendario) puede achicarse dentro del flex
+   → el calendario ancho scrollea en su wrap en vez de desbordar la columna */
+.planner .cmb9-body {
+  min-width: 0;
+}
+
+/* ---------- resumen sticky «en vivo» (visible con el picker abierto) ---------- */
+/* Pineado bajo el navbar del portal: mantiene el resultado a la vista mientras
+   se elige, aunque el picker empuje la grilla fuera del viewport. */
+.planner .cmb9-pickersum {
+  position: sticky;
+  top: calc(var(--nav-h) + 8px);
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 10px 14px;
+  flex-wrap: wrap;
+  padding: 8px 13px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-1);
+}
+.planner .cmb9-pickersum__lead {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.planner .cmb9-pickersum__lead b {
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.planner .cmb9-pickersum__lead b.ok {
+  color: var(--sage);
+}
+.planner .cmb9-pickersum__lead b.warn {
+  color: var(--brass);
+}
+.planner .cmb9-pickersum__txt {
+  font-family: var(--f-m);
+  font-size: 11.5px;
+  color: var(--muted);
+}
+.planner .cmb9-pickersum__meta {
+  font-family: var(--f-m);
+  font-size: 11px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+.planner .cmb9-pickersum__see {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: none;
+  font-family: var(--f-m);
+  font-size: 11px;
+  color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 10%, var(--panel));
+  border: 1px solid var(--brass);
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+.planner .cmb9-pickersum__see:hover {
+  background: var(--brass);
+  color: var(--block-ink);
+}
+
+/* ---------- header en filas (título · grilla de materias · preferencias) ---------- */
+.planner .cmb9-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-1);
+}
+/* fila 1: "Materias · N" + Vaciar a la izquierda, acciones a la derecha */
+.planner .cmb9-hrow {
+  display: flex;
+  align-items: center;
+  gap: 8px 14px;
+  flex-wrap: wrap;
+}
+.planner .cmb9-header__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.planner .cmb9-mats {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.planner .cmb9-mats__lbl {
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex: none;
+}
+/* contador discreto al lado del label */
+.planner .cmb9-mats__count {
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--faint);
+  flex: none;
+}
+/* Vaciar — mismo look texto-chico del botón histórico de planner.css, en tokens */
+.planner .cmb9-clear {
+  border: none;
+  background: none;
+  color: var(--faint);
+  cursor: pointer;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 6px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.planner .cmb9-clear:hover {
+  color: var(--oxblood);
+}
+
+/* fila 3: preferencias de cursada (Comisión: Auto · modalidad · Superponer) */
+.planner .cmb9-prefs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ---------- fila 2: grilla uniforme de materias elegidas ---------- */
+.planner .cmb9-matgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 7px;
+}
+/* celda de materia: anatomía fija abbr · nombre (elide) · cr · (selector | vacío)
+   · × sobre un grid interno → el × queda alineado al borde derecho en todas las
+   celdas. El nombre toma la columna flexible y trunca; el selector se cabecea a
+   un ancho acotado para no comerse el nombre. */
+.planner .cmb9-mchip {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  min-width: 0;
+  padding: 4px 7px 4px 10px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--chip-c, var(--brass));
+  border-radius: 7px;
+  animation: cmb9-chip-in 0.26s var(--ease-out) both;
+}
+.planner .cmb9-mchip__abbr {
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+/* nombre completo (truncado): el `title` del chip lleva código · nombre entero */
+.planner .cmb9-mchip__name {
+  min-width: 0;
+  font-family: var(--f-b);
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.planner .cmb9-mchip__cr {
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+/* el CommissionSelect ocupa su columna acotada; si la materia tiene una sola
+   comisión no se renderiza y la columna queda vacía (el × sigue en la última) */
+.planner .cmb9-mchip__com {
+  grid-column: 4;
+  width: 100%;
+  max-width: 100px;
+  min-width: 0;
+}
+.planner .cmb9-mchip__x {
+  grid-column: 5;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  transition: background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+.planner .cmb9-mchip__x:hover {
+  background: var(--oxblood);
+  color: var(--block-ink);
+}
+/* celda fantasma "＋ Agregar": misma altura que los chips, borde dashed */
+.planner .cmb9-addcell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  border: 1px dashed var(--line-2);
+  background: transparent;
+  color: var(--brass);
+  cursor: pointer;
+  border-radius: 7px;
+  font-family: var(--f-m);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  transition: background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.planner .cmb9-addcell:hover {
+  background: var(--brass-soft);
+  border-color: var(--brass);
+}
+/* con el picker abierto la celda queda "activa" y ofrece cerrar (Listo) */
+.planner .cmb9-addcell.is-open {
+  border-style: solid;
+  border-color: var(--brass);
+  background: var(--brass-soft);
+}
+/* estado vacío: la invitación ocupa toda la fila de la grilla */
+.planner .cmb9-addcell--lead {
+  grid-column: 1 / -1;
+}
+
+@keyframes cmb9-chip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- botones del cluster derecho (Ignorar mi progreso · Sugeridas · Descargar · Guardar) ---------- */
+.planner .cmb9-hbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--f-m);
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  padding: 7px 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.planner .cmb9-hbtn:hover:not(:disabled) {
+  background: var(--panel-2);
+  border-color: color-mix(in srgb, var(--brass) 55%, var(--line-2));
+}
+.planner .cmb9-hbtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.planner .cmb9-hbtn svg {
+  flex: none;
+}
+.planner .cmb9-hbtn__count {
+  font-size: 10px;
+  color: var(--muted);
+}
+/* estado "presionado" de un toggle .cmb9-hbtn (p. ej. Sugeridas) */
+.planner .cmb9-hbtn.is-on {
+  color: var(--brass);
+  border-color: var(--brass);
+  background: color-mix(in srgb, var(--brass) 12%, var(--panel));
+}
+.planner .cmb9-hbtn.is-on .cmb9-hbtn__count {
+  color: var(--brass);
+}
+/* acción primaria: Guardar preferencia (puente al plan) */
+.planner .cmb9-hbtn--primary {
+  color: var(--block-ink);
+  background: var(--brass);
+  border-color: var(--brass);
+  font-weight: 700;
+}
+.planner .cmb9-hbtn--primary:hover:not(:disabled) {
+  background: var(--brass-2);
+  border-color: var(--brass-2);
+  color: var(--block-ink);
+}
+
+/* ---------- switch de modo «Ignorar mi progreso» (siempre visible) ---------- */
+/* reusa .cmb-switch (planner.css); el wrapper lo agrupa con su InfoTip hermano */
+.planner .cmb9-solowrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: none;
+}
+.planner .cmb9-solo {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ---------- menú Descargar (3 opciones) ---------- */
+.planner .cmb9-dl {
+  position: relative;
+  flex: none;
+}
+.planner .cmb9-dlmenu {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  z-index: 30;
+  min-width: 244px;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-2);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.planner .cmb9-dlitem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 9px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--ink);
+  font-family: var(--f-b);
+  font-size: 13px;
+}
+.planner .cmb9-dlitem:hover {
+  background: var(--panel-2);
+}
+.planner .cmb9-dlitem > svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--brass);
+}
+.planner .cmb9-dlitem small {
+  display: block;
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+/* ---------- fila calendario + recomendador ---------- */
+.planner .cmb9-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.planner .cmb9-cal {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ---------- recomendador slim lateral ---------- */
+.planner .cmb9-recside {
+  flex: 0 0 250px;
+  align-self: stretch;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  /* sin overflow:hidden — cliparía los tooltips de encaje de las filas de abajo */
+}
+.planner .cmb9-rechead {
+  border-top-left-radius: var(--r);
+  border-top-right-radius: var(--r);
+}
+.planner .cmb9-rechead {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 11px 13px;
+  border-bottom: 1px solid var(--line);
+}
+.planner .cmb9-rechead__title {
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--ink);
+  flex: 1;
+  min-width: 0;
+}
+.planner .cmb9-rechead__count {
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.planner .cmb9-recempty {
+  padding: 12px 13px;
+  margin: 0;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* la lista de sugerencias usa la fila compartida RecRow (rec-row.css) */
+
+/* ---------- Guardar preferencia: popover con selector de cuatrimestre ---------- */
+.planner .cmb9-save {
+  position: relative;
+  flex: none;
+}
+.planner .cmb9-savemenu {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  z-index: 30;
+  width: 288px;
+  max-width: calc(100vw - 32px);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-2);
+  padding: 13px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.planner .cmb9-savemenu__lead {
+  margin: 0;
+  font-family: var(--f-b);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.planner .cmb9-savemenu__lead b {
+  color: var(--ink);
+}
+.planner .cmb9-savemenu__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.planner .cmb9-savemenu__lbl {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--f-m);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.planner .cmb9-savemenu__sel {
+  width: 100%;
+  max-width: none;
+}
+.planner .cmb9-savemenu__go {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: var(--f-m);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--block-ink);
+  background: var(--brass);
+  border: 1px solid var(--brass);
+  border-radius: 8px;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.planner .cmb9-savemenu__go:hover {
+  background: var(--brass-2);
+  border-color: var(--brass-2);
+}
+
+/* ---------- label "Comisión: Auto" + info-tooltip en el header ---------- */
+.planner .cmb9-cominfo {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.planner .cmb9-cominfo b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---------- info-tooltip inline (i) — CSS-only, visible en hover/focus ---------- */
+.planner .cmb9-tip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.planner .cmb9-tip__btn {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--line-2);
+  background: var(--panel-2);
+  color: var(--muted);
+  font-family: var(--f-m);
+  font-size: 9px;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: help;
+}
+.planner .cmb9-tip__btn:hover {
+  border-color: var(--brass);
+  color: var(--brass);
+}
+.planner .cmb9-tip__box {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 7px);
+  transform: translate(-50%, -4px);
+  z-index: 40;
+  width: 214px;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+  box-shadow: var(--shadow-2);
+  padding: 8px 10px;
+  font-family: var(--f-m);
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  /* El tip puede vivir dentro de contenedores nowrap (cominfo): sin esto la
+     prosa corre en una sola línea de ~900px y desborda el body aun invisible. */
+  white-space: normal;
+  color: var(--ink-soft);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+.planner .cmb9-tip:hover .cmb9-tip__box,
+.planner .cmb9-tip:focus-within .cmb9-tip__box {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+/* ---------- picker: lista más alta + dos columnas (obligatorias | electivas) ---------- */
+/* override de planner.css (.cmbx-picker .cmb-list{max-height:288px}); la clase
+   extra .cmb9-picklist sube la especificidad para ganar sin depender del orden */
+.planner .cmbx-picker .cmb-list.cmb9-picklist {
+  max-height: min(62vh, 560px);
+}
+/* dos columnas en ≥880px; abajo, apiladas. El scroll lo maneja .cmb-list. */
+.planner .cmb9-pickcols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  align-items: start;
+}
+@media (max-width: 880px) {
+  .planner .cmb9-pickcols {
+    grid-template-columns: 1fr;
+  }
+}
+/* «Sin horario cargado»: a lo ancho, debajo de las columnas, con un separador leve */
+.planner .cmb9-pickghost {
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+/* ---------- picker: filas de UNA línea (control · código · nombre · meta) ---------- */
+/* Columnas alineadas: el código en mono de ancho fijo arma un índice escaneable;
+   el nombre elide; la meta (créditos/comisiones) queda como una sola cifra a la
+   derecha. Overridea la métrica base de .cmb-row (planner.css) solo acá. */
+.planner .cmb9-picklist .cmb-row {
+  gap: 9px;
+  padding: 5px 8px;
+  border-radius: 6px;
+}
+.planner .cmb9-picklist .cmb-row:hover {
+  transform: none;
+}
+.planner .cmb9-picklist .cmb-row__plus {
+  width: 19px;
+  height: 19px;
+  border-radius: 5px;
+  font-size: 13px;
+}
+.planner .cmb9-picklist .cmb-row__code {
+  flex: none;
+  width: 44px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+.planner .cmb9-picklist .cmb-row__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.planner .cmb9-picklist .cmb-row__meta {
+  flex: none;
+  gap: 0;
+  font-size: 10px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+.planner .cmb9-picklist .cmb-row.is-added {
+  box-shadow: inset 2px 0 0 var(--brass);
+}
+.planner .cmb9-picklist .cmb-row.is-added .cmb-row__code {
+  color: var(--brass);
+}
+.planner .cmb9-picklist .cmb-row.is-added .cmb-row__name {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ---------- picker: sub-agrupado de obligatorias por año y cuatrimestre ---------- */
+.planner .cmb9-subgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+/* sub-header {año · cuatri}: BANDA divisoria (hairline arriba/abajo + fondo
+   opaco) para que el corte entre cuatrimestres se note de un vistazo; STICKY
+   dentro del scroll de .cmb-list (la banda viaja pineada y el corte se ve aun
+   scrolleando). top:-8px = compensa el padding de .cmb-list: pineada al ras del
+   borde visual, sin que las filas salientes asomen en la franja del padding. */
+.planner .cmb9-subh {
+  position: sticky;
+  top: -8px;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 8px 5px 10px;
+  background: var(--panel-2);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+/* el año manda; el cuatri acompaña más tenue */
+.planner .cmb9-subh b {
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.planner .cmb9-subh__cu {
+  color: var(--faint);
+}
+/* count por sub-grupo, alineado a la derecha (como el <i> de los group headers) */
+.planner .cmb9-subh i {
+  margin-left: auto;
+  font-style: normal;
+  letter-spacing: 0;
+  color: var(--faint);
+}
+/* aire entre cuatrimestres: el bloque siguiente respira antes de su banda */
+.planner .cmb9-subgroup + .cmb9-subgroup {
+  margin-top: 14px;
+}
+.planner .cmb9-subgroup {
+  padding-bottom: 2px;
+}
+
+/* ---------- picker: hint de aprobadas ocultas + tag «✓ aprobada» ---------- */
+.planner .cmb9-hiddenhint {
+  margin: 0;
+  padding: 8px 13px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.planner .cmb9-hiddenhint__btn {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--brass);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.planner .cmb9-hiddenhint__btn:hover {
+  color: var(--brass-2);
+}
+/* tag de fila aprobada (solo visible con «Ignorar mi progreso» ON): rol ok/sage */
+.planner .cmb9-oktag {
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  color: var(--sage);
+  border: 1px solid color-mix(in srgb, var(--sage) 34%, transparent);
+  background: color-mix(in srgb, var(--sage) 12%, transparent);
+  border-radius: 999px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+/* ---------- picker: filas «sin horario cargado» (búsqueda honesta) ---------- */
+/* dot neutro para el grupo atenuado */
+.planner .cmb-list .dot--ghost {
+  background: var(--faint);
+}
+/* fila no-agregable: misma métrica de una línea que .cmb-row pero atenuada y
+   sin affordances de click (no es un botón, no tiene «+» — la sangría izquierda
+   deja el hueco del control para que los códigos queden alineados) */
+.planner .cmb9-ghost {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 5px 8px 5px 36px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  opacity: 0.55;
+  cursor: default;
+}
+.planner .cmb9-ghost .cmb-row__code {
+  flex: none;
+  width: 44px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+.planner .cmb9-ghost__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.planner .cmb9-ghost__note {
+  flex: none;
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  font-style: italic;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+/* ---------- «sin solución»: botón inline para quitar la materia del par ---------- */
+.planner .cmb-conflict__rm {
+  margin-left: auto;
+  flex: none;
+  font-family: var(--f-m);
+  font-size: 10px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  padding: 3px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+.planner .cmb-conflict__rm:hover {
+  background: var(--oxblood);
+  border-color: var(--oxblood);
+  color: var(--block-ink);
+}
+
+/* ---------- responsive: apila el recomendador debajo del calendario ---------- */
+@media (max-width: 860px) {
+  .planner .cmb9-row {
+    flex-direction: column;
+    /* En columna, el align-items:flex-start de la base haría que el calendario
+       tome el ancho de su contenido (660px) y desborde el body; stretch lo capa
+       al contenedor y el scroll queda DENTRO de .cmbcal-wrap. */
+    align-items: stretch;
+  }
+  .planner .cmb9-recside {
+    flex: none;
+    width: 100%;
+  }
+  .planner .cmb9-header__right {
+    margin-left: 0;
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planner .cmb9-hbtn,
+  .planner .cmb9-savemenu__go,
+  .planner .cmb9-tip__box,
+  .planner .cmb9-clear,
+  .planner .cmb9-mchip__x,
+  .planner .cmb9-addcell,
+  .planner .cmb9-hiddenhint__btn,
+  .planner .cmb9-pickersum__see,
+  .planner .cmb-conflict__rm {
+    transition: none;
+  }
+  .planner .cmb9-mchip {
+    animation: none;
+  }
+}

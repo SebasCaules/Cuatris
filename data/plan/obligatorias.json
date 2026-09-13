@@ -1,0 +1,650 @@
+{
+  "ciclos": [
+    "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+    "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)"
+  ],
+  "materias": [
+    {
+      "codigo": "12.09",
+      "nombre": "Química",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 2 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "12.83",
+      "nombre": "Seguridad Ocupacional y Ambiental",
+      "creditos": 3,
+      "creditos_requeridos": 140,
+      "correlativas": [],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 5 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "31.08",
+      "nombre": "Sistemas de Representación",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 1 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "61.23",
+      "nombre": "Economía para Ingenieros",
+      "creditos": 3,
+      "creditos_requeridos": 120,
+      "correlativas": [],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 4 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "61.32",
+      "nombre": "Derecho para Ingenieros",
+      "creditos": 3,
+      "creditos_requeridos": 120,
+      "correlativas": [],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 4 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.03",
+      "nombre": "Introducción a la Informática",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 1 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.07",
+      "nombre": "Protocolos de Comunicación",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.11"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 3 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "72.08",
+      "nombre": "Arquitectura de Computadoras",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.31"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 2 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "72.11",
+      "nombre": "Sistemas Operativos",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.08",
+        "72.34"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 3 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.20",
+      "nombre": "Redes de Información",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.07"
+      ],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 5 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.25",
+      "nombre": "Simulación de Sistemas",
+      "creditos": 6,
+      "creditos_requeridos": 140,
+      "correlativas": [
+        "72.34",
+        "93.07"
+      ],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 4 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "72.27",
+      "nombre": "Sistemas de Inteligencia Artificial",
+      "creditos": 6,
+      "creditos_requeridos": 140,
+      "correlativas": [
+        "93.24",
+        "72.34"
+      ],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 4 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "72.31",
+      "nombre": "Programación Imperativa",
+      "creditos": 9,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.58",
+        "72.03"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 1 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "72.32",
+      "nombre": "Diseño y Procesamiento de Documentos XML",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.31"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 2 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.33",
+      "nombre": "Programación Orientada a Objetos",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.31"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 2 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.34",
+      "nombre": "Estructura de Datos y Algoritmos",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.59",
+        "72.33"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 2 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "72.35",
+      "nombre": "Ingenieria de Software I",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.33"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 3 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.36",
+      "nombre": "Interacción Hombre-Computadora (HCI)",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.33",
+        "72.32"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 3 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.37",
+      "nombre": "Base de Datos I",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34",
+        "93.35"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 3 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.38",
+      "nombre": "Proyecto de Aplicaciones Web",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.11",
+        "72.37",
+        "72.36",
+        "72.35"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 3 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "72.39",
+      "nombre": "Autómatas, Teoría de Lenguajes y Compiladores",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.34"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 3 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "72.40",
+      "nombre": "Ingenieria del Software II",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.35"
+      ],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 4 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.41",
+      "nombre": "Base de Datos II",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.11",
+        "72.37"
+      ],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 4 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.42",
+      "nombre": "Programación de Objetos Distribuidos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.07",
+        "72.37"
+      ],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 4 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.43",
+      "nombre": "Gestión de Proyectos Informáticos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 4 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "72.44",
+      "nombre": "Criptografía y Seguridad",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "72.07"
+      ],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 4 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "72.45",
+      "nombre": "Proyecto Final",
+      "creditos": 12,
+      "creditos_requeridos": 160,
+      "correlativas": [],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 5 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "72.98",
+      "nombre": "Práctica Laboral",
+      "creditos": 0,
+      "creditos_requeridos": 192,
+      "correlativas": [],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 5 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "93.07",
+      "nombre": "Métodos Numéricos",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.28"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 3 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "93.24",
+      "nombre": "Probabilidad y Estadística",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.28"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 2 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "93.26",
+      "nombre": "Análisis Matemático I",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 1 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "93.28",
+      "nombre": "Análisis Matemático II",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.58",
+        "93.26"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 1 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "93.35",
+      "nombre": "Lógica Computacional",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.58"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 2 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "93.41",
+      "nombre": "Física I",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.26"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 1 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "93.42",
+      "nombre": "Física II",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.28"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 2 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "93.43",
+      "nombre": "Física III",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.28",
+        "93.41"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 2 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "93.58",
+      "nombre": "Álgebra",
+      "creditos": 9,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 1 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "93.59",
+      "nombre": "Matemática Discreta",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.58"
+      ],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 1 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "93.75",
+      "nombre": "Métodos Numéricos Avanzados",
+      "creditos": 6,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "93.07"
+      ],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 4 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "94.21",
+      "nombre": "Formación General I",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 3 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "94.23",
+      "nombre": "Formación General III",
+      "creditos": 3,
+      "creditos_requeridos": 168,
+      "correlativas": [],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 5 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "94.24",
+      "nombre": "Metodología del Aprendizaje",
+      "creditos": 3,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 1 - Cuatrimestre 1"
+    },
+    {
+      "codigo": "94.51",
+      "nombre": "Inglés I",
+      "creditos": 0,
+      "creditos_requeridos": 0,
+      "correlativas": [],
+      "ciclo": "Ciclo Básico ( Título otorgado: Analista en Tecnologia Informática )  Requisito: Aprobar todos los items (suma 147 créditos)",
+      "seccion": "Año 3 - Cuatrimestre 2"
+    },
+    {
+      "codigo": "94.52",
+      "nombre": "Inglés II",
+      "creditos": 0,
+      "creditos_requeridos": 0,
+      "correlativas": [
+        "94.51"
+      ],
+      "ciclo": "Ciclo Profesional (Título Otorgado: Ingeniero en Informática) Requisito: Aprobar todos los items (suma 96 créditos)",
+      "seccion": "Año 5 - Cuatrimestre 2"
+    }
+  ],
+  "aristas_correlativas": [
+    {
+      "from": "72.03",
+      "to": "72.31"
+    },
+    {
+      "from": "72.07",
+      "to": "72.20"
+    },
+    {
+      "from": "72.07",
+      "to": "72.42"
+    },
+    {
+      "from": "72.07",
+      "to": "72.44"
+    },
+    {
+      "from": "72.08",
+      "to": "72.11"
+    },
+    {
+      "from": "72.11",
+      "to": "72.07"
+    },
+    {
+      "from": "72.11",
+      "to": "72.38"
+    },
+    {
+      "from": "72.11",
+      "to": "72.41"
+    },
+    {
+      "from": "72.31",
+      "to": "72.08"
+    },
+    {
+      "from": "72.31",
+      "to": "72.32"
+    },
+    {
+      "from": "72.31",
+      "to": "72.33"
+    },
+    {
+      "from": "72.32",
+      "to": "72.36"
+    },
+    {
+      "from": "72.33",
+      "to": "72.34"
+    },
+    {
+      "from": "72.33",
+      "to": "72.35"
+    },
+    {
+      "from": "72.33",
+      "to": "72.36"
+    },
+    {
+      "from": "72.34",
+      "to": "72.11"
+    },
+    {
+      "from": "72.34",
+      "to": "72.25"
+    },
+    {
+      "from": "72.34",
+      "to": "72.27"
+    },
+    {
+      "from": "72.34",
+      "to": "72.37"
+    },
+    {
+      "from": "72.34",
+      "to": "72.39"
+    },
+    {
+      "from": "72.35",
+      "to": "72.38"
+    },
+    {
+      "from": "72.35",
+      "to": "72.40"
+    },
+    {
+      "from": "72.36",
+      "to": "72.38"
+    },
+    {
+      "from": "72.37",
+      "to": "72.38"
+    },
+    {
+      "from": "72.37",
+      "to": "72.41"
+    },
+    {
+      "from": "72.37",
+      "to": "72.42"
+    },
+    {
+      "from": "93.07",
+      "to": "72.25"
+    },
+    {
+      "from": "93.07",
+      "to": "93.75"
+    },
+    {
+      "from": "93.24",
+      "to": "72.27"
+    },
+    {
+      "from": "93.26",
+      "to": "93.28"
+    },
+    {
+      "from": "93.26",
+      "to": "93.41"
+    },
+    {
+      "from": "93.28",
+      "to": "93.07"
+    },
+    {
+      "from": "93.28",
+      "to": "93.24"
+    },
+    {
+      "from": "93.28",
+      "to": "93.42"
+    },
+    {
+      "from": "93.28",
+      "to": "93.43"
+    },
+    {
+      "from": "93.35",
+      "to": "72.37"
+    },
+    {
+      "from": "93.41",
+      "to": "93.43"
+    },
+    {
+      "from": "93.58",
+      "to": "72.31"
+    },
+    {
+      "from": "93.58",
+      "to": "93.28"
+    },
+    {
+      "from": "93.58",
+      "to": "93.35"
+    },
+    {
+      "from": "93.58",
+      "to": "93.59"
+    },
+    {
+      "from": "93.59",
+      "to": "72.34"
+    },
+    {
+      "from": "94.51",
+      "to": "94.52"
+    }
+  ]
+}
