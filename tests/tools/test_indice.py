@@ -82,7 +82,9 @@ def test_conserva_publicado_y_horarios_esperados(datos: Path) -> None:
     actualizar(datos, publicado="2026-09-20")
     documento = _indice(datos)
     documento["horarios_esperados"] = {"2027-1C": "2026-11"}
-    (datos / "index.json").write_text(canon.serializar(documento), encoding="utf-8", newline="\n")
+    (datos / "index.json").write_text(
+        canon.serializar(documento), encoding="utf-8", newline="\n"
+    )
 
     archivo = datos / ARCHIVO_HORARIOS
     horarios = canon.cargar(archivo)
@@ -98,7 +100,9 @@ def test_conserva_publicado_y_horarios_esperados(datos: Path) -> None:
     assert nuevo["actualizado"] == "2026-10-05"
 
 
-def test_un_periodo_nuevo_toma_la_fecha_de_publicado(datos: Path, fixtures: Path) -> None:
+def test_un_periodo_nuevo_toma_la_fecha_de_publicado(
+    datos: Path, fixtures: Path
+) -> None:
     """`--publicado` fija la fecha de las entradas nuevas, no de las que ya estaban."""
     actualizar(datos, publicado="2026-09-20")
     origen = fixtures / "deben-pasar" / "horarios-casos-raros.json"
@@ -124,7 +128,9 @@ def test_un_periodo_nuevo_toma_la_fecha_de_publicado(datos: Path, fixtures: Path
     assert validar_archivo(datos / "index.json") == []
 
 
-def test_sin_publicado_se_usa_la_fecha_de_hoy(datos: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_sin_publicado_se_usa_la_fecha_de_hoy(
+    datos: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     """La fecha por defecto es la de hoy, en la forma del contrato."""
     monkeypatch.setattr(indice, "_hoy", lambda: "2026-09-12")
     actualizar(datos)
@@ -181,7 +187,12 @@ def test_el_subcomando_de_la_cli(datos: Path, monkeypatch: pytest.MonkeyPatch) -
     if MODULOS_EXTERNOS.get("indice") is None:
         monkeypatch.setitem(MODULOS_EXTERNOS, "indice", "cuatris.indice")
     assert MODULOS_EXTERNOS["indice"] == "cuatris.indice"
-    assert main(["indice", "actualizar", "--data", str(datos), "--publicado", "2026-09-20"]) == 0
+    assert (
+        main(
+            ["indice", "actualizar", "--data", str(datos), "--publicado", "2026-09-20"]
+        )
+        == 0
+    )
     assert (datos / "index.json").is_file()
     assert main(["validar", str(datos / "index.json"), "--data", str(datos)]) == 0
 

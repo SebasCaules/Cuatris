@@ -6,6 +6,10 @@
       "nombre": "Rectorado"
     },
     {
+      "id": "sdf",
+      "nombre": "Sede Distrito Financiero"
+    },
+    {
       "id": "sdt",
       "nombre": "SDT"
     }

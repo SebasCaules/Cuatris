@@ -96,7 +96,9 @@ def test_programacion_imperativa(materias: dict[str, dict]) -> None:
     assert imperativa["ciclo"] == "basico"
 
 
-def test_bioinformatica_suma_al_minor_de_ciencia_de_datos(materias: dict[str, dict]) -> None:
+def test_bioinformatica_suma_al_minor_de_ciencia_de_datos(
+    materias: dict[str, dict],
+) -> None:
     bioinformatica = materias["16.50"]
     assert bioinformatica["minors"] == ["CD"]
     assert bioinformatica["correlativas"] == ["72.37"]
@@ -115,7 +117,9 @@ def test_fila_repetida_del_excel_se_une(materias: dict[str, dict]) -> None:
     assert materias["73.82"]["minors"] == ["CD"]
 
 
-def test_creditos_decididos_a_mano(materias: dict[str, dict], importado: tuple[dict, dict]) -> None:
+def test_creditos_decididos_a_mano(
+    materias: dict[str, dict], importado: tuple[dict, dict]
+) -> None:
     reporte = importado[1]
     diferencias = {d["codigo"]: d for d in reporte["diferencias_creditos"]}
     assert set(diferencias) == set(CREDITOS_DECIDIDOS)
@@ -152,7 +156,9 @@ def test_minors(plan_json: dict) -> None:
     assert [m["sigla"] for m in minors] == ["CD", "IA", "IRV", "ARQ"]
     assert all(m["creditos_minimos"] == 14 for m in minors)
     # El Excel trae «Arqitectura de Software»; se corrige al cargar.
-    assert {m["sigla"]: m["nombre"] for m in minors}["ARQ"] == "Arquitectura de Software"
+    assert {m["sigla"]: m["nombre"] for m in minors}[
+        "ARQ"
+    ] == "Arquitectura de Software"
 
 
 def test_electivas(plan_json: dict) -> None:
@@ -187,8 +193,12 @@ def test_buscar_ciclos_detecta_un_ciclo() -> None:
 # --------------------------------------------------------------------------- forma del archivo
 
 
-def test_archivo_publicado_es_el_que_produce_el_comando(raiz: Path, plan_json: dict) -> None:
-    publicado = (raiz / "data" / "v1" / "planes" / "S10-Rev23.json").read_text(encoding="utf-8")
+def test_archivo_publicado_es_el_que_produce_el_comando(
+    raiz: Path, plan_json: dict
+) -> None:
+    publicado = (raiz / "data" / "v1" / "planes" / "S10-Rev23.json").read_text(
+        encoding="utf-8"
+    )
     assert publicado == modulo.serializar_canonico(plan_json)
 
 
@@ -217,7 +227,9 @@ def test_forma_canonica(raiz: Path) -> None:
 # --------------------------------------------------------------------------- falla ruidosa
 
 
-def _copiar_excel(origen: Path, destino: Path, cambios: list[tuple[str, int, int, object]]) -> Path:
+def _copiar_excel(
+    origen: Path, destino: Path, cambios: list[tuple[str, int, int, object]]
+) -> Path:
     libro = openpyxl.load_workbook(origen)
     for hoja, fila, columna, valor in cambios:
         libro[hoja].cell(row=fila, column=columna, value=valor)
@@ -226,26 +238,42 @@ def _copiar_excel(origen: Path, destino: Path, cambios: list[tuple[str, int, int
 
 
 def test_encabezado_distinto_rompe(rutas: dict[str, Path], tmp_path: Path) -> None:
-    roto = _copiar_excel(rutas["excel"], tmp_path / "roto.xlsx", [("Obligatorias", 3, 1, "Materias")])
+    roto = _copiar_excel(
+        rutas["excel"], tmp_path / "roto.xlsx", [("Obligatorias", 3, 1, "Materias")]
+    )
     with pytest.raises(modulo.ErrorPlan, match="encabezado inesperado"):
         modulo.leer_excel(roto)
 
 
-def test_bloque_sin_titulo_de_ciclo_rompe(rutas: dict[str, Path], tmp_path: Path) -> None:
-    roto = _copiar_excel(rutas["excel"], tmp_path / "sin-ciclo.xlsx", [("Obligatorias", 1, 1, "")])
+def test_bloque_sin_titulo_de_ciclo_rompe(
+    rutas: dict[str, Path], tmp_path: Path
+) -> None:
+    roto = _copiar_excel(
+        rutas["excel"], tmp_path / "sin-ciclo.xlsx", [("Obligatorias", 1, 1, "")]
+    )
     with pytest.raises(modulo.ErrorPlan, match="bloque sin título de ciclo"):
         modulo.leer_excel(roto)
 
 
-def test_columna_de_minor_desconocida_rompe(rutas: dict[str, Path], tmp_path: Path) -> None:
-    roto = _copiar_excel(rutas["excel"], tmp_path / "minor.xlsx", [("Electivas", 1, 5, "Ciencia Ficción")])
+def test_columna_de_minor_desconocida_rompe(
+    rutas: dict[str, Path], tmp_path: Path
+) -> None:
+    roto = _copiar_excel(
+        rutas["excel"],
+        tmp_path / "minor.xlsx",
+        [("Electivas", 1, 5, "Ciencia Ficción")],
+    )
     with pytest.raises(modulo.ErrorPlan, match="columna de minor desconocida"):
         modulo.leer_excel(roto)
 
 
-def test_diferencia_de_creditos_sin_decidir_rompe(rutas: dict[str, Path], tmp_path: Path) -> None:
+def test_diferencia_de_creditos_sin_decidir_rompe(
+    rutas: dict[str, Path], tmp_path: Path
+) -> None:
     # 10.07 Creatividad vale 3 créditos en las dos fuentes; al cambiarla tiene que romper.
-    roto = _copiar_excel(rutas["excel"], tmp_path / "creditos.xlsx", [("Electivas", 2, 2, 5)])
+    roto = _copiar_excel(
+        rutas["excel"], tmp_path / "creditos.xlsx", [("Electivas", 2, 2, 5)]
+    )
     with pytest.raises(modulo.ErrorPlan, match="nadie decidió cuál vale"):
         modulo.importar_plan(roto, rutas["sga"], rutas["titulos"], CREDITOS_DECIDIDOS)
 
@@ -256,29 +284,41 @@ def test_importar_sin_decidir_nada_rompe(rutas: dict[str, Path]) -> None:
         modulo.importar_plan(rutas["excel"], rutas["sga"], rutas["titulos"])
 
 
-def test_creditos_decididos_con_un_valor_inventado_rompe(rutas: dict[str, Path]) -> None:
+def test_creditos_decididos_con_un_valor_inventado_rompe(
+    rutas: dict[str, Path],
+) -> None:
     decididos = dict(CREDITOS_DECIDIDOS, **{"72.23": 4})
     with pytest.raises(modulo.ErrorPlan, match="no es ni el valor del Excel"):
         modulo.importar_plan(rutas["excel"], rutas["sga"], rutas["titulos"], decididos)
 
 
-def test_creditos_decididos_de_una_materia_que_no_difiere_rompe(rutas: dict[str, Path]) -> None:
+def test_creditos_decididos_de_una_materia_que_no_difiere_rompe(
+    rutas: dict[str, Path],
+) -> None:
     decididos = dict(CREDITOS_DECIDIDOS, **{"93.58": 9})
     with pytest.raises(modulo.ErrorPlan, match="ya no difieren"):
         modulo.importar_plan(rutas["excel"], rutas["sga"], rutas["titulos"], decididos)
 
 
-def test_marca_de_minor_desconocida_rompe(rutas: dict[str, Path], tmp_path: Path) -> None:
+def test_marca_de_minor_desconocida_rompe(
+    rutas: dict[str, Path], tmp_path: Path
+) -> None:
     # 16.50 suma al minor CD con una «X»; cualquier otra marca no se descarta en silencio.
-    roto = _copiar_excel(rutas["excel"], tmp_path / "marca.xlsx", [("Electivas", 6, 5, "✓")])
+    roto = _copiar_excel(
+        rutas["excel"], tmp_path / "marca.xlsx", [("Electivas", 6, 5, "✓")]
+    )
     with pytest.raises(modulo.ErrorPlan, match="marca de minor CD desconocida"):
         modulo.leer_excel(roto)
 
 
-def test_materia_debajo_del_pie_de_electivas_rompe(rutas: dict[str, Path], tmp_path: Path) -> None:
+def test_materia_debajo_del_pie_de_electivas_rompe(
+    rutas: dict[str, Path], tmp_path: Path
+) -> None:
     # El pie está en la fila 68; una materia más abajo quedaría fuera de todos los conteos.
     roto = _copiar_excel(
-        rutas["excel"], tmp_path / "pie.xlsx", [("Obligatorias", 69, 1, "72.99 - Materia Nueva")]
+        rutas["excel"],
+        tmp_path / "pie.xlsx",
+        [("Obligatorias", 69, 1, "72.99 - Materia Nueva")],
     )
     with pytest.raises(modulo.ErrorPlan, match="debajo del pie"):
         modulo.leer_excel(roto)
@@ -288,13 +328,17 @@ def _fuentes_minimas() -> tuple[modulo.FuenteExcel, modulo.FuenteSga, dict[str, 
     excel = modulo.FuenteExcel(
         materias={
             "93.58": modulo.MateriaExcel("93.58", "Álgebra", 9, 0, [], "basico", 1),
-            "72.31": modulo.MateriaExcel("72.31", "Imperativa", 30, 0, ["93.58"], "profesional", 2),
+            "72.31": modulo.MateriaExcel(
+                "72.31", "Imperativa", 30, 0, ["93.58"], "profesional", 2
+            ),
         },
         orden=["93.58", "72.31"],
         creditos_por_ciclo={"basico": 9, "profesional": 57},
         creditos_electivas=27,
         creditos_minimos_minor=14,
-        minors=[{"sigla": s, "nombre": n} for s, n in modulo.MINORS_POR_ENCABEZADO.values()],
+        minors=[
+            {"sigla": s, "nombre": n} for s, n in modulo.MINORS_POR_ENCABEZADO.values()
+        ],
     )
     sga = modulo.FuenteSga(
         materias={
@@ -347,8 +391,8 @@ def test_html_de_titulos_sin_tabla_rompe(tmp_path: Path) -> None:
 
 def test_extraer_sedes_saca_el_token_de_aula() -> None:
     html = (
-        '<span> Aula ITBA: <span>001R #----&gt; Sede Rectorado</span> </span>'
-        '<span> Aula ITBA: <span>12T #----&gt; SDT</span> </span>'
+        "<span> Aula ITBA: <span>001R #----&gt; Sede Rectorado</span> </span>"
+        "<span> Aula ITBA: <span>12T #----&gt; SDT</span> </span>"
     )
     assert modulo.extraer_sedes(html) == ["Rectorado", "SDT"]
     assert modulo.id_de_sede("Rectorado") == "rectorado"
@@ -364,7 +408,10 @@ def test_construir_vocabulario(tmp_path: Path) -> None:
     )
     assert modulo.construir_vocabulario(tmp_path) == {
         "contrato": "1.0.0",
-        "sedes": [{"id": "rectorado", "nombre": "Rectorado"}, {"id": "sdt", "nombre": "SDT"}],
+        "sedes": [
+            {"id": "rectorado", "nombre": "Rectorado"},
+            {"id": "sdt", "nombre": "SDT"},
+        ],
     }
 
 
@@ -383,11 +430,15 @@ def test_vocabulario_sin_sedes_rompe(tmp_path: Path) -> None:
 
 
 def test_vocabulario_publicado(raiz: Path) -> None:
-    documento = json.loads((raiz / "data" / "v1" / "vocabulario.json").read_text(encoding="utf-8"))
+    documento = json.loads(
+        (raiz / "data" / "v1" / "vocabulario.json").read_text(encoding="utf-8")
+    )
     assert documento["contrato"] == "1.0.0"
-    # Solo las sedes que aparecen en los HTML guardados del SGA.
+    # Las sedes observadas: en los HTML guardados del SGA y, desde el 2026-09-12, la que
+    # mostro la corrida real del scraper («Sede Distrito Financiero»).
     assert documento["sedes"] == [
         {"id": "rectorado", "nombre": "Rectorado"},
+        {"id": "sdf", "nombre": "Sede Distrito Financiero"},
         {"id": "sdt", "nombre": "SDT"},
     ]
     for sede in documento["sedes"]:
@@ -397,7 +448,9 @@ def test_vocabulario_publicado(raiz: Path) -> None:
 # --------------------------------------------------------------------------- CLI
 
 
-def test_subcomando_importar_escribe_el_archivo(rutas: dict[str, Path], tmp_path: Path) -> None:
+def test_subcomando_importar_escribe_el_archivo(
+    rutas: dict[str, Path], tmp_path: Path
+) -> None:
     parser = argparse.ArgumentParser(prog="cuatris")
     subparsers = parser.add_subparsers(dest="comando", required=True)
     modulo.configurar_subcomando(subparsers)

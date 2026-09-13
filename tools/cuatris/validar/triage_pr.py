@@ -310,8 +310,7 @@ def clasificar(repo: str | Path, base: str, head: str) -> Clasificacion:
             )
         if not es_ruta_de_datos(ruta):
             resultado.rechazar(
-                f"«{ruta}» no esta en el allowlist de rutas de datos "
-                f"({', '.join(RUTAS_DE_DATOS)})"
+                f"«{ruta}» no esta en el allowlist de rutas de datos ({', '.join(RUTAS_DE_DATOS)})"
             )
 
     for problema in _colisiones(_rutas_del_arbol(camino, sha_head), set(resultado.archivos)):
@@ -369,7 +368,7 @@ def ejecutar(args: argparse.Namespace) -> int:
 def main(argv: list[str] | None = None) -> int:
     """Permite correrlo sin pasar por `cuatris`, mientras se registra en `cli.py`.
 
-        python -m cuatris.validar.triage_pr triage --base main --head pr-123
+    python -m cuatris.validar.triage_pr triage --base main --head pr-123
     """
     parser = argparse.ArgumentParser(prog="cuatris pr", description=AYUDA)
     configurar(parser)

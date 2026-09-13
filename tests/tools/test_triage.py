@@ -46,7 +46,9 @@ def test_fixture_que_debe_fallar_en_c1(fixtures: Path, nombre: str, regla: str) 
 
 def test_hash_incorrecto_en_el_indice(fixtures: Path) -> None:
     """Un `hash` que no coincide con el archivo referido es error de C1."""
-    hallazgos = validar_archivo(fixtures / "deben-fallar" / "hash-incorrecto" / "index.json")
+    hallazgos = validar_archivo(
+        fixtures / "deben-fallar" / "hash-incorrecto" / "index.json"
+    )
     assert _reglas(hallazgos) == ["hash-incorrecto"]
     assert "v1/planes/S10-Rev23.json" in hallazgos[0].mensaje
 
@@ -110,8 +112,12 @@ def test_datos_personales() -> None:
     assert _reglas(revisar_datos({"docentes": ["a.perez@itba.edu.ar"]}, "x.json")) == [
         "privacidad-correo"
     ]
-    assert _reglas(revisar_datos({"nota": "11 4321-1234"}, "x.json")) == ["privacidad-telefono"]
-    assert _reglas(revisar_datos({"nota": "legajo 61234"}, "x.json")) == ["privacidad-legajo"]
+    assert _reglas(revisar_datos({"nota": "11 4321-1234"}, "x.json")) == [
+        "privacidad-telefono"
+    ]
+    assert _reglas(revisar_datos({"nota": "legajo 61234"}, "x.json")) == [
+        "privacidad-legajo"
+    ]
 
 
 def test_las_fechas_y_los_hashes_no_son_telefonos(fixtures: Path) -> None:
@@ -127,11 +133,15 @@ def test_las_fechas_y_los_hashes_no_son_telefonos(fixtures: Path) -> None:
     assert validar_archivo(fixtures / "deben-pasar" / "horarios-casos-raros.json") == []
 
 
-def test_no_canonico_se_detecta_sin_romper_el_resto(tmp_path: Path, fixtures: Path) -> None:
+def test_no_canonico_se_detecta_sin_romper_el_resto(
+    tmp_path: Path, fixtures: Path
+) -> None:
     """Un archivo valido pero mal formateado da un solo error, el de forma canonica."""
     datos = canon.cargar(fixtures / "deben-pasar" / "v1" / "vocabulario.json")
     ruta = tmp_path / "vocabulario.json"
-    ruta.write_text(json.dumps(datos, ensure_ascii=False, indent=4) + "\n", encoding="utf-8")
+    ruta.write_text(
+        json.dumps(datos, ensure_ascii=False, indent=4) + "\n", encoding="utf-8"
+    )
     assert _reglas(validar_archivo(ruta)) == ["no-canonico"]
 
 
@@ -142,12 +152,20 @@ def test_el_major_del_contrato_de_v1_es_1(fixtures: Path, tmp_path: Path) -> Non
     """Un archivo de `v1` que declara otro major es error: el corte va en el directorio."""
     datos = canon.cargar(fixtures / "deben-pasar" / "v1" / "vocabulario.json")
     ruta = tmp_path / "vocabulario.json"
-    for version, esperado in (("1.0.0", []), ("1.7.3", []), ("2.0.0", ["contrato-incompatible"])):
-        ruta.write_text(canon.serializar({**datos, "contrato": version}), encoding="utf-8")
+    for version, esperado in (
+        ("1.0.0", []),
+        ("1.7.3", []),
+        ("2.0.0", ["contrato-incompatible"]),
+    ):
+        ruta.write_text(
+            canon.serializar({**datos, "contrato": version}), encoding="utf-8"
+        )
         assert _reglas(validar_archivo(ruta)) == esperado, version
 
 
-def test_el_major_ajeno_se_ve_en_los_cinco_tipos(fixtures: Path, tmp_path: Path) -> None:
+def test_el_major_ajeno_se_ve_en_los_cinco_tipos(
+    fixtures: Path, tmp_path: Path
+) -> None:
     """La regla no depende del tipo: los cinco schemas son de `v1`."""
     origen = {
         "index.json": fixtures / "deben-pasar" / "index.json",
@@ -176,7 +194,9 @@ def test_un_contrato_ausente_o_mal_formado_lo_informa_c2(tmp_path: Path) -> None
 def test_una_fecha_con_la_forma_correcta_puede_no_existir() -> None:
     """El patron del schema acepta el 31 de septiembre; C1 construye la fecha."""
     assert revisar_datos({"desde": "2026-09-30", "hasta": "2026-12-31"}, "x.json") == []
-    assert _reglas(revisar_datos({"hasta": "2026-09-31"}, "x.json")) == ["fecha-invalida"]
+    assert _reglas(revisar_datos({"hasta": "2026-09-31"}, "x.json")) == [
+        "fecha-invalida"
+    ]
     assert _reglas(revisar_datos({"al": "2026-02-30"}, "x.json")) == ["fecha-invalida"]
     assert _reglas(revisar_datos({"al": "2026-13-01"}, "x.json")) == ["fecha-invalida"]
 
@@ -189,7 +209,12 @@ def test_el_29_de_febrero_depende_del_anio() -> None:
 
 def test_lo_que_no_tiene_forma_de_fecha_no_se_toca() -> None:
     """La regla solo mira los strings que cumplen el patron entero del contrato."""
-    datos = {"periodo": "2026-2C", "esperado": "2026-11", "aula": "001R", "hora": "14:00"}
+    datos = {
+        "periodo": "2026-2C",
+        "esperado": "2026-11",
+        "aula": "001R",
+        "hora": "14:00",
+    }
     assert revisar_datos(datos, "x.json") == []
 
 
@@ -210,7 +235,9 @@ def _indice_de_prueba(fixtures: Path, tmp_path: Path) -> Path:
     return destino / "index.json"
 
 
-def test_el_indice_declara_el_periodo_del_archivo(fixtures: Path, tmp_path: Path) -> None:
+def test_el_indice_declara_el_periodo_del_archivo(
+    fixtures: Path, tmp_path: Path
+) -> None:
     """Cambiar el periodo del indice sin tocar el archivo es un error, no un silencio."""
     ruta = _indice_de_prueba(fixtures, tmp_path)
     assert validar_archivo(ruta) == []
@@ -222,7 +249,9 @@ def test_el_indice_declara_el_periodo_del_archivo(fixtures: Path, tmp_path: Path
     assert "2026-2C" in hallazgos[0].mensaje
 
 
-def test_el_indice_declara_la_vigencia_del_archivo(fixtures: Path, tmp_path: Path) -> None:
+def test_el_indice_declara_la_vigencia_del_archivo(
+    fixtures: Path, tmp_path: Path
+) -> None:
     """`desde` y `hasta` mandan sobre que periodo esta activo: tambien se comprueban."""
     ruta = _indice_de_prueba(fixtures, tmp_path)
     datos = canon.cargar(ruta)
@@ -234,7 +263,9 @@ def test_el_indice_declara_la_vigencia_del_archivo(fixtures: Path, tmp_path: Pat
     assert all(hallazgo.nivel == ERROR for hallazgo in hallazgos)
 
 
-def test_el_publicado_del_indice_no_sale_del_archivo(fixtures: Path, tmp_path: Path) -> None:
+def test_el_publicado_del_indice_no_sale_del_archivo(
+    fixtures: Path, tmp_path: Path
+) -> None:
     """`publicado` es del indice y no tiene con que compararse: no puede dar un falso error."""
     ruta = _indice_de_prueba(fixtures, tmp_path)
     datos = canon.cargar(ruta)
@@ -262,7 +293,9 @@ def test_el_indice_no_sigue_una_ruta_fuera_del_directorio(
     assert "hash-incorrecto" not in reglas
 
 
-def test_una_ruta_absoluta_del_indice_tampoco_se_abre(fixtures: Path, tmp_path: Path) -> None:
+def test_una_ruta_absoluta_del_indice_tampoco_se_abre(
+    fixtures: Path, tmp_path: Path
+) -> None:
     """Una ruta absoluta sale del directorio de datos aunque no lleve ningun `..`."""
     ruta = _indice_de_prueba(fixtures, tmp_path)
     datos = canon.cargar(ruta)
@@ -276,11 +309,22 @@ def test_una_ruta_absoluta_del_indice_tampoco_se_abre(fixtures: Path, tmp_path: 
 
 def test_la_profundidad_del_texto_es_la_del_objeto(fixtures: Path) -> None:
     """Contar corchetes sobre el texto da lo mismo que recorrer el objeto ya parseado."""
-    for texto in ('{"a": [{"b": 1}]}', "{}", '{"a": []}', '{"a": [[]]}', "[1, 2, 3]", '"hoja"'):
-        assert profundidad_del_texto(texto) == profundidad(canon.cargar_texto(texto)), texto
+    for texto in (
+        '{"a": [{"b": 1}]}',
+        "{}",
+        '{"a": []}',
+        '{"a": [[]]}',
+        "[1, 2, 3]",
+        '"hoja"',
+    ):
+        assert profundidad_del_texto(texto) == profundidad(canon.cargar_texto(texto)), (
+            texto
+        )
     for ruta in sorted((fixtures / "deben-pasar").rglob("*.json")):
         texto = canon.leer_texto(ruta)
-        assert profundidad_del_texto(texto) == profundidad(canon.cargar_texto(texto)), ruta
+        assert profundidad_del_texto(texto) == profundidad(canon.cargar_texto(texto)), (
+            ruta
+        )
 
 
 def test_los_corchetes_dentro_de_un_string_no_cuentan() -> None:

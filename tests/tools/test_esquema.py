@@ -243,11 +243,12 @@ def test_el_corpus_de_ejemplo_esta_canonico_y_con_los_hashes_al_dia(raiz: Path) 
 
 
 def test_el_vocabulario_de_ejemplo_tiene_las_sedes_observadas(raiz: Path) -> None:
-    """N0-9: solo `rectorado` y `sdt`; `sdf` entra cuando aparezca en una captura."""
+    """N0-9: solo sedes observadas. `sdf` entro el 2026-09-12: la corrida real del scraper
+    mostro «Sede Distrito Financiero» en el detalle de un curso."""
     from cuatris import canon
 
     ejemplo = raiz / "app" / "src" / "datos" / "ejemplo" / "v1" / "vocabulario.json"
     publicado = raiz / "data" / "v1" / "vocabulario.json"
     sedes = [sede["id"] for sede in canon.cargar(ejemplo)["sedes"]]
     assert sedes == [sede["id"] for sede in canon.cargar(publicado)["sedes"]]
-    assert "sdf" not in sedes
+    assert sedes == ["rectorado", "sdf", "sdt"]

@@ -110,7 +110,9 @@ def _sga(html_autenticado: str, pedidos: list[httpx.Request]):
 # --------------------------------------------------------------------------------------
 
 
-def test_login_postea_el_action_y_los_campos_ocultos_del_html(html_listado: str) -> None:
+def test_login_postea_el_action_y_los_campos_ocultos_del_html(
+    html_listado: str,
+) -> None:
     pedidos: list[httpx.Request] = []
     with _cliente(_sga(html_listado, pedidos)) as cliente:
         resultado = cliente.iniciar_sesion(USUARIO, CLAVE)
@@ -133,7 +135,11 @@ def test_login_manda_las_tres_cookies_de_sesion(html_listado: str) -> None:
     pedidos: list[httpx.Request] = []
     with _cliente(_sga(html_listado, pedidos)) as cliente:
         cliente.iniciar_sesion(USUARIO, CLAVE)
-        assert set(cliente.cookies_de_sesion()) == {"JSESSIONID", "AWSALB", "AWSALBCORS"}
+        assert set(cliente.cookies_de_sesion()) == {
+            "JSESSIONID",
+            "AWSALB",
+            "AWSALBCORS",
+        }
 
     galletas = pedidos[1].headers.get("cookie", "")
     assert "JSESSIONID=abc" in galletas
@@ -220,7 +226,9 @@ def test_sesion_vencida_dispara_un_relogin_transparente(html_listado: str) -> No
     ]
 
 
-def test_una_sesion_que_vuelve_a_vencer_no_reintenta_para_siempre(html_listado: str) -> None:
+def test_una_sesion_que_vuelve_a_vencer_no_reintenta_para_siempre(
+    html_listado: str,
+) -> None:
     intentos = {"cursos": 0}
 
     def manejar(peticion: httpx.Request) -> httpx.Response:
@@ -331,7 +339,10 @@ def test_reintenta_ante_timeout_y_se_rinde_tras_tres_intentos() -> None:
         intentos["n"] += 1
         raise httpx.ReadTimeout("se acabo el tiempo", request=peticion)
 
-    with _cliente(manejar, reloj) as cliente, pytest.raises(ErrorDeRed, match="reintentos"):
+    with (
+        _cliente(manejar, reloj) as cliente,
+        pytest.raises(ErrorDeRed, match="reintentos"),
+    ):
         cliente.obtener("https://sga.itba.edu.ar/app2/cursos")
 
     assert intentos["n"] == 4  # el intento original mas tres reintentos
@@ -378,9 +389,7 @@ def test_enlace_de_pestana_lista_las_pestanas_cuando_no_encuentra_la_pedida(
 
 
 def test_enlace_de_pestana_avisa_si_la_pestana_no_trae_href() -> None:
-    panel = (
-        '<div class="tabpanel4"><ul><li class="active"><a>Comisiones</a></li></ul></div>'
-    )
+    panel = '<div class="tabpanel4"><ul><li class="active"><a>Comisiones</a></li></ul></div>'
     with pytest.raises(EstructuraInesperada, match="no trae «href»"):
         enlace_de_pestana(panel, "Comisiones")
 
@@ -395,7 +404,9 @@ def test_enlace_de_pestana_falla_sin_panel_de_pestanas(html_listado: str) -> Non
 # --------------------------------------------------------------------------------------
 
 
-def test_volcar_html_guarda_la_ultima_respuesta(tmp_path: Path, html_listado: str) -> None:
+def test_volcar_html_guarda_la_ultima_respuesta(
+    tmp_path: Path, html_listado: str
+) -> None:
     pedidos: list[httpx.Request] = []
     with _cliente(_sga(html_listado, pedidos)) as cliente:
         cliente.iniciar_sesion(USUARIO, CLAVE)

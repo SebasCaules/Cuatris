@@ -92,7 +92,10 @@ def _filas_del_listado(html: str) -> int:
 
 def _renglones_del_html(html: str) -> int:
     """Cantidad de `<div>` de bloque en el HTML: un renglon = un dia con una sola aula."""
-    return sum(len(celda.find_all("div", recursive=False)) for celda in _celdas_de_horarios(html))
+    return sum(
+        len(celda.find_all("div", recursive=False))
+        for celda in _celdas_de_horarios(html)
+    )
 
 
 # --------------------------------------------------------------------------------------
@@ -100,7 +103,9 @@ def _renglones_del_html(html: str) -> int:
 # --------------------------------------------------------------------------------------
 
 
-def test_algebra_tiene_nueve_comisiones_con_letras_no_contiguas(html_algebra: str) -> None:
+def test_algebra_tiene_nueve_comisiones_con_letras_no_contiguas(
+    html_algebra: str,
+) -> None:
     comisiones = parsers.parsear_comisiones(html_algebra)
     ids = [c.id for c in comisiones]
 
@@ -222,7 +227,9 @@ def test_un_cupo_con_la_forma_rota_falla_como_error_de_dominio(cupo: str) -> Non
     assert cupo in str(error.value)
 
 
-def test_celda_de_horarios_con_marcado_desconocido_no_deja_la_comision_sin_bloques() -> None:
+def test_celda_de_horarios_con_marcado_desconocido_no_deja_la_comision_sin_bloques() -> (
+    None
+):
     """Si Wicket cambia el `<div>` por otro tag, se avisa en vez de devolver `bloques=[]`."""
     html = """
     <table><thead><tr><th>Comisión</th><th>Horarios</th><th>Profesores</th>
@@ -245,7 +252,9 @@ def test_celda_de_horarios_con_marcado_desconocido_no_deja_la_comision_sin_bloqu
 # --------------------------------------------------------------------------------------
 
 
-def test_curso_toma_codigo_nombre_y_departamento_de_la_cabecera(html_algebra: str) -> None:
+def test_curso_toma_codigo_nombre_y_departamento_de_la_cabecera(
+    html_algebra: str,
+) -> None:
     curso = parsers.parsear_curso(html_algebra)
 
     assert curso.codigo == "93.18"
@@ -269,7 +278,9 @@ def test_curso_rechaza_una_pestana_que_no_sea_comisiones(html_plantel: str) -> N
 # --------------------------------------------------------------------------------------
 
 
-def test_listado_trae_las_filas_de_la_pagina_y_el_enlace_al_detalle(html_listado: str) -> None:
+def test_listado_trae_las_filas_de_la_pagina_y_el_enlace_al_detalle(
+    html_listado: str,
+) -> None:
     listado = parsers.parsear_listado(html_listado)
     filas_html = _filas_del_listado(html_listado)
 
@@ -293,7 +304,9 @@ def test_listado_trae_las_filas_de_la_pagina_y_el_enlace_al_detalle(html_listado
     assert all(f.enlace_detalle for f in listado.filas)
 
     # El caso «dos materias homonimas con distinto codigo» de HALLAZGOS.md.
-    acustica = [f.codigo for f in listado.filas if f.nombre == "Acústica para Ingenieros"]
+    acustica = [
+        f.codigo for f in listado.filas if f.nombre == "Acústica para Ingenieros"
+    ]
     assert acustica == ["23.05", "25.66"]
 
 
@@ -312,11 +325,15 @@ def test_paginacion_del_listado(html_listado: str) -> None:
     assert paginacion.tamano_pagina == 20
     assert paginacion.total_paginas == 24, "472 cursos de a 20 son 24 paginas"
     assert paginacion.hay_siguiente is True
-    assert paginacion.enlace_siguiente == sopa.select_one("div.navigator a.next")["href"]
+    assert (
+        paginacion.enlace_siguiente == sopa.select_one("div.navigator a.next")["href"]
+    )
     assert paginacion.enlace_ultima == sopa.select_one("div.navigator a.last")["href"]
 
 
-def test_listado_de_una_sola_pagina_no_tiene_siguiente(html_listado_filtrado: str) -> None:
+def test_listado_de_una_sola_pagina_no_tiene_siguiente(
+    html_listado_filtrado: str,
+) -> None:
     listado = parsers.parsear_listado(html_listado_filtrado)
 
     assert len(listado.filas) == 1
@@ -341,7 +358,9 @@ def test_ids_de_filtro_se_extraen_del_html_y_no_se_fijan(html_listado: str) -> N
     assert filtros.campos["Cód."] == f"{filtros.prefijo}:filters:1:filter:filter"
     assert filtros.campos["Materia"] == f"{filtros.prefijo}:filters:2:filter:filter"
     assert filtros.campos["Nivel"] == f"{filtros.prefijo}:filters:3:filter:filter"
-    assert filtros.campos["Departamento"] == f"{filtros.prefijo}:filters:4:filter:filter"
+    assert (
+        filtros.campos["Departamento"] == f"{filtros.prefijo}:filters:4:filter:filter"
+    )
     assert filtros.campos["Período"] == f"{filtros.prefijo}:filters:5:filter:filter"
     assert filtros.campos["Año"] == f"{filtros.prefijo}:filters:6:filter:filter"
     assert filtros.campo_go == f"{filtros.prefijo}:filters:12:filter:go"
@@ -428,7 +447,9 @@ def test_normalizar_tolera_acentos_mayusculas_y_espacios(
     funcion, texto: str, esperado: str
 ) -> None:
     assert funcion(texto) == esperado
-    assert texto not in DIAS_Y_TABLAS, "el caso tiene que ser distinto de la clave de la tabla"
+    assert texto not in DIAS_Y_TABLAS, (
+        "el caso tiene que ser distinto de la clave de la tabla"
+    )
 
 
 #: Las claves literales de las tablas, para comprobar que las variantes de arriba no lo son.
@@ -456,14 +477,22 @@ def test_normalizar_modalidad(texto: str, esperado: str) -> None:
 
 @pytest.mark.parametrize(
     ("texto", "esperado"),
-    [("Rectorado", "rectorado"), ("Sede Rectorado", "rectorado"), ("SDT", "sdt"), ("SDF", "sdf")],
+    [
+        ("Rectorado", "rectorado"),
+        ("Sede Rectorado", "rectorado"),
+        ("SDT", "sdt"),
+        ("SDF", "sdf"),
+        ("Sede Distrito Tecnológico", "sdt"),
+        ("Sede Distrito Financiero", "sdf"),
+    ],
 )
 def test_normalizar_sede(texto: str, esperado: str) -> None:
     assert normalizar.sede(texto) == esperado
 
 
 @pytest.mark.parametrize(
-    ("texto", "esperado"), [("14:00", "14:00"), ("14", "14:00"), ("8", "08:00"), ("08:30", "08:30")]
+    ("texto", "esperado"),
+    [("14:00", "14:00"), ("14", "14:00"), ("8", "08:00"), ("08:30", "08:30")],
 )
 def test_normalizar_hora(texto: str, esperado: str) -> None:
     assert normalizar.hora(texto) == esperado
@@ -502,7 +531,9 @@ def test_valor_desconocido_incluye_el_texto_original(funcion, texto: str) -> Non
 # --------------------------------------------------------------------------------------
 
 
-def test_a_contrato_arma_el_json_de_horarios(html_cripto: str, html_listado_filtrado: str) -> None:
+def test_a_contrato_arma_el_json_de_horarios(
+    html_cripto: str, html_listado_filtrado: str
+) -> None:
     """72.44 en 2026-1C: el detalle da las comisiones y el listado, las fechas de dictado.
 
     Es el mismo curso y el mismo periodo en las dos paginas del corpus, que es exactamente
@@ -510,7 +541,11 @@ def test_a_contrato_arma_el_json_de_horarios(html_cripto: str, html_listado_filt
     """
     fila = parsers.parsear_listado(html_listado_filtrado).filas[0]
     curso = parsers.parsear_curso(html_cripto)
-    assert (curso.codigo, curso.anio, curso.cuatrimestre) == ("72.44", 2026, "Primer Cuat.")
+    assert (curso.codigo, curso.anio, curso.cuatrimestre) == (
+        "72.44",
+        2026,
+        "Primer Cuat.",
+    )
     assert fila.codigo == curso.codigo
 
     curso = parsers.Curso(

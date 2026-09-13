@@ -63,7 +63,9 @@ def test_esta_canonico_distingue_las_dos_formas(tmp_path: Path) -> None:
     bueno = tmp_path / "bueno.json"
     bueno.write_text(canon.serializar(MINIMO), encoding="utf-8")
     malo = tmp_path / "malo.json"
-    malo.write_text(json.dumps(MINIMO, indent=4, sort_keys=False) + "\n", encoding="utf-8")
+    malo.write_text(
+        json.dumps(MINIMO, indent=4, sort_keys=False) + "\n", encoding="utf-8"
+    )
     assert canon.esta_canonico(bueno)
     assert not canon.esta_canonico(malo)
 
@@ -79,15 +81,20 @@ def test_hash_canonico_es_estable(tmp_path: Path, fixtures: Path) -> None:
     desordenado = tmp_path / "desordenado.json"
     datos = canon.cargar(original)
     desordenado.write_text(
-        json.dumps(datos, ensure_ascii=False, indent=4, sort_keys=False) + "\n", encoding="utf-8"
+        json.dumps(datos, ensure_ascii=False, indent=4, sort_keys=False) + "\n",
+        encoding="utf-8",
     )
     assert canon.hash_canonico(desordenado) == esperado
 
 
-def test_fmt_reescribe_y_es_idempotente(tmp_path: Path, capsys: pytest.CaptureFixture) -> None:
+def test_fmt_reescribe_y_es_idempotente(
+    tmp_path: Path, capsys: pytest.CaptureFixture
+) -> None:
     """`cuatris fmt` deja el archivo canonico y una segunda corrida no lo toca."""
     ruta = tmp_path / "vocabulario.json"
-    ruta.write_text(json.dumps(MINIMO, indent=4, sort_keys=False) + "\n", encoding="utf-8")
+    ruta.write_text(
+        json.dumps(MINIMO, indent=4, sort_keys=False) + "\n", encoding="utf-8"
+    )
 
     assert main(["fmt", str(ruta)]) == 0
     primera = ruta.read_text(encoding="utf-8")
@@ -121,7 +128,9 @@ def test_fmt_check_acepta_las_fixtures_que_deben_pasar(fixtures: Path) -> None:
     assert main(["fmt", "--check", *archivos]) == 0
 
 
-def test_fmt_sale_con_2_si_no_puede_abrir(tmp_path: Path, capsys: pytest.CaptureFixture) -> None:
+def test_fmt_sale_con_2_si_no_puede_abrir(
+    tmp_path: Path, capsys: pytest.CaptureFixture
+) -> None:
     """Un archivo inexistente es un problema de invocacion, no de datos."""
     assert main(["fmt", "--check", str(tmp_path / "no-existe.json")]) == 2
     assert "no se pudo abrir" in capsys.readouterr().out

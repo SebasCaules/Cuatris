@@ -1,4 +1,5 @@
 """Fixtures compartidas de los tests de la CLI."""
+
 from pathlib import Path
 
 import pytest

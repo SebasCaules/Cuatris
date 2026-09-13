@@ -74,6 +74,9 @@ SEDES: dict[str, str] = {
     "Rectorado": "rectorado",
     "SDT": "sdt",
     "SDF": "sdf",
+    # Nombres completos: el detalle de un curso los muestra asi (corrida real del 2026-09-12).
+    "Sede Distrito Tecnologico": "sdt",
+    "Sede Distrito Financiero": "sdf",
 }
 
 #: Cuatrimestres del filtro «Período» del listado de cursos. `Verano` y `Especial`

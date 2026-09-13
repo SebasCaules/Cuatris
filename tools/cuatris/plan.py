@@ -721,9 +721,7 @@ def construir_plan(
         )
 
     titulos = []
-    por_creditos = sorted(
-        TITULOS_CONOCIDOS.values(), key=lambda d: creditos_titulos[str(d["id"])]
-    )
+    por_creditos = sorted(TITULOS_CONOCIDOS.values(), key=lambda d: creditos_titulos[str(d["id"])])
     for datos in por_creditos:
         titulo: dict[str, object] = {
             "id": datos["id"],
@@ -776,9 +774,7 @@ def construir_plan(
         "obligatorias_vigentes": sum(
             1 for m in materias if m["vigente"] and m["ciclo"] != "electiva"
         ),
-        "electivas_vigentes": sum(
-            1 for m in materias if m["vigente"] and m["ciclo"] == "electiva"
-        ),
+        "electivas_vigentes": sum(1 for m in materias if m["vigente"] and m["ciclo"] == "electiva"),
         "solo_sga": sum(1 for m in materias if not m["vigente"]),
         "diferencias_creditos": diferencias_creditos,
         "diferencias_creditos_requeridos": diferencias_requeridos,
@@ -898,9 +894,7 @@ def _comando_importar(args: argparse.Namespace) -> int:
                 f"--creditos-decididos nombra {codigo} dos veces, con {anterior} y con {creditos}"
             )
         decididos[codigo] = creditos
-    plan, reporte = importar_plan(
-        Path(args.excel), Path(args.sga), Path(args.titulos), decididos
-    )
+    plan, reporte = importar_plan(Path(args.excel), Path(args.sga), Path(args.titulos), decididos)
     escribir_json_canonico(Path(args.salida), plan)
     print(_resumen(reporte), file=sys.stderr)
     print(f"escrito {args.salida}", file=sys.stderr)

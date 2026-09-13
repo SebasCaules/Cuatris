@@ -144,9 +144,7 @@ def _entradas_de_horarios(base: Path, indice: dict[str, Any], fecha: str) -> lis
         relativa = _relativa(base, ruta)
         faltantes = [clave for clave in ("id", "desde", "hasta") if not periodo.get(clave)]
         if faltantes:
-            raise ErrorIndice(
-                f"«{relativa}»: al periodo le faltan {', '.join(faltantes)}"
-            )
+            raise ErrorIndice(f"«{relativa}»: al periodo le faltan {', '.join(faltantes)}")
         identificador = str(periodo["id"])
         if identificador in vistos:
             raise ErrorIndice(

@@ -40,8 +40,9 @@ pytest/ruff/fastjsonschema (instalados en `.venv`).
 - **N0-8** `cli.py` con registro explícito `MODULOS_EXTERNOS` (un módulo = `AYUDA`,
   `configurar`, `ejecutar`); errores de dominio con mensaje limpio salvo `--traceback`; un
   archivo que no se puede abrir no aborta el lote. Cierra los dos findings medios de W1.1.
-- **N0-9** `vocabulario.json` solo con las sedes observadas en el material (`rectorado`,
-  `sdt`); `sdf` entra cuando aparezca en una captura.
+- **N0-9** `vocabulario.json` solo con las sedes observadas. `rectorado` y `sdt` del material;
+  `sdf` («Sede Distrito Financiero») entró el 2026-09-12 al aparecer en la corrida real del
+  scraper.
 - **N0-10** «Sin horario publicado» no es un estado de materia: es un atributo de la oferta
   (`seOfrece`, `cupoLleno` del motor). `estadoMateria` conserva el parámetro `horarios`
   documentado como reservado.

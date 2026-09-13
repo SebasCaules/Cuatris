@@ -64,13 +64,17 @@ def html_listado(corpus_sga: Path) -> str:
 @pytest.fixture(scope="session")
 def html_listado_1c(corpus_sga: Path) -> str:
     """Listado filtrado con un solo curso, 72.44 del Primer Cuat. 2026."""
-    return (corpus_sga / "oferta-filtrada-nombreycuatri.html").read_text(encoding="utf-8")
+    return (corpus_sga / "oferta-filtrada-nombreycuatri.html").read_text(
+        encoding="utf-8"
+    )
 
 
 @pytest.fixture(scope="session")
 def html_algebra(corpus_sga: Path) -> str:
     """93.18 Algebra Lineal, detalle con la pestana Comisiones ya abierta."""
-    return (corpus_sga / "horarios-materia-multiples-comisiones.html").read_text(encoding="utf-8")
+    return (corpus_sga / "horarios-materia-multiples-comisiones.html").read_text(
+        encoding="utf-8"
+    )
 
 
 @pytest.fixture(scope="session")
@@ -82,7 +86,9 @@ def html_cripto_plantel(corpus_sga: Path) -> str:
 @pytest.fixture(scope="session")
 def html_cripto_comisiones(corpus_sga: Path) -> str:
     """72.44, pestana Comisiones."""
-    return (corpus_sga / "horarios-materia-detalle-comisiones.html").read_text(encoding="utf-8")
+    return (corpus_sga / "horarios-materia-detalle-comisiones.html").read_text(
+        encoding="utf-8"
+    )
 
 
 def _codigo_de_fila(fila: Any) -> str | None:
@@ -142,7 +148,9 @@ class SGAFalso:
 
     def cliente(self) -> ClienteSGA:
         return ClienteSGA(
-            transporte=httpx.MockTransport(self.manejar), reloj=lambda: 0.0, dormir=lambda _s: None
+            transporte=httpx.MockTransport(self.manejar),
+            reloj=lambda: 0.0,
+            dormir=lambda _s: None,
         )
 
     def pidio(self, url: str) -> bool:
@@ -183,30 +191,43 @@ def entorno_con_credenciales(monkeypatch: pytest.MonkeyPatch) -> None:
 # --------------------------------------------------------------------------------------
 
 
-def test_el_filtro_usa_los_nombres_de_campo_del_html_y_no_ids_fijos(html_listado: str) -> None:
+def test_el_filtro_usa_los_nombres_de_campo_del_html_y_no_ids_fijos(
+    html_listado: str,
+) -> None:
     filtros = parsers.extraer_ids_filtro(html_listado)
     falso = SGAFalso(html_listado)
     falso.agregar(filtros.accion or "", html_listado)
 
     with falso.cliente() as cliente:
         bajar.filtrar_listado(
-            cliente, html_listado, nivel="Grado", cuatrimestre_texto="Segundo Cuat.", anio=2026
+            cliente,
+            html_listado,
+            nivel="Grado",
+            cuatrimestre_texto="Segundo Cuat.",
+            anio=2026,
         )
 
     envio = [u for u in falso.pedidos if u == filtros.accion]
     assert envio, "el filtro se postea al «action» del formulario del listado"
     # Los valores de los desplegables salen del `value` del `<option>` con ese texto visible.
     assert bajar.valor_de_opcion(html_listado, filtros.campos["Nivel"], "Grado") == "1"
-    assert bajar.valor_de_opcion(html_listado, filtros.campos["Período"], "Segundo Cuat.") == "1"
+    assert (
+        bajar.valor_de_opcion(html_listado, filtros.campos["Período"], "Segundo Cuat.")
+        == "1"
+    )
 
 
-def test_el_filtro_avisa_si_el_desplegable_no_tiene_la_opcion(html_listado: str) -> None:
+def test_el_filtro_avisa_si_el_desplegable_no_tiene_la_opcion(
+    html_listado: str,
+) -> None:
     filtros = parsers.extraer_ids_filtro(html_listado)
     with pytest.raises(parsers.EstructuraInesperada, match="Doctorado"):
         bajar.valor_de_opcion(html_listado, filtros.campos["Nivel"], "Doctorado")
 
 
-def test_la_paginacion_sigue_el_enlace_siguiente_hasta_el_final(html_listado: str) -> None:
+def test_la_paginacion_sigue_el_enlace_siguiente_hasta_el_final(
+    html_listado: str,
+) -> None:
     """Dos paginas simuladas: el barrido junta las filas de las dos y para al terminar."""
     siguiente = parsers.parsear_listado(html_listado).paginacion.enlace_siguiente
     assert siguiente
@@ -227,16 +248,23 @@ def test_la_paginacion_se_detiene_en_el_limite(html_listado: str) -> None:
     falso = SGAFalso(html_listado, {siguiente or "": recortar(html_listado, {"93.18"})})
 
     with falso.cliente() as cliente:
-        filas = list(bajar.recorrer_listado(cliente, pagina1, periodo="2026-2C", limite=1))
+        filas = list(
+            bajar.recorrer_listado(cliente, pagina1, periodo="2026-2C", limite=1)
+        )
 
     assert [f.codigo for f in filas] == ["30.28"]
-    assert not falso.pidio(siguiente or ""), "con --limite no se pide la pagina siguiente"
+    assert not falso.pidio(siguiente or ""), (
+        "con --limite no se pide la pagina siguiente"
+    )
 
 
 def test_una_fila_de_otro_periodo_corta_el_barrido(html_listado: str) -> None:
     pagina = recortar(html_listado, {"30.28"})
     falso = SGAFalso(html_listado)
-    with falso.cliente() as cliente, pytest.raises(parsers.EstructuraInesperada, match="filtro"):
+    with (
+        falso.cliente() as cliente,
+        pytest.raises(parsers.EstructuraInesperada, match="filtro"),
+    ):
         list(bajar.recorrer_listado(cliente, pagina, periodo="2026-1C"))
 
 
@@ -252,7 +280,10 @@ def test_bajar_curso_abre_la_pestana_comisiones_desde_el_plantel(
     url_pestana = enlace_de_pestana(html_cripto_plantel, "Comisiones")
     falso = SGAFalso(
         html_listado_1c,
-        {fila.enlace_detalle or "": html_cripto_plantel, url_pestana: html_cripto_comisiones},
+        {
+            fila.enlace_detalle or "": html_cripto_plantel,
+            url_pestana: html_cripto_comisiones,
+        },
     )
     with falso.cliente() as cliente:
         curso = bajar.bajar_curso(cliente, fila)
@@ -269,7 +300,10 @@ def test_bajar_curso_falla_si_el_sga_devuelve_otro_curso(
 ) -> None:
     fila = _fila(html_listado, "30.28")
     falso = SGAFalso(html_listado, {fila.enlace_detalle or "": html_algebra})
-    with falso.cliente() as cliente, pytest.raises(parsers.EstructuraInesperada, match="93.18"):
+    with (
+        falso.cliente() as cliente,
+        pytest.raises(parsers.EstructuraInesperada, match="93.18"),
+    ):
         bajar.bajar_curso(cliente, fila)
 
 
@@ -285,7 +319,9 @@ def test_el_checkpoint_guarda_una_linea_por_curso(tmp_path: Path) -> None:
 
     assert punto.codigos() == {"93.18", "30.28"}
     assert list(punto.cargar()) == ["93.18", "30.28"]  # conserva el orden de escritura
-    assert len((tmp_path / "2026-2C.jsonl").read_text(encoding="utf-8").splitlines()) == 2
+    assert (
+        len((tmp_path / "2026-2C.jsonl").read_text(encoding="utf-8").splitlines()) == 2
+    )
 
 
 def test_el_checkpoint_descarta_la_ultima_linea_truncada(tmp_path: Path) -> None:
@@ -300,7 +336,9 @@ def test_el_checkpoint_descarta_la_ultima_linea_truncada(tmp_path: Path) -> None
 
 def test_el_checkpoint_rechaza_una_linea_rota_en_el_medio(tmp_path: Path) -> None:
     ruta = tmp_path / "2026-2C.jsonl"
-    ruta.write_text('{"codigo": "9\n{"codigo": "30.28", "curso": {}}\n', encoding="utf-8")
+    ruta.write_text(
+        '{"codigo": "9\n{"codigo": "30.28", "curso": {}}\n', encoding="utf-8"
+    )
     with pytest.raises(ErrorDeCheckpoint, match="JSON valido"):
         Checkpoint(ruta, "2026-2C").cargar()
 
@@ -372,13 +410,17 @@ def test_configurar_registro_calla_el_log_de_httpx_con_el_jsessionid(
     bajar.configurar_registro()
     caplog.set_level(logging.INFO)
     url = "https://sga.itba.edu.ar/app2/;jsessionid=ABC123SECRETO?0-1.-login"
-    transporte = httpx.MockTransport(lambda _peticion: httpx.Response(200, html="<html></html>"))
+    transporte = httpx.MockTransport(
+        lambda _peticion: httpx.Response(200, html="<html></html>")
+    )
     with httpx.Client(transport=transporte) as http:
         http.get(url)
 
     assert "ABC123SECRETO" not in caplog.text
     assert not nivel_de_httpx_restaurado.isEnabledFor(logging.INFO)
-    assert nivel_de_httpx_restaurado.isEnabledFor(logging.WARNING), "los errores se siguen viendo"
+    assert nivel_de_httpx_restaurado.isEnabledFor(logging.WARNING), (
+        "los errores se siguen viendo"
+    )
 
 
 def test_el_archivo_de_algebra_lineal_pasa_el_validador(
@@ -446,7 +488,9 @@ def test_al_reanudar_no_se_vuelve_a_pedir_el_curso_ya_bajado(
 
     segundo_falso, _ = _sga_de_algebra(html_listado, html_algebra)
     assert _correr(segundo_falso, monkeypatch, **comunes)[0] == 0
-    assert not segundo_falso.pidio(url_detalle), "el curso del checkpoint no se vuelve a pedir"
+    assert not segundo_falso.pidio(url_detalle), (
+        "el curso del checkpoint no se vuelve a pedir"
+    )
     assert canon.cargar(salida) == primero
 
 
@@ -513,7 +557,9 @@ def test_un_archivo_que_no_valida_queda_como_invalido_y_sale_con_1(
 
     assert codigo == 1
     assert not salida.exists()
-    assert list(datos.iterdir()) == [], "nada rechazado puede quedar dentro del arbol de datos"
+    assert list(datos.iterdir()) == [], (
+        "nada rechazado puede quedar dentro del arbol de datos"
+    )
     invalido = cache / "2026-2C.invalido.json"
     assert invalido.is_file()
     assert str(invalido) in capsys.readouterr().out

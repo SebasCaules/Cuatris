@@ -215,7 +215,9 @@ def test_una_baja_fuera_de_datos_no_agrega_el_motivo_de_la_baja(repo: Path):
     _commit(repo, "baja de codigo")
     resultado = clasificar(repo, "main", "pr")
     assert resultado.clase == NECESITA_HUMANO
-    assert not any("toda baja dentro de data/" in motivo for motivo in resultado.motivos)
+    assert not any(
+        "toda baja dentro de data/" in motivo for motivo in resultado.motivos
+    )
     assert any("allowlist" in motivo for motivo in resultado.motivos)
 
 
@@ -259,7 +261,13 @@ def test_archivo_de_datos_ejecutable(repo: Path):
 
 def test_submodulo(repo: Path):
     sha = "0" * 39 + "1"
-    _git(repo, "update-index", "--add", "--cacheinfo", f"160000,{sha},data/v1/horarios/mod")
+    _git(
+        repo,
+        "update-index",
+        "--add",
+        "--cacheinfo",
+        f"160000,{sha},data/v1/horarios/mod",
+    )
     _git(repo, "commit", "-q", "-m", "submodulo")
     resultado = clasificar(repo, "main", "pr")
     assert resultado.clase == NECESITA_HUMANO
@@ -374,7 +382,17 @@ def test_salida_json_y_codigos_de_salida(repo: Path, tmp_path: Path, capsys):
     _commit(repo, "datos")
     salida = tmp_path / "triage.json"
     codigo = _correr(
-        ["triage", "--repo", str(repo), "--base", "main", "--head", "pr", "--salida", str(salida)]
+        [
+            "triage",
+            "--repo",
+            str(repo),
+            "--base",
+            "main",
+            "--head",
+            "pr",
+            "--salida",
+            str(salida),
+        ]
     )
     assert codigo == 0
     impreso = json.loads(capsys.readouterr().out)
@@ -388,11 +406,15 @@ def test_salida_json_y_codigos_de_salida(repo: Path, tmp_path: Path, capsys):
 def test_codigo_1_cuando_necesita_humano(repo: Path):
     _escribir(repo, "tools/cuatris/cli.py", "# hola\n")
     _commit(repo, "codigo")
-    assert _correr(["triage", "--repo", str(repo), "--base", "main", "--head", "pr"]) == 1
+    assert (
+        _correr(["triage", "--repo", str(repo), "--base", "main", "--head", "pr"]) == 1
+    )
 
 
 def test_codigo_2_cuando_no_se_puede_leer_el_repositorio(tmp_path: Path, capsys):
-    codigo = _correr(["triage", "--repo", str(tmp_path), "--base", "main", "--head", "pr"])
+    codigo = _correr(
+        ["triage", "--repo", str(tmp_path), "--base", "main", "--head", "pr"]
+    )
     assert codigo == 2
     assert "ERROR" in capsys.readouterr().out
 

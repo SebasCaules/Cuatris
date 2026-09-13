@@ -181,6 +181,7 @@ export const CRIPTO_SABADO: MateriaEnGrilla = {
 const SEDES: Record<string, string> = {
   rectorado: "Rectorado",
   sdt: "SDT",
+  sdf: "Sede Distrito Financiero",
 };
 
 /** Nombre de sede para las etiquetas; el id crudo si no está en el vocabulario. */

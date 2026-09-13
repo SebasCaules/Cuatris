@@ -303,9 +303,7 @@ def _revisar_dictado_conjunto(cursos: list[dict[str, Any]], archivo: str) -> lis
     porque `dictado_conjunto` es la unica lista blanca de `colision-de-aula`: un codigo mal
     tipeado ahi apaga la deteccion del par que se queria eximir y nadie se entera.
     """
-    presentes = {
-        codigo for curso in cursos if (codigo := _texto(curso.get("codigo"))) is not None
-    }
+    presentes = {codigo for curso in cursos if (codigo := _texto(curso.get("codigo"))) is not None}
     hallazgos: list[Hallazgo] = []
     vistos: set[tuple[str, str]] = set()
     for curso in cursos:
@@ -929,9 +927,7 @@ def _revisar_titulos(datos: dict[str, Any], archivo: str) -> list[Hallazgo]:
 # --- abreviaciones -----------------------------------------------------------------------
 
 
-def _revisar_abreviaciones(
-    datos: Any, archivo: str, contexto: Contexto | None
-) -> list[Hallazgo]:
+def _revisar_abreviaciones(datos: Any, archivo: str, contexto: Contexto | None) -> list[Hallazgo]:
     """Invariantes de `data/v1/abreviaciones.json`."""
     if not isinstance(datos, dict):
         return []

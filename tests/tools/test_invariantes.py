@@ -98,7 +98,9 @@ def _horarios(cursos: list[dict]) -> dict:
     }
 
 
-def _revisar_horarios(cursos: list[dict], contexto: Contexto | None = None) -> list[str]:
+def _revisar_horarios(
+    cursos: list[dict], contexto: Contexto | None = None
+) -> list[str]:
     return _reglas(revisar(_horarios(cursos), "horarios", "prueba.json", contexto))
 
 
@@ -111,9 +113,9 @@ def test_fixture_que_debe_fallar_en_c3(
 ) -> None:
     """Cada fixture de C3 produce exactamente ese error, con el contexto de `data/`."""
     contexto = contexto_de_datos(raiz / "data")
-    assert _errores(validar_archivo(fixtures / "deben-fallar" / nombre, contexto=contexto)) == [
-        regla
-    ]
+    assert _errores(
+        validar_archivo(fixtures / "deben-fallar" / nombre, contexto=contexto)
+    ) == [regla]
 
 
 def test_las_fixtures_que_pasan_no_tienen_errores(fixtures: Path) -> None:
@@ -137,7 +139,9 @@ def test_los_datos_del_repositorio_no_tienen_errores(raiz: Path) -> None:
     """El plan y las abreviaciones que se publican pasan C3 con su propio contexto."""
     contexto = contexto_de_datos(raiz / "data")
     for relativa in ("v1/planes/S10-Rev23.json", "v1/abreviaciones.json"):
-        assert validar_archivo(raiz / "data" / relativa, contexto=contexto) == [], relativa
+        assert validar_archivo(raiz / "data" / relativa, contexto=contexto) == [], (
+            relativa
+        )
 
 
 # --- horarios: identidades, franjas y fechas ---------------------------------------------
@@ -146,8 +150,12 @@ def test_los_datos_del_repositorio_no_tienen_errores(raiz: Path) -> None:
 def test_el_codigo_es_unico_y_el_nombre_no_importa() -> None:
     """Dos materias homonimas con codigos distintos son validas; dos veces el mismo codigo no."""
     homonimas = [
-        _curso("23.05", [_bloque("lunes", "08:00", "10:00", ["002R"])], nombre="Acustica"),
-        _curso("25.66", [_bloque("martes", "08:00", "10:00", ["002R"])], nombre="Acustica"),
+        _curso(
+            "23.05", [_bloque("lunes", "08:00", "10:00", ["002R"])], nombre="Acustica"
+        ),
+        _curso(
+            "25.66", [_bloque("martes", "08:00", "10:00", ["002R"])], nombre="Acustica"
+        ),
     ]
     assert _revisar_horarios(homonimas) == []
     repetido = [
@@ -164,7 +172,11 @@ def test_la_comision_es_unica_dentro_del_curso() -> None:
     assert _revisar_horarios([curso, otro]) == []
     repetida = copy.deepcopy(curso)
     repetida["comisiones"].append(
-        {"bloques": [_bloque("martes", "08:00", "10:00", ["003R"])], "docentes": [], "id": "A"}
+        {
+            "bloques": [_bloque("martes", "08:00", "10:00", ["003R"])],
+            "docentes": [],
+            "id": "A",
+        }
     )
     assert _revisar_horarios([repetida]) == ["comision-duplicada"]
 
@@ -183,9 +195,9 @@ def test_la_comision_es_unica_dentro_del_curso() -> None:
 )
 def test_la_franja_del_bloque(desde: str, hasta: str, esperado: list[str]) -> None:
     """`desde < hasta`, entre 07:00 y 23:00, y nunca mas de ocho horas seguidas."""
-    assert _revisar_horarios([_curso("93.18", [_bloque("lunes", desde, hasta, ["002R"])])]) == (
-        esperado
-    )
+    assert _revisar_horarios(
+        [_curso("93.18", [_bloque("lunes", desde, hasta, ["002R"])])]
+    ) == (esperado)
 
 
 def test_el_periodo_corto_es_valido_y_el_que_se_sale_no() -> None:
@@ -229,7 +241,11 @@ def test_la_sede_nula_solo_vale_si_no_es_presencial() -> None:
     """Un bloque virtual puede no tener sede; uno presencial siempre la declara."""
     virtual = _curso(
         "93.18",
-        [_bloque("lunes", "08:00", "10:00", [], sede=None, modalidad="virtual_sincronica")],
+        [
+            _bloque(
+                "lunes", "08:00", "10:00", [], sede=None, modalidad="virtual_sincronica"
+            )
+        ],
     )
     assert _revisar_horarios([virtual], CONTEXTO) == []
     presencial = _curso("93.18", [_bloque("lunes", "08:00", "10:00", [], sede=None)])
@@ -253,7 +269,9 @@ def test_colision_de_aula_entre_cursos_distintos() -> None:
 
 def test_dos_aulas_simultaneas_de_la_misma_comision_son_validas() -> None:
     """93.18 com. B usa 003T y 004T el mismo miercoles: es un caso real."""
-    curso = _curso("93.18", [_bloque("miercoles", "10:00", "12:00", ["003T", "004T"], sede="sdt")])
+    curso = _curso(
+        "93.18", [_bloque("miercoles", "10:00", "12:00", ["003T", "004T"], sede="sdt")]
+    )
     assert _revisar_horarios([curso]) == []
 
 
@@ -323,7 +341,9 @@ def test_el_mismo_docente_en_dos_comisiones_del_mismo_curso_no_advierte() -> Non
     ("capacidad", "inscriptos", "esperado"),
     [(48, 48, []), (48, 10, []), (48, 49, ["sobrecupo"])],
 )
-def test_el_sobrecupo_es_advertencia(capacidad: int, inscriptos: int, esperado: list[str]) -> None:
+def test_el_sobrecupo_es_advertencia(
+    capacidad: int, inscriptos: int, esperado: list[str]
+) -> None:
     """48/48 es el caso real de 93.18 com. A; el sobrecupo existe y solo se advierte."""
     curso = _curso("93.18", [_bloque("lunes", "14:00", "16:00", ["001R"])])
     curso["comisiones"][0]["cupo"] = {"capacidad": capacidad}
@@ -350,11 +370,23 @@ def _plan(materias: list[dict], **cambios) -> dict:
         "contrato": "1.0.0",
         "electivas": {"creditos_requeridos": 27},
         "materias": materias,
-        "minors": [{"creditos_minimos": 14, "nombre": "Ciencia de Datos", "sigla": "CD"}],
+        "minors": [
+            {"creditos_minimos": 14, "nombre": "Ciencia de Datos", "sigla": "CD"}
+        ],
         "plan": "S10-Rev23",
         "titulos": [
-            {"creditos": 147, "id": "analista", "nombre": "Analista", "tipo": "intermedio"},
-            {"creditos": 243, "id": "ingeniero", "nombre": "Ingeniero/a", "tipo": "principal"},
+            {
+                "creditos": 147,
+                "id": "analista",
+                "nombre": "Analista",
+                "tipo": "intermedio",
+            },
+            {
+                "creditos": 243,
+                "id": "ingeniero",
+                "nombre": "Ingeniero/a",
+                "tipo": "principal",
+            },
         ],
     }
     plan.update(cambios)
@@ -383,7 +415,10 @@ def _revisar_plan(materias: list[dict], **cambios) -> list[str]:
 
 def test_las_correlativas_existen_en_el_plan() -> None:
     """Una correlativa que no esta en `materias[]` es un plan roto."""
-    assert _revisar_plan([_materia("72.03"), _materia("72.31", correlativas=["72.03"])]) == []
+    assert (
+        _revisar_plan([_materia("72.03"), _materia("72.31", correlativas=["72.03"])])
+        == []
+    )
     assert _revisar_plan([_materia("72.31", correlativas=["72.03"])]) == [
         "correlativa-inexistente"
     ]
@@ -403,14 +438,18 @@ def test_el_grafo_de_correlativas_es_aciclico() -> None:
 
 def test_una_materia_correlativa_de_si_misma_es_un_ciclo() -> None:
     """El ciclo mas corto tambien se detecta."""
-    assert _revisar_plan([_materia("72.03", correlativas=["72.03"])]) == ["correlativas-ciclicas"]
+    assert _revisar_plan([_materia("72.03", correlativas=["72.03"])]) == [
+        "correlativas-ciclicas"
+    ]
 
 
 def test_el_cuatrimestre_sugerido_es_nulo_solo_en_las_electivas() -> None:
     """`cuatrimestre_sugerido` nulo si y solo si `ciclo` es «electiva»."""
     electiva = _materia("16.04", ciclo="electiva", cuatrimestre_sugerido=None)
     assert _revisar_plan([electiva]) == []
-    assert _revisar_plan([_materia("16.04", ciclo="electiva")]) == ["cuatrimestre-incoherente"]
+    assert _revisar_plan([_materia("16.04", ciclo="electiva")]) == [
+        "cuatrimestre-incoherente"
+    ]
     assert _revisar_plan([_materia("72.03", cuatrimestre_sugerido=None)]) == [
         "cuatrimestre-incoherente"
     ]
@@ -418,24 +457,37 @@ def test_el_cuatrimestre_sugerido_es_nulo_solo_en_las_electivas() -> None:
 
 def test_las_siglas_de_minor_estan_declaradas() -> None:
     """Una electiva solo puede sumar a un minor que exista en `minors[]`."""
-    electiva = _materia("16.04", ciclo="electiva", cuatrimestre_sugerido=None, minors=["CD"])
+    electiva = _materia(
+        "16.04", ciclo="electiva", cuatrimestre_sugerido=None, minors=["CD"]
+    )
     assert _revisar_plan([electiva]) == []
-    ajena = _materia("16.04", ciclo="electiva", cuatrimestre_sugerido=None, minors=["ZZ"])
+    ajena = _materia(
+        "16.04", ciclo="electiva", cuatrimestre_sugerido=None, minors=["ZZ"]
+    )
     assert _revisar_plan([ajena]) == ["minor-inexistente"]
 
 
-SOLO_PRINCIPAL = [{"creditos": 30, "id": "ingeniero", "nombre": "Ingeniero/a", "tipo": "principal"}]
+SOLO_PRINCIPAL = [
+    {"creditos": 30, "id": "ingeniero", "nombre": "Ingeniero/a", "tipo": "principal"}
+]
 """Titulos de un plan chico: su techo son los 30 creditos de su unica materia."""
 
 
 def test_no_se_pueden_exigir_mas_creditos_de_los_que_da_el_plan() -> None:
     """Un requisito imposible de cumplir es un error de carga, no una carrera dificil."""
-    assert _revisar_plan([_materia("72.45", creditos_requeridos=30)], titulos=SOLO_PRINCIPAL) == []
-    assert _revisar_plan([_materia("72.45", creditos_requeridos=31)], titulos=SOLO_PRINCIPAL) == [
-        "creditos-requeridos-excesivos"
-    ]
+    assert (
+        _revisar_plan(
+            [_materia("72.45", creditos_requeridos=30)], titulos=SOLO_PRINCIPAL
+        )
+        == []
+    )
     assert _revisar_plan(
-        [_materia("72.03")], electivas={"creditos_requeridos": 31}, titulos=SOLO_PRINCIPAL
+        [_materia("72.45", creditos_requeridos=31)], titulos=SOLO_PRINCIPAL
+    ) == ["creditos-requeridos-excesivos"]
+    assert _revisar_plan(
+        [_materia("72.03")],
+        electivas={"creditos_requeridos": 31},
+        titulos=SOLO_PRINCIPAL,
     ) == ["creditos-requeridos-excesivos"]
 
 
@@ -446,7 +498,9 @@ def test_el_plan_que_lista_solo_parte_de_sus_materias_no_dispara_la_regla() -> N
     una sola materia de 12 creditos y declara un titulo de 243: medir los requisitos contra
     esos 12 haria saltar la regla por lo que falta, no por lo que esta mal.
     """
-    proyecto = _materia("72.45", ciclo="profesional", creditos=12, creditos_requeridos=160)
+    proyecto = _materia(
+        "72.45", ciclo="profesional", creditos=12, creditos_requeridos=160
+    )
     assert _revisar_plan([proyecto]) == []
     assert _revisar_plan([proyecto], titulos=SOLO_PRINCIPAL) == [
         "creditos-requeridos-excesivos"
@@ -456,16 +510,25 @@ def test_el_plan_que_lista_solo_parte_de_sus_materias_no_dispara_la_regla() -> N
 def test_el_codigo_de_materia_no_se_repite() -> None:
     """La identidad de una materia es su codigo."""
     assert _revisar_plan([_materia("72.03"), _materia("93.26")]) == []
-    assert _revisar_plan([_materia("72.03"), _materia("72.03")]) == ["materia-duplicada"]
+    assert _revisar_plan([_materia("72.03"), _materia("72.03")]) == [
+        "materia-duplicada"
+    ]
 
 
 def test_los_creditos_de_los_titulos_no_bajan() -> None:
     """Si el titulo principal exige menos que un intermedio, se advierte."""
     titulos = [
         {"creditos": 243, "id": "analista", "nombre": "Analista", "tipo": "intermedio"},
-        {"creditos": 147, "id": "ingeniero", "nombre": "Ingeniero/a", "tipo": "principal"},
+        {
+            "creditos": 147,
+            "id": "ingeniero",
+            "nombre": "Ingeniero/a",
+            "tipo": "principal",
+        },
     ]
-    hallazgos = revisar(_plan([_materia("72.03")], titulos=titulos), "planes", "plan.json")
+    hallazgos = revisar(
+        _plan([_materia("72.03")], titulos=titulos), "planes", "plan.json"
+    )
     assert _reglas(hallazgos) == ["titulos-creditos-decrecientes"]
     assert hallazgos[0].nivel == WARNING
 
@@ -473,14 +536,26 @@ def test_los_creditos_de_los_titulos_no_bajan() -> None:
 def test_los_titulos_se_comparan_por_tipo_y_no_por_el_orden_del_arreglo() -> None:
     """Un plan que liste primero el principal es raro, pero no es una advertencia."""
     al_reves = [
-        {"creditos": 243, "id": "ingeniero", "nombre": "Ingeniero/a", "tipo": "principal"},
+        {
+            "creditos": 243,
+            "id": "ingeniero",
+            "nombre": "Ingeniero/a",
+            "tipo": "principal",
+        },
         {"creditos": 147, "id": "analista", "nombre": "Analista", "tipo": "intermedio"},
-        {"creditos": 192, "id": "bachiller", "nombre": "Bachiller", "tipo": "intermedio"},
+        {
+            "creditos": 192,
+            "id": "bachiller",
+            "nombre": "Bachiller",
+            "tipo": "intermedio",
+        },
     ]
     assert _revisar_plan([_materia("72.03")], titulos=al_reves) == []
     excesivo = copy.deepcopy(al_reves)
     excesivo[1]["creditos"] = 300
-    hallazgos = revisar(_plan([_materia("72.03")], titulos=excesivo), "planes", "plan.json")
+    hallazgos = revisar(
+        _plan([_materia("72.03")], titulos=excesivo), "planes", "plan.json"
+    )
     assert _reglas(hallazgos) == ["titulos-creditos-decrecientes"]
     assert "analista" in hallazgos[0].mensaje and "ingeniero" in hallazgos[0].mensaje
 
@@ -488,7 +563,9 @@ def test_los_titulos_se_comparan_por_tipo_y_no_por_el_orden_del_arreglo() -> Non
 # --- abreviaciones ------------------------------------------------------------------------
 
 
-def _revisar_abreviaciones(mapa: dict[str, str], contexto: Contexto | None = None) -> list[str]:
+def _revisar_abreviaciones(
+    mapa: dict[str, str], contexto: Contexto | None = None
+) -> list[str]:
     documento = {"abreviaciones": mapa, "contrato": "1.0.0"}
     return _reglas(revisar(documento, "abreviaciones", "abreviaciones.json", contexto))
 
@@ -496,7 +573,9 @@ def _revisar_abreviaciones(mapa: dict[str, str], contexto: Contexto | None = Non
 def test_las_abreviaciones_son_unicas() -> None:
     """Dos materias con la misma abreviacion son indistinguibles en la interfaz."""
     assert _revisar_abreviaciones({"72.42": "POD", "72.44": "Cripto"}) == []
-    assert _revisar_abreviaciones({"72.42": "POD", "72.44": "POD"}) == ["abreviacion-duplicada"]
+    assert _revisar_abreviaciones({"72.42": "POD", "72.44": "POD"}) == [
+        "abreviacion-duplicada"
+    ]
 
 
 def test_toda_abreviacion_apunta_a_una_materia_del_plan() -> None:
@@ -513,7 +592,10 @@ def test_la_materia_sin_abreviacion_solo_se_advierte() -> None:
     """Falta una abreviacion: la interfaz cae al nombre largo, no se rompe."""
     contexto = Contexto(codigos=frozenset({"72.44"}))
     hallazgos = revisar(
-        {"abreviaciones": {}, "contrato": "1.0.0"}, "abreviaciones", "abreviaciones.json", contexto
+        {"abreviaciones": {}, "contrato": "1.0.0"},
+        "abreviaciones",
+        "abreviaciones.json",
+        contexto,
     )
     assert _reglas(hallazgos) == ["materia-sin-abreviacion"]
     assert hallazgos[0].nivel == WARNING
@@ -533,26 +615,33 @@ def test_el_contexto_sale_del_directorio_de_datos(tmp_path: Path, raiz: Path) ->
     """`contexto_de_datos` lee los planes y el vocabulario, y tolera que falten."""
     contexto = contexto_de_datos(raiz / "data")
     assert contexto.codigos is not None and "72.44" in contexto.codigos
-    assert contexto.sedes == frozenset({"rectorado", "sdt"})
+    assert contexto.sedes == frozenset({"rectorado", "sdf", "sdt"})
     vacio = contexto_de_datos(tmp_path)
     assert vacio.codigos is None
     assert vacio.sedes is None
 
 
-def test_validar_con_data_aplica_las_reglas_cruzadas(fixtures: Path, raiz: Path) -> None:
+def test_validar_con_data_aplica_las_reglas_cruzadas(
+    fixtures: Path, raiz: Path
+) -> None:
     """`--data` es lo que convierte «sede desconocida» en un error de la linea de comandos."""
     ruta = str(fixtures / "deben-fallar" / "c3-sede-desconocida.json")
     assert main(["validar", ruta, "--data", str(raiz / "data")]) == 1
 
 
-def test_validar_con_data_inexistente_es_codigo_2(tmp_path: Path, fixtures: Path) -> None:
+def test_validar_con_data_inexistente_es_codigo_2(
+    tmp_path: Path, fixtures: Path
+) -> None:
     """Un `--data` que no es un directorio no se ignora en silencio."""
     ruta = str(fixtures / "deben-pasar" / "c3-dictado-conjunto.json")
     assert main(["validar", ruta, "--data", str(tmp_path / "no-existe")]) == 2
 
 
 def test_validar_sin_directorio_de_datos_avisa_lo_que_no_comprobo(
-    tmp_path: Path, fixtures: Path, capsys: pytest.CaptureFixture, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path,
+    fixtures: Path,
+    capsys: pytest.CaptureFixture,
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Un 0 sin una linea no puede significar «no habia como revisarlo»."""
     ruta = str(fixtures / "deben-fallar" / "c3-sede-desconocida.json")
@@ -570,7 +659,9 @@ def test_validar_avisa_si_el_directorio_de_datos_no_tiene_planes(
     """Falta el plan: los codigos quedan sin comprobar y se dice, no se calla."""
     datos = tmp_path / "data"
     (datos / "v1").mkdir(parents=True)
-    shutil.copy(raiz / "data" / "v1" / "vocabulario.json", datos / "v1" / "vocabulario.json")
+    shutil.copy(
+        raiz / "data" / "v1" / "vocabulario.json", datos / "v1" / "vocabulario.json"
+    )
     ruta = str(fixtures / "deben-pasar" / "c3-dictado-conjunto.json")
     assert main(["validar", ruta, "--data", str(datos)]) == 0
     salida = capsys.readouterr().out.strip().splitlines()
@@ -621,7 +712,9 @@ def test_el_id_del_periodo_es_anio_y_cuatrimestre(
 ) -> None:
     """El schema no puede relacionar tres campos con patrones independientes; C3 si."""
     datos = _horarios([])
-    datos["periodo"].update({"anio": anio, "cuatrimestre": cuatrimestre, "id": identificador})
+    datos["periodo"].update(
+        {"anio": anio, "cuatrimestre": cuatrimestre, "id": identificador}
+    )
     assert _reglas(revisar(datos, "horarios", "prueba.json", None)) == esperado
 
 
@@ -637,7 +730,11 @@ def test_el_periodo_incoherente_dice_cual_seria_el_id() -> None:
 def test_el_dictado_conjunto_apunta_a_cursos_del_archivo() -> None:
     """Un codigo que no esta en el archivo apaga la exencion sin que nadie se entere."""
     juntos = [
-        _curso("93.18", [_bloque("lunes", "08:00", "10:00", ["002R"])], dictado_conjunto=["72.44"]),
+        _curso(
+            "93.18",
+            [_bloque("lunes", "08:00", "10:00", ["002R"])],
+            dictado_conjunto=["72.44"],
+        ),
         _curso("72.44", [_bloque("lunes", "08:00", "10:00", ["002R"])]),
     ]
     assert _revisar_horarios(juntos) == []
@@ -654,7 +751,11 @@ def test_el_dictado_conjunto_apunta_a_cursos_del_archivo() -> None:
 def test_el_codigo_mal_tipeado_deja_de_eximir_la_colision() -> None:
     """Es la consecuencia que hace falta avisar: vuelve a aparecer `colision-de-aula`."""
     mal = [
-        _curso("93.18", [_bloque("lunes", "08:00", "10:00", ["002R"])], dictado_conjunto=["7.244"]),
+        _curso(
+            "93.18",
+            [_bloque("lunes", "08:00", "10:00", ["002R"])],
+            dictado_conjunto=["7.244"],
+        ),
         _curso("72.44", [_bloque("lunes", "08:00", "10:00", ["002R"])]),
     ]
     assert sorted(_revisar_horarios(mal)) == [
@@ -679,7 +780,9 @@ def test_solo_las_electivas_declaran_minors(
 ) -> None:
     """Una obligatoria con siglas pinta chips de minor y suma creditos de otra carrera."""
     sugerido = None if ciclo == "electiva" else 1
-    materia = _materia("72.44", ciclo=ciclo, cuatrimestre_sugerido=sugerido, minors=minors)
+    materia = _materia(
+        "72.44", ciclo=ciclo, cuatrimestre_sugerido=sugerido, minors=minors
+    )
     assert _revisar_plan([materia]) == esperado
 
 
@@ -694,7 +797,9 @@ def test_una_obligatoria_con_un_minor_inexistente_dispara_las_dos_reglas() -> No
 def test_el_plan_del_repositorio_no_tiene_obligatorias_con_minors(raiz: Path) -> None:
     """La regla nueva no rechaza el plan publicado: 44 obligatorias y 85 electivas."""
     datos = canon.cargar(raiz / "data" / "v1" / "planes" / "S10-Rev23.json")
-    assert "minor-en-obligatoria" not in _reglas(revisar(datos, "planes", "plan.json", None))
+    assert "minor-en-obligatoria" not in _reglas(
+        revisar(datos, "planes", "plan.json", None)
+    )
 
 
 # --- lo que el codigo exige tiene que estar escrito (F2.5 y F2.6) -------------------------
@@ -724,5 +829,7 @@ def test_no_se_promete_un_hash_estable_que_no_existe(raiz: Path, relativa: str) 
     alguien construya la corroboracion del Sprint 3 sobre una propiedad que no se cumple.
     """
     texto = (raiz / relativa).read_text(encoding="utf-8")
-    assert not hasattr(canon, "hash_estable"), "si existe, hay que volver a documentarla"
+    assert not hasattr(canon, "hash_estable"), (
+        "si existe, hay que volver a documentarla"
+    )
     assert "fuera del hash estable" not in texto, relativa

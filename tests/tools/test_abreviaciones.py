@@ -30,7 +30,11 @@ def documento(csv_curado: str, plan: dict) -> dict:
 
 
 def _csv(filas: list[tuple[str, str, str, str, str]]) -> str:
-    return CABECERA + "\n" + "".join(",".join(f'"{c}"' for c in fila) + "\n" for fila in filas)
+    return (
+        CABECERA
+        + "\n"
+        + "".join(",".join(f'"{c}"' for c in fila) + "\n" for fila in filas)
+    )
 
 
 # --------------------------------------------------------------------------- importar
@@ -56,7 +60,9 @@ def test_desempate_por_codigo(documento: dict) -> None:
 
 
 def test_gana_la_correccion(plan: dict) -> None:
-    texto = _csv([("72.42", "Programación de Objetos Distribuidos", "POD", "Distribuidos", "")])
+    texto = _csv(
+        [("72.42", "Programación de Objetos Distribuidos", "POD", "Distribuidos", "")]
+    )
     assert modulo.leer_csv(texto) == {"72.42": "Distribuidos"}
 
 
@@ -75,7 +81,9 @@ def test_valores_unicos(documento: dict) -> None:
 
 
 def test_abreviacion_repetida_rompe_con_los_codigos() -> None:
-    with pytest.raises(modulo.ErrorAbreviaciones, match=r"72\.42.*72\.44|72\.44.*72\.42"):
+    with pytest.raises(
+        modulo.ErrorAbreviaciones, match=r"72\.42.*72\.44|72\.44.*72\.42"
+    ):
         modulo.validar_unicidad({"72.42": "POD", "72.44": "POD", "72.45": "PF"})
 
 
@@ -130,7 +138,9 @@ def test_json_con_claves_repetidas_rompe(tmp_path: Path) -> None:
 # --------------------------------------------------------------------------- exportar
 
 
-def test_exportar_tiene_las_columnas_y_el_orden_del_plan(plan: dict, documento: dict) -> None:
+def test_exportar_tiene_las_columnas_y_el_orden_del_plan(
+    plan: dict, documento: dict
+) -> None:
     texto = modulo.exportar(plan, documento)
     assert texto.startswith("﻿" + CABECERA + "\n")
     assert "\r" not in texto
@@ -162,7 +172,9 @@ def test_nombres_del_csv_exportado_salen_del_plan(plan: dict, documento: dict) -
 def test_archivo_publicado_es_el_que_produce_el_comando(
     raiz: Path, documento: dict
 ) -> None:
-    publicado = (raiz / "data" / "v1" / "abreviaciones.json").read_text(encoding="utf-8")
+    publicado = (raiz / "data" / "v1" / "abreviaciones.json").read_text(
+        encoding="utf-8"
+    )
     assert publicado == modulo.serializar_canonico(documento)
 
 
@@ -201,7 +213,15 @@ def test_subcomandos(raiz: Path, tmp_path: Path) -> None:
     assert args.funcion(args) == 0
 
     args = parser.parse_args(
-        ["abreviaciones", "importar", str(csv_exportado), "--plan", ruta_plan, "--salida", str(json_vuelta)]
+        [
+            "abreviaciones",
+            "importar",
+            str(csv_exportado),
+            "--plan",
+            ruta_plan,
+            "--salida",
+            str(json_vuelta),
+        ]
     )
     assert args.funcion(args) == 0
     original = (raiz / "data" / "v1" / "abreviaciones.json").read_bytes()

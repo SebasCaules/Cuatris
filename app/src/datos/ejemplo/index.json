@@ -3,7 +3,7 @@
     "archivo": "v1/abreviaciones.json",
     "hash": "sha256:1412dbab80c9e1640573e8d4b630543da79850d976f99718a55beb93fb24f8dd"
   },
-  "actualizado": "2026-09-20",
+  "actualizado": "2026-09-12",
   "contrato": "1.0.0",
   "horarios": [
     {
@@ -27,6 +27,6 @@
   ],
   "vocabulario": {
     "archivo": "v1/vocabulario.json",
-    "hash": "sha256:cd60dcfae753b34976f6054ab1c10ce6962f4618402d4b176c95e4648a0040d7"
+    "hash": "sha256:9b954f8a8d111363d45491ea6269466c1d5a0d5b83e3d68a126a4f6f280ecf42"
   }
 }

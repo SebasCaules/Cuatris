@@ -94,6 +94,7 @@ describe("cargar", () => {
     const vocabulario = await cargarVocabulario(indice);
     expect(vocabulario.sedes.map((sede) => sede.id)).toEqual([
       "rectorado",
+      "sdf",
       "sdt",
     ]);
   });

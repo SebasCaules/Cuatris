@@ -118,8 +118,7 @@ def validar_archivo(
                 ERROR,
                 "tipo-desconocido",
                 archivo,
-                "no se pudo deducir el tipo de archivo; indicalo con --tipo "
-                f"({', '.join(TIPOS)})",
+                f"no se pudo deducir el tipo de archivo; indicalo con --tipo ({', '.join(TIPOS)})",
             )
         )
         return hallazgos

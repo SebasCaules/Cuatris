@@ -522,8 +522,7 @@ def parsear_curso(html_detalle: str | BeautifulSoup) -> Curso:
     pestana = _pestana_activa(sopa)
     if pestana is not None and _clave(pestana) != _clave("Comisiones"):
         raise EstructuraInesperada(
-            "El detalle no tiene abierta la pestana Comisiones, que es la unica que trae "
-            "horarios.",
+            "El detalle no tiene abierta la pestana Comisiones, que es la unica que trae horarios.",
             pestana,
         )
 
@@ -581,9 +580,7 @@ def _parsear_paginacion(sopa: BeautifulSoup) -> Paginacion:
         total = int(coincidencia.group("total"))
 
     tamano = hasta - desde + 1 if desde is not None and hasta is not None else None
-    total_paginas = (
-        math.ceil(total / tamano) if total is not None and tamano else None
-    )
+    total_paginas = math.ceil(total / tamano) if total is not None and tamano else None
 
     pagina: int | None = None
     for actual in sopa.select("div.navigator span.goto"):
@@ -826,9 +823,7 @@ def _comision_a_contrato(comision: Comision, curso: Curso, capturado: str) -> di
     return salida
 
 
-def a_contrato(
-    cursos: Iterable[Curso], periodo: Periodo, capturado: str
-) -> dict[str, Any]:
+def a_contrato(cursos: Iterable[Curso], periodo: Periodo, capturado: str) -> dict[str, Any]:
     """Arma el JSON de `data/v1/horarios/<periodo>.json` (CONTRATO-v1.md §1).
 
     No escribe ni valida: eso es de la CLI. `capturado` es la fecha de la corrida del
@@ -836,9 +831,7 @@ def a_contrato(
     ninguna fecha junto al numero de inscriptos.
     """
     if not isinstance(periodo, Periodo):
-        raise EstructuraInesperada(
-            "«periodo» tiene que ser un Periodo.", type(periodo).__name__
-        )
+        raise EstructuraInesperada("«periodo» tiene que ser un Periodo.", type(periodo).__name__)
     salida_cursos: list[dict[str, Any]] = []
     for curso in cursos:
         if curso.desde is None or curso.hasta is None:
