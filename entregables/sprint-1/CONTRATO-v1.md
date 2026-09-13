@@ -57,7 +57,7 @@ diferencia en `EXEC_STATE.md`.
 | `cursos[].departamento` | string, **opcional** | tal como lo muestra el SGA |
 | `cursos[].desde/hasta` | fecha | dentro del período (C3); períodos cortos son válidos |
 | `cursos[].dictado_conjunto` | array de códigos | requerido, puede ser `[]`; todo código es un curso del mismo archivo (C3, warning) |
-| `comisiones[].id` | string `^[A-Z0-9]{1,4}$` | opaco; único por curso (C3); sin chequeo de orden |
+| `comisiones[].id` | string `^[A-Za-z0-9][A-Za-z0-9._-]{0,7}$` | opaco; único por curso (C3); sin chequeo de orden |
 | `comisiones[].cupo` | objeto `{capacidad: int ≥ 0}`, **opcional** | estable |
 | `comisiones[].ocupacion` | objeto `{inscriptos: int ≥ 0, al: fecha}`, **opcional** | volátil; `inscriptos > capacidad` es warning |
 | `comisiones[].docentes` | array de strings | requerido, puede ser `[]`; colisión de docente = warning |
@@ -65,7 +65,7 @@ diferencia en `EXEC_STATE.md`.
 | `bloques[].desde/hasta` | hora | `desde < hasta`, entre `07:00` y `23:00`, y a lo sumo **8 h** de duración (C3: `bloque-demasiado-largo`, error) |
 | `bloques[].sede` | string o `null` | id de `vocabulario.json`; `null` solo si la modalidad no es presencial |
 | `bloques[].modalidad` | enum `presencial`, `virtual_sincronica`, `virtual_asincronica`, `blended` | el scraper mapea `Presencial`, `Virtual Sinc.`, `Virtual Asinc.`, `Blended`; otro valor = error ruidoso |
-| `bloques[].aulas` | array de strings `^[0-9A-Za-z][0-9A-Za-z .\-]{0,15}$` | requerido, puede ser `[]` (virtual o sin asignar); dos aulas simultáneas es válido |
+| `bloques[].aulas` | array de strings de 1 a 40 caracteres sin espacios en los bordes (`^\S(?:.{0,38}\S)?$`) | requerido, puede ser `[]` (virtual o sin asignar); dos aulas simultáneas es válido; **nunca enum**: el ITBA nombra las aulas como quiere |
 
 Nota sobre `sabado`: el plan original proponía «sábado» como caso negativo; se cambia porque
 un día real que el schema rechaza es un falso positivo crónico (amenaza A10). El caso negativo

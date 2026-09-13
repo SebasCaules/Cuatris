@@ -399,20 +399,27 @@ def vincular_dictado_conjunto(cursos: list[dict[str, Any]]) -> None:
     lee como una colision de aula y rechaza el archivo. La regla es estricta a proposito:
     mismo nombre normalizado **y** al menos un bloque identico en una comision del mismo id.
     Dos cursos con nombres distintos en la misma aula siguen siendo una colision que revisa
-    una persona.
+    una persona… salvo que compartan ademas un docente en esa misma comision: entonces es la
+    misma clase con dos nombres (materias equivalentes entre carreras) y tambien se vincula.
     """
     huellas: dict[str, set[tuple[Any, ...]]] = {}
+    docentes: dict[str, set[str]] = {}
     for curso in cursos:
         conjunto: set[tuple[Any, ...]] = set()
+        plantel: set[str] = set()
         for comision in curso.get("comisiones", []):
+            plantel.update(normalizar.clave(d) for d in comision.get("docentes", []))
             for bloque in comision.get("bloques", []):
                 conjunto.add((comision.get("id"), *_huella_de_bloque(bloque)))
         huellas[curso["codigo"]] = conjunto
+        docentes[curso["codigo"]] = plantel
     for indice, uno in enumerate(cursos):
         for otro in cursos[indice + 1 :]:
-            if normalizar.clave(uno["nombre"]) != normalizar.clave(otro["nombre"]):
-                continue
             if not huellas[uno["codigo"]] & huellas[otro["codigo"]]:
+                continue
+            mismo_nombre = normalizar.clave(uno["nombre"]) == normalizar.clave(otro["nombre"])
+            mismo_docente = bool(docentes[uno["codigo"]] & docentes[otro["codigo"]])
+            if not (mismo_nombre or mismo_docente):
                 continue
             for curso, par in ((uno, otro), (otro, uno)):
                 vinculados = set(curso.get("dictado_conjunto", []))
@@ -566,6 +573,7 @@ def ejecutar(args: argparse.Namespace) -> int:
     if hechos:
         print(f"El checkpoint ya tiene {len(hechos)} cursos de {periodo_id}; se saltean.")
 
+    fallidos: list[tuple[str, str, str]] = []
     with ClienteSGA(ritmo=args.ritmo) as cliente:
         try:
             inicio = cliente.iniciar_sesion(usuario, clave)
@@ -587,8 +595,18 @@ def ejecutar(args: argparse.Namespace) -> int:
             for numero, fila in enumerate(filas, start=1):
                 if fila.codigo in hechos:
                     continue
-                curso = bajar_curso(cliente, fila)
-                datos = curso_a_contrato(curso, periodo, capturado)
+                try:
+                    curso = bajar_curso(cliente, fila)
+                    datos = curso_a_contrato(curso, periodo, capturado)
+                except (parsers.EstructuraInesperada, normalizar.ValorDesconocido) as exc:
+                    # Un curso que no se entiende no frena a los otros 471: se anota, se
+                    # sigue, y al final se informan todos juntos. No entra al checkpoint,
+                    # asi que la proxima corrida lo vuelve a intentar con el mapeo corregido.
+                    fallidos.append((fila.codigo, fila.nombre, str(exc)))
+                    print(f"[{numero}/{len(filas)}] {fila.codigo} {fila.nombre}: ERROR {exc}")
+                    if args.guardar_html:
+                        cliente.volcar_html(cache, f"{periodo_id}-{fila.codigo}")
+                    continue
                 punto.agregar(fila.codigo, datos)
                 hechos[fila.codigo] = datos
                 print(f"[{numero}/{len(filas)}] {fila.codigo} {fila.nombre}")
@@ -596,6 +614,22 @@ def ejecutar(args: argparse.Namespace) -> int:
             if args.guardar_html:
                 cliente.volcar_html(cache, f"{periodo_id}-error")
             raise
+
+    if fallidos:
+        parcial = cache / f"{periodo_id}.parcial.json"
+        parcial.parent.mkdir(parents=True, exist_ok=True)
+        documento = armar_documento(
+            (hechos[f.codigo] for f in filas if f.codigo in hechos), periodo, capturado
+        )
+        escribir(documento, parcial)
+        print(
+            f"\n{len(fallidos)} de {len(filas)} cursos no se pudieron parsear; "
+            f"{len(hechos)} quedaron en el checkpoint y en {parcial} (fuera de data/)."
+        )
+        print("Corrija los mapeos o el parser y vuelva a correr: solo se repiten los fallidos.")
+        for codigo, nombre, motivo in fallidos:
+            print(f"  - {codigo} {nombre}: {motivo}")
+        return HAY_ERRORES
 
     documento = armar_documento((hechos[fila.codigo] for fila in filas), periodo, capturado)
     escribir(documento, args.salida)

@@ -729,3 +729,21 @@ def test_el_corpus_esta_anonimizado(corpus_sga: Path) -> None:
         texto = archivo.read_text(encoding="utf-8")
         assert "CAULES" not in texto.upper(), archivo.name
         assert "APELLIDO, NOMBRE" in texto, archivo.name
+
+
+def test_cupo_ilimitado_no_tiene_tope_pero_si_ocupacion() -> None:
+    """«2 / Ilimitado» (corrida real del 2026-09-12): sin `cupo`, con `ocupacion`."""
+    from bs4 import BeautifulSoup as _BS
+
+    celda = _BS("<td>2 / Ilimitado</td>", "html.parser").td
+    cupo, ocupacion = parsers._parsear_cupo(celda)
+    assert cupo is None
+    assert ocupacion is not None and ocupacion.inscriptos == 2
+
+
+def test_cupo_con_otra_forma_sigue_rompiendo() -> None:
+    from bs4 import BeautifulSoup as _BS
+
+    celda = _BS("<td>muchos</td>", "html.parser").td
+    with pytest.raises(parsers.EstructuraInesperada):
+        parsers._parsear_cupo(celda)

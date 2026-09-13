@@ -32,7 +32,7 @@ JSON Schema draft-07 están en `schemas/v1/` y son el artefacto: no hay paso de 
 | `cursos[].departamento` | string, opcional | como lo muestra el SGA |
 | `cursos[].desde` / `hasta` | fecha | del curso, no del período: los períodos cortos son reales |
 | `cursos[].dictado_conjunto` | array de códigos | requerido, puede ser `[]`; códigos del mismo archivo (C3, warning) |
-| `comisiones[].id` | string `^[A-Z0-9]{1,4}$` | opaco: sin orden ni contigüidad |
+| `comisiones[].id` | string `^[A-Za-z0-9][A-Za-z0-9._-]{0,7}$` | opaco: sin orden ni contigüidad |
 | `comisiones[].cupo.capacidad` | entero >= 0, opcional | estable; separado del dato volátil |
 | `comisiones[].ocupacion` | `{inscriptos, al}`, opcional | volátil; `inscriptos > capacidad` es warning |
 | `comisiones[].docentes` | array de strings | requerido, puede ser `[]` |

@@ -561,15 +561,17 @@ def test_un_archivo_que_no_valida_queda_como_invalido_y_sale_con_1(
     entorno_con_credenciales: None,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    """Un aula mas larga de lo que admite el contrato tiene que frenar la publicacion.
+    """Un aula mas larga de lo que admite el contrato (40) tiene que frenar la publicacion.
 
     El archivo rechazado va al directorio de cache y **no** queda en el arbol de datos: uno
     olvidado ahi rompe `cuatris indice actualizar` (dos archivos para el mismo periodo) y los
     gates de CI, que validan todos los JSON de `data/`.
     """
+    # Un aula de mas de 40 caracteres: el contrato admite cualquier nombre, pero no uno
+    # que no cabe en ningun listado.
     roto = html_algebra.replace(
         "001R #----&gt; Sede Rectorado",
-        "001R-un-codigo-de-aula-larguisimo #----&gt; Sede Rectorado",
+        "001R-un-codigo-de-aula-larguisimo-que-no-entra-en-cuarenta-caracteres #----&gt; Sede Rectorado",
     )
     assert roto != html_algebra
     falso, _ = _sga_de_algebra(html_listado, roto)
@@ -786,3 +788,21 @@ def test_los_homonimos_sin_bloque_en_comun_no_se_vinculan() -> None:
     )
     bajar.vincular_dictado_conjunto([a, b])
     assert a["dictado_conjunto"] == [] and b["dictado_conjunto"] == []
+
+
+def test_dos_nombres_distintos_con_el_mismo_docente_y_bloque_se_vinculan() -> None:
+    """Materias equivalentes entre carreras: misma clase, dos nombres, mismo docente."""
+    bloque = {
+        "dia": "martes",
+        "desde": "08:00",
+        "hasta": "10:00",
+        "sede": "rectorado",
+        "modalidad": "presencial",
+        "aulas": ["002R"],
+    }
+    a = _curso_contrato("93.41", "Física I", "A", [dict(bloque)])
+    b = _curso_contrato("93.44", "Física para Ingeniería", "A", [dict(bloque)])
+    a["comisiones"][0]["docentes"] = ["Pérez, Ana"]
+    b["comisiones"][0]["docentes"] = ["Pérez, Ana", "Gómez, Luis"]
+    bajar.vincular_dictado_conjunto([a, b])
+    assert a["dictado_conjunto"] == ["93.44"] and b["dictado_conjunto"] == ["93.41"]

@@ -424,18 +424,31 @@ def _fusionar_bloques(crudos: Sequence[Bloque]) -> tuple[Bloque, ...]:
     return tuple(fusionados)
 
 
+#: Textos con los que el SGA dice que una comision no tiene tope de cupo («2 / Ilimitado»,
+#: visto en la corrida real del 2026-09-12). Sin tope no hay `cupo`; la ocupacion se conserva.
+SIN_TOPE_DE_CUPO = frozenset({"ilimitado", "ilimitada", "sin limite", "sin límite", "-"})
+
+
 def _parsear_cupo(celda: Tag | None) -> tuple[Cupo | None, Ocupacion | None]:
-    """`48 / 49` -> inscriptos 48, capacidad 49 (el SGA muestra inscriptos/capacidad)."""
+    """`48 / 49` -> inscriptos 48, capacidad 49 (el SGA muestra inscriptos/capacidad).
+
+    `2 / Ilimitado` -> inscriptos 2 y sin `cupo`: el contrato no representa un tope infinito
+    y `cupo` es opcional justamente para eso.
+    """
     if celda is None:
         return None, None
     texto = _texto(celda)
     if not texto:
         return None, None
     partes = [p.strip() for p in texto.split("/")]
-    if len(partes) != 2 or not all(re.fullmatch(r"\d+", p) for p in partes):
+    if len(partes) != 2 or not re.fullmatch(r"\d+", partes[0]):
         raise EstructuraInesperada("El cupo no tiene la forma «inscriptos / capacidad».", texto)
-    inscriptos, capacidad = int(partes[0]), int(partes[1])
-    return Cupo(capacidad=capacidad), Ocupacion(inscriptos=inscriptos, al=None)
+    inscriptos = int(partes[0])
+    if partes[1].lower() in SIN_TOPE_DE_CUPO:
+        return None, Ocupacion(inscriptos=inscriptos, al=None)
+    if not re.fullmatch(r"\d+", partes[1]):
+        raise EstructuraInesperada("El cupo no tiene la forma «inscriptos / capacidad».", texto)
+    return Cupo(capacidad=int(partes[1])), Ocupacion(inscriptos=inscriptos, al=None)
 
 
 def parsear_comisiones(html: str | BeautifulSoup) -> list[Comision]:

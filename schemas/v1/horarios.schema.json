@@ -11,7 +11,7 @@
           "description": "Aulas del bloque; nunca es enum y admite dos aulas simultaneas.",
           "items": {
             "description": "Codigo de aula tal como lo publica el SGA.",
-            "pattern": "^[0-9A-Za-z][0-9A-Za-z .\\-]{0,15}$",
+            "pattern": "^\\S(?:.{0,38}\\S)?$",
             "type": "string"
           },
           "type": "array"
@@ -104,7 +104,7 @@
         },
         "id": {
           "description": "Identificador opaco de la comision; no se exige orden ni contiguidad.",
-          "pattern": "^[A-Z0-9]{1,4}$",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,7}$",
           "type": "string"
         },
         "ocupacion": {
