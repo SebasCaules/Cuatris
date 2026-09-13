@@ -67,7 +67,14 @@ No se reabren sin pedido explícito del autor.
   carrusel de cuatrimestres con horarios y choques (13b); «Progreso» = 13i.
 - **Componentes propios, siempre** (regla del autor): ningún control nativo con aspecto por
   defecto (casillas, selects, `<progress>`), ninguna librería de componentes ni set de iconos
-  genérico; glifos en SVG propio.
+  genérico; glifos en SVG propio. Tampoco `title=`: los tooltips son un componente propio.
+- **Interacción intuitiva, no guiada por textos** (regla del autor): las acciones se
+  descubren por forma y posición (casillas para marcar años y cuatrimestres enteros, no
+  botones «Marcar»); **cada estado lleva un tooltip claro** que diga qué estado es.
+  Referencia de densidad y aspecto: «Mis materias» de StudyVaults (fila 36 px, marca 22 px).
+- **Estados de una materia en el plan**: ciclo cronológico pendiente → cursando → cursada
+  (`regular`) → final (`aprobada`) → pendiente. Un año completo en *final* pliega su tarjeta
+  solo.
 
 ## Reglas de trabajo en este proyecto
 
