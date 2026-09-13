@@ -11,6 +11,7 @@ Las credenciales que aparecen son inventadas y no valen en ningun lado.
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import logging
 import re
 from collections.abc import Iterator
@@ -259,13 +260,45 @@ def test_la_paginacion_se_detiene_en_el_limite(html_listado: str) -> None:
 
 
 def test_una_fila_de_otro_periodo_corta_el_barrido(html_listado: str) -> None:
+    """Sin ninguna fila del periodo pedido, el filtro no se aplico."""
     pagina = recortar(html_listado, {"30.28"})
     falso = SGAFalso(html_listado)
-    with (
-        falso.cliente() as cliente,
-        pytest.raises(parsers.EstructuraInesperada, match="filtro"),
-    ):
-        list(bajar.recorrer_listado(cliente, pagina, periodo="2026-1C"))
+    with falso.cliente() as cliente:
+        filas = list(bajar.recorrer_listado(cliente, pagina, periodo="2026-1C"))
+    with pytest.raises(parsers.EstructuraInesperada, match="filtro"):
+        bajar.separar_anuales(filas, periodo="2026-1C")
+
+
+def test_un_curso_anual_de_otro_periodo_se_incluye_recortado(html_listado: str) -> None:
+    """Caso real del 2026-09-12: 41.34 Desarrollo de Yacimientos (Anual) aparece en el
+    listado de 2C rotulado «2026-1C»; se dicta todo el ano, asi que entra con las fechas
+    recortadas al cuatrimestre."""
+    propia = _fila(html_listado, "30.28")
+    anual = dataclasses.replace(
+        propia,
+        codigo="41.34",
+        nombre="Desarrollo de Yacimientos (Anual)",
+        periodo="2026-1C",
+        desde="2026-03-01",
+        hasta="2026-12-31",
+    )
+    propias, anuales = bajar.separar_anuales([propia, anual], periodo="2026-2C")
+    assert [f.codigo for f in propias] == ["30.28"]
+    assert [f.codigo for f in anuales] == ["41.34"]
+    assert anuales[0].desde == propia.desde and anuales[0].hasta == propia.hasta
+
+
+def test_una_fila_ajena_que_no_se_solapa_corta_el_barrido(html_listado: str) -> None:
+    propia = _fila(html_listado, "30.28")
+    ajena = dataclasses.replace(
+        propia,
+        codigo="41.34",
+        periodo="2026-1C",
+        desde="2026-03-01",
+        hasta="2026-07-01",
+    )
+    with pytest.raises(parsers.EstructuraInesperada, match="no se solapa"):
+        bajar.separar_anuales([propia, ajena], periodo="2026-2C")
 
 
 # --------------------------------------------------------------------------------------

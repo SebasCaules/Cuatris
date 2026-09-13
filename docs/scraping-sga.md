@@ -177,6 +177,14 @@ lo bajado.
   archivo del mismo período rompe `cuatris indice actualizar` y tumba los gates de CI, que
   validan todos los JSON de `data/`.
 
+**Cursos anuales.** El listado filtrado por un cuatrimestre trae también los cursos anuales,
+que el SGA rotula con el período en que empiezan (por ejemplo «Primer Cuat.» y nombre
+«(Anual)»). El scraper los acepta si su dictado se solapa con el intervalo de fechas de los
+cursos propios del cuatrimestre, y **recorta sus fechas a ese intervalo**, porque el archivo
+describe el cuatrimestre, no el año; lo avisa con un `WARNING` por curso. Una fila de otro
+período que no se solapa —o un listado sin ninguna fila del período pedido— sigue siendo la
+señal de que el filtro no se aplicó, y corta.
+
 ## Qué extrae cada parser y en qué se ancla
 
 Esta es la sección que hay que abrir primero cuando una corrida falle: dice, dato por dato,

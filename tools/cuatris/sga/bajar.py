@@ -195,8 +195,8 @@ def recorrer_listado(
     """Filas del listado filtrado, pagina por pagina, hasta el final o hasta `limite`.
 
     Se sigue el enlace «siguiente» del navegador del SGA (`div.navigator a.next`); cuando no
-    esta, el barrido termino. Una fila cuyo periodo no coincide con el pedido significa que
-    el filtro no se aplico: se corta con un error en vez de mezclar cuatrimestres.
+    esta, el barrido termino. Las filas de otro periodo se devuelven igual: `separar_anuales`
+    decide despues si son cursos anuales (validos) o la senal de que el filtro no se aplico.
     """
     vistas = 0
     visitadas: set[str] = set()
@@ -210,12 +210,6 @@ def recorrer_listado(
         for fila in listado.filas:
             if base and fila.enlace_detalle:
                 fila = dataclasses.replace(fila, enlace_detalle=urljoin(base, fila.enlace_detalle))
-            if fila.periodo != periodo:
-                raise parsers.EstructuraInesperada(
-                    f"El listado trae el curso {fila.codigo} del periodo «{fila.periodo}» "
-                    f"cuando se pidio «{periodo}»; el filtro no se aplico.",
-                    fila.nombre,
-                )
             if fila.enlace_detalle is None:
                 raise parsers.EstructuraInesperada(
                     f"La fila del curso {fila.codigo} no trae el enlace al detalle (la lupa).",
@@ -275,6 +269,58 @@ def bajar_curso(cliente: ClienteSGA, fila: parsers.FilaListado) -> parsers.Curso
 def hoy() -> str:
     """Fecha de la corrida, que es la que se usa como `fuente.capturado`."""
     return date.today().isoformat()
+
+
+def separar_anuales(
+    filas: Iterable[parsers.FilaListado], *, periodo: str
+) -> tuple[list[parsers.FilaListado], list[parsers.FilaListado]]:
+    """Divide las filas del listado en propias del periodo y anuales, y detecta el filtro roto.
+
+    El listado filtrado por «Segundo Cuat.» trae tambien los cursos **anuales**, que el SGA
+    rotula con el periodo en que empiezan («Primer Cuat.») y con nombre «(Anual)» (caso real
+    del 2026-09-12: 41.34 Desarrollo de Yacimientos). Son legitimos: se dictan durante el
+    cuatrimestre pedido. La regla no mira el nombre sino las fechas: una fila de otro periodo
+    se acepta como anual si su dictado **se solapa** con el intervalo que cubren las filas
+    propias; sus fechas se recortan a ese intervalo, porque este archivo describe el
+    cuatrimestre y no el ano. Si no hay ninguna fila propia, o una ajena no se solapa, el
+    filtro no se aplico y se corta.
+    """
+    propias: list[parsers.FilaListado] = []
+    ajenas: list[parsers.FilaListado] = []
+    for fila in filas:
+        (propias if fila.periodo == periodo else ajenas).append(fila)
+    if not propias:
+        ejemplo = ajenas[0] if ajenas else None
+        raise parsers.EstructuraInesperada(
+            f"Ninguna fila del listado es del periodo «{periodo}»; el filtro no se aplico.",
+            f"{ejemplo.codigo} {ejemplo.nombre} ({ejemplo.periodo})" if ejemplo else None,
+        )
+    desde = min(f.desde for f in propias if f.desde)
+    hasta = max(f.hasta for f in propias if f.hasta)
+    anuales: list[parsers.FilaListado] = []
+    for fila in ajenas:
+        if not fila.desde or not fila.hasta or fila.hasta < desde or fila.desde > hasta:
+            raise parsers.EstructuraInesperada(
+                f"El listado trae el curso {fila.codigo} del periodo «{fila.periodo}» cuando "
+                f"se pidio «{periodo}», y su dictado ({fila.desde}–{fila.hasta}) no se solapa "
+                f"con el cuatrimestre ({desde}–{hasta}); el filtro no se aplico.",
+                fila.nombre,
+            )
+        recortada = dataclasses.replace(
+            fila, desde=max(fila.desde, desde), hasta=min(fila.hasta, hasta)
+        )
+        REGISTRO.warning(
+            "%s %s es de «%s» pero se dicta tambien en %s (%s–%s): se incluye como anual, "
+            "con las fechas recortadas al cuatrimestre.",
+            fila.codigo,
+            fila.nombre,
+            fila.periodo,
+            periodo,
+            recortada.desde,
+            recortada.hasta,
+        )
+        anuales.append(recortada)
+    return propias, anuales
 
 
 def periodo_de_filas(
@@ -532,8 +578,10 @@ def ejecutar(args: argparse.Namespace) -> int:
                 cuatrimestre_texto=_cuatrimestre_texto(args.cuatrimestre),
                 anio=args.anio,
             )
-            filas = list(recorrer_listado(cliente, listado, periodo=periodo_id, limite=args.limite))
-            periodo = periodo_de_filas(filas, anio=args.anio, cuatrimestre=args.cuatrimestre)
+            todas = list(recorrer_listado(cliente, listado, periodo=periodo_id, limite=args.limite))
+            propias, anuales = separar_anuales(todas, periodo=periodo_id)
+            periodo = periodo_de_filas(propias, anio=args.anio, cuatrimestre=args.cuatrimestre)
+            filas = propias + anuales
             print(f"{len(filas)} cursos en el listado de {periodo_id}.")
 
             for numero, fila in enumerate(filas, start=1):
