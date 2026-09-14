@@ -12,7 +12,8 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import { usePlanner } from "@/components/planner/state";
-import { computeGraphLayout } from "@/lib/planner/layoutGraph";
+import { computeGraphLayout, GRAPH_METRICS } from "@/lib/planner/layoutGraph";
+import { PLAN } from "@/lib/planner/model";
 import { byId } from "@/lib/planner/model";
 import { isAvailable } from "@/lib/planner/metrics";
 import { IconSearch, IconLock } from "@/components/planner/icons";
@@ -51,9 +52,12 @@ export default function GrafoView() {
   const approved = state.approved;
 
   // Layout puro y determinístico → memo sin deps (no depende del estado).
-  const layout = useMemo(() => computeGraphLayout(), []);
-  const { nodes, edges, columns, width, height, nodeW, nodeH, headerH } =
-    layout;
+  // Puente transitorio (ola 1): la vista vieja consume el layout nuevo con la
+  // capa de electivas encendida; la ola 2 la reemplaza entera.
+  const layout = useMemo(() => computeGraphLayout(PLAN, { electivas: true }), []);
+  const { nodes, edges, columns, width, height, headerH } = layout;
+  const nodeW = GRAPH_METRICS.NODE_W;
+  const nodeH = GRAPH_METRICS.OB_H;
 
   // Posiciones por id para anclar las aristas a los recuadros.
   const pos = useMemo(() => {

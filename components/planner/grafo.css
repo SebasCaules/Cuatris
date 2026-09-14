@@ -1,203 +1,571 @@
 /* =========================================================================
-   Mapa de correlativas — viewport con pan/zoom (overhaul módulo B)
-   Scopeado bajo `.planner` como el resto del planner. Toda la presentación
-   sale de los role tokens del sitio vía las vars locales del planner
-   (--slate = azul obligatorias, --brass = coral electivas, --panel, --line,
-   --ink, --muted, --faint) + --status-go para aprobadas. Sin hex hardcodeado:
-   los rellenos son color-mix() sobre esos roles, así auto-tematizan con
-   [data-theme]. No se edita planner.css (compartido): este archivo REEMPLAZA
-   el uso de `.network` por `.grafo-viewport`.
+   Mapa de correlativas v2 — hoja de estilos (PLAN.md §1 + §2.8)
+   -------------------------------------------------------------------------
+   Reescritura completa para el rediseño «cero texto que describa»: nada de
+   leyenda, pistas ni contadores — cada estado y cada control se explican
+   solos por forma, posición y color (los mismos roles que el resto del
+   planner) y, al posarse, por un Tooltip o por la tarjeta de la materia.
+   Todo bajo `.planner` como el resto de las vistas. Cero hex: cada color
+   sale de los tokens de `.planner{}` (planner.css líneas 10-50 y 1482-1492)
+   vía color-mix(); así el mapa cambia de tema solo, sin `[data-theme]` acá
+   (regla del sitio: DESIGN.md §8). Los únicos literales son medidas (px,
+   opacidades, duraciones de fallback) — nunca colores.
+   No hay estado "sin clase": `NodeEstado`/`NodeStatus.estado` siempre cae en
+   uno de los seis valores (final/regular/promo/cursando/avail/blocked), así
+   que las reglas base de `.gnode__rect`/`.grafo-card__status` son puramente
+   estructurales (radio, tipografía, transición) y el color lo pone siempre
+   el modificador `.st-*`/`.is-*` — nunca queda un color "de repuesto" que en
+   los hechos no se vea nunca.
+   Las medidas de layout (108×34 obligatoria, 108×28 electiva, PAD, HEADER_H,
+   COL_GAP…) NO se repiten acá: viven una sola vez en `GRAPH_METRICS`
+   (lib/planner/layoutGraph.ts) y llegan al SVG como atributos x/y/width/
+   height calculados — repetirlas en CSS las duplicaría y las dos copias
+   podrían divergir. Esta hoja solo pone la PRESENTACIÓN (relleno, borde,
+   radio de esquina, tipografía, opacidad): lo que no depende de qué tan
+   grande es el plan de la carrera.
+   Sin JS ni acceso a window/document — un archivo .css no tiene por dónde
+   romper el export estático.
    ========================================================================= */
 
+/* -------------------------------------------------------------------------
+   RAÍZ — tokens derivados del mapa
+   Todo se deriva UNA vez acá con color-mix() sobre los roles del planner
+   (nunca un hex literal) para que el mapa cambie de tema solo. Nombres de
+   familia fijados por el contrato: --gnode-*, --gedge(-up/-down), --gband,
+   --grail; --ggrid es el único agregado propio (fondo de puntos del
+   viewport, mismo valor que probó bien en la v1).
+   ------------------------------------------------------------------------- */
 .planner .grafo-view{
-  /* tokens derivados del grafo (todo desde roles, ningún literal) */
-  --gnode-ob-fill: color-mix(in srgb, var(--slate) 20%, var(--panel));
-  --gnode-ob-stroke: var(--slate);
-  --gnode-el-fill: color-mix(in srgb, var(--brass) 16%, var(--panel));
-  --gnode-el-stroke: var(--brass);
-  --gnode-ob-fill-ap: color-mix(in srgb, var(--slate) 42%, var(--panel));
-  --gnode-el-fill-ap: color-mix(in srgb, var(--brass) 34%, var(--panel));
-  --gedge: color-mix(in srgb, var(--muted) 46%, transparent);
-  --gedge-lit: var(--brass);
+  /* nodos: relleno/borde por estado — mismo criterio que EstadoControl
+     ("un estado = un color" en todo el planner). Los tres estados de
+     avance (final/regular/promo) son un tinte 14% del status sobre el
+     panel + borde 45% del status sobre transparente; cursando/cursable
+     comparten familia --brass (identifica "hay algo para hacer ahora")
+     con relleno más liviano y borde SÓLIDO (no tinte) para que el ojo los
+     distinga de lejos de los tres de arriba. */
+  --gnode-go-fill: color-mix(in srgb, var(--status-go) 14%, var(--panel));
+  --gnode-go-stroke: color-mix(in srgb, var(--status-go) 45%, transparent);
+  --gnode-warn-fill: color-mix(in srgb, var(--status-warn) 14%, var(--panel));
+  --gnode-warn-stroke: color-mix(in srgb, var(--status-warn) 45%, transparent);
+  --gnode-promo-fill: color-mix(in srgb, var(--status-promo) 14%, var(--panel));
+  --gnode-promo-stroke: color-mix(in srgb, var(--status-promo) 45%, transparent);
+  --gnode-cursando-fill: color-mix(in srgb, var(--brass) 10%, var(--panel));
+  --gnode-avail-fill: color-mix(in srgb, var(--brass) 6%, var(--panel));
+  --gnode-blocked-fill: var(--panel);
+
+  /* punto de tipo (izquierda del nodo): obligatoria vs electiva — mismos
+     roles que el resto del planner usa para esa misma distinción. */
+  --gnode-ob-dot: var(--slate);
+  --gnode-el-dot: var(--brass);
+
+  /* aristas: tinta plana por default; con una materia activa (hover o
+     fijada) se tiñen aguas arriba (lo que necesita, en tinta) / aguas
+     abajo (lo que destraba, en acento) — nunca al mismo tiempo. */
+  --gedge: color-mix(in srgb, var(--muted) 30%, transparent);
+  --gedge-up: color-mix(in srgb, var(--ink) 55%, transparent);
+  --gedge-down: var(--brass);
+
+  /* fondo de puntos del viewport, banda de año alternada, riel de electivas */
   --ggrid: color-mix(in srgb, var(--muted) 16%, transparent);
-  --gcol-guide: color-mix(in srgb, var(--muted) 13%, transparent);
-  --gcol-anio: color-mix(in srgb, var(--ink) 66%, transparent);
-  --gcol-cuatri: var(--muted);
+  --gband: color-mix(in srgb, var(--muted) 4%, transparent);
+  --grail: var(--line-2);
 }
 
-/* ---------- toolbar (leyenda + conteo) ---------- */
-.planner .grafo-toolbar{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  flex-wrap:wrap;margin-bottom:12px;
+/* -------------------------------------------------------------------------
+   CABECERA — búsqueda sin coincidencias
+   El resto de la cabecera (el field de búsqueda, los chips «Electivas» /
+   «Cursables») es 100% `.vtools__search` / `.vtools__chip` tal cual están
+   en planner.css: no hace falta un solo estilo nuevo para que se vean
+   iguales a los de «Materias». Lo único propio del mapa es la señal de
+   "no hay resultados": el borde pasa a warn en vez de mostrar un texto de
+   error. `:focus` explícito (misma especificidad + pseudo-clase que
+   `.vtools__search input:focus`, así no depende del orden de imports para
+   ganarle al borde brass del foco).
+   ------------------------------------------------------------------------- */
+.planner .grafo-search.is-nomatch input{
+  border-color:var(--status-warn);
 }
-.planner .grafo-legend{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap}
-.planner .grafo-legend .lg{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft)}
-.planner .grafo-legend .sw{
-  width:26px;height:16px;border-radius:5px;border:1.6px solid;flex:none;position:relative;
+.planner .grafo-search.is-nomatch input:focus{
+  border-color:var(--status-warn);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--status-warn) 22%, transparent);
 }
-.planner .grafo-legend .sw.ob{background:var(--gnode-ob-fill);border-color:var(--gnode-ob-stroke)}
-.planner .grafo-legend .sw.el{background:var(--gnode-el-fill);border-color:var(--gnode-el-stroke)}
-.planner .grafo-legend .sw.ap{background:var(--gnode-ob-fill-ap);border-color:var(--gnode-ob-stroke);border-width:2px}
-.planner .grafo-legend .sw.ap::after{
-  content:"";position:absolute;top:-5px;right:-5px;width:11px;height:11px;border-radius:50%;
-  background:var(--status-go);box-shadow:0 0 0 2px var(--panel);
-}
-/* cursable: borde de acento verde (mismo verde que el candado abierto de las cards) */
-.planner .grafo-legend .sw.av{background:var(--panel);border-color:var(--status-go)}
-/* requisitos pendientes: swatch atenuado con candado ámbar (= nodo bloqueado) */
-.planner .grafo-legend .sw.lk{
-  background:color-mix(in srgb, var(--muted) 12%, var(--panel));border-color:var(--line-2);
-  display:inline-flex;align-items:center;justify-content:center;color:var(--status-warn);opacity:.8;
-}
-.planner .grafo-legend .sw.lk svg{width:11px;height:11px}
-/* flecha "habilita a": mismo tono que las aristas por defecto */
-.planner .grafo-legend .lg-arrow{
-  font-family:var(--f-m);font-size:14px;font-weight:700;line-height:1;color:var(--muted);
-}
-.planner .grafo-count{font-family:var(--f-m);font-size:11.5px;color:var(--muted)}
-.planner .grafo-count b{color:var(--ink);font-weight:600}
 
-/* fin de toolbar: búsqueda + conteo agrupados a la derecha */
-.planner .grafo-toolbar__end{display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap}
-.planner .grafo-search{
-  display:inline-flex;align-items:center;gap:7px;
-  height:30px;padding:0 10px;border:1px solid var(--line);border-radius:var(--r);
-  background:var(--panel-2);color:var(--muted);
-  transition:border-color .16s ease;
-}
-.planner .grafo-search:focus-within{border-color:var(--brass);color:var(--ink-soft)}
-/* búsqueda sin coincidencias: borde de advertencia (no sólo silencio) */
-.planner .grafo-search.has-error{border-color:var(--status-warn);color:var(--status-warn)}
-.planner .grafo-search svg{flex:none}
-/* mensaje de vacío del buscador: baja a su propia línea dentro de la toolbar */
-.planner .grafo-search__msg{
-  flex-basis:100%;margin:2px 0 0;
-  font-family:var(--f-m);font-size:11.5px;line-height:1.4;color:var(--status-warn);
-}
-.planner .grafo-search__input{
-  width:min(180px,42vw);border:none;background:none;outline:none;padding:0;
-  font-family:var(--f-b);font-size:12.5px;color:var(--ink);
-}
-.planner .grafo-search__input::placeholder{color:var(--faint)}
-
-/* ---------- viewport ---------- */
+/* -------------------------------------------------------------------------
+   VIEWPORT — lienzo con pan/zoom
+   `touch-action:none` porque el pan/zoom/pinch son hechos a mano por
+   useViewport (U2); sin esto el navegador se pelea con el gesto nativo.
+   `contain:paint` + `isolation:isolate` refuerzan el recorte duro: nada del
+   SVG transformado se escapa de la caja (heredado de la v1, probado).
+   ------------------------------------------------------------------------- */
 .planner .grafo-viewport{
-  position:relative;width:100%;
-  height:clamp(460px,68vh,720px);          /* responsivo — reemplaza el 640px fijo de .network */
-  overflow:hidden;                         /* recorte duro: nada del grafo escapa la caja */
-  contain:paint;                           /* refuerzo: confina el pintado al contenedor */
+  position:relative;
+  width:100%;
+  height:clamp(420px, 68vh, 760px);
+  overflow:hidden;
+  contain:paint;
   isolation:isolate;
-  border:1px solid var(--line);border-radius:var(--r-lg);
+  touch-action:none;
+  cursor:grab;
+  user-select:none;
+  -webkit-user-select:none;
+  border:1px solid var(--line);
+  border-radius:var(--r);
   background:var(--panel);
   background-image:radial-gradient(var(--ggrid) 1.1px, transparent 1.1px);
   background-size:26px 26px;
-  touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;
 }
-.planner .grafo-viewport.panning{cursor:grabbing}
-/* el propio <svg> también recorta: el <g> transformado nunca desborda su marco */
-.planner .grafo-viewport svg.grafo-svg{
-  position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden;
+.planner .grafo-viewport.is-panning{ cursor:grabbing; }
+
+.planner .grafo-svg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  overflow:hidden;
 }
 
-/* stage: se revela recién cuando el primer fit() está aplicado (evita el flash) */
-.planner .grafo-stage{opacity:0}
-.planner .grafo-stage.ready{opacity:1;transition:opacity .2s ease}
+/* la escena se revela recién con el primer encuadre aplicado (useViewport
+   marca `ready`): evita el flash de nodos amontonados en (0,0) antes del
+   fit inicial. */
+.planner .grafo-stage{
+  opacity:0;
+  transition:opacity var(--dur-base) var(--ease-out);
+}
+.planner .grafo-stage.is-ready{ opacity:1; }
 
-/* ---------- banda de cuatrimestres (guías + etiquetas año/cuatri) ---------- */
-.planner .grafo-columns{pointer-events:none}
-.planner .grafo-col-guide{
-  stroke:var(--gcol-guide);stroke-width:1;
-  stroke-dasharray:2 6;stroke-linecap:round;
+/* -------------------------------------------------------------------------
+   BANDAS DE AÑO, CABECERAS DE COLUMNA Y RIEL DE ELECTIVAS
+   Sin guías verticales (las sacó el contrato): la separación por año se lee
+   por el fondo alternado, no por líneas. `:nth-of-type(odd)` alcanza porque
+   GrafoStage dibuja las bandas como los únicos <rect class="grafo-band">
+   hijos de un mismo <g> (una por año con columnas nominales, en orden).
+   El riel es la línea punteada horizontal donde termina el espinazo de
+   obligatorias y empiezan a colgar las electivas — solo existe en el SVG
+   cuando `hasElectivas` (GrafoStage no la monta si no).
+   ------------------------------------------------------------------------- */
+.planner .grafo-band{
+  fill:transparent;
+  pointer-events:none;
 }
-.planner .grafo-col-anio{
-  fill:var(--gcol-anio);font-family:var(--f-m);font-weight:600;
-  font-size:12px;letter-spacing:.01em;
-}
-.planner .grafo-col-cuatri{
-  fill:var(--gcol-cuatri);font-family:var(--f-m);
-  font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
-}
+.planner .grafo-band:nth-of-type(odd){ fill:var(--gband); }
 
-/* ---------- nodos ---------- */
-.planner .grafo-node{cursor:pointer;transition:opacity .2s ease}
-/* bloqueada (no aprobada, faltan correlativas/créditos): atenuada de forma
-   persistente. Va ANTES de .dim → el hover-dim (más fuerte) lo puede pisar. */
-.planner .grafo-node.blk{opacity:.45}
-/* atenuado por hover de cadena: piso más alto (.16 apagaba demasiado) */
-.planner .grafo-node.dim{opacity:.28}
-.planner .grafo-node .gn-rect{
-  stroke-width:1.6;transition:fill .18s ease,stroke .18s ease,stroke-width .18s ease;
-}
-.planner .grafo-node.ob .gn-rect{fill:var(--gnode-ob-fill);stroke:var(--gnode-ob-stroke)}
-.planner .grafo-node.el .gn-rect{fill:var(--gnode-el-fill);stroke:var(--gnode-el-stroke)}
-.planner .grafo-node.ap.ob .gn-rect{fill:var(--gnode-ob-fill-ap);stroke-width:2}
-.planner .grafo-node.ap.el .gn-rect{fill:var(--gnode-el-fill-ap);stroke-width:2}
-/* cursable: borde de acento verde (conserva el relleno que indica el tipo) */
-.planner .grafo-node.avail .gn-rect{stroke:var(--status-go);stroke-width:2}
-.planner .grafo-node .gn-abbr{fill:var(--ink);font-family:var(--f-m);font-weight:600;font-size:12.5px}
-.planner .grafo-node .gn-code{fill:var(--muted);font-family:var(--f-m);font-size:10.5px}
-.planner .grafo-node .gn-badge circle{fill:var(--status-go)}
-.planner .grafo-node .gn-badge path{stroke:var(--panel);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
-/* mini candado ámbar (misma semántica que AvailLock cerrado): body relleno + arco */
-.planner .grafo-node .gn-lock rect{fill:var(--status-warn);stroke:none}
-.planner .grafo-node .gn-lock path{fill:none;stroke:var(--status-warn);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.planner .grafo-node:hover .gn-rect{stroke-width:2}
-.planner .grafo-node:focus{outline:none}
-.planner .grafo-node:focus-visible .gn-rect{stroke:var(--brass);stroke-width:2.6}
-.planner .grafo-node.sel .gn-rect{stroke:var(--brass);stroke-width:2.6}
-.planner .grafo-node.sel{
-  filter:drop-shadow(0 1px 5px color-mix(in srgb, var(--brass) 45%, transparent));
+.planner .grafo-rail{
+  fill:none;
+  stroke:var(--grail);
+  stroke-width:1;
+  stroke-dasharray:2 6;
+  stroke-linecap:round;
+  pointer-events:none;
 }
 
-/* ---------- aristas ---------- */
+.planner .grafo-col__anio{
+  fill:color-mix(in srgb, var(--ink) 66%, transparent);
+  font-family:var(--f-m);
+  font-weight:600;
+  font-size:12px;
+  letter-spacing:.01em;
+  text-anchor:middle;
+  pointer-events:none;
+}
+.planner .grafo-col__cuatri{
+  fill:var(--muted);
+  font-family:var(--f-m);
+  font-size:9.5px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  text-anchor:middle;
+  pointer-events:none;
+}
+
+/* -------------------------------------------------------------------------
+   ARISTAS Y FLECHAS
+   Default: tinta plana fina. Con una cadena activa (hover o fijada):
+   aguas arriba en tinta más marcada (`is-up`), aguas abajo en acento
+   (`is-down`); el resto de las aristas cae a `is-dim`. Sin manejadores de
+   puntero propios (el pan es del viewport) → `pointer-events:none`.
+   ------------------------------------------------------------------------- */
 .planner .grafo-edge{
-  fill:none;stroke:var(--gedge);stroke-width:1.4;stroke-linecap:round;
-  transition:opacity .2s ease,stroke .18s ease,stroke-width .18s ease;
+  fill:none;
+  stroke:var(--gedge);
+  stroke-width:1.2;
+  stroke-linecap:round;
+  pointer-events:none;
+  transition:
+    stroke var(--dur-fast) var(--ease-out),
+    stroke-width var(--dur-fast) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
 }
-.planner .grafo-edge.dim{opacity:.07}
-.planner .grafo-edge.lit{stroke:var(--gedge-lit);stroke-width:2.2}
-.planner .grafo-arrow{fill:var(--gedge)}
-.planner .grafo-arrow-lit{fill:var(--gedge-lit)}
+.planner .grafo-edge.is-up{ stroke:var(--gedge-up); stroke-width:1.8; }
+.planner .grafo-edge.is-down{ stroke:var(--gedge-down); stroke-width:2; }
+.planner .grafo-edge.is-dim{ opacity:.05; }
 
-/* ---------- controles flotantes (zoom / ajustar) ---------- */
-.planner .grafo-controls{
-  position:absolute;right:12px;bottom:12px;z-index:6;
-  display:flex;flex-direction:column;align-items:stretch;gap:6px;
+.planner .grafo-arrow{ fill:var(--gedge); }
+.planner .grafo-arrow--up{ fill:var(--gedge-up); }
+.planner .grafo-arrow--down{ fill:var(--gedge-down); }
+
+/* -------------------------------------------------------------------------
+   NODOS
+   Estructura fija por contrato: rect (hit-target único — el resto de los
+   hijos llevan pointer-events:none para no interferir con el tap del
+   viewport), ring (halo de énfasis, opacity en vez de stroke:none→color
+   porque ESE cambio no se puede animar), punto de tipo, sigla, glifo de
+   estado. Un solo color por estado (tabla del PLAN §1.1); el tipo
+   (obligatoria/electiva) solo se ve en el punto y en el tamaño/peso de la
+   sigla — el resto de la caja es igual para las dos.
+   ------------------------------------------------------------------------- */
+.planner .gnode{
+  cursor:pointer;
+  outline:none;
+  transition:opacity var(--dur-base) var(--ease-out);
 }
-.planner .grafo-zoom{
-  font-family:var(--f-m);font-size:10.5px;color:var(--muted);text-align:center;
-  background:color-mix(in srgb, var(--panel) 88%, transparent);
-  border:1px solid var(--line);border-radius:999px;padding:3px 0;letter-spacing:.02em;
+.planner .gnode:focus{ outline:none; }
+
+.planner .gnode__rect{
+  rx:7;
+  stroke-width:1.4;
+  transition:
+    fill var(--dur-fast) var(--ease-out),
+    stroke var(--dur-fast) var(--ease-out),
+    stroke-width var(--dur-fast) var(--ease-out);
+}
+
+/* ---- tipo: punto + tipografía de la sigla ---- */
+.planner .gnode__dot{ r:3; pointer-events:none; }
+.planner .gnode--ob .gnode__dot{ fill:var(--gnode-ob-dot); }
+.planner .gnode--el .gnode__dot{ fill:var(--gnode-el-dot); }
+
+.planner .gnode__abbr{
+  fill:var(--ink);
+  font-family:var(--f-m);
+  text-anchor:middle;
+  pointer-events:none;
+}
+.planner .gnode--ob .gnode__abbr{ font-size:12px; font-weight:600; }
+.planner .gnode--el .gnode__abbr{ font-size:11px; font-weight:500; }
+
+/* ---- estado: un color, tabla PLAN.md §1.1 ---- */
+.planner .gnode.st-final .gnode__rect{
+  fill:var(--gnode-go-fill); stroke:var(--gnode-go-stroke);
+}
+.planner .gnode.st-regular .gnode__rect{
+  fill:var(--gnode-warn-fill); stroke:var(--gnode-warn-stroke);
+}
+.planner .gnode.st-promo .gnode__rect{
+  fill:var(--gnode-promo-fill); stroke:var(--gnode-promo-stroke);
+}
+.planner .gnode.st-cursando .gnode__rect{
+  fill:var(--gnode-cursando-fill); stroke:var(--brass); stroke-width:1.6;
+}
+.planner .gnode.st-avail .gnode__rect{
+  fill:var(--gnode-avail-fill); stroke:var(--brass); stroke-width:1.6;
+}
+.planner .gnode.st-blocked .gnode__rect{
+  fill:var(--gnode-blocked-fill); stroke:var(--line);
+}
+/* bloqueada: atenuada de forma persistente (todo el nodo, no solo el
+   relleno) — .62 de opacidad, valor del contrato. */
+.planner .gnode.st-blocked{ opacity:.62; }
+
+/* ---- glifo de estado (derecha del nodo): mismos íconos que EstadoControl,
+   coloreados por currentColor vía `color` en el wrapper — sin glifo propio
+   para "cursable" (tabla: "ninguno"). El pulso de "cursando" reusa la
+   keyframe `mo-pulse` de motion.css (mismo pulso que el punto del control
+   tri-estado en la pestaña de aprobadas): no hace falta una propia. ---- */
+.planner .gnode__glyph{ pointer-events:none; }
+.planner .gnode__glyph--go{ color:var(--status-go); }
+.planner .gnode__glyph--warn{ color:var(--status-warn); }
+.planner .gnode__glyph--promo{ color:var(--status-promo); }
+.planner .gnode__glyph--cursando{ color:var(--brass); }
+.planner .gnode__glyph--lock{ color:var(--muted); }
+
+/* ---- énfasis: cadena (hover ?? fijada) › búsqueda › foco «Cursables» ----
+   `is-dim` va DESPUÉS de los `.st-*` en el archivo a propósito: cuando un
+   nodo bloqueado (opacity .62 de base) además queda fuera de la cadena o
+   del match activo, gana el .18 (más apagado) — misma especificidad
+   (2 clases), decide el orden de aparición en la hoja. */
+.planner .gnode.is-dim{ opacity:.18; }
+
+.planner .gnode__ring{
+  fill:none;
+  rx:7;
+  stroke:var(--brass);
+  stroke-width:1.6;
+  opacity:0;
+  pointer-events:none;
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    stroke-width var(--dur-fast) var(--ease-out);
+}
+/* is-hover / is-match: nodo activo por hover o por coincidencia de
+   búsqueda/foco "Cursables" — mismo halo, un solo lenguaje visual para
+   "esto es lo relevante ahora". */
+.planner .gnode.is-hover .gnode__ring,
+.planner .gnode.is-match .gnode__ring{ opacity:1; }
+/* is-pinned: además del halo (más grueso), una sombra de acento — releva
+   visualmente que este nodo "quedó" fijado, no es un hover de paso. */
+.planner .gnode.is-pinned .gnode__ring{ opacity:1; stroke-width:2; }
+.planner .gnode.is-pinned{
+  filter:drop-shadow(0 1px 6px color-mix(in srgb, var(--brass) 40%, transparent));
+}
+
+/* :focus-visible del nodo: pisa el ring genérico `[tabindex]:focus-visible`
+   de planner.css (misma especificidad; acá no sirve — un <g> sin caja
+   propia no rinde bien un box-shadow) con el trato pedido por el contrato:
+   el foco se marca en el propio rect, como borde más grueso. El extra
+   `.grafo-stage` en el selector sube la especificidad para ganarle sin
+   depender del orden de los imports. */
+.planner .grafo-stage .gnode:focus-visible{
+  outline:none;
+  box-shadow:none;
+}
+.planner .gnode:focus-visible .gnode__rect{
+  stroke:var(--brass);
+  stroke-width:2.4;
+}
+
+/* -------------------------------------------------------------------------
+   TARJETA — hover (no captura el puntero) / fijada (agrega EstadoControl +
+   acciones). Ancho fijo salvo pantalla angosta (media query al final).
+   Entra con la misma keyframe que el Tooltip del planner (`pv-tooltip-in`):
+   misma familia de movimiento en todo el sitio.
+   ------------------------------------------------------------------------- */
+.planner .grafo-card{
+  position:absolute;
+  z-index:7;
+  width:260px;
+  padding:12px 13px;
+  background:var(--panel);
+  border:1px solid var(--line-2);
+  border-radius:10px;
+  box-shadow:var(--shadow-2);
+  font-family:var(--f-b);
+  color:var(--ink-soft);
+  pointer-events:none;
+  transform-origin:left center;
+  animation:pv-tooltip-in var(--dur-fast) var(--ease-out) both;
+}
+.planner .grafo-card.is-pinned{ pointer-events:auto; }
+.planner .grafo-card--left{ transform-origin:right center; }
+.planner .grafo-card--below{ transform-origin:center top; }
+
+.planner .grafo-card__head{
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.planner .grafo-card__abbr{
+  font-family:var(--f-m); font-weight:600; font-size:13px;
+  color:var(--ink); white-space:nowrap;
+}
+.planner .grafo-card__code{
+  font-family:var(--f-m); font-size:10.5px;
+  color:var(--muted); white-space:nowrap;
+}
+.planner .grafo-card__cr{
+  margin-left:auto;
+  font-family:var(--f-m); font-size:10.5px; color:var(--faint);
+}
+.planner .grafo-card__name{
+  margin:2px 0 0;
+  font-size:12.5px; line-height:1.4; color:var(--ink-soft);
+}
+
+/* ---- línea de estado: texto siempre con la variante -text de su status
+   (regla 1.3); cursando/cursable/bloqueada usan brass/muted, que ya están
+   calibrados como texto (no forman parte de la familia --status-*). ---- */
+.planner .grafo-card__status{
+  display:flex; align-items:center; gap:6px;
+  margin:8px 0 9px;
+  padding:5px 8px;
+  border-radius:6px;
+  font-family:var(--f-m); font-size:11px; font-weight:600;
+}
+.planner .grafo-card__status.is-final{
+  color:var(--status-go-text);
+  background:color-mix(in srgb, var(--status-go) 14%, transparent);
+}
+.planner .grafo-card__status.is-regular{
+  color:var(--status-warn-text);
+  background:color-mix(in srgb, var(--status-warn) 14%, transparent);
+}
+.planner .grafo-card__status.is-promo{
+  color:var(--status-promo-text);
+  background:color-mix(in srgb, var(--status-promo) 14%, transparent);
+}
+.planner .grafo-card__status.is-cursando{
+  color:var(--brass);
+  background:color-mix(in srgb, var(--brass) 12%, transparent);
+}
+.planner .grafo-card__status.is-avail{
+  color:var(--brass);
+  background:color-mix(in srgb, var(--brass) 10%, transparent);
+}
+.planner .grafo-card__status.is-blocked{
+  color:var(--muted);
+  background:color-mix(in srgb, var(--muted) 8%, transparent);
+}
+
+.planner .grafo-card__row{ margin-top:9px; }
+.planner .grafo-card__lbl{
+  display:block;
+  margin-bottom:4px;
+  font-family:var(--f-m); font-size:10px; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--muted);
+}
+.planner .grafo-card__chips{ display:flex; flex-wrap:wrap; gap:4px; }
+
+/* ---- chip: neutro (fila «Habilita», sin estado propio) por default;
+   is-ok (aprobada, misma receta que .pill.ok del resto del sitio: texto
+   -text, borde 34%, fondo 12%) / is-missing (pendiente: mismo tono muted,
+   pero borde punteado — la forma también dice "todavía no"). ---- */
+.planner .grafo-chip{
+  display:inline-flex; align-items:center; gap:3px;
+  height:20px; padding:0 7px;
+  border-radius:999px;
+  border:1px solid var(--line-2);
+  background:var(--panel-2);
+  color:var(--muted);
+  font-family:var(--f-m); font-size:10px; white-space:nowrap;
+}
+.planner .grafo-chip svg{ width:9px; height:9px; flex:none; }
+.planner .grafo-chip.is-ok{
+  color:var(--status-go-text);
+  border-color:color-mix(in srgb, var(--status-go) 34%, transparent);
+  background:color-mix(in srgb, var(--status-go) 12%, var(--panel-2));
+}
+.planner .grafo-chip.is-missing{
+  color:var(--muted);
+  border-style:dashed;
+}
+
+/* ---- acciones (solo con la tarjeta fijada): EstadoControl + «Detalle» +
+   cerrar. ---- */
+.planner .grafo-card__acts{
+  display:flex; align-items:center; gap:8px;
+  margin-top:11px; padding-top:10px;
+  border-top:1px solid var(--line);
+}
+.planner .grafo-card__estado{ flex:none; }
+.planner .grafo-card__detail{
+  flex:1 1 auto; min-width:0;
+  background:none; border:none; padding:0;
+  font-family:var(--f-b); font-size:12px; font-weight:600;
+  color:var(--brass); text-align:left; cursor:pointer;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.planner .grafo-card__detail:hover{ text-decoration:underline; }
+.planner .grafo-card__close{
+  flex:none; display:inline-grid; place-items:center;
+  width:22px; height:22px; padding:0;
+  border-radius:6px; border:none;
+  background:none; color:var(--muted); cursor:pointer;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.planner .grafo-card__close:hover{ color:var(--ink); background:var(--panel-2); }
+.planner .grafo-card__close svg{ width:13px; height:13px; }
+
+/* -------------------------------------------------------------------------
+   CONTROLES FLOTANTES — zoom / ajustar / ubicar
+   Cuatro botones reales (<button>): el foco visible ya lo resuelve la
+   regla genérica `.planner button:focus-visible` de planner.css, no hace
+   falta repetirla acá.
+   ------------------------------------------------------------------------- */
+.planner .grafo-controls{
+  position:absolute; right:12px; bottom:12px; z-index:6;
+  display:flex; flex-direction:column; gap:6px;
 }
 .planner .grafo-btn{
-  width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;
-  background:var(--panel-2);border:1px solid var(--line-2);color:var(--ink);
-  border-radius:8px;cursor:pointer;font-family:var(--f-m);font-size:17px;line-height:1;
-  transition:background .16s ease,border-color .16s ease;
+  flex:none;
+  width:36px; height:36px;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--panel-2); border:1px solid var(--line-2); color:var(--ink);
+  border-radius:var(--r); cursor:pointer;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
 }
-.planner .grafo-btn:hover{background:var(--panel-3);border-color:var(--brass)}
-.planner .grafo-btn svg{width:16px;height:16px}
-.planner .grafo-btn.fit{width:auto;gap:7px;padding:0 12px;font-size:12px;font-weight:600}
-.planner .grafo-btn.fit svg{width:14px;height:14px}
+.planner .grafo-btn:hover{ border-color:var(--brass); color:var(--brass); }
+.planner .grafo-btn svg{ width:17px; height:17px; }
 
-/* ---------- pista de uso ---------- */
-.planner .grafo-hint{
-  position:absolute;left:12px;bottom:12px;z-index:5;
-  display:flex;flex-direction:column;gap:2px;max-width:min(320px,60%);
-  font-family:var(--f-m);font-size:10.5px;color:var(--muted);
-  background:color-mix(in srgb, var(--panel) 82%, transparent);
-  border:1px solid var(--line);border-radius:8px;padding:6px 11px;letter-spacing:.02em;
+/* -------------------------------------------------------------------------
+   MINIMAPA — abajo a la izquierda; oculto bajo 640px (sección angosta)
+   Nodos como pequeños <rect> (reusan el mismo w/h de GraphNode: el escalado
+   a 160px de ancho lo hace el viewBox del propio <svg>, no hace falta
+   repetir tamaños acá). `is-lit` sube la opacidad para la cadena/búsqueda
+   activa; sin eso, todos quedan a la misma opacidad base (overview parejo).
+   ------------------------------------------------------------------------- */
+.planner .grafo-minimap{
+  position:absolute; left:12px; bottom:12px; z-index:6;
+  padding:6px;
+  background:color-mix(in srgb, var(--panel) 88%, transparent);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  cursor:pointer;
+  touch-action:none;
 }
-.planner .grafo-hint__row{line-height:1.4}
-.planner .grafo-hint__row:last-child{color:var(--faint)}
+.planner .grafo-minimap__svg{
+  display:block;
+  width:160px;
+  height:auto;
+  max-height:120px;
+}
+.planner .grafo-minimap__node{
+  opacity:.5;
+  transition:opacity var(--dur-fast) var(--ease-out);
+}
+.planner .grafo-minimap__node--ob{ fill:var(--gnode-ob-dot); }
+.planner .grafo-minimap__node--el{ fill:var(--gnode-el-dot); }
+.planner .grafo-minimap__node.is-lit{ opacity:1; }
+.planner .grafo-minimap__view{
+  fill:color-mix(in srgb, var(--brass) 12%, transparent);
+  stroke:var(--brass);
+  stroke-width:1.5;
+  pointer-events:none;
+}
 
-@media (max-width:640px){
-  .planner .grafo-hint{display:none}
-}
+/* -------------------------------------------------------------------------
+   MOVIMIENTO
+   Transición de opacidad ya cubre el dim/undim de nodos (regla de arriba);
+   acá solo la entrada de las electivas (capa que se prende/apaga) y el
+   pulso de "cursando", que reusa `mo-pulse` de motion.css — es el MISMO
+   pulso que ya usa `.estado-ctl.st-cursando svg` en la pestaña de
+   aprobadas: un solo lenguaje de "esto está en curso" en todo el planner.
+   ------------------------------------------------------------------------- */
+.planner .gnode--el{ animation:planner-fade var(--dur-base) var(--ease-out) both; }
+.planner .gnode__glyph--cursando{ animation:mo-pulse 2.4s ease-in-out infinite; }
+
+/* -------------------------------------------------------------------------
+   MOVIMIENTO REDUCIDO — apaga transiciones Y animaciones en bloque
+   `animation-iteration-count:1` es lo que de verdad frena el pulso
+   infinito (bajar solo la duración lo dejaría titilando rapidísimo); con
+   duración casi cero además cada animación de entrada "termina" ya en su
+   estado final, así nada queda a mitad de camino (mismo patrón que ya usa
+   el resto del planner en sus bloques `prefers-reduced-motion`).
+   ------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce){
-  .planner .grafo-node,.planner .grafo-edge,.planner .grafo-node .gn-rect,.planner .grafo-stage{transition-duration:.01ms}
+  .planner .grafo-view,
+  .planner .grafo-view *,
+  .planner .grafo-view *::before,
+  .planner .grafo-view *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
 }
 
-/* Forma = acción: el porcentaje de zoom es una lectura, no un control → sin
-   borde (los botones +/− de al lado sí lo llevan). */
-.planner .grafo-zoom{border:none;background:transparent}
+/* -------------------------------------------------------------------------
+   PANTALLAS ANGOSTAS (≤ 640px)
+   ------------------------------------------------------------------------- */
+@media (max-width:640px){
+  .planner .grafo-minimap{ display:none; }
+  .planner .grafo-viewport{ height:clamp(380px, 62vh, 720px); }
+  .planner .grafo-card{ width:min(260px, calc(100vw - 32px)); }
+  .planner .grafo-controls{ gap:5px; }
+  .planner .grafo-btn{ width:32px; height:32px; }
+  .planner .grafo-btn svg{ width:15px; height:15px; }
+}
