@@ -5,21 +5,30 @@
 //
 // Lee el estado global `state.finales` (types.ts / state.tsx) y las acciones
 // SET_FINALES_PERIODO / SET_FINALES_ANIO / SET_MESA / SET_FINAL_ASIGNACION /
-// SET_FINALES_REMINDER / SET_FINALES_MARGEN. Los datos de mesas y correlativas
-// de final salen de lib/planner/finalesData.ts (DATA DE EJEMPLO, a reemplazar).
+// SET_FINALES_REMINDER / SET_FINALES_MARGEN / FINALES_EXTRA_ADD /
+// FINALES_EXTRA_REMOVE. Los datos de mesas y correlativas de final salen de
+// lib/planner/finalesData.ts (DATA DE EJEMPLO, a reemplazar).
 //
 // Regla de negocio (contrato del overseer):
-//   · un final está "pendiente" si la materia RINDE final (tieneFinal), tenés
-//     la cursada regular aprobada y todavía no lo rendiste:
-//     tieneFinal(code) && approved.has(code) && !finalDone.has(code).
-//     Lo que estás CURSANDO también cuenta como pendiente (pedido del autor):
-//     al terminar el cuatrimestre ese final hay que rendirlo, y el combinador
-//     planifica justamente los llamados que vienen. Se marca con «cursando».
+//   · la lista de pendientes es la unión de dos orígenes:
+//     - derivados del progreso (con «Mi progreso» activo, `usaProgreso`):
+//       tieneFinal(code) && (approved.has(code) || cursando.has(code)) &&
+//       !finalDone.has(code). Lo que estás CURSANDO también cuenta como
+//       pendiente (pedido del autor): al terminar el cuatrimestre ese final
+//       hay que rendirlo, y el combinador planifica justamente los llamados
+//       que vienen. Se marca con «cursando».
+//     - agregados a mano (`finales.extra`), sumados con el buscador: con «Mi
+//       progreso» activo entran sujetos a las mismas correlativas (what-if);
+//       con el switch apagado (o sin progreso marcado) la lista es SOLO
+//       `extra`, sin correlativas y sin excluir los finales ya aprobados.
+//     Los derivados no se pueden sacar de la lista (reflejan el progreso);
+//     los agregados a mano sí, con el × de su fila.
 //   · las materias que NO rinden final (promocionables / sin mesa) nunca son
 //     pendientes: su cursada aprobada SE TOMA COMO FINAL APROBADO — también
 //     para las correlativas de final (ver finalesAprobados en lib/planner/estado).
-//   · para rendir un final necesitás sus correlativas de FINAL aprobadas.
-//     Si falta alguna, el final queda bloqueado (candado).
+//   · con «Mi progreso» activo, para rendir un final necesitás sus
+//     correlativas de FINAL aprobadas; si falta alguna, el final queda
+//     bloqueado (candado). Sin progreso (modo libre) no hay correlativas.
 //   · cada período (Julio/Dic/Feb) publica DOS llamados (1.º y 2.º mesa). Cada
 //     final se ASIGNA a un período + un llamado: state.finales.seleccion es un
 //     Map<code, {periodo, llamado}>. Un final asignado a OTRO período no cuenta
@@ -43,7 +52,10 @@ import {
 } from "react";
 import { usePlanner } from "@/components/planner/state";
 import { finalesAprobados, tieneFinal } from "@/lib/planner/estado";
-import { byId, credOf, PALETTE } from "@/lib/planner/model";
+import { byId, credOf, PALETTE, PLAN } from "@/lib/planner/model";
+import ProgresoSwitch, { usaProgreso } from "@/components/planner/ProgresoSwitch";
+import MateriaPicker from "@/components/planner/MateriaPicker";
+import { Tooltip } from "@/components/planner/Tooltip";
 import {
   PERIODOS,
   PERIODO_LABEL,
@@ -274,6 +286,10 @@ interface FinalRow {
   opciones: Opcion[];
   /** la materia se está cursando: el final queda pendiente para cuando termine. */
   cursando: boolean;
+  /** agregado a mano (no sale del progreso): se puede quitar de la lista con
+   *  su ×. (Nombrado distinto de `manual`, el override de mesa, para no
+   *  pisarlo.) */
+  agregadoManual: boolean;
 }
 
 /* ============================ componente ============================ */
@@ -281,8 +297,9 @@ interface FinalRow {
 export default function FinalesCombinadorView() {
   const { state, dispatch } = usePlanner();
   const { approved, finalDone, cursando } = state;
-  const { periodo, anio, mesas, seleccion, reminderHs, margenDias } =
+  const { periodo, anio, mesas, seleccion, extra, reminderHs, margenDias } =
     state.finales;
+  const conProgreso = usaProgreso(state);
 
   const [panelOpen, setPanelOpen] = useState(true);
   // P1 — la ingesta arranca abierta solo si NO hay mesas reales cargadas; una vez
@@ -292,6 +309,9 @@ export default function FinalesCombinadorView() {
   // menú «Descargar» (popover local) + toggle «Otras fechas» (chips fantasma).
   const [dlOpen, setDlOpen] = useState(false);
   const [ghostsOn, setGhostsOn] = useState(false);
+  // buscador de finales: abierto a pedido («+ Agregar») o forzado con la
+  // lista vacía (empty state integrado, sin pantalla aparte).
+  const [pickerOpen, setPickerOpen] = useState(false);
   const dlRef = useRef<HTMLDivElement | null>(null);
   // Materia bajo el cursor (bloque del calendario, fila del panel o del editor):
   // sus otras mesas del período aparecen como chips fantasma resaltados. La
@@ -356,12 +376,21 @@ export default function FinalesCombinadorView() {
   // bloquean; para las correlativas de final se computan en `finalesOk`.
   const rows: FinalRow[] = useMemo(() => {
     const finalesOk = finalesAprobados(approved, finalDone);
-    const codes: string[] = [];
-    // aprobadas sin final + lo que se está cursando (disjuntos por invariante)
-    for (const c of [...approved, ...cursando])
-      if (!finalDone.has(c) && byId.has(c) && tieneFinal(c)) codes.push(c);
+    // derivados del progreso: cursada aprobada sin final + lo que se está
+    // cursando (disjuntos por invariante). Sin «Mi progreso» no se derivan.
+    const derivados = new Set<string>();
+    if (conProgreso)
+      for (const c of [...approved, ...cursando])
+        if (!finalDone.has(c) && byId.has(c) && tieneFinal(c)) derivados.add(c);
+    // + los agregados a mano: con «Mi progreso» son un what-if (sujetos a las
+    // mismas correlativas más abajo); sin progreso son la lista entera y no
+    // se excluyen los finales ya aprobados.
+    const codes = new Set(derivados);
+    for (const c of extra)
+      if (byId.has(c) && tieneFinal(c) && !(conProgreso && finalDone.has(c)))
+        codes.add(c);
     // orden estable: por año/cuatri/nombre (para color y listado)
-    codes.sort((a, b) => {
+    const ordered = [...codes].sort((a, b) => {
       const ma = byId.get(a)!;
       const mb = byId.get(b)!;
       return (
@@ -370,12 +399,14 @@ export default function FinalesCombinadorView() {
         ma.nombre.localeCompare(mb.nombre)
       );
     });
-    return codes.map((code, i): FinalRow => {
+    return ordered.map((code, i): FinalRow => {
       const m = byId.get(code)!;
       // año calendario del llamado (febrero cae en el siguiente): una
       // correlativa nueva con excepciones vigentes ese año no bloquea
-      // (correlativasVigencia.ts)
-      const { ok, faltan } = finalHabilitado(code, finalesOk, year);
+      // (correlativasVigencia.ts). Sin «Mi progreso» no hay correlativas.
+      const { ok, faltan } = conProgreso
+        ? finalHabilitado(code, finalesOk, year)
+        : { ok: true, faltan: [] as string[] };
       const manual = mesas.get(code) ?? null;
       const oficiales = mesasOficialesDe(code, periodo, anio);
       const asig = seleccion.get(code) ?? null;
@@ -461,12 +492,48 @@ export default function FinalesCombinadorView() {
         manual,
         hasBoth: !!oficiales.primer && !!oficiales.segundo,
         opciones,
-        cursando: cursando.has(code),
+        // sin «Mi progreso» el marcador de cursando es progreso y no se muestra
+        cursando: conProgreso && cursando.has(code),
+        agregadoManual: !derivados.has(code),
       };
     });
     // mesasVersion: recomputa cuando el parser carga/limpia mesas oficiales.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [approved, finalDone, cursando, mesas, seleccion, periodo, anio, month, year, mesasVersion]);
+  }, [approved, finalDone, cursando, mesas, seleccion, periodo, anio, month, year, mesasVersion, extra, conProgreso]);
+
+  // buscador forzado abierto con la lista vacía (empty state integrado).
+  const showPicker = pickerOpen || rows.length === 0;
+
+  // Todas las materias del plan activo (el árbol se remonta al cambiar de
+  // carrera, así que no hace falta más dependencias).
+  const todas = useMemo(
+    () => [...PLAN.obligatorias, ...PLAN.electivas].map((m) => byId.get(m.codigo)!),
+    [],
+  );
+  // Los derivados del progreso no se ofrecen (ya están en la lista y no se
+  // quitan); los agregados a mano sí, marcados con ✓ para poder quitarlos
+  // desde el mismo buscador (como en el combinador de horarios).
+  const derivadosEnLista = useMemo(
+    () => new Set(rows.filter((r) => !r.agregadoManual).map((r) => r.code)),
+    [rows],
+  );
+  // Agregables: rinden final y no salen del progreso; con «Mi progreso» los
+  // finales ya aprobados no se ofrecen (el hint del buscador avisa cuántos hay).
+  const candidatos = useMemo(
+    () =>
+      todas.filter(
+        (m) =>
+          tieneFinal(m.codigo) &&
+          !derivadosEnLista.has(m.codigo) &&
+          !(conProgreso && finalDone.has(m.codigo)),
+      ),
+    [todas, derivadosEnLista, conProgreso, finalDone],
+  );
+  // Búsqueda honesta: las que no rinden final se muestran atenuadas, no agregables.
+  const sinFinal = useMemo(() => todas.filter((m) => !tieneFinal(m.codigo)), [todas]);
+  const ocultosDone = conProgreso
+    ? todas.filter((m) => tieneFinal(m.codigo) && finalDone.has(m.codigo)).length
+    : 0;
 
   const eligibles = useMemo(() => rows.filter((r) => !r.blocked), [rows]);
   const blocked = useMemo(() => rows.filter((r) => r.blocked), [rows]);
@@ -638,6 +705,22 @@ export default function FinalesCombinadorView() {
     r.oficiales.primer || r.manual ? "primer" : "segundo";
   const agregarAca = (r: FinalRow) =>
     asignar(r.code, { periodo, llamado: defLlamado(r) });
+
+  // × de una fila agregada a mano (sale de `finales.extra`, no del progreso):
+  // la saca de la lista. Reutilizado en los tres grupos del panel.
+  const quitarBtn = (r: FinalRow) =>
+    r.agregadoManual ? (
+      <Tooltip content="Quitar de la lista" width={130}>
+        <button
+          type="button"
+          className="fin__srow-x"
+          aria-label={`Quitar ${r.nombre} de la lista`}
+          onClick={() => dispatch({ type: "FINALES_EXTRA_REMOVE", code: r.code })}
+        >
+          ×
+        </button>
+      </Tooltip>
+    ) : null;
 
   // Alterna 1.º↔2.º llamado de una mesa oficial con ambos llamados (usado por el
   // badge-botón del chip del calendario). Mismo dispatch que el segmentado.
@@ -918,37 +1001,8 @@ export default function FinalesCombinadorView() {
   const rendirFantasma = (g: Ghost) =>
     asignar(g.code, { periodo, llamado: g.llamado });
 
-  // ----- empty state focalizado (P0) -----
-  // Sin finales pendientes cortamos temprano: SOLO el encabezado + una card que
-  // lleva a «Mis materias» (donde se marcan las cursadas). Nada de ingesta, barra,
-  // calendario ni pie hasta que haya al menos un final para combinar.
-  if (rows.length === 0) {
-    return (
-      <section className="view-panel fin" aria-label="Combinación de finales">
-        <div className="fin__empty">
-          <span className="fin__empty-ico" aria-hidden="true">
-            <IconGraduation />
-          </span>
-          <h3 className="fin__empty-title">
-            Todavía no tenés finales para combinar
-          </h3>
-          <p className="fin__empty-body">
-            Esta vista arma tu calendario con las materias que cursaste y te
-            falta rendir. Marcá una cursada (✓) en «Mis materias» y aparece acá.
-          </p>
-          <button
-            type="button"
-            className="fin__hbtn is-primary"
-            onClick={() => dispatch({ type: "SET_VIEW", view: "cuatri" })}
-          >
-            Ir a Mis materias
-          </button>
-        </div>
-      </section>
-    );
-  }
-
-  // ----- textos de resumen (rows.length > 0 garantizado por el early return) -----
+  // ----- textos de resumen (rows.length puede ser 0: la vista ya no corta
+  // temprano — buscador y panel cubren el estado vacío) -----
   const nSel = selectedRows.length;
   // desglose por llamado de los elegidos en el período visible (solo si hay 2.º).
   const nSegundo = selectedRows.filter(
@@ -983,13 +1037,15 @@ export default function FinalesCombinadorView() {
   // hint del calendario cuando no hay mesas elegidas: con «Otras fechas» activo
   // guía hacia los fantasmas (o avisa que no hay fechas publicadas).
   const calHint =
-    selectedInPeriod.length > 0
-      ? null
-      : ghostsOn
-        ? ghosts.length > 0
-          ? "tocá una fecha fantasma para sumar ese final"
-          : "no hay otras fechas publicadas para este período"
-        : "sumá finales del panel para verlos en su mesa";
+    rows.length === 0
+      ? "agregá finales con el buscador para verlos en su mesa"
+      : selectedInPeriod.length > 0
+        ? null
+        : ghostsOn
+          ? ghosts.length > 0
+            ? "tocá una fecha fantasma para sumar ese final"
+            : "no hay otras fechas publicadas para este período"
+          : "sumá finales del panel para verlos en su mesa";
 
   /* ============================ render ============================ */
 
@@ -1037,6 +1093,7 @@ export default function FinalesCombinadorView() {
         </div>
 
         <div className="fin__bar-right">
+          <ProgresoSwitch vista="finales" />
           <button
             type="button"
             className="fin__hbtn"
@@ -1062,6 +1119,51 @@ export default function FinalesCombinadorView() {
           </button>
         </div>
       </div>
+
+      {/* ---- buscador de finales: abierto a pedido o forzado con la lista
+          vacía (mismo picker compartido con el combinador de horarios) ---- */}
+      {showPicker && (
+        <div className="fin__picker">
+          <MateriaPicker
+            candidatos={candidatos}
+            fantasmas={sinFinal}
+            fantasmaNota="no rinde final"
+            added={(code) => extra.has(code)}
+            onToggle={(code) => {
+              // con la lista vacía el buscador está abierto a la fuerza; al
+              // sumar el primer final queda abierto a pedido (no se cierra solo)
+              if (rows.length === 0) setPickerOpen(true);
+              dispatch(
+                extra.has(code)
+                  ? { type: "FINALES_EXTRA_REMOVE", code }
+                  : { type: "FINALES_EXTRA_ADD", code },
+              );
+            }}
+            meta={(m) => `${m.creditos} cr`}
+            tag={(m) =>
+              !conProgreso && finalDone.has(m.codigo) ? (
+                <span className="cmb9-oktag">✓ final aprobado</span>
+              ) : null
+            }
+            rowTitle={(m, added) =>
+              `${m.codigo} · ${m.nombre} — ${added ? "quitar de" : "sumar a"} tus finales pendientes`
+            }
+            placeholder="Buscá un final (código o nombre)…"
+            hint={
+              ocultosDone > 0
+                ? {
+                    text:
+                      ocultosDone === 1
+                        ? "Tu final aprobado no aparece"
+                        : `Tus ${ocultosDone} finales aprobados no aparecen`,
+                    action: ocultosDone === 1 ? "mostrarlo igual" : "mostrarlos igual",
+                    onAction: () => dispatch({ type: "SET_COMBO_SOLO", value: true }),
+                  }
+                : null
+            }
+          />
+        </div>
+      )}
 
       {/* ---- calendario + panel de pendientes (protagonista) ---- */}
       <div className="fin__row">
@@ -1234,16 +1336,19 @@ export default function FinalesCombinadorView() {
           </div>
 
           {/* ---- resumen: DEBAJO del calendario (el llamado a la acción queda
-              lo más arriba posible). Los cruces se marcan en el calendario. ---- */}
-          <div className="fin__resumen">
-            <span className="fin__resumen-ico" aria-hidden="true">
-              <IconGraduation />
-            </span>
-            <div className="fin__resumen-body">
-              <div className="fin__resumen-main">{resumenMain}</div>
-              <div className="fin__resumen-sub">{resumenSub}</div>
+              lo más arriba posible). Los cruces se marcan en el calendario.
+              Sin finales en la lista no hay nada que resumir. ---- */}
+          {rows.length > 0 && (
+            <div className="fin__resumen">
+              <span className="fin__resumen-ico" aria-hidden="true">
+                <IconGraduation />
+              </span>
+              <div className="fin__resumen-body">
+                <div className="fin__resumen-main">{resumenMain}</div>
+                <div className="fin__resumen-sub">{resumenSub}</div>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* editor de fechas de mesa (híbrido: oficial / manual / sin fecha) */}
           {editorRows.length > 0 && (
@@ -1382,9 +1487,42 @@ export default function FinalesCombinadorView() {
                 {eligibles.length}
                 {blocked.length > 0 ? ` + ${blocked.length} bloqueados` : ""}
               </span>
+              {rows.length > 0 && (
+                <Tooltip
+                  content={
+                    showPicker
+                      ? "Cerrar el buscador"
+                      : "Sumá finales a la lista: cualquier materia, esté o no en tu progreso"
+                  }
+                  width={220}
+                >
+                  <button
+                    type="button"
+                    className={"fin__add" + (showPicker ? " is-open" : "")}
+                    aria-expanded={showPicker}
+                    onClick={() => setPickerOpen((o) => !o)}
+                  >
+                    {showPicker ? (
+                      "Listo"
+                    ) : (
+                      <>
+                        <IconPlus size={11} /> Agregar
+                      </>
+                    )}
+                  </button>
+                </Tooltip>
+              )}
             </div>
 
-            {/* rows.length > 0 garantizado por el early state (P0) */}
+            {rows.length === 0 ? (
+              <button
+                type="button"
+                className="fin__add-lead"
+                onClick={() => setPickerOpen(true)}
+              >
+                ＋ Elegí los finales a combinar
+              </button>
+            ) : (
             <>
                 <div
                   className="fin__group"
@@ -1393,7 +1531,9 @@ export default function FinalesCombinadorView() {
                   <div className="fin__group-head">
                     <span className="fin__g-dot" />
                     <span className="fin__group-title">
-                      Se pueden rendir — {PERIODO_LABEL[periodo]}
+                      {conProgreso
+                        ? `Se pueden rendir — ${PERIODO_LABEL[periodo]}`
+                        : `Para combinar — ${PERIODO_LABEL[periodo]}`}
                     </span>
                     <span className="fin__group-n">{eligibles.length}</span>
                   </div>
@@ -1445,6 +1585,7 @@ export default function FinalesCombinadorView() {
                               >
                                 en {PERIODO_SHORT[elsewhere]}
                               </button>
+                              {quitarBtn(r)}
                               <span className="fin__tip" role="note">
                                 Ya lo asignaste al llamado de{" "}
                                 {PERIODO_LABEL[elsewhere]}. Clic en «en{" "}
@@ -1526,6 +1667,7 @@ export default function FinalesCombinadorView() {
                                   <IconPlus size={11} />
                                 )}
                               </button>
+                              {quitarBtn(r)}
                               <span className="fin__tip" role="note">
                                 {r.mesa
                                   ? `Mesa ${ddmm(r.mesa.fecha)} · ${r.mesa.hora}${r.source === "manual" ? " — fecha cargada a mano (editable)" : ` (oficial · ${LLAMADO_LABEL[r.llamado ?? "primer"]})`}`
@@ -1575,6 +1717,7 @@ export default function FinalesCombinadorView() {
                           >
                             <IconPlus size={11} />
                           </button>
+                          {quitarBtn(r)}
                           <span className="fin__tip" role="note">
                             Requiere el final de{" "}
                             {r.faltan.map(nombreDe).join(", ")} aprobado.
@@ -1585,6 +1728,7 @@ export default function FinalesCombinadorView() {
                   </div>
                 )}
             </>
+            )}
           </aside>
         )}
       </div>

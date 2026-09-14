@@ -285,7 +285,7 @@
   }
 }
 
-/* ---------- botones del cluster derecho (Ignorar mi progreso · Sugeridas · Descargar · Guardar) ---------- */
+/* ---------- botones del cluster derecho (Mi progreso · Sugeridas · Descargar · Guardar) ---------- */
 .planner .cmb9-hbtn {
   display: inline-flex;
   align-items: center;
@@ -338,19 +338,6 @@
   background: var(--brass-2);
   border-color: var(--brass-2);
   color: var(--block-ink);
-}
-
-/* ---------- switch de modo «Ignorar mi progreso» (siempre visible) ---------- */
-/* reusa .cmb-switch (planner.css); el wrapper lo agrupa con su InfoTip hermano */
-.planner .cmb9-solowrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  flex: none;
-}
-.planner .cmb9-solo {
-  font-size: 12px;
-  white-space: nowrap;
 }
 
 /* ---------- menú Descargar (3 opciones) ---------- */
@@ -762,7 +749,7 @@
 .planner .cmb9-hiddenhint__btn:hover {
   color: var(--brass-2);
 }
-/* tag de fila aprobada (solo visible con «Ignorar mi progreso» ON): rol ok/sage */
+/* tag de fila aprobada (solo visible con «Mi progreso» OFF): rol ok/sage */
 .planner .cmb9-oktag {
   font-family: var(--f-m);
   font-size: 9.5px;

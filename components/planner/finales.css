@@ -144,45 +144,10 @@
   cursor: not-allowed;
 }
 
-/* ---- empty state focalizado (sin finales pendientes) ---- */
-.planner .fin__empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-  max-width: 420px;
-  margin: 8px auto 0;
-  padding: 34px 28px;
-  border: 1px solid var(--line);
-  border-radius: var(--r);
-  background: color-mix(in srgb, var(--brass) 5%, var(--panel));
-}
-.planner .fin__empty-ico {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 11px;
-  color: var(--brass);
-  background: color-mix(in srgb, var(--brass) 14%, transparent);
-}
-.planner .fin__empty-title {
-  margin: 2px 0 0;
-  font-family: var(--f-d);
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--ink);
-}
-.planner .fin__empty-body {
-  margin: 0;
-  font-family: var(--f-m);
-  font-size: 11.5px;
-  line-height: 1.6;
-  color: var(--muted);
-}
-.planner .fin__empty .fin__hbtn {
-  margin-top: 6px;
+/* buscador de finales (MateriaPicker compartido): a todo el ancho entre la
+   barra y la fila calendario+panel; el borde/fondo ya los trae .cmbx-picker. */
+.planner .fin__picker {
+  margin-bottom: 12px;
 }
 
 /* ---- resumen: debajo del calendario, en su misma columna ---- */
@@ -662,6 +627,69 @@
   color: var(--muted);
   white-space: nowrap;
 }
+/* «+ Agregar» / «Listo»: abre el buscador compartido a todo el ancho. */
+.planner .fin__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--f-m);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: var(--brass);
+  background: transparent;
+  border: 1px dashed var(--line-2);
+  border-radius: 999px;
+  padding: 3px 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.planner .fin__add:hover {
+  background: var(--brass-soft);
+  border-color: var(--brass);
+}
+.planner .fin__add.is-open {
+  border-style: solid;
+  border-color: var(--brass);
+  background: var(--brass-soft);
+  color: var(--ink);
+}
+.planner .fin__add:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+/* invitación del panel cuando la lista está vacía (dibujo de .cmb9-addcell). */
+.planner .fin__add-lead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 12px;
+  min-height: 44px;
+  border: 1px dashed var(--line-2);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--brass);
+  font-family: var(--f-m);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 12px;
+  text-align: center;
+  line-height: 1.4;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.planner .fin__add-lead:hover {
+  background: var(--brass-soft);
+  border-color: var(--brass);
+}
+.planner .fin__add-lead:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
 .planner .fin__group {
   border-bottom: 1px solid var(--line);
   border-left: 2px solid var(--tone);
@@ -803,6 +831,36 @@
 .planner .fin__toggle:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+/* × de una fila agregada a mano: la saca de `finales.extra`. */
+.planner .fin__srow-x {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--faint);
+  font-size: 15px;
+  line-height: 1;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: -2px;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.planner .fin__srow-x:hover,
+.planner .fin__srow-x:focus-visible {
+  color: var(--status-caution-text);
+  background: color-mix(in srgb, var(--status-caution) 14%, transparent);
+}
+.planner .fin__srow-x:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
 }
 
 /* tooltip por fila */

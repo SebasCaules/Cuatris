@@ -1,10 +1,11 @@
 "use client";
 
-import { normalizar } from "@/lib/planner/texto";
 import "@/components/planner/combinador.css";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePlanner } from "@/components/planner/state";
+import ProgresoSwitch from "@/components/planner/ProgresoSwitch";
+import MateriaPicker from "@/components/planner/MateriaPicker";
 import {
   PLAN,
   byId,
@@ -62,14 +63,8 @@ const periodoLabel = () => PLAN.periodoLabel || "2.º cuatrimestre 2026";
 /** Tope de sugerencias que muestra el recomendador slim (panel angosto). */
 const SUGGEST_LIMIT = 14;
 
-const norm = normalizar;
 const hhmm = (m: number) =>
   `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
-
-/** Etiqueta del año de cursada (para sub-agrupar las obligatorias en el picker).
- *  Ordinales en español: 1.er / 3.er año; 2.º / 4.º / 5.º año. */
-const anioLabel = (a: number) =>
-  `${a === 1 || a === 3 ? `${a}.er` : `${a}.º`} año`;
 
 /** Fecha legible para el pie del documento exportado. */
 function nowStr(): string {
@@ -156,7 +151,6 @@ export default function CombinadorView() {
   const { state, dispatch } = usePlanner();
   const { combo, fixedCom, comboParams, comboSolo } = state;
 
-  const [q, setQ] = useState("");
   const [idx, setIdx] = useState(0);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [recOpen, setRecOpen] = useState(true);
@@ -190,71 +184,26 @@ export default function CombinadorView() {
     return { obs, els };
   }, [state.approved, state.comboSolo]);
 
-  const filtered = useMemo(() => {
-    const needle = norm(q.trim());
-    const match = (m: MateriaM) =>
-      !needle || norm(`${m.codigo} ${m.nombre} ${m.abbr}`).includes(needle);
-    return { obs: pool.obs.filter(match), els: pool.els.filter(match) };
-  }, [pool, q]);
-
-  // Obligatorias sub-agrupadas por (año, cuatrimestre): un sub-grupo por combo
-  // año-cuatri, ordenados 1.º año→5.º y, dentro, 1.º cuatri→2.º. Las materias sin
-  // año o sin cuatri caen a «Otras» al final. Sub-dividir por cuatri hace el
-  // listado (~41 troncales con horario) escaneable como el Plan por cuatrimestre.
-  const obsGroups = useMemo(() => {
-    const groups = new Map<
-      string,
-      { anio: number; cuatri: number; mats: MateriaM[] }
-    >();
-    const otras: MateriaM[] = [];
-    for (const m of filtered.obs) {
-      if (m.anio == null || m.cuatri == null) {
-        otras.push(m);
-        continue;
-      }
-      const key = `${m.anio}-${m.cuatri}`;
-      const g = groups.get(key);
-      if (g) g.mats.push(m);
-      else groups.set(key, { anio: m.anio, cuatri: m.cuatri, mats: [m] });
-    }
-    return {
-      ordered: [...groups.values()].sort(
-        (a, b) => a.anio - b.anio || a.cuatri - b.cuatri,
-      ),
-      otras,
-    };
-  }, [filtered.obs]);
-
-  // Electivas ordenadas por NOMBRE (en un picker se busca por nombre, no por código).
-  const elsByName = useMemo(
-    () =>
-      [...filtered.els].sort((a, b) => a.nombre.localeCompare(b.nombre, "es")),
-    [filtered.els],
-  );
-
   // Aprobadas CON horario que hoy no aparecen en el picker (modo normal): alimenta
-  // el hint de descubribilidad del switch «Ignorar mi progreso».
+  // el hint de descubribilidad del switch «Mi progreso».
   const hiddenApproved = useMemo(
     () => [...state.approved].filter(hasHorario).length,
     [state.approved],
   );
 
-  // Búsqueda honesta: materias DEL PLAN que matchean el texto pero todavía no
-  // tienen horario cargado. No son combinables (van atenuadas y no-agregables),
-  // pero se muestran para no dar la falsa señal de que no existen.
-  const ghostMatches = useMemo(() => {
-    const needle = norm(q.trim());
-    if (!needle) return [];
-    return [...PLAN.obligatorias, ...PLAN.electivas]
-      .filter(
-        (m) =>
-          !hasHorario(m.codigo) &&
-          (state.comboSolo || !state.approved.has(m.codigo)) &&
-          norm(`${m.codigo} ${m.nombre} ${m.abbr}`).includes(needle),
-      )
-      .map((m) => byId.get(m.codigo)!)
-      .sort((a, b) => a.codigo.localeCompare(b.codigo));
-  }, [q, state.comboSolo, state.approved]);
+  // Materias DEL PLAN sin horario cargado: el buscador las muestra atenuadas y
+  // no-agregables si matchean (búsqueda honesta), en vez de fingir que no existen.
+  const ghostPool = useMemo(
+    () =>
+      [...PLAN.obligatorias, ...PLAN.electivas]
+        .filter(
+          (m) =>
+            !hasHorario(m.codigo) &&
+            (state.comboSolo || !state.approved.has(m.codigo)),
+        )
+        .map((m) => byId.get(m.codigo)!),
+    [state.comboSolo, state.approved],
+  );
 
   // Selección EFECTIVA del combo: en modo normal, las aprobadas que hayan
   // entrado vía «Solo combinar» quedan latentes (no se combinan, no se
@@ -535,10 +484,6 @@ export default function CombinadorView() {
     setReseedAsk(false);
   };
 
-  const noResults =
-    filtered.obs.length === 0 &&
-    filtered.els.length === 0 &&
-    ghostMatches.length === 0;
   const showPicker = pickerOpen || selected.length === 0;
   const canExport = total > 0 && Boolean(ranked[safeIdx]);
 
@@ -621,38 +566,6 @@ export default function CombinadorView() {
       idx: targetIdx,
     });
     setSaveOpen(false);
-  };
-
-  // ---------- sub-render: fila del buscador ----------
-  // UNA línea por materia: control · código (columna mono fija) · nombre · meta.
-  // Con ~80 materias, la fila de 3 líneas (nombre + meta + chips de programa)
-  // era ilegible: entraban 5 por pantalla y toda señal repetida por fila
-  // (régimen, créditos duplicados) enterraba la elección. El detalle de cada
-  // materia vive en el drawer/ficha, no acá.
-  const row = (m: MateriaM) => {
-    const added = combo.has(m.codigo);
-    const coms = m.horario?.comisiones.length || 0;
-    // Sólo aparecen con «Ignorar mi progreso» ON; el tag deja claro por qué está.
-    const appr = state.approved.has(m.codigo);
-    return (
-      <button
-        type="button"
-        key={m.codigo}
-        className={"cmb-row" + (added ? " is-added" : "")}
-        onClick={() => dispatch({ type: "TOGGLE_COMBO", code: m.codigo })}
-        title={`${m.codigo} · ${m.nombre} — ${added ? "quitar de" : "agregar a"} tu cuatrimestre`}
-      >
-        <span className="cmb-row__plus" aria-hidden="true">
-          {added ? "✓" : "+"}
-        </span>
-        <span className="cmb-row__code">{m.codigo}</span>
-        <span className="cmb-row__name">{m.nombre}</span>
-        {appr && <span className="cmb9-oktag">✓ aprobada</span>}
-        <span className="cmb-row__meta">
-          {m.creditos} cr{coms > 1 ? ` · ${coms} com` : ""}
-        </span>
-      </button>
-    );
   };
 
   // ---------- sub-render: celda de materia elegida (grilla uniforme) ----------
@@ -764,39 +677,13 @@ export default function CombinadorView() {
 
         {/* Cluster de acciones — SIEMPRE montado: el switch de modo tiene que
             estar visible aun sin materias elegidas. Cada acción conserva su gate;
-            el switch «Ignorar mi progreso» no tiene ninguno. */}
+            el switch «Mi progreso» solo depende de que haya progreso marcado. */}
         <div className="cmb9-header__right">
-          {/* «Ignorar mi progreso»: para quien no usa el avance real y solo quiere
-              combinar horarios. ON ⇒ el pool ofrece TODAS las materias con horario,
-              también las aprobadas (armado puro, no se guarda al plan). Siempre
-              visible — no depende de tener materias elegidas ni aprobadas. El
-              InfoTip va como HERMANO del switch (ambos son <button>, no anidar). */}
-          <span className="cmb9-solowrap">
-            <button
-              type="button"
-              className={"cmb-switch cmb9-solo" + (comboSolo ? " on" : "")}
-              role="switch"
-              aria-checked={comboSolo}
-              title={
-                comboSolo
-                  ? "Ignorando tu progreso: se ofrecen todas las materias con horario, incluidas las aprobadas"
-                  : "Combiná solo lo que te falta; activá para incluir todas las materias con horario"
-              }
-              onClick={() => {
-                setSaveOpen(false);
-                dispatch({ type: "SET_COMBO_SOLO", value: !comboSolo });
-              }}
-            >
-              <span className="cmb-switch__track">
-                <span className="cmb-switch__knob" />
-              </span>
-              Ignorar mi progreso
-            </button>
-            <InfoTip
-              label="Qué hace «Ignorar mi progreso»"
-              text="Activado: el combinador ofrece todas las materias con horario, incluidas las que ya aprobaste — puro armado de horarios, sin guardar la cursada en tu plan. Desactivado: solo las materias que te faltan."
-            />
-          </span>
+          {/* «Mi progreso» (ProgresoSwitch, compartido con el combinador de
+              finales): ON = solo lo que falta; OFF = ignora el progreso (ofrece
+              también las aprobadas, no se suma al plan). No se muestra sin
+              progreso marcado. */}
+          <ProgresoSwitch vista="combo" />
 
           {/* Sugeridas: solo tiene sentido cuando hay combos que llenar; en estado
               vacío era un control muerto con un contador engañoso. */}
@@ -899,9 +786,12 @@ export default function CombinadorView() {
           </div>
           )}
 
-          {/* «Sumar a mi plan» alimenta el Plan de cursada; en modo libre
-              (comboSolo) la combinación puede incluir aprobadas → no se ofrece. */}
-          {canExport && !comboSolo && (
+          {/* «Sumar a mi plan» alimenta el Plan de cursada; se gatea por
+              CONTENIDO — si la selección incluye una aprobada (posible con
+              «Mi progreso» apagado) no se ofrece, porque el reducer la
+              saltearía y el guardado sería parcial en silencio; con el switch
+              apagado pero sin aprobadas elegidas sí se ofrece. */}
+          {canExport && !selected.some((m) => state.approved.has(m.codigo)) && (
             <div className="cmb9-save" ref={saveRef}>
               <button
                 type="button"
@@ -1066,125 +956,34 @@ export default function CombinadorView() {
 
   // ---------- sub-render: buscador desplegable ----------
   const picker = showPicker && (
-    <div className="cmbx-picker">
-      <div className="cmb-search">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.7">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.2-3.2" />
-        </svg>
-        <input
-          type="text"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Buscá una materia (código o nombre)…"
-          autoComplete="off"
-        />
-        {q && (
-          <button
-            type="button"
-            className="cmb-search__clear"
-            aria-label="Limpiar búsqueda"
-            onClick={() => setQ("")}
-          >
-            ×
-          </button>
-        )}
-      </div>
-      {/* Hint de descubribilidad: en modo normal, avisa que las aprobadas están
-          ocultas y ofrece encender el switch sin ir a buscarlo al header. */}
-      {!comboSolo && hiddenApproved > 0 && (
-        <p className="cmb9-hiddenhint">
-          {hiddenApproved === 1
-            ? "Tu materia aprobada no aparece"
-            : `Tus ${hiddenApproved} aprobadas no aparecen`}{" "}
-          ·{" "}
-          <button
-            type="button"
-            className="cmb9-hiddenhint__btn"
-            onClick={() => dispatch({ type: "SET_COMBO_SOLO", value: true })}
-          >
-            {hiddenApproved === 1 ? "mostrarla igual" : "mostrarlas igual"}
-          </button>
-        </p>
-      )}
-      <div className="cmb-list cmb9-picklist">
-        {/* Dos columnas en desktop: Obligatorias (por año·cuatri) | Electivas. */}
-        <div className="cmb9-pickcols">
-          {filtered.obs.length > 0 && (
-            <div className="cmb-group cmb9-pickcol">
-              <div className="cmb-grouph">
-                <span className="dot dot--ob" /> Obligatorias
-                <i>{filtered.obs.length}</i>
-              </div>
-              {/* sub-agrupadas por (año, cuatri): 1.º año→5.º y, dentro, 1.º→2.º cuatri */}
-              {obsGroups.ordered.map((g) => (
-                <div className="cmb9-subgroup" key={`${g.anio}-${g.cuatri}`}>
-                  <div className="cmb9-subh">
-                    <b>{anioLabel(g.anio)}</b>
-                    <span className="cmb9-subh__cu">· {g.cuatri}.º cuatri</span>
-                    <i>{g.mats.length}</i>
-                  </div>
-                  {g.mats.map(row)}
-                </div>
-              ))}
-              {obsGroups.otras.length > 0 && (
-                <div className="cmb9-subgroup">
-                  <div className="cmb9-subh">
-                    Otras<i>{obsGroups.otras.length}</i>
-                  </div>
-                  {obsGroups.otras.map(row)}
-                </div>
-              )}
-            </div>
-          )}
-          {filtered.els.length > 0 && (
-            <div className="cmb-group cmb9-pickcol">
-              <div className="cmb-grouph">
-                <span className="dot dot--el" /> Electivas
-                <i>{filtered.els.length}</i>
-              </div>
-              {elsByName.map(row)}
-            </div>
-          )}
-        </div>
-        {/* Búsqueda honesta: materias del plan que matchean pero aún no tienen
-            horario cargado — atenuadas y no-agregables, a lo ancho bajo las columnas. */}
-        {ghostMatches.length > 0 && (
-          <div className="cmb-group cmb9-pickghost">
-            <div className="cmb-grouph">
-              <span className="dot dot--ghost" /> Sin horario cargado
-              <i>{ghostMatches.length}</i>
-            </div>
-            {ghostMatches.map((m) => (
-              <div
-                className="cmb9-ghost"
-                key={m.codigo}
-                title={`${m.codigo} · ${m.nombre} — sin horario cargado todavía`}
-              >
-                <span className="cmb-row__code">{m.codigo}</span>
-                <span className="cmb9-ghost__name">{m.nombre}</span>
-                <span className="cmb9-ghost__note">sin horario cargado</span>
-              </div>
-            ))}
-          </div>
-        )}
-        {noResults && (
-          <div className="cmb-noresults">
-            No hay materias con “{q}”.
-            <span
-              style={{
-                display: "block",
-                marginTop: 6,
-                fontSize: "12px",
-                color: "var(--faint)",
-              }}
-            >
-              Probá con el código (p. ej. 72.03) o revisá la ortografía.
-            </span>
-          </div>
-        )}
-      </div>
-    </div>
+    <MateriaPicker
+      candidatos={[...pool.obs, ...pool.els]}
+      fantasmas={ghostPool}
+      fantasmaNota="sin horario cargado"
+      added={(code) => combo.has(code)}
+      onToggle={(code) => {
+        // con la selección vacía el buscador está abierto a la fuerza; al
+        // elegir la primera materia queda abierto a pedido (no se cierra solo)
+        if (selected.length === 0) setPickerOpen(true);
+        dispatch({ type: "TOGGLE_COMBO", code });
+      }}
+      tag={(m) => (state.approved.has(m.codigo) ? <span className="cmb9-oktag">✓ aprobada</span> : null)}
+      rowTitle={(m, added) =>
+        `${m.codigo} · ${m.nombre} — ${added ? "quitar de" : "agregar a"} tu cuatrimestre`
+      }
+      hint={
+        !comboSolo && hiddenApproved > 0
+          ? {
+              text:
+                hiddenApproved === 1
+                  ? "Tu materia aprobada no aparece"
+                  : `Tus ${hiddenApproved} aprobadas no aparecen`,
+              action: hiddenApproved === 1 ? "mostrarla igual" : "mostrarlas igual",
+              onAction: () => dispatch({ type: "SET_COMBO_SOLO", value: true }),
+            }
+          : null
+      }
+    />
   );
 
   // ---------- sub-render: resumen sticky «en vivo» sobre el picker ----------
