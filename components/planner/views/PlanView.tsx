@@ -951,12 +951,15 @@ function SemCard({
   onUnlock,
   onDownload,
   reqs = EMPTY_CODES,
+  orden = 0,
 }: {
   it: PlacedMateria[];
   i: number;
   start: PlanStart;
   /** requisitos sin cursada (Inglés) que hay que tener aprobados al llegar acá */
   reqs?: string[];
+  /** posición en la fila (escalona la entrada, motion.css) */
+  orden?: number;
   /** bloques fantasma de la vista previa (hover sobre una materia de la lista) */
   ghosts: WeekBlock[];
   /** la materia previsualizada entra en este cuatri */
@@ -1043,6 +1046,7 @@ function SemCard({
         (menuOpen || confirmOpen ? " is-menu-open" : "")
       }
       data-cuatri-idx={i}
+      style={{ "--i": orden } as React.CSSProperties}
     >
       <div className="pv-sem__head">
         <div className="pv-sem__when">
@@ -1304,6 +1308,7 @@ function RoadmapStop({
   locked,
   onUnlock,
   reqs = EMPTY_CODES,
+  orden = 0,
 }: {
   it: PlacedMateria[];
   i: number;
@@ -1317,6 +1322,8 @@ function RoadmapStop({
   onUnlock: (idx: number) => void;
   /** requisitos sin cursada (Inglés) que hay que tener aprobados al llegar acá */
   reqs?: string[];
+  /** posición en la grilla (escalona la entrada, motion.css) */
+  orden?: number;
 }) {
   const { state, dispatch } = usePlanner();
   const cu = cuatriAt(start, i);
@@ -1347,6 +1354,7 @@ function RoadmapStop({
         (isCapped ? " is-capped" : "") +
         (locked ? " is-locked" : "")
       }
+      style={{ "--i": orden } as React.CSSProperties}
     >
       <div
         className="rmap-stop__card"
@@ -3004,11 +3012,12 @@ export default function PlanView() {
                   {nowCard.length > 0 && (
                     <NowCard it={nowCard} cu={currentCuatri()} drop={dropStateOf(-1)} />
                   )}
-                  {used.map(({ it, i }) => (
+                  {used.map(({ it, i }, k) => (
                     <SemCard
                       key={i}
                       it={it}
                       i={i}
+                      orden={k}
                       start={PL.start}
                       ghosts={previewFit?.ghosts.get(i) ?? EMPTY_BLOCKS}
                       isPreview={previewFit?.idx.has(i) ?? false}
@@ -3044,11 +3053,12 @@ export default function PlanView() {
 
               {tab === "road" && (
                 <ol className="rmap">
-                  {used.map(({ it, i }) => (
+                  {used.map(({ it, i }, k) => (
                     <RoadmapStop
                       key={i}
                       it={it}
                       i={i}
+                      orden={k}
                       start={PL.start}
                       accBefore={R.accBefore}
                       maxCred={PL.maxCred}

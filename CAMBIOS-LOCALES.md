@@ -248,6 +248,24 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   (`clamp(16px,3vw,44px)`, variable `--nav-px`), así el tema y el perfil quedan en el borde
   derecho; el toggle de tema pasa a 32 px con icono de 15 px.
 
+## 16. Capa de movimiento (`components/planner/motion.css`)
+
+- `motion.css` (nuevo, lo importa `PlannerApp` después de `planner.css`): entradas
+  escalonadas (tarjetas del selector de carrera, años y filas de «Materias», tarjetas del
+  Calendario y del Roadmap, fila de pestañas y recomendaciones), pop al cambiar de estado
+  (icono de `EstadoControl` y cifras de la barra de métricas, remontados con `key`), pulso
+  del punto de «cursando», entrada del menú de perfil y de la lista de carreras, pulsación
+  (`:active` scale .96) y flechas del carrusel. Todo bajo `prefers-reduced-motion:
+  no-preference`; `fill-mode: backwards` para que al terminar manden los estilos normales.
+- Índices para el escalonado: `CuatriView` (`--yi` por año, `--ri` por fila; `QRow` recibe
+  `orden`), `PlanView` (`orden` en `SemCard` y `RoadmapStop` → `--i`), `CarreraPicker`
+  (`--i`). `Topbar`: `<b className="statline__num" key={valor}>`. `EstadoControl`: el icono
+  va en `.estado-ctl__ico` con `key={estado}`.
+- Portada (fuera del espejo): `Reveal` de `@studyvaults/ui` en títulos de sección, pasos,
+  tarjetas de datos y cierre (stagger 110 ms); barrido de brillo en el CTA, flotación suave
+  de la tarjeta de muestra, flechas que avanzan al posarse, marcas que crecen; el icono del
+  tema gira al posarse (`app/globals.css`).
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

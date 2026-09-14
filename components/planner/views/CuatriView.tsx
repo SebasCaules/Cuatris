@@ -238,7 +238,7 @@ export default function CuatriView() {
         </div>
       ) : (
         <div className="cq-years">
-          {years.map((y) => {
+          {years.map((y, yi) => {
             const all = y.sems.flatMap((s) => s.ms);
             const { done, mid, doing, avance } = bucketsOf(all, approved, finalDone, cursando);
             const pctDone = (done / all.length) * 100;
@@ -250,6 +250,7 @@ export default function CuatriView() {
               <section
                 className={"cq-year" + (isCollapsed ? " is-collapsed" : "")}
                 key={y.anio}
+                style={{ "--yi": yi } as React.CSSProperties}
               >
                 {/* toda la cabecera pliega/despliega (salvo la casilla); el botón
                     del chevron es el control accesible por teclado */}
@@ -346,8 +347,8 @@ export default function CuatriView() {
                           className="cq-list"
                           aria-label={`Año ${y.anio}, ${s.cuatri}.º cuatrimestre`}
                         >
-                          {s.ms.map((m) => (
-                            <QRow key={m.codigo} m={m} />
+                          {s.ms.map((m, ri) => (
+                            <QRow key={m.codigo} m={m} orden={ri} />
                           ))}
                         </ul>
                       </div>
@@ -366,7 +367,7 @@ export default function CuatriView() {
   );
 }
 
-function QRow({ m }: { m: Materia }) {
+function QRow({ m, orden = 0 }: { m: Materia; orden?: number }) {
   const { state, dispatch } = usePlanner();
   const estado = estadoOf(m.codigo, state.approved, state.finalDone, state.cursando);
   const has2 = tieneFinal(m.codigo);
@@ -383,6 +384,7 @@ function QRow({ m }: { m: Materia }) {
         (estado === "cursando" ? " is-cursando" : "") +
         (pend && !avail ? " is-locked" : "")
       }
+      style={{ "--ri": orden } as React.CSSProperties}
     >
       <EstadoControl code={m.codigo} stopPropagation={false} />
       <Tooltip content={`${m.codigo} · ${m.nombre} — ver detalle`} width={220}>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button, Eyebrow, Icon } from "@studyvaults/ui";
+import { Button, Eyebrow, Icon, Reveal } from "@studyvaults/ui";
 import Header from "./Header";
 import LegacyRedirect from "./LegacyRedirect";
 import data from "@/lib/planner/data.json";
@@ -206,10 +206,12 @@ export default function Landing() {
 
       {/* 2 · CÓMO FUNCIONA */}
       <section id="como" className="ld-section container">
-        <Eyebrow>Cómo funciona</Eyebrow>
-        <h2 className="ld-h2">Tres pasos</h2>
+        <Reveal>
+          <Eyebrow>Cómo funciona</Eyebrow>
+          <h2 className="ld-h2">Tres pasos</h2>
+        </Reveal>
         <ol className="ld-steps">
-          <li className="ld-step">
+          <Reveal as="li" className="ld-step" delay={0}>
             <span className="ld-step__n">01</span>
             <h3>Elegí tu carrera</h3>
             <p>
@@ -221,8 +223,8 @@ export default function Landing() {
               Elegir carrera
               <Icon name="arrowRight" size={14} />
             </Link>
-          </li>
-          <li className="ld-step">
+          </Reveal>
+          <Reveal as="li" className="ld-step" delay={110}>
             <span className="ld-step__n">02</span>
             <h3>Marcá tus materias</h3>
             <p>
@@ -243,8 +245,8 @@ export default function Landing() {
               Materias y electivas
               <Icon name="arrowRight" size={14} />
             </Link>
-          </li>
-          <li className="ld-step">
+          </Reveal>
+          <Reveal as="li" className="ld-step" delay={220}>
             <span className="ld-step__n">03</span>
             <h3>Planificá en la pestaña que necesites</h3>
             <p>
@@ -262,49 +264,53 @@ export default function Landing() {
                 </li>
               ))}
             </ul>
-          </li>
+          </Reveal>
         </ol>
       </section>
 
       {/* 3 · DATOS */}
       <section className="ld-section ld-section--data container">
-        <Eyebrow>De dónde salen los datos</Eyebrow>
-        <h2 className="ld-h2">Del SGA, guardados en el sitio</h2>
+        <Reveal>
+          <Eyebrow>De dónde salen los datos</Eyebrow>
+          <h2 className="ld-h2">Del SGA, guardados en el sitio</h2>
+        </Reveal>
         <div className="ld-data">
-          <article className="ld-data__card">
+          <Reveal as="article" className="ld-data__card" delay={0}>
             <h3>Horarios</h3>
             <p>
               Comisiones, días, aulas, sedes y docentes de la oferta del{" "}
               <b>{periodo}</b>, bajados del SGA del ITBA con un scraper y
               guardados acá: la página no consulta el SGA en vivo.
             </p>
-          </article>
-          <article className="ld-data__card">
+          </Reveal>
+          <Reveal as="article" className="ld-data__card" delay={110}>
             <h3>Planes de estudio</h3>
             <p>
               El plan vigente de cada carrera de grado, también del SGA:
               materias, créditos, correlativas y electivas.
             </p>
-          </article>
-          <article className="ld-data__card">
+          </Reveal>
+          <Reveal as="article" className="ld-data__card" delay={220}>
             <h3>Finales</h3>
             <p>Las mesas de la planilla oficial de finales, por llamado.</p>
-          </article>
+          </Reveal>
         </div>
-        <p className="ld-note">
-          No es material oficial de la universidad: antes de inscribirte, verificá en el SGA.
-        </p>
+        <Reveal delay={300}>
+          <p className="ld-note">
+            No es material oficial de la universidad: antes de inscribirte, verificá en el SGA.
+          </p>
+        </Reveal>
       </section>
 
       {/* 4 · CIERRE */}
       <section className="ld-cta">
-        <div className="container ld-cta__inner">
+        <Reveal className="container ld-cta__inner">
           <p className="ld-cta__txt">Todo se guarda en tu navegador. Empezá cuando quieras.</p>
           <Button variant="primary" size="lg" href={PLANNER} prefetch={false}>
             Empezar
             <Icon name="arrowRight" size={16} />
           </Button>
-        </div>
+        </Reveal>
       </section>
     </>
   );

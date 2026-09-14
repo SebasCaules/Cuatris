@@ -1,0 +1,79 @@
+/* =========================================================================
+   MOTION — la capa de movimiento del planner, en un solo lugar.
+   Entradas escalonadas (selector de carrera, años y filas de materias,
+   tarjetas del plan), pops al cambiar de estado (casilla y cifras de la
+   barra), pulso de «cursando», menú de perfil y feedback de pulsación.
+   Todo CSS: los componentes solo exponen índices (--i / --yi / --ri) y
+   remontan con `key` lo que tiene que volver a entrar. Tokens de motion del
+   planner (--ease-out, --ease-spring, --dur-*). Con prefers-reduced-motion
+   no hay nada de esto (queda solo la maqueta).
+   ========================================================================= */
+
+/* ---- maqueta (vale siempre): el icono de la casilla va en un wrapper para
+   poder remontarlo con key sin tocar la caja ---- */
+.planner .estado-ctl__ico{display:inline-grid;place-items:center;line-height:0}
+.planner .statline__num{display:inline-block}
+
+@media (prefers-reduced-motion:no-preference){
+  /* ---- entradas escalonadas (fill backwards: al terminar mandan los
+     estilos normales, así el hover conserva su transform) ---- */
+  .planner .cpick__head{animation:planner-fade-up var(--dur-base) var(--ease-out) backwards}
+  .planner .cpick__card{
+    animation:mo-card-in .42s var(--ease-out) backwards;
+    animation-delay:calc(80ms + var(--i,0) * 26ms);
+  }
+  .planner .cq-year{
+    animation:planner-fade-up .4s var(--ease-out) backwards;
+    animation-delay:calc(var(--yi,0) * 70ms);
+  }
+  .planner .qrow{
+    animation:mo-row-in .32s var(--ease-out) backwards;
+    animation-delay:calc(var(--yi,0) * 70ms + min(var(--ri,0) * 24ms, 240ms) + 60ms);
+  }
+  .planner .pv-sem{
+    animation:mo-card-in .45s var(--ease-out) backwards;
+    animation-delay:calc(var(--i,0) * 70ms);
+  }
+  .planner .rmap-stop__card{animation-delay:calc(var(--i,0) * 45ms)}
+  .planner .pv-tabs{animation:planner-fade-up .35s var(--ease-out) backwards;animation-delay:40ms}
+  .planner .plan2-recs{animation:planner-fade-up .4s var(--ease-out) backwards;animation-delay:160ms}
+
+  /* ---- pops de estado ---- */
+  .planner .estado-ctl__ico{animation:mo-pop .34s var(--ease-spring) backwards}
+  .planner .statline__num{animation:mo-stat .38s var(--ease-out) backwards}
+  .planner .vnav__tab.is-active,.planner .pv-tab[aria-selected="true"]{animation:mo-tab .3s var(--ease-out)}
+
+  /* ---- «cursando» late: el punto del control y de las pastillas ---- */
+  .planner .estado-ctl.st-cursando svg,.planner .statline__cur>svg{animation:mo-pulse 2.4s ease-in-out infinite}
+
+  /* ---- menú de perfil y lista de carreras ---- */
+  .planner .pmenu__panel{transform-origin:top right;animation:mo-menu-in .22s var(--ease-out) backwards}
+  .planner .clist{animation:planner-fade-up .22s var(--ease-out) backwards}
+  .planner .pmenu__form,.planner .pmenu__confirm{animation:planner-fade-up .2s var(--ease-out) backwards}
+
+  /* ---- micro: pulsación y flechas ---- */
+  .planner .btn,.planner .vnav__tab,.planner .pv-tab,.planner .pv-seg__opt,.planner .pmenu__row,
+  .planner .pmenu__ico,.planner .pmenu__swatch,.planner .cpick__card,.planner .estado-ctl,
+  .planner .pv-arrow,.planner .pmenu__btn,.planner .pv-rec-toggle{
+    transition-property:transform,background,border-color,color,box-shadow,opacity;
+    transition-duration:var(--dur-fast);transition-timing-function:var(--ease-out);
+  }
+  .planner .btn:active,.planner .vnav__tab:active,.planner .pv-tab:active,.planner .pv-seg__opt:active,
+  .planner .pmenu__row:active:not(:disabled),.planner .pmenu__ico:active,.planner .pmenu__swatch:active,
+  .planner .cpick__card:active:not(:disabled),.planner .estado-ctl:active,.planner .pmenu__btn:active,
+  .planner .pv-rec-toggle:active{transform:scale(.96)}
+  .planner .pv-arrow svg{transition:transform var(--dur-fast) var(--ease-out)}
+  .planner .pv-arrow--next:hover svg{transform:translateX(2px)}
+  .planner .pv-arrow--prev:hover svg{transform:translateX(-2px)}
+  .planner .cpick__card:hover:not(:disabled){box-shadow:0 8px 22px color-mix(in srgb,var(--ink) 8%,transparent)}
+  .planner .pv-req__box{transition:border-color var(--dur-fast) var(--ease-out)}
+  .planner .pv-req:hover .pv-req__box{border-color:var(--brass)}
+}
+
+@keyframes mo-card-in{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes mo-row-in{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+@keyframes mo-pop{0%{transform:scale(.35);opacity:0}65%{transform:scale(1.18);opacity:1}100%{transform:none}}
+@keyframes mo-stat{from{opacity:.15;transform:translateY(-7px)}to{opacity:1;transform:none}}
+@keyframes mo-pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes mo-menu-in{from{opacity:0;transform:translateY(-6px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes mo-tab{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:none}}

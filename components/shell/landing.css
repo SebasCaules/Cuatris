@@ -149,6 +149,25 @@
   align-items: center;
   gap: 12px;
 }
+/* barrido de brillo en el CTA primario (hero y cierre) */
+.ld-actions .btn--primary,
+.ld-cta .btn--primary { position: relative; overflow: hidden; }
+.ld-actions .btn--primary::before,
+.ld-cta .btn--primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 20%, color-mix(in srgb, var(--hex-white) 34%, transparent) 50%, transparent 80%);
+  transform: translateX(-130%);
+  transition: transform 700ms var(--ease);
+  pointer-events: none;
+}
+.ld-actions .btn--primary:hover::before,
+.ld-cta .btn--primary:hover::before { transform: translateX(130%); }
+.ld-actions .btn svg,
+.ld-cta .btn svg { transition: transform var(--dur-fast) var(--ease); }
+.ld-actions .btn:hover svg,
+.ld-cta .btn:hover svg { transform: translateX(3px); }
 .ld-facts {
   margin: 40px 0 0;
   padding-top: 22px;
@@ -183,7 +202,14 @@
   padding: 14px 16px 12px;
   max-width: 440px;
   margin-left: auto;
+  animation: ld-float 7s ease-in-out infinite;
 }
+@keyframes ld-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+.ld-demo__row { transition: background var(--dur-fast) var(--ease); border-radius: 6px; }
+.ld-demo__row:hover { background: var(--surface-3); }
 .ld-demo__head {
   display: flex;
   align-items: center;
@@ -363,6 +389,16 @@
   flex-direction: column;
   gap: 10px;
 }
+/* al posarse: borde y sombra (sin mover: el transform lo maneja la entrada
+   .reveal, que se replica acá para no pisarle la transición ni el stagger) */
+.ld-step.reveal {
+  transition: opacity var(--dur-slow) var(--ease) var(--reveal-delay, 0ms),
+    transform var(--dur-slow) var(--ease) var(--reveal-delay, 0ms),
+    border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+.ld-step:hover { border-color: var(--hairline-strong); box-shadow: var(--shadow-md); }
+.ld-step__n { transition: color var(--dur-fast) var(--ease), letter-spacing var(--dur-fast) var(--ease); }
+.ld-step:hover .ld-step__n { letter-spacing: 0.16em; }
 .ld-step__n {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -398,7 +434,9 @@
   color: var(--link);
   text-decoration: none;
 }
+.ld-step__link svg { transition: transform var(--dur-fast) var(--ease); }
 .ld-step__link:hover { color: var(--ink-strong); }
+.ld-step__link:hover svg { transform: translateX(3px); }
 
 /* pestañas de planificación (paso 03): una fila por vista, con su qué */
 .ld-views {
@@ -434,8 +472,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.ld-views__link svg { color: var(--link); }
+.ld-views__link svg { color: var(--link); transition: transform var(--dur-fast) var(--ease); }
 .ld-views__link:hover { border-color: var(--accent-line); color: var(--text-primary); }
+.ld-views__link:hover svg { transform: translateX(3px); }
 
 /* leyenda de estados (paso 02) */
 .ld-marks {
@@ -451,6 +490,8 @@
   align-items: center;
   gap: 10px;
 }
+.ld-marks .ld-ctl { transition: transform var(--dur-fast) var(--ease); }
+.ld-marks li:hover .ld-ctl { transform: scale(1.15); }
 .ld-marks__lbl {
   font-family: var(--font-display);
   font-size: 14.5px;
@@ -480,6 +521,12 @@
   border-radius: var(--r-card);
   background: var(--surface-2);
 }
+.ld-data__card.reveal {
+  transition: opacity var(--dur-slow) var(--ease) var(--reveal-delay, 0ms),
+    transform var(--dur-slow) var(--ease) var(--reveal-delay, 0ms),
+    border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+.ld-data__card:hover { border-color: var(--hairline-strong); box-shadow: var(--shadow-md); }
 .ld-data__card h3 {
   display: flex;
   align-items: center;
@@ -554,7 +601,8 @@
 @media (prefers-reduced-motion: reduce) {
   .ld-mask > span,
   .ld-anim,
-  .ld-hero__blob {
+  .ld-hero__blob,
+  .ld-demo {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;

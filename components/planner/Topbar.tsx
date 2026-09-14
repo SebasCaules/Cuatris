@@ -131,7 +131,7 @@ export default function Topbar() {
       ) : (
       <div className="statline">
         <span className="statline__it">
-          <b>{statCreditos}</b> cr aprobados
+          <b className="statline__num" key={statCreditos}>{statCreditos}</b> cr aprobados
           <Cur
             v={proj?.creditos ?? statCreditos}
             base={statCreditos}
@@ -141,7 +141,7 @@ export default function Topbar() {
         </span>
         <span className="statline__sep" aria-hidden="true" />
         <span className="statline__it statline__it--elec">
-          <b>{statElec}</b>
+          <b className="statline__num" key={statElec}>{statElec}</b>
           <i className="statline__of">/{ELEC_REQ}</i> electivos
           <Cur
             v={proj?.elec ?? statElec}
@@ -152,7 +152,7 @@ export default function Topbar() {
         </span>
         <span className="statline__sep" aria-hidden="true" />
         <span className="statline__it">
-          <b>{statDisp}</b> cursables
+          <b className="statline__num" key={statDisp}>{statDisp}</b> cursables
           <Cur
             v={proj?.disp ?? statDisp}
             base={statDisp}
@@ -162,7 +162,7 @@ export default function Topbar() {
         </span>
         <span className="statline__sep" aria-hidden="true" />
         <span className="statline__it">
-          <b>{statRestan}</b> oblig. restantes
+          <b className="statline__num" key={statRestan}>{statRestan}</b> oblig. restantes
           <Cur
             v={proj?.restan ?? statRestan}
             base={statRestan}

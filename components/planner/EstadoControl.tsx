@@ -187,31 +187,34 @@ export function EstadoControl({
         }
       }}
     >
-      {estado === "final" ? (
-        <CheckDouble />
-      ) : estado === "cursando" ? (
-        <DotCursando />
-      ) : estado === "regular" ? (
-        has2 ? (
-          <CheckSingle />
+      {/* `key` por estado: el icono se remonta y entra con un pop (motion.css) */}
+      <span className="estado-ctl__ico" key={estado} aria-hidden="true">
+        {estado === "final" ? (
+          <CheckDouble />
+        ) : estado === "cursando" ? (
+          <DotCursando />
+        ) : estado === "regular" ? (
+          has2 ? (
+            <CheckSingle />
+          ) : (
+            <CheckFilled />
+          )
         ) : (
-          <CheckFilled />
-        )
-      ) : (
-        // Affordance de "agregable": un + fantasma señala que el círculo hueco
-        // es clickeable (un toque lo marca cursada). Su opacidad la fija cards.css.
-        <svg
-          className="ctl-plus"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          aria-hidden="true"
-        >
-          <path d="M8 4.2v7.6M4.2 8h7.6" />
-        </svg>
-      )}
+          // Affordance de "agregable": un + fantasma señala que el círculo hueco
+          // es clickeable (un toque lo marca cursada). Su opacidad la fija cards.css.
+          <svg
+            className="ctl-plus"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            aria-hidden="true"
+          >
+            <path d="M8 4.2v7.6M4.2 8h7.6" />
+          </svg>
+        )}
+      </span>
     </button>
     </Tooltip>
   );

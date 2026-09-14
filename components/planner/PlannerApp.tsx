@@ -48,6 +48,7 @@ import GrafoView from "./views/GrafoView";
 import FinalesCombinadorView from "./views/FinalesCombinadorView";
 import RefView from "./views/RefView";
 import "./planner.css";
+import "./motion.css";
 
 const VIEWS = {
   cuatri: CuatriView,

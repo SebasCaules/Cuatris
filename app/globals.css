@@ -22,9 +22,13 @@ main.page > .planner { flex: 1 1 auto; }
    contenido (topbar y shell usan clamp(16px,3vw,44px)); así el tema y el
    perfil quedan pegados al borde derecho en cualquier pantalla */
 .cuatris-nav--app .nav__inner { --nav-px: clamp(16px, 3vw, 44px); max-width: none; }
-/* toggle de tema más chico que el icono de perfil */
+/* toggle de tema más chico que el icono de perfil; el icono gira al posarse */
 .cuatris-nav .theme-toggle--desktop { width: 32px; height: 32px; margin-left: 0; }
-.cuatris-nav .theme-toggle--desktop svg { width: 15px; height: 15px; }
+.cuatris-nav .theme-toggle--desktop svg { width: 15px; height: 15px; transition: transform var(--dur) var(--ease); }
+.cuatris-nav .theme-toggle--desktop:hover svg { transform: rotate(40deg); }
+@media (prefers-reduced-motion: reduce) {
+  .cuatris-nav .theme-toggle--desktop:hover svg { transform: none; }
+}
 .cuatris-nav .vnav { margin-left: 8px; }
 /* entre 1001 y 1280 px la fila va justa (cinco pestañas + carrera + tools) */
 @media (min-width: 1001px) and (max-width: 1280px) {

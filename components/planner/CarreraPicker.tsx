@@ -38,7 +38,7 @@ export default function CarreraPicker() {
         </p>
       </header>
       <div className="cpick__grid" role="list">
-        {CARRERAS.map((c) => {
+        {CARRERAS.map((c, ci) => {
           const guardado = conProgreso.has(c.codigo);
           const card = (
             <button
@@ -52,6 +52,7 @@ export default function CarreraPicker() {
               }
               disabled={!c.disponible || cargando != null}
               aria-busy={cargando === c.codigo}
+              style={{ "--i": ci } as React.CSSProperties}
               onClick={(e) => {
                 despegar(e.currentTarget);
                 void cambiar(c.codigo);
