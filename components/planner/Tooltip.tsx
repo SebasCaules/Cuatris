@@ -157,7 +157,9 @@ export function Tooltip({
   const trigger = cloneElement(child, {
     ref: (node: HTMLElement | null) => {
       triggerRef.current = node;
-      const prev = (child as unknown as { ref?: unknown }).ref;
+      // React 19: el ref del disparador viene como prop (leer `element.ref`
+      // avisa por consola y va a desaparecer)
+      const prev = childProps.ref;
       if (typeof prev === "function") prev(node);
       else if (prev && typeof prev === "object")
         (prev as { current: HTMLElement | null }).current = node;

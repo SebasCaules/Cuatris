@@ -5,6 +5,7 @@ import { PlannerProvider, usePlanner } from "./state";
 import PlannerErrorBoundary from "./PlannerErrorBoundary";
 import { CarreraContext } from "./carreraContext";
 import CarreraPicker from "./CarreraPicker";
+import { cancelar as cancelarVuelo } from "./carreraVuelo";
 import { activarCarrera, carreraPedida, CARRERA_URL_KEY } from "@/lib/planner/carreras";
 import {
   loadPersisted,
@@ -450,6 +451,7 @@ export default function PlannerApp({ chrome }: { chrome?: PlannerChrome }) {
         setCarrera(codigo);
       } catch (e) {
         console.warn("[planner] no se pudo cargar la carrera", codigo, e);
+        cancelarVuelo(); // la tarjeta vuelve a su lugar
       } finally {
         setCargando(null);
       }

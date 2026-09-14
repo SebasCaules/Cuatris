@@ -3,9 +3,10 @@
 // Selector de carrera de la barra superior: un botón con la carrera activa y
 // un menú propio (sin <select> nativo) con todas las carreras de grado del
 // ITBA. Las que no tienen plan cargado en el SGA se ven pero no se eligen.
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { CARRERAS, carreraInfo, nombreCorto } from "@/lib/planner/carreras";
 import { useCarrera } from "./carreraContext";
+import { aterrizar } from "./carreraVuelo";
 import { Tooltip } from "./Tooltip";
 import { IconChevronDown } from "./icons";
 
@@ -13,9 +14,17 @@ export default function CarreraSwitch() {
   const { codigo, cargando, cambiar } = useCarrera();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const menuId = useId();
   const activa = codigo ? carreraInfo(codigo) : undefined;
+
+  // Si la carrera se eligió recién en el selector de primera visita, la
+  // tarjeta viene volando: al montar (ya con la barra en su lugar) se le da el
+  // botón como destino. Sin vuelo pendiente no hace nada.
+  useLayoutEffect(() => {
+    if (btnRef.current) aterrizar(btnRef.current);
+  }, []);
 
   // cerrar con clic afuera / Escape; al abrir, foco en la carrera activa
   useEffect(() => {
@@ -52,6 +61,7 @@ export default function CarreraSwitch() {
     <div className="carrera" ref={rootRef}>
       <Tooltip content="Cambiar de carrera: cada una guarda su propio progreso" width={220} placement="bottom">
         <button
+          ref={btnRef}
           type="button"
           className={"carrera__btn" + (open ? " is-open" : "")}
           aria-haspopup="menu"
