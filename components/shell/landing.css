@@ -5,6 +5,24 @@
    (EstadoControl): un estado = un color en todo el sitio.
    ============================================================ */
 
+/* ---- pestañas del planificador en la barra (mismas clases que ViewNav; los
+   estilos del planner van bajo .planner, acá se repiten con tokens del sitio) ---- */
+.ld-vnav { display: flex; align-items: center; gap: 2px; min-width: 0; }
+.ld-vnav .vnav__tab {
+  flex: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  letter-spacing: -0.005em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.ld-vnav .vnav__tab:hover { background: var(--surface-3); color: var(--ink-strong); }
+.ld-vnav .vnav__tab:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+
 /* ---- hero: copy + tarjeta de muestra, fondo con grilla y blobs ---- */
 .ld-hero {
   position: relative;
@@ -382,6 +400,43 @@
 }
 .ld-step__link:hover { color: var(--ink-strong); }
 
+/* pestañas de planificación (paso 03): una fila por vista, con su qué */
+.ld-views {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.ld-views__link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-ctrl);
+  background: var(--surface-3);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.ld-views__link b {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink-strong);
+  white-space: nowrap;
+}
+.ld-views__link span {
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ld-views__link svg { color: var(--link); }
+.ld-views__link:hover { border-color: var(--accent-line); color: var(--text-primary); }
+
 /* leyenda de estados (paso 02) */
 .ld-marks {
   list-style: none;
@@ -489,8 +544,10 @@
 }
 @media (max-width: 600px) {
   .ld-hero { padding-top: calc(var(--nav-h) + 32px); }
-  .ld-navlink { display: none; }
   .ld-marks__hint { white-space: normal; }
+  .ld-views__link { grid-template-columns: minmax(0, 1fr) auto; }
+  .ld-views__link span { grid-column: 1; white-space: normal; }
+  .ld-views__link svg { grid-row: 1; grid-column: 2; }
 }
 
 /* ---- movimiento reducido: todo quieto y visible ---- */

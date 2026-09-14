@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { Button, Eyebrow, Icon, NavLink } from "@studyvaults/ui";
+import { Button, Eyebrow, Icon } from "@studyvaults/ui";
 import Header from "./Header";
 import LegacyRedirect from "./LegacyRedirect";
 import data from "@/lib/planner/data.json";
 import { CARRERAS } from "@/lib/planner/carreras/index";
+import { NAV_VIEWS } from "@/lib/planner/navViews";
 import "./landing.css";
 
 /**
@@ -15,6 +16,24 @@ import "./landing.css";
  */
 
 const PLANNER = "/planificar/";
+/** link a una vista del planificador (la carrera, si no está elegida, se pide
+ *  antes y la vista se abre después) */
+const vista = (view: string) => `${PLANNER}?view=${view}`;
+
+/** Las mismas pestañas de la barra del planificador, como links: desde la
+ *  portada se entra directo a la vista que se busca. Sin tooltip (el del
+ *  planner viaja con su CSS): el paso 03 explica cada pestaña. */
+function LandingNav() {
+  return (
+    <nav className="vnav ld-vnav" aria-label="Vistas del planificador">
+      {NAV_VIEWS.map((v) => (
+        <Link key={v.view} className="vnav__tab" href={vista(v.view)} prefetch={false}>
+          {v.label}
+        </Link>
+      ))}
+    </nav>
+  );
+}
 
 /* ---- marcas de estado: las mismas formas que el control del planner
    (EstadoControl), copiadas para no arrastrar el planner a la portada ---- */
@@ -106,13 +125,7 @@ export default function Landing() {
   return (
     <>
       <LegacyRedirect />
-      <Header
-        tools={
-          <NavLink href={PLANNER} className="ld-navlink">
-            Abrir el planificador
-          </NavLink>
-        }
-      />
+      <Header nav={<LandingNav />} />
 
       {/* 1 · HERO */}
       <section className="ld-hero">
@@ -136,13 +149,13 @@ export default function Landing() {
               </span>
             </h1>
             <p className="ld-sub ld-anim" style={{ "--d": "380ms" } as React.CSSProperties}>
-              Elegí tu carrera, marcá lo que ya cursaste y Cuatris arma el resto:
-              qué podés cursar, horarios sin choques, un plan hasta recibirte y
-              tus finales. Sin cuenta: todo queda en tu navegador.
+              Elegí tu carrera, marcá lo que ya cursaste y cada pestaña hace lo
+              suyo: qué podés cursar, un plan hasta recibirte, horarios sin
+              choques y tus finales. Sin cuenta: todo queda en tu navegador.
             </p>
             <div className="ld-actions ld-anim" style={{ "--d": "480ms" } as React.CSSProperties}>
               <Button variant="primary" size="lg" href={PLANNER} prefetch={false}>
-                Abrir el planificador
+                Empezar
                 <Icon name="arrowRight" size={16} />
               </Button>
               <Button variant="ghost" size="lg" href="#como">
@@ -201,15 +214,21 @@ export default function Landing() {
             <h3>Elegí tu carrera</h3>
             <p>
               Las carreras de grado del ITBA con su plan de estudios vigente.
-              Cada una guarda su propio progreso en este navegador.
+              Cada una guarda su propio progreso en este navegador; se cambia
+              desde la barra.
             </p>
+            <Link className="ld-step__link" href={PLANNER} prefetch={false}>
+              Elegir carrera
+              <Icon name="arrowRight" size={14} />
+            </Link>
           </li>
           <li className="ld-step">
             <span className="ld-step__n">02</span>
             <h3>Marcá tus materias</h3>
             <p>
-              Tocá la casilla de cada materia hasta dejarla en su estado real.
-              Con eso se calculan correlativas, créditos y qué podés cursar.
+              En <b>Materias y electivas</b>, tocá la casilla de cada materia
+              hasta dejarla en su estado real. Con eso se calculan
+              correlativas, créditos y qué podés cursar.
             </p>
             <ul className="ld-marks">
               {ESTADOS.map((e) => (
@@ -220,19 +239,29 @@ export default function Landing() {
                 </li>
               ))}
             </ul>
+            <Link className="ld-step__link" href={vista("cuatri")} prefetch={false}>
+              Materias y electivas
+              <Icon name="arrowRight" size={14} />
+            </Link>
           </li>
           <li className="ld-step">
             <span className="ld-step__n">03</span>
-            <h3>Pasá al plan de cursada</h3>
+            <h3>Planificá en la pestaña que necesites</h3>
             <p>
-              El planificador te propone qué cursar cuatri a cuatri hasta
-              recibirte, respetando correlativas y el orden del plan. El
-              combinador arma horarios sin choques y el de finales, tus mesas.
+              Con las materias marcadas, cada pestaña de la barra trabaja
+              sobre lo mismo: elegí la que responde tu pregunta.
             </p>
-            <Link className="ld-step__link" href={PLANNER} prefetch={false}>
-              Ir al planificador
-              <Icon name="arrowRight" size={14} />
-            </Link>
+            <ul className="ld-views">
+              {NAV_VIEWS.filter((v) => v.view !== "cuatri").map((v) => (
+                <li key={v.view}>
+                  <Link className="ld-views__link" href={vista(v.view)} prefetch={false}>
+                    <b>{v.label}</b>
+                    <span>{v.tip}</span>
+                    <Icon name="arrowRight" size={13} />
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </li>
         </ol>
       </section>
@@ -272,7 +301,7 @@ export default function Landing() {
         <div className="container ld-cta__inner">
           <p className="ld-cta__txt">Todo se guarda en tu navegador. Empezá cuando quieras.</p>
           <Button variant="primary" size="lg" href={PLANNER} prefetch={false}>
-            Abrir el planificador
+            Empezar
             <Icon name="arrowRight" size={16} />
           </Button>
         </div>

@@ -7,17 +7,11 @@ import { usePlanner } from "./state";
 import { Tooltip } from "./Tooltip";
 import { IconDownload } from "./icons";
 import CarreraSwitch from "./CarreraSwitch";
-import type { ViewKey } from "@/lib/planner/types";
+import { NAV_VIEWS } from "@/lib/planner/navViews";
 
-// Etiquetas descriptivas (pedido del autor): dicen qué se hace en cada vista,
-// no solo el tema. "Referencias" no es hermana: va en las tools.
-export const NAV_VIEWS: { view: ViewKey; label: string; tip?: string }[] = [
-  { view: "cuatri", label: "Materias y electivas", tip: "Marcá lo aprobado y lo que cursás; obligatorias por año y electivas por minor" },
-  { view: "plan", label: "Plan de cursada", tip: "Cuatrimestre a cuatrimestre hasta recibirte" },
-  { view: "combo", label: "Combinador de horarios", tip: "Armá el cuatrimestre eligiendo comisiones sin choques" },
-  { view: "finales", label: "Combinador de finales", tip: "Fechas de finales sin superposiciones" },
-  { view: "grafo", label: "Mapa de correlativas", tip: "Qué destraba cada materia" },
-];
+// Las etiquetas y tooltips de las vistas viven en lib/planner/navViews.ts
+// (módulo de datos puro): la portada dibuja las mismas pestañas como links.
+export { NAV_VIEWS };
 
 export function ViewNav() {
   const { state, dispatch } = usePlanner();

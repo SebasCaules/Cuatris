@@ -188,6 +188,13 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   con tooltip y clic al detalle. Desaparece al marcarlo aprobado en «Materias».
 - `planview.css`: `.pv-reqs`, `.pv-req*` (dos líneas en la tarjeta angosta del Roadmap).
 
+## 13. `NAV_VIEWS` en un módulo de datos
+
+- `lib/planner/navViews.ts` (nuevo): las etiquetas y tooltips de las vistas, sin
+  «use client», para que la portada (server component) dibuje las mismas pestañas como links
+  a `/planificar/?view=…`. `components/planner/ViewNav.tsx` las importa de ahí y las
+  re-exporta.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título
