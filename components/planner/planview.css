@@ -424,16 +424,6 @@
   padding: 3px 0;
   flex-wrap: wrap;
 }
-/* en angosto el botón de importar/exportar queda solo con su ícono */
-@media (max-width: 900px) {
-  .planner .pv-iconbtn__txt {
-    display: none;
-  }
-  .planner .pv-iconbtn--label {
-    padding: 6px;
-  }
-}
-
 /* selector 2 · 3 · 4 cuatrimestres a la vista (solo en Calendario): el mismo
    segmentado de las opciones, compactado al alto de los botones de la fila */
 .planner .pv-seg--cols {
@@ -503,37 +493,6 @@
 .planner .pv-rec-toggle[aria-checked="true"] .pv-switch::after {
   left: 14px;
   background: var(--block-ink);
-}
-
-/* botones de ícono (reset / import-export) */
-.planner .pv-iconbtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  color: var(--muted);
-  border-radius: 999px;
-  padding: 6px;
-  cursor: pointer;
-  transition: color var(--dur-fast) var(--ease-out),
-    border-color var(--dur-fast) var(--ease-out),
-    background var(--dur-fast) var(--ease-out);
-  font-family: var(--f-m);
-  font-size: 10.5px;
-}
-.planner .pv-iconbtn svg {
-  width: 13px;
-  height: 13px;
-}
-.planner .pv-iconbtn--label {
-  padding: 6px 11px 6px 9px;
-}
-.planner .pv-iconbtn:hover {
-  color: var(--ink);
-  border-color: var(--brass);
-  background: var(--panel-2);
 }
 
 /* ============================ SEM GRID (Calendario) ======================== */
@@ -1674,42 +1633,6 @@
   background: color-mix(in srgb, var(--brass) 14%, transparent);
 }
 
-/* ============================ + AGREGAR ELECTIVA (CTA) ================== */
-/* El llamado a la acción de la página: botón sólido brass, a la altura del
-   resto de la barra. Texto sobre color sólido = --block-ink (DESIGN §8). */
-.planner .pv-addelec {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 30px;
-  padding: 0 13px 0 10px;
-  border-radius: 999px;
-  border: 1px solid var(--brass);
-  background: var(--brass);
-  color: var(--block-ink);
-  font-family: var(--f-b);
-  font-weight: 600;
-  font-size: 12.5px;
-  cursor: pointer;
-  box-shadow: 0 3px 10px color-mix(in srgb, var(--brass) 24%, transparent);
-  transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out),
-    background var(--dur-fast) var(--ease-out);
-}
-.planner .pv-addelec:hover {
-  background: var(--brass-2);
-  border-color: var(--brass-2);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--brass) 40%, transparent);
-}
-.planner .pv-addelec:focus-visible {
-  outline: none;
-  box-shadow: var(--ring);
-}
-.planner .pv-addelec svg {
-  color: currentColor;
-  width: 13px;
-  height: 13px;
-}
 
 /* ============================ AVISO (abajo a la derecha) ================= */
 .planner.pv-toast {
@@ -1828,7 +1751,6 @@
   .planner .pv-loadbar > i,
   .planner .pv-minor-track > i,
   .planner .pv-dotbtn,
-  .planner .pv-iconbtn,
   .planner .pv-menu__item,
   .planner .pv-arrow,
   .planner .plan2-fchip {

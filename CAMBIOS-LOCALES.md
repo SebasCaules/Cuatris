@@ -232,6 +232,21 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   `title=`): dicen qué materias se cursan y qué cambia al aprobarlas; el botón de copiar
   link también. `app/globals.css`: `.nav__inner` en border-box (desbordaba 48 px en angosto).
 
+## 15. Plan de cursada: la fila de pestañas queda con el Recomendador (y 2 · 3 · 4)
+
+- `views/PlanView.tsx`: se quitan de `.pv-tabs__actions` «Agregar electiva» (redundante con
+  el buscador del panel de electivas), «Restablecer plan» (icono ambiguo, destructivo) e
+  «Importar / Exportar» (el modal del documento del plan y del .json de preferencias), con
+  su estado y helpers (`ResetConfirm`, `exportPlan`, `exportPrefs`, `importPrefsFromFile`).
+  Queda el switch «Recomendador» y, en Calendario, el selector 2 · 3 · 4. La descarga de un
+  cuatrimestre (calendario, imagen, programa) sigue en el menú «···» de cada tarjeta.
+- `IOModal.tsx` eliminado (ya sin uso). CSS: `.pv-addelec`, `.pv-iconbtn*`, `.plan2-io__*`
+  y la regla ACC-07 del botón destructivo.
+- `app/globals.css` + `components/shell/Header.tsx`: con el menú de perfil, la barra lleva
+  `cuatris-nav--app`: a todo el ancho, con el margen lateral del contenido
+  (`clamp(16px,3vw,44px)`, variable `--nav-px`), así el tema y el perfil quedan en el borde
+  derecho; el toggle de tema pasa a 32 px con icono de 15 px.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

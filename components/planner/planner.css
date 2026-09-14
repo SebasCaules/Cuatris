@@ -875,47 +875,6 @@
 }
 .planner .plan2-method b{color:var(--ink-soft);font-family:var(--f-d);font-weight:500}
 
-/* modal Exportar / importar: hub con dos cards (Documento · Preferencias).
-   Reusa el chrome .mnr-modal*; esto es solo el cuerpo. */
-.planner .plan2-io__grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.planner .plan2-io__card{
-  display:flex;flex-direction:column;gap:14px;
-  background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r-lg);
-  padding:16px 16px 15px;
-}
-.planner .plan2-io__cardtop{display:flex;flex-direction:column;gap:5px}
-.planner .plan2-io__kick{
-  font-family:var(--f-m);font-size:9px;font-weight:600;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--brass);
-}
-.planner .plan2-io__card h4{
-  margin:1px 0 0;font-family:var(--f-d);font-weight:600;font-size:15px;
-  letter-spacing:-.01em;color:var(--ink);
-}
-.planner .plan2-io__card p{margin:0;font-size:12px;line-height:1.5;color:var(--muted)}
-.planner .plan2-io__card p b{color:var(--ink-soft);font-weight:600}
-.planner .plan2-io__acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
-/* selector de cuatrimestres a incluir en el documento */
-.planner .plan2-io__pick{display:flex;flex-direction:column;gap:7px}
-.planner .plan2-io__pickhead{display:flex;align-items:center;justify-content:space-between}
-.planner .plan2-io__minilbl{font-family:var(--f-m);font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
-.planner .plan2-io__all{font-family:var(--f-m);font-size:10px;color:var(--brass);background:none;border:none;cursor:pointer;letter-spacing:.02em;padding:2px 2px}
-.planner .plan2-io__all:hover{color:var(--brass-2);text-decoration:underline}
-.planner .plan2-io__chips{display:flex;flex-wrap:wrap;gap:6px}
-.planner .plan2-io__chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-m);font-size:11px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer;transition:background .15s,border-color .15s,color .15s}
-.planner .plan2-io__chip:hover{border-color:var(--line-2);color:var(--ink-soft)}
-.planner .plan2-io__chip.is-on{background:var(--brass-soft);border-color:color-mix(in srgb,var(--brass) 45%,transparent);color:var(--brass-2);font-weight:600}
-.planner .plan2-io__chip i{font-style:normal;font-size:9px;opacity:.8;background:color-mix(in srgb,currentColor 14%,transparent);border-radius:999px;min-width:15px;text-align:center;padding:0 4px;line-height:1.6}
-.planner .plan2-io__note{
-  font-family:var(--f-m);font-size:10.5px;color:var(--faint);line-height:1.4;margin:0;
-}
-.planner .plan2-io__err{
-  font-family:var(--f-m);font-size:11px;line-height:1.4;color:var(--status-caution-text);margin:0;
-}
-@media (max-width:560px){
-  .planner .plan2-io__grid{grid-template-columns:1fr}
-}
-
 /* =========================================================================
    ROADMAP — panorama de cuatrimestres lado a lado (vista general)
    ========================================================================= */
@@ -1788,17 +1747,8 @@
     width:44px;height:44px;
   }
 
-  /* ACC-07: las acciones del plan a ≥44px de alto; el destructivo (Restablecer
-     plan — el único .pv-iconbtn sin label) queda cercado con una divisoria del
-     resto de las acciones no-destructivas. */
-  .planner .pv-iconbtn,.planner .pv-rec-toggle{min-height:44px}
-  .planner .pv-tabs__actions>.pv-iconbtn:not(.pv-iconbtn--label){
-    position:relative;margin-left:15px;margin-right:9px;
-  }
-  .planner .pv-tabs__actions>.pv-iconbtn:not(.pv-iconbtn--label)::before{
-    content:"";position:absolute;left:-8px;top:50%;transform:translateY(-50%);
-    width:1px;height:22px;background:var(--line);
-  }
+  /* ACC-07: las acciones del plan a ≥44px de alto */
+  .planner .pv-rec-toggle{min-height:44px}
 }
 
 /* =========================================================================

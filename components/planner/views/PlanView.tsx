@@ -47,14 +47,8 @@ import {
 import { downloadBlob, htmlToPngBlob } from "@/lib/planner/exportImage";
 import { renderStaticHTML } from "@/components/planner/renderStatic";
 import { CURSADA_CALENDAR_PRINT_CSS } from "@/components/planner/cursadaCalendarPrint";
+import { openForPrint } from "@/lib/planner/download";
 import {
-  openForPrint,
-  downloadHTMLFile,
-  downloadTextFile,
-} from "@/lib/planner/download";
-import {
-  serializePreferences,
-  parsePreferences,
   loadPlanCols,
   savePlanCols,
   type PlanCols,
@@ -66,7 +60,6 @@ import MinorsModal from "@/components/planner/MinorsModal";
 import { MinorBadge, MinorBadges } from "@/components/planner/MinorBadge";
 import { Tooltip } from "@/components/planner/Tooltip";
 import { RecRow, RecSig } from "@/components/planner/RecRow";
-import IOModal, { type IOCuatri } from "@/components/planner/IOModal";
 import {
   IconClose,
   IconGraduationCap,
@@ -1632,67 +1625,6 @@ function MinorsPanel({
   );
 }
 
-/* ---------- modal de confirmación de reset (portaleado en `.planner`) ---------- */
-function ResetConfirm({
-  onCancel,
-  onConfirm,
-}: {
-  onCancel: () => void;
-  onConfirm: () => void;
-}) {
-  // foco inicial + trap de Tab + restore al cerrar
-  const panelRef = useModalFocus<HTMLDivElement>();
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onCancel();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onCancel]);
-
-  if (typeof document === "undefined") return null;
-  return createPortal(
-    <div className="planner" style={{ padding: 0 }}>
-      <div
-        className="mnr-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="pv-reset-title"
-      >
-        <div className="mnr-modal__bg" onClick={onCancel} />
-        <div className="pv-reset" ref={panelRef}>
-          <div className="pv-reset__icon">
-            <IconWarnTri size={21} />
-          </div>
-          <h3 id="pv-reset-title">¿Restablecer el plan de cursada?</h3>
-          <p>
-            Se borran las materias agregadas, los topes por cuatrimestre y los
-            cuatrimestres finalizados. El plan vuelve a Auto. Esta acción no se
-            puede deshacer.
-          </p>
-          <div className="pv-reset__acts">
-            <button
-              type="button"
-              className="btn btn--ghost btn--sm"
-              onClick={onCancel}
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              className="btn btn--go btn--sm"
-              onClick={onConfirm}
-            >
-              Restablecer
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>,
-    document.body,
-  );
-}
 
 /* ---------- recomendaciones de electivas ---------- */
 function Recommendations({
@@ -2146,7 +2078,6 @@ export default function PlanView() {
   const [preview, setPreview] = useState<string | null>(null);
   const [minorsOpen, setMinorsOpen] = useState(false);
   const [recsHidden, setRecsHidden] = useState(false);
-  const [resetOpen, setResetOpen] = useState(false);
   // sin límite: el recomendador devuelve TODAS las electivas candidatas, ya
   // rankeadas. Recommendations las agrupa según si alargan o no la carrera.
   // Con el recomendador oculto no computamos nada: corre optimizePlan por
@@ -2645,25 +2576,6 @@ export default function PlanView() {
   const renderCalendar: CalendarRenderer = (blocks) =>
     renderStaticHTML(<CursadaCalendar blocks={blocks} days={DAYS} dense />);
 
-  const exportPlan = (format: "pdf" | "html", cuatris?: number[]) => {
-    if (typeof window === "undefined") return;
-    const html = buildPlanHTML({
-      result: baseR,
-      start: PL.start,
-      maxCred: PL.maxCred,
-      maxMat: PL.maxMat,
-      avoid: PL.avoid,
-      approvedCreditsNow: accNow,
-      generado: nowStr(),
-      autoPrint: format === "pdf",
-      cuatris,
-      method: PL.method,
-      renderCalendar,
-      calendarCSS: CURSADA_CALENDAR_PRINT_CSS,
-    });
-    if (format === "html") downloadHTMLFile(html, "plan-de-cursada.html");
-    else openForPrint(html);
-  };
 
   // descarga de UN cuatrimestre desde el menú 3-puntos: «solo calendario»
   // (PDF de una hoja A4, fondo blanco), «imagen» (la misma hoja como PNG),
@@ -2751,61 +2663,7 @@ export default function PlanView() {
   const unlockCuatri = (idx: number) =>
     dispatch({ type: "PLAN_TOGGLE_LOCK", idx });
 
-  // Cuatrimestres disponibles para elegir en el modal de exportar.
-  const ioCuatris = useMemo<IOCuatri[]>(
-    () =>
-      baseR.items
-        .map((it, i) => ({ it, i }))
-        .filter((x) => x.it.length)
-        .map((x) => ({
-          idx: x.i,
-          tag: cuatriLabel(cuatriAt(PL.start, x.i)),
-          materias: x.it.length,
-        })),
-    [baseR, PL.start],
-  );
 
-  /* ---- export/import de PREFERENCIAS (distinto del export del documento del
-   * plan de arriba): un .json portable con todo el estado persistible, para
-   * llevarlo a otro navegador o guardarlo como plantilla. ---- */
-  const [ioOpen, setIoOpen] = useState(false);
-  const [prefsError, setPrefsError] = useState<string | null>(null);
-  const prefsErrTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    // limpia el timeout pendiente si el componente se desmonta con el error abierto
-    return () => {
-      if (prefsErrTimeout.current) clearTimeout(prefsErrTimeout.current);
-    };
-  }, []);
-
-  const showPrefsError = (msg: string) => {
-    setPrefsError(msg);
-    if (prefsErrTimeout.current) clearTimeout(prefsErrTimeout.current);
-    prefsErrTimeout.current = setTimeout(() => setPrefsError(null), 4000);
-  };
-
-  const exportPrefs = () => {
-    if (typeof window === "undefined") return;
-    const fecha = nowStr();
-    const text = serializePreferences(state, fecha);
-    downloadTextFile(text, `preferencias-plan-${fecha}.json`, "application/json");
-  };
-
-  const importPrefsFromFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (typeof window === "undefined") return;
-    const file = e.target.files?.[0] ?? null;
-    e.target.value = ""; // permite reimportar el mismo archivo dos veces seguidas
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const payload = parsePreferences(String(reader.result ?? ""));
-      if (payload) dispatch({ type: "HYDRATE", payload });
-      else showPrefsError("El archivo no es un JSON de preferencias válido.");
-    };
-    reader.onerror = () => showPrefsError("No se pudo leer el archivo.");
-    reader.readAsText(file);
-  };
 
   // Navegación por teclado del tablist (roving tabindex): flechas con wrap,
   // Home/End. Mueve la selección y el foco al tab elegido.
@@ -2824,22 +2682,6 @@ export default function PlanView() {
     tabs[next]?.focus();
   };
 
-  // "+ Agregar electiva": abre el pool (si estaba plegado), lo trae a la vista y
-  // enfoca su buscador. Static-export safe (guard de document).
-  const focusElectivaSearch = () => {
-    if (typeof document === "undefined") return;
-    const det = document.getElementById("planPool") as HTMLDetailsElement | null;
-    if (det && !det.open) det.open = true;
-    const input = document.getElementById(
-      "planPoolSearch",
-    ) as HTMLInputElement | null;
-    if (input) {
-      input.focus({ preventScroll: true });
-      input.scrollIntoView({ behavior: "smooth", block: "center" });
-    } else if (det) {
-      det.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  };
 
   const recOn = !recsHidden;
 
@@ -3070,25 +2912,6 @@ export default function PlanView() {
             )}
             <button
               type="button"
-              className="pv-addelec"
-              aria-label="Agregar electiva — abre el buscador del pool"
-              onClick={focusElectivaSearch}
-            >
-              <svg
-                viewBox="0 0 24 24"
-                width="15"
-                height="15"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                aria-hidden="true"
-              >
-                <path d="M12 5v14M5 12h14" strokeLinecap="round" />
-              </svg>
-              Agregar electiva
-            </button>
-            <button
-              type="button"
               className="pv-rec-toggle"
               role="switch"
               aria-checked={recOn}
@@ -3098,34 +2921,6 @@ export default function PlanView() {
               Recomendador
               <span className="pv-switch" aria-hidden="true" />
             </button>
-            <button
-              type="button"
-              className="pv-iconbtn"
-              aria-label="Restablecer plan"
-              title="Restablecer plan"
-              onClick={() => setResetOpen(true)}
-            >
-              <IconRotateCcw size={15} />
-            </button>
-            <Tooltip
-              content={
-                <>
-                  Descargá el plan como <b>PDF</b> (listo para imprimir) o{" "}
-                  <b>HTML</b> para leer offline, guardá tus preferencias en un{" "}
-                  <b>.json</b> portable, o importá un plan guardado.
-                </>
-              }
-            >
-              <button
-                type="button"
-                className="pv-iconbtn pv-iconbtn--label"
-                aria-label="Importar / Exportar"
-                onClick={() => setIoOpen(true)}
-              >
-                <IconDownload size={15} />
-                <span className="pv-iconbtn__txt">Importar / Exportar</span>
-              </button>
-            </Tooltip>
           </div>
         </div>
       )}
@@ -3409,27 +3204,7 @@ export default function PlanView() {
         />
       )}
 
-      {resetOpen && (
-        <ResetConfirm
-          onCancel={() => setResetOpen(false)}
-          onConfirm={() => {
-            dispatch({ type: "PLAN_RESET" });
-            setResetOpen(false);
-          }}
-        />
-      )}
 
-      {ioOpen && (
-        <IOModal
-          onClose={() => setIoOpen(false)}
-          cuatris={ioCuatris}
-          onExportHTML={(sel) => exportPlan("html", sel)}
-          onExportPDF={(sel) => exportPlan("pdf", sel)}
-          onExportPrefs={exportPrefs}
-          onImportFile={importPrefsFromFile}
-          prefsError={prefsError}
-        />
-      )}
     </section>
   );
 }
