@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Newsreader, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AmbientLayer, ThemeScript } from "@studyvaults/ui";
-import Header from "@/components/shell/Header";
 import Footer from "@/components/shell/Footer";
 import { BASE_PATH, SITE_URL } from "@/lib/content/slug";
 
@@ -29,19 +28,28 @@ export const metadata: Metadata = {
     template: "%s · Cuatris",
   },
   description:
-    "Planificador de la carrera de Ingeniería en Informática del ITBA: marcá tus materias aprobadas y armá tu cursada — correlativas, horarios sin choques, plan cuatrimestre a cuatrimestre y combinación de finales. Sin cuenta: se guarda en tu navegador.",
+    "Planificador de cursada para las carreras de grado del ITBA: elegí tu carrera, marcá tus materias aprobadas y armá tu cursada — correlativas, horarios sin choques, plan cuatrimestre a cuatrimestre y combinación de finales. Sin cuenta: se guarda en tu navegador.",
   openGraph: {
     type: "website",
     siteName: "Cuatris",
     locale: "es_AR",
     title: "Cuatris — Planificador de cursada · ITBA",
     description:
-      "Correlativas, horarios sin choques, plan de cursada y finales para Ingeniería en Informática del ITBA. Sin cuenta: se guarda en tu navegador.",
+      "Correlativas, horarios sin choques, plan de cursada y finales para las carreras de grado del ITBA. Sin cuenta: se guarda en tu navegador.",
   },
-  // Instalable como app en el teléfono (manifest + icono de iOS). Las rutas
-  // llevan basePath a mano: metadata no pasa por next/link.
+  // Favicon (app/icon.svg, con PNG de respaldo) e instalable como app en el
+  // teléfono (manifest + icono de iOS). Declarar `icons` acá pisa la
+  // convención de archivo, así que el favicon se lista explícitamente. Las
+  // rutas llevan basePath a mano: metadata no pasa por next/link.
   manifest: `${BASE_PATH}/manifest.webmanifest`,
-  icons: { apple: `${BASE_PATH}/icons/apple-touch-icon.png` },
+  icons: {
+    icon: [
+      { url: `${BASE_PATH}/icon.svg`, type: "image/svg+xml" },
+      { url: `${BASE_PATH}/icons/icon-192.png`, sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: `${BASE_PATH}/icons/icon-192.png`,
+    apple: `${BASE_PATH}/icons/apple-touch-icon.png`,
+  },
   appleWebApp: { capable: true, title: "Cuatris", statusBarStyle: "default" },
 };
 
@@ -70,7 +78,8 @@ export default function RootLayout({
           Saltar al contenido
         </a>
         <AmbientLayer />
-        <Header />
+        {/* la barra superior la monta cada página (el planner le entrega su
+            navegación de vistas; 404 y error la muestran sola) */}
         <main id="main" className="page">
           {children}
         </main>

@@ -13,7 +13,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Cuatris — Planificador de cursada · ITBA",
     short_name: "Cuatris",
     description:
-      "Planificador de cursada para Ingeniería en Informática del ITBA: correlativas, horarios sin choques, plan de cursada y finales.",
+      "Planificador de cursada para las carreras de grado del ITBA: correlativas, horarios sin choques, plan de cursada y finales.",
     start_url: `${BASE_PATH}/`,
     scope: `${BASE_PATH}/`,
     display: "standalone",
