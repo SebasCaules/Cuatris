@@ -82,6 +82,7 @@ npm ci                      dependencias
 ./run.sh build              build estático servido en http://localhost:3101/Cuatris/
 npm run typecheck           regenera data.json + tsc --noEmit
 npm run build               next build → out/ (prebuild regenera lib/planner/data.json)
+npm run test:grafo          layout, modelo y viewport del mapa de correlativas contra las 16 carreras (Node ≥ 22.18)
 npm run datos               regenera finalesFlags.ts y mesasFinales.ts desde data/plan/finales-*.csv
 npm run carreras            HTML del SGA en data/plan/sga-carreras/ → data/plan/carreras.json + carreras/<CODIGO>.json
 python3 data/plan/bajar-carreras.py   baja esos HTML del SGA (login del autor; ~40 peticiones)
@@ -94,7 +95,7 @@ node scripts/build-fichas-data.mjs   PDFs → lib/planner/fichas.ts (requiere pd
 ```
 app/                 layout.tsx (fuentes, tema, header/footer) · page.tsx (la portada) ·
                      planificar/page.tsx (el planner) · error/not-found
-components/planner/  el planificador (espejo de StudyVaults)
+components/planner/  el planificador (espejo de StudyVaults); grafo/ = piezas del mapa de correlativas
 components/shell/    Header, Footer, CuatrisMark, Landing (portada) — propios del standalone
 lib/planner/         dominio del planner (espejo de StudyVaults)
 lib/url-state/       estado en la URL (espejo de StudyVaults)
@@ -102,6 +103,6 @@ lib/content/slug.ts  shim: BASE_PATH, SITE_URL, withBase
 packages/ui/         @studyvaults/ui (espejo de StudyVaults)
 public/electivas-fichas/  PDFs oficiales de las materias
 data/plan/           fuentes de datos + scripts Python + planillas de finales
-scripts/             pipelines .mjs y sync
+scripts/             pipelines .mjs, sync y tests del mapa (test-grafo-*.mts)
 deprecated/          el Cuatris anterior, congelado
 ```

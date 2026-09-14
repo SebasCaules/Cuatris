@@ -57,8 +57,9 @@ y, al posarse, por un `Tooltip` o por la tarjeta de la materia. Textos de la int
   depende** de la capa de electivas.
 - Nodo obligatoria 108×34; electiva 108×28. Contenido: punto de tipo a la izquierda
   (`--slate` obligatoria / `--brass` electiva, r=3), sigla (mono; 12 px 600 / 11 px 500),
-  glifo de estado a la derecha. Siglas de más de 12 caracteres se comprimen con
-  `textLength`/`lengthAdjust="spacingAndGlyphs"` hasta el ancho útil.
+  glifo de estado a la derecha. Siglas de más de 9 caracteres (obligatoria) o 10
+  (electiva) se comprimen con `textLength`/`lengthAdjust="spacingAndGlyphs"` hasta el
+  ancho útil entre el punto y el glifo.
 - Estados (un estado = un color, igual que `EstadoControl`):
 
   | Estado | Relleno / borde | Glifo |
@@ -66,7 +67,7 @@ y, al posarse, por un `Tooltip` o por la tarjeta de la materia. Textos de la int
   | final aprobado | `status-go` 14 % / go 45 % | doble tilde (`CheckDouble`) en go |
   | cursada, falta final | `status-warn` 14 % / warn 45 % | tilde simple en warn |
   | promocionada / no rinde | `status-promo` 14 % / promo 45 % | tilde rellena en promo |
-  | cursando | brass 10 % / `--brass` | punto brass (pulso de motion.css) |
+  | cursando | slate 16 % / slate 60 % (como `EstadoControl` y la barra) | punto `--link` (pulso de motion.css) |
   | cursable | brass 6 % / `--brass` 1.6 px | ninguno |
   | bloqueada (faltan correlativas o créditos) | panel / `--line`, opacidad .62 | candado muted |
 
@@ -83,10 +84,12 @@ y, al posarse, por un `Tooltip` o por la tarjeta de la materia. Textos de la int
 - Arrastrar = panear; rueda = zoom anclado al cursor; pinch = zoom anclado al punto medio;
   botones `+` `−`; «ver todo» (⤢); «ir a donde estoy» (◎ = frontera: primer cuatrimestre con
   obligatorias pendientes). Cuatro botones de ícono con `Tooltip`; sin lectura de porcentaje.
-- Encuadre inicial: si todo entra legible (escala ≥ .72) se muestra entero; si no, escala
-  .72 con la columna de la frontera a un tercio del ancho (la anterior visible) y la banda
-  del espinazo centrada. Se re-aplica al cambiar de tamaño mientras el usuario no haya
-  tomado control.
+- Encuadre inicial (N0-13): si todo entra legible (escala ≥ .72) se muestra entero; si no,
+  escala .72 con la frontera al borde izquierdo —con la columna anterior (ya cursada) de
+  referencia si ambas entran— y la banda del espinazo centrada; con la capa de electivas
+  encendida el lienzo se apoya arriba (cabeceras visibles, electivas colgando). Se
+  re-aplica al cambiar de tamaño o de capa mientras el usuario no haya tomado control
+  (panear, zoom, ver todo, ir a donde estoy, Enter en la búsqueda, flechas).
 - Posarse sobre un nodo (180 ms): cadena + **tarjeta** a la derecha del nodo (a la izquierda
   o debajo si no entra): sigla · código · créditos / nombre / línea de estado con color de
   estado («Cursable», «Faltan: AM1 · Álgebra», «Faltan 24 créditos», «Cursando», «Cursada ·
@@ -94,13 +97,18 @@ y, al posarse, por un `Tooltip` o por la tarjeta de la materia. Textos de la int
   correlativas directas, tildadas las aprobadas) / fila «Habilita» (chips de lo que destraba
   directamente). La tarjeta de hover no captura el puntero.
 - Clic en un nodo = **fijar** (la cadena queda y la tarjeta suma el `EstadoControl` y el
-  botón «Detalle» → `OPEN_DRAWER`); clic sobre el fijado, clic en vacío o Esc = soltar.
-  Doble clic = abrir el detalle. Un arrastre nunca fija.
-- Teclado: un solo tab-stop entre los nodos (roving), flechas ← → siguen correlativas, ↑ ↓
-  recorren la columna, Enter/Espacio fija, Esc suelta.
+  botón «Ver detalle» → `OPEN_DRAWER`); clic sobre el fijado, clic en vacío o Esc = soltar
+  (Esc desde cualquier lado, salvo con el detalle o la ficha abiertos; si el foco estaba
+  en la tarjeta vuelve al nodo). Doble clic = abrir el detalle con el nodo fijado. El nodo
+  fijado nunca se atenúa. Un arrastre nunca fija.
+- Teclado: un solo tab-stop entre los nodos (roving; de entrada, la primera obligatoria de
+  la frontera), flechas ← → siguen correlativas, ↑ ↓ recorren la columna (obligatorias y
+  después las electivas sub-columna por sub-columna), Enter/Espacio fija, Esc suelta; el
+  nodo enfocado por teclado se revela si quedó fuera de la vista.
 - Búsqueda (campo de la cabecera de la vista, mismo aspecto que «Materias»): filtra en vivo
-  (100 ms) resaltando coincidencias; Enter centra la primera; Esc limpia. Si solo coinciden
-  electivas y la capa está apagada, se enciende sola.
+  (100 ms) resaltando coincidencias; Enter centra y fija la primera; Esc limpia. Si solo
+  coinciden electivas y la capa está apagada, se enciende sola (una vez por consulta, sin
+  tocar la preferencia guardada).
 - Chips (mismo `vtools__chip` que «Materias»): **Electivas** (capa; se persiste en
   `plan_grafo_electivas_v1`; default apagada; no se muestra si el plan no tiene electivas)
   y **Cursables** (foco: resalta lo que ya se puede cursar). Cada chip con `Tooltip`.
@@ -134,9 +142,10 @@ export interface GraphColumn { index: number; x: number; cx: number; width: numb
 export interface GraphBand { year: number; x: number; width: number }
 export interface GraphLayout {
   nodes: GraphNode[]; edges: Edge[]; columns: GraphColumn[]; bands: GraphBand[];
-  width: number; height: number; headerH: number;
+  width: number; height: number;
   /** y donde termina la banda del espinazo (riel); las electivas empiezan debajo */
   spineBottom: number;
+  /** hay electivas EN EL LIENZO (capa encendida y el plan tiene alguna) */
   hasElectivas: boolean;
 }
 export interface LayoutOptions { electivas: boolean }
@@ -148,7 +157,9 @@ Reglas:
 1. Nodos = todas las `obligatorias` + (si `opts.electivas`) todas las `electivas`.
    Aristas = de `Materia.correlativas` (c → m), filtradas a nodos presentes (con la capa
    apagada se descartan las que tocan electivas).
-2. Columna nominal: `anio`+`cuatri` → `(anio-1)*2+(cuatri-1)`; solo `anio` → `(anio-1)*2`;
+2. Columna nominal: `anio`+`cuatri` → `(anio-1)*2+(cuatri-1)`. Solo `anio` (LCA): cada año
+   ocupa tantas columnas como el camino más largo entre sus propias obligatorias y cada
+   una va a la columna de su profundidad dentro del año (columnas acumuladas por año);
    nada → null. Obligatorias con nominal: esa columna. Resto: `max(col(pred)+1)` sobre sus
    correlativas presentes, y para electivas además `≥ colCreditos(creditosReq)` =
    (primera columna k con acumulado nominal ≥ creditosReq) + 1 (acumulado = suma de créditos
@@ -165,9 +176,13 @@ Reglas:
    miran vecinos obligatorios (el espinazo no depende de la capa); las electivas miran a sus
    correlativas (ya fijas) y a sus sucesoras electivas. Dentro de las electivas, primero las
    que tienen alguna arista (ordenadas por mediana), después las aisladas (por sigla).
-5. Coordenadas: `x` de columna acumulado (ancho de columna = `max(NODE_W, sub*(NODE_W+SUB_GAP)-SUB_GAP)` con `sub = ceil(nElectivas/MAX_ROWS)`, o 1 sin capa); `COL_GAP` entre columnas. Banda del espinazo: alto = `maxOb*(OB_H+OB_GAP)-OB_GAP`, obligatorias centradas en la banda; `spineBottom = PAD+HEADER_H+bandH`. Electivas desde `spineBottom+BAND_GAP`, en columnas de a `MAX_ROWS` (llenado por columna: la primera sub-columna se lleva las que tienen aristas).
-6. `columns[k]`: `top`/`sub` según nominal del plan (`"1º"`/`"1c"`; solo año → `sub:null`;
-   nada nominal → ambos null). Las columnas que quedan **más allá de la última columna
+   Después de la mediana, el espinazo pasa por una transposición de pares adyacentes
+   (Sugiyama) que intercambia dos obligatorias vecinas si bajan los cruces GEOMÉTRICOS
+   entre aristas obligatoria→obligatoria. Todo orden por texto usa `localeCompare` con
+   locale fijo `"es"` (determinismo entre navegadores).
+5. Coordenadas: `x` de columna acumulado (ancho de columna = `max(NODE_W, sub*(NODE_W+SUB_GAP)-SUB_GAP)` con `sub = ceil(nElectivas/MAX_ROWS)`, o 1 con la capa apagada — N0-10); `COL_GAP` entre columnas; con la capa apagada las columnas terminan en la última obligatoria (sin columna fantasma). Banda del espinazo: alto = `maxOb*(OB_H+OB_GAP)-OB_GAP`, obligatorias centradas en la banda; `spineBottom = PAD+HEADER_H+bandH`. Electivas desde `spineBottom+BAND_GAP`, en columnas de a `MAX_ROWS` (llenado por columna: la primera sub-columna se lleva las que tienen aristas).
+6. `columns[k]`: `top`/`sub` según nominal del plan (`"1º"`/`"1c"`; solo año → `top` solo en
+   la primera columna del año y `sub:null`; nada nominal → ambos null). Las columnas que quedan **más allá de la última columna
    nominal** (nodos empujados por la pasada de validez, p. ej. P: 46.02→46.03 ambas de
    5º·2c) no llevan cabecera (`top`/`sub` null, `year` null): no se inventa un «6.º año».
    `bands`: una por año con ≥1 columna nominal, solo si hay años nominales.
@@ -203,7 +218,7 @@ export function statusOf(m: Materia, ctx: StatusCtx): NodeStatus;
 export function frontierColumn(nodes: GraphNode[], approved: Set<string>): number;
 /** ids cuyo código, sigla o nombre normalizados contienen la consulta normalizada; vacío si la consulta está vacía */
 export function matchQuery(materias: Materia[], query: string, norm: (s: string) => string): Set<string>;
-/** vecino para navegación por teclado: ArrowRight = primera sucesora, ArrowLeft = primera predecesora, ArrowUp/Down = anterior/siguiente en la misma columna (por y) */
+/** vecino para navegación por teclado: ArrowRight = primera sucesora, ArrowLeft = primera predecesora, ArrowUp/Down = anterior/siguiente en la misma columna (obligatorias primero, después las electivas sub-columna por sub-columna: por x y luego por y) */
 export function neighborOf(id: string, key: string, nodes: GraphNode[], adj: GraphAdjacency): string | null;
 ```
 
@@ -229,8 +244,8 @@ export interface ViewportApi {
   set(t: Transform): void;                                    // clamp de escala + aplica + notifica
   zoomBy(factor: number): void;                               // anclado al centro; marca interacción
   fitAll(): void;                                             // encuadra todo (FIT_PAD 40); sticky ante resize
-  frame(rect: ContentRect, opts?: { scale?: number; align?: "center" | "left-third" }): void;
-  centerOn(x: number, y: number, minScale?: number): void;    // centra un punto, escala ≥ minScale
+  frame(rect: ContentRect, opts?: { scale?: number; auto?: boolean }): void; // centra un rect; `auto` = encuadre automático (no marca interacción)
+  centerOn(x: number, y: number, minScale?: number): void;    // centra un punto, escala ≥ minScale; marca interacción
   toScreen(x: number, y: number): { x: number; y: number };   // contenido → px del viewport
   subscribe(cb: (t: Transform) => void): () => void;          // notifica en rAF tras cada cambio
   handlers: { onPointerDown; onPointerMove; onPointerUp; onPointerCancel } // para el div del viewport
@@ -254,8 +269,12 @@ anclada al punto medio, que también panea); doble rAF para el encuadre inicial 
 `ResizeObserver` que re-encuadra (`fitAll` si el último pedido fue «ver todo», si no
 `initialFrame`) mientras `userInteracted` sea falso; al cambiar `width/height` (capa de
 electivas) mantiene la transformación si el usuario ya interactuó, si no re-encuadra. `set`
-clampea la escala a `[MIN_SCALE, MAX_SCALE]` salvo que venga de `fitAll` (piso
-`FIT_MIN_SCALE`). Static-export safe.
+clampea la escala a `[piso, MAX_SCALE]`, donde el piso es `MIN_SCALE` o, si un encuadre
+dejó el mapa más chico (pantallas angostas), la escala aplicada (sin saltos al primer
+gesto); `fitAll` y los encuadres automáticos bajan hasta `FIT_MIN_SCALE`. El paneo se acota
+para que siempre queden ≥ 64 px de contenido a la vista. `set`, `frame` (sin `auto`),
+`centerOn`, rueda, pinch, arrastre y botones cuentan como interacción del usuario.
+Static-export safe.
 
 Done-test: `npm run typecheck`; funciones puras exportadas `fitTransform(contentW, contentH,
 vw, vh, pad, minScale, maxScale)` y `zoomAtPoint(t, px, py, factor, min, max)` con test en
@@ -282,7 +301,7 @@ Se dibuja absoluto dentro de `.grafo-viewport` (no portal), con el `useLayoutEff
 mide y posiciona (derecha del nodo; izquierda o debajo si no entra en el viewport) y se
 reubica en cada `subscribe`. Nombres y créditos desde `byId` (`@/lib/planner/model`).
 `pinned=false` → `pointer-events:none`, sin controles. `pinned=true` → `EstadoControl` +
-botón «Detalle» + botón × (`Tooltip` «Soltar · Esc»). La raíz de la tarjeta frena la
+botón «Ver detalle» + botón × (`Tooltip` «Soltar · Esc»). La raíz de la tarjeta frena la
 propagación de `pointerdown`/`pointerup`/`click` (así el viewport no interpreta un clic en la
 tarjeta como tap en vacío ni como arrastre). Estructura de clases en §2.8.
 

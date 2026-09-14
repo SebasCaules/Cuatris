@@ -12,7 +12,7 @@
 // notificación de `viewport.subscribe`: con ~100 nodos en el DAG, un
 // setState por cada pan/zoom del lienzo principal dispararía un re-render de
 // este componente de más en cada frame de la interacción.
-import { useEffect, useMemo, useRef, type PointerEvent as ReactPointerEvent } from "react";
+import { memo, useEffect, useMemo, useRef, type PointerEvent as ReactPointerEvent } from "react";
 import type { GraphLayout } from "@/lib/planner/layoutGraph";
 import type { Transform, ViewportApi } from "@/components/planner/grafo/useViewport";
 
@@ -24,7 +24,7 @@ export interface GrafoMinimapProps {
   lit: Set<string> | null;
 }
 
-export function GrafoMinimap({ layout, viewport, lit }: GrafoMinimapProps) {
+function GrafoMinimapInner({ layout, viewport, lit }: GrafoMinimapProps) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const viewRectRef = useRef<SVGRectElement | null>(null);
 
@@ -154,3 +154,6 @@ export function GrafoMinimap({ layout, viewport, lit }: GrafoMinimapProps) {
     </div>
   );
 }
+
+// memo: solo re-renderiza cuando cambian el layout, el viewport (ready) o el conjunto resaltado
+export const GrafoMinimap = memo(GrafoMinimapInner);

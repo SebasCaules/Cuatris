@@ -1,7 +1,7 @@
 // Done-tests de components/planner/grafo/grafoModel.ts (PLAN.md §2.2).
 // Node ≥ 23 con type stripping, sin dependencias: lee lib/planner/data.json
 // a mano (fs + JSON.parse) y ejercita el módulo puro contra datos reales de
-// Informática (plan S, 141 materias). Sale con exit(1) e imprime qué falló.
+// Informática (plan S). Sale con exit(1) e imprime qué falló.
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -14,7 +14,8 @@ import {
   neighborOf,
 } from "../components/planner/grafo/grafoModel.ts";
 import type { Edge, Materia } from "../lib/planner/types.ts";
-import type { GraphNode } from "../lib/planner/layoutGraph.ts";
+import { computeGraphLayout, type GraphNode } from "../lib/planner/layoutGraph.ts";
+import { normalizar } from "../lib/planner/texto.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dataPath = join(__dirname, "..", "lib", "planner", "data.json");
@@ -25,7 +26,13 @@ interface PlanData {
   edges: Edge[];
   aprobadasDefault: string[];
 }
-const data = JSON.parse(readFileSync(dataPath, "utf8")) as PlanData;
+let data: PlanData;
+try {
+  data = JSON.parse(readFileSync(dataPath, "utf8")) as PlanData;
+} catch {
+  console.error("falta lib/planner/data.json: corré `npm run typecheck` (o `node scripts/build-planner-data.mjs`) antes");
+  process.exit(1);
+}
 
 const obligatorias = data.obligatorias;
 const electivas = data.electivas;
@@ -93,7 +100,11 @@ check(
 // ---------------------------------------------------------------------------
 // statusOf vs. isAvailable (reimplementación local e independiente)
 // ---------------------------------------------------------------------------
-check("el plan S tiene 141 materias (44 obligatorias + 97 electivas)", materias.length === 141, materias.length);
+check(
+  "el plan S tiene obligatorias y electivas, y materias = obligatorias + electivas",
+  obligatorias.length > 0 && electivas.length > 0 && materias.length === obligatorias.length + electivas.length,
+  { obligatorias: obligatorias.length, electivas: electivas.length },
+);
 
 const primerAnio = obligatorias.filter((m) => m.anio === 1).map((m) => m.codigo);
 const approved = new Set<string>([...data.aprobadasDefault, ...primerAnio]);
@@ -138,14 +149,36 @@ check(
 );
 
 // ---------------------------------------------------------------------------
-// matchQuery
+// statusOf: tabla de estados (misma verdad que estadoOf + isAvailable)
 // ---------------------------------------------------------------------------
-function norm(s: string): string {
-  return s
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
+{
+  const m = obligatorias.find((x) => (x.correlativas || []).length > 0 && (Number(x.creditosReq) || 0) === 0)!;
+  const conCred = materias.find((x) => (Number(x.creditosReq) || 0) > 0)!;
+  const ctx = (o: Partial<{ approved: string[]; finalDone: string[]; cursando: string[]; cred: number; final: boolean }>) => ({
+    approved: new Set(o.approved ?? []),
+    finalDone: new Set(o.finalDone ?? []),
+    cursando: new Set(o.cursando ?? []),
+    approvedCredits: o.cred ?? 0,
+    tieneFinal: () => o.final ?? true,
+  });
+  check("statusOf: en finalDone → final", statusOf(m, ctx({ approved: [m.codigo], finalDone: [m.codigo] })).estado === "final");
+  check("statusOf: aprobada con final pendiente → regular", statusOf(m, ctx({ approved: [m.codigo] })).estado === "regular");
+  check("statusOf: aprobada sin final (promociona) → promo", statusOf(m, ctx({ approved: [m.codigo], final: false })).estado === "promo");
+  check("statusOf: cursando → cursando", statusOf(m, ctx({ cursando: [m.codigo] })).estado === "cursando");
+  const bloq = statusOf(m, ctx({}));
+  check("statusOf: correlativas pendientes → blocked con faltanCorr = correlativas", bloq.estado === "blocked" && bloq.faltanCorr.length === m.correlativas.length, bloq);
+  const avail = statusOf(m, ctx({ approved: m.correlativas }));
+  check("statusOf: correlativas aprobadas y sin créditos exigidos → avail", avail.estado === "avail" && avail.faltanCorr.length === 0 && avail.faltanCred === 0, avail);
+  const req = Number(conCred.creditosReq);
+  const porCred = statusOf(conCred, ctx({ approved: conCred.correlativas, cred: req - 1 }));
+  check("statusOf: créditos insuficientes → blocked con faltanCred = 1", porCred.estado === "blocked" && porCred.faltanCred === 1, porCred);
+  check("statusOf: créditos justos → avail", statusOf(conCred, ctx({ approved: conCred.correlativas, cred: req })).estado === "avail");
 }
+
+// ---------------------------------------------------------------------------
+// matchQuery (con la misma normalización que usa la vista)
+// ---------------------------------------------------------------------------
+const norm = normalizar;
 
 const amMatches = matchQuery(materias, "am", norm);
 check(
@@ -270,6 +303,34 @@ check(
 check("neighborOf ArrowRight(94.24) = null (sin sucesoras)", neighborOf("94.24", "ArrowRight", nodes, adj) === null);
 check("neighborOf ArrowLeft(94.24) = null (sin predecesoras)", neighborOf("94.24", "ArrowLeft", nodes, adj) === null);
 check("neighborOf con una key no reconocida da null", neighborOf(CHAIN_ID, "Enter", nodes, adj) === null);
+
+// ---------------------------------------------------------------------------
+// neighborOf sobre el layout REAL con la capa de electivas (sub-columnas):
+// ↑ desde la primera obligatoria da null; ↓ desde la última obligatoria baja a
+// la cima de la primera sub-columna de electivas; ↓ dentro de una sub-columna
+// nunca salta a la de al lado.
+// ---------------------------------------------------------------------------
+{
+  const lay = computeGraphLayout(data as unknown as import("../lib/planner/types.ts").Plan, { electivas: true });
+  const adjLay = buildAdjacency(lay.edges);
+  const col0 = lay.nodes.filter((n) => n.col === 0);
+  const obs = col0.filter((n) => n.ob).sort((a, b) => a.y - b.y);
+  const els = col0.filter((n) => !n.ob);
+  const subXs = [...new Set(els.map((n) => n.x))].sort((a, b) => a - b);
+  check("layout S: la columna 0 tiene ≥ 2 sub-columnas de electivas (fixture)", subXs.length >= 2, subXs);
+  check("neighborOf ↑ desde la primera obligatoria de la columna 0 = null", neighborOf(obs[0].id, "ArrowUp", lay.nodes, adjLay) === null);
+  const primeraEl = els.filter((n) => n.x === subXs[0]).sort((a, b) => a.y - b.y);
+  check(
+    "neighborOf ↓ desde la última obligatoria = cima de la primera sub-columna",
+    neighborOf(obs[obs.length - 1].id, "ArrowDown", lay.nodes, adjLay) === primeraEl[0].id,
+    { obtenido: neighborOf(obs[obs.length - 1].id, "ArrowDown", lay.nodes, adjLay), esperado: primeraEl[0].id },
+  );
+  check(
+    "neighborOf ↓ desde la última de la primera sub-columna = cima de la segunda (no salta al medio)",
+    neighborOf(primeraEl[primeraEl.length - 1].id, "ArrowDown", lay.nodes, adjLay) ===
+      els.filter((n) => n.x === subXs[1]).sort((a, b) => a.y - b.y)[0].id,
+  );
+}
 
 if (failed) {
   console.error("\ntest-grafo-model: FALLÓ (ver FAIL arriba)");

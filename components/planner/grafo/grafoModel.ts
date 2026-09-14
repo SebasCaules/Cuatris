@@ -155,9 +155,10 @@ export function matchQuery(
 /** Vecino para navegación por teclado (roving tabindex): ArrowRight = primera
  *  sucesora (orden de la lista de adyacencia), ArrowLeft = primera
  *  predecesora, ArrowUp/ArrowDown = nodo anterior/siguiente de la misma
- *  columna (`GraphNode.col`), recorrida sub-columna por sub-columna (orden por
- *  `x` y después por `y`: bajar no salta a la sub-columna de al lado). `null`
- *  si no hay vecino. */
+ *  columna (`GraphNode.col`): primero las obligatorias (la banda de arriba),
+ *  después las electivas sub-columna por sub-columna (por `x` y luego `y`):
+ *  bajar desde la última obligatoria llega a la cima de la primera
+ *  sub-columna y nunca salta a la de al lado. `null` si no hay vecino. */
 export function neighborOf(
   id: string,
   key: string,
@@ -172,7 +173,7 @@ export function neighborOf(
   if (!cur) return null;
   const columna = nodes
     .filter((n) => n.col === cur.col)
-    .sort((a, b) => a.x - b.x || a.y - b.y);
+    .sort((a, b) => (a.ob === b.ob ? 0 : a.ob ? -1 : 1) || a.x - b.x || a.y - b.y);
   const idx = columna.findIndex((n) => n.id === id);
   if (idx === -1) return null;
   const next = idx + (key === "ArrowUp" ? -1 : 1);

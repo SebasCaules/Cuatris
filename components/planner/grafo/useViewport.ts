@@ -50,11 +50,10 @@ export interface ViewportApi {
   zoomBy(factor: number): void;
   /** encuadra todo (FIT_PAD 40); sticky ante resize */
   fitAll(): void;
-  frame(
-    rect: ContentRect,
-    opts?: { scale?: number; align?: "center" | "left-third" },
-  ): void;
-  /** centra un punto, escala ≥ minScale */
+  /** centra un rect (a la escala dada o la actual). `auto` = encuadre
+   *  automático (mount/resize/capa): no cuenta como interacción del usuario */
+  frame(rect: ContentRect, opts?: { scale?: number; auto?: boolean }): void;
+  /** centra un punto, escala ≥ minScale; cuenta como interacción del usuario */
   centerOn(x: number, y: number, minScale?: number): void;
   /** contenido → px del viewport */
   toScreen(x: number, y: number): { x: number; y: number };
@@ -88,6 +87,9 @@ export const VIEWPORT_LIMITS = {
   FIT_MIN_SCALE: 0.06,
   FIT_PAD: 40,
 } as const;
+
+// contenido mínimo (px de pantalla) que siempre queda dentro del viewport
+const PAN_MARGIN = 64;
 
 const clamp = (v: number, lo: number, hi: number) =>
   Math.max(lo, Math.min(hi, v));
@@ -164,10 +166,17 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
   // render de React (con ~100 nodos sería notoriamente lento). Se aplica a
   // mano sobre el atributo `transform` del <g> del stage.
   const tf = useRef<Transform>({ scale: 1, tx: 0, ty: 0 });
-  // Una vez que el usuario paneó, hizo zoom (rueda, botones o pinch), el
-  // encuadre automático de mount/resize deja de tocar la vista: a partir de
-  // ahí es SU vista.
+  // Una vez que el usuario paneó, hizo zoom (rueda, botones o pinch) o pidió
+  // un encuadre (ver todo, ir a donde estoy, Enter en la búsqueda, flechas),
+  // el encuadre automático de mount/resize deja de tocar la vista: a partir
+  // de ahí es SU vista.
   const userInteracted = useRef(false);
+  // Piso de escala vigente para las operaciones manuales. Normalmente
+  // MIN_SCALE, pero «ver todo» puede dejar el mapa más chico (en una pantalla
+  // angosta el DAG entero cabe recién a .15): desde ahí, arrastrar o hacer
+  // zoom no puede «subir» la escala al piso de golpe — el piso sigue a la
+  // escala aplicada y vuelve a MIN_SCALE cuando la escala lo supera.
+  const scaleFloor = useRef<number>(VIEWPORT_LIMITS.MIN_SCALE);
   // Sticky: si el último encuadre pedido fue "ver todo" (fitAll), un resize
   // vuelve a pedir "ver todo" en vez de repetir el encuadre inicial de la
   // vista. Se apaga al framear algo puntual (frame/centerOn) — esos ya no son
@@ -197,19 +206,41 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
     g.setAttribute("transform", `translate(${tx} ${ty}) scale(${scale})`);
   }
 
-  // Único punto de escritura de `tf`: clampea la escala al piso que
-  // corresponda (MIN_SCALE para todo lo manual; FIT_MIN_SCALE sólo cuando lo
-  // llama fitAll, que necesita poder bajar más para garantizar cero overflow
-  // del DAG completo) y dispara DOM + notificación a suscriptores.
-  function applyInternal(next: Transform, floor: number) {
-    tf.current = {
-      scale: clamp(next.scale, floor, VIEWPORT_LIMITS.MAX_SCALE),
-      tx: next.tx,
-      ty: next.ty,
+  // Traslación acotada: siempre queda al menos PAN_MARGIN px de contenido
+  // dentro de la vista (sin esto un arrastre largo deja el lienzo vacío y no
+  // hay cómo volver salvo con los botones).
+  function clampPan(t: Transform): Transform {
+    const vp = viewportRef.current;
+    if (!vp) return t;
+    const vw = vp.clientWidth;
+    const vh = vp.clientHeight;
+    if (!vw || !vh) return t;
+    const { width, height } = optsRef.current;
+    const fit = (v: number, lo: number, hi: number) =>
+      lo <= hi ? clamp(v, lo, hi) : (lo + hi) / 2;
+    return {
+      scale: t.scale,
+      tx: fit(t.tx, PAN_MARGIN - width * t.scale, vw - PAN_MARGIN),
+      ty: fit(t.ty, PAN_MARGIN - height * t.scale, vh - PAN_MARGIN),
     };
+  }
+
+  // Único punto de escritura de `tf`: clampea la escala al piso que
+  // corresponda (el piso vigente para todo lo manual; FIT_MIN_SCALE sólo
+  // cuando lo llama fitAll o un encuadre automático, que necesitan poder
+  // bajar más para garantizar cero overflow del DAG completo), acota el paneo
+  // y dispara DOM + notificación a suscriptores.
+  function applyInternal(next: Transform, floor: number) {
+    const scale = clamp(next.scale, floor, VIEWPORT_LIMITS.MAX_SCALE);
+    // el piso manual sigue a la escala aplicada: nunca por encima de ella
+    scaleFloor.current = Math.min(VIEWPORT_LIMITS.MIN_SCALE, scale);
+    tf.current = clampPan({ scale, tx: next.tx, ty: next.ty });
     applyDom();
     scheduleNotify();
   }
+
+  // piso para las operaciones manuales (rueda, pinch, botones, arrastre)
+  const manualFloor = () => Math.min(VIEWPORT_LIMITS.MIN_SCALE, scaleFloor.current);
 
   // ---------- API imperativa ----------
   function get(): Transform {
@@ -221,7 +252,7 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
   function set(t: Transform) {
     userInteracted.current = true;
     wantFit.current = false;
-    applyInternal(t, VIEWPORT_LIMITS.MIN_SCALE);
+    applyInternal(t, manualFloor());
   }
 
   // Zoom anclado al CENTRO del viewport — a diferencia de la rueda, que ancla
@@ -233,15 +264,9 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
     userInteracted.current = true;
     const vw = vp.clientWidth;
     const vh = vp.clientHeight;
-    const next = zoomAtPoint(
-      tf.current,
-      vw / 2,
-      vh / 2,
-      factor,
-      VIEWPORT_LIMITS.MIN_SCALE,
-      VIEWPORT_LIMITS.MAX_SCALE,
-    );
-    applyInternal(next, VIEWPORT_LIMITS.MIN_SCALE);
+    const floor = manualFloor();
+    const next = zoomAtPoint(tf.current, vw / 2, vh / 2, factor, floor, VIEWPORT_LIMITS.MAX_SCALE);
+    applyInternal(next, floor);
   }
 
   function fitAll() {
@@ -264,37 +289,22 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
     applyInternal(next, VIEWPORT_LIMITS.FIT_MIN_SCALE);
   }
 
-  function frame(
-    rect: ContentRect,
-    o?: { scale?: number; align?: "center" | "left-third" },
-  ) {
+  function frame(rect: ContentRect, o?: { scale?: number; auto?: boolean }) {
     const vp = viewportRef.current;
     if (!vp) return;
     const vw = vp.clientWidth;
     const vh = vp.clientHeight;
     if (!vw || !vh) return;
     const scale = o?.scale ?? tf.current.scale;
-    const align = o?.align ?? "center";
-    let tx: number;
-    if (align === "left-third") {
-      // El borde izquierdo del rect va a un tercio del ancho del viewport;
-      // si correr ese ancla el ancho de una columna más hacia la izquierda
-      // todavía deja sitio (no la saca de pantalla), se corre — así la
-      // columna anterior (ya cursada) queda visible de referencia sin
-      // robarle protagonismo a la frontera. `rect.w` hace de proxy del
-      // ancho de "una columna": es lo único de lo que dispone esta función.
-      const third = vw / 3;
-      const shifted = third - rect.w * scale;
-      const leftPx = shifted >= 0 ? shifted : third;
-      tx = leftPx - rect.x * scale;
-    } else {
-      tx = vw / 2 - (rect.x + rect.w / 2) * scale;
-    }
+    const tx = vw / 2 - (rect.x + rect.w / 2) * scale;
     const ty = vh / 2 - (rect.y + rect.h / 2) * scale;
     // Framear algo puntual ya no es "ver todo": el próximo resize debe volver
-    // a pedir el encuadre inicial de la vista, no un fitAll.
+    // a pedir el encuadre inicial de la vista, no un fitAll. Y si lo pidió el
+    // usuario (ir a donde estoy, Enter en la búsqueda), es SU vista.
     wantFit.current = false;
-    applyInternal({ scale, tx, ty }, VIEWPORT_LIMITS.MIN_SCALE);
+    if (!o?.auto) userInteracted.current = true;
+    // el encuadre automático puede bajar del piso manual (pantallas angostas)
+    applyInternal({ scale, tx, ty }, o?.auto ? VIEWPORT_LIMITS.FIT_MIN_SCALE : manualFloor());
   }
 
   function centerOn(x: number, y: number, minScale?: number) {
@@ -306,10 +316,8 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
     const scale =
       minScale !== undefined ? Math.max(tf.current.scale, minScale) : tf.current.scale;
     wantFit.current = false;
-    applyInternal(
-      { scale, tx: vw / 2 - x * scale, ty: vh / 2 - y * scale },
-      VIEWPORT_LIMITS.MIN_SCALE,
-    );
+    userInteracted.current = true;
+    applyInternal({ scale, tx: vw / 2 - x * scale, ty: vh / 2 - y * scale }, manualFloor());
   }
 
   function toScreen(x: number, y: number): { x: number; y: number } {
@@ -422,7 +430,7 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
       const mx = (pts[0].x + pts[1].x) / 2;
       const my = (pts[0].y + pts[1].y) / 2;
       const vp = viewportRef.current;
-      if (pinch.current && vp) {
+      if (pinch.current && vp && pinch.current.dist > 0) {
         const r = vp.getBoundingClientRect();
         const factor = d / pinch.current.dist;
         userInteracted.current = true;
@@ -439,15 +447,9 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
           tx: tf.current.tx + (lmx - plmx),
           ty: tf.current.ty + (lmy - plmy),
         };
-        const zoomed = zoomAtPoint(
-          panned,
-          lmx,
-          lmy,
-          factor,
-          VIEWPORT_LIMITS.MIN_SCALE,
-          VIEWPORT_LIMITS.MAX_SCALE,
-        );
-        applyInternal(zoomed, VIEWPORT_LIMITS.MIN_SCALE);
+        const floor = manualFloor();
+        const zoomed = zoomAtPoint(panned, lmx, lmy, factor, floor, VIEWPORT_LIMITS.MAX_SCALE);
+        applyInternal(zoomed, floor);
       }
       pinch.current = { dist: d, mx, my };
       return;
@@ -463,12 +465,8 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
     }
     if (drag.current.moved) {
       applyInternal(
-        {
-          scale: tf.current.scale,
-          tx: drag.current.tx0 + dx,
-          ty: drag.current.ty0 + dy,
-        },
-        VIEWPORT_LIMITS.MIN_SCALE,
+        { scale: tf.current.scale, tx: drag.current.tx0 + dx, ty: drag.current.ty0 + dy },
+        manualFloor(),
       );
     }
   }
@@ -481,7 +479,16 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
       /* no-op */
     }
 
-    if (pinch.current && pointers.current.size < 2) {
+    if (pinch.current && pointers.current.size >= 2) {
+      // Con tres dedos y uno que se va, el par que sigue es otro: se rehace la
+      // foto del gesto para no comparar contra la distancia del par viejo.
+      const pts = [...pointers.current.values()].slice(0, 2);
+      pinch.current = {
+        dist: dist(pts[0], pts[1]),
+        mx: (pts[0].x + pts[1].x) / 2,
+        my: (pts[0].y + pts[1].y) / 2,
+      };
+    } else if (pinch.current && pointers.current.size < 2) {
       // Se soltó un dedo del pinch: si queda uno, retoma el pan desde SU
       // posición actual (no desde donde había empezado el gesto original) —
       // así no hay salto. `moved:true` evita que ese remanente se lea como
@@ -574,6 +581,9 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
     if (vp && typeof ResizeObserver !== "undefined") {
       ro = new ResizeObserver(() => {
         if (!userInteracted.current) autoFrame(apiRef.current);
+        // el tamaño del viewport cambió: los suscriptores (minimapa, tarjeta)
+        // recalculan aunque la transformación quede igual
+        scheduleNotify();
       });
       ro.observe(vp);
     }
@@ -594,17 +604,26 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       const r = vp.getBoundingClientRect();
-      const factor = Math.pow(1.0016, -e.deltaY);
+      // deltaY en píxeles: en líneas (deltaMode 1) o páginas (2) se convierte;
+      // el pinch de trackpad llega como rueda con ctrlKey y deltas chicos: se
+      // amplifica para que se sienta como el gesto nativo que se cancela.
+      let dy = e.deltaY;
+      if (e.deltaMode === 1) dy *= 16;
+      else if (e.deltaMode === 2) dy *= vp.clientHeight;
+      if (e.ctrlKey) dy *= 8;
+      dy = clamp(dy, -400, 400);
+      const factor = Math.pow(1.0016, -dy);
       userInteracted.current = true;
+      const floor = manualFloor();
       const next = zoomAtPoint(
         tf.current,
         e.clientX - r.left,
         e.clientY - r.top,
         factor,
-        VIEWPORT_LIMITS.MIN_SCALE,
+        floor,
         VIEWPORT_LIMITS.MAX_SCALE,
       );
-      applyInternal(next, VIEWPORT_LIMITS.MIN_SCALE);
+      applyInternal(next, floor);
     };
     vp.addEventListener("wheel", onWheel, { passive: false });
     return () => vp.removeEventListener("wheel", onWheel);

@@ -6,8 +6,11 @@
 // bosque de electivas colgando de él. El algoritmo separa ambos mundos:
 //
 //   1. LAYERING NOMINAL: cada obligatoria con año+cuatri va a la columna
-//      `(año-1)*2+(cuatri-1)`; con solo año, a `(año-1)*2`; sin nada, queda
-//      "sin nominal" y entra al resto.
+//      `(año-1)*2+(cuatri-1)`. Con solo año (LCA), cada año ocupa tantas
+//      columnas como el camino más largo entre sus obligatorias y cada una va
+//      a la columna de su profundidad dentro del año (así una cadena de tres
+//      materias de 1.º no invade la banda de 2.º). Sin nada, queda "sin
+//      nominal" y entra al resto.
 //   2. LAYERING DEL RESTO (obligatorias sin nominal + TODAS las electivas):
 //      punto fijo — cada nodo toma `max(col(correlativa presente)+1)`, y las
 //      electivas además respetan un piso por créditos acumulados del plan
@@ -20,9 +23,11 @@
 //      allá de la última nominal (P: 46.02→46.03 ambas de 5.º·2c).
 //   4. ORDEN DENTRO DE CADA COLUMNA: obligatorias primero (heurística de la
 //      mediana mirando solo vecinos obligatorios — el espinazo es el mismo
-//      con o sin la capa de electivas encendida), después las electivas
-//      conectadas (mediana mirando correlativas de cualquier tipo y sucesoras
-//      electivas) y por último las electivas aisladas (por sigla).
+//      con o sin la capa de electivas encendida — y después una pasada de
+//      transposición de pares adyacentes que baja los cruces que la mediana
+//      deja), después las electivas conectadas (mediana mirando correlativas
+//      de cualquier tipo y sucesoras electivas) y por último las electivas
+//      aisladas (por sigla).
 //   5. COORDENADAS: el orden y la altura del espinazo (banda de obligatorias)
 //      se calculan SIEMPRE con el grafo completo, así una obligatoria conserva
 //      su columna y su `y` al prender o apagar la capa de electivas (§1.1 del
@@ -66,7 +71,6 @@ export interface GraphLayout {
   bands: GraphBand[];
   width: number;
   height: number;
-  headerH: number;
   /** y donde termina la banda del espinazo (riel); las electivas empiezan debajo */
   spineBottom: number;
   /** hay electivas en el lienzo (capa encendida y el plan tiene alguna) */
@@ -106,14 +110,19 @@ const {
 } = GRAPH_METRICS;
 
 const SWEEPS = 16;
+const TRANSPOSE_SWEEPS = 8;
 const GUARD = 100;
+// Orden de siglas y códigos con locale FIJO: el layout tiene que ser el mismo
+// en cualquier navegador (con el locale del sistema, «CH» o «Å» cambian el
+// orden y con él el JSON).
+const LOCALE = "es";
 
 // ---- helpers puros -----------------------------------------------------
 
-/** Columna nominal de una obligatoria a partir de año/cuatri; null sin año. */
+/** Columna nominal de una obligatoria con año y cuatrimestre; null si falta
+ *  alguno (los planes con año solo se resuelven aparte, por profundidad). */
 function nominalCol(m: Materia): number | null {
-  if (m.anio == null) return null;
-  if (m.cuatri == null) return (m.anio - 1) * 2;
+  if (m.anio == null || m.cuatri == null) return null;
   return (m.anio - 1) * 2 + (m.cuatri - 1);
 }
 
@@ -130,10 +139,6 @@ function normPos(id: string, order: string[]): number {
   return i / (order.length - 1);
 }
 
-function codigoKey(m: Materia): string {
-  return m.codigo;
-}
-
 function cmpAnioCuatriCodigo(a: Materia, b: Materia): number {
   const ax = a.anio ?? Infinity;
   const bx = b.anio ?? Infinity;
@@ -141,11 +146,11 @@ function cmpAnioCuatriCodigo(a: Materia, b: Materia): number {
   const ac = a.cuatri ?? Infinity;
   const bc = b.cuatri ?? Infinity;
   if (ac !== bc) return ac - bc;
-  return codigoKey(a).localeCompare(codigoKey(b), undefined, { numeric: true });
+  return a.codigo.localeCompare(b.codigo, LOCALE, { numeric: true });
 }
 
 function cmpAbbr(a: Materia, b: Materia): number {
-  return (a.abbr || a.codigo).localeCompare(b.abbr || b.codigo, undefined, {
+  return (a.abbr || a.codigo).localeCompare(b.abbr || b.codigo, LOCALE, {
     numeric: true,
   });
 }
@@ -186,17 +191,63 @@ export function computeGraphLayout(plan: Plan, opts?: LayoutOptions): GraphLayou
 
   // ---- 1. layering nominal de obligatorias --------------------------------
   const nominal = new Map<string, number | null>();
-  obligatorias.forEach((m) => nominal.set(m.codigo, nominalCol(m)));
   const hasAnioNominal = obligatorias.some((m) => m.anio != null);
   const hasCuatriNominal = obligatorias.some(
     (m) => m.anio != null && m.cuatri != null,
   );
+  // año de cada columna nominal y primera columna de cada año (cabeceras)
+  const yearOfCol = new Map<number, number>();
+  const firstColOfYear = new Map<number, number>();
+  if (hasCuatriNominal) {
+    obligatorias.forEach((m) => nominal.set(m.codigo, nominalCol(m)));
+  } else if (hasAnioNominal) {
+    // Solo año: cada año se parte en tantas columnas como el camino más largo
+    // entre sus propias obligatorias; cada una va a la columna de su
+    // profundidad dentro del año. Las columnas se acumulan año a año.
+    const years = [...new Set(obligatorias.filter((m) => m.anio != null).map((m) => m.anio!))]
+      .sort((a, b) => a - b);
+    let offset = 0;
+    for (const y of years) {
+      const members = obligatorias.filter((m) => m.anio === y);
+      const inYear = new Set(members.map((m) => m.codigo));
+      const depth = new Map<string, number>();
+      members.forEach((m) => depth.set(m.codigo, 0));
+      let changed = true;
+      let guard = 0;
+      while (changed && guard++ < GUARD) {
+        changed = false;
+        members.forEach((m) => {
+          let d = 0;
+          for (const c of m.correlativas || []) {
+            if (inYear.has(c)) d = Math.max(d, (depth.get(c) ?? 0) + 1);
+          }
+          if (d !== depth.get(m.codigo)) {
+            depth.set(m.codigo, d);
+            changed = true;
+          }
+        });
+      }
+      let span = 1;
+      depth.forEach((d) => (span = Math.max(span, d + 1)));
+      members.forEach((m) => nominal.set(m.codigo, offset + (depth.get(m.codigo) ?? 0)));
+      for (let c = offset; c < offset + span; c++) yearOfCol.set(c, y);
+      firstColOfYear.set(y, offset);
+      offset += span;
+    }
+  }
+  obligatorias.forEach((m) => {
+    if (!nominal.has(m.codigo)) nominal.set(m.codigo, null);
+  });
   let maxNominalCol: number | null = null;
-  if (hasAnioNominal) {
-    obligatorias.forEach((m) => {
-      const n = nominal.get(m.codigo);
-      if (n != null) maxNominalCol = maxNominalCol == null ? n : Math.max(maxNominalCol, n);
-    });
+  nominal.forEach((n) => {
+    if (n != null) maxNominalCol = maxNominalCol == null ? n : Math.max(maxNominalCol, n);
+  });
+  if (hasCuatriNominal && maxNominalCol != null) {
+    for (let c = 0; c <= maxNominalCol; c++) {
+      const y = Math.floor(c / 2) + 1;
+      yearOfCol.set(c, y);
+      if (!firstColOfYear.has(y)) firstColOfYear.set(y, c);
+    }
   }
 
   // acumulado de créditos por columna nominal (solo obligatorias con nominal)
@@ -365,21 +416,77 @@ export function computeGraphLayout(plan: Plan, opts?: LayoutOptions): GraphLayou
     return (raw ?? []).filter((n) => obSet.has(n));
   });
 
+  // ---- 4b. transposición del espinazo ---------------------------------------
+  // Pares adyacentes de una columna: se intercambian si así bajan los cruces
+  // GEOMÉTRICOS entre las aristas obligatoria→obligatoria (segmentos rectos
+  // entre columnas, con la y que tendrá cada nodo en la banda centrada). Es la
+  // transposición clásica de Sugiyama, pero contando cruces reales: con
+  // aristas que saltan varias columnas, mirar solo los vecinos del par
+  // engaña (un intercambio puede cruzar aristas de nodos intermedios).
+  {
+    const obEdges = allEdges.filter((e) => obSet.has(e.from) && obSet.has(e.to));
+    const STEP = OB_H + OB_GAP;
+    // y relativa al centro de la banda: la columna entera queda centrada
+    const yRel = new Map<string, number>();
+    const refreshY = (c: number) => {
+      const list = obColOrder.get(c)!;
+      list.forEach((id, i) => yRel.set(id, (i - (list.length - 1) / 2) * STEP));
+    };
+    for (let c = 0; c <= maxCol; c++) refreshY(c);
+    const segs = obEdges.map((e) => ({ a: e.from, b: e.to, ca: col.get(e.from)!, cb: col.get(e.to)! }));
+    const cross = (): number => {
+      let n = 0;
+      for (let i = 0; i < segs.length; i++) {
+        const p = segs[i];
+        const px1 = p.ca + 0.4;
+        const py1 = yRel.get(p.a)!;
+        const px2 = p.cb - 0.4;
+        const py2 = yRel.get(p.b)!;
+        for (let j = i + 1; j < segs.length; j++) {
+          const q = segs[j];
+          if (q.a === p.a || q.b === p.b) continue; // comparten extremo: no es cruce
+          const qx1 = q.ca + 0.4;
+          const qy1 = yRel.get(q.a)!;
+          const qx2 = q.cb - 0.4;
+          const qy2 = yRel.get(q.b)!;
+          if (Math.max(px1, qx1) >= Math.min(px2, qx2)) continue; // sin solape en x
+          const d1 = (qx1 - px1) * (py2 - py1) - (px2 - px1) * (qy1 - py1);
+          const d2 = (qx2 - px1) * (py2 - py1) - (px2 - px1) * (qy2 - py1);
+          const d3 = (px1 - qx1) * (qy2 - qy1) - (qx2 - qx1) * (py1 - qy1);
+          const d4 = (px2 - qx1) * (qy2 - qy1) - (qx2 - qx1) * (py2 - qy1);
+          if (d1 * d2 < 0 && d3 * d4 < 0) n++;
+        }
+      }
+      return n;
+    };
+    let best = cross();
+    for (let it = 0; it < TRANSPOSE_SWEEPS && best > 0; it++) {
+      let improved = false;
+      for (let c = 0; c <= maxCol; c++) {
+        const list = obColOrder.get(c)!;
+        for (let i = 0; i + 1 < list.length; i++) {
+          [list[i], list[i + 1]] = [list[i + 1], list[i]];
+          refreshY(c);
+          const n = cross();
+          if (n < best) {
+            best = n;
+            improved = true;
+          } else {
+            [list[i], list[i + 1]] = [list[i + 1], list[i]];
+            refreshY(c);
+          }
+        }
+      }
+      if (!improved) break;
+    }
+  }
+
   // electivas: predecesoras de cualquier tipo (ya fijas si son ob), sucesoras
   // solo electivas.
   runSweeps(elColOrderConnected, (id, dir) => {
     if (dir === "down") return predAll.get(id) ?? [];
     return (succAll.get(id) ?? []).filter((n) => elSet.has(n));
   });
-
-  const finalOrder = new Map<number, string[]>();
-  for (let c = 0; c <= maxCol; c++) {
-    finalOrder.set(c, [
-      ...(obColOrder.get(c) ?? []),
-      ...(elColOrderConnected.get(c) ?? []),
-      ...(elColOrderIsolated.get(c) ?? []),
-    ]);
-  }
 
   // ---- 5. coordenadas -------------------------------------------------------
   // Banda del espinazo SIEMPRE con el grafo completo: la capa de electivas no
@@ -392,10 +499,16 @@ export function computeGraphLayout(plan: Plan, opts?: LayoutOptions): GraphLayou
   const spineBottom = top0 + bandH;
   const elStartY = spineBottom + BAND_GAP;
 
+  // Con la capa apagada las columnas terminan en la última obligatoria: una
+  // electiva empujada más allá no deja una columna fantasma vacía al final.
+  let maxObCol = 0;
+  obligatorias.forEach((m) => (maxObCol = Math.max(maxObCol, col.get(m.codigo)!)));
+  const outMaxCol = electivasOn ? maxCol : maxObCol;
+
   const colWidth: number[] = [];
   const colX: number[] = [];
   let maxElRows = 0;
-  for (let c = 0; c <= maxCol; c++) {
+  for (let c = 0; c <= outMaxCol; c++) {
     const nEl = electivasOn
       ? (elColOrderConnected.get(c)?.length ?? 0) + (elColOrderIsolated.get(c)?.length ?? 0)
       : 0;
@@ -408,7 +521,7 @@ export function computeGraphLayout(plan: Plan, opts?: LayoutOptions): GraphLayou
   const electivaAreaH = maxElRows > 0 ? maxElRows * (EL_H + EL_GAP) - EL_GAP : 0;
 
   const nodesFull: GraphNode[] = [];
-  for (let c = 0; c <= maxCol; c++) {
+  for (let c = 0; c <= outMaxCol; c++) {
     const obIds = obColOrder.get(c)!;
     const colObH = obIds.length > 0 ? obIds.length * (OB_H + OB_GAP) - OB_GAP : 0;
     const y0 = top0 + (bandH - colObH) / 2;
@@ -445,19 +558,25 @@ export function computeGraphLayout(plan: Plan, opts?: LayoutOptions): GraphLayou
     });
   }
 
-  const width = colX[maxCol] + colWidth[maxCol] + PAD;
+  const width = colX[outMaxCol] + colWidth[outMaxCol] + PAD;
   const height = electivaAreaH > 0 ? elStartY + electivaAreaH + PAD : spineBottom + PAD;
 
   // ---- columnas (cabeceras) y bandas -----------------------------------------
+  // Con cuatrimestre: «1º» + «1c» en cada columna. Solo año: «1º» en la
+  // primera columna del año y nada en las demás. Más allá de la última
+  // columna nominal (nodos empujados por la pasada de validez): sin cabecera.
   const columns: GraphColumn[] = [];
-  for (let c = 0; c <= maxCol; c++) {
-    let year: number | null = null;
+  for (let c = 0; c <= outMaxCol; c++) {
+    const year = yearOfCol.get(c) ?? null;
     let top: string | null = null;
     let sub: string | null = null;
-    if (hasAnioNominal && maxNominalCol != null && c <= maxNominalCol) {
-      year = Math.floor(c / 2) + 1;
-      top = `${year}º`;
-      sub = hasCuatriNominal ? `${(c % 2) + 1}c` : null;
+    if (year != null) {
+      if (hasCuatriNominal) {
+        top = `${year}º`;
+        sub = `${(c % 2) + 1}c`;
+      } else if (firstColOfYear.get(year) === c) {
+        top = `${year}º`;
+      }
     }
     columns.push({
       index: c,
@@ -471,14 +590,15 @@ export function computeGraphLayout(plan: Plan, opts?: LayoutOptions): GraphLayou
   }
 
   const bands: GraphBand[] = [];
-  if (hasAnioNominal && maxNominalCol != null) {
-    const maxYear = Math.floor(maxNominalCol / 2) + 1;
-    for (let y = 1; y <= maxYear; y++) {
+  {
+    const years = [...new Set([...yearOfCol.values()])].sort((a, b) => a - b);
+    for (const y of years) {
       const colsForYear: number[] = [];
-      for (let c = 0; c <= maxNominalCol; c++) {
-        if (Math.floor(c / 2) + 1 === y) colsForYear.push(c);
-      }
+      yearOfCol.forEach((yy, c) => {
+        if (yy === y && c <= outMaxCol) colsForYear.push(c);
+      });
       if (!colsForYear.length) continue;
+      colsForYear.sort((a, b) => a - b);
       const first = colsForYear[0];
       const last = colsForYear[colsForYear.length - 1];
       bands.push({
@@ -504,7 +624,6 @@ export function computeGraphLayout(plan: Plan, opts?: LayoutOptions): GraphLayou
     bands,
     width,
     height,
-    headerH: HEADER_H,
     spineBottom,
     hasElectivas,
   };

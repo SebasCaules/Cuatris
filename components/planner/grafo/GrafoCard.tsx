@@ -53,10 +53,12 @@ export interface GrafoCardProps {
 
 /** Lado donde terminó quedando la tarjeta respecto del nodo: decide la clase
  *  modificadora (`--left`/`--below`). "right" es la preferencia por default y
- *  no suma clase. "Arriba" reusa "below" — misma clase; la única diferencia
- *  es el signo del desplazamiento vertical (PLAN.md §2.4: "misma clase
- *  --below"). */
+ *  no suma clase. "Arriba" reusa la clase `--below`: solo cambia el signo del
+ *  desplazamiento vertical. */
 type Lado = "right" | "left" | "below";
+
+// cuántas sucesoras se listan como chips; el resto va en un «+N» con tooltip
+const MAX_HABILITA = 10;
 
 type ChipVariant = "ok" | "missing" | "neutral";
 
@@ -98,26 +100,36 @@ function statusGlyph(estado: NodeEstado): ReactElement | null {
  *  fijada no lleva Tooltip (la de hover no captura el puntero: envolverlo
  *  igual no serviría de nada). `tabIndex=-1` en la versión fijada solo para
  *  calificar como "disparador enfocable" del Tooltip sin sumar un tab-stop
- *  nuevo (mismo criterio que los chips de minor en PlanView). */
+ *  nuevo (mismo criterio que los chips de minor en PlanView). Un código que
+ *  no está en el plan de la carrera (correlativa heredada del SGA) se marca
+ *  como faltante y lo dice el tooltip. */
 function renderChip(code: string, variant: ChipVariant, pinned: boolean): ReactElement {
   const m = byId.get(code);
   const sigla = m?.abbr ?? code;
-  const cls =
-    "grafo-chip" +
-    (variant === "ok" ? " is-ok" : variant === "missing" ? " is-missing" : "");
+  const v: ChipVariant = m ? variant : "missing";
+  const cls = "grafo-chip" + (v === "ok" ? " is-ok" : v === "missing" ? " is-missing" : "");
   if (!pinned) {
     return (
       <span key={code} className={cls}>
         {sigla}
-        {variant === "ok" && <IconCheck size={9} strokeWidth={2.6} />}
+        {v === "ok" && <IconCheck size={9} strokeWidth={2.6} />}
       </span>
     );
   }
+  const tip = m ? (
+    <>
+      <b>{code}</b> · {m.nombre}
+    </>
+  ) : (
+    <>
+      <b>{code}</b> · no está en el plan de esta carrera
+    </>
+  );
   return (
-    <Tooltip key={code} width={220} content={<><b>{code}</b> · {m?.nombre ?? code}</>}>
+    <Tooltip key={code} width={220} content={tip}>
       <span className={cls} tabIndex={-1}>
         {sigla}
-        {variant === "ok" && <IconCheck size={9} strokeWidth={2.6} />}
+        {v === "ok" && <IconCheck size={9} strokeWidth={2.6} />}
       </span>
     </Tooltip>
   );
@@ -173,12 +185,15 @@ export function GrafoCard({
         left = p.x - GAP - cardW;
         if (left < EDGE) {
           // Tampoco a la izquierda: DEBAJO (o ARRIBA si se pasa del fondo).
+          // Si tampoco entra arriba, se acomoda dentro del viewport aunque
+          // tape el nodo: una tarjeta cortada por arriba no se puede leer.
           next = "below";
           left = clamp(centerX - cardW / 2, EDGE, vw - cardW - EDGE);
           top = p.y + nodeH + GAP;
           if (top + cardH > vh - EDGE) {
             top = p.y - GAP - cardH;
           }
+          top = clamp(top, EDGE, Math.max(EDGE, vh - cardH - EDGE));
         }
       }
 
@@ -224,7 +239,8 @@ export function GrafoCard({
             : "")
       }
       role={pinned ? "group" : undefined}
-      aria-label={abbr}
+      aria-label={pinned ? abbr : undefined}
+      aria-hidden={pinned ? undefined : true}
       onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
@@ -254,12 +270,26 @@ export function GrafoCard({
         <div className="grafo-card__row">
           <span className="grafo-card__lbl">Habilita</span>
           <div className="grafo-card__chips">
-            {habilita.slice(0, 10).map((c) => renderChip(c, "neutral", pinned))}
-            {habilita.length > 10 && (
-              <span key="__more" className="grafo-chip">
-                +{habilita.length - 10}
-              </span>
-            )}
+            {habilita.slice(0, MAX_HABILITA).map((c) => renderChip(c, "neutral", pinned))}
+            {habilita.length > MAX_HABILITA &&
+              (pinned ? (
+                <Tooltip
+                  key="__more"
+                  width={240}
+                  content={habilita
+                    .slice(MAX_HABILITA)
+                    .map((c) => byId.get(c)?.abbr ?? c)
+                    .join(" · ")}
+                >
+                  <span className="grafo-chip" tabIndex={-1}>
+                    +{habilita.length - MAX_HABILITA}
+                  </span>
+                </Tooltip>
+              ) : (
+                <span key="__more" className="grafo-chip">
+                  +{habilita.length - MAX_HABILITA}
+                </span>
+              ))}
           </div>
         </div>
       )}

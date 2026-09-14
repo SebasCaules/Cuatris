@@ -12,6 +12,7 @@
 // un clic en un botón también se leería como el arranque de un pan o como un
 // tap en el vacío.
 import type { ReactNode } from "react";
+import { memo } from "react";
 import { Tooltip } from "@/components/planner/Tooltip";
 
 export interface GrafoControlsProps {
@@ -68,12 +69,7 @@ const IconLocate = () => (
 
 const LOCATE_LABEL = "Ir a donde estoy: el primer cuatrimestre con materias pendientes";
 
-export function GrafoControls({
-  onZoomIn,
-  onZoomOut,
-  onFit,
-  onLocate,
-}: GrafoControlsProps) {
+function GrafoControlsInner({ onZoomIn, onZoomOut, onFit, onLocate }: GrafoControlsProps) {
   return (
     <div
       className="grafo-controls"
@@ -83,17 +79,17 @@ export function GrafoControls({
       onPointerUp={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
-      <Tooltip content="Acercar" width={200}>
+      <Tooltip content="Acercar" width={96}>
         <button type="button" className="grafo-btn" aria-label="Acercar" onClick={onZoomIn}>
           <IconZoomIn />
         </button>
       </Tooltip>
-      <Tooltip content="Alejar" width={200}>
+      <Tooltip content="Alejar" width={96}>
         <button type="button" className="grafo-btn" aria-label="Alejar" onClick={onZoomOut}>
           <IconZoomOut />
         </button>
       </Tooltip>
-      <Tooltip content="Ver toda la carrera" width={200}>
+      <Tooltip content="Ver toda la carrera" width={160}>
         <button
           type="button"
           className="grafo-btn"
@@ -103,7 +99,7 @@ export function GrafoControls({
           <IconFit />
         </button>
       </Tooltip>
-      <Tooltip content={LOCATE_LABEL} width={200}>
+      <Tooltip content={LOCATE_LABEL} width={230}>
         <button type="button" className="grafo-btn" aria-label={LOCATE_LABEL} onClick={onLocate}>
           <IconLocate />
         </button>
@@ -111,3 +107,6 @@ export function GrafoControls({
     </div>
   );
 }
+
+// memo: los callbacks llegan estables desde la vista; nada que re-renderizar por hover
+export const GrafoControls = memo(GrafoControlsInner);

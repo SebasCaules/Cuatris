@@ -57,12 +57,20 @@ import { GrafoMinimap } from "@/components/planner/grafo/GrafoMinimap";
 
 // escala mínima a la que el mapa se considera legible para el encuadre inicial
 const LEGIBLE_SCALE = 0.72;
+// escala mínima al «ir a donde estoy» y al centrar un resultado de la búsqueda
+const LOCATE_MIN_SCALE = 0.9;
+const FOCUS_MIN_SCALE = 0.95;
 // demora del hover antes de mostrar la tarjeta (la cadena se resalta al instante)
 const CARD_DELAY = 180;
+// lista vacía estable: una referencia nueva por render re-correría los efectos
+// de la tarjeta (mide y se resuscribe) sin que cambie nada
+const EMPTY: readonly string[] = [];
 
 export default function GrafoView() {
   const { state, dispatch } = usePlanner();
   const { approved, finalDone, cursando } = state;
+  // con el detalle o la ficha abiertos, Esc es de ellos (no suelta el nodo)
+  const modalAbierto = state.drawerCode != null || state.fichaCode != null;
 
   // ---- preferencias de pantalla (hidratadas en el cliente) ----
   const [electivasOn, setElectivasOn] = useState(false);
@@ -76,12 +84,12 @@ export default function GrafoView() {
   }, [electivasOn]);
   const [spot, setSpot] = useState(false);
 
-  const hasElectivas = PLAN.electivas.length > 0;
+  const planTieneElectivas = PLAN.electivas.length > 0;
 
   // ---- layout puro + modelo ----
   const layout = useMemo(
-    () => computeGraphLayout(PLAN, { electivas: electivasOn && hasElectivas }),
-    [electivasOn, hasElectivas],
+    () => computeGraphLayout(PLAN, { electivas: electivasOn && planTieneElectivas }),
+    [electivasOn, planTieneElectivas],
   );
   const nodeById = useMemo(() => {
     const m = new Map<string, GraphNode>();
@@ -91,13 +99,10 @@ export default function GrafoView() {
   const adj = useMemo(() => buildAdjacency(layout.edges), [layout]);
   // adyacencia del plan ENTERO (con la capa de electivas apagada la tarjeta
   // sigue diciendo todo lo que una materia habilita)
-  const fullAdj = useMemo(() => {
-    const edges: { from: string; to: string }[] = [];
-    for (const m of [...PLAN.obligatorias, ...PLAN.electivas]) {
-      for (const c of m.correlativas || []) if (byId.has(c)) edges.push({ from: c, to: m.codigo });
-    }
-    return buildAdjacency(edges);
-  }, []);
+  const fullAdj = useMemo(
+    () => buildAdjacency(PLAN.edges.filter((e) => byId.has(e.from) && byId.has(e.to))),
+    [],
+  );
 
   const statuses = useMemo(() => {
     const ctx = {
@@ -162,13 +167,16 @@ export default function GrafoView() {
     });
     return s;
   }, [matchesAll, nodeById]);
-  // solo coinciden electivas y la capa está apagada → se enciende sola
+  // Solo coinciden electivas y la capa está apagada → se enciende sola, UNA
+  // vez por consulta (si el estudiante la apaga a mano después, se respeta) y
+  // sin tocar la preferencia guardada: una búsqueda no decide el default.
+  const autoOnFor = useRef<string | null>(null);
   useEffect(() => {
-    if (q && matchesAll.size && !matches.size && !electivasOn && hasElectivas) {
-      saveGrafoElectivas(true);
-      setElectivasOn(true);
-    }
-  }, [q, matchesAll, matches, electivasOn, hasElectivas]);
+    if (!q || !matchesAll.size || matches.size || electivasOn || !planTieneElectivas) return;
+    if (autoOnFor.current === q) return;
+    autoOnFor.current = q;
+    setElectivasOn(true);
+  }, [q, matchesAll, matches, electivasOn, planTieneElectivas]);
   const noMatch = q.length > 0 && matchesAll.size === 0;
 
   const availIds = useMemo(() => {
@@ -189,8 +197,8 @@ export default function GrafoView() {
 
   // ---- viewport (pan / zoom / encuadres) ----
   // Frontera = primer cuatrimestre con obligatorias pendientes: ahí «está» el
-  // estudiante. El encuadre la deja con la columna anterior (ya cursada) al
-  // borde izquierdo, de referencia, y la banda del espinazo centrada.
+  // estudiante. El encuadre la deja al borde izquierdo con la columna anterior
+  // (ya cursada) de referencia —si entra— y la banda del espinazo centrada.
   const frontier = useMemo(() => frontierColumn(layout.nodes, approved), [layout, approved]);
   const frontierRef = useRef(frontier);
   frontierRef.current = frontier;
@@ -205,14 +213,17 @@ export default function GrafoView() {
   const frameFor = useCallback((vw: number, vh: number, scale: number): ContentRect => {
     const lay = layoutRef.current;
     const f = Math.min(frontierRef.current, lay.columns.length - 1);
+    const colF = lay.columns[f];
     const prev = f > 0 ? lay.columns[f - 1] : null;
-    const leftX = prev ? prev.x - GRAPH_METRICS.COL_GAP / 2 : 0;
-    const top = GRAPH_METRICS.PAD + GRAPH_METRICS.HEADER_H;
+    const { NODE_W, COL_GAP, PAD, HEADER_H } = GRAPH_METRICS;
+    // la columna anterior solo si, además de ella, la frontera entra entera
+    const conPrev = prev != null && (COL_GAP / 2 + prev.width + COL_GAP + NODE_W) * scale <= vw;
+    const leftX = conPrev ? prev.x - COL_GAP / 2 : colF ? colF.x - COL_GAP / 2 : 0;
+    const top = PAD + HEADER_H;
     if (lay.height * scale <= vh) {
       return { x: leftX, y: top, w: vw / scale, h: Math.max(1, lay.spineBottom - top) };
     }
-    const topY = GRAPH_METRICS.PAD / 2;
-    return { x: leftX, y: topY, w: vw / scale, h: vh / scale };
+    return { x: leftX, y: PAD / 2, w: vw / scale, h: vh / scale };
   }, []);
 
   const initialFrame = useCallback(
@@ -229,12 +240,17 @@ export default function GrafoView() {
         VIEWPORT_LIMITS.FIT_MIN_SCALE,
         VIEWPORT_LIMITS.MAX_SCALE,
       );
-      // todo entra legible → entero; si no, escala legible sobre la frontera
-      if (fit.scale >= LEGIBLE_SCALE) api.fitAll();
-      else
+      // Todo entra legible → entero; si no, escala legible sobre la frontera.
+      // Siempre con `auto`: es el encuadre automático, no un pedido del usuario
+      // (así un resize o el cambio de capa lo vuelven a evaluar).
+      if (fit.scale >= LEGIBLE_SCALE) {
+        api.frame({ x: 0, y: 0, w: lay.width, h: lay.height }, { scale: fit.scale, auto: true });
+      } else {
         api.frame(frameFor(vp.clientWidth, vp.clientHeight, LEGIBLE_SCALE), {
           scale: LEGIBLE_SCALE,
+          auto: true,
         });
+      }
     },
     [frameFor],
   );
@@ -249,10 +265,15 @@ export default function GrafoView() {
     if (target.closest(".grafo-card")) return;
     setPinnedId(null);
   }, []);
+  // doble clic = abrir el detalle; el nodo queda fijado (el primer toque ya
+  // pudo haberlo soltado si estaba fijado: se vuelve a fijar)
   const onDoubleTap = useCallback(
     (target: Element) => {
       const code = target.closest("[data-code]")?.getAttribute("data-code");
-      if (code) dispatch({ type: "OPEN_DRAWER", code });
+      if (code) {
+        setPinnedId(code);
+        dispatch({ type: "OPEN_DRAWER", code });
+      }
     },
     [dispatch],
   );
@@ -268,25 +289,55 @@ export default function GrafoView() {
   const locate = useCallback(() => {
     const vp = viewport.viewportRef.current;
     if (!vp) return;
-    const scale = Math.max(viewport.get().scale, 0.9);
+    const scale = Math.max(viewport.get().scale, LOCATE_MIN_SCALE);
     viewport.frame(frameFor(vp.clientWidth, vp.clientHeight, scale), { scale });
   }, [viewport, frameFor]);
-
-  const focusNode = useCallback(
-    (id: string) => {
-      const n = nodeById.get(id);
-      if (!n) return;
-      viewport.centerOn(n.x + n.w / 2, n.y + n.h / 2, 0.95);
-      setPinnedId(id);
-    },
-    [nodeById, viewport],
-  );
 
   const nodeRefs = useRef(new Map<string, SVGGElement>());
   const nodeRef = useCallback((id: string, el: SVGGElement | null) => {
     if (el) nodeRefs.current.set(id, el);
     else nodeRefs.current.delete(id);
   }, []);
+
+  // Soltar: si el foco estaba dentro de la tarjeta fijada (que se desmonta),
+  // vuelve al nodo — el usuario de teclado no pierde su lugar en el mapa.
+  const unpin = useCallback(() => {
+    const id = pinnedId;
+    const vp = viewport.viewportRef.current;
+    setPinnedId(null);
+    if (!id || !vp) return;
+    const active = document.activeElement;
+    if (active && active.closest(".grafo-card")) {
+      nodeRefs.current.get(id)?.focus({ preventScroll: true });
+    }
+  }, [pinnedId, viewport]);
+
+  // Esc suelta desde cualquier lado (el foco puede haber quedado en <body>
+  // tras panear o tocar el minimapa); no mientras el detalle o la ficha estén
+  // abiertos, que tienen su propio Esc, ni con el foco en el buscador con
+  // texto (ahí Esc limpia la consulta: lo maneja la sección).
+  useEffect(() => {
+    if (!pinnedId || modalAbierto) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      const t = e.target as HTMLElement | null;
+      if (t && t.tagName === "INPUT" && (t as HTMLInputElement).value) return;
+      unpin();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [pinnedId, modalAbierto, unpin]);
+
+  const focusNode = useCallback(
+    (id: string) => {
+      const n = nodeById.get(id);
+      if (!n) return;
+      viewport.centerOn(n.x + n.w / 2, n.y + n.h / 2, FOCUS_MIN_SCALE);
+      setPinnedId(id);
+      setRovingId(id);
+    },
+    [nodeById, viewport],
+  );
 
   // El foco por TECLADO tiene que verse: si el nodo enfocado quedó fuera del
   // viewport (o cortado por un borde), se centra a la escala actual. El foco
@@ -311,33 +362,53 @@ export default function GrafoView() {
   );
 
   // ---- teclado ----
-  const onNodeKeyDown = (e: ReactKeyboardEvent<SVGGElement>, id: string) => {
+  // Los manejadores que bajan al stage se mantienen estables (leen lo que
+  // necesitan desde refs): así el SVG (~1.000 elementos) no se reconcilia por
+  // renders de la vista que no lo tocan (la demora de la tarjeta, cada tecla).
+  const adjRef = useRef(adj);
+  adjRef.current = adj;
+  const revealRef = useRef(revealNode);
+  revealRef.current = revealNode;
+
+  const onNodeKeyDown = useCallback((e: ReactKeyboardEvent<SVGGElement>, id: string) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       setPinnedId((p) => (p === id ? null : id));
       return;
     }
     if (e.key.startsWith("Arrow")) {
-      const target = neighborOf(id, e.key, layout.nodes, adj);
+      const target = neighborOf(id, e.key, layoutRef.current.nodes, adjRef.current);
       if (target) {
         e.preventDefault();
         setRovingId(target);
-        nodeRefs.current.get(target)?.focus();
+        // preventScroll: quien revela el nodo es el mapa (revealNode), no el
+        // scroll de la página
+        nodeRefs.current.get(target)?.focus({ preventScroll: true });
       }
     }
-  };
+  }, []);
+  const onNodeFocus = useCallback((id: string) => {
+    setHoverId(id);
+    setRovingId(id);
+    revealRef.current(id);
+  }, []);
+  const onNodeBlur = useCallback((id: string) => {
+    setHoverId((cur) => (cur === id ? null : cur));
+  }, []);
+  const onZoomIn = useCallback(() => viewport.zoomBy(1.25), [viewport]);
+  const onZoomOut = useCallback(() => viewport.zoomBy(0.8), [viewport]);
+
   const onSectionKeyDown = (e: ReactKeyboardEvent<HTMLElement>) => {
     if (e.key !== "Escape") return;
     const t = e.target as HTMLElement;
-    if (t.tagName === "INPUT") {
-      if (query) {
-        setQuery("");
-        e.stopPropagation();
-      }
+    if (t.tagName === "INPUT" && query) {
+      // primero se limpia la consulta; un segundo Esc (buscador vacío) suelta
+      setQuery("");
+      e.stopPropagation();
       return;
     }
-    if (pinnedId) {
-      setPinnedId(null);
+    if (pinnedId && !modalAbierto) {
+      unpin();
       e.stopPropagation();
     }
   };
@@ -348,7 +419,13 @@ export default function GrafoView() {
     if (first) focusNode(first.id);
   };
 
-  const tabStopId = rovingId && nodeById.has(rovingId) ? rovingId : (layout.nodes[0]?.id ?? null);
+  // Único tab-stop entre los nodos: el último enfocado o, de entrada, la
+  // primera obligatoria de la frontera (donde el encuadre deja al estudiante).
+  const tabStopId = useMemo(() => {
+    if (rovingId && nodeById.has(rovingId)) return rovingId;
+    const enFrontera = layout.nodes.find((n) => n.ob && n.col === frontier);
+    return enFrontera?.id ?? layout.nodes[0]?.id ?? null;
+  }, [rovingId, nodeById, layout, frontier]);
 
   // ---- tarjeta: la del hover (de paso, sin capturar el puntero) o la fijada ----
   // Posarse sobre otro nodo mientras hay uno fijado muestra la tarjeta de paso
@@ -357,13 +434,24 @@ export default function GrafoView() {
   const cardPinned = showId !== null && showId === pinnedId;
   const cardNode = showId ? nodeById.get(showId) : undefined;
   const cardStatus = showId ? statuses.get(showId) : undefined;
+  const cardRequiere = (showId && byId.get(showId)?.correlativas) || EMPTY;
+  const cardHabilita = (showId && fullAdj.succ.get(showId)) || EMPTY;
 
   return (
     <section className="view-panel grafo-view" id="panel-grafo" onKeyDown={onSectionKeyDown}>
       <div className="panel-head panel-head--tools">
         <div className="vtools">
           <div className={"field vtools__search grafo-search" + (noMatch ? " is-nomatch" : "")}>
-            <svg className="field__ic" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+            <svg
+              className="field__ic"
+              viewBox="0 0 24 24"
+              width="15"
+              height="15"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              aria-hidden="true"
+            >
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-3.2-3.2" />
             </svg>
@@ -378,17 +466,41 @@ export default function GrafoView() {
             />
           </div>
           <div className="vtools__filters" role="group" aria-label="Capas y foco">
-            {hasElectivas && (
-              <Tooltip width={230} content={electivasOn ? "Ocultar las electivas: queda el espinazo de obligatorias." : "Mostrar las electivas colgando de sus correlativas."}>
-                <button type="button" className={"vtools__chip" + (electivasOn ? " is-on" : "")} aria-pressed={electivasOn} onClick={toggleElectivas}>
-                  <span className="vtools__chip-ic" aria-hidden="true"><IconCheck size={11} strokeWidth={2.4} /></span>
+            {planTieneElectivas && (
+              <Tooltip
+                width={230}
+                content={
+                  electivasOn
+                    ? "Ocultar las electivas: queda el espinazo de obligatorias."
+                    : "Mostrar las electivas colgando de sus correlativas."
+                }
+              >
+                <button
+                  type="button"
+                  className={"vtools__chip" + (electivasOn ? " is-on" : "")}
+                  aria-pressed={electivasOn}
+                  onClick={toggleElectivas}
+                >
+                  <span className="vtools__chip-ic" aria-hidden="true">
+                    <IconCheck size={11} strokeWidth={2.4} />
+                  </span>
                   Electivas
                 </button>
               </Tooltip>
             )}
-            <Tooltip width={230} content="Resalta lo que ya podés cursar: correlativas y créditos cubiertos.">
-              <button type="button" className={"vtools__chip" + (spot ? " is-on" : "")} aria-pressed={spot} onClick={() => setSpot((s) => !s)}>
-                <span className="vtools__chip-ic" aria-hidden="true"><IconCheck size={11} strokeWidth={2.4} /></span>
+            <Tooltip
+              width={230}
+              content="Resalta lo que ya podés cursar: correlativas y créditos cubiertos."
+            >
+              <button
+                type="button"
+                className={"vtools__chip" + (spot ? " is-on" : "")}
+                aria-pressed={spot}
+                onClick={() => setSpot((s) => !s)}
+              >
+                <span className="vtools__chip-ic" aria-hidden="true">
+                  <IconCheck size={11} strokeWidth={2.4} />
+                </span>
                 Cursables
               </button>
             </Tooltip>
@@ -407,12 +519,8 @@ export default function GrafoView() {
           stageRef={viewport.stageRef}
           nodeRef={nodeRef}
           onHover={setHoverId}
-          onFocus={(id) => {
-            setHoverId(id);
-            setRovingId(id);
-            revealNode(id);
-          }}
-          onBlur={(id) => setHoverId((cur) => (cur === id ? null : cur))}
+          onFocus={onNodeFocus}
+          onBlur={onNodeBlur}
           onKeyDown={onNodeKeyDown}
           ready={viewport.ready}
         />
@@ -424,17 +532,17 @@ export default function GrafoView() {
             anchor={{ x: cardNode.x, y: cardNode.y, w: cardNode.w, h: cardNode.h }}
             viewport={viewport}
             status={cardStatus}
-            requiere={byId.get(showId)?.correlativas ?? []}
-            habilita={fullAdj.succ.get(showId) ?? []}
+            requiere={cardRequiere as string[]}
+            habilita={cardHabilita as string[]}
             approved={approved}
             onDetalle={() => dispatch({ type: "OPEN_DRAWER", code: showId })}
-            onClose={() => setPinnedId(null)}
+            onClose={unpin}
           />
         )}
         <GrafoMinimap layout={layout} viewport={viewport} lit={emphasis.lit} />
         <GrafoControls
-          onZoomIn={() => viewport.zoomBy(1.25)}
-          onZoomOut={() => viewport.zoomBy(0.8)}
+          onZoomIn={onZoomIn}
+          onZoomOut={onZoomOut}
           onFit={viewport.fitAll}
           onLocate={locate}
         />

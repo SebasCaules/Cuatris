@@ -19,8 +19,8 @@ Rama `mapa-correlativas` (worktree `.claude/worktrees/mapa-correlativas`, creada
 | Ola 2 · U7 GrafoView (orquestador) + integración + gates + commit | DONE | c443d3e | Smoke en dev (S, LCA, I, B, P; claro/oscuro; 400 px; teclado). Fixes del orquestador: tap con pointer capture (target del pointerdown), encuadre de la frontera sin hueco a la izquierda y apoyado arriba con la capa encendida, foco por teclado que se revela. 6 agentes, 0,91 M tokens |
 | Transversal · U9 persist + package.json | DONE | 3f577ab | `loadGrafoElectivas`/`saveGrafoElectivas`, `npm run test:grafo` |
 | Transversal · U10 docs (CAMBIOS-LOCALES §18) | DONE | c443d3e | |
-| Cierre · U11 smoke con datos | DOING | | dev verificado; falta el build estático servido |
-| Cierre · U12 auditoría final adversarial + fixes + gates + veredicto | TODO | | |
+| Cierre · U11 smoke con datos | DONE | | dev (S, LCA, I, B, P; claro/oscuro; 400 px; teclado) y build estático servido bajo `/Cuatris/` |
+| Cierre · U12 auditoría final adversarial + fixes + gates + veredicto | DONE | (siguiente) | 6 auditores Fable (53 hallazgos: 6 altas —3 duplicados—, 19 medias, 28 bajas). La refutación por agente se frenó a pedido del autor (25 agentes Fable era desproporcionado): adjudicó el orquestador (Opus). Detalle abajo |
 | Merge a `main` | TODO | | push solo a pedido del autor |
 
 ## Decisiones N0
@@ -58,6 +58,43 @@ Rama `mapa-correlativas` (worktree `.claude/worktrees/mapa-correlativas`, creada
 - **N0-12** El tap se decide por el elemento bajo el puntero en el `pointerdown` (con
   `setPointerCapture` el `pointerup` llega retargeteado al viewport).
 
+- **N0-13** Encuadre de la frontera: al borde izquierdo, con la columna anterior de
+  referencia solo si ambas entran; con la capa encendida el lienzo se apoya arriba. La
+  opción `align:"left-third"` del hook se elimina (nadie la usaba). El encuadre automático
+  usa `frame({auto:true})`, nunca el `fitAll` pegajoso del botón «ver todo».
+- **N0-14** «Cursando» en el mapa va en slate/`--link`, como `EstadoControl` y la barra
+  (DESIGN.md: un estado = un color). El acento (`--brass`) queda para cursable, aristas
+  que destraban y énfasis; como texto se usa `--accent-text`.
+- **N0-15** Planes con año pero sin cuatrimestre (LCA): cada año se parte en tantas
+  columnas como su cadena interna más larga; cabecera solo en la primera columna del año.
+- **N0-16** El espinazo pasa por una transposición geométrica de pares adyacentes tras la
+  mediana (cruces reales −20…−50 % en todas las carreras; ≤ 7 ms por layout).
+
+## Auditoría final (adjudicación del orquestador)
+
+Confirmados y corregidos: la animación de entrada de las electivas pisaba `.is-dim` y
+`.st-blocked` (`both` → `backwards`; 3 auditores lo vieron); salto de escala tras «ver
+todo» en pantallas angostas (piso dinámico); ↑↓ entre sub-columnas; `fitAll` pegajoso
+desde el encuadre automático; columna fantasma con la capa apagada (L, LAES, LN, Q); LCA
+con materias bajo la cabecera de otro año; búsqueda que reencendía la capa y pisaba la
+preferencia; `localeCompare` con locale del sistema; Esc que no soltaba con el foco fuera de
+la sección; doble clic que soltaba el fijado; foco perdido al soltar desde la tarjeta;
+tab-stop inicial en 1.º año; «ir a donde estoy» que escondía la frontera con zoom alto;
+tarjeta cortada por arriba en móvil; paneo sin cota; encuadres que no contaban como
+interacción; color de «cursando» y textos en acento crudo (contraste); re-renders del SVG
+por estados ajenos (`memo` + callbacks estables); glifos duplicados (ahora los de
+`EstadoControl` + `IconLock`); `test:grafo` sin datos generados y conteo cableado; docs
+(§18, PLAN, CLAUDE.md, README) desactualizados; y las bajas baratas (aria-pressed, «+N»
+con tooltip, chip de correlativa ausente del plan, deltaMode/ctrl+rueda, pinch con tres
+dedos, tooltips a medida, z-index de los controles, `preventScroll`, listas vacías
+estables, código muerto, comentarios viejos).
+
+Refutados / no aplicados: ninguno de los alta/media. Diferidos a FIXES.md: S-03 (dato de
+E: correlativa 31.17 fuera del plan), S-04 (pasar `nodeById` al stage).
+
 ## Veredicto final
 
-(pendiente)
+VERDE. Gates: `npm run typecheck`, `npm run build`, `npm run test:grafo` limpios; smoke en
+dev y en el build estático servido bajo `/Cuatris/` (S, LCA, I, B, P; claro/oscuro; 400 px;
+teclado). Pendiente del autor: merge de `mapa-correlativas` a `main` y push (dispara el
+deploy).

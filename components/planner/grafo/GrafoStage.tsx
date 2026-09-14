@@ -13,14 +13,23 @@
 // re-renderizar este componente (p. ej. al cambiar el hover) nunca pisa esa
 // transformación.
 //
-// Los glifos de estado son EXACTAMENTE los de `EstadoControl.tsx` (mismos
-// `viewBox`/`path`/trazos): un estado tiene que leerse igual en toda la app,
-// esté en la pestaña de aprobadas o en el mapa. Los tres markers de flecha
-// (base/up/down) evitan tener que recolorear un único marker por CSS —
-// `marker` no hereda `currentColor` del `<path>` que lo referencia.
-import { useMemo, type KeyboardEvent, type ReactElement, type RefObject } from "react";
+// Los glifos de estado SON los de `EstadoControl.tsx` (los mismos
+// componentes, anidados en un <svg> con posición y tamaño) y el candado es el
+// `IconLock` del set de iconos: un estado tiene que leerse igual en toda la
+// app, esté en la pestaña de aprobadas, en la tarjeta o en el mapa. Los tres
+// markers de flecha (base/up/down) evitan tener que recolorear un único
+// marker por CSS — `marker` no hereda `currentColor` del `<path>` que lo
+// referencia.
+//
+// `memo`: la vista re-renderiza por cosas que no tocan el SVG (la demora de
+// la tarjeta, cada tecla de la búsqueda antes del debounce); con props
+// estables el stage (~1.000 elementos) solo se reconcilia cuando cambia algo
+// suyo.
+import { memo, useMemo, type KeyboardEvent, type ReactElement, type RefObject } from "react";
 import { GRAPH_METRICS, type GraphLayout, type GraphNode } from "@/lib/planner/layoutGraph";
 import type { NodeEstado, NodeStatus } from "@/components/planner/grafo/grafoModel";
+import { CheckDouble, CheckFilled, CheckSingle, DotCursando } from "@/components/planner/EstadoControl";
+import { IconLock } from "@/components/planner/icons";
 
 const { PAD, COL_GAP, BAND_GAP } = GRAPH_METRICS;
 
@@ -63,78 +72,54 @@ const ESTADO_LABEL: Record<NodeEstado, string> = {
   blocked: "faltan requisitos",
 };
 
-/** Glifo de estado (derecha del nodo): mismos trazos que EstadoControl.tsx,
- *  para que un estado se lea igual en todo el planner. "avail" no lleva
- *  glifo (tabla del PLAN §1.1). */
+// ancho reservado para el glifo de estado (derecha) y para el punto (izquierda)
+const GLYPH_W = 14;
+const GLYPH_H = 12;
+const GLYPH_RIGHT = 21;
+const ABBR_LEFT = 18;
+const ABBR_RIGHT = GLYPH_RIGHT + 3;
+
+/** Glifo de estado (derecha del nodo): los componentes de EstadoControl y el
+ *  IconLock del set, anidados en un <svg> que fija posición y tamaño (un <svg>
+ *  hijo escala su viewBox al ancho/alto del padre). "avail" no lleva glifo
+ *  (tabla del PLAN §1.1). */
 function estadoGlyph(estado: NodeEstado, w: number, h: number): ReactElement | null {
-  const x = w - 21;
-  const y = (h - 12) / 2;
-  const common = { x, y, width: 14, height: 12, "aria-hidden": true } as const;
+  const common = {
+    x: w - GLYPH_RIGHT,
+    y: (h - GLYPH_H) / 2,
+    width: GLYPH_W,
+    height: GLYPH_H,
+    "aria-hidden": true,
+  } as const;
   switch (estado) {
     case "final":
       return (
-        <svg
-          {...common}
-          className="gnode__glyph gnode__glyph--go"
-          viewBox="0 0 24 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2.2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M2.5 8.5L6 12L11.5 4.5" />
-          <path d="M9.5 8.5L13 12L18.5 4.5" />
+        <svg {...common} className="gnode__glyph gnode__glyph--go">
+          <CheckDouble />
         </svg>
       );
     case "regular":
       return (
-        <svg
-          {...common}
-          className="gnode__glyph gnode__glyph--warn"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2.2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M3 8.5L6.5 12L13 4.5" />
+        <svg {...common} className="gnode__glyph gnode__glyph--warn">
+          <CheckSingle />
         </svg>
       );
     case "promo":
       return (
-        <svg
-          {...common}
-          className="gnode__glyph gnode__glyph--promo"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+        <svg {...common} className="gnode__glyph gnode__glyph--promo">
+          <CheckFilled />
         </svg>
       );
     case "cursando":
       return (
-        <svg
-          {...common}
-          className="gnode__glyph gnode__glyph--cursando"
-          viewBox="0 0 16 16"
-          fill="currentColor"
-        >
-          <circle cx="8" cy="8" r="3.4" />
+        <svg {...common} className="gnode__glyph gnode__glyph--cursando">
+          <DotCursando />
         </svg>
       );
     case "blocked":
       return (
-        <svg {...common} className="gnode__glyph gnode__glyph--lock" viewBox="0 0 16 16">
-          <rect x={3} y={7} width={10} height={7} rx={1.5} fill="currentColor" />
-          <path
-            d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7"
-            stroke="currentColor"
-            strokeWidth={1.6}
-            strokeLinecap="round"
-            fill="none"
-          />
+        <svg {...common} className="gnode__glyph gnode__glyph--lock">
+          <IconLock size={GLYPH_H} strokeWidth={2} />
         </svg>
       );
     case "avail":
@@ -155,7 +140,7 @@ function edgePath(a: GraphNode, b: GraphNode): string {
   return `M ${x1} ${y1} C ${midX} ${y1} ${midX} ${y2} ${x2} ${y2}`;
 }
 
-export function GrafoStage({
+function GrafoStageInner({
   layout,
   statuses,
   emphasis,
@@ -303,9 +288,11 @@ export function GrafoStage({
         <g className="grafo-nodes">
           {layout.nodes.map((n) => {
             const status = statuses.get(n.id) ?? FALLBACK_STATUS;
-            const dim = emphasis.lit !== null && !emphasis.lit.has(n.id);
             const isHover = n.id === hoverId;
             const isPinned = n.id === pinnedId;
+            // el nodo fijado nunca se atenúa (conserva su halo aunque el hover
+            // esté en otra cadena)
+            const dim = emphasis.lit !== null && !emphasis.lit.has(n.id) && !isPinned;
             const isMatch =
               (emphasis.mode === "search" || emphasis.mode === "spot") &&
               (emphasis.lit?.has(n.id) ?? false);
@@ -318,8 +305,12 @@ export function GrafoStage({
               (isHover ? " is-hover" : "") +
               (isPinned ? " is-pinned" : "") +
               (isMatch ? " is-match" : "");
+            // sigla centrada en la zona útil (entre el punto y el glifo) y
+            // comprimida si no entra (mono: ~7.2 px por carácter a 12 px)
             const maxLen = n.ob ? 9 : 10;
             const compress = n.abbr.length > maxLen;
+            const abbrX = (ABBR_LEFT + (n.w - ABBR_RIGHT)) / 2;
+            const abbrMax = n.w - ABBR_RIGHT - ABBR_LEFT;
             const ariaLabel = `${n.abbr}, ${n.id}, ${n.ob ? "obligatoria" : "electiva"}, ${ESTADO_LABEL[status.estado]}`;
             return (
               <g
@@ -329,6 +320,7 @@ export function GrafoStage({
                 transform={`translate(${n.x} ${n.y})`}
                 tabIndex={n.id === tabStopId ? 0 : -1}
                 role="button"
+                aria-pressed={isPinned}
                 aria-label={ariaLabel}
                 ref={(el) => nodeRef(n.id, el)}
                 onMouseEnter={() => onHover(n.id)}
@@ -348,11 +340,11 @@ export function GrafoStage({
                 <circle className="gnode__dot" cx={11} cy={n.h / 2} r={3} />
                 <text
                   className="gnode__abbr"
-                  x={n.w / 2 + 1}
+                  x={abbrX}
                   y={n.h / 2}
                   dominantBaseline="central"
                   {...(compress
-                    ? { textLength: n.w - 38, lengthAdjust: "spacingAndGlyphs" as const }
+                    ? { textLength: abbrMax, lengthAdjust: "spacingAndGlyphs" as const }
                     : {})}
                 >
                   {n.abbr}
@@ -366,3 +358,5 @@ export function GrafoStage({
     </svg>
   );
 }
+
+export const GrafoStage = memo(GrafoStageInner);

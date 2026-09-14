@@ -194,6 +194,28 @@ for (const { codigo, plan } of fixtures) {
     layoutOff.columns.every((c) => c.width === GRAPH_METRICS.NODE_W),
     layoutOff.columns.map((c) => c.width),
   );
+  // …y ninguna columna queda vacía (una electiva empujada más allá de la
+  // última obligatoria no deja una columna fantasma al final)
+  for (const tag of ["off", "on"] as const) {
+    const lay = tag === "off" ? layoutOff : layoutOn;
+    const vacias = lay.columns.filter((c) => !lay.nodes.some((n) => n.col === c.index)).map((c) => c.index);
+    check(`${codigo} [${tag}] ninguna columna sin nodos`, vacias.length === 0, vacias);
+    // planes con año pero sin cuatrimestre (LCA): cada obligatoria cae en una
+    // columna de SU año (el año se parte en tantas columnas como haga falta).
+    // Con cuatrimestre, la pasada de validez puede correr una materia al
+    // cuatrimestre siguiente (LCC 94.66 ← 11.67, ambas de 2º·2c): se acepta.
+    if (plan.obligatorias.every((m) => m.cuatri == null)) {
+      const malAnio = lay.nodes
+        .filter((n) => n.ob)
+        .map((n) => ({ n, m: plan.obligatorias.find((m) => m.codigo === n.id)! }))
+        .filter(({ n, m }) => m.anio != null && lay.columns[n.col].year !== m.anio)
+        .map(({ n }) => n.id);
+      check(`${codigo} [${tag}] ninguna obligatoria bajo la cabecera de otro año`, malAnio.length === 0, malAnio);
+    }
+    // las cabeceras no se repiten: un rótulo por cuatrimestre (o por año)
+    const tops = lay.columns.map((c) => (c.top ?? "") + (c.sub ?? "")).filter(Boolean);
+    check(`${codigo} [${tag}] cabeceras sin repetir`, new Set(tops).size === tops.length, tops);
+  }
 
   // (g) ninguna columna de electivas con más de MAX_ROWS filas
   const subColCount = new Map<string, number>();
