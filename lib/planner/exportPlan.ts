@@ -2,6 +2,11 @@
 // bien formateado (sirve para descargar como .html o imprimir → PDF). Sin
 // dependencias ni DOM: devuelve un string. Los colores son literales (no usa
 // color-mix) para que imprima y se vea bien en cualquier visor.
+//
+// La grilla semanal puede venir del componente de pantalla (CursadaCalendar
+// renderizado estático por la vista → `renderCalendar` + `calendarCSS`), así el
+// documento muestra exactamente el mismo calendario que la app; sin ese
+// callback se usa la grilla propia (`weekGridHTML`).
 import { cuatriAt, cuatriLabel, cuatriName } from "./optimize";
 import { isAsync, slotsConflict, toMin } from "./time";
 import { DAYS, PALETTE } from "./model";
@@ -179,6 +184,15 @@ function layoutLanes(
   }
   flush();
   return out;
+}
+
+/** Render de la grilla semanal a partir de los bloques (HTML string). */
+export type CalendarRenderer = (blocks: WeekBlock[]) => string;
+
+/** Grilla del cuatrimestre: la compartida (si la vista la pasó) o la propia. */
+function calendarHTML(blocks: WeekBlock[], render?: CalendarRenderer): string {
+  if (!blocks.length) return `<p class="cg-empty">Sólo materias sin grilla semanal.</p>`;
+  return render ? `<div class="cg-shared">${render(blocks)}</div>` : weekGridHTML(blocks);
 }
 
 // Grilla semanal autocontenida (lun–vie × horas) con bloques posicionados,
@@ -408,12 +422,14 @@ function materiaRowsHTML(placed: PlacedMateria[]): string {
 }
 
 /** Sección "Semana de cursada": grilla combinada + asincrónicos + roster. */
-function weekSectionHTML(placed: PlacedMateria[], title: string): string {
+function weekSectionHTML(
+  placed: PlacedMateria[],
+  title: string,
+  render?: CalendarRenderer,
+): string {
   const cred = credOf(placed);
   const { blocks, asyncs } = computeCuatriBlocks(placed);
-  const calHTML = blocks.length
-    ? weekGridHTML(blocks)
-    : `<p class="cg-empty">Sólo materias sin grilla semanal.</p>`;
+  const calHTML = calendarHTML(blocks, render);
   return `<section class="cuatri">
     <div class="cuatri__h">
       <h2>${esc(title)}</h2>
@@ -680,10 +696,11 @@ function combinedCuatriSectionsHTML(
   includeCalendar: boolean,
   includeSpecs: boolean,
   weekTitle: string,
+  render?: CalendarRenderer,
 ): string {
   const parts: string[] = [];
   if (includeCalendar) {
-    parts.push(weekSectionHTML(placed, weekTitle));
+    parts.push(weekSectionHTML(placed, weekTitle, render));
     parts.push(combinedEvaluacionesHTML(placed));
   }
   if (includeSpecs) {
@@ -708,13 +725,12 @@ function compactBodyHTML(
   periodo: string,
   generado: string,
   pie: string,
+  render?: CalendarRenderer,
 ): string {
   const cred = credOf(placed);
   const { blocks, asyncs } = computeCuatriBlocks(placed);
   const dias = new Set(blocks.map((b) => b.dia)).size;
-  const calHTML = blocks.length
-    ? weekGridHTML(blocks)
-    : `<p class="cg-empty">Sólo materias sin grilla semanal.</p>`;
+  const calHTML = calendarHTML(blocks, render);
   const stats = [
     `${placed.length} materia${placed.length === 1 ? "" : "s"}`,
     `${cred} créditos`,
@@ -723,7 +739,7 @@ function compactBodyHTML(
 
   return `<header class="doc">
     <div class="cpt-id">
-      <p class="kick">StudyVaults · ITBA · ${esc(titulo)}</p>
+      <p class="kick">Cuatris · ITBA · ${esc(titulo)}</p>
       <h1>${esc(periodo || titulo)}</h1>
     </div>
     <p class="gen"><b>${esc(stats)}</b><br>Generado el ${esc(generado)}</p>
@@ -754,7 +770,7 @@ function compactBodyHTML(
 const BASE_CSS = `
   :root{
     --ink:#2b211c; --soft:#5a4d45; --muted:#8a7d73; --line:#e3d9cf;
-    --paper:#fbf8f4; --panel:#fff; --coral:#d2754f; --slate:#5b7290;
+    --paper:#fff; --panel:#fff; --coral:#d2754f; --slate:#5b7290;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -929,42 +945,42 @@ const COMBINED_CSS = `
 // un A4 con margen de 10mm — el mismo en pantalla y en papel — para que lo que
 // mide el script de ajuste sea exactamente lo que se va a imprimir.
 const COMPACT_CSS = `
-  body.is-compact .wrap{width:190mm;max-width:190mm;padding:0;margin:0 auto}
-  @media screen{ body.is-compact{padding:18px 12px} }
-  @media print{ body.is-compact .wrap{padding:0} }
+  .is-compact .wrap{width:190mm;max-width:190mm;padding:0;margin:0 auto}
+  @media screen{ .is-compact{padding:18px 12px} }
+  @media print{ .is-compact .wrap{padding:0} }
   /* cabecera en una línea: identidad a la izquierda, resumen a la derecha */
-  body.is-compact header.doc{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
+  .is-compact header.doc{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;
     border-bottom:1.5px solid var(--ink);padding-bottom:7px;margin-bottom:10px}
-  body.is-compact header.doc .kick{font-size:9px;letter-spacing:.14em;margin:0 0 3px}
-  body.is-compact header.doc h1{font-size:19px;margin:0}
-  body.is-compact header.doc .gen{font-size:10.5px;line-height:1.45;text-align:right;flex:none}
-  body.is-compact header.doc .gen b{color:var(--ink);font-weight:600}
+  .is-compact header.doc .kick{font-size:9px;letter-spacing:.14em;margin:0 0 3px}
+  .is-compact header.doc h1{font-size:19px;margin:0}
+  .is-compact header.doc .gen{font-size:10.5px;line-height:1.45;text-align:right;flex:none}
+  .is-compact header.doc .gen b{color:var(--ink);font-weight:600}
   /* grilla: mismo tamaño que el documento largo (es lo que se viene a leer) */
-  body.is-compact .cpt-cal{margin:0 0 11px}
-  body.is-compact .cg-async{margin-top:8px;gap:6px}
-  body.is-compact .cg-async__chip{font-size:9.5px;padding:2px 7px}
+  .is-compact .cpt-cal{margin:0 0 11px}
+  .is-compact .cg-async{margin-top:8px;gap:6px}
+  .is-compact .cg-async__chip{font-size:9.5px;padding:2px 7px}
   /* dos columnas abajo: materias | evaluaciones */
-  body.is-compact .cpt-cols{display:flex;align-items:flex-start;gap:16px}
-  body.is-compact .cpt-box{flex:1 1 0;min-width:0}
-  body.is-compact .cpt-h{font-family:"SFMono-Regular",Menlo,monospace;font-size:9px;letter-spacing:.11em;
+  .is-compact .cpt-cols{display:flex;align-items:flex-start;gap:16px}
+  .is-compact .cpt-box{flex:1 1 0;min-width:0}
+  .is-compact .cpt-h{font-family:"SFMono-Regular",Menlo,monospace;font-size:9px;letter-spacing:.11em;
     text-transform:uppercase;color:var(--coral);margin:0 0 6px;padding-bottom:5px;border-bottom:1px solid var(--ink)}
-  body.is-compact .mlist .mrow{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 7px;padding:5px 0}
-  body.is-compact .mrow__abbr{font-size:11.5px;min-width:0}
-  body.is-compact .mrow__name{font-size:11px;flex:1 1 100%;order:3;color:var(--soft);line-height:1.35}
-  body.is-compact .mrow__com{font-size:9.5px;margin-left:auto}
-  body.is-compact .mrow__cr{font-size:10px;min-width:0}
-  body.is-compact .cpt-ev{list-style:none;margin:0;padding:0}
-  body.is-compact .cpt-ev__li{padding:5px 0;border-bottom:1px solid var(--line)}
-  body.is-compact .cpt-ev__li:last-child{border-bottom:none}
-  body.is-compact .cpt-ev__mat{display:block;font-size:11px;line-height:1.3}
-  body.is-compact .cpt-ev__mat b{font-size:11.5px}
-  body.is-compact .cpt-ev__mat span{color:var(--soft)}
-  body.is-compact .cpt-ev__ins{display:block;margin-top:3px}
-  body.is-compact .cpt-ev__when{font-family:"SFMono-Regular",Menlo,monospace;font-size:9.5px;color:var(--soft)}
-  body.is-compact .ec-chip{font-size:9.5px;padding:1px 7px;margin:0 4px 3px 0}
-  body.is-compact .ec-soon{font-size:10px}
-  body.is-compact .cpt-note{font-size:9.5px;color:var(--muted);margin:7px 0 0;line-height:1.4}
-  body.is-compact footer.doc{margin-top:12px;padding-top:8px;font-size:9.5px}
+  .is-compact .mlist .mrow{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 7px;padding:5px 0}
+  .is-compact .mrow__abbr{font-size:11.5px;min-width:0}
+  .is-compact .mrow__name{font-size:11px;flex:1 1 100%;order:3;color:var(--soft);line-height:1.35}
+  .is-compact .mrow__com{font-size:9.5px;margin-left:auto}
+  .is-compact .mrow__cr{font-size:10px;min-width:0}
+  .is-compact .cpt-ev{list-style:none;margin:0;padding:0}
+  .is-compact .cpt-ev__li{padding:5px 0;border-bottom:1px solid var(--line)}
+  .is-compact .cpt-ev__li:last-child{border-bottom:none}
+  .is-compact .cpt-ev__mat{display:block;font-size:11px;line-height:1.3}
+  .is-compact .cpt-ev__mat b{font-size:11.5px}
+  .is-compact .cpt-ev__mat span{color:var(--soft)}
+  .is-compact .cpt-ev__ins{display:block;margin-top:3px}
+  .is-compact .cpt-ev__when{font-family:"SFMono-Regular",Menlo,monospace;font-size:9.5px;color:var(--soft)}
+  .is-compact .ec-chip{font-size:9.5px;padding:1px 7px;margin:0 4px 3px 0}
+  .is-compact .ec-soon{font-size:10px}
+  .is-compact .cpt-note{font-size:9.5px;color:var(--muted);margin:7px 0 0;line-height:1.4}
+  .is-compact footer.doc{margin-top:12px;padding-top:8px;font-size:9.5px}
 `;
 
 /** Reglas de página; el documento compacto usa márgenes chicos (10mm) para que
@@ -1012,6 +1028,8 @@ export interface DocOpts {
   autoPrint?: boolean;
   /** documento de una sola carilla (estilos + ajuste de altura). */
   compact?: boolean;
+  /** CSS extra (p. ej. el del calendario compartido). */
+  extraCSS?: string;
 }
 
 /** Envuelve el contenido en un documento HTML autocontenido e imprimible. */
@@ -1028,7 +1046,7 @@ function docPage(title: string, inner: string, opts: DocOpts = {}): string {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
-<style>${BASE_CSS}${SPECS_CSS}${COMBINED_CSS}${COMPACT_CSS}${pageCSS(!!opts.compact)}</style>
+<style>${BASE_CSS}${SPECS_CSS}${COMBINED_CSS}${COMPACT_CSS}${opts.extraCSS ?? ""}${pageCSS(!!opts.compact)}</style>
 ${fitScript}${autoPrintScript}
 </head>
 <body${opts.compact ? ' class="is-compact"' : ""}>
@@ -1068,6 +1086,10 @@ export interface ExportArgs {
    *  del documento multi-cuatrimestre). Default "cuatris" para no romper los
    *  call-sites que todavía no lo pasan. */
   method?: OptMethod;
+  /** grilla semanal de pantalla (CursadaCalendar renderizado estático) y su
+   *  CSS de impresión; sin esto se usa la grilla propia del módulo. */
+  renderCalendar?: CalendarRenderer;
+  calendarCSS?: string;
 }
 
 /** Objetivo del meta-note según el método de optimización elegido. */
@@ -1109,15 +1131,17 @@ export function buildPlanHTML(a: ExportArgs): string {
         "Plan de cursada",
         cuatriName(cu),
         a.generado,
-        `Plan de cursada · ${cuatriName(cu)} · studyvaults · ITBA`,
+        `Plan de cursada · ${cuatriName(cu)} · Cuatris · ITBA`,
+        a.renderCalendar,
       );
       return docPage("Plan de cursada — ITBA", inner, {
         autoPrint: a.autoPrint,
         compact: true,
+        extraCSS: a.calendarCSS,
       });
     }
     const inner = `<header class="doc">
-    <p class="kick">StudyVaults · ITBA</p>
+    <p class="kick">Cuatris · ITBA</p>
     <h1>Plan de cursada</h1>
     <p class="gen">${esc(cuatriName(cu))} · Generado el ${esc(a.generado)}</p>
   </header>
@@ -1129,19 +1153,20 @@ export function buildPlanHTML(a: ExportArgs): string {
     <div class="s"><b>${dias}</b><span>día${dias === 1 ? "" : "s"} en el campus</span></div>
   </div>
 
-  ${combinedCuatriSectionsHTML(only.it, includeCalendar, includeSpecs, "Semana de cursada")}
+  ${combinedCuatriSectionsHTML(only.it, includeCalendar, includeSpecs, "Semana de cursada", a.renderCalendar)}
 
-  <footer class="doc">Plan de cursada · ${esc(cuatriName(cu))} · studyvaults · ITBA</footer>`;
-    return docPage("Plan de cursada — ITBA", inner, { autoPrint: a.autoPrint });
+  <footer class="doc">Plan de cursada · ${esc(cuatriName(cu))} · Cuatris · ITBA</footer>`;
+    return docPage("Plan de cursada — ITBA", inner, {
+      autoPrint: a.autoPrint,
+      extraCSS: a.calendarCSS,
+    });
   }
 
   const cuatriSection = ({ it, i }: { it: PlacedMateria[]; i: number }) => {
     const cu = cuatriAt(start, i);
     const cred = credOf(it);
     const { blocks, asyncs } = computeCuatriBlocks(it);
-    const calHTML = blocks.length
-      ? weekGridHTML(blocks)
-      : `<p class="cg-empty">Sólo materias sin grilla semanal.</p>`;
+    const calHTML = calendarHTML(blocks, a.renderCalendar);
     // Lista compacta de materias: identidad + créditos + comisión. La grilla de
     // arriba ya muestra los horarios, así que no repetimos el detalle.
     return `<section class="cuatri">
@@ -1168,7 +1193,7 @@ export function buildPlanHTML(a: ExportArgs): string {
       : specsSectionHTML(flat) + consolidatedBibliografiaHTML(flat);
 
   const inner = `<header class="doc">
-    <p class="kick">StudyVaults · ITBA</p>
+    <p class="kick">Cuatris · ITBA</p>
     <h1>Plan de cursada</h1>
     <p class="gen">Generado el ${esc(a.generado)}</p>
   </header>
@@ -1196,9 +1221,47 @@ export function buildPlanHTML(a: ExportArgs): string {
 
   ${specsHTML}
 
-  <footer class="doc">Plan de cursada · ${elecPlan} créditos electivos en este plan · studyvaults</footer>`;
+  <footer class="doc">Plan de cursada · ${elecPlan} créditos electivos en este plan · Cuatris</footer>`;
 
-  return docPage("Plan de cursada — ITBA", inner, { autoPrint: a.autoPrint });
+  return docPage("Plan de cursada — ITBA", inner, {
+    autoPrint: a.autoPrint,
+    extraCSS: a.calendarCSS,
+  });
+}
+
+// ---- hoja de UN cuatrimestre (imagen) --------------------------------------
+
+/** A4 vertical a 96 dpi y márgenes de 10 mm (los mismos del documento compacto). */
+export const PLAN_SHEET_W = 794;
+export const PLAN_SHEET_H = 1123;
+export const PLAN_SHEET_PAD = 38;
+
+/** La hoja compacta de un cuatrimestre como fragmento (HTML + CSS), para
+ *  rasterizarla como imagen: mismo cuerpo que «Solo calendario» (PDF). */
+export function buildCuatriSheet(a: {
+  placed: PlacedMateria[];
+  periodo: string;
+  generado: string;
+  renderCalendar?: CalendarRenderer;
+  calendarCSS?: string;
+}): { html: string; css: string } {
+  const inner = compactBodyHTML(
+    a.placed,
+    "Plan de cursada",
+    a.periodo,
+    a.generado,
+    `Plan de cursada · ${a.periodo} · Cuatris · ITBA`,
+    a.renderCalendar,
+  );
+  const html = `<div class="is-compact sheet"><div class="wrap">${inner}</div></div>`;
+  const css =
+    BASE_CSS +
+    SPECS_CSS +
+    COMBINED_CSS +
+    COMPACT_CSS +
+    (a.calendarCSS ?? "") +
+    `.sheet{box-sizing:border-box;width:${PLAN_SHEET_W}px;min-height:${PLAN_SHEET_H}px;padding:${PLAN_SHEET_PAD}px;background:#fff;color:#2b211c;font-family:Georgia,"Times New Roman",serif;line-height:1.5}`;
+  return { html, css };
 }
 
 // ---- export de la COMBINACIÓN elegida (un cuatrimestre) --------------------
@@ -1214,6 +1277,9 @@ export interface ComboExportArgs {
   includeSpecs?: boolean;
   /** documento COMPACTO de una carilla. Ver ExportArgs.compact. */
   compact?: boolean;
+  /** grilla semanal de pantalla + su CSS (ver ExportArgs). */
+  renderCalendar?: CalendarRenderer;
+  calendarCSS?: string;
 }
 
 export function buildComboHTML(a: ComboExportArgs): string {
@@ -1230,16 +1296,18 @@ export function buildComboHTML(a: ComboExportArgs): string {
       "Programa de cursada",
       a.periodo ?? "",
       a.generado,
-      "Programa de cursada · studyvaults · ITBA",
+      "Programa de cursada · Cuatris · ITBA",
+      a.renderCalendar,
     );
     return docPage("Programa de cursada — ITBA", inner, {
       autoPrint: a.autoPrint,
       compact: true,
+      extraCSS: a.calendarCSS,
     });
   }
 
   const inner = `<header class="doc">
-    <p class="kick">StudyVaults · ITBA</p>
+    <p class="kick">Cuatris · ITBA</p>
     <h1>Programa de cursada</h1>
     <p class="gen">${a.periodo ? esc(a.periodo) + " · " : ""}Generado el ${esc(a.generado)}</p>
   </header>
@@ -1250,9 +1318,12 @@ export function buildComboHTML(a: ComboExportArgs): string {
     <div class="s"><b>${dias}</b><span>día${dias === 1 ? "" : "s"} en el campus</span></div>
   </div>
 
-  ${combinedCuatriSectionsHTML(placed, includeCalendar, includeSpecs, "Semana de cursada")}
+  ${combinedCuatriSectionsHTML(placed, includeCalendar, includeSpecs, "Semana de cursada", a.renderCalendar)}
 
-  <footer class="doc">Programa de cursada · studyvaults · ITBA</footer>`;
+  <footer class="doc">Programa de cursada · Cuatris · ITBA</footer>`;
 
-  return docPage("Programa de cursada — ITBA", inner, { autoPrint: a.autoPrint });
+  return docPage("Programa de cursada — ITBA", inner, {
+    autoPrint: a.autoPrint,
+    extraCSS: a.calendarCSS,
+  });
 }

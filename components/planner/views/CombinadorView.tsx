@@ -14,7 +14,7 @@ import {
   DAYS,
   DAYS6,
 } from "@/lib/planner/model";
-import { comModalidad, isAsync, slotsConflict, toMin } from "@/lib/planner/time";
+import { comModalidad, isAsync, slotsConflict, toMin, viajesDe } from "@/lib/planner/time";
 import { generateCombos } from "@/lib/planner/combos";
 import {
   optimizePlan,
@@ -26,6 +26,8 @@ import {
 import { MAX_PLAN_CUATRIS } from "@/lib/planner/consts";
 import { buildComboHTML } from "@/lib/planner/exportPlan";
 import { openForPrint } from "@/lib/planner/download";
+import { renderStaticHTML } from "@/components/planner/renderStatic";
+import { CURSADA_CALENDAR_PRINT_CSS } from "@/components/planner/cursadaCalendarPrint";
 import { Legend } from "@/components/planner/WeekGrid";
 import CursadaCalendar from "@/components/planner/CursadaCalendar";
 import { RecRow, RecSig } from "@/components/planner/RecRow";
@@ -54,7 +56,8 @@ interface AsyncChip extends Slot {
 
 const MODAL_KEYS = ["Presencial", "Virtual", "Blended"] as const;
 /** Período que se estampa en el documento exportado. */
-const PERIODO = "2.º cuatrimestre 2026";
+/** Período de los horarios cargados (lo trae el plan; fallback al último conocido). */
+const periodoLabel = () => PLAN.periodoLabel || "2.º cuatrimestre 2026";
 /** Tope de sugerencias que muestra el recomendador slim (panel angosto). */
 const SUGGEST_LIMIT = 14;
 
@@ -98,6 +101,8 @@ function comTitle(c: Comision): string {
  *  Se usan para ORDENAR las opciones (la más compacta primero) y para los
  *  stat-tiles de la opción activa. */
 function comboMetrics(placed: PlacedMateria[]) {
+  // idas a la facultad: bloques presenciales pegados en la misma sede = una
+  const { viajes } = viajesDe(placed.map((x) => x.com));
   const days = new Set<string>();
   let totalMin = 0;
   let minStart = Infinity;
@@ -112,6 +117,7 @@ function comboMetrics(placed: PlacedMateria[]) {
     }
   }
   return {
+    viajes,
     dias: days.size,
     horas: Math.round((totalMin / 60) * 10) / 10,
     minStart: minStart === Infinity ? 0 : minStart,
@@ -291,7 +297,8 @@ export default function CombinadorView() {
     [comboEff, fixedCom, comboParams],
   );
 
-  // Opciones ordenadas: menos días en el campus › termina más temprano › menos
+  // Opciones ordenadas: menos idas a la facultad (bloques pegados en la misma
+  // sede cuentan una) › menos días en el campus › termina más temprano › menos
   // horas › orden original. Así la opción 1 ya es una cursada compacta.
   const ranked = useMemo(() => {
     if (!result) return [];
@@ -299,6 +306,7 @@ export default function CombinadorView() {
       .map((c, i) => ({ c, m: comboMetrics(c), i }))
       .sort(
         (a, b) =>
+          a.m.viajes - b.m.viajes ||
           a.m.dias - b.m.dias ||
           a.m.maxEnd - b.m.maxEnd ||
           a.m.horas - b.m.horas ||
@@ -439,8 +447,14 @@ export default function CombinadorView() {
   // Plan base (para poblar el dropdown de "Guardar en el cuatrimestre X"): sabe
   // cuántos cuatrimestres usa el plan hoy → ofrecemos esos + uno nuevo.
   const PL = state.plan;
+  // Misma regla que el Plan de cursada: lo que se está cursando ya está
+  // decidido y no se vuelve a ubicar (ni se siembra acá como próximo cuatri).
+  const settled = useMemo(
+    () => new Set([...state.approved, ...state.cursando]),
+    [state.approved, state.cursando],
+  );
   const cuatriOptions = useMemo(() => {
-    const base = optimizePlan(PL, state.approved, state.fixedCom);
+    const base = optimizePlan(PL, settled, state.fixedCom);
     let maxUsed = -1;
     base.items.forEach((it, i) => {
       if (it.length) maxUsed = i;
@@ -466,7 +480,7 @@ export default function CombinadorView() {
     PL.capCredByIdx,
     PL.capMatByIdx,
     PL.lockedIdx,
-    state.approved,
+    settled,
     state.fixedCom,
   ]);
 
@@ -486,7 +500,7 @@ export default function CombinadorView() {
   // acá es para ese cuatrimestre, así que la selección arranca desde ahí en vez
   // de vacía. Mismo dep-set que `cuatriOptions` (lo que lee optimizePlan).
   const nextSeed = useMemo(
-    () => nextCuatriCodes(PL, state.approved, state.fixedCom),
+    () => nextCuatriCodes(PL, settled, state.fixedCom),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       PL.pool,
@@ -499,7 +513,7 @@ export default function CombinadorView() {
       PL.capCredByIdx,
       PL.capMatByIdx,
       PL.lockedIdx,
-      state.approved,
+      settled,
       state.fixedCom,
     ],
   );
@@ -574,8 +588,12 @@ export default function CombinadorView() {
       buildComboHTML({
         placed,
         generado: nowStr(),
-        periodo: PERIODO,
+        periodo: periodoLabel(),
         autoPrint: true,
+        // el mismo calendario que la pantalla, renderizado estático
+        renderCalendar: (blocks) =>
+          renderStaticHTML(<CursadaCalendar blocks={blocks} days={DAYS} dense />),
+        calendarCSS: CURSADA_CALENDAR_PRINT_CSS,
         ...opts,
       }),
       filename,
@@ -1466,15 +1484,6 @@ export default function CombinadorView() {
 
   return (
     <section className="view-panel" id="panel-combo">
-      <div className="panel-head">
-        <h2>Armá tu cuatrimestre</h2>
-        <p>
-          Elegí materias, ajustá cómo querés cursar y mirá —en vivo— todas las
-          cursadas que entran sin pisarse. Lo que sumás acá queda en tu plan de
-          cursada.
-        </p>
-      </div>
-
       <div className="cmb9">
         {header}
         {pickerSummary}

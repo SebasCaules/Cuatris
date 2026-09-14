@@ -24,21 +24,35 @@ import { approvedCredits, electiveCredits } from "@/lib/planner/metrics";
 import { isAsync, slotsConflict, comModalidad, salaLabel } from "@/lib/planner/time";
 import {
   optimizePlan,
+  assignComs,
+  compareCuatri,
   cuatriAt,
+  currentCuatri,
+  nextCuatri,
   cuatriLabel,
   cuatriName,
   OPT_METHODS,
   type OptMethodMeta,
 } from "@/lib/planner/optimize";
 import { recommendElectives, type Recommendation } from "@/lib/planner/recommend";
-import { buildPlanHTML } from "@/lib/planner/exportPlan";
+import {
+  buildCuatriSheet,
+  buildPlanHTML,
+  PLAN_SHEET_H,
+  PLAN_SHEET_PAD,
+  PLAN_SHEET_W,
+  type CalendarRenderer,
+} from "@/lib/planner/exportPlan";
+import { downloadBlob, htmlToPngBlob } from "@/lib/planner/exportImage";
+import { renderStaticHTML } from "@/components/planner/renderStatic";
+import { CURSADA_CALENDAR_PRINT_CSS } from "@/components/planner/cursadaCalendarPrint";
 import {
   openForPrint,
   downloadHTMLFile,
   downloadTextFile,
 } from "@/lib/planner/download";
 import { serializePreferences, parsePreferences } from "@/lib/planner/persist";
-import { MINORS, MINOR_REQ, minorsOf } from "@/lib/planner/minors";
+import { MINORS, minorsOf } from "@/lib/planner/minors";
 import { CommissionSelect } from "@studyvaults/ui";
 import CursadaCalendar from "@/components/planner/CursadaCalendar";
 import MinorsModal from "@/components/planner/MinorsModal";
@@ -77,7 +91,8 @@ import type {
 } from "@/lib/planner/types";
 import "@/components/planner/planview.css";
 
-const ELEC_REQ = PLAN.creditosElectivasReq ?? 27;
+// créditos electivos requeridos por el plan ACTIVO (cambia con la carrera)
+const elecReq = () => PLAN.creditosElectivasReq ?? 27;
 const EMPTY_BLOCKS: WeekBlock[] = [];
 
 /* ---------- iconos locales (no existen en icons.tsx) ---------- */
@@ -142,6 +157,8 @@ function NumField({
   min,
   max,
   onCommit,
+  stepper = false,
+  unit,
 }: {
   id: string;
   label: string;
@@ -149,6 +166,12 @@ function NumField({
   min: number;
   max: number;
   onCommit: (n: number) => void;
+  /** Con `stepper`, el campo es un control propio −/n/+ (banner del plan):
+   *  los botones y las flechas ↑/↓ cambian de a uno y commitean al instante;
+   *  el número también se puede escribir (commit en blur/Enter). */
+  stepper?: boolean;
+  /** sufijo tenue al lado del número («cr», «mat.»). */
+  unit?: string;
 }) {
   const [draft, setDraft] = useState(String(value));
   const [focused, setFocused] = useState(false);
@@ -157,33 +180,91 @@ function NumField({
     if (!focused) setDraft(String(value));
   }, [value, focused]);
   const clamp = (n: number) => Math.min(max, Math.max(min, n));
+  const commitDraft = () => {
+    const n = parseInt(draft, 10);
+    const c = Number.isNaN(n) ? value : clamp(n);
+    if (c !== value) onCommit(c);
+    setDraft(String(c));
+  };
+  const stepBy = (d: number) => {
+    const c = clamp(value + d);
+    if (c !== value) onCommit(c);
+    setDraft(String(c));
+  };
+  const input = (
+    <input
+      type={stepper ? "text" : "number"}
+      id={id}
+      min={min}
+      max={max}
+      inputMode="numeric"
+      pattern={stepper ? "[0-9]*" : undefined}
+      value={draft}
+      aria-valuemin={min}
+      aria-valuemax={max}
+      aria-valuenow={value}
+      onFocus={(e) => {
+        setFocused(true);
+        if (stepper) e.target.select();
+      }}
+      onChange={(e) => {
+        // Solo actualizamos el borrador local: NO commiteamos por dígito (cada
+        // commit re-optimiza todo el plan). El valor real se fija en blur/Enter.
+        setDraft(e.target.value);
+      }}
+      onBlur={() => {
+        setFocused(false);
+        commitDraft();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+        if (!stepper) return;
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+          e.preventDefault();
+          stepBy(e.key === "ArrowUp" ? 1 : -1);
+        }
+      }}
+    />
+  );
+  if (!stepper) {
+    return (
+      <div className="plan2-field">
+        <label htmlFor={id}>{label}</label>
+        {input}
+      </div>
+    );
+  }
   return (
-    <div className="plan2-field">
+    <div className="plan2-field pv-num">
       <label htmlFor={id}>{label}</label>
-      <input
-        type="number"
-        id={id}
-        min={min}
-        max={max}
-        inputMode="numeric"
-        value={draft}
-        onFocus={() => setFocused(true)}
-        onChange={(e) => {
-          // Solo actualizamos el borrador local: NO commiteamos por dígito (cada
-          // commit re-optimiza todo el plan). El valor real se fija en blur/Enter.
-          setDraft(e.target.value);
-        }}
-        onBlur={() => {
-          setFocused(false);
-          const n = parseInt(draft, 10);
-          const c = Number.isNaN(n) ? value : clamp(n);
-          if (c !== value) onCommit(c);
-          setDraft(String(c));
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") (e.target as HTMLInputElement).blur();
-        }}
-      />
+      <div className="pv-num__ctl" role="group" aria-label={label}>
+        <button
+          type="button"
+          className="pv-num__btn"
+          aria-label={`Menos ${label.toLowerCase()}`}
+          disabled={value <= min}
+          onClick={() => stepBy(-1)}
+        >
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+            <path d="M5 12h14" />
+          </svg>
+        </button>
+        <span className="pv-num__val">
+          {input}
+          {unit && <span className="pv-num__unit">{unit}</span>}
+        </span>
+        <button
+          type="button"
+          className="pv-num__btn"
+          aria-label={`Más ${label.toLowerCase()}`}
+          disabled={value >= max}
+          onClick={() => stepBy(1)}
+        >
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }
@@ -395,7 +476,7 @@ function computeMinorRows(
           cr += x.m.creditos || 0;
       }),
     );
-    return { minor, cr, done: cr >= MINOR_REQ };
+    return { minor, cr, done: cr >= minor.req };
   });
 }
 
@@ -413,12 +494,25 @@ function Carousel({
   count,
   children,
   handle,
+  leadHidden = false,
 }: {
   count: number;
   children: React.ReactNode;
   handle?: React.Ref<CarouselHandle>;
+  /** la primera tarjeta (el cuatrimestre en curso) arranca fuera de vista, a
+   *  la izquierda: se llega con la flecha «anterior» o scrolleando. */
+  leadHidden?: boolean;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const leadDone = useRef(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !leadHidden || leadDone.current) return;
+    const lead = el.querySelector<HTMLElement>(".pv-sem--now");
+    if (!lead) return;
+    leadDone.current = true;
+    el.scrollLeft = lead.offsetLeft + lead.offsetWidth + 16 - 2;
+  }, [leadHidden, count]);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
   const [scrolling, setScrolling] = useState(false);
@@ -606,6 +700,8 @@ function CuatriCaps({
           value={capCred ?? globalCred}
           min={3}
           max={40}
+          stepper
+          unit="cr"
           onCommit={(n) =>
             dispatch({ type: "SET_PLAN_CAP_CRED", idx: i, value: n })
           }
@@ -616,6 +712,8 @@ function CuatriCaps({
           value={capMat ?? globalMat}
           min={1}
           max={9}
+          stepper
+          unit="mat."
           onCommit={(n) =>
             dispatch({ type: "SET_PLAN_CAP_MAT", idx: i, value: n })
           }
@@ -637,6 +735,160 @@ function CuatriCaps({
 }
 
 /* ========================================================================= */
+/* ---------- cuatrimestre nuevo: fantasma de vista previa y destino «+» ---------- */
+// GhostCard: la materia previsualizada no entra en el plan actual y caería en
+// un cuatrimestre nuevo; se dibuja ese cuatrimestre con sus bloques fantasma.
+function GhostCard({
+  idx,
+  cu,
+  ghosts,
+  abbr,
+}: {
+  idx: number;
+  cu: PlanStart;
+  ghosts: WeekBlock[];
+  abbr: string;
+}) {
+  return (
+    <article className="pv-sem pv-sem--ghost is-preview" data-cuatri-idx={idx} aria-hidden="true">
+      <div className="pv-sem__head">
+        <div className="pv-sem__when">
+          <span className="pv-sem__title">{cuatriName(cu)}</span>
+          <span className="pv-sem__now-tag pv-sem__now-tag--new">nuevo</span>
+        </div>
+      </div>
+      <div className="pv-sem__body">
+        {ghosts.length ? (
+          <CursadaCalendar blocks={ghosts} days={DAYS} compact />
+        ) : (
+          <p className="pv-sem__empty">{abbr} · sin grilla semanal</p>
+        )}
+      </div>
+      <div className="pv-sem__foot">
+        <div className="pv-load-meta">
+          <span className="cr">vista previa · alarga la carrera</span>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+// NewCard: destino «+» que aparece al final del carrusel mientras se arrastra
+// una materia; soltarla ahí abre ese cuatrimestre y la fija en él.
+function NewCard({
+  idx,
+  cu,
+  drop,
+}: {
+  idx: number;
+  cu: PlanStart;
+  drop: "can" | "ok" | "warn" | "bad" | null;
+}) {
+  return (
+    <article
+      className={
+        "pv-sem pv-sem--new" +
+        (drop === "can" ? " is-drop-can" : "") +
+        (drop === "ok" ? " is-drop-ok" : "") +
+        (drop === "warn" ? " is-drop-warn" : "")
+      }
+      data-cuatri-idx={idx}
+    >
+      <div className="pv-sem__head">
+        <div className="pv-sem__when">
+          <span className="pv-sem__title">{cuatriName(cu)}</span>
+          <span className="pv-sem__now-tag pv-sem__now-tag--new">nuevo</span>
+        </div>
+      </div>
+      <div className="pv-sem__body pv-sem__newbody">
+        <span className="pv-sem__plus" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+        </span>
+        <span className="pv-sem__newtxt">
+          Soltá acá para abrir este cuatrimestre
+        </span>
+        <span className="pv-sem__newsub">alarga la carrera un cuatrimestre</span>
+      </div>
+    </article>
+  );
+}
+
+/* ---------- tarjeta del cuatrimestre en curso (solo lectura) ---------- */
+// Lo que se está cursando hoy. No se optimiza, no recibe arrastres ni se
+// finaliza: es el punto de partida del plan, a la izquierda del primer
+// cuatrimestre planificado.
+function NowCard({
+  it,
+  cu,
+  drop,
+}: {
+  it: PlacedMateria[];
+  cu: PlanStart;
+  drop: "can" | "ok" | "warn" | "bad" | null;
+}) {
+  const { dispatch } = usePlanner();
+  const { blocks, asyncs, campusDays } = useMemo(
+    () => computeCuatriBlocks(it),
+    [it],
+  );
+  const cred = it.reduce((s, x) => s + (x.m.creditos || 0), 0);
+  return (
+    <article
+      className={"pv-sem pv-sem--now" + (drop === "bad" ? " is-drop-bad" : "")}
+      data-cuatri-idx={-1}
+    >
+      <div className="pv-sem__head">
+        <div className="pv-sem__when">
+          <span className="pv-sem__title">{cuatriName(cu)}</span>
+          <span className="pv-sem__now-tag">en curso</span>
+        </div>
+      </div>
+      <div className="pv-sem__body">
+        {blocks.length ? (
+          <CursadaCalendar
+            blocks={blocks}
+            days={DAYS}
+            compact
+            onBlockClick={(code) => dispatch({ type: "OPEN_DRAWER", code })}
+          />
+        ) : (
+          <ul className="pv-sem__nowlist">
+            {it.map((x, k) => (
+              <li key={x.m.codigo} style={{ "--blk": PALETTE[k % PALETTE.length] } as React.CSSProperties}>
+                <button
+                  type="button"
+                  className="pv-sem__nowmat"
+                  onClick={() => dispatch({ type: "OPEN_DRAWER", code: x.m.codigo })}
+                >
+                  <b>{x.m.abbr}</b>
+                  <span>{x.m.nombre}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        {blocks.length > 0 && <AsyncRow asyncs={asyncs} dragging={null} />}
+      </div>
+      <div className="pv-sem__foot">
+        <div className="pv-load-meta">
+          <span className="cr">
+            {cred} cr · {it.length} {it.length === 1 ? "materia" : "mat."}
+            {campusDays > 0 && (
+              <>
+                {" · "}
+                {campusDays} {campusDays === 1 ? "día" : "días"}
+              </>
+            )}
+          </span>
+          <span className="aux">cursando</span>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 /* ---------- tarjeta de cuatrimestre (tab Calendario) ---------- */
 function SemCard({
   it,
@@ -673,7 +925,7 @@ function SemCard({
   onUnlock: (idx: number) => void;
   onDownload: (
     idx: number,
-    scope: "cal" | "compacto" | "both" | "programa",
+    scope: "cal" | "imagen" | "both" | "programa",
   ) => void;
 }) {
   const { state, dispatch } = usePlanner();
@@ -805,6 +1057,8 @@ function SemCard({
                         value={capCred ?? maxCred}
                         min={3}
                         max={40}
+                        stepper
+                        unit="cr"
                         onCommit={(n) =>
                           dispatch({
                             type: "SET_PLAN_CAP_CRED",
@@ -819,6 +1073,8 @@ function SemCard({
                         value={capMat ?? maxMat}
                         min={1}
                         max={9}
+                        stepper
+                        unit="mat."
                         onCommit={(n) =>
                           dispatch({
                             type: "SET_PLAN_CAP_MAT",
@@ -866,18 +1122,19 @@ function SemCard({
                   }}
                 >
                   <IconCalendar size={15} /> Solo calendario
+                  <span className="sub">PDF · 1 hoja</span>
                 </button>
                 <button
                   type="button"
                   role="menuitem"
                   className="pv-menu__item"
                   onClick={() => {
-                    onDownload(i, "compacto");
+                    onDownload(i, "imagen");
                     setMenuOpen(false);
                   }}
                 >
-                  <IconCompactPage size={15} /> Compacto
-                  <span className="sub">1 carilla</span>
+                  <IconCompactPage size={15} /> Imagen
+                  <span className="sub">.png · 1 hoja</span>
                 </button>
                 <button
                   type="button"
@@ -1262,7 +1519,7 @@ function MinorsPanel({
   return (
     <div className="pv-minors">
       {rows.map(({ minor, cr, done }) => {
-        const pct = Math.min(100, Math.round((cr / MINOR_REQ) * 100));
+        const pct = Math.min(100, Math.round((cr / minor.req) * 100));
         return (
           <div
             key={minor.id}
@@ -1281,7 +1538,7 @@ function MinorsPanel({
             </div>
             <div className={"pv-minor-count" + (done ? " is-done" : "")}>
               {done && <IconCheck size={12} />}
-              {cr} / {MINOR_REQ} cr
+              {cr} / {minor.req} cr
             </div>
           </div>
         );
@@ -1296,8 +1553,8 @@ function MinorsPanel({
             </>
           ) : (
             <>
-              Ningún área llega a {MINOR_REQ} créditos todavía. Agregá electivas
-              del área para completar un minor.
+              Ningún área llega a sus créditos todavía. Agregá electivas
+              del área para completarla.
             </>
           )}
         </span>
@@ -1391,6 +1648,7 @@ function Recommendations({
   preview: string | null;
   onHide?: () => void;
 }) {
+  const ELEC_REQ = elecReq();
   const { dispatch } = usePlanner();
 
   if (!recs.length) return null;
@@ -1577,8 +1835,13 @@ function PlanPool({
   const [query, setQuery] = useState("");
   const [suggOpen, setSuggOpen] = useState(false);
 
+  // aprobadas + cursando: ninguna de las dos se ubica en el plan
+  const settled = useMemo(
+    () => new Set([...state.approved, ...state.cursando]),
+    [state.approved, state.cursando],
+  );
   const { obs, els } = useMemo(() => {
-    const codes = [...state.plan.pool].filter((c) => !state.approved.has(c));
+    const codes = [...state.plan.pool].filter((c) => !settled.has(c));
     const obs = codes
       .filter((c) => !isElectiva(c))
       .map((c) => byId.get(c)!)
@@ -1590,7 +1853,7 @@ function PlanPool({
       .filter(Boolean)
       .sort(planPriority);
     return { obs, els };
-  }, [state.plan.pool, state.approved]);
+  }, [state.plan.pool, settled]);
 
   const cuatriOpts = () => {
     const opts: { value: string; label: string }[] = [];
@@ -1606,11 +1869,11 @@ function PlanPool({
       .filter(
         (m) =>
           !state.plan.pool.has(m.codigo) &&
-          !state.approved.has(m.codigo) &&
+          !settled.has(m.codigo) &&
           (m.codigo + " " + m.nombre + " " + m.abbr).toLowerCase().includes(q),
       )
       .slice(0, 12);
-  }, [query, state.plan.pool, state.approved]);
+  }, [query, state.plan.pool, settled]);
 
   // Cada fila previsualiza en los calendarios al pasar el mouse y se arrastra a
   // un cuatrimestre para fijarla ahí (los controles de la fila no arrancan el
@@ -1797,6 +2060,27 @@ export default function PlanView() {
   const { state, dispatch } = usePlanner();
   const PL = state.plan;
   const approved = state.approved;
+  // Para planificar, lo que se está cursando ya está decidido: no se vuelve a
+  // ubicar en un cuatrimestre ni cuenta contra los topes, y sus correlativas se
+  // dan por cumplidas para lo que sigue. Los créditos acumulados (accNow) y el
+  // % de avance siguen contando solo lo aprobado.
+  const settled = useMemo(
+    () => new Set([...state.approved, ...state.cursando]),
+    [state.approved, state.cursando],
+  );
+
+  // Tarjeta «en curso»: lo marcado como cursando, con horarios. La comisión
+  // es la que el usuario fijó (Combinador); si no fijó ninguna, la que no se
+  // pisa con las demás. Va primera en el carrusel, escondida a la izquierda:
+  // el plan arranca en el cuatrimestre siguiente y esto es contexto, no algo
+  // que se optimice.
+  const nowCard = useMemo<PlacedMateria[]>(() => {
+    const mats = [...state.cursando]
+      .map((code) => byId.get(code))
+      .filter((m): m is MateriaM => !!m)
+      .sort((a, b) => a.codigo.localeCompare(b.codigo));
+    return assignComs(mats, state.fixedCom);
+  }, [state.cursando, state.fixedCom]);
   const [preview, setPreview] = useState<string | null>(null);
   const [minorsOpen, setMinorsOpen] = useState(false);
   const [recsHidden, setRecsHidden] = useState(false);
@@ -1819,7 +2103,7 @@ export default function PlanView() {
   // interacción). El resultado es idéntico: mismos inputs, mismo `recommendElectives`.
   const dHidden = useDeferredValue(recsHidden, true);
   const dPL = useDeferredValue(PL);
-  const dApproved = useDeferredValue(approved);
+  const dApproved = useDeferredValue(settled);
   const dFixedCom = useDeferredValue(state.fixedCom);
   const recs = useMemo(
     () =>
@@ -1849,11 +2133,11 @@ export default function PlanView() {
     !recsHidden &&
     (dHidden !== recsHidden ||
       dPL !== PL ||
-      dApproved !== approved ||
+      dApproved !== settled ||
       dFixedCom !== state.fixedCom);
 
   const baseR = useMemo(
-    () => optimizePlan(PL, approved, state.fixedCom),
+    () => optimizePlan(PL, settled, state.fixedCom),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       PL.pool,
@@ -1865,7 +2149,7 @@ export default function PlanView() {
       PL.method,
       PL.capCredByIdx,
       PL.capMatByIdx,
-      approved,
+      settled,
       state.fixedCom,
     ],
   );
@@ -1876,14 +2160,25 @@ export default function PlanView() {
   // comprometido.
   const R = baseR;
 
+  // El primer cuatrimestre que se puede planificar es el que SIGUE al que está
+  // en curso (por fecha): lo que se cursa hoy ya está decidido y vive en la
+  // tarjeta «en curso» del carrusel, no en el plan.
+  const firstPlannable = useMemo(() => nextCuatri(), []);
   const startOptions = useMemo(() => {
     const opts: { value: string; label: string }[] = [];
     for (let i = 0; i < 6; i++) {
-      const c = cuatriAt({ parity: 2, year: 2026 }, i);
+      const c = cuatriAt(firstPlannable, i);
       opts.push({ value: c.parity + "-" + c.year, label: cuatriName(c) });
     }
     return opts;
-  }, []);
+  }, [firstPlannable]);
+  // Un inicio guardado que quedó en el pasado (el usuario planificó en otro
+  // cuatrimestre) se corre al primero planificable: el select ya no lo ofrece.
+  useEffect(() => {
+    if (!state.hydrated) return;
+    if (compareCuatri(PL.start, firstPlannable) < 0)
+      dispatch({ type: "SET_PLAN_START", start: firstPlannable });
+  }, [state.hydrated, PL.start, firstPlannable, dispatch]);
 
   const used = useMemo(
     () => R.items.map((it, i) => ({ it, i })).filter((x) => x.it.length),
@@ -1892,8 +2187,8 @@ export default function PlanView() {
 
   const previewFit = useMemo(
     () =>
-      preview ? fitsOf(preview, R, PL, approved, state.fixedCom, used) : null,
-    [preview, R, PL, approved, state.fixedCom, used],
+      preview ? fitsOf(preview, R, PL, settled, state.fixedCom, used) : null,
+    [preview, R, PL, settled, state.fixedCom, used],
   );
 
   /* ---- drag & drop entre cuatrimestres (Pointer Events, sin dependencias) ----
@@ -1912,8 +2207,8 @@ export default function PlanView() {
   } | null>(null);
   const dragFit = useMemo(
     () =>
-      drag ? fitsOf(drag.code, R, PL, approved, state.fixedCom, used) : null,
-    [drag?.code, R, PL, approved, state.fixedCom, used], // eslint-disable-line react-hooks/exhaustive-deps
+      drag ? fitsOf(drag.code, R, PL, settled, state.fixedCom, used) : null,
+    [drag?.code, R, PL, settled, state.fixedCom, used], // eslint-disable-line react-hooks/exhaustive-deps
   );
   const dragRef = useRef<{ code: string; x: number; y: number; active: boolean } | null>(null);
 
@@ -1928,15 +2223,40 @@ export default function PlanView() {
     // ellos sin soltar.
     let last = { x: e.clientX, y: e.clientY };
     let ticker: ReturnType<typeof setInterval> | null = null;
+    const hit = (x: number, y: number): number | null => {
+      const el = document.elementFromPoint(x, y)?.closest<HTMLElement>("[data-cuatri-idx]");
+      return el ? Number(el.dataset.cuatriIdx) : null;
+    };
+    // Mientras dura el arrastre la pista no encaja (scroll-snap): con snap,
+    // cada avance programado volvía a la tarjeta más cercana y el carrusel
+    // no recorría nada. La clase la saca `finish`/Escape.
+    const trackEl = () => document.querySelector<HTMLElement>(".pv-track");
     const tick = () => {
       const edge = 72;
       const vh = window.innerHeight;
       if (last.y < edge) window.scrollBy(0, -Math.ceil((edge - last.y) / 4));
       else if (last.y > vh - edge) window.scrollBy(0, Math.ceil((last.y - (vh - edge)) / 4));
-    };
-    const hit = (x: number, y: number): number | null => {
-      const el = document.elementFromPoint(x, y)?.closest<HTMLElement>("[data-cuatri-idx]");
-      return el ? Number(el.dataset.cuatriIdx) : null;
+      // y el carrusel en X: cerca de sus bordes (o más allá) corre la pista de
+      // forma continua, así se llega del primer cuatri al último pasando por
+      // los del medio (y a la tarjeta «+» del final). La velocidad crece con
+      // la cercanía al borde, hasta ~1.400 px/s.
+      const track = trackEl();
+      if (!track) return;
+      const r = track.getBoundingClientRect();
+      if (last.y < r.top || last.y > r.bottom) return;
+      const side = 96;
+      const max = 24;
+      let dx = 0;
+      if (last.x < r.left + side) dx = -Math.min(max, Math.ceil((r.left + side - last.x) / 4));
+      else if (last.x > r.right - side) dx = Math.min(max, Math.ceil((last.x - (r.right - side)) / 4));
+      if (!dx) return;
+      const before = track.scrollLeft;
+      track.scrollLeft = before + dx;
+      if (track.scrollLeft === before) return; // tope de la pista
+      // la pista se movió bajo el puntero quieto: el cuatri destino cambió
+      // aunque no haya pointermove
+      const over = hit(last.x, last.y);
+      setDrag((d) => (d && d.over !== over ? { ...d, over } : d));
     };
     const onMove = (ev: PointerEvent) => {
       const d = dragRef.current;
@@ -1949,6 +2269,7 @@ export default function PlanView() {
         } catch {
           /* el origen pudo desmontarse: seguimos con los listeners globales */
         }
+        trackEl()?.classList.add("is-dragging");
         ticker = setInterval(tick, 16);
         // El click que sigue al pointerup de un arrastre NO es un click: sin
         // esto, soltar sobre un cuatri abría además la ficha de la materia.
@@ -1970,6 +2291,7 @@ export default function PlanView() {
     const stopTicker = () => {
       if (ticker) clearInterval(ticker);
       ticker = null;
+      trackEl()?.classList.remove("is-dragging");
     };
     const swallowClick = (ev: MouseEvent) => {
       ev.stopPropagation();
@@ -1992,7 +2314,8 @@ export default function PlanView() {
       unswallowSoon();
       const target = cancel ? null : hit(ev.clientX, ev.clientY);
       setDrag(null);
-      if (target === null) return;
+      // la tarjeta «en curso» (índice -1) no es un destino
+      if (target === null || target < 0 || target >= MAX_PLAN_CUATRIS) return;
       // Soltar = fijar: el optimizador ubica una materia fijada "sí o sí" en ese
       // cuatri, así que solo un cuatri finalizado (o el mismo de origen) se
       // rechaza. Si no entra limpia (tope, choque, correlativa) igual se fija:
@@ -2022,7 +2345,7 @@ export default function PlanView() {
     document.addEventListener("pointercancel", onCancel);
     document.addEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [baseR, PL, approved, state.fixedCom, used, dispatch]);
+  }, [baseR, PL, settled, state.fixedCom, used, dispatch]);
 
   // Ubicación actual de cada materia (código → índice de cuatri). Cuando cambia
   // —una materia nueva, movida, fijada o soltada— el carrusel corre hasta los
@@ -2073,8 +2396,35 @@ export default function PlanView() {
 
   // Feedback de destino: verde = entra limpia · ámbar = se fija igual pero excede
   // el tope / se pisa / falta correlativa · rojo = finalizado o el mismo cuatri.
+  // Índice del cuatrimestre NUEVO que se abre al arrastrar más allá del último:
+  // aparece como tarjeta «+» al final del carrusel mientras dura el arrastre.
+  const newIdx = (used.length ? used[used.length - 1].i : -1) + 1;
+  const newFits = useMemo(() => {
+    if (!drag) return false;
+    const m = byId.get(drag.code);
+    if (!m || newIdx >= MAX_PLAN_CUATRIS) return false;
+    const cu = cuatriAt(PL.start, newIdx);
+    if (m.parity !== null && m.parity !== cu.parity) return false;
+    const before = new Set(settled);
+    let acc = approvedCredits(settled);
+    baseR.items.forEach((it) =>
+      it.forEach((x) => {
+        if (x.m.codigo === drag.code) return;
+        before.add(x.m.codigo);
+        acc += x.m.creditos || 0;
+      }),
+    );
+    if ((m.creditosReq || 0) > acc) return false;
+    return (m.correlativas || []).every((c) => before.has(c));
+  }, [drag, newIdx, PL.start, settled, baseR]);
+
   const dropStateOf = (i: number): "can" | "ok" | "warn" | "bad" | null => {
     if (!drag || !dragFit) return null;
+    if (i < 0) return drag.over === i ? "bad" : null; // «en curso» no recibe
+    if (i === newIdx) {
+      if (drag.over === i) return newFits ? "ok" : "warn";
+      return newFits ? "can" : null;
+    }
     const can = dragFit.idx.has(i);
     const blocked =
       PL.lockedIdx.has(i) || baseR.items[i]?.some((x) => x.m.codigo === drag.code);
@@ -2108,26 +2458,57 @@ export default function PlanView() {
   const flat = R.items.flat();
   const totalCred = flat.reduce((s, x) => s + (x.m.creditos || 0), 0);
   const accNow = approvedCredits(approved);
-  const finalCred = accNow + totalCred;
+  // lo que se cursa ahora no está en el plan ni en accNow, pero sí en el total
+  const cursandoCred = approvedCredits(state.cursando);
+  const finalCred = accNow + cursandoCred + totalCred;
   const lastIdx = used.length ? used[used.length - 1].i : 0;
   const gradCu = cuatriAt(PL.start, lastIdx);
   const pct = finalCred > 0 ? Math.round((accNow / finalCred) * 100) : 0;
   // créditos electivos comprometidos (sin el preview) → para el panel de recos
   const elecCommitted =
-    electiveCredits(approved) +
+    electiveCredits(settled) +
     baseR.items
       .flat()
       .filter((x) => x.m.tipo === "electiva")
       .reduce((s, x) => s + (x.m.creditos || 0), 0);
 
+  // Si la materia previsualizada no entra en ningún cuatrimestre del plan, el
+  // recomendador dice dónde caería si el plan se alarga (`landingIdx` más allá
+  // del último): se dibuja ahí una tarjeta fantasma de cuatrimestre NUEVO con
+  // sus bloques, para que se vea qué significa «alarga la carrera».
+  const previewExt = useMemo(() => {
+    if (!preview || !previewFit || previewFit.idx.size > 0) return null;
+    const m = byId.get(preview);
+    if (!m) return null;
+    const last = used.length ? used[used.length - 1].i : -1;
+    const rec = recs.find((r) => r.m.codigo === preview);
+    const idx =
+      rec && !rec.conflict && rec.landingIdx > last ? rec.landingIdx : null;
+    if (idx === null) return null;
+    const { com } = pickComision(m, [], state.fixedCom, PL.avoid);
+    const ghosts: WeekBlock[] = [];
+    com?.slots.forEach((slot) => {
+      if (isAsync(slot) || !DAYS.includes(slot.dia)) return;
+      ghosts.push({
+        ...slot,
+        abbr: m.abbr,
+        nombre: m.nombre,
+        codigo: m.codigo,
+        color: PALETTE[0],
+        preview: true,
+      });
+    });
+    return { idx, m, ghosts };
+  }, [preview, previewFit, used, recs, state.fixedCom, PL.avoid]);
+
   // info del preview para el renglón de vista previa: en qué cuatris entra
   const previewInfo = useMemo(() => {
     if (!preview || !previewFit) return null;
     const idxs = [...previewFit.idx].sort((a, b) => a - b);
-    return { m: byId.get(preview) ?? null, idxs };
-  }, [preview, previewFit]);
+    return { m: byId.get(preview) ?? null, idxs, ext: previewExt?.idx ?? null };
+  }, [preview, previewFit, previewExt]);
 
-  const minorRows = useMemo(() => computeMinorRows(used, approved), [used, approved]);
+  const minorRows = useMemo(() => computeMinorRows(used, settled), [used, settled]);
 
   // Al pasar el mouse por una materia, el carrusel muestra dónde está (si ya
   // está en el plan) y/o dónde entra. Solo cuando ninguno se ve.
@@ -2135,12 +2516,13 @@ export default function PlanView() {
     if (!preview || !previewFit) return;
     const actual = placement.get(preview);
     const idxs = [...previewFit.idx].sort((a, b) => a - b);
+    if (previewExt) idxs.push(previewExt.idx);
     const lista = actual !== undefined ? [actual, ...idxs.filter((i) => i !== actual)] : idxs;
     if (!lista.length) return;
     const id = setTimeout(() => carouselRef.current?.reveal(lista), 120);
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [preview, previewFit]);
+  }, [preview, previewFit, previewExt]);
 
   const warns: string[] = [];
   R.items.forEach((it, i) =>
@@ -2162,6 +2544,11 @@ export default function PlanView() {
     ),
   );
 
+  // Los documentos exportados llevan el MISMO calendario que la tarjeta
+  // (CursadaCalendar renderizado estático) con su CSS de impresión.
+  const renderCalendar: CalendarRenderer = (blocks) =>
+    renderStaticHTML(<CursadaCalendar blocks={blocks} days={DAYS} dense />);
+
   const exportPlan = (format: "pdf" | "html", cuatris?: number[]) => {
     if (typeof window === "undefined") return;
     const html = buildPlanHTML({
@@ -2175,20 +2562,25 @@ export default function PlanView() {
       autoPrint: format === "pdf",
       cuatris,
       method: PL.method,
+      renderCalendar,
+      calendarCSS: CURSADA_CALENDAR_PRINT_CSS,
     });
     if (format === "html") downloadHTMLFile(html, "plan-de-cursada.html");
     else openForPrint(html);
   };
 
-  // descarga de UN cuatrimestre desde el menú 3-puntos, con los 4 alcances
-  // (solo calendario / compacto de 1 carilla / calendario+programa / solo
-  // programa) vía exportPlan. "compacto" lleva lo mismo que "cal" pero armado
-  // para entrar en una sola página.
+  // descarga de UN cuatrimestre desde el menú 3-puntos: «solo calendario»
+  // (PDF de una hoja A4, fondo blanco), «imagen» (la misma hoja como PNG),
+  // «calendario + programa» y «solo programa» (documentos largos).
   const downloadCuatri = (
     idx: number,
-    scope: "cal" | "compacto" | "both" | "programa",
+    scope: "cal" | "imagen" | "both" | "programa",
   ) => {
     if (typeof window === "undefined") return;
+    if (scope === "imagen") {
+      void downloadCuatriPNG(idx);
+      return;
+    }
     const html = buildPlanHTML({
       result: baseR,
       start: PL.start,
@@ -2200,11 +2592,52 @@ export default function PlanView() {
       autoPrint: true,
       cuatris: [idx],
       includeCalendar: scope !== "programa",
-      includeSpecs: scope !== "cal" && scope !== "compacto",
-      compact: scope === "compacto",
+      includeSpecs: scope !== "cal",
+      compact: scope === "cal",
       method: PL.method,
+      renderCalendar,
+      calendarCSS: CURSADA_CALENDAR_PRINT_CSS,
     });
     openForPrint(html);
+  };
+
+  // Imagen PNG de un cuatrimestre: la hoja compacta rasterizada a 2x (A4
+  // vertical, fondo blanco); si mide más que la página se escala para que
+  // entre entera. Sin rasterizador (Safari) cae al PDF.
+  const downloadCuatriPNG = async (idx: number) => {
+    const placed = baseR.items[idx] ?? [];
+    const periodo = cuatriName(cuatriAt(PL.start, idx));
+    const { html, css } = buildCuatriSheet({
+      placed,
+      periodo,
+      generado: nowStr(),
+      renderCalendar,
+      calendarCSS: CURSADA_CALENDAR_PRINT_CSS,
+    });
+    const probe = document.createElement("div");
+    probe.style.cssText = `position:fixed;left:-10000px;top:0;width:${PLAN_SHEET_W}px;visibility:hidden`;
+    probe.innerHTML = `<style>${css}</style>${html}`;
+    document.body.appendChild(probe);
+    const natural =
+      probe.querySelector<HTMLElement>(".sheet")?.scrollHeight ?? PLAN_SHEET_H;
+    probe.remove();
+    const avail = PLAN_SHEET_H - PLAN_SHEET_PAD * 2;
+    const k = Math.min(1, avail / Math.max(1, natural - PLAN_SHEET_PAD * 2));
+    const wrapped =
+      k < 1
+        ? `<div style="transform:scale(${k});transform-origin:top left;width:${PLAN_SHEET_W}px">${html}</div>`
+        : html;
+    try {
+      const blob = await htmlToPngBlob(wrapped, css, {
+        width: PLAN_SHEET_W,
+        height: PLAN_SHEET_H,
+        scale: 2,
+      });
+      downloadBlob(blob, `plan-${periodo.replace(/[^\w]+/g, "-").toLowerCase()}-cuatris.png`);
+    } catch (e) {
+      console.warn("No se pudo generar la imagen; se abre el PDF.", e);
+      downloadCuatri(idx, "cal");
+    }
   };
 
   // Finalizar un cuatrimestre: `pinnedByLock` lleva los códigos ubicados hoy
@@ -2335,10 +2768,6 @@ export default function PlanView() {
 
   return (
     <section className="view-panel pv">
-      <div className="panel-head">
-        <h2>Plan de cursada</h2>
-      </div>
-
       {used.length > 0 && !careerFolded && (
         <>
           {/* Configuración general: parámetros a la izquierda, resultado a la
@@ -2378,6 +2807,8 @@ export default function PlanView() {
                   value={PL.maxMat}
                   min={1}
                   max={9}
+                  stepper
+                  unit="mat."
                   onCommit={(n) =>
                     dispatch({ type: "SET_PLAN_MAXMAT", value: n })
                   }
@@ -2391,6 +2822,8 @@ export default function PlanView() {
                   value={PL.maxCred}
                   min={3}
                   max={40}
+                  stepper
+                  unit="cr"
                   onCommit={(n) =>
                     dispatch({ type: "SET_PLAN_MAXCRED", value: n })
                   }
@@ -2454,7 +2887,7 @@ export default function PlanView() {
                 </span>
                 <span className="pv-strip__minors" role="group" aria-label="Progreso de minors">
                   {minorRows.map(({ minor, cr, done }) => (
-                    <Tooltip key={minor.id} width={200} content={`${minor.name}: ${cr} de ${MINOR_REQ} créditos`}>
+                    <Tooltip key={minor.id} width={200} content={`${minor.name}: ${cr} de ${minor.req} créditos`}>
                       <span
                         className={"pv-strip__minor" + (done ? " is-done" : "")}
                         style={{ ["--minor-color" as string]: minor.color }}
@@ -2462,10 +2895,10 @@ export default function PlanView() {
                       >
                         <MinorBadge minor={minor} variant="pill" />
                         <span className="pv-strip__mbar" aria-hidden="true">
-                          <i style={{ width: `${Math.min(100, (cr / MINOR_REQ) * 100)}%` }} />
+                          <i style={{ width: `${Math.min(100, (cr / minor.req) * 100)}%` }} />
                         </span>
                         {done ? <IconCheck size={11} /> : null}
-                        {cr}/{MINOR_REQ}
+                        {cr}/{minor.req}
                       </span>
                     </Tooltip>
                   ))}
@@ -2568,9 +3001,11 @@ export default function PlanView() {
               <button
                 type="button"
                 className="pv-iconbtn pv-iconbtn--label"
+                aria-label="Importar / Exportar"
                 onClick={() => setIoOpen(true)}
               >
-                <IconDownload size={15} /> Importar / Exportar
+                <IconDownload size={15} />
+                <span className="pv-iconbtn__txt">Importar / Exportar</span>
               </button>
             </Tooltip>
           </div>
@@ -2601,6 +3036,12 @@ export default function PlanView() {
                         .map((i) => cuatriLabel(cuatriAt(PL.start, i)))
                         .join(" · ")}
                     </b>
+                  </>
+                ) : previewInfo.ext !== null ? (
+                  <>
+                    no entra en el plan actual: abre un cuatrimestre nuevo en{" "}
+                    <b>{cuatriLabel(cuatriAt(PL.start, previewInfo.ext))}</b>{" "}
+                    (alarga la carrera)
                   </>
                 ) : (
                   "no entra en ningún cuatrimestre del plan (correlativas, créditos, tope o superposición)"
@@ -2663,7 +3104,7 @@ export default function PlanView() {
         tab === "min" ? (
           <MinorsPanel
             used={used}
-            approved={approved}
+            approved={settled}
             onOpenDetail={() => setMinorsOpen(true)}
           />
         ) : (
@@ -2675,7 +3116,18 @@ export default function PlanView() {
           >
             <div className="plan2-split__main">
               {tab === "cal" && (
-                <Carousel count={used.length} handle={carouselRef}>
+                <Carousel
+                  count={
+                    used.length +
+                    (nowCard.length ? 1 : 0) +
+                    (previewExt || drag ? 1 : 0)
+                  }
+                  handle={carouselRef}
+                  leadHidden={nowCard.length > 0}
+                >
+                  {nowCard.length > 0 && (
+                    <NowCard it={nowCard} cu={currentCuatri()} drop={dropStateOf(-1)} />
+                  )}
                   {used.map(({ it, i }) => (
                     <SemCard
                       key={i}
@@ -2695,6 +3147,21 @@ export default function PlanView() {
                       onDownload={downloadCuatri}
                     />
                   ))}
+                  {previewExt && (
+                    <GhostCard
+                      idx={previewExt.idx}
+                      cu={cuatriAt(PL.start, previewExt.idx)}
+                      ghosts={previewExt.ghosts}
+                      abbr={previewExt.m.abbr}
+                    />
+                  )}
+                  {drag && !previewExt && (
+                    <NewCard
+                      idx={newIdx}
+                      cu={cuatriAt(PL.start, newIdx)}
+                      drop={dropStateOf(newIdx)}
+                    />
+                  )}
                 </Carousel>
               )}
 
@@ -2854,7 +3321,7 @@ export default function PlanView() {
         <MinorsModal
           used={used}
           start={PL.start}
-          approved={approved}
+          approved={settled}
           onClose={() => setMinorsOpen(false)}
         />
       )}

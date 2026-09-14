@@ -164,53 +164,129 @@
 .planner .pv-strip__minor.is-done .pv-strip__mbar > i {
   background: var(--sage);
 }
+/* Parámetros: mismo lenguaje que el resultado de al lado (rótulo mono en
+   versalitas tenue + valor en negrita), controles de 34px alineados en una
+   fila; el switch cierra la fila a la misma altura. */
 .planner .pv-bctl {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  gap: 10px 18px;
   align-items: flex-end;
   min-width: 0;
 }
 .planner .pv-field {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
   min-width: 0;
 }
-.planner .pv-field__lbl {
+.planner .pv-field__lbl,
+.planner .pv-num > label {
   font-family: var(--f-m);
-  font-size: 10px;
-  letter-spacing: 0.07em;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--faint);
 }
 /* el <select> de "empiezo a cursar" reusa el look de CommissionSelect
    (@studyvaults/ui) pero en tamaño banner: padding-derecho holgado y la flecha
    separada del borde para que NUNCA pise el texto (fix B13). */
 .planner .pv-field .commission-select {
-  min-width: 176px;
+  min-width: 168px;
   max-width: none;
-  height: 36px;
+  height: 34px;
   font-size: 12px;
-  padding: 0 38px 0 13px;
-  background-position: right 14px center;
+  font-weight: 600;
+  padding: 0 36px 0 12px;
+  background-position: right 13px center;
   background-size: 12px;
+  border-radius: 999px;
 }
-/* NumField (máx cr / máx mat) llega con su propio .plan2-field: se le unifica
-   el label (mismo uppercase/tracking que .pv-field__lbl) y el alto del input,
-   para que la fila no mezcle dos estilos de campo */
-.planner .pv-field--num .plan2-field {
-  gap: 7px;
+.planner .pv-num {
+  gap: 6px;
 }
-.planner .pv-field--num .plan2-field label {
-  font-size: 10px;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+/* Stepper −/n/+ (NumField con `stepper`): una pastilla del alto del select,
+   el número editable en el medio con su unidad tenue, botones que se apagan
+   en los topes. Las flechas ↑/↓ del teclado también suman y restan. */
+.planner .pv-num__ctl {
+  display: inline-flex;
+  align-items: stretch;
+  height: 34px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--panel);
+  overflow: hidden;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
 }
-.planner .pv-field--num .plan2-field input {
-  height: 36px;
-  padding-top: 0;
-  padding-bottom: 0;
+.planner .pv-num__ctl:hover {
+  border-color: var(--brass);
+}
+.planner .pv-num__ctl:focus-within {
+  border-color: var(--brass);
+  box-shadow: var(--ring);
+}
+.planner .pv-num__btn {
+  width: 30px;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.planner .pv-num__btn:hover:not(:disabled) {
+  color: var(--block-ink);
+  background: var(--brass);
+}
+.planner .pv-num__btn:active:not(:disabled) {
+  filter: brightness(0.95);
+}
+.planner .pv-num__btn:disabled {
+  color: var(--faint);
+  opacity: 0.5;
+  cursor: default;
+}
+.planner .pv-num__btn:focus-visible {
+  outline: none;
+  color: var(--brass);
+}
+.planner .pv-num__val {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 0 4px;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+.planner .pv-num .pv-num__val input {
+  width: 2.4ch;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-family: var(--f-m);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.planner .pv-num .pv-num__val input:focus {
+  outline: none;
+  box-shadow: none;
+  border: none;
+}
+.planner .pv-num__unit {
+  align-self: center;
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  color: var(--faint);
+  padding-right: 4px;
 }
 
 /* segmentado del método de optimización (lo reusa .plan2-opt, bajo el board) */
@@ -250,7 +326,29 @@
   justify-content: flex-end;
 }
 .planner .pv-field--sw .cmb-switch {
-  min-height: 36px;
+  min-height: 34px;
+}
+
+/* Slot de vista previa: no ocupa lugar. El pill flota sobre el borde superior
+   del tablero (posición absoluta), así aparece y desaparece sin mover nada. */
+.planner .view-panel .plan2-preview-slot {
+  position: relative;
+  min-height: 0;
+  height: 0;
+  margin: 0;
+  overflow: visible;
+  z-index: 8;
+}
+.planner .view-panel .plan2-preview-slot__hint {
+  display: none;
+}
+.planner .view-panel .plan2-preview-slot__msg {
+  position: absolute;
+  top: -13px; /* a caballo del borde: no tapa el título de la primera tarjeta */
+  left: 10px;
+  padding: 4px 12px;
+  font-size: 11.5px;
+  box-shadow: var(--shadow-2);
 }
 
 /* ============================ TAB STRIP ==================================== */
@@ -265,10 +363,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 6px 14px;
   flex-wrap: wrap;
-  margin: 22px 0 var(--r);
-  padding-top: 3px;
+  margin: 10px 0 10px;
+  padding-top: 0;
   background: color-mix(in srgb, var(--bg) 90%, transparent);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -285,20 +383,20 @@
   border: none;
   cursor: pointer;
   font-family: var(--f-m);
-  font-size: 12.5px;
+  font-size: 12px;
   letter-spacing: 0.02em;
   color: var(--muted);
-  padding: 13px 12px 11px;
+  padding: 9px 10px 8px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   transition: color var(--dur-fast) var(--ease-out);
 }
 .planner .pv-tab svg {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
 }
 .planner .pv-tab:hover {
   color: var(--ink);
@@ -322,9 +420,18 @@
 .planner .pv-tabs__actions {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 0;
+  gap: 6px;
+  padding: 3px 0;
   flex-wrap: wrap;
+}
+/* en angosto el botón de importar/exportar queda solo con su ícono */
+@media (max-width: 900px) {
+  .planner .pv-iconbtn__txt {
+    display: none;
+  }
+  .planner .pv-iconbtn--label {
+    padding: 6px;
+  }
 }
 
 /* toggle recomendador (switch) */
@@ -336,15 +443,15 @@
   user-select: none;
   background: none;
   border: none;
-  padding: 6px 4px;
+  padding: 4px 3px;
   font-family: var(--f-m);
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--muted);
 }
 .planner .pv-switch {
   position: relative;
-  width: 36px;
-  height: 21px;
+  width: 30px;
+  height: 18px;
   flex: none;
   background: var(--panel-3);
   border: 1px solid var(--line-2);
@@ -357,8 +464,8 @@
   position: absolute;
   top: 2px;
   left: 2px;
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--muted);
   transition: left var(--dur-fast) var(--ease-out),
@@ -372,7 +479,7 @@
   border-color: var(--brass);
 }
 .planner .pv-rec-toggle[aria-checked="true"] .pv-switch::after {
-  left: 17px;
+  left: 14px;
   background: var(--block-ink);
 }
 
@@ -386,16 +493,20 @@
   border: 1px solid var(--line);
   color: var(--muted);
   border-radius: 999px;
-  padding: 8px;
+  padding: 6px;
   cursor: pointer;
   transition: color var(--dur-fast) var(--ease-out),
     border-color var(--dur-fast) var(--ease-out),
     background var(--dur-fast) var(--ease-out);
   font-family: var(--f-m);
-  font-size: 11px;
+  font-size: 10.5px;
+}
+.planner .pv-iconbtn svg {
+  width: 13px;
+  height: 13px;
 }
 .planner .pv-iconbtn--label {
-  padding: 8px 13px 8px 10px;
+  padding: 6px 11px 6px 9px;
 }
 .planner .pv-iconbtn:hover {
   color: var(--ink);
@@ -418,7 +529,10 @@
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
+  /* `proximity`, no `mandatory`: con snap obligatorio un gesto corto de
+     trackpad volvía a la misma tarjeta y no se podía recorrer el carrusel;
+     ahora se desplaza libre y solo encaja cuando queda cerca de un borde. */
+  scroll-snap-type: x proximity;
   scroll-padding-inline: 2px;
   scrollbar-width: none;
   padding: 2px 2px 6px;
@@ -432,6 +546,12 @@
   cursor: grabbing;
   scroll-snap-type: none;
   user-select: none;
+}
+/* arrastrando una materia entre cuatris: la pista corre libre (autoscroll
+   cerca de los bordes) y no encaja hasta soltar */
+.planner .pv-track.is-dragging {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
 }
 /* dos cuatrimestres "en foco" por vista (uno en angosto); el resto queda fuera */
 .planner .pv-track > .pv-sem {
@@ -493,6 +613,139 @@
   transition: border-color var(--dur-fast) var(--ease-out),
     box-shadow var(--dur-fast) var(--ease-out);
 }
+/* Cuatrimestre en curso: misma tarjeta, sin acciones, con el fondo apenas
+   más apagado y un rótulo «en curso» al lado del título. Arranca fuera de
+   vista a la izquierda del carrusel. */
+.planner .pv-sem--now {
+  background: var(--panel-2);
+  border-style: dashed;
+}
+.planner .pv-sem--now .pv-sem__when,
+.planner .pv-sem--ghost .pv-sem__when,
+.planner .pv-sem--new .pv-sem__when {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.planner .pv-sem__now-tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--brass) 38%, transparent);
+  background: var(--brass-soft);
+  color: var(--brass-2);
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.planner .pv-sem__nowlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.planner .pv-sem__nowmat {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: var(--r);
+  border: 1px solid color-mix(in srgb, var(--blk) 36%, transparent);
+  border-left: 3px solid var(--blk);
+  background: color-mix(in srgb, var(--blk) 18%, var(--panel));
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.planner .pv-sem__nowmat b {
+  font-family: var(--f-d);
+  font-size: 13px;
+  font-weight: 600;
+}
+.planner .pv-sem__nowmat span {
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Cuatrimestre nuevo (fantasma de vista previa / destino «+» del arrastre):
+   tarjeta punteada, más tenue, con el rótulo «nuevo». */
+.planner .pv-sem--ghost,
+.planner .pv-sem--new {
+  background: var(--panel-2);
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--brass) 45%, var(--line));
+}
+.planner .pv-sem--ghost {
+  opacity: 0.92;
+}
+.planner .pv-sem__now-tag--new {
+  color: var(--brass-2);
+}
+.planner .pv-sem__newbody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 220px;
+  text-align: center;
+  padding: 24px 16px;
+}
+.planner .pv-sem__plus {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 1.5px dashed color-mix(in srgb, var(--brass) 55%, transparent);
+  color: var(--brass);
+  background: var(--brass-soft);
+  transition: transform var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.planner .pv-sem--new.is-drop-ok .pv-sem__plus,
+.planner .pv-sem--new.is-drop-warn .pv-sem__plus {
+  transform: scale(1.08);
+}
+.planner .pv-sem--new.is-drop-ok .pv-sem__plus {
+  border-style: solid;
+  background: var(--brass);
+  color: var(--block-ink);
+}
+.planner .pv-sem__newtxt {
+  font-family: var(--f-d);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink);
+}
+.planner .pv-sem__newsub {
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+/* Bloque fantasma de la vista previa dentro de las tarjetas: el rótulo «vista
+   previa» va abajo a la derecha (arriba se pisaba con la abreviatura). En la
+   escala compacta el rótulo se omite —el borde punteado ya lo dice— y el
+   aula queda a la vista, que es el dato que importa al elegir. */
+.planner .pv-sem .cmbcal-blk.is-preview::after {
+  top: auto;
+  bottom: 3px;
+  right: 5px;
+}
+.planner .pv-sem .cmbcal--compact .cmbcal-blk.is-preview::after {
+  display: none;
+}
+
 .planner .pv-sem.is-preview {
   border-color: var(--brass);
   box-shadow: var(--shadow-1), 0 0 0 2px color-mix(in srgb, var(--brass) 30%, transparent);
@@ -772,28 +1025,40 @@
   color: var(--muted);
   margin-bottom: 8px;
 }
+/* Límites de este cuatri: los mismos steppers −/n/+ del banner, uno al lado
+   del otro, y «auto» (volver al límite general) debajo como pastilla. */
 .planner .pv-menu__caps {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  align-items: flex-end;
-  flex-wrap: wrap;
+  align-items: end;
 }
-/* NumField dentro del menú: compactamos el .plan2-field */
-.planner .pv-menu__caps .plan2-field {
-  flex: 1 1 92px;
+.planner .pv-menu__caps .pv-num {
   gap: 5px;
+  min-width: 0;
 }
-.planner .pv-menu__caps .plan2-field label {
-  font-size: 9.5px;
+.planner .pv-menu__caps .pv-num > label {
+  font-size: 9px;
+}
+.planner .pv-menu__caps .pv-num__ctl {
+  height: 30px;
+}
+.planner .pv-menu__caps .pv-num__btn {
+  width: 26px;
+}
+.planner .pv-menu__caps .pv-num .pv-num__val input {
+  font-size: 12px;
 }
 .planner .pv-menu__auto {
+  grid-column: 1 / -1;
+  justify-self: start;
   font-family: var(--f-m);
   font-size: 10.5px;
   color: var(--muted);
   background: var(--panel-2);
   border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 8px 11px;
+  border-radius: 999px;
+  padding: 6px 12px;
   cursor: pointer;
   transition: color var(--dur-fast) var(--ease-out),
     border-color var(--dur-fast) var(--ease-out);
@@ -1376,23 +1641,23 @@
 }
 
 /* ============================ + AGREGAR ELECTIVA (CTA) ================== */
-/* El llamado a la acción de la página: botón sólido brass, más alto que el
+/* El llamado a la acción de la página: botón sólido brass, a la altura del
    resto de la barra. Texto sobre color sólido = --block-ink (DESIGN §8). */
 .planner .pv-addelec {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 40px;
-  padding: 0 18px 0 14px;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 13px 0 10px;
   border-radius: 999px;
   border: 1px solid var(--brass);
   background: var(--brass);
   color: var(--block-ink);
   font-family: var(--f-b);
   font-weight: 600;
-  font-size: 13.5px;
+  font-size: 12.5px;
   cursor: pointer;
-  box-shadow: 0 6px 16px color-mix(in srgb, var(--brass) 28%, transparent);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--brass) 24%, transparent);
   transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out),
     background var(--dur-fast) var(--ease-out);
 }
@@ -1408,6 +1673,8 @@
 }
 .planner .pv-addelec svg {
   color: currentColor;
+  width: 13px;
+  height: 13px;
 }
 
 /* ============================ AVISO (abajo a la derecha) ================= */
@@ -1462,12 +1729,50 @@
 @media (max-width: 980px) {
   .planner .pv-config {
     grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 10px 16px 12px;
   }
+  /* apilado: el egreso a la izquierda y, tras una divisoria, créditos y
+     minors ocupando todo el ancho libre (antes quedaban apretados abajo) */
   .planner .pv-result {
-    padding-left: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 20px;
+    row-gap: 0;
+    padding: 10px 0 0;
     border-left: 0;
-    padding-top: 10px;
     border-top: 1px solid var(--line);
+  }
+  .planner .pv-result__grad {
+    align-self: stretch;
+    padding-right: 20px;
+    border-right: 1px solid var(--line);
+  }
+  .planner .pv-result__cred {
+    gap: 8px;
+  }
+  .planner .pv-result__cred .pv-strip__item {
+    display: flex;
+    max-width: 380px;
+  }
+  .planner .pv-result__cred .pv-strip__bar {
+    width: auto;
+    flex: 1 1 60px;
+    max-width: 200px;
+  }
+  .planner .pv-strip__minors {
+    gap: 6px 14px;
+  }
+}
+@media (max-width: 560px) {
+  .planner .pv-result {
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+  }
+  .planner .pv-result__grad {
+    padding-right: 0;
+    border-right: 0;
   }
 }
 @media (max-width: 640px) {
@@ -1495,4 +1800,25 @@
   .planner .plan2-fchip {
     transition: none;
   }
+}
+
+/* Límites por cuatri en el roadmap (details «Límites de este cuatri»): mismos
+   steppers que el banner y el menú de la tarjeta. */
+.planner .rmap-caps__body .pv-num {
+  align-items: flex-start;
+}
+.planner .rmap-caps__body .pv-num > label {
+  font-size: 9px;
+}
+.planner .rmap-caps__body .pv-num__ctl {
+  height: 30px;
+}
+.planner .rmap-caps__body .pv-num__btn {
+  width: 26px;
+}
+.planner .rmap-caps__body .pv-num .pv-num__val input {
+  font-size: 12px;
+}
+.planner .rmap-caps__auto {
+  border-radius: 999px;
 }
