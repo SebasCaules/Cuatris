@@ -8,7 +8,7 @@ import {
   type Dispatch,
   type ReactNode,
 } from "react";
-import { PLAN, esAnual, esPlanificable, remainingOblig } from "@/lib/planner/model";
+import { PLAN, esAnual, esPlanificable, remainingOblig, topeNominal } from "@/lib/planner/model";
 import { nextCuatri } from "@/lib/planner/optimize";
 
 /** «Electivas» se fusionó con «Materias»: cualquier pedido de la vista vieja
@@ -46,11 +46,25 @@ export type { Estado };
 const clampInt = (n: number, min: number, max: number) =>
   Number.isFinite(n) ? Math.min(max, Math.max(min, Math.round(n))) : min;
 
+/** Tope persistido → tope a usar: sin dato (undefined/0) → null (el nominal);
+ *  un default viejo por debajo del nominal → el nominal; si no, el guardado. */
+function heredarTope(
+  guardado: number | undefined,
+  defaultsViejos: number[],
+  nominal: number,
+): number | null {
+  if (!guardado) return null;
+  if (defaultsViejos.includes(guardado) && guardado < nominal) return nominal;
+  return guardado;
+}
+
 /** Estado inicial determinístico (igual en SSR y primer render del cliente).
  *  Build divulgable: arranca SIN materias aprobadas — cada usuario marca las
  *  suyas y se persisten en localStorage (ver persist.ts). */
 export function initialState(): PlannerState {
   const approved = new Set<string>(PLAN.aprobadasDefault);
+  // topes por default: el cuatrimestre más cargado del plan de estudios
+  const tope = topeNominal();
   return {
     view: "cuatri",
     approved,
@@ -78,8 +92,8 @@ export function initialState(): PlannerState {
       // se empieza a planificar en el cuatrimestre que SIGUE al que está en
       // curso: lo que se cursa hoy ya está decidido (marcado como «cursando»).
       start: nextCuatri(),
-      maxCred: 24,
-      maxMat: 5,
+      maxCred: tope.cred,
+      maxMat: tope.mat,
       avoid: true,
       method: "cuatris",
       capCredByIdx: new Map<number, number>(),
@@ -200,9 +214,17 @@ export function reducer(s: PlannerState, a: Action): PlannerState {
               : s.plan.lockPins,
           start: p.planOpts?.start ?? s.plan.start,
           // clamp defensivo: valores persistidos fuera de rango (de versiones
-          // previas con el input roto) no deben romper el plan
-          maxCred: clampInt(p.planOpts?.maxCred ?? s.plan.maxCred, 3, 40),
-          maxMat: clampInt(p.planOpts?.maxMat ?? s.plan.maxMat, 1, 9),
+          // previas con el input roto) no deben romper el plan. 0 = sin dato
+          // (import sin ese campo) → queda el tope nominal del estado inicial.
+          // Un tope guardado que es uno de los defaults viejos (18/24 cr,
+          // 5 materias) y quedó por debajo del nominal del plan se sube: nadie
+          // lo eligió, lo escribió el planner con su default de entonces.
+          maxCred: clampInt(
+            heredarTope(p.planOpts?.maxCred, [18, 24], s.plan.maxCred) ?? s.plan.maxCred,
+            3,
+            40,
+          ),
+          maxMat: clampInt(heredarTope(p.planOpts?.maxMat, [5], s.plan.maxMat) ?? s.plan.maxMat, 1, 9),
           avoid: p.planOpts?.avoid ?? s.plan.avoid,
           method: p.planOpts?.method ?? s.plan.method,
           capCredByIdx: p.planOpts?.capCredByIdx

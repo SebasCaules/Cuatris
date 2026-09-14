@@ -99,6 +99,34 @@ export const esPlanificable = (c: string) => !NO_PLANIFICABLES.has(c);
 export const esRequisito = (c: string) => REQUISITOS.has(c);
 export const esAnual = (c: string) => ANUALES.has(c);
 
+/** Carga del cuatrimestre más cargado de la grilla nominal del plan (créditos
+ *  y cantidad de obligatorias planificables): es el tope por default del
+ *  optimizador. Con menos, el plan no puede reproducir ni el cuatrimestre
+ *  nominal (Informática pide 27 cr en el 2.º cuatrimestre de 1.º año) y
+ *  desparrama materias. Sin grilla nominal (planes sin año/cuatrimestre),
+ *  24 cr y 5 materias. */
+export function topeNominal(): { cred: number; mat: number } {
+  const acc = new Map<string, { cred: number; mat: number }>();
+  for (const m of PLAN.obligatorias) {
+    if (m.anio == null || m.cuatri == null || !esPlanificable(m.codigo)) continue;
+    const k = `${m.anio}/${m.cuatri}`;
+    const a = acc.get(k) ?? { cred: 0, mat: 0 };
+    a.cred += m.creditos || 0;
+    a.mat += 1;
+    acc.set(k, a);
+  }
+  let cred = 0;
+  let mat = 0;
+  for (const a of acc.values()) {
+    cred = Math.max(cred, a.cred);
+    mat = Math.max(mat, a.mat);
+  }
+  return {
+    cred: cred ? Math.min(40, Math.max(3, cred)) : 24,
+    mat: mat ? Math.min(9, Math.max(1, mat)) : 5,
+  };
+}
+
 export const remainingOblig = (approved: Set<string>) =>
   PLAN.obligatorias
     .filter((m) => !approved.has(m.codigo) && esPlanificable(m.codigo))

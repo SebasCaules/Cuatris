@@ -152,8 +152,12 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   de la carrera… Ver toda la carrera»): el plan se ve entero de entrada. Se quitó
   `showFullCareer`/`careerFolded` y el bloque `.pv-firstrun*` de `planview.css`. La pestaña
   inicial es siempre Calendario (antes Roadmap con más de 6 cuatrimestres).
-- `state.tsx` y `persist.ts`: máximo de créditos por cuatrimestre por default 24 (era 18);
-  el fallback al importar un `.json` sin ese dato, igual.
+- `state.tsx` y `persist.ts`: los topes por default de créditos y materias por cuatrimestre
+  salen del plan de estudios: el cuatrimestre nominal más cargado (`topeNominal()` en
+  `model.ts`; Informática: 27 cr y 6 materias, por el 2.º cuatrimestre de 1.º año). Con
+  menos, el optimizador no podía reproducir ni la grilla nominal. Un tope guardado que es
+  uno de los defaults viejos (18/24 cr, 5 materias) y queda por debajo del nominal se sube
+  al hidratar (`heredarTope`); un `.json` sin ese dato (0) también toma el nominal.
 - `planner.css`: `.rmap-stop__card` con `box-sizing:border-box` — con `height:100%` +
   padding en content-box la tarjeta desbordaba la celda y pisaba la fila de abajo.
 
