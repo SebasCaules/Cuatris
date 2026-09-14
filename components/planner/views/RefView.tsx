@@ -1,5 +1,6 @@
 "use client";
 
+import { normalizar } from "@/lib/planner/texto";
 import { useMemo, useState } from "react";
 import { PLAN } from "@/lib/planner/model";
 import type { Materia } from "@/lib/planner/types";
@@ -8,10 +9,10 @@ export default function RefView() {
   const [query, setQuery] = useState("");
 
   const all = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = normalizar(query.trim());
     return [...PLAN.obligatorias, ...PLAN.electivas]
       .filter((m) =>
-        (m.codigo + " " + m.nombre + " " + m.abbr).toLowerCase().includes(q),
+        normalizar(m.codigo + " " + m.nombre + " " + m.abbr).includes(q),
       )
       .sort((a, b) => a.abbr.localeCompare(b.abbr));
   }, [query]);

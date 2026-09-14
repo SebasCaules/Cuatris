@@ -7,6 +7,7 @@
 // cada cuatrimestre marca todo el grupo como terminado (final aprobado, o
 // promocionada si no rinde); el control de la fila cicla el estado; cada cosa
 // explica qué hace con el Tooltip del planner. Un año completo se pliega solo.
+import { normalizar } from "@/lib/planner/texto";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePlanner } from "@/components/planner/state";
 import { PLAN, hasHorario } from "@/lib/planner/model";
@@ -111,9 +112,9 @@ export default function CuatriView() {
   };
 
   const years = useMemo<YearGroup[]>(() => {
-    const q = search.toLowerCase();
+    const q = normalizar(search);
     const passSearch = (m: Materia) =>
-      !q || `${m.codigo} ${m.nombre} ${m.abbr}`.toLowerCase().includes(q);
+      !q || normalizar(`${m.codigo} ${m.nombre} ${m.abbr}`).includes(q);
 
     let list = PLAN.obligatorias.filter(passSearch);
     if (fDisp)

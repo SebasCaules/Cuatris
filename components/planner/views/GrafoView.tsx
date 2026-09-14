@@ -1,5 +1,6 @@
 "use client";
 
+import { normalizar } from "@/lib/planner/texto";
 import "../grafo.css";
 import {
   useCallback,
@@ -453,15 +454,15 @@ export default function GrafoView() {
   // Prioriza prefijo de código o abbr; si no, primer "contiene" (código/abbr/nombre).
   const matchNode = useCallback(
     (raw: string): string | null => {
-      const q = raw.trim().toLowerCase();
+      const q = normalizar(raw.trim());
       if (!q) return null;
       let incl: string | null = null;
       for (const n of nodes) {
-        const code = n.id.toLowerCase();
-        const abbr = n.abbr.toLowerCase();
+        const code = normalizar(n.id);
+        const abbr = normalizar(n.abbr);
         if (code.startsWith(q) || abbr.startsWith(q)) return n.id;
         if (!incl) {
-          const name = (byId.get(n.id)?.nombre ?? "").toLowerCase();
+          const name = normalizar(byId.get(n.id)?.nombre ?? "");
           if (code.includes(q) || abbr.includes(q) || name.includes(q))
             incl = n.id;
         }

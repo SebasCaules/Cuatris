@@ -1,5 +1,6 @@
 "use client";
 
+import { normalizar } from "@/lib/planner/texto";
 import { useMemo, useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { usePlanner } from "./state";
@@ -132,7 +133,7 @@ export default function Sidebar({
     setSearchInput(value);
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      dispatch({ type: "SET_SEARCH", value: value.trim().toLowerCase() });
+      dispatch({ type: "SET_SEARCH", value: normalizar(value.trim()) });
     }, 140);
   };
 

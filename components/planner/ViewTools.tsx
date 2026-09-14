@@ -3,6 +3,7 @@
 // Controles que antes vivían en el rail izquierdo y ahora van en la cabecera de
 // la vista que los consume: búsqueda (Mis materias, Electivas), filtros y
 // minors (Electivas) y el restablecer de aprobadas (Mis materias, Electivas).
+import { normalizar } from "@/lib/planner/texto";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePlanner } from "./state";
@@ -33,7 +34,7 @@ export function SearchField({ placeholder = "Buscar código o materia" }: { plac
     setValue(v);
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      dispatch({ type: "SET_SEARCH", value: v.trim().toLowerCase() });
+      dispatch({ type: "SET_SEARCH", value: normalizar(v.trim()) });
     }, 140);
   };
 

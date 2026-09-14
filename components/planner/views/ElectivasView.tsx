@@ -1,5 +1,6 @@
 "use client";
 
+import { normalizar } from "@/lib/planner/texto";
 import { memo, useMemo, useState, type Dispatch } from "react";
 import { usePlanner, type Action } from "@/components/planner/state";
 import { EstadoControl } from "@/components/planner/EstadoControl";
@@ -173,10 +174,10 @@ export function ElectivasSection() {
   const [q2, setQ2] = useState("");
 
   const list = useMemo(() => {
-    const q = search.toLowerCase();
-    const q2n = q2.trim().toLowerCase();
+    const q = normalizar(search);
+    const q2n = normalizar(q2.trim());
     const passSearch = (m: Materia) => {
-      const txt = (m.codigo + " " + m.nombre + " " + m.abbr).toLowerCase();
+      const txt = normalizar(m.codigo + " " + m.nombre + " " + m.abbr);
       return (!q || txt.includes(q)) && (!q2n || txt.includes(q2n));
     };
     let l = PLAN.electivas.filter(passSearch).filter((m) => {

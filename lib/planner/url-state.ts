@@ -7,6 +7,7 @@
 //     las que están en su valor default, para una URL corta y estable.
 // Contrato completo (taxonomía de claves, reglas): site/lib/url-state/README.md
 // → tabla "Detalle planner".
+import { normalizar } from "@/lib/planner/texto";
 import { csv, flag, setOrDelete } from "@/lib/url-state/core";
 import { byId, PLAN } from "./model";
 import { FICHAS } from "./fichas";
@@ -48,7 +49,7 @@ export function decodePlannerUrl(p: URLSearchParams): PlannerUrlState {
 
   // mismo normalizado que SET_SEARCH (Sidebar): trim + lowercase.
   const pq = p.get("pq");
-  if (pq != null) out.search = pq.trim().toLowerCase();
+  if (pq != null) out.search = normalizar(pq.trim());
 
   const areasRaw = p.get("areas");
   if (areasRaw != null) {

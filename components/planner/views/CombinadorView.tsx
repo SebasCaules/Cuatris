@@ -1,5 +1,6 @@
 "use client";
 
+import { normalizar } from "@/lib/planner/texto";
 import "@/components/planner/combinador.css";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -61,11 +62,7 @@ const periodoLabel = () => PLAN.periodoLabel || "2.º cuatrimestre 2026";
 /** Tope de sugerencias que muestra el recomendador slim (panel angosto). */
 const SUGGEST_LIMIT = 14;
 
-const norm = (s: string) =>
-  s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "");
+const norm = normalizar;
 const hhmm = (m: number) =>
   `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 
