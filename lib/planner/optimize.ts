@@ -8,7 +8,12 @@
 //      1. Prioridad por CAMINO CRÍTICO: las materias que destraban cadenas
 //         largas de correlativas se ubican primero.
 //      2. Empaquetado FFD por créditos para llenar cada cuatrimestre.
-//      3. Selección de comisión que minimiza los días distintos en el campus.
+//      3. Selección de comisión que minimiza las IDAS a la facultad
+//         (`viajesDe`): una comisión que termina en la sede donde arranca la
+//         siguiente materia cuenta una sola ida; recién después, menos días
+//         distintos y menos espera entre bloques. Siempre se prefiere una
+//         comisión sin superposición si existe (con `avoid` apagado, la
+//         materia entra igual con la menos mala si no hay ninguna libre).
 //      4. Compactación: adelanta materias de cuatrimestres tardíos a previos
 //         de igual paridad que tengan lugar.
 //  - "dias": minimizar los días distintos de campus por semana.
@@ -29,9 +34,27 @@
 // Los caps por cuatrimestre (`PL.capCredByIdx` / `PL.capMatByIdx`, con
 // fallback a `PL.maxCred` / `PL.maxMat`) se respetan como tope DURO en los
 // tres métodos, tanto al colocar como al compactar.
-import { byId } from "./model";
+//
+// ORDEN DEL PLAN DE ESTUDIOS (preferencia, no invariante): las obligatorias
+// se colocan en el orden nominal de su plan (año/cuatrimestre) y en cada
+// cuatrimestre sólo entran las que están a lo sumo ORDEN_VENTANA cuatrimestres
+// por delante de la obligatoria pendiente más temprana. Así una materia de 5.º
+// no se mezcla con una de 1.º aunque correlativas y créditos lo permitan; la
+// de 5.º espera a que las anteriores estén ubicadas. Vale al colocar, al
+// compactar y al rebalancear (una materia no se adelanta a un cuatri cuyas
+// obligatorias son de años muy anteriores). Las electivas no tienen orden
+// nominal y no participan de la ventana; lo fijado a mano tampoco.
+//
+// Materias ANUALES (Proyecto Final: 12 cr en un año continuo): se ubican como
+// DOS MITADES en cuatrimestres consecutivos (i, i+1), cada una con la mitad de
+// los créditos y contando como una materia en cada uno; las dos tienen que
+// entrar en sus caps. Sin paridad (arrancan en cualquier cuatrimestre). Sus
+// dependientes van después de la segunda mitad. Las mitades no se compactan
+// ni se rebalancean sueltas: la colocación ya las deja en el primer par de
+// cuatrimestres donde caben.
+import { byId, esAnual } from "./model";
 import { approvedCredits } from "./metrics";
-import { comConflict, isAsync } from "./time";
+import { comConflict, isAsync, viajesDe } from "./time";
 import type {
   Comision,
   MateriaM,
@@ -53,6 +76,27 @@ export const cuatriAt = (start: PlanStart, i: number): PlanStart => {
   }
   return { parity: p, year: y };
 };
+
+/** Orden cronológico de dos cuatrimestres (negativo si `a` es anterior). */
+export const compareCuatri = (a: PlanStart, b: PlanStart): number =>
+  a.year - b.year || a.parity - b.parity;
+
+/**
+ * Cuatrimestre en curso según la fecha: marzo–julio es el 1.º, agosto–
+ * diciembre el 2.º; enero y febrero son receso y cuentan como el 2.º del año
+ * anterior (todavía no empezó nada nuevo).
+ */
+export const currentCuatri = (date: Date = new Date()): PlanStart => {
+  const m = date.getMonth() + 1;
+  const y = date.getFullYear();
+  if (m >= 8) return { parity: 2, year: y };
+  if (m >= 3) return { parity: 1, year: y };
+  return { parity: 2, year: y - 1 };
+};
+
+/** El próximo cuatrimestre a planificar: el que sigue al que está en curso. */
+export const nextCuatri = (date: Date = new Date()): PlanStart =>
+  cuatriAt(currentCuatri(date), 1);
 
 export const cuatriLabel = (c: PlanStart) =>
   (c.parity === 1 ? "1c" : "2c") + "-" + String(c.year).slice(-2);
@@ -98,6 +142,53 @@ const capCred = (PL: PlanState, i: number): number =>
 const capMat = (PL: PlanState, i: number): number =>
   PL.capMatByIdx.get(i) ?? PL.maxMat;
 
+/* ---------- orden nominal del plan de estudios ---------- */
+
+/** Cuatrimestres de adelanto que se toleran respecto de la obligatoria
+ *  pendiente más temprana (2 = un año lectivo). */
+const ORDEN_VENTANA = 2;
+
+/** Índice nominal 0.. de una obligatoria en su plan ((año-1)·2 + cuatri-1);
+ *  null para electivas y materias sin año. */
+const nominalIdx = (m: MateriaM): number | null => {
+  if (m.tipo !== "obligatoria" || m.anio == null) return null;
+  return (m.anio - 1) * 2 + (m.cuatri != null ? m.cuatri - 1 : 0);
+};
+
+/** Menor índice nominal entre las materias dadas (null si ninguna lo tiene). */
+const anchorOf = (ms: Iterable<MateriaM>): number | null => {
+  let min: number | null = null;
+  for (const m of ms) {
+    const n = nominalIdx(m);
+    if (n != null && (min == null || n < min)) min = n;
+  }
+  return min;
+};
+
+/** ¿`m` está demasiado adelantada respecto de `anchor`? (fuera de la ventana) */
+const fueraDeOrden = (m: MateriaM, anchor: number | null): boolean => {
+  const n = nominalIdx(m);
+  return n != null && anchor != null && n > anchor + ORDEN_VENTANA;
+};
+
+/* ---------- materias anuales: dos mitades consecutivas ---------- */
+
+/** Créditos de cada mitad (la primera se lleva el redondeo hacia arriba). */
+const mitadCred = (m: MateriaM, parte: 1 | 2): number => {
+  const c = m.creditos || 0;
+  return parte === 1 ? Math.ceil(c / 2) : Math.floor(c / 2);
+};
+
+/** La materia tal como se ubica en un cuatrimestre: media carga y el número
+ *  de mitad en el nombre y la sigla, para que el plan las distinga. */
+const mitadDe = (m: MateriaM, parte: 1 | 2): MateriaM => ({
+  ...m,
+  creditos: mitadCred(m, parte),
+  nombre: `${m.nombre} · ${parte}.ª mitad`,
+  abbr: `${m.abbr}${parte === 1 ? "¹" : "²"}`,
+  parity: null, // arranca en cualquier cuatrimestre; la 2.ª mitad va al siguiente
+});
+
 /* ---------- helpers de comisión / horario ---------- */
 
 const comsOf = (m: MateriaM): Comision[] =>
@@ -121,14 +212,22 @@ const usedDaysOf = (placed: PlacedMateria[]): Set<string> => {
 const hasFreeCom = (coms: Comision[], placed: PlacedMateria[]): boolean =>
   coms.some((c) => !placed.some((x) => x.com && comConflict(x.com, c)));
 
-// Elige la comisión más compacta: menos días nuevos en el campus, luego menos
-// días en total, luego orden original. En modo `avoid` prefiere comisiones sin
-// superposición; si no hay ninguna, cae a la mejor igual (el llamador decide si
-// la ubica o no vía hasFreeCom).
+// Puntaje de un conjunto de comisiones (un cuatrimestre): idas a la facultad
+// ≫ días distintos ≫ espera entre bloques. Menor es mejor.
+const comScore = (coms: (Comision | null | undefined)[]): number => {
+  const v = viajesDe(coms);
+  return v.viajes * 10000 + v.dias * 100 + Math.min(99, Math.round(v.espera / 15));
+};
+
+// Elige la comisión que menos idas a la facultad agrega a lo ya puesto en el
+// cuatrimestre (pegada a otra materia en la misma sede = misma ida), luego
+// menos días, menos espera y orden original. SIEMPRE prefiere una comisión
+// sin superposición con lo elegido; si no hay ninguna, cae a la mejor igual
+// (el llamador decide si la ubica o no vía hasFreeCom / `avoid`).
 const chooseCom = (
   coms: Comision[],
   placed: PlacedMateria[],
-  avoid: boolean,
+  _avoid: boolean,
   fixedComision?: string,
 ): Comision | null => {
   if (!coms.length) return null;
@@ -136,21 +235,13 @@ const chooseCom = (
     const fx = coms.find((c) => c.comision === fixedComision);
     if (fx) return fx;
   }
-  const free = avoid
-    ? coms.filter((c) => !placed.some((x) => x.com && comConflict(x.com, c)))
-    : coms;
+  const free = coms.filter((c) => !placed.some((x) => x.com && comConflict(x.com, c)));
   const cand = free.length ? free : coms;
-  const used = usedDaysOf(placed);
+  const base = placed.map((x) => x.com);
   let best = cand[0];
   let bestScore = Infinity;
   cand.forEach((c, idx) => {
-    const days = comDays(c);
-    let extra = 0;
-    days.forEach((d) => {
-      if (!used.has(d)) extra++;
-    });
-    // peso: días nuevos ≫ días totales ≫ orden de la cátedra
-    const score = extra * 1000 + days.size * 10 + idx;
+    const score = comScore([...base, c]) * 10 + Math.min(9, idx);
     if (score < bestScore) {
       bestScore = score;
       best = c;
@@ -158,6 +249,104 @@ const chooseCom = (
   });
   return best;
 };
+
+/* ---------- reelección de comisiones del cuatrimestre ---------- */
+
+// Cuando ninguna comisión de la candidata queda libre contra lo YA elegido en
+// el cuatrimestre, la colocación greedy la descartaba aunque el cuatrimestre
+// la admitiera cambiando alguna comisión ya puesta (Derecho tiene ocho; la
+// «F» del lunes 16–19 le cerraba la puerta a cualquier electiva del lunes).
+// Busca una asignación de comisiones sin superposiciones para las materias
+// puestas más la candidata —respetando las comisiones fijadas por el usuario—
+// y, entre las factibles, la de menos idas a la facultad (`comScore`).
+// Devuelve null si no existe ninguna. El espacio es chico (≤ capMat materias por cuatri) y
+// además se acota por nodos visitados.
+interface ComAssignment {
+  coms: (Comision | null)[]; // una por materia puesta, en el mismo orden
+  candCom: Comision | null; // la de la candidata
+}
+
+const RESOLVE_BUDGET = 4000;
+
+function resolveComs(
+  placed: PlacedMateria[],
+  cand: MateriaM,
+  fixedCom: Map<string, string> | undefined,
+): ComAssignment | null {
+  const mats = [...placed.map((x) => x.m), cand];
+  const options: (Comision | null)[][] = mats.map((m) => {
+    const coms = comsOf(m);
+    if (!coms.length) return [null];
+    const fx = fixedCom?.get(m.codigo);
+    if (fx) {
+      const c = coms.find((x) => x.comision === fx);
+      if (c) return [c];
+    }
+    return coms;
+  });
+  const chosen: (Comision | null)[] = [];
+  let best: (Comision | null)[] | null = null;
+  let bestScore = Infinity;
+  let nodes = 0;
+  const rec = (k: number): void => {
+    if (nodes++ > RESOLVE_BUDGET) return;
+    if (k === mats.length) {
+      const sc = comScore(chosen);
+      if (sc < bestScore) {
+        bestScore = sc;
+        best = chosen.slice();
+      }
+      return;
+    }
+    for (const c of options[k]) {
+      if (c && chosen.some((o) => o && comConflict(o, c))) continue;
+      chosen.push(c);
+      rec(k + 1);
+      chosen.pop();
+      if (bestScore <= 10000 + 100) return; // una sola ida: no se puede mejorar
+    }
+  };
+  rec(0);
+  if (best === null) return null;
+  const asg = best as (Comision | null)[];
+  return { coms: asg.slice(0, placed.length), candCom: asg[placed.length] };
+}
+
+// Aplica una asignación a las materias ya puestas (misma posición).
+const applyComs = (placed: PlacedMateria[], coms: (Comision | null)[]) => {
+  placed.forEach((x, k) => {
+    x.com = coms[k];
+  });
+};
+
+/**
+ * Comisiones para un conjunto de materias que se cursan JUNTAS (el cuatrimestre
+ * en curso): la fijada por el usuario si la hay; si no, la que no se pisa con
+ * las demás (reeligiendo si hace falta) y suma menos idas a la facultad. Sin
+ * asignación libre de superposiciones, cae a la más compacta igual: es una
+ * foto de lo que se cursa, no una optimización.
+ */
+export function assignComs(
+  mats: MateriaM[],
+  fixedCom?: Map<string, string>,
+): PlacedMateria[] {
+  const placed: PlacedMateria[] = [];
+  for (const m of mats) {
+    const coms = comsOf(m);
+    if (!coms.length) {
+      placed.push({ m, com: null });
+      continue;
+    }
+    const re = resolveComs(placed, m, fixedCom);
+    if (re) {
+      applyComs(placed, re.coms);
+      placed.push({ m, com: re.candCom });
+    } else {
+      placed.push({ m, com: chooseCom(coms, placed, false, fixedCom?.get(m.codigo)) });
+    }
+  }
+  return placed;
+}
 
 /* ---------- orden de colocación (camino crítico) ---------- */
 
@@ -173,6 +362,13 @@ function buildCriticalOrder(
   for (const m of mats) {
     for (const c of m.correlativas || []) {
       if (!codeSet.has(c)) continue; // correlativa ya aprobada → no cuenta
+      // Una electiva no alarga la cadena crítica de una obligatoria: contar
+      // «BDII destraba Grafos» como profundidad de BDII la hacía saltar por
+      // delante de otras obligatorias en cuanto se agregaba la electiva al
+      // pool, y ese reordenamiento empujaba materias a cuatrimestres nuevos
+      // (el recomendador marcaba «alarga» a electivas que entran de sobra).
+      // Entre electivas sí se cuenta: sólo ordena a las electivas entre sí.
+      if (m.tipo === "electiva" && byId.get(c)?.tipo !== "electiva") continue;
       const arr = dependents.get(c);
       if (arr) arr.push(m.codigo);
       else dependents.set(c, [m.codigo]);
@@ -194,8 +390,12 @@ function buildCriticalOrder(
     depthMemo.set(code, d);
     return d;
   };
+  // obligatorias antes que electivas; entre obligatorias, primero las de
+  // año/cuatrimestre más temprano del plan (orden nominal) y recién después
+  // el camino crítico: así cada cuatrimestre se llena con lo que «toca».
   return (a: MateriaM, b: MateriaM) =>
     (a.tipo === b.tipo ? 0 : a.tipo === "obligatoria" ? -1 : 1) ||
+    (nominalIdx(a) ?? 99) - (nominalIdx(b) ?? 99) ||
     depthOf(b.codigo) - depthOf(a.codigo) ||
     (b.creditos || 0) - (a.creditos || 0) ||
     (b.creditosReq || 0) - (a.creditosReq || 0) ||
@@ -221,9 +421,14 @@ function placeMats(
   mats: MateriaM[],
   order: (a: MateriaM, b: MateriaM) => number,
   N: number,
+  // Con `seed`, `mats` se colocan SOBRE un plan ya armado (relleno de
+  // electivas en el esqueleto de obligatorias): los cuatrimestres conservan lo
+  // que tienen y sólo se ocupa el lugar que sobra.
+  seed?: { items: PlacedMateria[][]; placedIdx: Record<string, number> },
 ): PlaceResult {
-  const items: PlacedMateria[][] = Array.from({ length: N }, () => []);
-  const placedIdx: Record<string, number> = {};
+  const items: PlacedMateria[][] =
+    seed?.items ?? Array.from({ length: N }, () => []);
+  const placedIdx: Record<string, number> = seed?.placedIdx ?? {};
   let acc = approvedCredits(approved);
   let remaining = mats.slice();
   const prereqDone = (m: MateriaM, i: number) =>
@@ -232,44 +437,107 @@ function placeMats(
         approved.has(c) || (placedIdx[c] !== undefined && placedIdx[c] < i),
     );
 
+  const credOfCuatri = (it: PlacedMateria[]) =>
+    it.reduce((s, x) => s + (x.m.creditos || 0), 0);
+
   for (let i = 0; i < N && remaining.length; i++) {
     const cu = cuatriAt(PL.start, i);
-    const place = (m: MateriaM) => {
+    const place = (m: MateriaM, com?: Comision | null) => {
+      if (esAnual(m.codigo)) {
+        // dos mitades: i e i+1; los dependientes se cuentan desde la segunda
+        for (const parte of [1, 2] as const) {
+          const j = i + parte - 1;
+          if (j >= N) break;
+          const mm = mitadDe(m, parte);
+          const coms = comsOf(m);
+          items[j].push({
+            m: mm,
+            com:
+              parte === 1 && com !== undefined
+                ? com
+                : chooseCom(coms, items[j], PL.avoid, fixedCom?.get(m.codigo)),
+            parte,
+          });
+          placedIdx[m.codigo] = j;
+        }
+        return;
+      }
       const coms = comsOf(m);
       items[i].push({
         m,
-        com: chooseCom(coms, items[i], PL.avoid, fixedCom?.get(m.codigo)),
+        com:
+          com !== undefined
+            ? com
+            : chooseCom(coms, items[i], PL.avoid, fixedCom?.get(m.codigo)),
       });
       placedIdx[m.codigo] = i;
     };
+    /** ¿Entra la segunda mitad de una anual en i+1? (cap de materias y de
+     *  créditos del cuatrimestre siguiente, que no esté finalizado). */
+    const cabeSegundaMitad = (m: MateriaM): boolean => {
+      const j = i + 1;
+      if (j >= N || PL.lockedIdx.has(j)) return false;
+      if (items[j].length >= capMat(PL, j)) return false;
+      const add = mitadCred(m, 2);
+      return items[j].length === 0 || credOfCuatri(items[j]) + add <= capCred(PL, j);
+    };
     // materias fijadas a este cuatrimestre van sí o sí
-    remaining.filter((m) => PL.fixed.get(m.codigo) === i).forEach(place);
+    remaining
+      .filter((m) => PL.fixed.get(m.codigo) === i)
+      .forEach((m) => place(m));
     remaining = remaining.filter((m) => placedIdx[m.codigo] === undefined);
 
     // cuatrimestre finalizado (lockeado): sólo lo ya pineado vía `fixed` vive
     // acá; no se rellena con materias nuevas.
     if (!PL.lockedIdx.has(i)) {
-      const cand = remaining
+      const feasibles = remaining
         .filter((m) => {
           const fx = PL.fixed.get(m.codigo);
           if (fx !== undefined && fx !== null && fx !== i) return false;
-          if (m.parity !== null && m.parity !== cu.parity) return false;
+          // las anuales arrancan en cualquier cuatrimestre
+          if (!esAnual(m.codigo) && m.parity !== null && m.parity !== cu.parity) return false;
           if ((m.creditosReq || 0) > acc) return false;
           return prereqDone(m, i);
         })
         .sort(order);
+      // Orden del plan: la obligatoria pendiente más temprana marca hasta
+      // dónde se puede adelantar en este cuatrimestre (ORDEN_VENTANA). Si con
+      // esa ventana no entra NINGUNA, se abre de a un año hasta que algo
+      // entre: preferir el orden nunca deja un cuatrimestre vacío.
+      const anchor = anchorOf(remaining.filter((m) => PL.fixed.get(m.codigo) == null));
+      let cand = feasibles;
+      if (anchor != null) {
+        for (let w = ORDEN_VENTANA; ; w += 2) {
+          const lim = anchor + w;
+          cand = feasibles.filter((m) => {
+            const n = nominalIdx(m);
+            return n == null || n <= lim;
+          });
+          if (cand.length || !feasibles.some((m) => nominalIdx(m) != null)) break;
+        }
+      }
 
       const hardMat = capMat(PL, i);
       const hardCred = capCred(PL, i);
 
       for (const m of cand) {
         if (items[i].length >= hardMat) break;
-        const cred = items[i].reduce((s, x) => s + (x.m.creditos || 0), 0);
-        const add = m.creditos || 0;
+        const cred = credOfCuatri(items[i]);
+        const anual = esAnual(m.codigo);
+        const add = anual ? mitadCred(m, 1) : m.creditos || 0;
         if (items[i].length > 0 && cred + add > hardCred) continue;
+        if (anual && !cabeSegundaMitad(m)) continue;
         const coms = comsOf(m);
-        // en modo avoid, no la ubico si no hay comisión sin superposición
-        if (PL.avoid && coms.length && !hasFreeCom(coms, items[i])) continue;
+        // en modo avoid, no la ubico si no hay comisión sin superposición…
+        if (PL.avoid && coms.length && !hasFreeCom(coms, items[i])) {
+          // …salvo que el cuatrimestre entero admita otra combinación de
+          // comisiones (reelección) que la deje entrar.
+          const re = resolveComs(items[i], m, fixedCom);
+          if (!re) continue;
+          applyComs(items[i], re.coms);
+          place(m, re.candCom);
+          continue;
+        }
         place(m);
       }
       remaining = remaining.filter((m) => placedIdx[m.codigo] === undefined);
@@ -316,6 +584,7 @@ function compact(
       for (const it of items[i]) {
         const fx = PL.fixed.get(it.m.codigo);
         if (fx !== undefined && fx !== null) continue;
+        if (it.parte) continue; // mitad de una anual: se queda con su par
         let done = false;
         for (let j = 0; j < i; j++) {
           if (PL.lockedIdx.has(j)) continue; // no adelantar a un cuatri finalizado
@@ -333,25 +602,41 @@ function compact(
           if (items[j].length >= capMat(PL, j)) continue;
           if (credOfCuatri(items[j]) + (it.m.creditos || 0) > capCred(PL, j))
             continue;
+          // orden del plan: no adelantar a un cuatri cuyas obligatorias son de
+          // años muy anteriores (mezclaría 1.º con 5.º)
+          if (fueraDeOrden(it.m, anchorOf(items[j].map((x) => x.m)))) continue;
           const comsM = comsOf(it.m);
           let comJ = it.com;
+          let reComs: (Comision | null)[] | null = null;
           if (comsM.length) {
-            if (PL.avoid && !hasFreeCom(comsM, items[j])) continue;
-            const cJ = chooseCom(
-              comsM,
-              items[j],
-              PL.avoid,
-              fixedCom?.get(it.m.codigo),
-            );
+            let cJ: Comision | null;
+            if (PL.avoid && !hasFreeCom(comsM, items[j])) {
+              // ninguna comisión libre contra lo elegido: probar reeligiendo
+              // las comisiones del cuatrimestre destino.
+              const re = resolveComs(items[j], it.m, fixedCom);
+              if (!re) continue;
+              reComs = re.coms;
+              cJ = re.candCom;
+            } else {
+              cJ = chooseCom(
+                comsM,
+                items[j],
+                PL.avoid,
+                fixedCom?.get(it.m.codigo),
+              );
+            }
             if (opts.noNewDays) {
-              const used = usedDaysOf(items[j]);
-              const addsNewDay = cJ
-                ? [...comDays(cJ)].some((d) => !used.has(d))
-                : false;
-              if (addsNewDay) continue; // adelantarla sumaría un día de campus nuevo
+              const before = usedDaysOf(items[j]).size;
+              const after = new Set<string>();
+              (reComs ?? items[j].map((x) => x.com)).forEach(
+                (c) => c && comDays(c).forEach((d) => after.add(d)),
+              );
+              if (cJ) comDays(cJ).forEach((d) => after.add(d));
+              if (after.size > before) continue; // sumaría un día de campus nuevo
             }
             comJ = cJ;
           }
+          if (reComs) applyComs(items[j], reComs);
           it.com = comJ;
           items[i] = items[i].filter((x) => x !== it);
           items[j].push(it);
@@ -463,6 +748,7 @@ function rebalance(
       // varianza que varios chicos.
       const cands = items[i]
         .filter((x) => {
+          if (x.parte) return false; // mitad de una anual: se queda con su par
           const fx = PL.fixed.get(x.m.codigo);
           return fx === undefined || fx === null;
         })
@@ -489,6 +775,9 @@ function rebalance(
           if (credOfCuatri(items[j]) + (it.m.creditos || 0) > capCred(PL, j))
             continue;
           if ((it.m.creditosReq || 0) > accB[j]) continue;
+          // orden del plan: ni adelantarla a un cuatri de años muy anteriores
+          // ni meter en i… (j > i) una materia muy posterior a lo que hay en j
+          if (fueraDeOrden(it.m, anchorOf(items[j].map((x) => x.m)))) continue;
           if (j < i) {
             // más temprano: sus propias correlativas deben seguir cumplidas.
             if (
@@ -549,6 +838,95 @@ function rebalance(
   return moved;
 }
 
+/* ---------- colocación base: mezclada vs. esqueleto + relleno ---------- */
+
+interface BaseResult extends PlaceResult {
+  moved: number;
+}
+
+const usedCuatris = (items: PlacedMateria[][]) =>
+  items.filter((it) => it.length).length;
+
+// Último cuatrimestre con materias: la fecha de egreso del plan.
+const lastCuatri = (items: PlacedMateria[][]) => {
+  let last = -1;
+  items.forEach((it, i) => {
+    if (it.length) last = i;
+  });
+  return last;
+};
+
+// Colocación + compactación de `mats` (con las opciones de compactación del
+// método), opcionalmente sobre un plan semilla.
+function placeAndCompact(
+  PL: PlanState,
+  approved: Set<string>,
+  fixedCom: Map<string, string> | undefined,
+  mats: MateriaM[],
+  N: number,
+  opts: CompactOpts,
+  seed?: { items: PlacedMateria[][]; placedIdx: Record<string, number> },
+): BaseResult {
+  const order = buildCriticalOrder(mats);
+  const r = placeMats(PL, approved, fixedCom, mats, order, N, seed);
+  const moved = compact(PL, approved, fixedCom, r.items, r.placedIdx, N, opts);
+  return { ...r, moved };
+}
+
+// Dos colocaciones, y se queda con la mejor:
+//  - M (mezclada): todo el pool junto, el comportamiento histórico. Las
+//    electivas compiten por el lugar con las obligatorias.
+//  - F (esqueleto + relleno): primero las obligatorias y lo fijado a un
+//    cuatrimestre —el esqueleto, compactado—, y después las electivas ocupan el
+//    lugar que sobra; sólo abren cuatrimestres nuevos si no hay lugar.
+// M puede ganar cuando una electiva temprana suma los créditos que destraban
+// una obligatoria (créditos requeridos). Pero en M una electiva colocada
+// temprano también podía quedarse con el hueco al que la compactación iba a
+// adelantar una obligatoria, y el plan se alargaba un cuatrimestre por una
+// electiva que entraba de sobra en otro lado: el recomendador la marcaba
+// «alarga». Criterio: más materias ubicadas › egreso más temprano (último
+// cuatrimestre usado) › menos cuatrimestres con materias › F (a igualdad, la
+// que no reordena las obligatorias al agregar una electiva).
+function basePlacement(
+  PL: PlanState,
+  approved: Set<string>,
+  fixedCom: Map<string, string> | undefined,
+  mats: MateriaM[],
+  N: number,
+  opts: CompactOpts = {},
+): BaseResult {
+  const mixed = placeAndCompact(PL, approved, fixedCom, mats, N, opts);
+
+  const isFilling = (m: MateriaM) => {
+    const fx = PL.fixed.get(m.codigo);
+    return m.tipo === "electiva" && (fx === undefined || fx === null);
+  };
+  const skeleton = mats.filter((m) => !isFilling(m));
+  const filling = mats.filter(isFilling);
+  if (!filling.length) return mixed;
+
+  const bone = placeAndCompact(PL, approved, fixedCom, skeleton, N, opts);
+  const full = placeAndCompact(PL, approved, fixedCom, filling, N, opts, {
+    items: bone.items,
+    placedIdx: bone.placedIdx,
+  });
+  const layered: BaseResult = {
+    items: full.items,
+    placedIdx: full.placedIdx,
+    remaining: [...bone.remaining, ...full.remaining],
+    moved: bone.moved + full.moved,
+  };
+
+  if (layered.remaining.length !== mixed.remaining.length)
+    return layered.remaining.length < mixed.remaining.length ? layered : mixed;
+  const lastL = lastCuatri(layered.items);
+  const lastM = lastCuatri(mixed.items);
+  if (lastL !== lastM) return lastL < lastM ? layered : mixed;
+  return usedCuatris(layered.items) <= usedCuatris(mixed.items)
+    ? layered
+    : mixed;
+}
+
 /* ---------- entrypoint ---------- */
 
 export function optimizePlan(
@@ -561,7 +939,6 @@ export function optimizePlan(
     .map((c) => byId.get(c))
     .filter(Boolean) as MateriaM[];
 
-  const order = buildCriticalOrder(mats);
   const N = 14;
 
   let items: PlacedMateria[][];
@@ -572,24 +949,23 @@ export function optimizePlan(
   const method: OptMethod = PL.method ?? "cuatris";
 
   if (method === "dias") {
-    // colocación base idéntica a "cuatris" (chooseCom ya minimiza días
-    // nuevos en cada elección); la compactación sólo adelanta una materia si
-    // eso no agrega un día de campus nuevo al cuatri destino, así que nunca
-    // puede empeorar el total de días respecto de la colocación base.
-    const r = placeMats(PL, approved, fixedCom, mats, order, N);
+    // misma colocación base que "cuatris" (chooseCom ya minimiza días nuevos
+    // en cada elección); la compactación sólo adelanta una materia si eso no
+    // agrega un día de campus nuevo al cuatri destino, así que nunca puede
+    // empeorar el total de días respecto de la colocación base.
+    const r = basePlacement(PL, approved, fixedCom, mats, N, {
+      noNewDays: true,
+    });
     items = r.items;
     placedIdx = r.placedIdx;
     remaining = r.remaining;
-    moved = compact(PL, approved, fixedCom, items, placedIdx, N, {
-      noNewDays: true,
-    });
+    moved = r.moved;
   } else if (method === "balance") {
     // fase 1: corremos "cuatris" completo (colocación + compactación) para
     // obtener una solución 100% factible con la cantidad mínima de
     // cuatrimestres usados U (todas las materias del pool ubicadas, salvo
     // las que "cuatris" tampoco podría ubicar).
-    const base = placeMats(PL, approved, fixedCom, mats, order, N);
-    compact(PL, approved, fixedCom, base.items, base.placedIdx, N);
+    const base = basePlacement(PL, approved, fixedCom, mats, N);
     let maxIdx = -1;
     for (let i = 0; i < N; i++) if (base.items[i].length) maxIdx = i;
     const U = Math.max(1, maxIdx + 1);
@@ -603,12 +979,12 @@ export function optimizePlan(
     placedIdx = base.placedIdx;
     remaining = base.remaining;
   } else {
-    // "cuatris" (default): comportamiento original exacto.
-    const r = placeMats(PL, approved, fixedCom, mats, order, N);
+    // "cuatris" (default).
+    const r = basePlacement(PL, approved, fixedCom, mats, N);
     items = r.items;
     placedIdx = r.placedIdx;
     remaining = r.remaining;
-    moved = compact(PL, approved, fixedCom, items, placedIdx, N);
+    moved = r.moved;
   }
 
   const accBefore2: number[] = [];
@@ -630,5 +1006,5 @@ export function nextCuatriCodes(
   fixedCom?: Map<string, string>,
 ): string[] {
   const { items } = optimizePlan(PL, approved, fixedCom);
-  return (items[0] ?? []).map((x) => x.m.codigo);
+  return [...new Set((items[0] ?? []).map((x) => x.m.codigo))];
 }

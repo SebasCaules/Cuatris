@@ -10,15 +10,25 @@ import type { MateriaM, PlacedMateria, PlanState } from "./types";
 export interface Recommendation {
   m: MateriaM;
   landingIdx: number; // índice de cuatrimestre donde caería (-1 si no se ubica)
-  addsCuatri: boolean; // ¿alarga el plan en un cuatrimestre?
+  addsCuatri: boolean; // ¿corre la fecha de egreso (último cuatrimestre usado)?
   newDays: number; // días de campus que suma a ese cuatrimestre
   conflict: boolean; // no se pudo ubicar (correlativas / créditos / superposición)
   noHorario: boolean; // sin horario publicado → no se puede armar la cursada
   area: string | null;
 }
 
-const usedCount = (items: PlacedMateria[][]) =>
-  items.filter((it) => it.length).length;
+// «Alargar la carrera» es recibirse más tarde: lo que cuenta es el ÚLTIMO
+// cuatrimestre usado, no cuántos tienen materias. Una electiva que cae en un
+// hueco del plan (un cuatrimestre vacío entre dos con materias, por paridad)
+// no mueve la fecha de egreso; contarla como «un cuatrimestre más» la marcaba
+// como si alargara.
+const lastUsed = (items: PlacedMateria[][]) => {
+  let last = -1;
+  items.forEach((it, i) => {
+    if (it.length) last = i;
+  });
+  return last;
+};
 
 const campusDays = (placed: PlacedMateria[]): Set<string> => {
   const d = new Set<string>();
@@ -36,7 +46,7 @@ export function recommendElectives(
   fixedCom?: Map<string, string>,
 ): Recommendation[] {
   const base = optimizePlan(PL, approved, fixedCom);
-  const baseUsed = usedCount(base.items);
+  const baseLast = lastUsed(base.items);
 
   // áreas ya cubiertas (electivas aprobadas o ya en el plan) → para diversificar
   const coveredAreas = new Set<string>();
@@ -62,7 +72,7 @@ export function recommendElectives(
       if (it.some((x) => x.m.codigo === m.codigo)) landingIdx = i;
     });
     const conflict = landingIdx < 0; // quedó sin ubicar
-    const addsCuatri = usedCount(hyp.items) > baseUsed;
+    const addsCuatri = lastUsed(hyp.items) > baseLast;
 
     let newDays = 0;
     if (landingIdx >= 0) {

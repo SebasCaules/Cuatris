@@ -53,6 +53,55 @@ export function comConflict(ca: Comision, cb: Comision): boolean {
   return false;
 }
 
+/* ---------- viajes al campus ---------- */
+
+/** Separación (min) a partir de la cual dos bloques del mismo día y sede
+ *  cuentan como dos idas distintas a la facultad. */
+export const VIAJE_GAP_MIN = 120;
+
+export interface Viajes {
+  /** idas a la facultad por semana: bloques presenciales del mismo día y sede
+   *  pegados (o con menos de VIAJE_GAP_MIN de espera) cuentan una sola. */
+  viajes: number;
+  /** días distintos con clase presencial. */
+  dias: number;
+  /** minutos de espera dentro de las idas (entre bloques de una misma ida). */
+  espera: number;
+}
+
+/** Cuenta las idas a la facultad que implica un conjunto de comisiones (las
+ *  de un cuatrimestre). Sólo bloques presenciales (ni asincrónicos ni
+ *  virtuales); un cambio de sede dentro del día es otra ida. */
+export function viajesDe(coms: (Comision | null | undefined)[]): Viajes {
+  const porDia = new Map<string, Slot[]>();
+  for (const c of coms) {
+    if (!c) continue;
+    for (const s of c.slots) {
+      if (isAsync(s) || s.modalidad === "Virtual") continue;
+      const arr = porDia.get(s.dia);
+      if (arr) arr.push(s);
+      else porDia.set(s.dia, [s]);
+    }
+  }
+  let viajes = 0;
+  let espera = 0;
+  for (const slots of porDia.values()) {
+    slots.sort((a, b) => toMin(a.desde) - toMin(b.desde));
+    let fin = -Infinity;
+    let sede: string | null = null;
+    for (const s of slots) {
+      const ini = toMin(s.desde);
+      const sd = s.sede || null;
+      const misma = sede === null || sd === null || sd === sede;
+      if (fin === -Infinity || !misma || ini - fin > VIAJE_GAP_MIN) viajes++;
+      else if (ini > fin) espera += ini - fin;
+      fin = Math.max(fin, toMin(s.hasta));
+      if (sd) sede = sd;
+    }
+  }
+  return { viajes, dias: porDia.size, espera };
+}
+
 export const salaLabel = (s: Slot): string =>
   s.sala ||
   (isAsync(s)
