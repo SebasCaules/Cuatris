@@ -337,6 +337,7 @@
    solo, con tooltip: se lee lo elegido, se descubre el resto por forma y
    posición, y cambiar es un clic. Misma altura (34px) que el resto. */
 .planner .pv-seg--obj {
+  box-sizing: border-box; /* 26px de botón + 3px de padding + 1px de borde = 34px */
   height: 34px;
   align-items: center;
   flex-wrap: nowrap;
@@ -367,7 +368,7 @@
   /* ancho fijo (la etiqueta más larga): el segmentado no cambia de tamaño al
      elegir, así la fila no se reacomoda bajo el cursor */
   display: inline-block;
-  width: 15ch;
+  width: calc(15ch + 0.15em);
   text-align: left;
 }
 /* objetivo + switch envuelven juntos: son «cómo se arma», no parámetros */
@@ -379,7 +380,7 @@
 }
 .planner .pv-seg__opt--ic:not([aria-checked="true"]):hover {
   color: var(--ink);
-  background: var(--panel-2);
+  background: var(--panel);
 }
 .planner .pv-seg__opt--ic:focus-visible {
   outline: 2px solid var(--brass);
@@ -388,7 +389,7 @@
 
 /* «mínimo posible»: la fecha de egreso coincide con la cota inferior */
 .planner .pv-result__min {
-  color: var(--brass);
+  color: var(--accent-text);
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: help;
@@ -1749,9 +1750,10 @@
 }
 
 /* ============================ RESPONSIVE ================================== */
-/* el grid del banner colapsa temprano: entre ~640 y ~950px los tracks mínimos
-   (280px de controles + 300px de egreso) ya desbordarían lado a lado */
-@media (max-width: 980px) {
+/* el grid del banner colapsa temprano: por debajo de ~1100px los parámetros
+   (cinco campos + el switch) y el egreso lado a lado envuelven en tres o
+   cuatro filas; apilados caben en una */
+@media (max-width: 1100px) {
   .planner .pv-config {
     grid-template-columns: 1fr;
     gap: 10px;

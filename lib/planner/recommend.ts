@@ -45,7 +45,9 @@ export function recommendElectives(
   limit = 6,
   fixedCom?: Map<string, string>,
 ): Recommendation[] {
-  const base = optimizePlan(PL, approved, fixedCom);
+  // modo quick: ~90 simulaciones con el mismo esqueleto (memoizado); la
+  // colocación mezclada corre sin reinicios.
+  const base = optimizePlan(PL, approved, fixedCom, { quick: true });
   const baseLast = lastUsed(base.items);
 
   // áreas ya cubiertas (electivas aprobadas o ya en el plan) → para diversificar
@@ -66,7 +68,7 @@ export function recommendElectives(
   const recs: Recommendation[] = candidates.map((m) => {
     const hypPool = new Set(PL.pool);
     hypPool.add(m.codigo);
-    const hyp = optimizePlan({ ...PL, pool: hypPool }, approved, fixedCom);
+    const hyp = optimizePlan({ ...PL, pool: hypPool }, approved, fixedCom, { quick: true });
     let landingIdx = -1;
     hyp.items.forEach((it, i) => {
       if (it.some((x) => x.m.codigo === m.codigo)) landingIdx = i;

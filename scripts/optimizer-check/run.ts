@@ -55,6 +55,8 @@ interface Scenario {
   name: string;
   ap: Set<string>;
   over: Partial<PlanState>;
+  /** comisiones fijadas por el usuario (código → comisión) */
+  fixedCom?: Map<string, string>;
 }
 
 function scenariosFor(code: string): Scenario[] {
@@ -98,6 +100,21 @@ function scenariosFor(code: string): Scenario[] {
     out.push({ name: "locked0", ap, over: { fixed, lockedIdx: new Set([0]) } });
   }
   out.push({ name: "horizonte", ap: new Set(), over: { maxMat: 2 } });
+  // comisiones fijadas: la primera comisión de seis materias con varias
+  {
+    const ap = approvedNominal(2);
+    const fixedCom = new Map<string, string>();
+    remainingOblig(ap)
+      .filter((c) => (byId.get(c)?.horario?.comisiones.length ?? 0) > 1)
+      .slice(0, 6)
+      .forEach((c) => fixedCom.set(c, byId.get(c)!.horario!.comisiones[0].comision));
+    out.push({ name: "fixedCom", ap, over: {}, fixedCom });
+  }
+  // anual fijada en el último índice del horizonte base (13): necesita el 14
+  {
+    const anual = PLAN.obligatorias.find((m) => esAnual(m.codigo));
+    if (anual) out.push({ name: "anualFin", ap: new Set(), over: { fixed: new Map([[anual.codigo, 13]]) } });
+  }
   return out;
 }
 
@@ -128,17 +145,29 @@ for (const code of codes) {
           const PL = mkPL({ method, maxCred: mc, maxMat: mm, avoid, ...sc.over }, sc.ap);
           const label = `${code} ${sc.name} ${method} ${PL.maxCred}/${PL.maxMat} avoid=${avoid ? 1 : 0}`;
           const t0 = performance.now();
-          const R = optimizePlan(PL, sc.ap);
+          const R = optimizePlan(PL, sc.ap, sc.fixedCom);
           times.push(performance.now() - t0);
-          const ck = check(PL, sc.ap, R);
+          const ck = check(PL, sc.ap, R, sc.fixedCom);
           total++;
           if (!ck.ok) {
             fails++;
             console.log(`INVARIANTE ${label}: ${ck.errors.slice(0, 4).join(" | ")}`);
           }
+          // independencia del orden del pool: el mismo conjunto en orden inverso
+          // tiene que dar el mismo plan (misma firma de cuatrimestres)
+          if (method === "cuatris" && mc === tope.cred) {
+            const rev = mkPL({ ...PL, pool: new Set([...PL.pool].reverse()) }, sc.ap);
+            const R2 = optimizePlan(rev, sc.ap, sc.fixedCom);
+            const sig = (r: typeof R) => r.items.map((it) => it.map((x) => x.m.codigo + "/" + (x.com?.comision ?? "")).join(",")).join("|");
+            if (sig(R) !== sig(R2)) {
+              fails++;
+              console.log(`ORDEN DEL POOL ${label}: el plan cambia con el pool en orden inverso`);
+            }
+          }
           res[`${method}/${mc}`] = ck;
-          if (method === "cuatris") {
-            const ref = refBest(PL, sc.ap, 120, 3);
+          if (method === "cuatris" && !sc.fixedCom) {
+            // mismo horizonte que el plan (el optimizador lo extiende si hace falta)
+            const ref = refBest(PL, sc.ap, 120, 3, R.items.length);
             if (
               ref.unplaced < ck.unplaced.length ||
               (ref.unplaced === ck.unplaced.length && ref.last < ck.last)

@@ -78,6 +78,7 @@
 // ni se rebalancean sueltas: la colocación ya las deja en el primer par de
 // cuatrimestres donde caben.
 import { PLAN, byId, esAnual, onPlanChange } from "./model";
+import { MAX_PLAN_CUATRIS } from "./consts";
 import { approvedCredits } from "./metrics";
 import { comConflict, isAsync, viajesDe } from "./time";
 import type {
@@ -144,7 +145,7 @@ export const OPT_METHODS: OptMethodMeta[] = [
     label: "Recibirte antes",
     short: "menos cuatrimestres",
     objetivo:
-      "Terminar lo antes posible: cada cuatrimestre lleva todo lo que entra en los topes.",
+      "Terminar lo antes posible: cada cuatrimestre lleva lo máximo que permiten los topes y el orden del plan.",
   },
   {
     key: "dias",
@@ -260,8 +261,18 @@ const usedDaysOf = (placed: PlacedMateria[]): Set<string> => {
 };
 
 // ¿Hay alguna comisión sin superposición con lo ya puesto en el cuatrimestre?
-const hasFreeCom = (coms: Comision[], placed: PlacedMateria[]): boolean =>
-  coms.some((c) => !placed.some((x) => x.com && conflicts(x.com, c)));
+// Con una comisión fijada por el usuario, sólo cuenta esa: si se pisa, la
+// materia no entra acá (antes se la daba por libre porque OTRA comisión lo
+// estaba, y después `chooseCom` devolvía la fijada pisando a una vecina).
+const hasFreeCom = (
+  coms: Comision[],
+  placed: PlacedMateria[],
+  fixedComision?: string,
+): boolean => {
+  const fx = fixedComision ? coms.filter((c) => c.comision === fixedComision) : [];
+  const cand = fx.length ? fx : coms;
+  return cand.some((c) => !placed.some((x) => x.com && conflicts(x.com, c)));
+};
 
 // Puntaje de un conjunto de comisiones (un cuatrimestre): idas a la facultad
 // ≫ días distintos ≫ espera entre bloques. Menor es mejor.
@@ -811,7 +822,7 @@ function placeMats(
         if (anual && !cabeSegundaMitad(m)) continue;
         const coms = comsOf(m);
         // en modo avoid, no la ubico si no hay comisión sin superposición…
-        if (PL.avoid && coms.length && !hasFreeCom(coms, items[i])) {
+        if (PL.avoid && coms.length && !hasFreeCom(coms, items[i], fixedCom?.get(m.codigo))) {
           // …salvo que el cuatrimestre entero admita otra combinación de
           // comisiones (reelección) que la deje entrar.
           const re = resolveComs(items[i], m, fixedCom);
@@ -898,7 +909,7 @@ function compact(
           let reComs: (Comision | null)[] | null = null;
           if (comsM.length) {
             let cJ: Comision | null;
-            if (PL.avoid && !hasFreeCom(comsM, items[j])) {
+            if (PL.avoid && !hasFreeCom(comsM, items[j], fixedCom?.get(it.m.codigo))) {
               // ninguna comisión libre contra lo elegido: probar reeligiendo
               // las comisiones del cuatrimestre destino.
               const re = resolveComs(items[j], it.m, fixedCom);
@@ -1091,7 +1102,7 @@ function rebalance(
           const prevCom = it.com;
           let comJ = it.com;
           if (comsM.length) {
-            if (PL.avoid && !hasFreeCom(comsM, items[j])) continue;
+            if (PL.avoid && !hasFreeCom(comsM, items[j], fixedCom?.get(it.m.codigo))) continue;
             comJ = chooseCom(
               comsM,
               items[j],
@@ -1205,9 +1216,10 @@ const SEARCH_RESTARTS = 48;
 const MIXED_RESTARTS = 8;
 
 /** Horizonte de cuatrimestres: 14 (siete años) y, si con eso quedan materias
- *  ubicables afuera (topes muy bajos, muchas fijadas), se extiende hasta 42. */
+ *  ubicables afuera (topes muy bajos, muchas fijadas), se extiende hasta
+ *  MAX_PLAN_CUATRIS (el tope que también usan los selects y el arrastre). */
 const HORIZON = 14;
-const HORIZON_MAX = 42;
+const HORIZON_MAX = MAX_PLAN_CUATRIS;
 
 function placeAndCompact(
   PL: PlanState,
@@ -1380,6 +1392,7 @@ function basePlacement(
   mats: MateriaM[],
   N: number,
   method: OptMethod,
+  quick: boolean,
 ): BaseResult {
   const isFilling = (m: MateriaM) => {
     const fx = PL.fixed.get(m.codigo);
@@ -1441,7 +1454,13 @@ function basePlacement(
   }
   layered = layered as BaseResult;
 
-  const mixed = searchPlacement(PL, approved, fixedCom, mats, N, method, MIXED_RESTARTS);
+  // Si el relleno ya toca la cota, la mezclada no puede terminar antes: se
+  // ahorra (es lo que más cuesta en el recomendador). En modo `quick` corre
+  // sin reinicios.
+  const bound = lowerBoundLast(PL, approved, mats, N);
+  if (layered.remaining.length <= bound.unplaceable && lastCuatri(layered.items) <= bound.last)
+    return layered;
+  const mixed = searchPlacement(PL, approved, fixedCom, mats, N, method, quick ? 0 : MIXED_RESTARTS);
   return betterScore(scoreOf(PL, method, mixed), scoreOf(PL, method, layered)) ? mixed : layered;
 }
 
@@ -1459,13 +1478,15 @@ function explainUnplaced(
   const why = new Map<string, UnplacedReason>();
   const inPool = new Set(mats.map((m) => m.codigo));
   const out = new Set(unplaced.map((m) => m.codigo));
-  const max =
-    approvedCredits(approved) +
-    mats.reduce((s, m) => s + (out.has(m.codigo) ? 0 : m.creditos || 0), 0);
+  const total =
+    approvedCredits(approved) + mats.reduce((s, m) => s + (m.creditos || 0), 0);
   for (const m of unplaced) {
     const codes = (m.correlativas || []).filter(
       (c) => !approved.has(c) && (!inPool.has(c) || out.has(c)),
     );
+    // lo máximo que puede haber antes de ella: aprobadas más todo el pool
+    // (menos ella misma); si ni así alcanza, hacen falta más materias
+    const max = total - (m.creditos || 0);
     if (codes.length) why.set(m.codigo, { kind: "correlativa", codes });
     else if ((m.creditosReq || 0) > max)
       why.set(m.codigo, { kind: "creditos", req: m.creditosReq || 0, max });
@@ -1476,27 +1497,45 @@ function explainUnplaced(
 
 /* ---------- entrypoint ---------- */
 
+export interface OptimizeOpts {
+  /** Recomendador: simula ~90 planes con el mismo esqueleto. La mezclada corre
+   *  sin reinicios (el esqueleto memoizado ya lleva la búsqueda completa). */
+  quick?: boolean;
+}
+
 export function optimizePlan(
   PL: PlanState,
   approved: Set<string>,
   fixedCom?: Map<string, string>,
+  opts: OptimizeOpts = {},
 ): PlanResult {
-  const mats = [...PL.pool]
+  // orden canónico: el plan no depende del orden en que se agregaron las
+  // materias al pool (el ruido de los reinicios se asigna por posición)
+  const mats = ([...PL.pool]
     .filter((c) => !approved.has(c))
     .map((c) => byId.get(c))
-    .filter(Boolean) as MateriaM[];
+    .filter(Boolean) as MateriaM[]).sort((a, b) => a.codigo.localeCompare(b.codigo));
 
   const method: OptMethod = PL.method ?? "cuatris";
 
-  // Horizonte: 14 cuatrimestres; si quedan afuera materias que un horizonte
-  // más largo sí ubica (topes muy bajos, muchas fijadas), se extiende.
+  // Horizonte: 14 cuatrimestres —o lo que pidan las fijadas (una anual fijada
+  // al final necesita el índice siguiente para su 2.ª mitad)— y, si quedan
+  // afuera materias que un horizonte más largo sí ubica (topes muy bajos,
+  // muchas fijadas), se extiende.
   let N = HORIZON;
-  let base = basePlacement(PL, approved, fixedCom, mats, N, method);
+  for (const m of mats) {
+    const fx = PL.fixed.get(m.codigo);
+    if (fx === undefined || fx === null) continue;
+    N = Math.max(N, fx + (esAnual(m.codigo) ? 2 : 1));
+  }
+  N = Math.min(HORIZON_MAX, N);
+  const quick = opts.quick === true;
+  let base = basePlacement(PL, approved, fixedCom, mats, N, method, quick);
   while (N < HORIZON_MAX && base.remaining.length) {
     const wide = lowerBoundLast(PL, approved, mats, HORIZON_MAX);
     if (base.remaining.length <= wide.unplaceable) break;
     N = Math.min(HORIZON_MAX, N + HORIZON);
-    base = basePlacement(PL, approved, fixedCom, mats, N, method);
+    base = basePlacement(PL, approved, fixedCom, mats, N, method, quick);
   }
   let moved = base.moved;
   if (method === "balance") {

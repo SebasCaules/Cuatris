@@ -97,7 +97,7 @@ export function depths(mats: MateriaM[]): Map<string, number> {
   return memo;
 }
 
-export function best(PL: PlanState, approved: Set<string>, restarts = 300, seed = 1): RefResult & { orders: number } {
+export function best(PL: PlanState, approved: Set<string>, restarts = 300, seed = 1, N = 14): RefResult & { orders: number } {
   const mats = [...PL.pool].filter((c) => !approved.has(c)).map((c) => byId.get(c)!).filter(Boolean);
   const dep = depths(mats);
   const rand = rng(seed);
@@ -115,6 +115,6 @@ export function best(PL: PlanState, approved: Set<string>, restarts = 300, seed 
     const w = rand() * 3; // peso del camino crítico
     orders.push((a, b) => (dep.get(b.codigo)! * w + noise.get(b.codigo)! * 2 + (b.creditos / 6)) - (dep.get(a.codigo)! * w + noise.get(a.codigo)! * 2 + (a.creditos / 6)));
   }
-  for (const o of orders) { const R = schedule(PL, approved, o); if (better(R, bestR)) bestR = R; }
+  for (const o of orders) { const R = schedule(PL, approved, o, N); if (better(R, bestR)) bestR = R; }
   return { ...bestR!, orders: orders.length };
 }

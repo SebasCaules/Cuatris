@@ -361,11 +361,31 @@ superposiciones o por un requisito de créditos que le deja una única ventana (
   `lib/planner/time.ts`, `isAsync` y `toMin` memoizados. Naval desde cero con superposiciones
   (el peor caso, 48 reinicios sin tocar la cota): 736 → 116 ms; mediana de la matriz de
   escenarios 0,2 ms, p99 18 ms.
-- Verificación: `scripts/optimizer-check/` (harness con `npx tsx`): invariantes de todo plan
-  (cobertura, correlativas, créditos, paridad, topes, superposiciones, anuales), cota
-  inferior, solver de referencia con reinicios aleatorios (nunca mejor que el optimizador) y
-  consistencia «dias»/«balance» nunca más tarde que «cuatris», sobre 16 carreras × 18
-  escenarios × 3 métodos × 2 topes × 2 modos.
+- Verificación: `scripts/optimizer-check/` (`npm run check:optimizador`, con `tsx` como
+  devDependency): invariantes de todo plan (cobertura, correlativas, créditos, paridad,
+  topes, superposiciones —también contra comisiones fijadas—, anuales), cota inferior,
+  solver de referencia con reinicios aleatorios (nunca mejor que el optimizador),
+  independencia del orden del pool y consistencia «dias»/«balance» nunca más tarde que
+  «cuatris», sobre 16 carreras × 20 escenarios × 3 métodos × 2 topes × 2 modos.
+- Tras la auditoría adversarial (2026-09-14, noche):
+  - `hasFreeCom` mira sólo la comisión fijada por el usuario cuando la hay: antes, con
+    «Evitar superposiciones», una materia con comisión fijada entraba si CUALQUIER otra
+    comisión suya estaba libre y después se colocaba la fijada pisando a una vecina
+    (preexistente; 101/172 planes con superposición en el muestreo del auditor).
+  - Orden canónico del pool (`mats` por código): el plan no depende de en qué orden se
+    agregaron o restablecieron las materias (el ruido de los reinicios se asigna por
+    posición y el memo lo enmascaraba).
+  - Horizonte inicial ≥ lo que piden las fijadas (una anual fijada en el índice 13 necesita
+    el 14 para su segunda mitad; antes quedaba con una sola mitad y sin aviso).
+    `MAX_PLAN_CUATRIS` pasa a 42 (`lib/planner/consts.ts`) y es el tope del horizonte; los
+    selects «fijar en» de `PlanView` ofrecen hasta un cuatrimestre después del último usado
+    (`fixRange`) y el arrastre acepta cualquier índice del plan (antes descartaba en silencio
+    los ≥ 14 aunque mostrara feedback verde).
+  - `optimizePlan(…, { quick: true })` para el recomendador: la mezclada corre sin reinicios
+    y se saltea cuando el relleno ya toca la cota. Recomendador: 7–190 ms (antes hasta 740).
+  - `explainUnplaced` «creditos» compara contra lo aprobado más TODO el pool sin la materia
+    (antes, contra lo colocado: con topes mínimos culpaba a los créditos por una materia que
+    quedó afuera por el tope).
 
 ## 19. Plan de cursada: el objetivo se elige junto a «Evitar superposiciones» (2026-09-14)
 
@@ -384,7 +404,16 @@ superposiciones o por un requisito de créditos que le deja una única ventana (
   secundario.
 - `planview.css`: `.pv-config` con `grid-template-columns: minmax(0,1fr) fit-content(52%)`:
   con muchos minors (Industrial: nueve) el resultado aplastaba los parámetros a una columna;
-  ahora las pastillas envuelven.
+  ahora las pastillas envuelven. El banner se apila por debajo de 1100 px (antes 980): con
+  cinco campos más el switch, lado a lado envolvía en tres o cuatro filas.
+- Tras la auditoría adversarial: `aria-label` y roving tabindex con flechas/Home/End en los
+  radios del objetivo; `box-sizing: border-box` en `.pv-seg--obj` (medía 42 px, no 34);
+  «mínimo posible» en `--accent-text` (contraste AA); hover de los iconos con fondo
+  visible; la observación distingue correlativa que falta en el plan, que está en el plan
+  pero tampoco entra, o que no figura en el plan de estudios (con concordancia de número);
+  el consejo de apagar «Evitar superposiciones» sólo si está encendido; la cota teórica no se
+  cita con materias sin ubicar; con «Carga pareja» la nota habla de rebalanceo, no de
+  compactación.
 ## 20. Combinadores: «Mi progreso» compartido y finales sin progreso (2026-09-14)
 
 Los dos combinadores (horarios y finales) sirven al que planifica con su progreso y al que

@@ -304,7 +304,7 @@ function methodText(
       termina antes— y después, {secundario}{" "}
       {minimo
         ? "El egreso coincide con la cota mínima: no existe plan más corto con estas restricciones."
-        : R.minLast != null && R.minLast >= 0
+        : R.minLast != null && R.minLast >= 0 && R.unplaced.length === 0
           ? `Cota teórica: ${R.minLast + 1} cuatrimestres (calculada sin combinar los topes con los créditos requeridos ni las superposiciones, así que puede no ser alcanzable).`
           : ""}{" "}
       Restricciones respetadas: paridad 1.º/2.º cuatrimestre · correlativas ·
@@ -315,7 +315,9 @@ function methodText(
       . Tope por cuatrimestre: {PL.maxCred} créditos y {PL.maxMat} materias. Las
       comisiones se eligen para pedir menos idas a la facultad.{" "}
       {R.moved
-        ? `Compactación: ${R.moved} materia(s) adelantadas a cuatrimestres con lugar.`
+        ? PL.method === "balance"
+          ? `Rebalanceo: ${R.moved} movimiento(s) entre cuatrimestres para emparejar la carga.`
+          : `Compactación: ${R.moved} materia(s) adelantadas a cuatrimestres con lugar.`
         : ""}
     </>
   );
@@ -978,10 +980,14 @@ function SemCard({
   onDownload,
   reqs = EMPTY_CODES,
   orden = 0,
+  fixRange = 14,
 }: {
   it: PlacedMateria[];
   i: number;
   start: PlanStart;
+  /** cuántos cuatrimestres ofrece el select «fijar en» (el plan puede extender
+   *  el horizonte más allá de 14) */
+  fixRange?: number;
   /** requisitos sin cursada (Inglés) que hay que tener aprobados al llegar acá */
   reqs?: string[];
   /** posición en la fila (escalona la entrada, motion.css) */
@@ -1335,10 +1341,14 @@ function RoadmapStop({
   onUnlock,
   reqs = EMPTY_CODES,
   orden = 0,
+  fixRange = 14,
 }: {
   it: PlacedMateria[];
   i: number;
   start: PlanStart;
+  /** cuántos cuatrimestres ofrece el select «fijar en» (el plan puede extender
+   *  el horizonte más allá de 14) */
+  fixRange?: number;
   accBefore: number[];
   maxCred: number;
   maxMat: number;
@@ -1528,7 +1538,7 @@ function RoadmapStop({
                       }
                     >
                       <option value="">auto</option>
-                      {Array.from({ length: MAX_PLAN_CUATRIS }, (_, ci) => (
+                      {Array.from({ length: fixRange }, (_, ci) => (
                         <option value={String(ci)} key={ci}>
                           {cuatriLabel(cuatriAt(start, ci))}
                         </option>
@@ -1850,8 +1860,11 @@ function PlanPool({
   onDragStart,
   dragging,
   onActed,
+  fixRange = 14,
 }: {
   start: PlanStart;
+  /** cuántos cuatrimestres ofrece el select «fijar en» */
+  fixRange?: number;
   preview: string | null;
   onPreview: (code: string | null) => void;
   onDragStart: (code: string, e: React.PointerEvent) => void;
@@ -1895,7 +1908,7 @@ function PlanPool({
 
   const cuatriOpts = () => {
     const opts: { value: string; label: string }[] = [];
-    for (let i = 0; i < MAX_PLAN_CUATRIS; i++)
+    for (let i = 0; i < fixRange; i++)
       opts.push({ value: String(i), label: cuatriLabel(cuatriAt(start, i)) });
     return opts;
   };
@@ -2568,6 +2581,9 @@ export default function PlanView() {
   const accNow = approvedCredits(approved);
   const lastIdx = used.length ? used[used.length - 1].i : 0;
   const gradCu = cuatriAt(PL.start, lastIdx);
+  // selects «fijar en»: hasta un cuatrimestre después del último usado (el
+  // plan extiende su horizonte cuando hace falta; MAX_PLAN_CUATRIS es el tope)
+  const fixRange = Math.min(MAX_PLAN_CUATRIS, Math.max(14, lastIdx + 2));
   // créditos electivos comprometidos (sin el preview) → para el panel de recos
   const elecCommitted =
     electiveCredits(settled) +
@@ -2648,11 +2664,18 @@ export default function PlanView() {
     let motivo: string;
     if (why?.kind === "correlativa") {
       const fuera = why.codes.filter((c) => !byId.has(c));
-      const dentro = why.codes.filter((c) => byId.has(c));
+      const enPlan = why.codes.filter((c) => byId.has(c) && PL.pool.has(c));
+      const faltan = why.codes.filter((c) => byId.has(c) && !PL.pool.has(c));
       const partes: string[] = [];
-      if (dentro.length)
+      if (faltan.length)
         partes.push(
-          `necesita ${dentro.map(abbrOf).join(", ")}: marcala como aprobada o sumala a las materias del plan`,
+          faltan.length === 1
+            ? `necesita ${abbrOf(faltan[0])}: marcala como aprobada o sumala a las materias del plan`
+            : `necesita ${faltan.map(abbrOf).join(", ")}: marcalas como aprobadas o sumalas a las materias del plan`,
+        );
+      if (enPlan.length)
+        partes.push(
+          `depende de ${enPlan.map(abbrOf).join(", ")}, que tampoco ${enPlan.length === 1 ? "entra" : "entran"}`,
         );
       if (fuera.length)
         partes.push(
@@ -2662,8 +2685,9 @@ export default function PlanView() {
     } else if (why?.kind === "creditos") {
       motivo = `pide ${why.req} créditos y con lo marcado se juntan ${why.max}: agregá electivas`;
     } else {
-      motivo =
-        "no encontró cuatrimestre (superposiciones o topes): subí los máximos o apagá «Evitar superposiciones»";
+      motivo = PL.avoid
+        ? "no encontró cuatrimestre (superposiciones o topes): subí los máximos o apagá «Evitar superposiciones»"
+        : "no encontró cuatrimestre con lugar: subí el máximo de materias o de créditos";
     }
     warns.push(`${m.abbr} · ${m.nombre}: ${motivo}.`);
   });
@@ -2765,6 +2789,23 @@ export default function PlanView() {
   // Navegación por teclado del tablist (roving tabindex): flechas con wrap,
   // Home/End. Mueve la selección y el foco al tab elegido.
   const TAB_ORDER: PlanTab[] = ["cal", "road", "min"];
+  // radiogroup «Objetivo»: roving tabindex (flechas / Home / End cambian el
+  // objetivo y mueven el foco), como las pestañas.
+  const onObjetivoKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const keys = OPT_METHODS.map((m) => m.key);
+    const cur = keys.indexOf(PL.method);
+    let next: number;
+    if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (cur + keys.length - 1) % keys.length;
+    else if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (cur + 1) % keys.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = keys.length - 1;
+    else return;
+    e.preventDefault();
+    dispatch({ type: "SET_PLAN_METHOD", value: keys[next] });
+    const radios = e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="radio"]');
+    radios[next]?.focus();
+  };
+
   const onTablistKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     let next: number;
     const cur = TAB_ORDER.indexOf(tab);
@@ -2789,7 +2830,9 @@ export default function PlanView() {
     if (R.unplaced.length > 0) {
       const kinds = new Set([...(R.unplacedWhy?.values() ?? [])].map((w) => w.kind));
       const fix = kinds.has("sinLugar")
-        ? "subí el máximo de materias o de créditos, o apagá «Evitar superposiciones»."
+        ? PL.avoid
+          ? "subí el máximo de materias o de créditos, o apagá «Evitar superposiciones»."
+          : "subí el máximo de materias o de créditos."
         : kinds.has("creditos")
           ? "hacen falta más créditos: agregá electivas."
           : "faltan correlativas: mirá las observaciones.";
@@ -2798,7 +2841,7 @@ export default function PlanView() {
     if (recOn && !recsPending && recs.length > 0 && !recs.some((r) => !r.conflict && !r.addsCuatri))
       return "Ninguna electiva entra sin alargar la carrera: subí el máximo de materias o de créditos por cuatrimestre.";
     return null;
-  }, [R.unplaced.length, R.unplacedWhy, recOn, recsPending, recs]);
+  }, [R.unplaced.length, R.unplacedWhy, PL.avoid, recOn, recsPending, recs]);
   const [avisoCerrado, setAvisoCerrado] = useState<string | null>(null);
   const aviso = sinMargen && avisoCerrado !== sinMargen ? sinMargen : null;
   const showSide = recOn && recs.length > 0 && tab !== "min";
@@ -2886,6 +2929,7 @@ export default function PlanView() {
                     className="pv-seg pv-seg--obj"
                     role="radiogroup"
                     aria-labelledby="pcObjLbl"
+                    onKeyDown={onObjetivoKeyDown}
                   >
                     {OPT_METHODS.map((m: OptMethodMeta) => (
                       <Tooltip
@@ -2901,6 +2945,8 @@ export default function PlanView() {
                           type="button"
                           role="radio"
                           aria-checked={PL.method === m.key}
+                          aria-label={m.label}
+                          tabIndex={PL.method === m.key ? 0 : -1}
                           className="pv-seg__opt pv-seg__opt--ic"
                           onClick={() =>
                             dispatch({ type: "SET_PLAN_METHOD", value: m.key })
@@ -3192,6 +3238,7 @@ export default function PlanView() {
                       onUnlock={unlockCuatri}
                       onDownload={downloadCuatri}
                       reqs={reqByIdx.get(i)}
+                      fixRange={fixRange}
                     />
                   ))}
                   {previewExt && (
@@ -3301,6 +3348,7 @@ export default function PlanView() {
           onDragStart={startDrag}
           dragging={drag?.code ?? null}
           onActed={markActed}
+          fixRange={fixRange}
         />
       </details>
 

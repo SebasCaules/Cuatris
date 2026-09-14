@@ -38,9 +38,11 @@ export function mkPL(over: Partial<PlanState> = {}, approved = new Set<string>()
   };
 }
 
+const comsOf = (m: MateriaM) => m.horario?.comisiones ?? [];
+
 export interface Check { ok: boolean; errors: string[]; used: number; last: number; unplaced: string[]; loads: number[]; mats: number[]; days: number[]; viajes: number[] }
 
-export function check(PL: PlanState, approved: Set<string>, R: PlanResult): Check {
+export function check(PL: PlanState, approved: Set<string>, R: PlanResult, fixedCom?: Map<string, string>): Check {
   const errors: string[] = [];
   const N = R.items.length;
   const idxOf = new Map<string, number[]>();
@@ -70,8 +72,11 @@ export function check(PL: PlanState, approved: Set<string>, R: PlanResult): Chec
     if (R.accBefore[i] !== acc) errors.push(`accBefore[${i}]=${R.accBefore[i]} ≠ ${acc}`);
     const cred = it.reduce((s, x) => s + (x.m.creditos || 0), 0);
     loads.push(cred); mats.push(it.length);
-    if (it.length > capMat(i)) errors.push(`cuatri ${i}: ${it.length} materias > cap ${capMat(i)}`);
-    if (cred > capCred(i) && it.length > 1) errors.push(`cuatri ${i}: ${cred} cr > cap ${capCred(i)}`);
+    // los topes sólo se exigen si el cuatrimestre tiene alguna materia libre:
+    // lo fijado a mano va «sí o sí» aunque desborde
+    const hayLibre = it.some((x) => PL.fixed.get(x.m.codigo) == null);
+    if (hayLibre && it.length > capMat(i)) errors.push(`cuatri ${i}: ${it.length} materias > cap ${capMat(i)}`);
+    if (hayLibre && cred > capCred(i) && it.length > 1) errors.push(`cuatri ${i}: ${cred} cr > cap ${capCred(i)}`);
     const d = new Set<string>();
     for (const x of it) if (x.com) for (const s of x.com.slots) if (!isAsync(s)) d.add(s.dia);
     days.push(d.size); viajes.push(viajesDe(it.map((x) => x.com)).viajes);
@@ -89,7 +94,11 @@ export function check(PL: PlanState, approved: Set<string>, R: PlanResult): Chec
         const lastIdx = ci ? Math.max(...ci) : undefined;
         if (lastIdx === undefined || lastIdx >= i) errors.push(`${code} en ${i} con correlativa ${c} en ${lastIdx ?? "ninguno"}`);
       }
-      if (PL.avoid && x.com && !pinned) for (const y of it) if (y !== x && y.com && PL.fixed.get(y.m.codigo) == null && comConflict(x.com, y.com)) errors.push(`cuatri ${i}: ${code}/${x.com.comision} pisa ${y.m.codigo}/${y.com.comision}`);
+      // superposiciones: sólo se toleran entre dos materias forzadas por el
+      // usuario (fijadas a este cuatrimestre o con comisión fijada)
+      const forced = (y: typeof x) => PL.fixed.get(y.m.codigo) != null || fixedCom?.has(y.m.codigo) === true;
+      if (PL.avoid && x.com) for (const y of it) if (y !== x && y.com && !(forced(x) && forced(y)) && comConflict(x.com, y.com)) errors.push(`cuatri ${i}: ${code}/${x.com.comision} pisa ${y.m.codigo}/${y.com.comision}`);
+      if (fixedCom?.get(code) && x.com && x.com.comision !== fixedCom.get(code) && comsOf(orig).some((c) => c.comision === fixedCom.get(code))) errors.push(`${code}: comisión fijada ${fixedCom.get(code)} pero el plan eligió ${x.com.comision}`);
     }
     if (PL.lockedIdx.has(i)) for (const x of it) if (PL.fixed.get(x.m.codigo) == null) errors.push(`cuatri ${i} lockeado con ${x.m.codigo} sin fijar`);
     acc += cred;

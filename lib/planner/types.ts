@@ -243,8 +243,9 @@ export interface PlacedMateria {
 /** Por qué una materia del pool quedó sin ubicar.
  *  - "correlativa": le falta una correlativa que no está aprobada ni en el
  *    pool (`codes`), o que está en el pool pero tampoco entra (cascada).
- *  - "creditos": pide más créditos (`req`) de los que el plan puede juntar con
- *    lo aprobado más todo el pool (`max`): hacen falta más materias (electivas).
+ *  - "creditos": pide más créditos (`req`) de los que puede haber antes de
+ *    ella: lo aprobado más todo el pool sin ella (`max`). Hacen falta más
+ *    materias (electivas).
  *  - "sinLugar": entra en teoría, pero no hubo cuatrimestre donde ponerla
  *    (superposiciones con `avoid`, topes por cuatrimestre, horizonte). */
 export type UnplacedReason =
