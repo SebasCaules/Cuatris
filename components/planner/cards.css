@@ -232,7 +232,7 @@
    ============================================================ */
 .planner .card-grid.card-grid--el{
   grid-template-columns:repeat(auto-fill,minmax(205px,1fr));
-  gap:10px;align-items:start;
+  gap:10px;align-items:stretch;   /* todas las cards de la fila, del mismo alto */
 }
 /* empty state a todo el ancho de la grilla (antes ocupaba 1 columna) */
 .planner .card-grid--el .empty{grid-column:1/-1}
@@ -253,10 +253,12 @@
   display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
   min-height:calc(15px * 1.16 * 2);   /* 2 líneas fijas → todos los títulos alinean */
 }
-/* señales en 1 renglón reservado (sin wrap): así el alto no varía card a card */
+/* señales en 1 renglón de alto FIJO (sin wrap, también las insignias de minor,
+   que en planner.css envuelven): así el alto no varía card a card */
 .planner .card-grid--el .card__meta{
-  flex-wrap:nowrap;overflow:hidden;gap:5px;margin:8px 0 0;min-height:19px;
+  flex-wrap:nowrap;overflow:hidden;gap:5px;margin:8px 0 0;height:21px;min-height:21px;
 }
+.planner .card-grid--el .card__meta .minor-badges{flex:none;flex-wrap:nowrap}
 /* CPT-12: horario estampado en el renglón de señales (franjas «Lu 18–21 · Ju
    18–21» o «N comisiones»). Ocupa el ancho sobrante y se trunca con title, así
    el choque de días se detecta escaneando la grilla sin abrir el drawer. */
@@ -271,8 +273,12 @@
 /* acciones: una sola fila compacta; combinar deja de estirarse (flex:1) y la
    ficha se vuelve un botón inline empujado a la derecha (antes: renglón extra) */
 .planner .card-grid--el .card__acts{
-  align-items:center;gap:8px;margin-top:10px;padding-top:9px;
+  align-items:center;gap:8px;margin-top:auto;padding-top:9px;min-height:36px;box-sizing:border-box;
 }
+/* la fila de acciones queda abajo de todo; el espacio sobrante va arriba de
+   ella, así los pies de las cards alinean aunque el nombre ocupe una línea */
+.planner .card-grid--el .card__acts{margin-top:auto}
+.planner .card-grid--el .card__meta{margin-bottom:10px}
 .planner .card-grid--el .mini{
   flex:0 0 auto;padding:5px 10px;border-radius:6px;font-size:11.5px;
   white-space:nowrap;   /* el estado activo «en tu plan ✓» no debe partirse */

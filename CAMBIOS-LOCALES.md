@@ -308,6 +308,11 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   `app/globals.css`) y lleva un avatar-link al planificador (`.ld-avatar`, mismo dibujo que
   `PerfilMenu`).
 
+- Electivas (`cards.css`, `views/ElectivasView.tsx`): todas las cards miden igual (la
+  grilla estira la fila, la fila de señales tiene alto fijo con las insignias de minor sin
+  wrap, y la fila de acciones va abajo con alto mínimo); las marcadas (cursando, cursada,
+  final aprobado) van primero, después el resto por código.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

@@ -168,7 +168,7 @@ const ElectCard = memo(function ElectCard({
  */
 export function ElectivasSection() {
   const { state, dispatch } = usePlanner();
-  const { approved, finalDone, combo, areasOn, search, fDisp, fHor } = state;
+  const { approved, finalDone, cursando, combo, areasOn, search, fDisp, fHor } = state;
   // Búsqueda propia de la sección (además de la global de la cabecera, que
   // filtra las dos listas): local al componente, sin tocar el estado global.
   const [q2, setQ2] = useState("");
@@ -189,9 +189,13 @@ export function ElectivasSection() {
     });
     if (fDisp) l = l.filter((m) => isAvailable(m, approved));
     if (fHor) l = l.filter((m) => hasHorario(m.codigo));
-    l = [...l].sort((a, b) => a.codigo.localeCompare(b.codigo));
+    // primero las marcadas (cursando, cursada, final aprobado), después el
+    // resto; dentro de cada grupo, por código
+    const marcada = (m: Materia) =>
+      approved.has(m.codigo) || cursando.has(m.codigo) ? 0 : 1;
+    l = [...l].sort((a, b) => marcada(a) - marcada(b) || a.codigo.localeCompare(b.codigo));
     return l;
-  }, [search, q2, areasOn, fDisp, fHor, approved]);
+  }, [search, q2, areasOn, fDisp, fHor, approved, cursando]);
 
   // ¿Hay algún filtro activo que limpiar? (incluye áreas apagadas). Solo con
   // esto mostramos el atajo "Limpiar filtros" en el empty state.
