@@ -1231,6 +1231,10 @@
   border-radius:0;padding:9px 0;font-family:var(--f-b);font-size:13px;
 }
 .planner .pool-add input:focus{outline:none}
+/* el foco lo dibuja la caja (:focus-within): el input de adentro no lleva el
+   anillo genérico de .planner input:focus-visible (quedaba un anillo dentro
+   de otro) */
+.planner .pool-add input:focus-visible{box-shadow:none}
 .planner .pool-add input::placeholder{color:var(--faint)}
 .planner .pool-sugg{
   position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--panel-2);
@@ -1267,10 +1271,16 @@
 .planner .plan2-recs__sub{font-family:var(--f-m);font-size:11px;color:var(--muted);line-height:1.5}
 /* progreso de créditos electivos: una línea mono + barra brass (reemplaza al
    párrafo de ayuda y a la barra de filtros: el panel es la lista) */
-.planner .plan2-recs__prog{display:flex;flex-direction:column;gap:5px;margin-top:4px}
-.planner .plan2-recs__progtxt{font-family:var(--f-m);font-size:11px;color:var(--muted);letter-spacing:.01em}
-.planner .plan2-recs__progtxt b{font-weight:600;color:var(--ink)}
-.planner .plan2-recs__progbar{display:block;height:4px;border-radius:999px;background:var(--panel-3);overflow:hidden}
+/* progreso de créditos electivos: el dato que gobierna el panel — cifra grande
+   en display, «faltan N» en brass y barra visible */
+.planner .plan2-recs__prog{
+  display:flex;flex-direction:column;gap:7px;margin-top:8px;padding:10px 12px;
+  border:1px solid var(--line);border-radius:var(--r);background:var(--panel-2);
+}
+.planner .plan2-recs__progtxt{font-family:var(--f-m);font-size:11px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
+.planner .plan2-recs__progtxt b{font-family:var(--f-d);font-weight:600;font-size:20px;line-height:1;letter-spacing:-.01em;color:var(--ink);text-transform:none}
+.planner .plan2-recs__progtxt>span{margin-left:auto;color:var(--brass);font-weight:600}
+.planner .plan2-recs__progbar{display:block;height:6px;border-radius:999px;background:var(--panel-3);overflow:hidden}
 .planner .plan2-recs__progbar>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--brass),var(--brass-2));transition:width var(--dur-base) var(--ease-out)}
 /* fila de encabezado: título a la izquierda + chevron de ocultar a la derecha,
    mismo patrón (y estilo) que `.side__head`/`.side__collapse` del rail principal */

@@ -313,6 +313,14 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   wrap, y la fila de acciones va abajo con alto mínimo); las marcadas (cursando, cursada,
   final aprobado) van primero, después el resto por código.
 
+- `views/CuatriView.tsx` + `cards.css`: después del último año, una card «Electivas · las
+  que marcaste» con las electivas con estado (cursando, cursada, final) en las mismas filas
+  que las obligatorias (respeta búsqueda y filtros; se pliega como un año, `anio` -1).
+- `planner.css`: el buscador del pool del plan ya no dibuja el anillo genérico de foco
+  dentro de la caja (la caja lo muestra con `:focus-within`); el progreso de créditos
+  electivos del panel de recomendaciones pasa a un bloque con cifra grande y «faltan N» en
+  brass.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título
