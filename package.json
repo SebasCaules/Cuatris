@@ -15,7 +15,8 @@
     "typecheck": "node scripts/build-planner-data.mjs && tsc --noEmit",
     "datos": "node scripts/build-planner-data.mjs && node scripts/build-finales-flags-data.mjs && node scripts/build-mesas-finales-data.mjs",
     "carreras": "node scripts/build-carreras-data.mjs",
-    "sync": "bash scripts/sync-desde-studyvaults.sh"
+    "sync": "bash scripts/sync-desde-studyvaults.sh",
+    "check:optimizador": "tsx scripts/optimizer-check/run.ts"
   },
   "dependencies": {
     "@studyvaults/ui": "*",
@@ -27,6 +28,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "tsx": "^4.23.13",
     "typescript": "^5"
   }
 }

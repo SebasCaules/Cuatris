@@ -13,6 +13,7 @@ import { createPortal } from "react-dom";
 import { usePlanner } from "@/components/planner/state";
 import {
   byId,
+  abbrOf,
   isElectiva,
   hasHorario,
   planPriority,
@@ -2619,11 +2620,30 @@ export default function PlanView() {
         );
     }),
   );
-  R.unplaced.forEach((m) =>
-    warns.push(
-      `${m.abbr} · ${m.nombre}: no se pudo ubicar (revisá correlativas, créditos requeridos o paridad de cuatrimestre).`,
-    ),
-  );
+  R.unplaced.forEach((m) => {
+    const why = R.unplacedWhy?.get(m.codigo);
+    let motivo: string;
+    if (why?.kind === "correlativa") {
+      const fuera = why.codes.filter((c) => !byId.has(c));
+      const dentro = why.codes.filter((c) => byId.has(c));
+      const partes: string[] = [];
+      if (dentro.length)
+        partes.push(
+          `necesita ${dentro.map(abbrOf).join(", ")}: marcala como aprobada o sumala a las materias del plan`,
+        );
+      if (fuera.length)
+        partes.push(
+          `su correlativa ${fuera.join(", ")} no figura en este plan de estudios`,
+        );
+      motivo = partes.join("; ");
+    } else if (why?.kind === "creditos") {
+      motivo = `pide ${why.req} créditos y con lo marcado se juntan ${why.max}: agregá electivas`;
+    } else {
+      motivo =
+        "no encontró cuatrimestre (superposiciones o topes): subí los máximos o apagá «Evitar superposiciones»";
+    }
+    warns.push(`${m.abbr} · ${m.nombre}: ${motivo}.`);
+  });
 
   // Los documentos exportados llevan el MISMO calendario que la tarjeta
   // (CursadaCalendar renderizado estático) con su CSS de impresión.
@@ -2743,12 +2763,19 @@ export default function PlanView() {
   // la carrera, o hay materias que no se pudieron ubicar. Se muestra abajo a la
   // derecha y se puede cerrar; vuelve si la situación cambia.
   const sinMargen = useMemo(() => {
-    if (R.unplaced.length > 0)
-      return `${R.unplaced.length} ${R.unplaced.length === 1 ? "materia no entra" : "materias no entran"} en ningún cuatrimestre: subí el máximo de materias o de créditos.`;
+    if (R.unplaced.length > 0) {
+      const kinds = new Set([...(R.unplacedWhy?.values() ?? [])].map((w) => w.kind));
+      const fix = kinds.has("sinLugar")
+        ? "subí el máximo de materias o de créditos, o apagá «Evitar superposiciones»."
+        : kinds.has("creditos")
+          ? "hacen falta más créditos: agregá electivas."
+          : "faltan correlativas: mirá las observaciones.";
+      return `${R.unplaced.length} ${R.unplaced.length === 1 ? "materia no entra" : "materias no entran"} en ningún cuatrimestre: ${fix}`;
+    }
     if (recOn && !recsPending && recs.length > 0 && !recs.some((r) => !r.conflict && !r.addsCuatri))
       return "Ninguna electiva entra sin alargar la carrera: subí el máximo de materias o de créditos por cuatrimestre.";
     return null;
-  }, [R.unplaced.length, recOn, recsPending, recs]);
+  }, [R.unplaced.length, R.unplacedWhy, recOn, recsPending, recs]);
   const [avisoCerrado, setAvisoCerrado] = useState<string | null>(null);
   const aviso = sinMargen && avisoCerrado !== sinMargen ? sinMargen : null;
   const showSide = recOn && recs.length > 0 && tab !== "min";

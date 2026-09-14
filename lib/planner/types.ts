@@ -236,11 +236,28 @@ export interface PlacedMateria {
   parte?: 1 | 2;
 }
 
+/** Por qué una materia del pool quedó sin ubicar.
+ *  - "correlativa": le falta una correlativa que no está aprobada ni en el
+ *    pool (`codes`), o que está en el pool pero tampoco entra (cascada).
+ *  - "creditos": pide más créditos (`req`) de los que el plan puede juntar con
+ *    lo aprobado más todo el pool (`max`): hacen falta más materias (electivas).
+ *  - "sinLugar": entra en teoría, pero no hubo cuatrimestre donde ponerla
+ *    (superposiciones con `avoid`, topes por cuatrimestre, horizonte). */
+export type UnplacedReason =
+  | { kind: "correlativa"; codes: string[] }
+  | { kind: "creditos"; req: number; max: number }
+  | { kind: "sinLugar" };
+
 export interface PlanResult {
   items: PlacedMateria[][]; // por índice de cuatrimestre
   unplaced: MateriaM[];
   accBefore: number[];
   moved: number;
+  /** cota inferior del último cuatrimestre usado (correlativas, paridad,
+   *  créditos requeridos y topes): si el plan termina ahí, no se puede antes. */
+  minLast?: number;
+  /** motivo por materia sin ubicar (código → motivo). */
+  unplacedWhy?: Map<string, UnplacedReason>;
 }
 
 export interface PlanState {

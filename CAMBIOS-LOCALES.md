@@ -326,6 +326,47 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   pide el título («3 / 27 cr · faltan 24») y los minors. Antes mezclaba «créditos hasta hoy»
   con minors proyectados; el «hoy» ya está en la barra de métricas.
 
+## 18. Optimizador del plan: búsqueda en cartera, cota inferior y motivos (2026-09-14)
+
+Antes, «Recibirte antes» quedaba 1 o 2 cuatrimestres por encima del óptimo en seis carreras
+(Informática con «Evitar superposiciones», Industrial, Electrónica, Ciencias Aplicadas,
+Petróleo, Química): la ventana del orden nominal (§6) y la colocación greedy en un solo
+orden no encontraban el plan corto cuando una materia crítica quedaba trabada por
+superposiciones o por un requisito de créditos que le deja una única ventana (94.23).
+
+- `lib/planner/optimize.ts`: `searchPlacement` prueba varias colocaciones y se queda con la
+  mejor por un vector lexicográfico (`scoreOf`: sin ubicar › egreso › cuatrimestres usados ›
+  apartamiento del orden nominal › idas › días; para «dias», días e idas van antes):
+  la nominal con ventana (la de siempre), la de HOLGURA (`latestStarts`: el último
+  cuatrimestre en el que cada materia puede arrancar sin correr el egreso, hacia atrás por
+  dependientes con paridad y anuales; sin ventana) y, si ninguna toca la cota inferior,
+  hasta `SEARCH_RESTARTS` = 48 reinicios con la prioridad de holgura perturbada (semilla
+  fija: mismo input, mismo plan). `lowerBoundLast`: ASAP sin topes (punto fijo con
+  acumulación optimista de créditos) + cota de capacidad; sale como `PlanResult.minLast`.
+  Los tres métodos comparten el egreso mínimo: «dias» y «balance» sólo cambian el criterio
+  secundario (antes «dias» podía terminar más tarde por la compactación restringida).
+- Esqueleto memoizado (`searchSkeleton`, clave = firma del input, LRU de 8, se vacía con
+  `onPlanChange`): el recomendador simula ~90 planes con el mismo esqueleto y paga la
+  búsqueda una vez. Relleno de electivas con cuatro órdenes y reintento de las obligatorias
+  que el esqueleto no ubicó (créditos que recién se juntan con electivas); la mezclada corre
+  con `MIXED_RESTARTS` = 8.
+- Horizonte adaptable: 14 cuatrimestres y, si quedan afuera materias que un horizonte más
+  largo sí ubica (topes muy bajos, muchas fijadas), hasta 42. Antes con «máx. 2 materias»
+  la mitad de la carrera quedaba «sin ubicar».
+- `PlanResult.unplacedWhy` (`explainUnplaced`): por qué no entra cada materia
+  («correlativa» fuera del plan o que tampoco entra, «creditos» inalcanzables con el pool,
+  «sinLugar»). `views/PlanView.tsx` lo usa en las observaciones y en el aviso «no entra en
+  ningún cuatrimestre» (que ya no manda a subir los topes cuando el problema es otro).
+- Rendimiento: `comConflict` memoizado por par de comisiones (`conflicts`, WeakMap) y, en
+  `lib/planner/time.ts`, `isAsync` y `toMin` memoizados. Naval desde cero con superposiciones
+  (el peor caso, 48 reinicios sin tocar la cota): 736 → 116 ms; mediana de la matriz de
+  escenarios 0,2 ms, p99 18 ms.
+- Verificación: `scripts/optimizer-check/` (harness con `npx tsx`): invariantes de todo plan
+  (cobertura, correlativas, créditos, paridad, topes, superposiciones, anuales), cota
+  inferior, solver de referencia con reinicios aleatorios (nunca mejor que el optimizador) y
+  consistencia «dias»/«balance» nunca más tarde que «cuatris», sobre 16 carreras × 18
+  escenarios × 3 métodos × 2 topes × 2 modos.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

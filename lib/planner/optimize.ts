@@ -4,46 +4,71 @@
 // créditosReq, los caps por cuatrimestre, ni (en modo `avoid`) superposición
 // horaria.
 //
+// OBJETIVO PRIMARIO (los tres métodos): la fecha de egreso, o sea el ÚLTIMO
+// cuatrimestre con materias. Ningún método la sacrifica: «menos días» y «carga
+// pareja» son criterios secundarios entre planes que terminan igual.
+//
 //  - "cuatris" (default): minimizar la cantidad de cuatrimestres.
-//      1. Prioridad por CAMINO CRÍTICO: las materias que destraban cadenas
-//         largas de correlativas se ubican primero.
-//      2. Empaquetado FFD por créditos para llenar cada cuatrimestre.
-//      3. Selección de comisión que minimiza las IDAS a la facultad
-//         (`viajesDe`): una comisión que termina en la sede donde arranca la
-//         siguiente materia cuenta una sola ida; recién después, menos días
-//         distintos y menos espera entre bloques. Siempre se prefiere una
-//         comisión sin superposición si existe (con `avoid` apagado, la
-//         materia entra igual con la menos mala si no hay ninguna libre).
-//      4. Compactación: adelanta materias de cuatrimestres tardíos a previos
-//         de igual paridad que tengan lugar.
-//  - "dias": minimizar los días distintos de campus por semana.
-//      Misma colocación base que "cuatris" (a: `chooseCom` ya minimiza días
-//      nuevos en cada elección), pero (b) la compactación sólo adelanta una
-//      materia si eso NO agrega un día de campus nuevo al cuatrimestre
-//      destino. Esto hace que cada movimiento de compactación sea, como
-//      mucho, neutro en días totales (nunca puede empeorar el total respecto
-//      de la colocación base, que es idéntica a la de "cuatris").
-//  - "balance": repartir créditos parejo sin aumentar la cantidad de
-//      cuatrimestres. Corre "cuatris" completo (colocación + compactación)
-//      para obtener una solución 100% factible con la cantidad mínima de
-//      cuatrimestres usados U, y después la rebalancea: mueve materias del
-//      cuatrimestre más cargado al menos cargado (misma paridad) mientras
-//      eso reduzca el desbalance, sin crear cuatrimestres nuevos ni dejar
-//      materias sin ubicar.
+//      Búsqueda en cartera (`searchPlacement`): se prueban varias
+//      colocaciones y se elige la mejor por un vector lexicográfico
+//      (materias sin ubicar › egreso › cuatrimestres usados › orden del plan
+//      de estudios › idas a la facultad › días). Colocaciones:
+//      1. NOMINAL: obligatorias en el orden del plan de estudios (año y
+//         cuatrimestre), con la ventana ORDEN_VENTANA; entre iguales, camino
+//         crítico y FFD por créditos. Es el plan «natural».
+//      2. HOLGURA: prioridad por menor `latestStart` (el último cuatrimestre
+//         en el que la materia puede arrancar sin correr la fecha de egreso,
+//         calculado hacia atrás por dependientes, con paridad y anuales).
+//         Sin ventana: una materia de 4.º con holgura cero entra en 2.º si
+//         eso acorta el plan. Atrapa lo que la nominal no ve: requisitos de
+//         créditos que dejan una sola ventana (94.23 pide 168 créditos y es
+//         del 2.º cuatrimestre), materias con una sola comisión, etc.
+//      3. REINICIOS: si ninguna alcanza la cota inferior (`lowerBoundLast`:
+//         ASAP sin topes + capacidad), hasta SEARCH_RESTARTS colocaciones
+//         más con la prioridad de holgura perturbada (ruido determinista con
+//         semilla fija: mismo input, mismo plan). Corta en cuanto una toca la
+//         cota. En modo `avoid` esto es lo que resuelve los bloqueos por
+//         superposición: probar otro subconjunto en el cuatrimestre que
+//         trababa a una materia crítica.
+//      Cada colocación termina con `compact` (adelantar materias a
+//      cuatrimestres previos de igual paridad con lugar). Empaquetado FFD por
+//      créditos dentro de cada cuatrimestre; selección de comisión que
+//      minimiza las IDAS a la facultad (`viajesDe`) y siempre prefiere una
+//      comisión sin superposición si existe (con `avoid` apagado, la materia
+//      entra igual con la menos mala si no hay ninguna libre).
+//  - "dias": mismo egreso, menos días de campus por semana. La misma cartera
+//      con dos cambios: la compactación sólo adelanta una materia si eso NO
+//      agrega un día de campus nuevo al cuatrimestre destino, y el vector de
+//      elección pone días e idas antes que cuatrimestres usados y orden.
+//  - "balance": mismo egreso, carga pareja. Toma el plan de "cuatris" y lo
+//      rebalancea: mueve materias del cuatrimestre más cargado al menos
+//      cargado (misma paridad) mientras eso reduzca el desbalance, sin crear
+//      cuatrimestres nuevos ni dejar materias sin ubicar.
+//
+// ESQUELETO + RELLENO: con electivas en el pool, la búsqueda cara corre sobre
+// el ESQUELETO (obligatorias y lo fijado a un cuatrimestre) y se memoiza por
+// firma del input; las electivas rellenan después el lugar que sobra (sólo
+// abren cuatrimestres nuevos si no hay lugar), y las obligatorias que el
+// esqueleto no pudo ubicar (créditos requeridos que sólo se juntan con
+// electivas) se reintentan sobre el plan relleno. En paralelo se arma la
+// colocación MEZCLADA (todo el pool junto, sin reinicios) y se queda la mejor
+// por el mismo vector. La memoización es lo que mantiene barato al
+// recomendador de electivas, que simula el plan una vez por candidata (~90
+// corridas con el mismo esqueleto).
 //
 // Los caps por cuatrimestre (`PL.capCredByIdx` / `PL.capMatByIdx`, con
 // fallback a `PL.maxCred` / `PL.maxMat`) se respetan como tope DURO en los
 // tres métodos, tanto al colocar como al compactar.
 //
-// ORDEN DEL PLAN DE ESTUDIOS (preferencia, no invariante): las obligatorias
-// se colocan en el orden nominal de su plan (año/cuatrimestre) y en cada
-// cuatrimestre sólo entran las que están a lo sumo ORDEN_VENTANA cuatrimestres
-// por delante de la obligatoria pendiente más temprana. Así una materia de 5.º
-// no se mezcla con una de 1.º aunque correlativas y créditos lo permitan; la
-// de 5.º espera a que las anteriores estén ubicadas. Vale al colocar, al
-// compactar y al rebalancear (una materia no se adelanta a un cuatri cuyas
-// obligatorias son de años muy anteriores). Las electivas no tienen orden
-// nominal y no participan de la ventana; lo fijado a mano tampoco.
+// ORDEN DEL PLAN DE ESTUDIOS (preferencia, no invariante): en la colocación
+// nominal las obligatorias se colocan en el orden de su plan (año/cuatrimestre)
+// y en cada cuatrimestre sólo entran las que están a lo sumo ORDEN_VENTANA
+// cuatrimestres por delante de la obligatoria pendiente más temprana. Así una
+// materia de 5.º no se mezcla con una de 1.º aunque correlativas y créditos lo
+// permitan. Como la elección final es por egreso primero y orden después, la
+// ventana nunca cuesta un cuatrimestre: si mezclar acorta el plan, se mezcla
+// (`orderDev` mide cuánto). Las electivas no tienen orden nominal y no
+// participan; lo fijado a mano tampoco.
 //
 // Materias ANUALES (Proyecto Final: 12 cr en un año continuo): se ubican como
 // DOS MITADES en cuatrimestres consecutivos (i, i+1), cada una con la mitad de
@@ -52,7 +77,7 @@
 // dependientes van después de la segunda mitad. Las mitades no se compactan
 // ni se rebalancean sueltas: la colocación ya las deja en el primer par de
 // cuatrimestres donde caben.
-import { byId, esAnual } from "./model";
+import { PLAN, byId, esAnual, onPlanChange } from "./model";
 import { approvedCredits } from "./metrics";
 import { comConflict, isAsync, viajesDe } from "./time";
 import type {
@@ -63,6 +88,7 @@ import type {
   PlanStart,
   PlanState,
   OptMethod,
+  UnplacedReason,
 } from "./types";
 
 export const cuatriAt = (start: PlanStart, i: number): PlanStart => {
@@ -194,6 +220,30 @@ const mitadDe = (m: MateriaM, parte: 1 | 2): MateriaM => ({
 const comsOf = (m: MateriaM): Comision[] =>
   (m.horario && m.horario.comisiones) || [];
 
+// `comConflict` es el cuello de botella de la búsqueda (decenas de miles de
+// pares por corrida, siempre los mismos objetos de `byId`): se memoiza por
+// identidad de las dos comisiones. WeakMap: al cargar otro plan, los objetos
+// viejos se van con su caché.
+const conflictCache = new WeakMap<Comision, WeakMap<Comision, boolean>>();
+const conflicts = (a: Comision, b: Comision): boolean => {
+  let ma = conflictCache.get(a);
+  if (!ma) {
+    ma = new WeakMap();
+    conflictCache.set(a, ma);
+  }
+  const hit = ma.get(b);
+  if (hit !== undefined) return hit;
+  const v = comConflict(a, b);
+  ma.set(b, v);
+  let mb = conflictCache.get(b);
+  if (!mb) {
+    mb = new WeakMap();
+    conflictCache.set(b, mb);
+  }
+  mb.set(a, v);
+  return v;
+};
+
 // Días distintos (no asincrónicos) que ocupa una comisión.
 const comDays = (com: Comision): Set<string> => {
   const s = new Set<string>();
@@ -210,7 +260,7 @@ const usedDaysOf = (placed: PlacedMateria[]): Set<string> => {
 
 // ¿Hay alguna comisión sin superposición con lo ya puesto en el cuatrimestre?
 const hasFreeCom = (coms: Comision[], placed: PlacedMateria[]): boolean =>
-  coms.some((c) => !placed.some((x) => x.com && comConflict(x.com, c)));
+  coms.some((c) => !placed.some((x) => x.com && conflicts(x.com, c)));
 
 // Puntaje de un conjunto de comisiones (un cuatrimestre): idas a la facultad
 // ≫ días distintos ≫ espera entre bloques. Menor es mejor.
@@ -235,7 +285,7 @@ const chooseCom = (
     const fx = coms.find((c) => c.comision === fixedComision);
     if (fx) return fx;
   }
-  const free = coms.filter((c) => !placed.some((x) => x.com && comConflict(x.com, c)));
+  const free = coms.filter((c) => !placed.some((x) => x.com && conflicts(x.com, c)));
   const cand = free.length ? free : coms;
   const base = placed.map((x) => x.com);
   let best = cand[0];
@@ -299,7 +349,7 @@ function resolveComs(
       return;
     }
     for (const c of options[k]) {
-      if (c && chosen.some((o) => o && comConflict(o, c))) continue;
+      if (c && chosen.some((o) => o && conflicts(o, c))) continue;
       chosen.push(c);
       rec(k + 1);
       chosen.pop();
@@ -402,11 +452,238 @@ function buildCriticalOrder(
     a.codigo.localeCompare(b.codigo);
 }
 
-/* ---------- colocación (fase común a los tres métodos) ---------- */
-// Idéntica para "cuatris", "dias" y la fase 1 de "balance": los tres parten
-// de la MISMA colocación base (camino crítico + FFD por créditos + comisión
-// más compacta). Lo que cambia entre métodos es lo que se hace DESPUÉS
+/* ---------- prioridad por holgura (latestStart) y cota inferior ---------- */
+
+/** Índices de cuatrimestre que puede ocupar `m` (paridad; las anuales y las
+ *  materias sin paridad entran en cualquiera). Fijadas: sólo su índice. */
+const parityOk = (PL: PlanState, m: MateriaM, i: number): boolean =>
+  esAnual(m.codigo) ||
+  m.parity === null ||
+  m.parity === cuatriAt(PL.start, i).parity;
+
+// Último índice ≤ `upto` donde `m` puede arrancar (paridad); -1 si ninguno.
+const latestFit = (PL: PlanState, m: MateriaM, upto: number): number => {
+  for (let i = upto; i >= 0; i--) if (parityOk(PL, m, i)) return i;
+  return -1;
+};
+
+/**
+ * `latestStart` de cada materia para una fecha de egreso objetivo `L` (índice
+ * del último cuatrimestre): el mayor índice en el que puede arrancar de modo
+ * que ella y todos sus dependientes (dentro del pool) terminen a más tardar
+ * en L. Se calcula hacia atrás por dependientes; una anual necesita dos
+ * cuatrimestres. Puede dar negativo: significa que con ese L la cadena no
+ * entra (sigue siendo un orden útil: cuanto más negativo, más urgente).
+ */
+function latestStarts(
+  PL: PlanState,
+  mats: MateriaM[],
+  L: number,
+): Map<string, number> {
+  const inPool = new Set(mats.map((m) => m.codigo));
+  const dependents = new Map<string, string[]>();
+  for (const m of mats) {
+    for (const c of m.correlativas || []) {
+      if (!inPool.has(c)) continue;
+      const arr = dependents.get(c);
+      if (arr) arr.push(m.codigo);
+      else dependents.set(c, [m.codigo]);
+    }
+  }
+  const memo = new Map<string, number>();
+  const visiting = new Set<string>();
+  const ls = (code: string): number => {
+    const hit = memo.get(code);
+    if (hit !== undefined) return hit;
+    const m = byId.get(code);
+    if (!m) return L;
+    if (visiting.has(code)) return L; // guard anti-ciclo
+    visiting.add(code);
+    const fx = PL.fixed.get(code);
+    let v: number;
+    if (fx !== undefined && fx !== null) v = fx;
+    else {
+      const span = esAnual(code) ? 1 : 0; // la 2.ª mitad ocupa i+1
+      let upto = L - span;
+      for (const d of dependents.get(code) || []) {
+        const ld = ls(d) - 1 - span;
+        if (ld < upto) upto = ld;
+      }
+      v = upto < 0 ? upto : latestFit(PL, m, upto);
+    }
+    visiting.delete(code);
+    memo.set(code, v);
+    return v;
+  };
+  for (const m of mats) ls(m.codigo);
+  return memo;
+}
+
+/**
+ * Orden de colocación por HOLGURA: primero la materia cuyo `latestStart` es
+ * menor (la que antes hay que arrancar para no correr el egreso `L`); entre
+ * iguales, obligatoria › camino crítico › orden nominal › más créditos (FFD)
+ * › mayor requisito de créditos › código. Con `noise`, cada materia suma un
+ * desplazamiento aleatorio (reinicios de la búsqueda).
+ */
+function buildSlackOrder(
+  PL: PlanState,
+  mats: MateriaM[],
+  L: number,
+  noise?: Map<string, number>,
+): (a: MateriaM, b: MateriaM) => number {
+  const ls = latestStarts(PL, mats, L);
+  const critical = buildCriticalOrder(mats);
+  const key = (m: MateriaM) => (ls.get(m.codigo) ?? L) + (noise?.get(m.codigo) ?? 0);
+  return (a, b) => key(a) - key(b) || critical(a, b);
+}
+
+/** Generador determinista (LCG): la búsqueda con reinicios da siempre el
+ *  mismo plan para el mismo input. */
+const rng = (seed: number): (() => number) => {
+  let s = seed >>> 0;
+  return () => {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 4294967296;
+  };
+};
+
+interface Bound {
+  /** cota inferior del último cuatrimestre usado (-1 sin materias). */
+  last: number;
+  /** materias que NO entran en ningún cuatrimestre del horizonte (correlativa
+   *  fuera del plan, créditos requeridos inalcanzables…): quedan sin ubicar
+   *  haga lo que haga la búsqueda. */
+  unplaceable: number;
+}
+
+/**
+ * Cota inferior de la fecha de egreso. ASAP sin topes: el índice más temprano
+ * de cada materia dado el de sus correlativas, su paridad, los cuatrimestres
+ * finalizados y su requisito de créditos contra una acumulación OPTIMISTA (todo
+ * lo que puede estar antes, está antes); punto fijo monótono. Más la cota de
+ * capacidad (créditos y materias del pool contra los topes de los primeros
+ * cuatrimestres). Ningún plan factible termina antes.
+ */
+function lowerBoundLast(
+  PL: PlanState,
+  approved: Set<string>,
+  mats: MateriaM[],
+  N: number,
+): Bound {
+  const inPool = new Map(mats.map((m) => [m.codigo, m]));
+  const earliest = new Map<string, number>();
+  for (const m of mats) earliest.set(m.codigo, 0);
+  const base = approvedCredits(approved);
+  const creditsBefore = (i: number): number => {
+    let s = base;
+    for (const m of mats) {
+      const e = earliest.get(m.codigo)!;
+      if (e < i && e < N) s += m.creditos || 0;
+    }
+    return s;
+  };
+  let changed = true;
+  let guard = 0;
+  while (changed && guard++ < 100) {
+    changed = false;
+    for (const m of mats) {
+      const fx = PL.fixed.get(m.codigo);
+      let e: number;
+      if (fx !== undefined && fx !== null) e = fx;
+      else {
+        let lo = 0;
+        for (const c of m.correlativas || []) {
+          if (approved.has(c)) continue;
+          const cm = inPool.get(c);
+          if (!cm) {
+            lo = N; // correlativa fuera del pool: no entra nunca
+            break;
+          }
+          const ec = earliest.get(c)! + 1 + (esAnual(c) ? 1 : 0);
+          if (ec > lo) lo = ec;
+        }
+        e = lo;
+        for (; e < N; e++) {
+          if (PL.lockedIdx.has(e)) continue;
+          if (!parityOk(PL, m, e)) continue;
+          if ((m.creditosReq || 0) > creditsBefore(e)) continue;
+          break;
+        }
+      }
+      if (e !== earliest.get(m.codigo)) {
+        earliest.set(m.codigo, e);
+        changed = true;
+      }
+    }
+  }
+  let last = -1;
+  let unplaceable = 0;
+  // demanda libre (no fijada) contra la capacidad que dejan las fijadas
+  let cred = 0;
+  let count = 0;
+  let maxCredMateria = 0;
+  const fixedCred: number[] = Array(N).fill(0);
+  const fixedCount: number[] = Array(N).fill(0);
+  for (const m of mats) {
+    const e = earliest.get(m.codigo)!;
+    const anual = esAnual(m.codigo);
+    if (e >= N || (anual && e + 1 >= N)) {
+      unplaceable++;
+      continue;
+    }
+    const end = e + (anual ? 1 : 0);
+    if (end > last) last = end;
+    const fx = PL.fixed.get(m.codigo);
+    if (fx !== undefined && fx !== null) {
+      fixedCred[fx] += anual ? mitadCred(m, 1) : m.creditos || 0;
+      fixedCount[fx] += 1;
+      if (anual && fx + 1 < N) {
+        fixedCred[fx + 1] += mitadCred(m, 2);
+        fixedCount[fx + 1] += 1;
+      }
+      continue;
+    }
+    cred += m.creditos || 0;
+    count += anual ? 2 : 1;
+    const c1 = anual ? mitadCred(m, 1) : m.creditos || 0;
+    if (c1 > maxCredMateria) maxCredMateria = c1;
+  }
+  // capacidad: el menor L tal que los topes de 0..L (sin los finalizados, y
+  // descontando lo fijado) alcanzan para los créditos y las materias libres.
+  // La parte de créditos sólo vale si ninguna materia supera por sí sola un
+  // tope (una sola puede exceder el cap cuando va sola en el cuatrimestre).
+  let minCap = Infinity;
+  for (let i = 0; i < N; i++) if (!PL.lockedIdx.has(i)) minCap = Math.min(minCap, capCred(PL, i));
+  let accC = 0;
+  let accM = 0;
+  for (let L = 0; L < N; L++) {
+    if (!PL.lockedIdx.has(L)) {
+      accC += Math.max(0, capCred(PL, L) - fixedCred[L]);
+      accM += Math.max(0, capMat(PL, L) - fixedCount[L]);
+    }
+    const okCred = maxCredMateria > minCap || accC >= cred;
+    if (okCred && accM >= count) {
+      if (count > 0 && L > last) last = L;
+      break;
+    }
+  }
+  return { last, unplaceable };
+}
+
+
+/* ---------- colocación (una corrida de la cartera) ---------- */
+// Recorre los cuatrimestres en orden y llena cada uno con las materias
+// factibles según `order`, respetando los topes, las fijadas, los finalizados
+// y (con `avoid`) las superposiciones. `ventana` aplica la preferencia por el
+// orden del plan de estudios (ORDEN_VENTANA); la colocación por holgura la
+// apaga. Lo que cambia entre métodos es lo que se hace DESPUÉS de la cartera
 // (compactación restringida para "dias", rebalanceo para "balance").
+
+interface PlaceOpts {
+  /** respetar la ventana del orden nominal (default: sí). */
+  ventana?: boolean;
+}
 
 interface PlaceResult {
   items: PlacedMateria[][];
@@ -425,7 +702,9 @@ function placeMats(
   // electivas en el esqueleto de obligatorias): los cuatrimestres conservan lo
   // que tienen y sólo se ocupa el lugar que sobra.
   seed?: { items: PlacedMateria[][]; placedIdx: Record<string, number> },
+  popts: PlaceOpts = {},
 ): PlaceResult {
+  const ventana = popts.ventana !== false;
   const items: PlacedMateria[][] =
     seed?.items ?? Array.from({ length: N }, () => []);
   const placedIdx: Record<string, number> = seed?.placedIdx ?? {};
@@ -504,7 +783,9 @@ function placeMats(
       // dónde se puede adelantar en este cuatrimestre (ORDEN_VENTANA). Si con
       // esa ventana no entra NINGUNA, se abre de a un año hasta que algo
       // entre: preferir el orden nunca deja un cuatrimestre vacío.
-      const anchor = anchorOf(remaining.filter((m) => PL.fixed.get(m.codigo) == null));
+      const anchor = ventana
+        ? anchorOf(remaining.filter((m) => PL.fixed.get(m.codigo) == null))
+        : null;
       let cand = feasibles;
       if (anchor != null) {
         for (let w = ORDEN_VENTANA; ; w += 2) {
@@ -554,6 +835,8 @@ interface CompactOpts {
   // si es true, no adelanta una materia si eso agrega un día de campus nuevo
   // al cuatrimestre destino (usado por "dias": nunca empeora el total).
   noNewDays?: boolean;
+  // respetar la ventana del orden nominal al adelantar (default: sí).
+  ventana?: boolean;
 }
 
 function compact(
@@ -604,7 +887,11 @@ function compact(
             continue;
           // orden del plan: no adelantar a un cuatri cuyas obligatorias son de
           // años muy anteriores (mezclaría 1.º con 5.º)
-          if (fueraDeOrden(it.m, anchorOf(items[j].map((x) => x.m)))) continue;
+          if (
+            opts.ventana !== false &&
+            fueraDeOrden(it.m, anchorOf(items[j].map((x) => x.m)))
+          )
+            continue;
           const comsM = comsOf(it.m);
           let comJ = it.com;
           let reComs: (Comision | null)[] | null = null;
@@ -838,7 +1125,8 @@ function rebalance(
   return moved;
 }
 
-/* ---------- colocación base: mezclada vs. esqueleto + relleno ---------- */
+
+/* ---------- vector de elección entre colocaciones ---------- */
 
 interface BaseResult extends PlaceResult {
   moved: number;
@@ -856,75 +1144,333 @@ const lastCuatri = (items: PlacedMateria[][]) => {
   return last;
 };
 
-// Colocación + compactación de `mats` (con las opciones de compactación del
-// método), opcionalmente sobre un plan semilla.
+// Cuánto se aparta el plan del orden del plan de estudios: por cuatrimestre,
+// suma de lo que cada obligatoria se adelanta más allá de ORDEN_VENTANA
+// respecto de la más temprana que la acompaña (0 = ningún cuatrimestre mezcla
+// años lejanos). Las fijadas a mano no cuentan.
+const orderDevOf = (PL: PlanState, items: PlacedMateria[][]): number => {
+  let dev = 0;
+  for (const it of items) {
+    const libres = it.filter((x) => PL.fixed.get(x.m.codigo) == null).map((x) => x.m);
+    const anchor = anchorOf(libres);
+    if (anchor == null) continue;
+    for (const m of libres) {
+      const n = nominalIdx(m);
+      if (n != null && n > anchor + ORDEN_VENTANA) dev += n - anchor - ORDEN_VENTANA;
+    }
+  }
+  return dev;
+};
+
+// Idas a la facultad y días de campus sumados sobre todos los cuatrimestres.
+const viajesDiasOf = (items: PlacedMateria[][]): { viajes: number; dias: number } => {
+  let viajes = 0;
+  let dias = 0;
+  for (const it of items) {
+    if (!it.length) continue;
+    const v = viajesDe(it.map((x) => x.com));
+    viajes += v.viajes;
+    dias += v.dias;
+  }
+  return { viajes, dias };
+};
+
+/** Vector lexicográfico (menor es mejor) con el que se comparan dos
+ *  colocaciones del mismo pool. El egreso va siempre primero. */
+function scoreOf(PL: PlanState, method: OptMethod, r: PlaceResult): number[] {
+  const last = lastCuatri(r.items);
+  const used = usedCuatris(r.items);
+  const dev = orderDevOf(PL, r.items);
+  const { viajes, dias } = viajesDiasOf(r.items);
+  return method === "dias"
+    ? [r.remaining.length, last, dias, viajes, used, dev]
+    : [r.remaining.length, last, used, dev, viajes, dias];
+}
+
+const betterScore = (a: number[], b: number[]): boolean => {
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return a[i] < b[i];
+  }
+  return false;
+};
+
+/* ---------- búsqueda en cartera (esqueleto o pool entero) ---------- */
+
+/** Reinicios con prioridad perturbada cuando ninguna colocación determinista
+ *  toca la cota inferior. Determinista (semilla fija). El esqueleto se memoiza,
+ *  así que su búsqueda se paga una vez por cambio de estado; la mezclada (pool
+ *  con electivas) corre en cada simulación del recomendador y lleva menos. */
+const SEARCH_RESTARTS = 48;
+const MIXED_RESTARTS = 8;
+
+/** Horizonte de cuatrimestres: 14 (siete años) y, si con eso quedan materias
+ *  ubicables afuera (topes muy bajos, muchas fijadas), se extiende hasta 42. */
+const HORIZON = 14;
+const HORIZON_MAX = 42;
+
 function placeAndCompact(
   PL: PlanState,
   approved: Set<string>,
   fixedCom: Map<string, string> | undefined,
   mats: MateriaM[],
+  order: (a: MateriaM, b: MateriaM) => number,
   N: number,
   opts: CompactOpts,
+  ventana: boolean,
   seed?: { items: PlacedMateria[][]; placedIdx: Record<string, number> },
 ): BaseResult {
-  const order = buildCriticalOrder(mats);
-  const r = placeMats(PL, approved, fixedCom, mats, order, N, seed);
-  const moved = compact(PL, approved, fixedCom, r.items, r.placedIdx, N, opts);
+  const r = placeMats(PL, approved, fixedCom, mats, order, N, seed, { ventana });
+  const moved = compact(PL, approved, fixedCom, r.items, r.placedIdx, N, {
+    ...opts,
+    ventana,
+  });
   return { ...r, moved };
 }
 
-// Dos colocaciones, y se queda con la mejor:
-//  - M (mezclada): todo el pool junto, el comportamiento histórico. Las
-//    electivas compiten por el lugar con las obligatorias.
+/**
+ * Mejor colocación de `mats` sobre cuatrimestres vacíos. Cartera: nominal (con
+ * ventana), holgura (sin ventana), holgura con ventana, y reinicios con ruido
+ * mientras no se alcance la cota inferior. Con `restarts` = 0 sólo corren las
+ * deterministas (colocación mezclada del pool con electivas: no se memoiza y
+ * el recomendador la corre una vez por candidata).
+ */
+function searchPlacement(
+  PL: PlanState,
+  approved: Set<string>,
+  fixedCom: Map<string, string> | undefined,
+  mats: MateriaM[],
+  N: number,
+  method: OptMethod,
+  restarts: number,
+): BaseResult {
+  const copts: CompactOpts = method === "dias" ? { noNewDays: true } : {};
+  const bound = lowerBoundLast(PL, approved, mats, N);
+  let best = placeAndCompact(PL, approved, fixedCom, mats, buildCriticalOrder(mats), N, copts, true);
+  let bestScore = scoreOf(PL, method, best);
+  const atBound = (r: BaseResult) =>
+    r.remaining.length <= bound.unplaceable && lastCuatri(r.items) <= bound.last;
+  if (atBound(best)) return best;
+  const consider = (r: BaseResult) => {
+    const s = scoreOf(PL, method, r);
+    if (betterScore(s, bestScore)) {
+      best = r;
+      bestScore = s;
+    }
+  };
+  const L = Math.max(bound.last, 0);
+  consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, L), N, copts, false));
+  if (atBound(best)) return best;
+  consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, L), N, copts, true));
+  if (atBound(best)) return best;
+  const rand = rng(0x5eed);
+  for (let r = 0; r < restarts; r++) {
+    const noise = new Map<string, number>();
+    const w = 0.5 + rand() * 2;
+    for (const m of mats) noise.set(m.codigo, rand() * w);
+    consider(
+      placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, L + (r % 2), noise), N, copts, false),
+    );
+    if (atBound(best)) break;
+  }
+  return best;
+}
+
+/* ---------- memoización del esqueleto ---------- */
+// El recomendador simula el plan una vez por electiva candidata con el MISMO
+// esqueleto; la búsqueda con reinicios se paga una sola vez. Clave: todo lo que
+// determina la colocación del esqueleto (plan activo, aprobadas, materias,
+// fijadas, comisiones fijadas, inicio, topes, finalizados, método).
+
+const MEMO_MAX = 8;
+const memo = new Map<string, BaseResult>();
+// otro plan (carrera): otros objetos en byId, la caché no sirve
+onPlanChange(() => memo.clear());
+
+const sortedEntries = (m: Map<string, unknown> | Map<number, unknown>): string =>
+  [...m.entries()]
+    .map(([k, v]) => `${k}=${v}`)
+    .sort()
+    .join(",");
+
+function memoKey(
+  PL: PlanState,
+  approved: Set<string>,
+  fixedCom: Map<string, string> | undefined,
+  mats: MateriaM[],
+  method: OptMethod,
+  N: number,
+): string {
+  const codes = mats.map((m) => m.codigo).sort();
+  const fc = fixedCom
+    ? [...fixedCom.entries()]
+        .filter(([k]) => byId.has(k))
+        .map(([k, v]) => `${k}=${v}`)
+        .sort()
+        .join(",")
+    : "";
+  return [
+    PLAN.planId ?? "",
+    PLAN.carrera?.codigo ?? "",
+    method,
+    N,
+    PL.start.parity + "-" + PL.start.year,
+    PL.maxCred,
+    PL.maxMat,
+    PL.avoid ? 1 : 0,
+    sortedEntries(PL.capCredByIdx),
+    sortedEntries(PL.capMatByIdx),
+    [...PL.lockedIdx].sort().join(","),
+    sortedEntries(PL.fixed),
+    fc,
+    [...approved].sort().join(","),
+    codes.join(","),
+  ].join("|");
+}
+
+const cloneResult = (r: BaseResult): BaseResult => ({
+  items: r.items.map((it) => it.map((x) => ({ ...x }))),
+  placedIdx: { ...r.placedIdx },
+  remaining: r.remaining.slice(),
+  moved: r.moved,
+});
+
+function searchSkeleton(
+  PL: PlanState,
+  approved: Set<string>,
+  fixedCom: Map<string, string> | undefined,
+  mats: MateriaM[],
+  N: number,
+  method: OptMethod,
+): BaseResult {
+  const key = memoKey(PL, approved, fixedCom, mats, method, N);
+  const hit = memo.get(key);
+  if (hit) {
+    // refrescar el orden LRU
+    memo.delete(key);
+    memo.set(key, hit);
+    return cloneResult(hit);
+  }
+  const r = searchPlacement(PL, approved, fixedCom, mats, N, method, SEARCH_RESTARTS);
+  memo.set(key, cloneResult(r));
+  if (memo.size > MEMO_MAX) memo.delete(memo.keys().next().value as string);
+  return r;
+}
+
+/* ---------- colocación base: esqueleto + relleno vs. mezclada ---------- */
+
+// Dos colocaciones, y se queda con la mejor por `scoreOf`:
 //  - F (esqueleto + relleno): primero las obligatorias y lo fijado a un
-//    cuatrimestre —el esqueleto, compactado—, y después las electivas ocupan el
-//    lugar que sobra; sólo abren cuatrimestres nuevos si no hay lugar.
-// M puede ganar cuando una electiva temprana suma los créditos que destraban
-// una obligatoria (créditos requeridos). Pero en M una electiva colocada
-// temprano también podía quedarse con el hueco al que la compactación iba a
-// adelantar una obligatoria, y el plan se alargaba un cuatrimestre por una
-// electiva que entraba de sobra en otro lado: el recomendador la marcaba
-// «alarga». Criterio: más materias ubicadas › egreso más temprano (último
-// cuatrimestre usado) › menos cuatrimestres con materias › F (a igualdad, la
-// que no reordena las obligatorias al agregar una electiva).
+//    cuatrimestre —el esqueleto, con la búsqueda completa y memoizado—, después
+//    las electivas ocupan el lugar que sobra (sólo abren cuatrimestres nuevos
+//    si no hay lugar), y por último se reintentan las obligatorias que el
+//    esqueleto no pudo ubicar (créditos requeridos que recién se juntan con
+//    las electivas).
+//  - M (mezclada): todo el pool junto, sólo las colocaciones deterministas.
+//    Puede ganar cuando una electiva temprana suma los créditos que destraban
+//    una obligatoria antes de lo que F la ubica.
+// A igualdad gana F: no reordena las obligatorias al agregar una electiva (en
+// M una electiva colocada temprano podía quedarse con el hueco al que la
+// compactación iba a adelantar una obligatoria, y el recomendador la marcaba
+// «alarga»).
 function basePlacement(
   PL: PlanState,
   approved: Set<string>,
   fixedCom: Map<string, string> | undefined,
   mats: MateriaM[],
   N: number,
-  opts: CompactOpts = {},
+  method: OptMethod,
 ): BaseResult {
-  const mixed = placeAndCompact(PL, approved, fixedCom, mats, N, opts);
-
   const isFilling = (m: MateriaM) => {
     const fx = PL.fixed.get(m.codigo);
     return m.tipo === "electiva" && (fx === undefined || fx === null);
   };
   const skeleton = mats.filter((m) => !isFilling(m));
   const filling = mats.filter(isFilling);
-  if (!filling.length) return mixed;
+  const bone = searchSkeleton(PL, approved, fixedCom, skeleton, N, method);
+  if (!filling.length) return bone;
 
-  const bone = placeAndCompact(PL, approved, fixedCom, skeleton, N, opts);
-  const full = placeAndCompact(PL, approved, fixedCom, filling, N, opts, {
-    items: bone.items,
-    placedIdx: bone.placedIdx,
-  });
-  const layered: BaseResult = {
-    items: full.items,
-    placedIdx: full.placedIdx,
-    remaining: [...bone.remaining, ...full.remaining],
-    moved: bone.moved + full.moved,
-  };
+  const copts: CompactOpts = method === "dias" ? { noNewDays: true } : {};
+  // Relleno sobre una copia del esqueleto, con varios órdenes de electivas
+  // (son pocas: cada relleno es barato); después se reintentan las
+  // obligatorias que el esqueleto dejó afuera. Gana el mejor por `scoreOf`.
+  const fillOrders: ((a: MateriaM, b: MateriaM) => number)[] = [
+    buildCriticalOrder(filling),
+    (a, b) => (b.creditos || 0) - (a.creditos || 0) || a.codigo.localeCompare(b.codigo),
+    (a, b) => (a.creditos || 0) - (b.creditos || 0) || a.codigo.localeCompare(b.codigo),
+    (a, b) => comsOf(a).length - comsOf(b).length || a.codigo.localeCompare(b.codigo),
+  ];
+  let layered: BaseResult | null = null;
+  let layeredScore: number[] = [];
+  for (const order of fillOrders) {
+    const seed = cloneResult(bone);
+    const full = placeAndCompact(PL, approved, fixedCom, filling, order, N, copts, true, {
+      items: seed.items,
+      placedIdx: seed.placedIdx,
+    });
+    let cand: BaseResult = {
+      items: full.items,
+      placedIdx: full.placedIdx,
+      remaining: [...bone.remaining, ...full.remaining],
+      moved: bone.moved + full.moved,
+    };
+    if (bone.remaining.length) {
+      const again = placeAndCompact(
+        PL,
+        approved,
+        fixedCom,
+        bone.remaining,
+        buildCriticalOrder(bone.remaining),
+        N,
+        copts,
+        true,
+        { items: full.items, placedIdx: full.placedIdx },
+      );
+      cand = {
+        items: again.items,
+        placedIdx: again.placedIdx,
+        remaining: [...again.remaining, ...full.remaining],
+        moved: cand.moved + again.moved,
+      };
+    }
+    const sc = scoreOf(PL, method, cand);
+    if (!layered || betterScore(sc, layeredScore)) {
+      layered = cand;
+      layeredScore = sc;
+    }
+  }
+  layered = layered as BaseResult;
 
-  if (layered.remaining.length !== mixed.remaining.length)
-    return layered.remaining.length < mixed.remaining.length ? layered : mixed;
-  const lastL = lastCuatri(layered.items);
-  const lastM = lastCuatri(mixed.items);
-  if (lastL !== lastM) return lastL < lastM ? layered : mixed;
-  return usedCuatris(layered.items) <= usedCuatris(mixed.items)
-    ? layered
-    : mixed;
+  const mixed = searchPlacement(PL, approved, fixedCom, mats, N, method, MIXED_RESTARTS);
+  return betterScore(scoreOf(PL, method, mixed), scoreOf(PL, method, layered)) ? mixed : layered;
+}
+
+/* ---------- por qué quedó afuera ---------- */
+
+/** Motivo de cada materia sin ubicar (para que el plan diga qué falta en vez
+ *  de un «no entra» genérico). Cascada: si su correlativa está en el pool
+ *  pero tampoco entró, la culpa es de la correlativa. */
+function explainUnplaced(
+  PL: PlanState,
+  approved: Set<string>,
+  mats: MateriaM[],
+  unplaced: MateriaM[],
+): Map<string, UnplacedReason> {
+  const why = new Map<string, UnplacedReason>();
+  const inPool = new Set(mats.map((m) => m.codigo));
+  const out = new Set(unplaced.map((m) => m.codigo));
+  const max =
+    approvedCredits(approved) +
+    mats.reduce((s, m) => s + (out.has(m.codigo) ? 0 : m.creditos || 0), 0);
+  for (const m of unplaced) {
+    const codes = (m.correlativas || []).filter(
+      (c) => !approved.has(c) && (!inPool.has(c) || out.has(c)),
+    );
+    if (codes.length) why.set(m.codigo, { kind: "correlativa", codes });
+    else if ((m.creditosReq || 0) > max)
+      why.set(m.codigo, { kind: "creditos", req: m.creditosReq || 0, max });
+    else why.set(m.codigo, { kind: "sinLugar" });
+  }
+  return why;
 }
 
 /* ---------- entrypoint ---------- */
@@ -939,61 +1485,43 @@ export function optimizePlan(
     .map((c) => byId.get(c))
     .filter(Boolean) as MateriaM[];
 
-  const N = 14;
-
-  let items: PlacedMateria[][];
-  let placedIdx: Record<string, number>;
-  let remaining: MateriaM[];
-  let moved = 0;
-
   const method: OptMethod = PL.method ?? "cuatris";
 
-  if (method === "dias") {
-    // misma colocación base que "cuatris" (chooseCom ya minimiza días nuevos
-    // en cada elección); la compactación sólo adelanta una materia si eso no
-    // agrega un día de campus nuevo al cuatri destino, así que nunca puede
-    // empeorar el total de días respecto de la colocación base.
-    const r = basePlacement(PL, approved, fixedCom, mats, N, {
-      noNewDays: true,
-    });
-    items = r.items;
-    placedIdx = r.placedIdx;
-    remaining = r.remaining;
-    moved = r.moved;
-  } else if (method === "balance") {
-    // fase 1: corremos "cuatris" completo (colocación + compactación) para
-    // obtener una solución 100% factible con la cantidad mínima de
-    // cuatrimestres usados U (todas las materias del pool ubicadas, salvo
-    // las que "cuatris" tampoco podría ubicar).
-    const base = basePlacement(PL, approved, fixedCom, mats, N);
-    let maxIdx = -1;
-    for (let i = 0; i < N; i++) if (base.items[i].length) maxIdx = i;
-    const U = Math.max(1, maxIdx + 1);
-
-    // fase 2: rebalanceo iterativo (least-loaded first) DENTRO de esos mismos
-    // U cuatrimestres: nunca crea ni vacía un índice, así que ni la cantidad
-    // de cuatrimestres ni la lista de materias ubicadas cambian — sólo se
-    // pareja la carga.
+  // Horizonte: 14 cuatrimestres; si quedan afuera materias que un horizonte
+  // más largo sí ubica (topes muy bajos, muchas fijadas), se extiende.
+  let N = HORIZON;
+  let base = basePlacement(PL, approved, fixedCom, mats, N, method);
+  while (N < HORIZON_MAX && base.remaining.length) {
+    const wide = lowerBoundLast(PL, approved, mats, HORIZON_MAX);
+    if (base.remaining.length <= wide.unplaceable) break;
+    N = Math.min(HORIZON_MAX, N + HORIZON);
+    base = basePlacement(PL, approved, fixedCom, mats, N, method);
+  }
+  let moved = base.moved;
+  if (method === "balance") {
+    // rebalanceo iterativo (least-loaded first) DENTRO de los U cuatrimestres
+    // usados: nunca crea ni vacía un índice, así que ni el egreso ni la lista
+    // de materias ubicadas cambian — sólo se pareja la carga.
+    const U = Math.max(1, lastCuatri(base.items) + 1);
     moved = rebalance(PL, approved, fixedCom, base.items, base.placedIdx, U);
-    items = base.items;
-    placedIdx = base.placedIdx;
-    remaining = base.remaining;
-  } else {
-    // "cuatris" (default).
-    const r = basePlacement(PL, approved, fixedCom, mats, N);
-    items = r.items;
-    placedIdx = r.placedIdx;
-    remaining = r.remaining;
-    moved = r.moved;
   }
+  const { items, remaining } = base;
 
-  const accBefore2: number[] = [];
-  let a3 = approvedCredits(approved);
+  const accBefore: number[] = [];
+  let acc = approvedCredits(approved);
   for (let i = 0; i < N; i++) {
-    accBefore2[i] = a3;
-    a3 += items[i].reduce((s, x) => s + (x.m.creditos || 0), 0);
+    accBefore[i] = acc;
+    acc += items[i].reduce((s, x) => s + (x.m.creditos || 0), 0);
   }
-  return { items, unplaced: remaining, accBefore: accBefore2, moved };
+  const bound = lowerBoundLast(PL, approved, mats, N);
+  return {
+    items,
+    unplaced: remaining,
+    accBefore,
+    moved,
+    minLast: bound.last,
+    unplacedWhy: explainUnplaced(PL, approved, mats, remaining),
+  };
 }
 
 /** Códigos que el plan ubica en el PRÓXIMO cuatrimestre (índice 0). Puro:

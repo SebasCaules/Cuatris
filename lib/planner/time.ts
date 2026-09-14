@@ -1,13 +1,28 @@
 // Tiempo / modalidad / conflictos de horario. Puro (espejo de planner.js).
 import type { Comision, Slot } from "./types";
 
+// Memoizado: las horas son un puñado de strings («13:00»…) y el optimizador
+// las convierte decenas de miles de veces por corrida.
+const minCache = new Map<string, number>();
 export const toMin = (h: string): number => {
+  const hit = minCache.get(h);
+  if (hit !== undefined) return hit;
   const [a, b] = h.split(":").map(Number);
-  return a * 60 + b;
+  const v = a * 60 + b;
+  minCache.set(h, v);
+  return v;
 };
 
-export const isAsync = (s: Slot): boolean =>
-  !!s.async || /asincr/i.test(s.aula || "");
+// Memoizado por identidad del slot: el optimizador lo consulta decenas de
+// miles de veces por corrida sobre los mismos objetos del plan.
+const asyncCache = new WeakMap<Slot, boolean>();
+export const isAsync = (s: Slot): boolean => {
+  const hit = asyncCache.get(s);
+  if (hit !== undefined) return hit;
+  const v = !!s.async || /asincr/i.test(s.aula || "");
+  asyncCache.set(s, v);
+  return v;
+};
 
 export function comModalidad(com: Comision): string {
   const m = com.slots
