@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePlanner } from "./state";
 import { DotCursando } from "./EstadoControl";
-import { PLAN } from "@/lib/planner/model";
+import { Tooltip } from "./Tooltip";
+import { PLAN, byId } from "@/lib/planner/model";
 import {
   approvedCredits,
   electiveCredits,
@@ -59,7 +60,18 @@ export default function Topbar() {
   }, [approved, cursando]);
   // Pastilla al lado del stat: el punto de «cursando» (el mismo glifo que
   // marca esas materias en la lista) y cómo queda la cifra sobre su total al
-  // aprobar lo que se cursa («● 165/231»). El tooltip lo explica en palabras.
+  // aprobar lo que se cursa («● 165/231»). El Tooltip del planner dice qué
+  // materias son y qué cambia; la pastilla es enfocable para leerlo con teclado.
+  const nCur = cursando.size;
+  const cursandoTxt = `${nCur} ${nCur === 1 ? "materia" : "materias"} que cursás`;
+  const cursandoLista = useMemo(
+    () =>
+      [...cursando]
+        .map((c) => byId.get(c))
+        .filter((m): m is NonNullable<typeof m> => !!m)
+        .sort((a, b) => a.codigo.localeCompare(b.codigo)),
+    [cursando],
+  );
   const Cur = ({
     v,
     base,
@@ -73,15 +85,24 @@ export default function Topbar() {
   }) => {
     if (!proj || v === base) return null;
     return (
-      <span className="statline__cur" title={tip} aria-label={tip}>
-        <DotCursando />
-        {v}
-        <i className="statline__cur-of">/{total}</i>
-      </span>
+      <Tooltip
+        width={250}
+        content={
+          <>
+            <b>Cursando {cursandoLista.map((m) => m.abbr).join(" · ")}</b>
+            <br />
+            {tip}
+          </>
+        }
+      >
+        <span className="statline__cur" tabIndex={0} aria-label={`${cursandoTxt}: ${tip}`}>
+          <DotCursando />
+          {v}
+          <i className="statline__cur-of">/{total}</i>
+        </span>
+      </Tooltip>
     );
   };
-  const nCur = cursando.size;
-  const cursandoTxt = `${nCur} ${nCur === 1 ? "materia" : "materias"} que cursás`;
 
   const handleShare = () => {
     if (typeof window === "undefined" || typeof navigator === "undefined")
@@ -115,7 +136,7 @@ export default function Topbar() {
             v={proj?.creditos ?? statCreditos}
             base={statCreditos}
             total={CRED_TOTAL}
-            tip={`Al aprobar las ${cursandoTxt} llegás a ${proj?.creditos ?? statCreditos} de los ${CRED_TOTAL} créditos de la carrera (hoy tenés ${statCreditos}).`}
+            tip={`Al aprobarlas llegás a ${proj?.creditos ?? statCreditos} de los ${CRED_TOTAL} créditos de la carrera (hoy tenés ${statCreditos}).`}
           />
         </span>
         <span className="statline__sep" aria-hidden="true" />
@@ -126,7 +147,7 @@ export default function Topbar() {
             v={proj?.elec ?? statElec}
             base={statElec}
             total={ELEC_REQ}
-            tip={`Al aprobar las ${cursandoTxt} sumás ${proj?.elec ?? statElec} de los ${ELEC_REQ} créditos electivos que pide el plan (hoy ${statElec}).`}
+            tip={`Al aprobarlas sumás ${proj?.elec ?? statElec} de los ${ELEC_REQ} créditos electivos que pide el plan (hoy ${statElec}).`}
           />
         </span>
         <span className="statline__sep" aria-hidden="true" />
@@ -136,7 +157,7 @@ export default function Topbar() {
             v={proj?.disp ?? statDisp}
             base={statDisp}
             total={MAT_TOTAL - approved.size - nCur}
-            tip={`Al aprobar las ${cursandoTxt} vas a poder cursar ${proj?.disp ?? statDisp} de las ${MAT_TOTAL - approved.size - nCur} materias que te quedan (hoy ${statDisp}): sus correlativas quedan cubiertas.`}
+            tip={`Al aprobarlas vas a poder cursar ${proj?.disp ?? statDisp} de las ${MAT_TOTAL - approved.size - nCur} materias que te quedan (hoy ${statDisp}): sus correlativas quedan cubiertas.`}
           />
         </span>
         <span className="statline__sep" aria-hidden="true" />
@@ -146,17 +167,17 @@ export default function Topbar() {
             v={proj?.restan ?? statRestan}
             base={statRestan}
             total={OBLIG_TOTAL}
-            tip={`Al aprobar las ${cursandoTxt} te quedan ${proj?.restan ?? statRestan} de las ${OBLIG_TOTAL} obligatorias de la carrera (hoy ${statRestan}).`}
+            tip={`Al aprobarlas te quedan ${proj?.restan ?? statRestan} de las ${OBLIG_TOTAL} obligatorias de la carrera (hoy ${statRestan}).`}
           />
         </span>
       </div>
       )}
+      <Tooltip content={copied ? "Link copiado" : "Copiar el link de esta vista (reproduce filtros y lo abierto)"} width={200}>
       <button
         type="button"
         className={`share-btn${copied ? " is-copied" : ""}`}
         onClick={handleShare}
         aria-label="Copiar link de esta vista"
-        title="Copiar link de esta vista"
       >
         {copied ? (
           <svg
@@ -192,6 +213,7 @@ export default function Topbar() {
           {copied ? "¡Link copiado!" : ""}
         </span>
       </button>
+      </Tooltip>
     </header>
   );
 }
