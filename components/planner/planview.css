@@ -71,6 +71,15 @@
   flex-direction: column;
   gap: 6px;
 }
+/* el bloque entero habla del final del plan: la etiqueta lo dice una vez */
+.planner .pv-strip__when {
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+.planner .pv-strip__pct.is-ok { color: var(--sage); }
 .planner .pv-strip__item {
   display: inline-flex;
   align-items: center;

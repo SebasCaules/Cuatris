@@ -321,6 +321,11 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   electivos del panel de recomendaciones pasa a un bloque con cifra grande y «faltan N» en
   brass.
 
+- `views/PlanView.tsx` + `planview.css`: el bloque de resumen del plan habla todo del final
+  del plan (etiqueta «Al final del plan»): créditos electivos que junta el plan sobre los que
+  pide el título («3 / 27 cr · faltan 24») y los minors. Antes mezclaba «créditos hasta hoy»
+  con minors proyectados; el «hoy» ya está en la barra de métricas.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

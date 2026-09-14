@@ -2541,14 +2541,9 @@ export default function PlanView() {
 
 
   const flat = R.items.flat();
-  const totalCred = flat.reduce((s, x) => s + (x.m.creditos || 0), 0);
   const accNow = approvedCredits(approved);
-  // lo que se cursa ahora no está en el plan ni en accNow, pero sí en el total
-  const cursandoCred = approvedCredits(state.cursando);
-  const finalCred = accNow + cursandoCred + totalCred;
   const lastIdx = used.length ? used[used.length - 1].i : 0;
   const gradCu = cuatriAt(PL.start, lastIdx);
-  const pct = finalCred > 0 ? Math.round((accNow / finalCred) * 100) : 0;
   // créditos electivos comprometidos (sin el preview) → para el panel de recos
   const elecCommitted =
     electiveCredits(settled) +
@@ -2556,6 +2551,7 @@ export default function PlanView() {
       .flat()
       .filter((x) => x.m.tipo === "electiva")
       .reduce((s, x) => s + (x.m.creditos || 0), 0);
+  const elecPlanPct = Math.min(100, Math.round((elecCommitted / elecReq()) * 100));
 
   // Si la materia previsualizada no entra en ningún cuatrimestre del plan, el
   // recomendador dice dónde caería si el plan se alarga (`landingIdx` más allá
@@ -2861,13 +2857,18 @@ export default function PlanView() {
                   </span>
                 </div>
               </div>
+              {/* Todo lo de este bloque es AL FINAL DEL PLAN (igual que «Te
+                  recibís en»): créditos electivos que junta el plan sobre los
+                  que pide el título, y los minors con lo aprobado más lo
+                  planificado. El «hoy» vive en la barra de métricas de arriba. */}
               <div className="pv-result__cred">
+                <span className="pv-strip__when">Al final del plan</span>
                 <span className="pv-strip__item">
                   <span className="pv-strip__lbl" id="pvCredLbl">
-                    Créditos
+                    Electivos
                   </span>
                   <span>
-                    <b>{accNow}</b> / {finalCred}
+                    <b>{Math.min(elecCommitted, elecReq())}</b> / {elecReq()} cr
                   </span>
                   <span
                     className="pv-strip__bar"
@@ -2875,11 +2876,13 @@ export default function PlanView() {
                     aria-labelledby="pvCredLbl"
                     aria-valuemin={0}
                     aria-valuemax={100}
-                    aria-valuenow={pct}
+                    aria-valuenow={elecPlanPct}
                   >
-                    <i style={{ width: `${pct}%` }} />
+                    <i style={{ width: `${elecPlanPct}%` }} />
                   </span>
-                  <span className="pv-strip__pct">{pct}%</span>
+                  <span className={"pv-strip__pct" + (elecCommitted >= elecReq() ? " is-ok" : "")}>
+                    {elecCommitted >= elecReq() ? "cubiertos" : `faltan ${elecReq() - elecCommitted}`}
+                  </span>
                 </span>
                 <span className="pv-strip__minors" role="group" aria-label="Progreso de minors">
                   {minorRows.map(({ minor, cr, done }) => (
