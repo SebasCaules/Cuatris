@@ -157,14 +157,20 @@ Reglas:
 3. Pasada de validez: para toda arista `from→to`, `col(to) ≥ col(from)+1` (empujar `to`;
    punto fijo, guard 100).
 4. Orden en cada columna: obligatorias arriba (orden inicial por `anio, cuatri, codigo`), luego
-   electivas (inicial por sigla). Heurística de la mediana (16 barridas alternadas): las
-   obligatorias solo miran vecinos obligatorios (el espinazo no depende de la capa); las
-   electivas miran a sus correlativas (fijas) y a sus sucesoras electivas. Dentro de las
-   electivas, primero las que tienen alguna arista (ordenadas por mediana), después las
-   aisladas (por sigla).
+   electivas (inicial por sigla). Heurística de la mediana (16 barridas alternadas
+   abajo/arriba) sin nodos dummy: como muchas aristas saltan varias columnas, cada nodo toma
+   la mediana de la **posición normalizada** (`i/(n-1)`, o .5 si la columna tiene un solo
+   nodo) de TODOS sus predecesores (barrida hacia abajo) o sucesores (hacia arriba), estén en
+   la columna que estén; sin vecinos conserva su lugar (sort estable). Las obligatorias solo
+   miran vecinos obligatorios (el espinazo no depende de la capa); las electivas miran a sus
+   correlativas (ya fijas) y a sus sucesoras electivas. Dentro de las electivas, primero las
+   que tienen alguna arista (ordenadas por mediana), después las aisladas (por sigla).
 5. Coordenadas: `x` de columna acumulado (ancho de columna = `max(NODE_W, sub*(NODE_W+SUB_GAP)-SUB_GAP)` con `sub = ceil(nElectivas/MAX_ROWS)`, o 1 sin capa); `COL_GAP` entre columnas. Banda del espinazo: alto = `maxOb*(OB_H+OB_GAP)-OB_GAP`, obligatorias centradas en la banda; `spineBottom = PAD+HEADER_H+bandH`. Electivas desde `spineBottom+BAND_GAP`, en columnas de a `MAX_ROWS` (llenado por columna: la primera sub-columna se lleva las que tienen aristas).
 6. `columns[k]`: `top`/`sub` según nominal del plan (`"1º"`/`"1c"`; solo año → `sub:null`;
-   nada nominal → ambos null). `bands`: una por año con ≥1 columna, solo si hay años nominales.
+   nada nominal → ambos null). Las columnas que quedan **más allá de la última columna
+   nominal** (nodos empujados por la pasada de validez, p. ej. P: 46.02→46.03 ambas de
+   5º·2c) no llevan cabecera (`top`/`sub` null, `year` null): no se inventa un «6.º año».
+   `bands`: una por año con ≥1 columna nominal, solo si hay años nominales.
 7. Determinista (misma entrada → mismo JSON). Cero solapamientos. `width/height` finitos.
 
 Done-test (`scripts/test-grafo-layout.mts`, Node ≥ 23 con type stripping, carga
