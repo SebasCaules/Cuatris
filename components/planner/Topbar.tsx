@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { usePlanner } from "./state";
 import { DotCursando } from "./EstadoControl";
 import { Tooltip } from "./Tooltip";
-import { PLAN, byId } from "@/lib/planner/model";
+import { PLAN } from "@/lib/planner/model";
 import {
   approvedCredits,
   electiveCredits,
@@ -61,18 +61,10 @@ export default function Topbar() {
   // Pastilla al lado del stat: el punto de «cursando» (el mismo glifo que
   // marca esas materias en la lista) y cómo queda la cifra sobre su total al
   // aprobar lo que se cursa («● 165/231»). El Tooltip del planner lo dice en
-  // dos líneas —«Al terminar la cursada (SDS · Cripto)» y la cifra que queda—;
-  // la pastilla es enfocable para leerlo con teclado.
+  // una línea («Al terminar la cursada: 165/231 créditos»); la pastilla es
+  // enfocable para leerlo con teclado.
   const nCur = cursando.size;
   const cursandoTxt = `${nCur} ${nCur === 1 ? "materia" : "materias"} que cursás`;
-  const cursandoLista = useMemo(
-    () =>
-      [...cursando]
-        .map((c) => byId.get(c))
-        .filter((m): m is NonNullable<typeof m> => !!m)
-        .sort((a, b) => a.codigo.localeCompare(b.codigo)),
-    [cursando],
-  );
   const Cur = ({
     v,
     base,
@@ -87,16 +79,14 @@ export default function Topbar() {
     if (!proj || v === base) return null;
     return (
       <Tooltip
-        width={230}
+        width={180}
         content={
           <>
-            <b>Al terminar la cursada</b> ({cursandoLista.map((m) => m.abbr).join(" · ")})
-            <br />
-            {tip}
+            Al terminar la cursada: <b>{tip}</b>
           </>
         }
       >
-        <span className="statline__cur" tabIndex={0} aria-label={`${cursandoTxt}: ${tip}`}>
+        <span className="statline__cur" tabIndex={0} aria-label={`Al terminar la cursada (${cursandoTxt}): ${tip}`}>
           <DotCursando />
           {v}
           <i className="statline__cur-of">/{total}</i>
@@ -133,7 +123,7 @@ export default function Topbar() {
             v={proj?.creditos ?? statCreditos}
             base={statCreditos}
             total={CRED_TOTAL}
-            tip={`${proj?.creditos ?? statCreditos} de ${CRED_TOTAL} créditos aprobados`}
+            tip={`${proj?.creditos ?? statCreditos}/${CRED_TOTAL} créditos`}
           />
         </span>
         <span className="statline__sep" aria-hidden="true" />
@@ -144,7 +134,7 @@ export default function Topbar() {
             v={proj?.elec ?? statElec}
             base={statElec}
             total={ELEC_REQ}
-            tip={`${proj?.elec ?? statElec} de ${ELEC_REQ} créditos electivos`}
+            tip={`${proj?.elec ?? statElec}/${ELEC_REQ} electivos`}
           />
         </span>
         <span className="statline__sep" aria-hidden="true" />
@@ -154,7 +144,7 @@ export default function Topbar() {
             v={proj?.disp ?? statDisp}
             base={statDisp}
             total={MAT_TOTAL - approved.size - nCur}
-            tip={`${proj?.disp ?? statDisp} de ${MAT_TOTAL - approved.size - nCur} materias cursables`}
+            tip={`${proj?.disp ?? statDisp}/${MAT_TOTAL - approved.size - nCur} cursables`}
           />
         </span>
         <span className="statline__sep" aria-hidden="true" />
@@ -164,7 +154,7 @@ export default function Topbar() {
             v={proj?.restan ?? statRestan}
             base={statRestan}
             total={OBLIG_TOTAL}
-            tip={`${proj?.restan ?? statRestan} de ${OBLIG_TOTAL} obligatorias restantes`}
+            tip={`${proj?.restan ?? statRestan}/${OBLIG_TOTAL} obligatorias`}
           />
         </span>
       </div>
