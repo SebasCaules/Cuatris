@@ -422,16 +422,27 @@
 .ld-data__card {
   padding: 20px 22px;
   border: 1px solid var(--hairline);
-  border-left: 3px solid var(--accent);
   border-radius: var(--r-card);
   background: var(--surface-2);
 }
 .ld-data__card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0 0 8px;
   font-family: var(--font-display);
   font-size: 19px;
   font-weight: 600;
   color: var(--ink-strong);
+}
+/* marca chica en el título en vez de un borde de color al costado */
+.ld-data__card h3::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--accent);
+  flex: none;
 }
 .ld-data__card p {
   margin: 0;
