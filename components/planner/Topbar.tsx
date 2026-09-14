@@ -60,8 +60,9 @@ export default function Topbar() {
   }, [approved, cursando]);
   // Pastilla al lado del stat: el punto de «cursando» (el mismo glifo que
   // marca esas materias en la lista) y cómo queda la cifra sobre su total al
-  // aprobar lo que se cursa («● 165/231»). El Tooltip del planner dice qué
-  // materias son y qué cambia; la pastilla es enfocable para leerlo con teclado.
+  // aprobar lo que se cursa («● 165/231»). El Tooltip del planner lo dice en
+  // dos líneas —«Al terminar la cursada (SDS · Cripto)» y la cifra que queda—;
+  // la pastilla es enfocable para leerlo con teclado.
   const nCur = cursando.size;
   const cursandoTxt = `${nCur} ${nCur === 1 ? "materia" : "materias"} que cursás`;
   const cursandoLista = useMemo(
@@ -86,10 +87,10 @@ export default function Topbar() {
     if (!proj || v === base) return null;
     return (
       <Tooltip
-        width={250}
+        width={230}
         content={
           <>
-            <b>Cursando {cursandoLista.map((m) => m.abbr).join(" · ")}</b>
+            <b>Al terminar la cursada</b> ({cursandoLista.map((m) => m.abbr).join(" · ")})
             <br />
             {tip}
           </>
@@ -122,13 +123,9 @@ export default function Topbar() {
 
   return (
     <header className="topbar">
-      {/* Sin materias marcadas la tira sería un muro de ceros que no informa
-          nada: se muestra recién cuando hay progreso (el banner de primer uso
-          ocupa ese lugar mientras tanto). El div vacío conserva el layout
-          space-between. */}
-      {approved.size === 0 ? (
-        <div aria-hidden="true" />
-      ) : (
+      {/* Siempre visible, también sin nada marcado: «cursables» y
+          «obligatorias restantes» ya dicen algo con cero aprobadas (antes se
+          escondía y en un perfil nuevo parecía que faltaban los stats). */}
       <div className="statline">
         <span className="statline__it">
           <b className="statline__num" key={statCreditos}>{statCreditos}</b> cr aprobados
@@ -136,7 +133,7 @@ export default function Topbar() {
             v={proj?.creditos ?? statCreditos}
             base={statCreditos}
             total={CRED_TOTAL}
-            tip={`Al aprobarlas llegás a ${proj?.creditos ?? statCreditos} de los ${CRED_TOTAL} créditos de la carrera (hoy tenés ${statCreditos}).`}
+            tip={`${proj?.creditos ?? statCreditos} de ${CRED_TOTAL} créditos aprobados`}
           />
         </span>
         <span className="statline__sep" aria-hidden="true" />
@@ -147,7 +144,7 @@ export default function Topbar() {
             v={proj?.elec ?? statElec}
             base={statElec}
             total={ELEC_REQ}
-            tip={`Al aprobarlas sumás ${proj?.elec ?? statElec} de los ${ELEC_REQ} créditos electivos que pide el plan (hoy ${statElec}).`}
+            tip={`${proj?.elec ?? statElec} de ${ELEC_REQ} créditos electivos`}
           />
         </span>
         <span className="statline__sep" aria-hidden="true" />
@@ -157,7 +154,7 @@ export default function Topbar() {
             v={proj?.disp ?? statDisp}
             base={statDisp}
             total={MAT_TOTAL - approved.size - nCur}
-            tip={`Al aprobarlas vas a poder cursar ${proj?.disp ?? statDisp} de las ${MAT_TOTAL - approved.size - nCur} materias que te quedan (hoy ${statDisp}): sus correlativas quedan cubiertas.`}
+            tip={`${proj?.disp ?? statDisp} de ${MAT_TOTAL - approved.size - nCur} materias cursables`}
           />
         </span>
         <span className="statline__sep" aria-hidden="true" />
@@ -167,11 +164,10 @@ export default function Topbar() {
             v={proj?.restan ?? statRestan}
             base={statRestan}
             total={OBLIG_TOTAL}
-            tip={`Al aprobarlas te quedan ${proj?.restan ?? statRestan} de las ${OBLIG_TOTAL} obligatorias de la carrera (hoy ${statRestan}).`}
+            tip={`${proj?.restan ?? statRestan} de ${OBLIG_TOTAL} obligatorias restantes`}
           />
         </span>
       </div>
-      )}
       <Tooltip content={copied ? "Link copiado" : "Copiar el link de esta vista (reproduce filtros y lo abierto)"} width={200}>
       <button
         type="button"
