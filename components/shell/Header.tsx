@@ -21,7 +21,16 @@ export default function Header({
   perfil?: ReactNode;
 }) {
   return (
-    <header className={"nav cuatris-nav" + (nav ? " cuatris-nav--views" : "")} role="banner">
+    <header
+      className={
+        "nav cuatris-nav" +
+        (nav ? " cuatris-nav--views" : "") +
+        // barra de la app (con perfil): a todo el ancho, alineada con el
+        // contenido fluido del planner; la portada conserva la fila centrada
+        (perfil ? " cuatris-nav--app" : "")
+      }
+      role="banner"
+    >
       <div className="nav__inner">
         <Link className="brand" href="/" prefetch={false}>
           <CuatrisMark />

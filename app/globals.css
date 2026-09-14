@@ -17,7 +17,14 @@ main.page > .planner { flex: 1 1 auto; }
 .cuatris-nav .nav__inner .theme-toggle--desktop { display: inline-flex !important; }
 /* border-box: .nav__inner es width:100% + padding y en pantallas angostas
    desbordaba 48 px (lo último de la fila quedaba fuera de la vista) */
-.cuatris-nav .nav__inner { box-sizing: border-box; gap: 16px; }
+.cuatris-nav .nav__inner { --nav-px: 24px; box-sizing: border-box; gap: 16px; padding: 0 var(--nav-px); }
+/* barra del planner: a todo el ancho, con el mismo margen lateral que el
+   contenido (topbar y shell usan clamp(16px,3vw,44px)); así el tema y el
+   perfil quedan pegados al borde derecho en cualquier pantalla */
+.cuatris-nav--app .nav__inner { --nav-px: clamp(16px, 3vw, 44px); max-width: none; }
+/* toggle de tema más chico que el icono de perfil */
+.cuatris-nav .theme-toggle--desktop { width: 32px; height: 32px; margin-left: 0; }
+.cuatris-nav .theme-toggle--desktop svg { width: 15px; height: 15px; }
 .cuatris-nav .vnav { margin-left: 8px; }
 /* entre 1001 y 1280 px la fila va justa (cinco pestañas + carrera + tools) */
 @media (min-width: 1001px) and (max-width: 1280px) {
@@ -42,9 +49,9 @@ main.page > .planner { flex: 1 1 auto; }
   .cuatris-nav .vnav {
     order: 10;
     flex: 1 0 100%;
-    margin: 6px -24px 0;
-    padding: 0 24px 8px;
-    width: calc(100% + 48px);
+    margin: 6px calc(-1 * var(--nav-px)) 0;
+    padding: 0 var(--nav-px) 8px;
+    width: calc(100% + 2 * var(--nav-px));
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
