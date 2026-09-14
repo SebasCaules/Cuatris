@@ -20,6 +20,24 @@
         ],
         "createdAt": "2026-09-13T20:08:07.872Z",
         "reason": "Claude: replica en impresión el bloque de pantalla .cmbcal-blk (planner.css), que ya lleva el acento izquierdo en el color de la materia; el export debe verse igual que la app"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "components/planner/combinador.css"
+        ],
+        "createdAt": "2026-09-14T22:45:27.986Z",
+        "reason": "autor: barra de color izquierda de 3px identifica la materia en chips y bloques (components/planner/DESIGN.md §5.1; código espejado de StudyVaults c8fe185, previo a este cambio)"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "components/planner/views/CombinadorView.tsx"
+        ],
+        "createdAt": "2026-09-14T22:45:28.016Z",
+        "reason": "autor: barra de color izquierda de 3px identifica la materia en los chips asincrónicos (components/planner/DESIGN.md §5.1; código espejado de StudyVaults, previo a este cambio)"
       }
     ]
   }

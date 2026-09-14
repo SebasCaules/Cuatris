@@ -312,6 +312,16 @@ export default function FinalesCombinadorView() {
   // buscador de finales: abierto a pedido («+ Agregar») o forzado con la
   // lista vacía (empty state integrado, sin pantalla aparte).
   const [pickerOpen, setPickerOpen] = useState(false);
+  // contenedor del buscador: destino de la invitación del panel vacío (lo
+  // trae a la vista y enfoca su caja) y de aria-controls de «+ Agregar».
+  const pickerRef = useRef<HTMLDivElement | null>(null);
+  const irAlBuscador = () => {
+    setPickerOpen(true);
+    const el = pickerRef.current;
+    if (!el) return;
+    el.scrollIntoView({ block: "start", behavior: "smooth" });
+    el.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+  };
   const dlRef = useRef<HTMLDivElement | null>(null);
   // Materia bajo el cursor (bloque del calendario, fila del panel o del editor):
   // sus otras mesas del período aparecen como chips fantasma resaltados. La
@@ -1123,7 +1133,7 @@ export default function FinalesCombinadorView() {
       {/* ---- buscador de finales: abierto a pedido o forzado con la lista
           vacía (mismo picker compartido con el combinador de horarios) ---- */}
       {showPicker && (
-        <div className="fin__picker">
+        <div className="fin__picker" id="fin-picker" ref={pickerRef}>
           <MateriaPicker
             candidatos={candidatos}
             fantasmas={sinFinal}
@@ -1144,9 +1154,6 @@ export default function FinalesCombinadorView() {
               !conProgreso && finalDone.has(m.codigo) ? (
                 <span className="cmb9-oktag">✓ final aprobado</span>
               ) : null
-            }
-            rowTitle={(m, added) =>
-              `${m.codigo} · ${m.nombre} — ${added ? "quitar de" : "sumar a"} tus finales pendientes`
             }
             placeholder="Buscá un final (código o nombre)…"
             hint={
@@ -1500,6 +1507,7 @@ export default function FinalesCombinadorView() {
                     type="button"
                     className={"fin__add" + (showPicker ? " is-open" : "")}
                     aria-expanded={showPicker}
+                    aria-controls="fin-picker"
                     onClick={() => setPickerOpen((o) => !o)}
                   >
                     {showPicker ? (
@@ -1515,13 +1523,16 @@ export default function FinalesCombinadorView() {
             </div>
 
             {rows.length === 0 ? (
-              <button
-                type="button"
-                className="fin__add-lead"
-                onClick={() => setPickerOpen(true)}
-              >
-                ＋ Elegí los finales a combinar
-              </button>
+              // el buscador ya está abierto arriba: la invitación lleva hasta él
+              <Tooltip content="Ir al buscador" width={120}>
+                <button
+                  type="button"
+                  className="fin__add-lead"
+                  onClick={irAlBuscador}
+                >
+                  ＋ Elegí los finales a combinar
+                </button>
+              </Tooltip>
             ) : (
             <>
                 <div

@@ -169,7 +169,7 @@ export default function CombinadorView() {
 
   // ---------- materias combinables ----------
   const pool = useMemo(() => {
-    // «Solo combinar» ignora el progreso: ofrece también las ya aprobadas
+    // con «Mi progreso» apagado (comboSolo) se ofrecen también las ya aprobadas
     const ok = (m: Materia) =>
       hasHorario(m.codigo) &&
       (state.comboSolo || !state.approved.has(m.codigo));
@@ -191,6 +191,10 @@ export default function CombinadorView() {
     [state.approved],
   );
 
+  // Agregables del buscador (una sola lista: el componente separa por tipo);
+  // memoizada para que el buscador no rehaga sus grupos en cada render.
+  const candidatos = useMemo(() => [...pool.obs, ...pool.els], [pool]);
+
   // Materias DEL PLAN sin horario cargado: el buscador las muestra atenuadas y
   // no-agregables si matchean (búsqueda honesta), en vez de fingir que no existen.
   const ghostPool = useMemo(
@@ -206,7 +210,7 @@ export default function CombinadorView() {
   );
 
   // Selección EFECTIVA del combo: en modo normal, las aprobadas que hayan
-  // entrado vía «Solo combinar» quedan latentes (no se combinan, no se
+  // entrado con «Mi progreso» apagado quedan latentes (no se combinan, no se
   // muestran, no se guardan — así el guardado al plan nunca es parcial en
   // silencio) y reaparecen al reactivar el modo. No se borran del set.
   const comboEff = useMemo(
@@ -486,6 +490,14 @@ export default function CombinadorView() {
 
   const showPicker = pickerOpen || selected.length === 0;
   const canExport = total > 0 && Boolean(ranked[safeIdx]);
+  // «Sumar a mi plan» se ofrece solo con una cursada exportable y sin aprobadas
+  // en la selección (ver el comentario del botón); si deja de ofrecerse con el
+  // menú abierto (p. ej. al apagar «Mi progreso»), el menú se cierra.
+  const canSave =
+    canExport && !selected.some((m) => state.approved.has(m.codigo));
+  useEffect(() => {
+    if (!canSave) setSaveOpen(false);
+  }, [canSave]);
 
   // ---------- diagnóstico de "sin solución": ¿la culpa es la modalidad? ----------
   // Espejo del filtro de comisionesFor (comisión fija → modalidad) SIN su fallback:
@@ -791,7 +803,7 @@ export default function CombinadorView() {
               «Mi progreso» apagado) no se ofrece, porque el reducer la
               saltearía y el guardado sería parcial en silencio; con el switch
               apagado pero sin aprobadas elegidas sí se ofrece. */}
-          {canExport && !selected.some((m) => state.approved.has(m.codigo)) && (
+          {canSave && (
             <div className="cmb9-save" ref={saveRef}>
               <button
                 type="button"
@@ -957,7 +969,7 @@ export default function CombinadorView() {
   // ---------- sub-render: buscador desplegable ----------
   const picker = showPicker && (
     <MateriaPicker
-      candidatos={[...pool.obs, ...pool.els]}
+      candidatos={candidatos}
       fantasmas={ghostPool}
       fantasmaNota="sin horario cargado"
       added={(code) => combo.has(code)}

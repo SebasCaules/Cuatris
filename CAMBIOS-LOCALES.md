@@ -385,6 +385,59 @@ superposiciones o por un requisito de créditos que le deja una única ventana (
 - `planview.css`: `.pv-config` con `grid-template-columns: minmax(0,1fr) fit-content(52%)`:
   con muchos minors (Industrial: nueve) el resultado aplastaba los parámetros a una columna;
   ahora las pastillas envuelven.
+## 20. Combinadores: «Mi progreso» compartido y finales sin progreso (2026-09-14)
+
+Los dos combinadores (horarios y finales) sirven al que planifica con su progreso y al que
+solo quiere combinar: comparten un modo y un buscador, y el de finales ya no depende de tener
+cursadas marcadas.
+
+- **Un solo modo.** `state.comboSolo` («ignorar mi progreso», clave `plan_combo_solo_v1`)
+  pasa a valer para los dos combinadores. En la UI es el switch **«Mi progreso»**
+  (`components/planner/ProgresoSwitch.tsx`, nuevo: mismo dibujo que el «Recomendador» del
+  plan, reglas `.prog-switch*` al final de `planner.css`, tooltip del `Tooltip` sin
+  InfoTip ni `title=`), primer control del cluster derecho de la barra en las dos vistas.
+  **Sin progreso marcado (ni aprobadas ni cursando) no se muestra**: los dos modos serían
+  iguales y el que solo combina no necesita el control. Exporta `hayProgreso` y
+  `usaProgreso` (`!comboSolo && hayProgreso`). Quien tenía «Ignorar mi progreso» prendido
+  en horarios ve también el combinador de finales en modo libre (mismo flag): el switch
+  apagado, con su tooltip, es la vía de vuelta.
+- **Buscador compartido.** `components/planner/MateriaPicker.tsx` (nuevo): el picker del
+  combinador de horarios extraído tal cual (búsqueda sin tildes, Obligatorias por año ·
+  cuatrimestre | Electivas por nombre, grupo atenuado de coincidencias no agregables, sin
+  resultados, hint bajo el buscador), parametrizado (`candidatos`, `fantasmas`,
+  `fantasmaNota`, `added`, `onToggle`, `tag`, `meta`, `hint`, `rowTitle`, `placeholder`).
+  Importa `combinador.css` (las reglas `.cmb9-*` viven ahí). `anioLabel` se exporta desde
+  el componente. La consulta vive en el componente (se limpia al cerrar el buscador).
+- **Finales sin progreso** (`views/FinalesCombinadorView.tsx`, `finales.css`): la lista de
+  pendientes es derivados del progreso ∪ `finales.extra` (`lib/planner/types.ts`; nuevo
+  `Set` con los finales agregados a mano; acciones `FINALES_EXTRA_ADD` /
+  `FINALES_EXTRA_REMOVE` en `state.tsx` — quitar borra también su asignación). Con «Mi
+  progreso» activo los extra entran sujetos a las correlativas de final (candado) y no se
+  ofrecen los finales ya aprobados (el hint del buscador avisa cuántos hay); con el switch
+  apagado, o sin progreso, la lista es solo `extra`, sin correlativas y sin el chip
+  «cursando» («Para combinar — Período» en vez de «Se pueden rendir»). Los derivados no se
+  quitan (reflejan el progreso); los agregados tienen × (`.fin__srow-x`, tooltip «Quitar de
+  la lista»). El buscador se abre desde «+ Agregar» en la cabecera del panel (`.fin__add`, a
+  todo el ancho entre la barra y la fila calendario+panel, `.fin__picker`) y queda abierto
+  con la lista vacía junto a la invitación «＋ Elegí los finales a combinar»
+  (`.fin__add-lead`, que lleva hasta el buscador y enfoca su caja); el estado vacío «Ir a Mis
+  materias» desaparece (y su CSS `.fin__empty*`). Sobre el × la nota de la fila se calla
+  (`:has`), para no mostrar dos burbujas.
+  Sin finales en la lista no se muestra el resumen. Los extra siguen en el buscador con ✓
+  (solo se ocultan los derivados). Las materias que no rinden final aparecen atenuadas
+  («no rinde final»).
+- **Horarios** (`views/CombinadorView.tsx`, `combinador.css`): el switch «Ignorar mi
+  progreso» + InfoTip del header se reemplaza por `ProgresoSwitch` (se van `.cmb9-solowrap`
+  y `.cmb9-solo`); el picker inline pasa a `MateriaPicker`. «Sumar a mi plan» se gatea por
+  contenido (ninguna aprobada en la selección) en vez de por el modo: con `comboSolo`
+  persistido y sin progreso el switch no existe y el botón tiene que seguir apareciendo. En
+  las dos vistas, el buscador forzado por lista vacía queda abierto a pedido al elegir el
+  primer ítem (antes se cerraba solo).
+- **Persistencia** (`lib/planner/persist.ts`): `PersistedFinales.extra?: string[]`; se
+  serializa solo si no está vacío, así la firma de las instantáneas guardadas antes no
+  cambia (no aparece «cambios sin guardar»); `parseFinales` lo lee tolerante.
+  `perfilGuardado.ts`: `enBlanco` también mira `finales.extra` (un perfil nunca guardado con
+  finales agregados a mano cuenta como «sin guardar»).
 
 ## Fuera de los directorios espejados (no lo toca el sync)
 

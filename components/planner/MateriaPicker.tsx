@@ -8,7 +8,7 @@
 // CombinadorView (fuente única).
 import "@/components/planner/combinador.css";
 
-import { useMemo, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { normalizar } from "@/lib/planner/texto";
 import type { MateriaM } from "@/lib/planner/types";
 
@@ -18,6 +18,9 @@ export const anioLabel = (a: number): string =>
   `${a === 1 || a === 3 ? `${a}.er` : `${a}.º`} año`;
 
 const cap = (s: string): string => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+
+/** Default estable de `fantasmas` (un `[]` inline sería un array nuevo por render). */
+const SIN_FANTASMAS: MateriaM[] = [];
 
 export interface MateriaPickerProps {
   /** materias agregables (el componente las separa por `m.tipo`). */
@@ -50,7 +53,7 @@ const defaultMeta = (m: MateriaM): ReactNode => {
 
 export default function MateriaPicker({
   candidatos,
-  fantasmas = [],
+  fantasmas = SIN_FANTASMAS,
   fantasmaNota = "sin horario cargado",
   added,
   onToggle,
@@ -62,15 +65,18 @@ export default function MateriaPicker({
 }: MateriaPickerProps) {
   const [q, setQ] = useState("");
   const needle = normalizar(q.trim());
-  const matches = (m: MateriaM) =>
-    !needle || normalizar(`${m.codigo} ${m.nombre} ${m.abbr}`).includes(needle);
+  const matches = useCallback(
+    (m: MateriaM) =>
+      !needle || normalizar(`${m.codigo} ${m.nombre} ${m.abbr}`).includes(needle),
+    [needle],
+  );
 
   const obligatorias = useMemo(
     () =>
       candidatos
         .filter((m) => m.tipo === "obligatoria" && matches(m))
         .sort((a, b) => a.codigo.localeCompare(b.codigo)),
-    [candidatos, needle],
+    [candidatos, matches],
   );
 
   const electivas = useMemo(
@@ -78,12 +84,12 @@ export default function MateriaPicker({
       candidatos
         .filter((m) => m.tipo === "electiva" && matches(m))
         .sort((a, b) => a.nombre.localeCompare(b.nombre, "es")),
-    [candidatos, needle],
+    [candidatos, matches],
   );
 
   const fantasmasFiltrados = useMemo(
     () => fantasmas.filter(matches).sort((a, b) => a.codigo.localeCompare(b.codigo)),
-    [fantasmas, needle],
+    [fantasmas, matches],
   );
 
   // Obligatorias sub-agrupadas por (año, cuatrimestre): un sub-grupo por combo

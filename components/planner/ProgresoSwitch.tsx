@@ -10,12 +10,14 @@ import { Tooltip } from "@/components/planner/Tooltip";
 import { usePlanner } from "@/components/planner/state";
 import type { PlannerState } from "@/lib/planner/types";
 
-export function tieneProgreso(state: PlannerState): boolean {
+/** ¿Hay progreso marcado en el estado vivo? (distinto de `tieneProgreso` de
+ *  persist.ts, que mira lo guardado de una carrera.) */
+export function hayProgreso(state: PlannerState): boolean {
   return state.approved.size > 0 || state.cursando.size > 0;
 }
 
 export function usaProgreso(state: PlannerState): boolean {
-  return !state.comboSolo && tieneProgreso(state);
+  return !state.comboSolo && hayProgreso(state);
 }
 
 const COPY: Record<"combo" | "finales", { on: string; off: string }> = {
@@ -31,7 +33,7 @@ const COPY: Record<"combo" | "finales", { on: string; off: string }> = {
 
 export default function ProgresoSwitch({ vista }: { vista: "combo" | "finales" }) {
   const { state, dispatch } = usePlanner();
-  if (!tieneProgreso(state)) return null;
+  if (!hayProgreso(state)) return null;
   const on = !state.comboSolo;
   return (
     <Tooltip content={COPY[vista][on ? "on" : "off"]} width={240}>

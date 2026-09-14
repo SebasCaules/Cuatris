@@ -304,7 +304,7 @@ export function reducer(s: PlannerState, a: Action): PlannerState {
       combo.add(a.code);
       // Puente automático combinar→plan: agregar una materia al combinador la
       // suma también al pool del plan, salvo que esté aprobada (una aprobada
-      // nunca entra al plan; puede llegar acá vía «Ignorar mi progreso»).
+      // nunca entra al plan; puede llegar acá con «Mi progreso» apagado).
       if (s.approved.has(a.code)) return { ...s, combo };
       const pool = new Set(s.plan.pool);
       pool.add(a.code);
@@ -431,7 +431,7 @@ export function reducer(s: PlannerState, a: Action): PlannerState {
       const pool = new Set(s.plan.pool);
       const fixed = new Map(s.plan.fixed);
       for (const c of a.codes) {
-        // una aprobada nunca entra al plan (posible vía «Solo combinar»):
+        // una aprobada nunca entra al plan (posible con «Mi progreso» apagado):
         // el pool la ocultaría en la UI y quedaría imposible de quitar.
         if (s.approved.has(c)) continue;
         pool.add(c);

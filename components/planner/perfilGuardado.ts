@@ -34,7 +34,8 @@ function enBlanco(s: ReturnType<typeof usePlanner>["state"]): boolean {
     s.combo.size === 0 &&
     s.plan.fixed.size === 0 &&
     s.plan.lockedIdx.size === 0 &&
-    s.finales.seleccion.size === 0
+    s.finales.seleccion.size === 0 &&
+    s.finales.extra.size === 0
   );
 }
 

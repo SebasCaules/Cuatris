@@ -2386,3 +2386,6 @@
 .planner .prog-switch[aria-checked="true"]{color:var(--ink)}
 .planner .prog-switch[aria-checked="true"] .prog-switch__track{background:var(--brass);border-color:var(--brass)}
 .planner .prog-switch[aria-checked="true"] .prog-switch__track::after{left:14px;background:var(--block-ink)}
+@media (prefers-reduced-motion:reduce){
+  .planner .prog-switch__track,.planner .prog-switch__track::after{transition:none}
+}
