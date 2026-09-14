@@ -35,7 +35,7 @@ import { readParams, writeParams } from "@/lib/url-state/core";
 import { decodePlannerUrl, encodePlannerUrl } from "@/lib/planner/url-state";
 import { llamadoVigente } from "@/lib/planner/finalesData";
 import Topbar from "./Topbar";
-import { ViewNav, NavTools } from "./ViewNav";
+import { ViewNav } from "./ViewNav";
 import PerfilMenu from "./PerfilMenu";
 import { Tooltip } from "./Tooltip";
 import DetailDrawer from "./DetailDrawer";
@@ -72,9 +72,9 @@ const VIEW_TITLES: Record<keyof typeof VIEWS, string> = {
 };
 
 /** Chrome del sitio alrededor de la navegación del planner: recibe la nav de
- *  vistas, las herramientas (carrera, referencias) y el menú de perfiles
- *  (esquina derecha) y devuelve la barra superior. Sin chrome, la nav se
- *  dibuja como tira propia arriba del contenido. */
+ *  vistas, herramientas (hoy ninguna: carrera y referencias viven en el menú
+ *  de perfil) y el menú de perfil (esquina derecha) y devuelve la barra
+ *  superior. Sin chrome, la nav se dibuja como tira propia arriba del contenido. */
 export type PlannerChrome = (nav: ReactNode, tools: ReactNode, perfil: ReactNode) => ReactNode;
 
 function PlannerInner({
@@ -318,8 +318,9 @@ function PlannerInner({
   // los controles que colgaban del rail (búsqueda, filtros, minors, reset) van
   // en la cabecera de la vista que los usa (ViewTools).
   const nav = <ViewNav />;
-  const tools = <NavTools />;
-  // perfiles: siempre en la barra (también con el selector de carrera)
+  const tools = null;
+  // perfil (con la carrera adentro): siempre en la barra, también con el
+  // selector de primera visita
   const perfilMenu = <PerfilMenu />;
 
   // Banner de primer uso: usuario sin nada marcado y que no lo cerró. Se va

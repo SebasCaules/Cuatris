@@ -2007,25 +2007,10 @@
 .planner .vnav__tab:hover{background:var(--panel-2);color:var(--ink)}
 .planner .vnav__tab.is-active{background:var(--brass-soft);color:var(--ink);font-weight:600}
 .planner .vnav__tab:focus-visible{outline:none;box-shadow:0 0 0 3px var(--brass-soft)}
-.planner .vnav__tools{display:flex;align-items:center;gap:4px;flex:none}
-.planner .vnav__util{
-  padding:8px 10px;border:none;background:transparent;border-radius:8px;
-  font-family:var(--f-b);font-size:12.5px;color:var(--faint);cursor:pointer;white-space:nowrap;
-  transition:color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out);
-}
-.planner .vnav__util:hover{color:var(--ink-soft);background:var(--panel-2)}
-.planner .vnav__util.is-active{color:var(--brass)}
-.planner .vnav__icon{
-  width:40px;height:40px;display:inline-grid;place-items:center;flex:none;
-  border:1px solid var(--hairline-strong);border-radius:var(--r-ctrl,8px);background:transparent;
-  color:var(--ink);cursor:pointer;
-  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out);
-}
-.planner .vnav__icon:hover{background:var(--hairline);border-color:var(--ring)}
 /* sin chrome del sitio: tira propia arriba del contenido */
 .planner .vnav-strip{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px clamp(16px,3vw,44px);border-bottom:1px solid var(--line)}
 .planner .vnav-strip .vnav{flex-wrap:wrap}
-.planner .vnav-strip .vnav__tools{margin-left:auto}
+.planner .vnav-strip .pmenu{margin-left:auto}
 
 /* cabecera de vista con herramientas a la derecha (búsqueda, filtros, reset) */
 .planner .panel-head--tools{display:flex;align-items:flex-end;justify-content:space-between;gap:12px 24px;flex-wrap:wrap}
@@ -2083,8 +2068,6 @@
   .planner .vnav__tab{padding:8px 7px;font-size:13px;letter-spacing:-.012em}
   .planner .vnav{gap:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
   .planner .vnav::-webkit-scrollbar{display:none}
-  .planner .vnav__tools{gap:2px}
-  .planner .vnav__util{padding:8px 7px}
 }
 
 /* =========================================================================
@@ -2142,58 +2125,33 @@
 .planner .pool-h i{border:none;padding:2px 8px}
 
 /* ---------------------------------------------------------------------------
-   Selector de carrera (barra superior): botón con código + nombre y un menú
-   propio. El código va en mono como los de las materias; la carrera activa se
-   marca con brass. Las carreras sin plan se ven atenuadas y no se eligen.
+   Lista de carreras (CarreraLista, en línea dentro del menú de perfil): el
+   código va en mono como los de las materias; la activa se marca con brass.
+   Las carreras sin plan se ven atenuadas y no se eligen.
    --------------------------------------------------------------------------- */
-.planner .carrera{position:relative;flex:none}
-.planner .carrera__btn{
-  display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 10px 0 6px;
-  border:1px solid var(--hairline-strong);border-radius:var(--r-ctrl,8px);background:transparent;
-  color:var(--ink);font-family:var(--f-b);font-size:12.5px;cursor:pointer;max-width:260px;
-  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out);
-}
-.planner .carrera__btn:hover,.planner .carrera__btn.is-open{background:var(--hairline);border-color:var(--ring)}
-.planner .carrera__btn:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
-.planner .carrera__btn[aria-busy="true"]{color:var(--faint)}
 .planner .carrera__code{
   font-family:var(--f-m);font-size:11px;font-weight:600;letter-spacing:.04em;
   padding:3px 6px;border-radius:6px;background:var(--brass-soft);color:var(--brass);
 }
-.planner .carrera__name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:150px}
-.planner .carrera__btn svg{flex:none;color:var(--faint)}
-.planner .carrera__menu{
-  position:absolute;top:calc(100% + 6px);right:0;z-index:60;min-width:340px;max-height:min(70vh,520px);overflow-y:auto;
-  padding:6px;border:1px solid var(--line);border-radius:10px;background:var(--panel);
-  box-shadow:0 12px 32px rgba(0,0,0,.18);
+.planner .clist{
+  display:flex;flex-direction:column;gap:1px;max-height:min(46vh,340px);overflow-y:auto;
+  margin-top:4px;padding:4px;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);
 }
 .planner .carrera__item{
   display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;
-  padding:8px 10px;border:none;border-radius:8px;background:transparent;text-align:left;
+  padding:7px 8px;border:none;border-radius:6px;background:transparent;text-align:left;
   font-family:var(--f-b);font-size:13px;color:var(--ink);cursor:pointer;
 }
-.planner .carrera__item:hover,.planner .carrera__item:focus-visible{background:var(--panel-2);outline:none}
+.planner .carrera__item:hover,.planner .carrera__item:focus-visible{background:var(--panel);outline:none}
 .planner .carrera__item.is-active{color:var(--brass)}
 .planner .carrera__item.is-active .carrera__item-code{background:var(--brass-soft);color:var(--brass)}
 .planner .carrera__item:disabled{color:var(--faint);cursor:not-allowed}
 .planner .carrera__item:disabled:hover{background:transparent}
-.planner .carrera__item-code{font-family:var(--f-m);font-size:11px;font-weight:600;letter-spacing:.04em;padding:3px 0;border-radius:6px;background:var(--panel-2);text-align:center;color:var(--ink-soft)}
+.planner .carrera__item-code{font-family:var(--f-m);font-size:11px;font-weight:600;letter-spacing:.04em;padding:3px 0;border-radius:6px;background:var(--panel);text-align:center;color:var(--ink-soft)}
 .planner .carrera__item:disabled .carrera__item-code{color:var(--faint)}
 .planner .carrera__item-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .planner .carrera__item-plan{font-family:var(--f-m);font-size:10.5px;color:var(--faint);white-space:nowrap}
 .planner .mnr-th-req{font-family:var(--f-m);font-size:10px;font-weight:400;color:var(--faint)}
-/* La fila de la barra va justa con las cinco pestañas descriptivas: entre
-   1001 y 1280 px el botón muestra solo el código (el nombre completo queda
-   en el tooltip y en el menú). Debajo de 1000 px las pestañas pasan a una
-   segunda fila y vuelve a haber lugar para el nombre; en teléfonos angostos
-   se recorta otra vez. */
-@media (min-width:1001px) and (max-width:1280px), (max-width:600px){
-  .planner .carrera__name{display:none}
-  .planner .carrera__btn{padding:0 6px 0 5px;max-width:none;gap:4px}
-}
-@media (max-width:600px){
-  .planner .carrera__menu{min-width:280px;right:auto;left:0}
-}
 
 /* ---------------------------------------------------------------------------
    Elegir carrera (primera visita): ocupa el lugar de la vista. Tarjetas con el
@@ -2234,75 +2192,91 @@
   font-family:var(--f-m);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--brass);white-space:nowrap;
 }
 .planner .cpick__card.has-progress{border-color:color-mix(in srgb,var(--brass) 45%,var(--line))}
-.planner .carrera__name.is-empty{color:var(--muted)}
 @media (max-width:600px){
   .planner .cpick__grid{grid-template-columns:1fr}
 }
 
 /* ---------------------------------------------------------------------------
-   Perfiles (PerfilMenu): avatar con iniciales en la esquina derecha de la barra
-   y un panel propio con la lista (activo marcado), renombrar/borrar por fila,
-   el formulario del nombre al crear o renombrar y las dos formas de crear.
+   Perfil (PerfilMenu): icono de persona en la esquina derecha de la barra y un
+   panel propio en secciones —quién, CARRERA (con la lista en línea), PERFILES
+   (activo marcado, renombrar/borrar, crear) y Referencias—. Todas las filas
+   comparten .pmenu__row: marca a la izquierda, texto + pista chica.
    --------------------------------------------------------------------------- */
 .planner .pmenu{position:relative;flex:none;margin-left:4px}
-/* el avatar ES el botón: círculo con las iniciales, sin caja alrededor */
 .planner .pmenu__btn{
   width:40px;height:40px;display:inline-grid;place-items:center;padding:0;
-  border:none;border-radius:50%;background:transparent;cursor:pointer;
-  transition:box-shadow var(--dur-fast) var(--ease-out);
+  border:1px solid var(--hairline-strong);border-radius:50%;background:transparent;color:var(--ink);cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out);
 }
-.planner .pmenu__btn:hover .pmenu__avatar,.planner .pmenu__btn.is-open .pmenu__avatar{box-shadow:0 0 0 3px var(--hairline)}
-.planner .pmenu__btn:focus-visible{outline:none}
-.planner .pmenu__btn:focus-visible .pmenu__avatar{box-shadow:0 0 0 3px var(--brass-soft)}
-.planner .pmenu__avatar,.planner .pmenu__mini{
-  display:inline-grid;place-items:center;border-radius:50%;
-  font-family:var(--f-m);font-weight:600;letter-spacing:.04em;line-height:1;
-  background:var(--brass-soft);color:var(--brass);
-  transition:box-shadow var(--dur-fast) var(--ease-out);
-}
-.planner .pmenu__avatar{width:34px;height:34px;font-size:12.5px;border:1px solid color-mix(in srgb,var(--brass) 35%,transparent)}
-.planner .pmenu__mini{width:24px;height:24px;font-size:10px;flex:none;background:var(--panel-2);color:var(--ink-soft)}
-.planner .pmenu__item.is-active .pmenu__mini{background:var(--brass-soft);color:var(--brass)}
+.planner .pmenu__btn:hover,.planner .pmenu__btn.is-open{background:var(--brass-soft);border-color:var(--brass);color:var(--brass)}
+.planner .pmenu__btn:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
 .planner .pmenu__panel{
-  position:absolute;top:calc(100% + 6px);right:0;z-index:60;width:min(340px,calc(100vw - 24px));
-  padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);
-  box-shadow:0 12px 32px rgba(0,0,0,.18);display:flex;flex-direction:column;gap:8px;
+  position:absolute;top:calc(100% + 6px);right:0;z-index:60;width:min(360px,calc(100vw - 24px));
+  padding:6px;border:1px solid var(--line);border-radius:12px;background:var(--panel);
+  box-shadow:0 12px 32px rgba(0,0,0,.18);display:flex;flex-direction:column;gap:2px;
 }
-.planner .pmenu__head{display:flex;flex-direction:column;gap:3px;padding:2px 4px 4px}
-.planner .pmenu__kick{font-family:var(--f-m);font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
-.planner .pmenu__hint{margin:0;font-size:12px;line-height:1.45;color:var(--muted)}
-.planner .pmenu__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
-.planner .pmenu__item{display:flex;align-items:center;gap:4px;min-width:0}
-.planner .pmenu__pick{
-  flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:9px;
-  padding:6px 8px;border:1px solid transparent;border-radius:8px;background:transparent;
+/* quién: perfil activo y carrera */
+.planner .pmenu__who{display:flex;align-items:center;gap:11px;padding:8px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.planner .pmenu__who-ico{
+  width:36px;height:36px;flex:none;display:inline-grid;place-items:center;border-radius:50%;
+  background:var(--brass-soft);color:var(--brass);
+}
+.planner .pmenu__who-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.planner .pmenu__who-txt b{font-family:var(--f-d);font-weight:600;font-size:15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.planner .pmenu__who-txt small{font-family:var(--f-m);font-size:10.5px;letter-spacing:.02em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* secciones con su etiqueta */
+.planner .pmenu__sec{display:flex;flex-direction:column;gap:2px;padding:4px 4px 6px}
+.planner .pmenu__sec + .pmenu__sec{border-top:1px solid var(--line);margin-top:2px;padding-top:8px}
+.planner .pmenu__lbl{font-family:var(--f-m);font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);padding:0 6px 3px}
+.planner .pmenu__hint{margin:0;padding:4px 6px;font-size:12px;line-height:1.45;color:var(--muted)}
+/* fila genérica */
+.planner .pmenu__row{
+  flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:10px;width:100%;
+  padding:7px 8px;border:1px solid transparent;border-radius:8px;background:transparent;
   font-family:var(--f-b);font-size:13.5px;color:var(--ink-soft);text-align:left;cursor:pointer;
   transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out);
 }
-.planner .pmenu__pick:hover:not(:disabled){background:var(--panel-2)}
-.planner .pmenu__pick:focus-visible{outline:none;box-shadow:0 0 0 3px var(--brass-soft)}
-.planner .pmenu__pick:disabled{cursor:default}
-.planner .pmenu__item.is-active .pmenu__pick{background:var(--panel-2);border-color:color-mix(in srgb,var(--brass) 40%,var(--line));color:var(--ink)}
-.planner .pmenu__name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.planner .pmenu__tag{margin-left:auto;display:inline-flex;align-items:center;gap:3px;font-family:var(--f-m);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--brass);white-space:nowrap}
+.planner .pmenu__row:hover:not(:disabled){background:var(--panel-2)}
+.planner .pmenu__row:focus-visible{outline:none;box-shadow:0 0 0 3px var(--brass-soft)}
+.planner .pmenu__row:disabled{cursor:default}
+.planner .pmenu__row.is-active{color:var(--brass)}
+.planner .pmenu__row-txt{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1 1 auto}
+.planner .pmenu__row-txt small{font-family:var(--f-m);font-size:10px;letter-spacing:.02em;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* fila de carrera: código + nombre + chevron */
+.planner .pmenu__row--carrera{border-color:var(--line);background:var(--panel-2)}
+.planner .pmenu__row--carrera:hover:not(:disabled){border-color:var(--brass)}
+.planner .pmenu__row--carrera svg{flex:none;color:var(--faint);transition:transform var(--dur-fast) var(--ease-out)}
+.planner .pmenu__row--carrera.is-open svg{transform:rotate(180deg)}
+/* perfiles: marca redonda (tilde en el activo, + en crear) */
+.planner .pmenu__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+.planner .pmenu__item{display:flex;align-items:center;gap:2px;min-width:0}
+.planner .pmenu__item.is-active .pmenu__row{background:var(--panel-2);border-color:color-mix(in srgb,var(--brass) 40%,var(--line));color:var(--ink)}
+.planner .pmenu__mark{
+  width:18px;height:18px;flex:none;display:inline-grid;place-items:center;
+  border:1px solid var(--line-2);border-radius:50%;color:var(--brass);
+}
+.planner .pmenu__item.is-active .pmenu__mark{border-color:var(--brass);background:var(--brass-soft)}
+.planner .pmenu__mark--plus{border-style:dashed;color:var(--muted)}
+.planner .pmenu__row--new:hover .pmenu__mark--plus{border-color:var(--brass);color:var(--brass)}
+/* acciones por fila, en palabras (un icono de tacho no se entendía) */
+.planner .pmenu__acciones{flex:none;display:inline-flex;align-items:center;gap:2px;padding-right:2px}
 .planner .pmenu__txtbtn{
-  flex:none;padding:4px 6px;border:none;background:transparent;border-radius:6px;
-  font-family:var(--f-m);font-size:10.5px;color:var(--faint);cursor:pointer;
+  padding:4px 5px;border:none;background:transparent;border-radius:6px;
+  font-family:var(--f-m);font-size:10.5px;letter-spacing:.02em;color:var(--faint);cursor:pointer;
+  transition:color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out);
 }
-.planner .pmenu__txtbtn:hover{color:var(--ink-soft);background:var(--panel-2)}
-.planner .pmenu__ico{
-  flex:none;width:26px;height:26px;display:inline-grid;place-items:center;
-  border:none;background:transparent;border-radius:6px;color:var(--faint);cursor:pointer;
-}
-.planner .pmenu__ico:hover:not(:disabled){color:var(--oxblood);background:var(--panel-2)}
-.planner .pmenu__item--confirm{
-  flex-wrap:wrap;gap:8px;padding:8px 9px;border-radius:8px;
+.planner .pmenu__txtbtn:hover:not(:disabled){color:var(--ink);background:var(--panel-2)}
+.planner .pmenu__txtbtn--del:hover:not(:disabled){color:var(--oxblood)}
+.planner .pmenu__txtbtn:disabled{cursor:default;opacity:.6}
+.planner .pmenu__confirm{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 9px;border-radius:8px;
   border:1px solid color-mix(in srgb,var(--oxblood) 45%,transparent);background:color-mix(in srgb,var(--oxblood) 8%,var(--panel));
 }
 .planner .pmenu__q{flex:1 1 100%;font-size:12.5px;line-height:1.45;color:var(--ink-soft)}
 .planner .pmenu__q b{color:var(--ink)}
 .planner .pmenu__del{background:var(--oxblood);border-color:var(--oxblood);color:#fff}
-.planner .pmenu__form{display:flex;flex-direction:column;gap:8px;padding:6px 4px 2px;border-top:1px solid var(--line)}
+.planner .pmenu__new{display:flex;flex-direction:column;gap:1px;margin-top:2px}
+.planner .pmenu__form{display:flex;flex-direction:column;gap:8px;padding:6px 6px 2px}
 .planner .pmenu__field{display:flex;flex-direction:column;gap:5px}
 .planner .pmenu__field span{font-family:var(--f-m);font-size:10px;letter-spacing:.05em;color:var(--muted)}
 .planner .pmenu__field input{
@@ -2311,42 +2285,15 @@
 }
 .planner .pmenu__field input:focus{outline:none;border-color:var(--brass);box-shadow:0 0 0 3px var(--brass-soft)}
 .planner .pmenu__acts{display:flex;flex-wrap:wrap;gap:8px}
-.planner .pmenu__new{display:flex;flex-direction:column;gap:2px;padding-top:6px;border-top:1px solid var(--line)}
-.planner .pmenu__newbtn{
-  display:flex;align-items:center;gap:9px;padding:7px 8px;border:none;border-radius:8px;background:transparent;
-  font-family:var(--f-b);font-size:13px;color:var(--ink-soft);text-align:left;cursor:pointer;
-  transition:background var(--dur-fast) var(--ease-out);
-}
-.planner .pmenu__newbtn svg{flex:none;color:var(--brass)}
-.planner .pmenu__newbtn span{display:flex;flex-direction:column;gap:1px;min-width:0}
-.planner .pmenu__newbtn small{font-family:var(--f-m);font-size:10px;letter-spacing:.02em;color:var(--faint)}
-.planner .pmenu__newbtn:hover:not(:disabled){background:var(--panel-2)}
-.planner .pmenu__newbtn:disabled{cursor:default;opacity:.6}
-/* pie: tema y referencias (lo que se sacó de la barra) */
-.planner .pmenu__foot{display:flex;flex-direction:column;gap:2px;padding-top:6px;border-top:1px solid var(--line)}
-.planner .pmenu__foot .theme-toggle--mobile{
-  width:100%;margin:0;padding:7px 8px;border:none;border-radius:8px;gap:9px;
-  font-family:var(--f-b);font-size:13px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--ink-soft);
-}
-.planner .pmenu__foot .theme-toggle--mobile:hover{background:var(--panel-2);color:var(--ink)}
-.planner .pmenu__foot .theme-toggle--mobile svg{width:15px;height:15px;color:var(--brass)}
-.planner .pmenu__link{
-  display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;padding:7px 8px;
-  border:none;border-radius:8px;background:transparent;text-align:left;cursor:pointer;
-  font-family:var(--f-b);font-size:13px;color:var(--ink-soft);
-  transition:background var(--dur-fast) var(--ease-out);
-}
-.planner .pmenu__link small{font-family:var(--f-m);font-size:10px;letter-spacing:.02em;color:var(--faint)}
-.planner .pmenu__link:hover{background:var(--panel-2);color:var(--ink)}
-.planner .pmenu__link.is-active{color:var(--brass)}
+.planner .pmenu__foot{border-top:1px solid var(--line);margin-top:2px;padding:6px 4px 2px}
 
 /* ---------------------------------------------------------------------------
-   Vuelo de la tarjeta elegida hasta el selector de la barra (carreraVuelo.ts).
-   La copia es una caja fija con dos caras superpuestas —la tarjeta y el botón
-   del selector— que comparten las clases reales (.cpick__card / .carrera__btn)
-   para verse idénticas a los originales; la caja transiciona posición y
-   medida, y las caras se cruzan en opacidad. Va en <body> con clase .planner
-   (tokens y media queries del selector) pero sin su padding.
+   Vuelo de la tarjeta elegida hasta el icono de perfil (carreraVuelo.ts). La
+   copia es una caja fija con dos caras superpuestas —la tarjeta y el icono—
+   que comparten las clases reales (.cpick__card / .pmenu__btn) para verse
+   idénticas a los originales; la caja transiciona posición, medida y radio
+   (termina redonda), y las caras se cruzan en opacidad. Va en <body> con
+   clase .planner (tokens) pero sin su padding.
    --------------------------------------------------------------------------- */
 .planner.cvuelo{
   position:fixed;z-index:1100;padding:0;overflow:hidden;pointer-events:none;box-sizing:border-box;
@@ -2357,8 +2304,9 @@
 .planner.cvuelo.is-alto{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 30px rgba(0,0,0,.18)}
 .planner.cvuelo.is-volando{
   transition:left .52s var(--ease-in-out),top .52s var(--ease-in-out),width .52s var(--ease-in-out),height .52s var(--ease-in-out),
-    border-color .52s var(--ease-in-out),background-color .52s var(--ease-in-out),box-shadow .52s var(--ease-in-out),transform .3s var(--ease-out);
-  border-color:var(--hairline-strong);background:var(--hairline);box-shadow:0 0 0 rgba(0,0,0,0);
+    border-radius .52s var(--ease-in-out),border-color .52s var(--ease-in-out),background-color .52s var(--ease-in-out),
+    box-shadow .52s var(--ease-in-out),transform .3s var(--ease-out);
+  border-radius:50%;border-color:var(--brass);background:var(--brass-soft);box-shadow:0 0 0 rgba(0,0,0,0);
 }
 .planner.cvuelo.is-fuera{transition:opacity .24s var(--ease-out);opacity:0}
 .planner.cvuelo .cvuelo__card{
@@ -2366,18 +2314,18 @@
   transition:opacity .22s var(--ease-out);
 }
 .planner.cvuelo .cvuelo__btn{
-  position:absolute;left:0;top:0;height:100%;border-color:transparent;background:transparent;opacity:0;
+  position:absolute;inset:0;width:auto;height:auto;border:none;background:transparent;color:var(--brass);opacity:0;
   transition:opacity .26s var(--ease-out) .2s;
 }
 .planner.cvuelo.is-volando .cvuelo__card{opacity:0}
 .planner.cvuelo.is-volando .cvuelo__btn{opacity:1}
-/* el botón real recibe la copia: un realce breve al aparecer */
-.planner .carrera__btn.is-recien{animation:carrera-recien .6s var(--ease-out)}
+/* el icono real recibe la copia: un realce breve al aparecer */
+.planner .pmenu__btn.is-recien{animation:carrera-recien .6s var(--ease-out)}
 @keyframes carrera-recien{
-  0%{box-shadow:0 0 0 0 var(--brass-soft);border-color:var(--brass)}
-  60%{box-shadow:0 0 0 6px transparent;border-color:var(--brass)}
+  0%{box-shadow:0 0 0 0 var(--brass-soft);border-color:var(--brass);color:var(--brass)}
+  60%{box-shadow:0 0 0 6px transparent;border-color:var(--brass);color:var(--brass)}
   100%{box-shadow:0 0 0 0 transparent}
 }
 @media (prefers-reduced-motion:reduce){
-  .planner .carrera__btn.is-recien{animation:none}
+  .planner .pmenu__btn.is-recien{animation:none}
 }

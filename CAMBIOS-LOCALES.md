@@ -8,7 +8,7 @@ reaplicarla después del sync. Cuando una entrada ya esté en StudyVaults, se bo
 Base sincronizada: árbol de trabajo de `StudyVaultsITBA/site` del 2026-09-13 ~02:45 (commit
 `4c5d1af` + cambios sin commitear de la sesión «Planificador de cursada ITBA»).
 
-## 1. Guardar o cargar progreso desde cualquier vista
+## 1. Guardar o cargar progreso desde cualquier vista (retirado en §14)
 
 - `components/planner/ProgresoModal.tsx` (nuevo): modal con el bundle `.json` portable del
   planner (el mismo que exporta el IOModal del Plan de cursada), con resumen de lo que
@@ -69,13 +69,14 @@ El planner deja de estar atado a Informática: hay un plan por carrera de grado 
 - `components/planner/carreraContext.ts`, `CarreraSwitch.tsx` y `CarreraPicker.tsx` (nuevos):
   contexto de carrera activa, el selector de la barra (menú propio, carreras sin plan
   deshabilitadas con tooltip) y la pantalla de elección de la primera visita (tarjetas;
-  marca las carreras con progreso guardado, `tieneProgreso` en persist.ts).
+  marca las carreras con progreso guardado, `tieneProgreso` en persist.ts). (En §14 el
+  selector deja la barra: la lista pasa a `CarreraLista.tsx`, dentro del menú de perfil.)
 - `components/planner/PlannerApp.tsx`: no hay carrera por defecto. Al montar resuelve la
   pedida (`?carrera=` → preferencia guardada); sin ninguna, `PlannerInner` muestra el
   `CarreraPicker` con la barra reducida a la marca. Con carrera, carga su plan y remonta
   `PlannerProvider` con `key={carrera}`; no hidrata ni escribe hasta entonces. `cambiar()`
   escribe `?carrera=` y la preferencia.
-- `components/planner/ViewNav.tsx`: `NavTools` monta `CarreraSwitch`.
+- `components/planner/ViewNav.tsx`: `NavTools` monta `CarreraSwitch` (hasta §14).
 - `components/planner/Topbar.tsx`, `views/PlanView.tsx`, `views/CombinadorView.tsx`,
   `ViewTools.tsx`: las constantes derivadas de `PLAN` (créditos electivos, totales, período
   de los horarios) se leen en el render; `MinorsModal.tsx`, `Sidebar.tsx`, `ViewTools.tsx`,
@@ -129,7 +130,8 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   vuelve; con `prefers-reduced-motion` no hay vuelo.
 - `CarreraPicker.tsx` (`despegar` al hacer clic), `CarreraSwitch.tsx` (`aterrizar` al montar,
   ref en el botón), `PlannerApp.tsx` (`cancelar` si falla la carga), `planner.css`
-  (`.cvuelo*`, `.carrera__btn.is-recien`).
+  (`.cvuelo*`, `.carrera__btn.is-recien`). Desde §14 el destino es el icono de perfil
+  (`PerfilMenu`): la caja termina redonda y la cara de llegada es ese icono.
 - `planner.css`: la fila de tipo · plan · «progreso guardado» de la tarjeta hace wrap en vez
   de desbordar (`.cpick__meta`).
 - `components/planner/Tooltip.tsx`: el ref del disparador se lee de `props.ref` (React 19
@@ -208,17 +210,19 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   carrera; `cambiarPerfil(id)` activa el perfil, carga la carrera que tenga guardada (o
   muestra el selector) y remonta el árbol (`key` = perfil + carrera). `carreraContext.ts`
   expone `perfil`, `perfiles`, `cambiarPerfil`, `refrescarPerfiles`.
-- `PerfilMenu.tsx` (nuevo): avatar con las iniciales del perfil activo en la esquina
-  derecha de la barra (también con el selector de carrera) y menú propio: lista (tocar =
-  activar), renombrar, borrar con confirmación en línea (el principal no se borra), «Guardar
-  como perfil nuevo» (copia la configuración actual y la activa) y «Nuevo perfil vacío»
-  (arranca de cero: pide la carrera). Al pie, el tema (`ThemeToggle` variante mobile) y
-  «Referencias», que salen de la barra para despejarla. `planner.css`: `.pmenu*`.
+- `PerfilMenu.tsx` (nuevo): icono de persona (`IconUser`) en la esquina derecha de la barra
+  (también con el selector de carrera), a la derecha del toggle de tema, y panel propio en
+  secciones: quién (perfil activo y carrera); CARRERA, que se cambia ahí mismo con la lista
+  en línea (`CarreraLista.tsx`, extraída de `CarreraSwitch.tsx`, que se elimina junto con
+  `NavTools`); PERFILES (tocar = activar; «renombrar»/«borrar» en palabras, con
+  confirmación en línea; el principal no se borra; «Guardar como perfil nuevo» copia la
+  configuración actual y la activa; «Nuevo perfil vacío» arranca de cero y pide la
+  carrera); y «Referencias» al pie. `planner.css`: `.pmenu*`, `.clist`.
 - Se eliminó `ProgresoModal.tsx` (guardar/cargar el progreso como .json desde la barra) y el
   link «o cargá un progreso guardado» del banner de primer uso; el .json de preferencias
-  sigue en Importar / Exportar del Plan de cursada (`IOModal`). `ViewNav.tsx`: `NavTools`
-  queda solo con el selector de carrera. `PlannerChrome` pasa a `(nav, tools, perfil)` y
-  `Header` (standalone) ubica `perfil` a la derecha; sin él muestra el toggle de tema.
+  sigue en Importar / Exportar del Plan de cursada (`IOModal`). `PlannerChrome` pasa a
+  `(nav, tools, perfil)` (tools hoy vacío) y `Header` (standalone) ubica el toggle de tema y
+  `perfil` a la derecha.
 - `Topbar.tsx`: las pastillas «● N/total» de cursando usan el `Tooltip` del planner (antes
   `title=`): dicen qué materias se cursan y qué cambia al aprobarlas; el botón de copiar
   link también. `app/globals.css`: `.nav__inner` en border-box (desbordaba 48 px en angosto).

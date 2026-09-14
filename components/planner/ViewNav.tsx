@@ -2,10 +2,10 @@
 
 // Navegación entre vistas, para la barra superior del sitio (reemplaza al rail
 // izquierdo). PlannerApp la entrega al chrome del sitio vía la prop `chrome`;
-// va junto a la marca y comparte fila con las herramientas (`NavTools`).
+// va junto a la marca. (La carrera y las referencias viven en el menú de
+// perfil, en la esquina derecha.)
 import { usePlanner } from "./state";
 import { Tooltip } from "./Tooltip";
-import CarreraSwitch from "./CarreraSwitch";
 import { NAV_VIEWS } from "@/lib/planner/navViews";
 
 // Las etiquetas y tooltips de las vistas viven en lib/planner/navViews.ts
@@ -37,15 +37,5 @@ export function ViewNav() {
         );
       })}
     </nav>
-  );
-}
-
-/** Accesos secundarios de la barra: la carrera activa. (Referencias y el
- *  tema viven en el menú de perfiles, en la esquina derecha.) */
-export function NavTools() {
-  return (
-    <div className="vnav__tools">
-      <CarreraSwitch />
-    </div>
   );
 }

@@ -122,6 +122,14 @@ export const IconChevronRight = (p: IconProps) => (
   </Svg>
 );
 
+/** Silueta de persona (perfil / cuenta). */
+export const IconUser = (p: IconProps) => (
+  <Svg {...p}>
+    <circle cx="12" cy="8.5" r="3.6" />
+    <path d="M5 19.5c.9-3.4 3.6-5 7-5s6.1 1.6 7 5" />
+  </Svg>
+);
+
 export const IconChevronDown = (p: IconProps) => (
   <Svg {...p}>
     <path d="M6 9.5l6 6 6-6" />

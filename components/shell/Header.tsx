@@ -6,10 +6,10 @@ import CuatrisMark from "./CuatrisMark";
 /**
  * Barra superior del standalone: marca, navegación entre vistas del planner
  * (`nav`, la entrega PlannerApp vía su prop `chrome`), herramientas (`tools`:
- * carrera) y, en la esquina derecha, el menú de perfiles (`perfil`, que lleva
- * adentro el tema y las referencias) o —sin él (portada, 404, error)— el
- * toggle de tema. Reusa el chrome `.nav` del sistema de diseño sin el menú
- * del portal ni el buscador global.
+ * hoy vacías), toggle de tema y, en la esquina derecha, el menú de perfil
+ * (`perfil`: carrera, perfiles y referencias). Reusa el chrome `.nav` del
+ * sistema de diseño sin el menú del portal ni el buscador global. Sin
+ * `nav`/`perfil` (portada, 404, error) quedan la marca y el tema.
  */
 export default function Header({
   nav,
@@ -30,8 +30,8 @@ export default function Header({
         {nav}
         <span className="nav__spacer" />
         {tools}
-        {/* con el menú de perfiles, el tema se cambia desde ahí */}
-        {perfil ?? <ThemeToggle variant="desktop" />}
+        <ThemeToggle variant="desktop" />
+        {perfil}
       </div>
     </header>
   );

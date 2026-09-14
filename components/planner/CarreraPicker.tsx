@@ -3,8 +3,8 @@
 // Primera visita (o sin carrera en la URL ni guardada): el planner no asume
 // ninguna carrera y pide elegirla. Ocupa el lugar de la vista; al elegir se
 // carga el plan y aparece el planner de esa carrera. Cada carrera guarda su
-// progreso aparte, y el selector de la barra permite cambiar después: la
-// tarjeta elegida vuela hasta ese selector (carreraVuelo.ts) para mostrarlo.
+// progreso aparte, y desde el menú de perfil de la barra se cambia después:
+// la tarjeta elegida vuela hasta ese icono (carreraVuelo.ts) para mostrarlo.
 import { useEffect, useState } from "react";
 import { CARRERAS, nombreCorto } from "@/lib/planner/carreras";
 import { tieneProgreso } from "@/lib/planner/persist";
@@ -53,7 +53,7 @@ export default function CarreraPicker() {
               disabled={!c.disponible || cargando != null}
               aria-busy={cargando === c.codigo}
               onClick={(e) => {
-                despegar(e.currentTarget, c.codigo, nombreCorto(c.nombre));
+                despegar(e.currentTarget);
                 void cambiar(c.codigo);
               }}
             >

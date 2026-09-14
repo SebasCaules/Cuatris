@@ -1,16 +1,16 @@
-// Vuelo de la tarjeta de carrera hasta el selector de la barra.
+// Vuelo de la tarjeta de carrera hasta el icono de perfil de la barra.
 //
 // Al elegir una carrera en CarreraPicker, la tarjeta «despega» (una copia fija
 // sobre la página; la original se oculta) y, cuando el planner ya montó con
-// esa carrera, «aterriza» sobre el botón del selector de la barra: la caja se
-// desplaza y se achica hasta la medida del botón mientras el contenido de la
-// tarjeta se funde en el del botón. Así se ve adónde fue a parar la elección y
-// dónde se cambia después.
+// esa carrera, «aterriza» sobre el icono de perfil de la barra (la carrera
+// vive dentro del perfil): la caja se desplaza y se redondea hasta la medida
+// del icono mientras la cara de tarjeta se funde en la de perfil. Así se ve
+// adónde fue a parar la elección y dónde se cambia después.
 //
 // Es imperativo y vive fuera de React a propósito: el árbol del planner se
 // remonta entero al cambiar de carrera (`key`), y la copia tiene que
 // sobrevivir a ese remontaje. CarreraPicker llama a `despegar` con la tarjeta
-// tocada y CarreraSwitch, al montar, a `aterrizar` con su botón. Si el destino
+// tocada y PerfilMenu, al montar, a `aterrizar` con su botón. Si el destino
 // no aparece (falló la carga) la copia se desvanece y la tarjeta vuelve.
 // Con prefers-reduced-motion no hay vuelo.
 
@@ -31,8 +31,9 @@ let pendiente: Vuelo | null = null;
 const sinMovimiento = (): boolean =>
   typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const CHEVRON =
-  '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg>';
+/** El mismo icono de persona de PerfilMenu (IconUser), como marcado. */
+const ICONO_PERFIL =
+  '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M5 19.5c.9-3.4 3.6-5 7-5s6.1 1.6 7 5"/></svg>';
 
 function ubicar(el: HTMLElement, r: { left: number; top: number; width: number; height: number }) {
   el.style.left = `${r.left}px`;
@@ -42,8 +43,8 @@ function ubicar(el: HTMLElement, r: { left: number; top: number; width: number; 
 }
 
 /** Copia la tarjeta en una capa fija y la deja «levantada» mientras carga el
- *  plan. `codigo`/`nombre` arman la cara de botón en la que se convierte. */
-export function despegar(card: HTMLElement, codigo: string, nombre: string): void {
+ *  plan. La otra cara es el icono de perfil en el que se convierte. */
+export function despegar(card: HTMLElement): void {
   if (pendiente || sinMovimiento() || typeof document === "undefined") return;
   const desde = card.getBoundingClientRect();
 
@@ -58,17 +59,10 @@ export function despegar(card: HTMLElement, codigo: string, nombre: string): voi
   cara.removeAttribute("id");
   cara.setAttribute("tabindex", "-1");
 
-  // cara de botón: lo que muestra el selector de la barra para esa carrera
+  // cara de destino: el icono de perfil de la barra
   const btn = document.createElement("div");
-  btn.className = "carrera__btn cvuelo__btn";
-  const code = document.createElement("span");
-  code.className = "carrera__code";
-  code.textContent = codigo;
-  const name = document.createElement("span");
-  name.className = "carrera__name";
-  name.textContent = nombre;
-  btn.append(code, name);
-  btn.insertAdjacentHTML("beforeend", CHEVRON);
+  btn.className = "pmenu__btn cvuelo__btn";
+  btn.insertAdjacentHTML("beforeend", ICONO_PERFIL);
 
   ghost.append(cara, btn);
   document.body.appendChild(ghost);

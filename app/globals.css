@@ -52,7 +52,6 @@ main.page > .planner { flex: 1 1 auto; }
   }
   .cuatris-nav .vnav::-webkit-scrollbar { display: none; }
   .cuatris-nav .vnav__tab { padding: 7px 11px; font-size: 14px; }
-  .cuatris-nav .vnav__util { display: none; } /* Referencias sigue en ?view=ref */
 }
 
 /* footer de una sola franja */
