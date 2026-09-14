@@ -1,15 +1,15 @@
 # Cuatris
 
-Planificador de cursada para **Ingeniería en Informática del ITBA** (plan S10-Rev23): marcás
-las materias que ya aprobaste y armás tu cursada — correlativas, horarios sin choques, plan
+Planificador de cursada para las **carreras de grado del ITBA**: elegís tu carrera, marcás
+las materias que ya cursaste y armás tu cursada — correlativas, horarios sin choques, plan
 cuatrimestre a cuatrimestre, minors, créditos y combinación de finales. Sin cuenta: todo se
 guarda en tu navegador y se puede exportar/importar.
 
-Sitio: https://sebascaules.github.io/Cuatris/
+Sitio: https://sebascaules.github.io/Cuatris/ (portada) · https://sebascaules.github.io/Cuatris/planificar/ (planificador)
 
 Es la **versión standalone del planificador de [StudyVaults ITBA](https://sebascaules.github.io/StudyVaults/)**
-(`site/app/electivas/planificar` de ese repositorio): el mismo código, servido como una única
-página y sin el resto del portal. El proyecto anterior de Cuatris (SPA propia + CLI en Python)
+(`site/app/electivas/planificar` de ese repositorio): el mismo código, con una portada propia
+y sin el resto del portal. El proyecto anterior de Cuatris (SPA propia + CLI en Python)
 quedó congelado en [`deprecated/`](deprecated/DEPRECADO.md).
 
 ## Correr en local
@@ -28,12 +28,12 @@ queden cambios viejos pegados. Sin el script: `npm run dev` / `npm run build` (e
 
 | Ruta | Qué es |
 |---|---|
-| `app/` | Next.js (App Router, `output: "export"`): `layout.tsx` (fuentes, tema, header/footer) y `page.tsx` (el planificador) |
+| `app/` | Next.js (App Router, `output: "export"`): `layout.tsx` (fuentes, tema, header/footer), `page.tsx` (la portada) y `planificar/page.tsx` (el planificador) |
 | `components/planner/` | El planificador: estado (`state.tsx`), vistas (`views/`), drawer, ficha, modales y sus `.css`. **Espejo de StudyVaults.** |
 | `lib/planner/` | Dominio: modelo, correlativas, optimizador de plan, horarios, finales, persistencia, exportación. **Espejo de StudyVaults.** |
 | `lib/url-state/` | Estado en la URL (`?view=…`) sobre el static export. Espejo de StudyVaults. |
 | `packages/ui/` | `@studyvaults/ui`, el sistema de diseño (tokens, chrome, primitivos). Espejo de StudyVaults. |
-| `components/shell/` | Lo propio del standalone: `Header`, `Footer`, marca |
+| `components/shell/` | Lo propio del standalone: `Header`, `Footer`, marca, portada (`Landing`) |
 | `lib/content/slug.ts`, `lib/site.ts` | Shims del standalone (`withBase`, URLs) |
 | `data/plan/` | Fuentes de datos: `electivas.csv`/`obligatorias.csv` → `electivas.py` → `.json`; `horarios.json` (SGA, ver `SCRAPING.md`); `build-data.py` → `data.js`; planillas oficiales de finales `finales-*.csv` |
 | `scripts/` | Pipelines: `build-planner-data.mjs` (→ `lib/planner/data.json`, en cada build), `build-mesas-finales-data.mjs` y `build-finales-flags-data.mjs` (→ `.ts` commiteados), `build-fichas-data.mjs` (PDFs → `fichas.ts`, requiere `pdftotext`), `sync-desde-studyvaults.sh` |

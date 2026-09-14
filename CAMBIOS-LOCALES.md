@@ -118,8 +118,47 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   `is-dragging` (sin scroll-snap: con snap cada avance volvía a la misma tarjeta).
 - `components/planner/planview.css`: regla `.pv-track.is-dragging`.
 
+## 8. Elegir carrera: la tarjeta vuela hasta el selector (2026-09-14)
+
+- `components/planner/carreraVuelo.ts` (nuevo): al tocar una tarjeta del selector de primera
+  visita, una copia fija «despega» (la original se oculta) y, cuando el planner ya montó con
+  esa carrera, «aterriza» sobre el botón del selector de la barra: la caja transiciona
+  posición y medida y las caras (tarjeta → botón) se cruzan; el botón real queda oculto hasta
+  que la copia lo cubre y aparece con un realce breve. Fuera de React porque el árbol se
+  remonta (`key`) en el medio. Sin destino en 2,5 s (carga fallida) se cancela y la tarjeta
+  vuelve; con `prefers-reduced-motion` no hay vuelo.
+- `CarreraPicker.tsx` (`despegar` al hacer clic), `CarreraSwitch.tsx` (`aterrizar` al montar,
+  ref en el botón), `PlannerApp.tsx` (`cancelar` si falla la carga), `planner.css`
+  (`.cvuelo*`, `.carrera__btn.is-recien`).
+- `planner.css`: la fila de tipo · plan · «progreso guardado» de la tarjeta hace wrap en vez
+  de desbordar (`.cpick__meta`).
+- `components/planner/Tooltip.tsx`: el ref del disparador se lee de `props.ref` (React 19
+  avisaba por consola al leer `element.ref`).
+
+## 9. Plan de cursada: cuántos cuatrimestres se ven en el carrusel
+
+- `views/PlanView.tsx`: segmentado 2 · 3 · 4 en la fila de pestañas (solo en Calendario);
+  el `Carousel` recibe `cols` y lo pone como `--pv-cols` en la pista. Preferencia guardada
+  en `plan_cols_v1` (una sola clave para todas las carreras: `lib/planner/persist.ts`,
+  `loadPlanCols`/`savePlanCols`).
+- `planview.css`: `.pv-track > .pv-sem` toma el ancho de `--pv-cols`; `.pv-seg--cols`; con
+  menos de 1000 px vuelven los dos por pantalla y el selector se oculta.
+
+## 10. Plan de cursada: sin plegado de primera corrida, Calendario por default, 24 créditos
+
+- `views/PlanView.tsx`: con 0 aprobadas ya no se muestra el resumen plegado («Plan completo
+  de la carrera… Ver toda la carrera»): el plan se ve entero de entrada. Se quitó
+  `showFullCareer`/`careerFolded` y el bloque `.pv-firstrun*` de `planview.css`. La pestaña
+  inicial es siempre Calendario (antes Roadmap con más de 6 cuatrimestres).
+- `state.tsx` y `persist.ts`: máximo de créditos por cuatrimestre por default 24 (era 18);
+  el fallback al importar un `.json` sin ese dato, igual.
+- `planner.css`: `.rmap-stop__card` con `box-sizing:border-box` — con `height:100%` +
+  padding en content-box la tarjeta desbordaba la celda y pisaba la fila de abajo.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
-`app/` (manifest instalable, iconos PNG, título de página), `components/shell/`,
-`lib/content/slug.ts`, `lib/site.ts`, `scripts/`, `run.sh`: son propios del standalone y no
-tienen equivalente que portar.
+`app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título
+de página), `components/shell/` (barra, pie, portada `Landing.tsx` + `landing.css`,
+`LegacyRedirect.tsx` para los links viejos con query en `/`), `lib/content/slug.ts`,
+`lib/site.ts`, `scripts/`, `run.sh`: son propios del standalone y no tienen equivalente que
+portar.

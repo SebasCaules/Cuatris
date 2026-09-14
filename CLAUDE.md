@@ -1,8 +1,10 @@
 # Cuatris — guía del proyecto para Claude Code
 
-Planificador de cursada para Ingeniería en Informática del ITBA (plan S10-Rev23), publicado en
+Planificador de cursada para las carreras de grado del ITBA, publicado en
 `https://sebascaules.github.io/Cuatris/` (sitio de proyecto de GitHub Pages: se sirve bajo
-`/Cuatris/`). **Es la versión standalone del planificador de StudyVaults ITBA**
+`/Cuatris/`). Dos rutas: `/` es la portada (cómo se usa, de dónde salen los datos) y
+`/planificar/` el planificador; un link viejo con query en `/` (`?carrera=`, `?view=`…) se
+redirige a `/planificar/` con la misma query. **Es la versión standalone del planificador de StudyVaults ITBA**
 (`~/Desktop/ITBA/StudyVaultsITBA/site/app/electivas/planificar`): Next.js 16 con
 `output: "export"`, React 19, TypeScript, sin Tailwind, con el sistema de diseño
 `@studyvaults/ui` copiado como package del workspace.
@@ -82,9 +84,10 @@ node scripts/build-fichas-data.mjs   PDFs → lib/planner/fichas.ts (requiere pd
 ## Estructura
 
 ```
-app/                 layout.tsx (fuentes, tema, header/footer) · page.tsx (el planner) · error/not-found
+app/                 layout.tsx (fuentes, tema, header/footer) · page.tsx (la portada) ·
+                     planificar/page.tsx (el planner) · error/not-found
 components/planner/  el planificador (espejo de StudyVaults)
-components/shell/    Header, Footer, CuatrisMark (propios del standalone)
+components/shell/    Header, Footer, CuatrisMark, Landing (portada) — propios del standalone
 lib/planner/         dominio del planner (espejo de StudyVaults)
 lib/url-state/       estado en la URL (espejo de StudyVaults)
 lib/content/slug.ts  shim: BASE_PATH, SITE_URL, withBase
