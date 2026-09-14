@@ -164,7 +164,8 @@ window.PLAN = {
    "creditosReq": 140,
    "correlativas": [
     "72.34",
-    "93.07"
+    "93.07",
+    "93.75"
    ],
    "ciclo": "Ciclo Profesional",
    "seccion": "Año 4 - Cuatrimestre 2",
@@ -181,7 +182,8 @@ window.PLAN = {
    "creditosReq": 140,
    "correlativas": [
     "93.24",
-    "72.34"
+    "72.34",
+    "93.75"
    ],
    "ciclo": "Ciclo Profesional",
    "seccion": "Año 4 - Cuatrimestre 2",
@@ -7751,6 +7753,14 @@ window.PLAN = {
   {
    "from": "93.59",
    "to": "72.34"
+  },
+  {
+   "from": "93.75",
+   "to": "72.25"
+  },
+  {
+   "from": "93.75",
+   "to": "72.27"
   },
   {
    "from": "94.51",

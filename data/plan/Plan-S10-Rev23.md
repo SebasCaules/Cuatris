@@ -97,8 +97,8 @@ Las áreas/minors definidos en la planilla de electivas son: **Ciencia de Datos*
 
 | Código | Materia | Créditos | Créd. req. | Correlativas |
 |---|---|---|---|---|
-| 72.25 | Simulación de Sistemas | 6 | 140 | 72.34, 93.07 |
-| 72.27 | Sistemas de Inteligencia Artificial | 6 | 140 | 93.24, 72.34 |
+| 72.25 | Simulación de Sistemas | 6 | 140 | 72.34, 93.07, 93.75 ¹ |
+| 72.27 | Sistemas de Inteligencia Artificial | 6 | 140 | 93.24, 72.34, 93.75 ¹ |
 | 72.43 | Gestión de Proyectos Informáticos | 3 | 0 | — |
 | 72.44 | Criptografía y Seguridad | 6 | 0 | 72.07 |
 
@@ -234,5 +234,13 @@ Requisito: completar **27 créditos**. Las columnas de área marcan a qué *mino
   - `73.65`, `82.18` → ambas "Procesamiento del Lenguaje Natural" (3 créditos, correl. 93.07).
 - En la columna *Imágenes y RV*, `72.87` figura con `x` minúscula (se interpreta como marcada).
 - `61.13`, `73.30`, `81.57`, `82.21` no tienen valor de "créditos requeridos" en la planilla (celda vacía → "—").
+- ¹ **Correlativa agregada después del xlsx (2026-09):** `93.75` Métodos Numéricos Avanzados pasa a
+  ser correlativa de `72.25` Simulación de Sistemas y `72.27` Sistemas de Inteligencia Artificial,
+  a pedido de los PRM de ambas materias (el SGA ya la muestra). Rige plenamente desde 2027: la
+  carrera pidió a Experiencia Estudiantil que durante todo 2026 se aprueben excepciones para (1)
+  rendir el final de 72.25/72.27 sin haber aprobado ni cursado 93.75 y (2) matricularse en
+  72.25/72.27 sin haber cursado 93.75. `obligatorias.csv`/`obligatorias.json`/`data.js` ya la
+  incluyen; en el planner, la excepción de 2026 se contempla en las correlativas de final
+  (`lib/planner/correlativasVigencia.ts`).
 
 **Totales:** 44 materias obligatorias · 91 materias electivas listadas.
