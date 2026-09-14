@@ -249,9 +249,11 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   página) y muestra el aviso «Perfil guardado» (`.pv-toast--ok`, 1,8 s).
 - `PerfilMenu.tsx`: punto coral en el avatar cuando hay cambios sin guardar (`is-dirty`,
   también en el tooltip), línea de estado bajo el nombre («Cambios sin guardar» / «Nunca
-  guardado» / «Guardado 17:52» / «Sin cambios»), fila «Guardar perfil ⌘S» y, con cambios
-  sobre una instantánea, «Descartar cambios» con confirmación. `planner.css`: `.pmenu__kbd`,
-  `.pmenu__saved`, `.pmenu__btn.is-dirty::after`; `planview.css`: `.pv-toast--ok`.
+  guardado» / «Guardado 17:52» / «Sin cambios»), pill «Guardar ⌘S» al lado del nombre
+  (brass con cambios; tilde y atajo cuando está al día) y, con cambios sobre una
+  instantánea, «descartar» en la línea de estado, con confirmación. `planner.css`:
+  `.pmenu__save`, `.pmenu__kbd`, `.pmenu__saved`, `.pmenu__txtlink`,
+  `.pmenu__btn.is-dirty::after`; `planview.css`: `.pv-toast--ok`.
 
 ## 15. Plan de cursada: la fila de pestañas queda con el Recomendador (y 2 · 3 · 4)
 

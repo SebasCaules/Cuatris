@@ -2186,15 +2186,29 @@
   content:"";position:absolute;right:0;top:0;width:12px;height:12px;border-radius:50%;
   background:var(--brass);border:2px solid var(--bg);box-sizing:border-box;
 }
-.planner .pmenu__saved{color:var(--faint)}
-.planner .pmenu__saved.is-dirty{color:var(--brass)}
-.planner .pmenu__saved.is-dirty::before{content:"● "}
-.planner .pmenu__row--save.is-dirty{color:var(--ink)}
-.planner .pmenu__mark--dirty{border-color:var(--brass);background:var(--brass-soft)}
+.planner .pmenu__who-txt .pmenu__saved{color:var(--faint);white-space:normal;overflow:visible}
+.planner .pmenu__who-txt .pmenu__saved.is-dirty{color:var(--brass)}
+.planner .pmenu__who-txt .pmenu__saved.is-dirty::before{content:"● "}
+/* «Guardar ⌘S» al lado del nombre: pill discreta; con cambios, brass */
+.planner .pmenu__save{
+  margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 9px;
+  border:1px solid var(--line);border-radius:999px;background:transparent;
+  font-family:var(--f-b);font-size:12.5px;color:var(--muted);cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out);
+}
+.planner .pmenu__save>svg{color:var(--sage);margin-left:3px}
+.planner .pmenu__save:hover{border-color:var(--line-2);color:var(--ink)}
+.planner .pmenu__save.is-dirty{border-color:var(--brass);background:var(--brass);color:var(--block-ink);font-weight:600}
+.planner .pmenu__save.is-dirty:hover{background:var(--brass-2);border-color:var(--brass-2)}
+.planner .pmenu__save.is-dirty .pmenu__kbd{border-color:color-mix(in srgb,var(--block-ink) 25%,transparent);background:color-mix(in srgb,#fff 35%,transparent);color:var(--block-ink)}
 .planner .pmenu__kbd{
-  margin-left:auto;flex:none;padding:2px 6px;border:1px solid var(--line-2);border-bottom-width:2px;border-radius:5px;
+  flex:none;padding:1px 5px;border:1px solid var(--line-2);border-bottom-width:2px;border-radius:5px;
   font-family:var(--f-m);font-size:10px;color:var(--muted);background:var(--panel-2);
 }
+.planner .pmenu__txtlink{
+  padding:0;border:none;background:none;font:inherit;color:var(--brass);cursor:pointer;text-decoration:underline;text-underline-offset:2px;
+}
+.planner .pmenu__txtlink:hover{color:var(--ink)}
 /* quién: perfil activo y carrera */
 .planner .pmenu__who{display:flex;align-items:center;gap:11px;padding:8px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:4px}
 .planner .pmenu__who-ico{

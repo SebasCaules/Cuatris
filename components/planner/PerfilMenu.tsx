@@ -205,55 +205,57 @@ export default function PerfilMenu({
               {estadoGuardado && (
                 <small className={"pmenu__saved" + (sinGuardar ? " is-dirty" : "")}>
                   {estadoGuardado}
+                  {guardado && sinGuardar && !guardado.nuncaGuardado && (
+                    <>
+                      {" · "}
+                      <Tooltip content="Vuelve a como estaba la última vez que guardaste" width={200} placement="bottom">
+                        <button type="button" className="pmenu__txtlink" onClick={() => setConfirmDescartar(true)}>
+                          descartar
+                        </button>
+                      </Tooltip>
+                    </>
+                  )}
                 </small>
               )}
             </span>
+            {/* GUARDAR: la instantánea del perfil (el borrador se guarda solo) */}
+            {guardado && (
+              <Tooltip
+                content={sinGuardar ? `Guardar el perfil (${guardado.atajo || "Ctrl+S"})` : "Todo guardado"}
+                width={170}
+                placement="bottom"
+              >
+                <button
+                  type="button"
+                  className={"pmenu__save" + (sinGuardar ? " is-dirty" : "")}
+                  onClick={() => {
+                    guardado.guardar();
+                    setConfirmDescartar(false);
+                  }}
+                >
+                  {sinGuardar ? "Guardar" : <IconCheck size={12} />}
+                  {guardado.atajo && <kbd className="pmenu__kbd">{guardado.atajo}</kbd>}
+                </button>
+              </Tooltip>
+            )}
           </div>
-
-          {/* GUARDAR: la instantánea del perfil (el borrador se guarda solo) */}
-          {guardado && (
-            <section className="pmenu__sec pmenu__sec--save" aria-label="Guardar">
+          {guardado && confirmDescartar && (
+            <div className="pmenu__confirm" role="alert">
+              <span className="pmenu__q">¿Volver a lo guardado? Se pierden los cambios.</span>
               <button
                 type="button"
-                className={"pmenu__row pmenu__row--save" + (sinGuardar ? " is-dirty" : "")}
+                className="btn btn--sm pmenu__del"
                 onClick={() => {
-                  guardado.guardar();
+                  guardado.descartar();
                   setConfirmDescartar(false);
                 }}
               >
-                <span className={"pmenu__mark" + (sinGuardar ? " pmenu__mark--dirty" : "")} aria-hidden="true">
-                  {!sinGuardar && <IconCheck size={11} />}
-                </span>
-                <span className="pmenu__row-txt">Guardar perfil</span>
-                {guardado.atajo && <kbd className="pmenu__kbd">{guardado.atajo}</kbd>}
+                Descartar
               </button>
-              {sinGuardar && !guardado.nuncaGuardado &&
-                (confirmDescartar ? (
-                  <div className="pmenu__confirm" role="alert">
-                    <span className="pmenu__q">¿Volver a lo guardado? Se pierden los cambios.</span>
-                    <button
-                      type="button"
-                      className="btn btn--sm pmenu__del"
-                      onClick={() => {
-                        guardado.descartar();
-                        setConfirmDescartar(false);
-                      }}
-                    >
-                      Descartar
-                    </button>
-                    <button type="button" className="btn btn--ghost btn--sm" onClick={() => setConfirmDescartar(false)}>
-                      Cancelar
-                    </button>
-                  </div>
-                ) : (
-                  <Tooltip content="Vuelve a como estaba la última vez que guardaste" width={200} placement="bottom">
-                    <button type="button" className="pmenu__row" onClick={() => setConfirmDescartar(true)}>
-                      <span className="pmenu__mark pmenu__mark--plus" aria-hidden="true" />
-                      <span className="pmenu__row-txt">Descartar cambios</span>
-                    </button>
-                  </Tooltip>
-                ))}
-            </section>
+              <button type="button" className="btn btn--ghost btn--sm" onClick={() => setConfirmDescartar(false)}>
+                Cancelar
+              </button>
+            </div>
           )}
 
           {/* CARRERA del perfil: se cambia acá, con la lista en línea */}
