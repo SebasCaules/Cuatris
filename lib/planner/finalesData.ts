@@ -22,6 +22,7 @@
 // `fuenteDeMesas()` expone ese estado para que la UI no rotule mal los datos.
 // ============================================================================
 
+import { correlativaExceptuada } from "@/lib/planner/correlativasVigencia";
 import type { FinalLlamado, FinalPeriodo, MesaFinal } from "./types";
 import type { FinalesBucket } from "./finales/parseFinales";
 import { MESAS_PUBLICADAS } from "./mesasFinales";
@@ -301,22 +302,31 @@ export const CORRELATIVAS_FINAL: Record<string, string[]> = {
   "72.37": ["72.34"], // Base de Datos I   ← final de EDA
   "72.08": ["72.31"], // Arq. de Computadoras ← final de Prog. Imperativa
   "72.11": ["72.08", "72.34"], // Sistemas Operativos ← AC + EDA
+  // Cambio de plan 2026-09 (real, con transición: ver correlativasVigencia.ts):
+  // el final de Simulación y el de SIA exigen el final de Métodos Numéricos
+  // Avanzados; en 2026 la carrera aprueba excepciones.
+  "72.25": ["93.75"], // Simulación de Sistemas ← final de MNA
+  "72.27": ["93.75"], // Sist. de Inteligencia Artificial ← final de MNA
 };
 
-/** Correlativas de FINAL de un código (finales que deben estar aprobados). */
-export function correlativasFinal(code: string): string[] {
-  return CORRELATIVAS_FINAL[code] ?? [];
+/** Correlativas de FINAL de un código (finales que deben estar aprobados).
+ *  Con `anio`, deja afuera las que en ese año todavía tienen excepción. */
+export function correlativasFinal(code: string, anio?: number): string[] {
+  const todas = CORRELATIVAS_FINAL[code] ?? [];
+  return anio == null ? todas : todas.filter((c) => !correlativaExceptuada(code, c, anio));
 }
 
 /**
  * ¿Está habilitado a rendir el final de `code`? Requiere que TODAS sus
  * correlativas de final estén en `finalDone`. Devuelve además cuáles faltan
- * (para el tooltip del candado).
+ * (para el tooltip del candado). `anio` es el del llamado: una correlativa
+ * nueva con excepciones vigentes ese año no bloquea.
  */
 export function finalHabilitado(
   code: string,
   finalDone: Set<string>,
+  anio?: number,
 ): { ok: boolean; faltan: string[] } {
-  const faltan = correlativasFinal(code).filter((c) => !finalDone.has(c));
+  const faltan = correlativasFinal(code, anio).filter((c) => !finalDone.has(c));
   return { ok: faltan.length === 0, faltan };
 }

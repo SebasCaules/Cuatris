@@ -350,6 +350,9 @@
 .planner .dr-sec{margin-top:22px}
 .planner .dr-sec h4{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin:0 0 11px;border-bottom:1px solid var(--line);padding-bottom:7px}
 .planner .dr-chips{display:flex;flex-wrap:wrap;gap:7px}
+/* aviso de correlativa nueva con excepciones vigentes (correlativasVigencia.ts) */
+.planner .dr-corr-nota{margin:9px 0 0;font-size:12px;line-height:1.5;color:var(--muted)}
+.planner .dr-corr-nota b{font-family:var(--f-m);font-weight:600;color:var(--ink-soft)}
 .planner .dr-com{background:var(--panel-2);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:9px}
 .planner .dr-com__h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .planner .dr-com__h b{font-family:var(--f-m);font-size:12.5px}

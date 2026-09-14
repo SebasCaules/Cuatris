@@ -155,6 +155,25 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
 - `planner.css`: `.rmap-stop__card` con `box-sizing:border-box` — con `height:100%` +
   padding en content-box la tarjeta desbordaba la celda y pisaba la fila de abajo.
 
+## 11. Correlativa 93.75 → 72.25 / 72.27 con transición (2026-09-14)
+
+- Datos (`data/plan/`, que el sync trae de `StudyVaultsITBA/Electivas/` — **portar allá**):
+  `obligatorias.csv`, `obligatorias.json` y `data.js` suman `93.75` (Métodos Numéricos
+  Avanzados) a las correlativas de `72.25` Simulación de Sistemas y `72.27` Sistemas de
+  Inteligencia Artificial, con sus aristas; `Plan-S10-Rev23.md` lo anota (nota ¹). Editados a
+  mano: regenerar con `electivas.py`/`build-data.py` pisaría curaduría posterior de
+  `electivas.json`/`data.js` (electivas que no están en el CSV). El SGA ya muestra la
+  correlativa (`data/plan/carreras/S.json`).
+- `lib/planner/correlativasVigencia.ts` (nuevo): correlativas con transición
+  (`rigeDesde`): la carrera aprueba excepciones durante 2026 para cursar 72.25/72.27 sin
+  haber cursado 93.75 y rendir su final sin haberla aprobado; desde 2027 rige plena.
+- `lib/planner/finalesData.ts`: `CORRELATIVAS_FINAL` suma `72.25`/`72.27` ← `93.75`;
+  `correlativasFinal`/`finalHabilitado` aceptan el año calendario del llamado y no exigen
+  una correlativa con excepción vigente ese año. `views/FinalesCombinadorView.tsx` pasa
+  `year` (febrero cae en el año siguiente: febrero 2027 ya la exige).
+- `DetailDrawer.tsx` + `planner.css` (`.dr-corr-nota`): aviso bajo los chips de
+  correlativas (también en el HTML exportado).
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

@@ -372,7 +372,10 @@ export default function FinalesCombinadorView() {
     });
     return codes.map((code, i): FinalRow => {
       const m = byId.get(code)!;
-      const { ok, faltan } = finalHabilitado(code, finalesOk);
+      // año calendario del llamado (febrero cae en el siguiente): una
+      // correlativa nueva con excepciones vigentes ese año no bloquea
+      // (correlativasVigencia.ts)
+      const { ok, faltan } = finalHabilitado(code, finalesOk, year);
       const manual = mesas.get(code) ?? null;
       const oficiales = mesasOficialesDe(code, periodo, anio);
       const asig = seleccion.get(code) ?? null;

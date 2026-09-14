@@ -15,6 +15,7 @@ import { usePlanner } from "@/components/planner/state";
 import { EstadoControl } from "@/components/planner/EstadoControl";
 import { AvailLock } from "@/components/planner/CardSignals";
 import { estadoOf, tieneFinal } from "@/lib/planner/estado";
+import { transicionesDe } from "@/lib/planner/correlativasVigencia";
 import { useModalFocus } from "@/components/planner/useModalFocus";
 import { FICHAS } from "@/lib/planner/fichas";
 import { minorsOf } from "@/lib/planner/minors";
@@ -144,6 +145,9 @@ function buildMateriaHTML(m: MateriaM, ficha: Ficha | undefined): string {
               .join("")}</div>`
           : `<p class="muted">Sin correlativas</p>`
       }
+      ${transicionesDe(m.codigo)
+        .map((t) => `<p class="muted"><b>${esc(t.correlativa)}</b> · ${esc(t.nota)}</p>`)
+        .join("")}
     </section>`;
 
   const comsHTML =
@@ -417,6 +421,8 @@ function DrawerModal({ m, code }: { m: MateriaM; code: string }) {
   const areas = m.areas || [];
   const minors = minorsOf(areas);
   const correlativas = m.correlativas || [];
+  // correlativas nuevas con excepciones vigentes (aviso bajo los chips)
+  const transiciones = transicionesDe(code);
   const ficha = FICHAS[code];
   // descripción inline: presentación de la materia (o contenidos mínimos como fallback)
   const descInline = ficha
@@ -636,6 +642,11 @@ function DrawerModal({ m, code }: { m: MateriaM; code: string }) {
                       <span className="muted">Sin correlativas</span>
                     )}
                   </div>
+                  {transiciones.map((t) => (
+                    <p key={t.correlativa} className="dr-corr-nota">
+                      <b>{t.correlativa}</b> · {t.nota}
+                    </p>
+                  ))}
                 </div>
 
                 <div className="dr-sec">
