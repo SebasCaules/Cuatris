@@ -214,11 +214,15 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   (también con el selector de carrera), a la derecha del toggle de tema, y panel propio en
   secciones: quién (perfil activo y carrera); CARRERA, que se cambia ahí mismo con la lista
   en línea (`CarreraLista.tsx`, extraída de `CarreraSwitch.tsx`, que se elimina junto con
-  `NavTools`); PERFILES (tocar = activar; lápiz para renombrar y tacho clásico —`IconBin`,
-  con tapa y ranuras: el cono fino de `IconTrash` no se leía— para borrar, con
-  confirmación en línea; el principal no se borra; «Guardar como perfil nuevo» copia la
+  `NavTools`); COLOR del perfil (muestras de `lib/planner/perfilColores.ts`, hex en datos;
+  tiñe el icono de la barra, la cabecera y la marca de la fila vía `--pf`;
+  `colorearPerfil` en persist.ts); PERFILES (tocar = activar; lápiz para renombrar y tacho
+  clásico —`IconBin`, con tapa y ranuras: el cono fino de `IconTrash` no se leía— para
+  borrar, con confirmación en línea; se borra cualquiera, también el principal, y sin
+  ninguno `loadPerfiles` crea «Nuevo perfil» vacío; «Guardar como perfil nuevo» copia la
   configuración actual y la activa; «Nuevo perfil vacío» arranca de cero y pide la
-  carrera); y «Referencias» al pie. `planner.css`: `.pmenu*`, `.clist`.
+  carrera); y «Referencias» al pie. Texto mínimo: las explicaciones van en tooltips.
+  `planner.css`: `.pmenu*`, `.clist`.
 - Se eliminó `ProgresoModal.tsx` (guardar/cargar el progreso como .json desde la barra) y el
   link «o cargá un progreso guardado» del banner de primer uso; el .json de preferencias
   sigue en Importar / Exportar del Plan de cursada (`IOModal`). `PlannerChrome` pasa a

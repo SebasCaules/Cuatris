@@ -59,9 +59,12 @@ export function despegar(card: HTMLElement): void {
   cara.removeAttribute("id");
   cara.setAttribute("tabindex", "-1");
 
-  // cara de destino: el icono de perfil de la barra
+  // cara de destino: el icono de perfil de la barra (con su color, si tiene)
   const btn = document.createElement("div");
   btn.className = "pmenu__btn cvuelo__btn";
+  const real = document.querySelector<HTMLElement>(".pmenu__btn");
+  const pf = real?.style.getPropertyValue("--pf");
+  if (pf) btn.style.setProperty("--pf", pf);
   btn.insertAdjacentHTML("beforeend", ICONO_PERFIL);
 
   ghost.append(cara, btn);

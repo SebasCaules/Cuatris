@@ -3,10 +3,12 @@
 // Perfil, en la esquina derecha de la barra: un icono de persona abre el menú
 // del perfil activo. Arriba, quién es (nombre y carrera). Después, en
 // secciones: la CARRERA del perfil (se cambia ahí mismo, con la lista en
-// línea), los PERFILES guardados en este navegador (tocar uno lo activa;
-// renombrar; borrar con confirmación; «Guardar como perfil nuevo» copia la
-// configuración actual y la activa; «Nuevo perfil vacío» arranca de cero y
-// pide la carrera) y, al pie, «Referencias». Lo que se hace en el planner se
+// línea), el COLOR del perfil (icono de la barra), los PERFILES guardados en
+// este navegador (tocar uno lo activa; renombrar; borrar con confirmación —
+// cualquiera, también el principal; sin ninguno queda uno nuevo vacío—;
+// «Guardar como perfil nuevo» copia la configuración actual y la activa;
+// «Nuevo perfil vacío» arranca de cero y pide la carrera) y, al pie,
+// «Referencias». Lo que se hace en el planner se
 // guarda siempre en el perfil activo; nada se pierde al cambiar. La
 // persistencia por perfil vive en lib/planner/persist.ts; PlannerApp remonta
 // el árbol al cambiar de perfil o de carrera.
@@ -20,9 +22,10 @@ import CarreraLista from "./CarreraLista";
 import { aterrizar } from "./carreraVuelo";
 import { IconBin, IconCheck, IconChevronDown, IconPencil, IconPlus, IconUser } from "./icons";
 import { carreraInfo, nombreCorto } from "@/lib/planner/carreras";
+import { PERFIL_COLORES } from "@/lib/planner/perfilColores";
 import {
-  PERFIL_PRINCIPAL,
   borrarPerfil,
+  colorearPerfil,
   crearPerfil,
   renombrarPerfil,
   type Perfil,
@@ -46,6 +49,9 @@ export default function PerfilMenu() {
   const nombreActivo = activo?.nombre ?? "Principal";
   const carrera = codigo ? carreraInfo(codigo) : undefined;
   const ocupado = cargando != null;
+  // color del perfil como variable CSS (sin color, el acento del sitio)
+  const colorStyle = (c?: string) =>
+    (c ? { "--pf": c } : undefined) as React.CSSProperties | undefined;
 
   // destino del vuelo de la tarjeta de carrera (sin vuelo pendiente, no-op)
   useLayoutEffect(() => {
@@ -105,15 +111,21 @@ export default function PerfilMenu() {
     void cambiarPerfil(nuevo.id);
   };
 
+  // cualquier perfil se borra; sin ninguno, persist crea uno nuevo vacío
   const borrar = (p: Perfil) => {
     const eraActivo = p.id === perfil;
-    borrarPerfil(p.id);
+    const queda = borrarPerfil(p.id);
     refrescarPerfiles();
     setBorrando(null);
     if (eraActivo) {
       setOpen(false);
-      void cambiarPerfil(PERFIL_PRINCIPAL);
+      void cambiarPerfil(queda);
     }
+  };
+
+  const colorear = (hex: string | null) => {
+    colorearPerfil(perfil, hex);
+    refrescarPerfiles();
   };
 
   const elegirPerfil = (p: Perfil) => {
@@ -135,16 +147,17 @@ export default function PerfilMenu() {
             <b>{nombreActivo}</b>
             {carrera ? ` · ${nombreCorto(carrera.nombre)}` : ""}
             <br />
-            Tu perfil: carrera, otros perfiles guardados y referencias
+            Perfil: carrera, color, otros perfiles
           </>
         }
-        width={220}
+        width={200}
         placement="bottom"
       >
         <button
           ref={btnRef}
           type="button"
           className={"pmenu__btn" + (open ? " is-open" : "")}
+          style={colorStyle(activo?.color)}
           aria-haspopup="dialog"
           aria-expanded={open}
           aria-controls={menuId}
@@ -159,15 +172,12 @@ export default function PerfilMenu() {
         <div className="pmenu__panel" id={menuId} role="dialog" aria-label="Perfil">
           {/* quién: perfil activo y su carrera */}
           <div className="pmenu__who">
-            <span className="pmenu__who-ico" aria-hidden="true">
+            <span className="pmenu__who-ico" aria-hidden="true" style={colorStyle(activo?.color)}>
               <IconUser size={18} />
             </span>
             <span className="pmenu__who-txt">
               <b>{nombreActivo}</b>
-              <small>
-                {carrera ? `${carrera.codigo} · ${nombreCorto(carrera.nombre)}` : "Sin carrera elegida"}
-                {perfiles.length > 1 ? ` · ${perfiles.length} perfiles` : ""}
-              </small>
+              <small>{carrera ? `${carrera.codigo} · ${nombreCorto(carrera.nombre)}` : "Sin carrera"}</small>
             </span>
           </div>
 
@@ -187,14 +197,40 @@ export default function PerfilMenu() {
                 <span className="carrera__code">{cargando ?? codigo}</span>
                 <span className="pmenu__row-txt">
                   {cargando ? "Cargando…" : nombreCorto(carrera?.nombre ?? codigo)}
-                  <small>{carrerasAbiertas ? "elegí otra abajo" : "cambiar de carrera"}</small>
                 </span>
                 <IconChevronDown size={14} />
               </button>
             ) : (
-              <p className="pmenu__hint">Este perfil todavía no tiene carrera: elegila en la página.</p>
+              <p className="pmenu__hint">Sin carrera</p>
             )}
             {carrerasAbiertas && codigo && <CarreraLista codigo={codigo} onElegir={elegirCarrera} />}
+          </section>
+
+          {/* COLOR del perfil */}
+          <section className="pmenu__sec" aria-labelledby={`${menuId}-col`}>
+            <span className="pmenu__lbl" id={`${menuId}-col`}>
+              Color
+            </span>
+            <div className="pmenu__colors" role="radiogroup" aria-label="Color del perfil">
+              {PERFIL_COLORES.map((c) => {
+                const on = activo?.color === c.hex;
+                return (
+                  <Tooltip key={c.hex} content={c.nombre} width={110} placement="bottom">
+                    <button
+                      type="button"
+                      role="radio"
+                      aria-checked={on}
+                      aria-label={c.nombre}
+                      className={"pmenu__swatch" + (on ? " is-on" : "")}
+                      style={{ "--pf": c.hex } as React.CSSProperties}
+                      onClick={() => colorear(on ? null : c.hex)}
+                    >
+                      {on && <IconCheck size={11} />}
+                    </button>
+                  </Tooltip>
+                );
+              })}
+            </div>
           </section>
 
           {/* PERFILES guardados en este navegador */}
@@ -209,7 +245,7 @@ export default function PerfilMenu() {
                   return (
                     <li key={p.id} className="pmenu__confirm" role="alert">
                       <span className="pmenu__q">
-                        ¿Borrar <b>{p.nombre}</b>? Se pierde todo lo guardado ahí.
+                        ¿Borrar <b>{p.nombre}</b>?
                       </span>
                       <button type="button" className="btn btn--sm pmenu__del" onClick={() => borrar(p)}>
                         Borrar
@@ -228,13 +264,11 @@ export default function PerfilMenu() {
                       disabled={ocupado}
                       onClick={() => elegirPerfil(p)}
                     >
-                      <span className="pmenu__mark" aria-hidden="true">
+                      <span className="pmenu__mark" aria-hidden="true" style={colorStyle(p.color)}>
                         {esActivo && <IconCheck size={11} />}
                       </span>
-                      <span className="pmenu__row-txt">
-                        {p.nombre}
-                        {esActivo && <small>activo — acá se guarda lo que hacés</small>}
-                      </span>
+                      <span className="pmenu__row-txt">{p.nombre}</span>
+                      {esActivo && <span className="pmenu__tag">activo</span>}
                     </button>
                     <span className="pmenu__acciones">
                       <Tooltip content="Renombrar" width={110} placement="bottom">
@@ -247,22 +281,20 @@ export default function PerfilMenu() {
                           <IconPencil size={15} />
                         </button>
                       </Tooltip>
-                      {p.id !== PERFIL_PRINCIPAL && (
-                        <Tooltip content="Borrar este perfil y todo lo guardado en él" width={200} placement="bottom">
-                          <button
-                            type="button"
-                            className="pmenu__ico pmenu__ico--del"
-                            aria-label={`Borrar el perfil ${p.nombre}`}
-                            disabled={ocupado}
-                            onClick={() => {
-                              cerrarForm();
-                              setBorrando(p);
-                            }}
-                          >
-                            <IconBin size={15} />
-                          </button>
-                        </Tooltip>
-                      )}
+                      <Tooltip content="Borrar el perfil y todo lo guardado en él" width={190} placement="bottom">
+                        <button
+                          type="button"
+                          className="pmenu__ico pmenu__ico--del"
+                          aria-label={`Borrar el perfil ${p.nombre}`}
+                          disabled={ocupado}
+                          onClick={() => {
+                            cerrarForm();
+                            setBorrando(p);
+                          }}
+                        >
+                          <IconBin size={15} />
+                        </button>
+                      </Tooltip>
                     </span>
                   </li>
                 );
@@ -274,10 +306,10 @@ export default function PerfilMenu() {
                 <label className="pmenu__field">
                   <span>
                     {modo.tipo === "renombrar"
-                      ? `Nuevo nombre para ${modo.perfil.nombre}`
+                      ? "Nuevo nombre"
                       : modo.tipo === "copiar"
-                        ? "Nombre del perfil nuevo (copia lo actual)"
-                        : "Nombre del perfil nuevo (vacío)"}
+                        ? "Nombre del perfil (copia lo actual)"
+                        : "Nombre del perfil (vacío)"}
                   </span>
                   <input
                     type="text"
@@ -296,7 +328,7 @@ export default function PerfilMenu() {
                 </label>
                 <div className="pmenu__acts">
                   <button type="submit" className="btn btn--go btn--sm" disabled={!nombre.trim() || ocupado}>
-                    {modo.tipo === "renombrar" ? "Guardar" : modo.tipo === "copiar" ? "Guardar perfil" : "Crear"}
+                    {modo.tipo === "renombrar" ? "Guardar" : "Crear"}
                   </button>
                   <button type="button" className="btn btn--ghost btn--sm" onClick={cerrarForm}>
                     Cancelar
@@ -305,34 +337,32 @@ export default function PerfilMenu() {
               </form>
             ) : (
               <div className="pmenu__new">
-                <button
-                  type="button"
-                  className="pmenu__row pmenu__row--new"
-                  disabled={ocupado}
-                  onClick={() => abrirForm({ tipo: "copiar" })}
-                >
-                  <span className="pmenu__mark pmenu__mark--plus" aria-hidden="true">
-                    <IconPlus size={11} />
-                  </span>
-                  <span className="pmenu__row-txt">
-                    Guardar como perfil nuevo
-                    <small>copia todo lo actual y lo deja activo</small>
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  className="pmenu__row pmenu__row--new"
-                  disabled={ocupado}
-                  onClick={() => abrirForm({ tipo: "nuevo" })}
-                >
-                  <span className="pmenu__mark pmenu__mark--plus" aria-hidden="true">
-                    <IconPlus size={11} />
-                  </span>
-                  <span className="pmenu__row-txt">
-                    Nuevo perfil vacío
-                    <small>arranca de cero y pide la carrera</small>
-                  </span>
-                </button>
+                <Tooltip content="Copia todo lo actual a un perfil nuevo y lo deja activo" width={210} placement="bottom">
+                  <button
+                    type="button"
+                    className="pmenu__row pmenu__row--new"
+                    disabled={ocupado}
+                    onClick={() => abrirForm({ tipo: "copiar" })}
+                  >
+                    <span className="pmenu__mark pmenu__mark--plus" aria-hidden="true">
+                      <IconPlus size={11} />
+                    </span>
+                    <span className="pmenu__row-txt">Guardar como perfil nuevo</span>
+                  </button>
+                </Tooltip>
+                <Tooltip content="Arranca de cero y pide la carrera" width={190} placement="bottom">
+                  <button
+                    type="button"
+                    className="pmenu__row pmenu__row--new"
+                    disabled={ocupado}
+                    onClick={() => abrirForm({ tipo: "nuevo" })}
+                  >
+                    <span className="pmenu__mark pmenu__mark--plus" aria-hidden="true">
+                      <IconPlus size={11} />
+                    </span>
+                    <span className="pmenu__row-txt">Nuevo perfil vacío</span>
+                  </button>
+                </Tooltip>
               </div>
             )}
           </section>
@@ -348,10 +378,7 @@ export default function PerfilMenu() {
                   dispatch({ type: "SET_VIEW", view: "ref" });
                 }}
               >
-                <span className="pmenu__row-txt">
-                  Referencias
-                  <small>abreviaturas y códigos de las materias</small>
-                </span>
+                <span className="pmenu__row-txt">Referencias</span>
               </button>
             </div>
           )}

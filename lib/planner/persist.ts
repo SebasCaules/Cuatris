@@ -64,6 +64,8 @@ export interface Perfil {
   nombre: string;
   /** fecha de creación (ISO) */
   creado: string;
+  /** color del perfil (hex de PERFIL_COLORES); sin color, el acento del sitio */
+  color?: string;
 }
 export interface Perfiles {
   activo: string;
@@ -129,11 +131,15 @@ const isPerfil = (x: unknown): x is Perfil =>
   typeof (x as Perfil).id === "string" &&
   typeof (x as Perfil).nombre === "string";
 
-/** Registro de perfiles. Siempre incluye el principal primero; si el activo
- *  guardado ya no existe, vuelve al principal. */
+const nuevoId = () => `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+
+/** Registro de perfiles. Sin registro (usuario de antes de los perfiles) el
+ *  único es el principal, con las claves históricas. Si el usuario borró
+ *  todos, se crea uno nuevo vacío para que siempre haya uno activo; si el
+ *  activo guardado ya no existe, queda el primero. */
 export function loadPerfiles(): Perfiles {
   let activo = PERFIL_PRINCIPAL;
-  let perfiles: Perfil[] = [];
+  let perfiles: Perfil[] | null = null;
   try {
     const raw = localStorage.getItem(K_PERFILES);
     const v = raw ? (JSON.parse(raw) as Partial<Perfiles>) : null;
@@ -142,13 +148,14 @@ export function loadPerfiles(): Perfiles {
   } catch {
     /* sin registro */
   }
-  const principal = perfiles.find((p) => p.id === PERFIL_PRINCIPAL) ?? {
-    id: PERFIL_PRINCIPAL,
-    nombre: NOMBRE_PERFIL_PRINCIPAL,
-    creado: "",
-  };
-  perfiles = [principal, ...perfiles.filter((p) => p.id !== PERFIL_PRINCIPAL)];
-  if (!perfiles.some((p) => p.id === activo)) activo = PERFIL_PRINCIPAL;
+  if (perfiles == null) {
+    perfiles = [{ id: PERFIL_PRINCIPAL, nombre: NOMBRE_PERFIL_PRINCIPAL, creado: "" }];
+  } else if (perfiles.length === 0) {
+    perfiles = [{ id: nuevoId(), nombre: "Nuevo perfil", creado: new Date().toISOString() }];
+    activo = perfiles[0].id;
+    savePerfiles({ activo, perfiles });
+  }
+  if (!perfiles.some((p) => p.id === activo)) activo = perfiles[0].id;
   return { activo, perfiles };
 }
 function savePerfiles(v: Perfiles): void {
@@ -186,7 +193,7 @@ function clavesDe(id: string): string[] {
  *  carrera elegida incluida) y lo registra. No lo activa. */
 export function crearPerfil(nombre: string, desde: string | null = null): Perfil {
   const reg = loadPerfiles();
-  const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  const id = nuevoId();
   const perfil: Perfil = { id, nombre: nombre.trim() || "Perfil", creado: new Date().toISOString() };
   if (desde != null) {
     try {
@@ -219,16 +226,27 @@ export function activarPerfil(id: string): void {
   setPersistPerfil(id);
 }
 
-/** Borra un perfil y todo lo guardado en él. El principal no se borra (se
- *  puede vaciar con `vaciarPerfil`). Si era el activo, queda activo el principal. */
-export function borrarPerfil(id: string): void {
-  if (id === PERFIL_PRINCIPAL) return;
-  vaciarPerfil(id);
+/** Color del perfil (hex de PERFIL_COLORES, o null para volver al acento). */
+export function colorearPerfil(id: string, color: string | null): void {
   const reg = loadPerfiles();
   savePerfiles({
-    activo: reg.activo === id ? PERFIL_PRINCIPAL : reg.activo,
-    perfiles: reg.perfiles.filter((p) => p.id !== id),
+    ...reg,
+    perfiles: reg.perfiles.map((p) =>
+      p.id === id ? { ...p, color: color ?? undefined } : p,
+    ),
   });
+}
+
+/** Borra un perfil (también el principal) y todo lo guardado en él. Si era el
+ *  activo queda el primero de los que quedan; sin ninguno, `loadPerfiles` crea
+ *  uno nuevo vacío. Devuelve el id que queda activo. */
+export function borrarPerfil(id: string): string {
+  vaciarPerfil(id);
+  const reg = loadPerfiles();
+  const perfiles = reg.perfiles.filter((p) => p.id !== id);
+  const activo = reg.activo === id ? (perfiles[0]?.id ?? "") : reg.activo;
+  savePerfiles({ activo, perfiles });
+  return loadPerfiles().activo;
 }
 
 /** Elimina todo lo guardado de un perfil (queda como recién creado). */

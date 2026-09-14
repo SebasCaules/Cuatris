@@ -2203,13 +2203,16 @@
    comparten .pmenu__row: marca a la izquierda, texto + pista chica.
    --------------------------------------------------------------------------- */
 .planner .pmenu{position:relative;flex:none;margin-left:4px}
+/* --pf: color del perfil (lo pone el componente); sin él, el acento */
 .planner .pmenu__btn{
+  --pf:var(--brass);
   width:40px;height:40px;display:inline-grid;place-items:center;padding:0;
-  border:1px solid var(--hairline-strong);border-radius:50%;background:transparent;color:var(--ink);cursor:pointer;
+  border:1px solid color-mix(in srgb,var(--pf) 45%,transparent);border-radius:50%;
+  background:color-mix(in srgb,var(--pf) 16%,transparent);color:color-mix(in srgb,var(--pf) 72%,var(--ink));cursor:pointer;
   transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out);
 }
-.planner .pmenu__btn:hover,.planner .pmenu__btn.is-open{background:var(--brass-soft);border-color:var(--brass);color:var(--brass)}
-.planner .pmenu__btn:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.planner .pmenu__btn:hover,.planner .pmenu__btn.is-open{background:color-mix(in srgb,var(--pf) 30%,transparent);border-color:var(--pf)}
+.planner .pmenu__btn:focus-visible{outline:2px solid var(--pf);outline-offset:2px}
 .planner .pmenu__panel{
   position:absolute;top:calc(100% + 6px);right:0;z-index:60;width:min(360px,calc(100vw - 24px));
   padding:6px;border:1px solid var(--line);border-radius:12px;background:var(--panel);
@@ -2218,8 +2221,9 @@
 /* quién: perfil activo y carrera */
 .planner .pmenu__who{display:flex;align-items:center;gap:11px;padding:8px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:4px}
 .planner .pmenu__who-ico{
+  --pf:var(--brass);
   width:36px;height:36px;flex:none;display:inline-grid;place-items:center;border-radius:50%;
-  background:var(--brass-soft);color:var(--brass);
+  background:color-mix(in srgb,var(--pf) 18%,transparent);color:color-mix(in srgb,var(--pf) 72%,var(--ink));
 }
 .planner .pmenu__who-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
 .planner .pmenu__who-txt b{font-family:var(--f-d);font-weight:600;font-size:15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2252,11 +2256,23 @@
 .planner .pmenu__item{display:flex;align-items:center;gap:2px;min-width:0}
 .planner .pmenu__item.is-active .pmenu__row{background:var(--panel-2);border-color:color-mix(in srgb,var(--brass) 40%,var(--line));color:var(--ink)}
 .planner .pmenu__mark{
+  --pf:var(--brass);
   width:18px;height:18px;flex:none;display:inline-grid;place-items:center;
-  border:1px solid var(--line-2);border-radius:50%;color:var(--brass);
+  border:1px solid color-mix(in srgb,var(--pf) 55%,var(--line-2));border-radius:50%;
+  background:color-mix(in srgb,var(--pf) 14%,transparent);color:color-mix(in srgb,var(--pf) 72%,var(--ink));
 }
-.planner .pmenu__item.is-active .pmenu__mark{border-color:var(--brass);background:var(--brass-soft)}
-.planner .pmenu__mark--plus{border-style:dashed;color:var(--muted)}
+.planner .pmenu__item.is-active .pmenu__mark{border-color:var(--pf);background:color-mix(in srgb,var(--pf) 28%,transparent)}
+/* color del perfil: muestras redondas, la elegida con tilde */
+.planner .pmenu__colors{display:flex;flex-wrap:wrap;gap:7px;padding:2px 6px 4px}
+.planner .pmenu__swatch{
+  width:24px;height:24px;display:inline-grid;place-items:center;padding:0;
+  border:2px solid transparent;border-radius:50%;background:var(--pf);color:var(--block-ink);cursor:pointer;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);transition:transform var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out);
+}
+.planner .pmenu__swatch:hover{transform:scale(1.1)}
+.planner .pmenu__swatch.is-on{border-color:var(--ink)}
+.planner .pmenu__swatch:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--pf) 45%,transparent)}
+.planner .pmenu__mark--plus{border-style:dashed;border-color:var(--line-2);background:transparent;color:var(--muted)}
 .planner .pmenu__row--new:hover .pmenu__mark--plus{border-color:var(--brass);color:var(--brass)}
 /* acciones por fila: lápiz (renombrar) y tacho clásico (borrar) */
 .planner .pmenu__acciones{flex:none;display:inline-flex;align-items:center;gap:1px;padding-right:2px}
