@@ -51,7 +51,13 @@ import {
   downloadHTMLFile,
   downloadTextFile,
 } from "@/lib/planner/download";
-import { serializePreferences, parsePreferences } from "@/lib/planner/persist";
+import {
+  serializePreferences,
+  parsePreferences,
+  loadPlanCols,
+  savePlanCols,
+  type PlanCols,
+} from "@/lib/planner/persist";
 import { MINORS, minorsOf } from "@/lib/planner/minors";
 import { CommissionSelect } from "@studyvaults/ui";
 import CursadaCalendar from "@/components/planner/CursadaCalendar";
@@ -492,11 +498,14 @@ export type CarouselHandle = {
 
 function Carousel({
   count,
+  cols = 2,
   children,
   handle,
   leadHidden = false,
 }: {
   count: number;
+  /** cuatrimestres a la vista a la vez (2, 3 o 4; uno en angosto vía CSS). */
+  cols?: PlanCols;
   children: React.ReactNode;
   handle?: React.Ref<CarouselHandle>;
   /** la primera tarjeta (el cuatrimestre en curso) arranca fuera de vista, a
@@ -631,6 +640,7 @@ function Carousel({
       <div
         ref={ref}
         className={"pv-track" + (scrolling ? " is-scrolling" : "")}
+        style={{ "--pv-cols": cols } as React.CSSProperties}
         onScroll={update}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -2444,6 +2454,17 @@ export default function PlanView() {
   // dentro de la sesión no pisa la elección del usuario.
   const [tab, setTab] = useState<PlanTab>(() => (used.length > 6 ? "road" : "cal"));
 
+  // Cuatrimestres a la vista en el carrusel (2 por default). Preferencia de
+  // pantalla guardada aparte del progreso; se lee tras montar (localStorage).
+  const [cols, setCols] = useState<PlanCols>(2);
+  useEffect(() => {
+    setCols(loadPlanCols());
+  }, []);
+  const elegirCols = (n: PlanCols) => {
+    setCols(n);
+    savePlanCols(n);
+  };
+
   useEffect(() => {
     if (tab !== "cal" || !pendingReveal.current) return;
     const idxs = pendingReveal.current;
@@ -2950,6 +2971,28 @@ export default function PlanView() {
           </div>
 
           <div className="pv-tabs__actions">
+            {tab === "cal" && (
+              <Tooltip content="Cuántos cuatrimestres se ven a la vez en el carrusel" width={190}>
+                <div
+                  className="pv-seg pv-seg--cols"
+                  role="group"
+                  aria-label="Cuatrimestres a la vista"
+                >
+                  {([2, 3, 4] as const).map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      className="pv-seg__opt"
+                      aria-pressed={cols === n}
+                      aria-label={`${n} cuatrimestres a la vista`}
+                      onClick={() => elegirCols(n)}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                </div>
+              </Tooltip>
+            )}
             <button
               type="button"
               className="pv-addelec"
@@ -3122,6 +3165,7 @@ export default function PlanView() {
                     (nowCard.length ? 1 : 0) +
                     (previewExt || drag ? 1 : 0)
                   }
+                  cols={cols}
                   handle={carouselRef}
                   leadHidden={nowCard.length > 0}
                 >

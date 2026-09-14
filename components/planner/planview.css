@@ -434,6 +434,28 @@
   }
 }
 
+/* selector 2 · 3 · 4 cuatrimestres a la vista (solo en Calendario): el mismo
+   segmentado de las opciones, compactado al alto de los botones de la fila */
+.planner .pv-seg--cols {
+  padding: 2px;
+  gap: 1px;
+  flex-wrap: nowrap;
+}
+.planner .pv-seg--cols .pv-seg__opt {
+  min-width: 26px;
+  padding: 5px 8px;
+}
+/* con menos de 1000 px no hay lugar para 3 o 4 calendarios legibles: vuelven
+   los dos por pantalla y el selector se oculta (uno solo en angosto, abajo) */
+@media (max-width: 1000px) {
+  .planner .pv-seg--cols {
+    display: none;
+  }
+  .planner .pv-track {
+    --pv-cols: 2 !important;
+  }
+}
+
 /* toggle recomendador (switch) */
 .planner .pv-rec-toggle {
   display: inline-flex;
@@ -553,9 +575,13 @@
   scroll-snap-type: none;
   scroll-behavior: auto;
 }
-/* dos cuatrimestres "en foco" por vista (uno en angosto); el resto queda fuera */
+/* `--pv-cols` cuatrimestres "en foco" por vista (2 por default; el selector de
+   la barra de pestañas permite 3 o 4; uno en angosto); el resto queda fuera */
+.planner .pv-track {
+  --pv-cols: 2;
+}
 .planner .pv-track > .pv-sem {
-  flex: 0 0 calc(50% - 8px);
+  flex: 0 0 calc((100% - 16px * (var(--pv-cols) - 1)) / var(--pv-cols));
   scroll-snap-align: start;
 }
 .planner .pv-arrow {

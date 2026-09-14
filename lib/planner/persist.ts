@@ -81,6 +81,26 @@ export function saveCarreraPref(codigo: string): void {
   }
 }
 
+/** Cuatrimestres a la vista en el carrusel del Plan de cursada. Preferencia
+ *  de pantalla, no de progreso: una sola clave para todas las carreras. */
+export type PlanCols = 2 | 3 | 4;
+export const K_PLAN_COLS = "plan_cols_v1";
+export function loadPlanCols(): PlanCols {
+  try {
+    const n = Number(localStorage.getItem(K_PLAN_COLS));
+    return n === 3 || n === 4 ? n : 2;
+  } catch {
+    return 2;
+  }
+}
+export function savePlanCols(n: PlanCols): void {
+  try {
+    localStorage.setItem(K_PLAN_COLS, String(n));
+  } catch {
+    /* almacenamiento no disponible */
+  }
+}
+
 export interface PlanOpts {
   start: PlanStart;
   maxCred: number;
