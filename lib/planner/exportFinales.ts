@@ -1,9 +1,14 @@
-// Export del calendario de FINALES de un período (Julio / Diciembre / Febrero) a
-// un documento HTML autocontenido e imprimible (→ PDF). Mismo espíritu que
-// exportPlan.ts: sin DOM ni dependencias, devuelve un string; los colores son
-// literales (rgba, nunca color-mix) para que imprima bien en cualquier visor;
-// tipografía serif/mono del mismo estándar. Todo se deriva de los argumentos —
-// no hay Date.now(): las fechas ISO se parsean como locales con new Date(y,m-1,d).
+// Export del calendario de FINALES de un período (Julio / Diciembre / Febrero):
+// una «hoja» A4 vertical, fondo blanco, todo en una página (calendario del
+// mes + lista de mesas), que sirve tanto para imprimir / guardar como PDF
+// (buildFinalesHTML → documento completo) como para bajar como imagen
+// (buildFinalesSheet → fragmento + CSS que rasteriza exportImage.ts).
+//
+// El calendario NO se arma acá: llega ya renderizado (`calendarHTML`) desde el
+// componente compartido MonthCalendar, así lo que se exporta es exactamente lo
+// que se ve en pantalla. Sin DOM ni dependencias; colores literales (rgba,
+// nunca color-mix) para que imprima igual en cualquier visor; tipografía
+// serif/mono del sistema (la imagen no puede cargar fuentes externas).
 
 /** Una mesa de final ya resuelta por la vista (fecha + hora + color de materia). */
 export interface FinalesExportRow {
@@ -23,16 +28,6 @@ const esc = (s: unknown): string =>
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!,
   );
 
-// Tinte literal (rgba sobre papel claro) a partir del hex de la materia. No
-// usamos color-mix para que imprima bien en cualquier visor (idéntico a exportPlan).
-function tint(hex: string, alpha: number): string {
-  const h = hex.replace("#", "");
-  const r = parseInt(h.slice(0, 2), 16);
-  const g = parseInt(h.slice(2, 4), 16);
-  const b = parseInt(h.slice(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
 const pad2 = (n: number): string => String(n).padStart(2, "0");
 
 /** Parsea "YYYY-MM-DD" como fecha LOCAL a medianoche (sin corrimientos de TZ). */
@@ -46,117 +41,10 @@ function parseISO(s: string): Date | null {
   return isNaN(dt.getTime()) ? null : dt;
 }
 
-/** Clave de día canónica "YYYY-MM-DD" a partir de una fecha (para indexar mesas). */
-const dayKey = (d: Date): string =>
-  `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
-
-/** Siguiente día (fecha local, sin horas → estable ante DST). */
-const nextDay = (d: Date): Date =>
-  new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1);
-
 /** dd/mm a partir de "YYYY-MM-DD" (fallback al string crudo si no parsea). */
 function ddmm(fecha: string): string {
   const d = parseISO(fecha);
   return d ? `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}` : esc(fecha);
-}
-
-// Etiquetas de columnas del calendario: Lunes..Sábado (SIN domingo, como la
-// vista). Se inlinean acá para mantener el módulo sin dependencias.
-const WEEKDAYS = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
-
-/** Índice de columna de una fecha en la grilla Lu..Sá (Lun=0 … Sáb=5; Dom=-1 → se omite). */
-const colOf = (d: Date): number => {
-  const wd = d.getDay(); // 0=Dom, 1=Lun, … 6=Sáb
-  return wd === 0 ? -1 : wd - 1;
-};
-
-/** Badge del llamado derivado del string: "1º"/"2º"; "manual" si es fecha manual. */
-function llamadoBadge(r: FinalesExportRow): string {
-  if (!r.llamado) return "manual";
-  const m = /(\d)/.exec(r.llamado);
-  return m ? `${m[1]}º` : "manual";
-}
-
-// ---- grilla mensual ---------------------------------------------------------
-
-/** Bloque de una mesa dentro de una celda del calendario (acento = color materia). */
-function mesaBlockHTML(r: FinalesExportRow): string {
-  const manual = r.source === "manual" || !r.llamado;
-  return `<div class="fc-blk${manual ? " is-manual" : ""}" style="background:${tint(
-    r.color,
-    0.16,
-  )};border-color:${tint(r.color, 0.5)};border-left-color:${r.color}">
-        <span class="fc-blk__name">${esc(r.nombre)}</span>
-        <span class="fc-blk__meta"><span class="fc-blk__h">${esc(
-          r.hora,
-        )}</span><span class="fc-blk__badge">${esc(llamadoBadge(r))}</span></span>
-      </div>`;
-}
-
-/** Grilla mensual Lu..Sá con el offset del día 1 respecto del lunes. El mes se
- *  EXTIENDE si alguna mesa cae después del último día (caso Febrero → primeros
- *  días de marzo): se agregan las semanas necesarias y esas celdas van atenuadas. */
-function monthGridHTML(
-  month: number,
-  year: number,
-  rows: FinalesExportRow[],
-): string {
-  const first = new Date(year, month - 1, 1);
-  const lastOfMonth = new Date(year, month, 0); // día 0 del mes siguiente = último del actual
-
-  // Índice de mesas por día (una lista por fecha) + fecha máxima a cubrir.
-  const byDay = new Map<string, FinalesExportRow[]>();
-  let endTime = lastOfMonth.getTime();
-  for (const r of rows) {
-    const d = parseISO(r.fecha);
-    if (!d) continue;
-    const k = dayKey(d);
-    const list = byDay.get(k);
-    if (list) list.push(r);
-    else byDay.set(k, [r]);
-    if (d.getTime() > endTime) endTime = d.getTime();
-  }
-  const endDate = new Date(endTime);
-
-  const cells: string[] = [];
-
-  // Offset inicial: cuántas celdas vacías van antes del día 1 (según su columna).
-  // Si el día 1 cae domingo, se omite (como la vista) y arranca el lunes en col 0.
-  let cursor = new Date(first);
-  let firstCol = colOf(first);
-  if (firstCol < 0) {
-    cursor = nextDay(first); // saltar el domingo
-    firstCol = 0;
-  }
-  for (let i = 0; i < firstCol; i++) cells.push(`<div class="fc-cell is-blank"></div>`);
-
-  // Recorrido día a día hasta cubrir la última mesa; los domingos se saltan
-  // (no hay columna), así el flujo Sáb→Lun mantiene la alineación de columnas.
-  while (cursor.getTime() <= endDate.getTime()) {
-    if (cursor.getDay() === 0) {
-      cursor = nextDay(cursor);
-      continue;
-    }
-    const inMonth =
-      cursor.getMonth() === month - 1 && cursor.getFullYear() === year;
-    const mesas = byDay.get(dayKey(cursor)) ?? [];
-    const blocks = mesas.map(mesaBlockHTML).join("");
-    cells.push(
-      `<div class="fc-cell${inMonth ? "" : " is-out"}${
-        mesas.length ? " has-mesa" : ""
-      }"><span class="fc-num">${cursor.getDate()}</span>${blocks}</div>`,
-    );
-    cursor = nextDay(cursor);
-  }
-
-  // Completar la última fila (múltiplo de 6) para que la grilla cierre prolija.
-  while (cells.length % 6 !== 0) cells.push(`<div class="fc-cell is-blank"></div>`);
-
-  const head = WEEKDAYS.map((d) => `<div class="fc-h">${esc(d)}</div>`).join("");
-  return `<div class="fc">
-    <div class="fc-head">${head}</div>
-    <div class="fc-grid">${cells.join("")}</div>
-  </div>`;
 }
 
 // ---- lista de mesas ---------------------------------------------------------
@@ -216,145 +104,119 @@ function mesaListHTML(rows: FinalesExportRow[], margenDias: number): string {
     </table>`;
 }
 
-// ---- estilos ----------------------------------------------------------------
+// ---- hoja A4 ----------------------------------------------------------------
+
+/** A4 vertical a 96 dpi: 210 × 297 mm. Márgenes de 10 mm. */
+export const SHEET_W = 794;
+export const SHEET_H = 1123;
+export const SHEET_PAD = 38;
 
 // Tokens y tipografía calcados de exportPlan.ts (mismo lenguaje visual).
-const CSS = `
-  :root{
-    --ink:#2b211c; --soft:#5a4d45; --muted:#8a7d73; --line:#e3d9cf;
-    --paper:#fbf8f4; --panel:#fff; --coral:#d2754f; --slate:#5b7290;
-    --alert:#9c3b2e;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
-  body{
-    background:var(--paper); color:var(--ink);
-    font-family:Georgia,"Times New Roman",serif; line-height:1.5;
-    -webkit-print-color-adjust:exact; print-color-adjust:exact;
-  }
-  .wrap{max-width:920px;margin:0 auto;padding:40px 32px 56px}
-  .mono{font-family:"SFMono-Regular",Menlo,Consolas,monospace}
-  .muted{color:var(--muted)}
-  header.doc{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:18px}
-  header.doc .kick{font-family:"SFMono-Regular",Menlo,monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--coral);margin:0 0 6px}
-  header.doc h1{font-size:26px;margin:0 0 6px;letter-spacing:-.01em}
-  header.doc .sub{color:var(--soft);font-size:12.5px;margin:0 0 3px;line-height:1.5}
-  header.doc .gen{color:var(--muted);font-size:12px;font-family:"SFMono-Regular",Menlo,monospace;margin:0}
-  /* resumen (cantidad de finales · período · margen) */
-  .summary{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:16px;background:var(--panel)}
-  .summary .s{flex:1;min-width:140px;padding:11px 16px;border-right:1px solid var(--line)}
-  .summary .s:last-child{border-right:none}
-  .summary .s b{display:block;font-size:21px;line-height:1.1}
-  .summary .s span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:5px;font-family:"SFMono-Regular",Menlo,monospace}
-  .summary .s.accent b{color:var(--coral)}
-  h2.sec{font-size:17px;margin:22px 0 12px;padding-bottom:7px;border-bottom:2px solid var(--ink)}
-  /* ---- grilla mensual Lu..Sá ---- */
-  .fc{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);page-break-inside:avoid;break-inside:avoid}
-  .fc-head{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--line);background:#f6efe7}
-  .fc-h{padding:7px 5px;text-align:center;font-family:"SFMono-Regular",Menlo,monospace;font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);border-right:1px solid var(--line)}
-  .fc-h:last-child{border-right:none}
-  .fc-grid{display:grid;grid-template-columns:repeat(6,1fr)}
-  .fc-cell{min-height:64px;padding:4px 5px 6px;border-right:1px solid var(--line);border-top:1px solid var(--line);display:flex;flex-direction:column;gap:3px}
-  .fc-cell:nth-child(6n){border-right:none}
-  .fc-num{font-family:"SFMono-Regular",Menlo,monospace;font-size:10px;color:var(--muted);line-height:1}
-  .fc-cell.has-mesa .fc-num{color:var(--ink);font-weight:600}
-  .fc-cell.is-out{background:repeating-linear-gradient(135deg,transparent,transparent 9px,#f1e9de 9px,#f1e9de 10px)}
-  .fc-cell.is-out .fc-num{color:var(--muted);opacity:.7}
-  .fc-cell.is-blank{background:#f8f2ea}
-  .fc-blk{border:1px solid;border-left-width:3px;border-radius:5px;padding:3px 5px;display:flex;flex-direction:column;gap:1px;overflow:hidden}
-  .fc-blk.is-manual{border-left-style:dashed}
-  .fc-blk__name{font-family:Georgia,"Times New Roman",serif;font-weight:bold;font-size:10.5px;line-height:1.12;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .fc-blk__meta{display:flex;align-items:center;justify-content:space-between;gap:5px}
-  .fc-blk__h{font-family:"SFMono-Regular",Menlo,monospace;font-size:9px;color:var(--soft)}
-  .fc-blk__badge{font-family:"SFMono-Regular",Menlo,monospace;font-size:8px;font-weight:600;letter-spacing:.02em;color:#fff;background:var(--coral);border-radius:999px;padding:1px 5px;line-height:1.3}
-  .fc-blk.is-manual .fc-blk__badge{background:var(--slate)}
-  /* ---- tabla de mesas ---- */
-  .fc-list{width:100%;border-collapse:collapse;font-size:12px;margin-top:2px}
-  .fc-list thead th{text-align:left;font-family:"SFMono-Regular",Menlo,monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0 10px 6px;border-bottom:1px solid var(--line)}
-  .fc-row{border-bottom:1px solid var(--line);page-break-inside:avoid;break-inside:avoid}
-  .fc-list td{padding:8px 10px;vertical-align:middle}
-  .fc-r__date{font-family:"SFMono-Regular",Menlo,monospace;font-size:12px;font-weight:600;white-space:nowrap;min-width:52px}
-  .fc-r__time{font-family:"SFMono-Regular",Menlo,monospace;font-size:11px;color:var(--soft);white-space:nowrap}
-  .fc-r__mat{width:100%}
+const SHEET_CSS = `
+  .sheet{box-sizing:border-box;width:${SHEET_W}px;min-height:${SHEET_H}px;padding:${SHEET_PAD}px;background:#fff;color:#2b211c;font-family:Georgia,"Times New Roman",serif;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sheet *{box-sizing:border-box}
+  .sheet .mono{font-family:"SFMono-Regular",Menlo,Consolas,monospace}
+  .sheet header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;border-bottom:2px solid #2b211c;padding-bottom:10px;margin-bottom:14px}
+  .sheet .kick{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#d2754f;margin:0 0 4px}
+  .sheet h1{font-size:24px;line-height:1.1;margin:0;letter-spacing:-.01em}
+  .sheet .hmeta{text-align:right;font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:10px;line-height:1.6;color:#8a7d73;white-space:nowrap}
+  .sheet .hmeta b{display:block;font-family:Georgia,"Times New Roman",serif;font-size:15px;color:#2b211c;letter-spacing:0}
+  .sheet h2{font-size:12px;font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#5a4d45;margin:16px 0 8px}
+  /* lista de mesas: compacta, una línea por mesa, hueco de repaso entre medio */
+  .fc-list{width:100%;border-collapse:collapse;font-size:11.5px}
+  .fc-list thead th{text-align:left;font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#8a7d73;padding:0 8px 5px;border-bottom:1px solid #d9d2ca}
+  .fc-row{border-bottom:1px solid #e9e3dc}
+  .fc-list td{padding:5px 8px;vertical-align:middle}
+  .fc-r__date{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:11px;font-weight:600;white-space:nowrap;width:56px}
+  .fc-r__time{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:10.5px;color:#5a4d45;white-space:nowrap;width:52px}
+  .fc-r__mat{width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0}
   .fc-r__dot{display:inline-block;width:8px;height:8px;border-radius:999px;margin-right:7px;vertical-align:middle}
-  .fc-r__mat b{font-size:12.5px}
-  .fc-r__mat span{color:var(--soft);font-size:11.5px}
-  .fc-r__call{font-family:"SFMono-Regular",Menlo,monospace;font-size:10.5px;color:var(--soft);white-space:nowrap}
-  .fc-r__call.is-manual{color:var(--muted);font-style:italic}
-  /* hueco de repaso entre dos mesas consecutivas */
-  .fc-gap td{padding:3px 10px 3px 27px;border:none}
-  .fc-gap__line{font-family:"SFMono-Regular",Menlo,monospace;font-size:9.5px;letter-spacing:.02em;color:var(--muted)}
+  .fc-r__mat b{font-size:11.5px}
+  .fc-r__mat span{color:#5a4d45;font-size:11px}
+  .fc-r__call{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:10px;color:#5a4d45;white-space:nowrap}
+  .fc-r__call.is-manual{color:#8a7d73;font-style:italic}
+  .fc-gap td{padding:1px 8px 1px 24px;border:none}
+  .fc-gap__line{font-family:"SFMono-Regular",Menlo,Consolas,monospace;font-size:9px;letter-spacing:.02em;color:#8a7d73}
   .fc-gap__line::before{content:"↕ ";opacity:.6}
-  .fc-gap.is-alert .fc-gap__line{color:var(--alert)}
-  .fc-empty{font-size:12.5px;color:var(--muted);font-style:italic;margin:6px 0 0}
-  footer.doc{margin-top:26px;border-top:1px solid var(--line);padding-top:12px;color:var(--muted);font-size:11px;font-family:"SFMono-Regular",Menlo,monospace;line-height:1.55}
-  @page{size:A4;margin:14mm}
-  @media print{
-    .wrap{padding:0;max-width:none}
-    body{background:#fff}
-    .no-print{display:none !important}
-    h2.sec,.fc-head{page-break-after:avoid}
-    .fc,.fc-row{page-break-inside:avoid}
-  }
+  .fc-gap.is-alert .fc-gap__line{color:#9c3b2e}
+  .fc-empty{font-size:12px;color:#8a7d73;font-style:italic;margin:6px 0 0}
+  .sheet footer{margin-top:14px;border-top:1px solid #d9d2ca;padding-top:8px;color:#8a7d73;font-size:9.5px;font-family:"SFMono-Regular",Menlo,Consolas,monospace;line-height:1.5}
 `;
 
-// ---- documento --------------------------------------------------------------
-
-export function buildFinalesHTML(a: {
-  periodoLabel: string;  // "Julio" | "Diciembre" | "Febrero"
-  anioReal: number;      // año real del período (para el título)
-  month: number;         // 1..12 — mes calendario del período
-  year: number;          // año calendario de ese mes
+export interface FinalesSheetArgs {
+  periodoLabel: string; // "Julio" | "Diciembre" | "Febrero"
+  anioReal: number; // año real del período (para el título)
+  mesLabel: string; // "Diciembre 2026" (mes calendario mostrado)
   rows: FinalesExportRow[]; // solo mesas del período, YA ordenadas por fecha+hora
-  margenDias: number;    // margen de repaso configurado
-  generado: string;      // fecha legible de generación
-  autoPrint: boolean;    // true → window.print() al cargar
-}): string {
+  margenDias: number; // margen de repaso configurado
+  generado: string; // fecha legible de generación
+  calendarHTML: string; // MonthCalendar renderizado (renderStaticHTML)
+  calendarCSS: string; // MONTH_CALENDAR_PRINT_CSS
+}
+
+/** La hoja (fragmento HTML + CSS): cabecera, calendario, mesas y pie. */
+export function buildFinalesSheet(a: FinalesSheetArgs): { html: string; css: string } {
   const n = a.rows.length;
   const margenTxt = `${a.margenDias} día${a.margenDias === 1 ? "" : "s"}`;
-  const title = `Finales — ${a.periodoLabel} ${a.anioReal}`;
-
-  // Script de autoimpresión: mismo patrón que exportPlan (focus + print onload).
-  const autoPrintScript = a.autoPrint
-    ? `<script>window.addEventListener('load',function(){setTimeout(function(){window.focus();window.print();},250);});</script>`
-    : "";
-
-  const inner = `<header class="doc">
-    <p class="kick">StudyVaults · ITBA</p>
-    <h1>${esc(title)}</h1>
-    <p class="sub">${n} final${n === 1 ? "" : "es"} en este período · margen de repaso configurado: ${esc(
+  const html = `<div class="sheet">
+  <header>
+    <div>
+      <p class="kick">Cuatris · ITBA</p>
+      <h1>Finales — ${esc(a.periodoLabel)} ${esc(String(a.anioReal))}</h1>
+    </div>
+    <div class="hmeta"><b>${n} final${n === 1 ? "" : "es"}</b>margen de repaso: ${esc(
       margenTxt,
-    )}</p>
-    <p class="gen">Generado el ${esc(a.generado)}</p>
+    )}<br/>generado el ${esc(a.generado)}</div>
   </header>
-
-  <div class="summary">
-    <div class="s accent"><b>${n}</b><span>final${n === 1 ? "" : "es"}</span></div>
-    <div class="s"><b>${esc(a.periodoLabel)}</b><span>${esc(String(a.anioReal))}</span></div>
-    <div class="s"><b>${esc(margenTxt)}</b><span>margen de repaso</span></div>
-  </div>
-
-  <h2 class="sec">Calendario</h2>
-  ${monthGridHTML(a.month, a.year, a.rows)}
-
-  <h2 class="sec">Mesas del período</h2>
+  <h2>${esc(a.mesLabel)}</h2>
+  ${a.calendarHTML}
+  <h2>Mesas del período</h2>
   ${mesaListHTML(a.rows, a.margenDias)}
+  <footer>Fechas sujetas a confirmación de la cátedra — verificá siempre con el/la docente. Este documento no es la fuente oficial.</footer>
+</div>`;
+  return { html, css: a.calendarCSS + SHEET_CSS };
+}
 
-  <footer class="doc">Fechas sujetas a confirmación de la cátedra — verificá siempre con el/la docente. Este documento no es la fuente oficial.</footer>`;
+// ---- documento imprimible -----------------------------------------------------
 
+/** Documento HTML completo: la hoja centrada, @page A4 y, al imprimir, un
+ *  ajuste de escala para que TODO entre en una sola página aunque el mes
+ *  tenga 7 semanas o haya muchas mesas. */
+export function buildFinalesHTML(
+  a: FinalesSheetArgs & { autoPrint: boolean },
+): string {
+  const { html, css } = buildFinalesSheet(a);
+  const title = `Finales — ${a.periodoLabel} ${a.anioReal}`;
+  const avail = SHEET_H - SHEET_PAD * 2;
+  // Escala a una página: si la hoja mide más que el alto útil, se reduce con
+  // `zoom` (afecta al layout, así no queda una segunda página en blanco).
+  const fitScript = `<script>(function(){function fit(){var s=document.querySelector('.sheet');if(!s)return;s.style.zoom='';var h=s.scrollHeight-${SHEET_PAD * 2};if(h>${avail}){s.style.zoom=String(${avail}/h);}}window.addEventListener('load',fit);window.addEventListener('beforeprint',fit);${
+    a.autoPrint
+      ? "window.addEventListener('load',function(){setTimeout(function(){window.focus();window.print();},250);});"
+      : ""
+  }})();</script>`;
   return `<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)} — ITBA</title>
-<style>${CSS}</style>
-${autoPrintScript}
+<style>
+  html,body{margin:0;padding:0;background:#e9e4de}
+  .page{display:flex;justify-content:center;padding:24px 12px}
+  .sheet{box-shadow:0 10px 40px rgba(0,0,0,.18)}
+  ${css}
+  @page{size:A4 portrait;margin:0}
+  @media print{
+    html,body{background:#fff}
+    .page{padding:0;display:block}
+    .sheet{box-shadow:none;min-height:0;page-break-inside:avoid;break-inside:avoid}
+  }
+</style>
+${fitScript}
 </head>
 <body>
-<div class="wrap">
-${inner}
-</div>
+<div class="page">${html}</div>
 </body>
 </html>`;
 }

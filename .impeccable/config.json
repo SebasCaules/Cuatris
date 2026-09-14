@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "components/planner/MonthCalendar.tsx"
+        ],
+        "createdAt": "2026-09-13T19:57:19.364Z",
+        "reason": "Claude: el acento izquierdo en el color de la materia es el lenguaje ya existente de todos los bloques del planner (finales.css .fin__exam, exportPlan, exportFinales previo); el export replica la pantalla a propósito"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "components/planner/cursadaCalendarPrint.ts"
+        ],
+        "createdAt": "2026-09-13T20:08:07.872Z",
+        "reason": "Claude: replica en impresión el bloque de pantalla .cmbcal-blk (planner.css), que ya lleva el acento izquierdo en el color de la materia; el export debe verse igual que la app"
+      }
+    ]
+  }
+}

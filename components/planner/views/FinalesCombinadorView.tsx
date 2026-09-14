@@ -12,6 +12,9 @@
 //   · un final está "pendiente" si la materia RINDE final (tieneFinal), tenés
 //     la cursada regular aprobada y todavía no lo rendiste:
 //     tieneFinal(code) && approved.has(code) && !finalDone.has(code).
+//     Lo que estás CURSANDO también cuenta como pendiente (pedido del autor):
+//     al terminar el cuatrimestre ese final hay que rendirlo, y el combinador
+//     planifica justamente los llamados que vienen. Se marca con «cursando».
 //   · las materias que NO rinden final (promocionables / sin mesa) nunca son
 //     pendientes: su cursada aprobada SE TOMA COMO FINAL APROBADO — también
 //     para las correlativas de final (ver finalesAprobados en lib/planner/estado).
@@ -67,27 +70,43 @@ import {
 import { openForPrint } from "@/lib/planner/download";
 import {
   buildFinalesHTML,
+  buildFinalesSheet,
+  SHEET_H,
+  SHEET_PAD,
+  SHEET_W,
   type FinalesExportRow,
 } from "@/lib/planner/exportFinales";
+import { downloadBlob, htmlToPngBlob } from "@/lib/planner/exportImage";
+import {
+  buildMonthWeeks,
+  mcalCellHeight,
+  MonthCalendar,
+  MonthCalendarEvent,
+  MONTH_CALENDAR_PRINT_CSS,
+} from "@/components/planner/MonthCalendar";
+import { renderStaticHTML } from "@/components/planner/renderStatic";
 import type {
   FinalAsignacion,
   FinalLlamado,
   FinalPeriodo,
   MesaFinal,
 } from "@/lib/planner/types";
+import "../month-calendar.css";
 import "../finales.css";
+
+/** Alto fijo de un bloque de mesa en pantalla (px): nombre a dos líneas +
+ *  hora / etiqueta / segmentado. Todas las celdas del mes miden para el máximo
+ *  de bloques posibles en un día, así la grilla nunca cambia de tamaño. */
+const EV_H = 58;
+/** Alto del bloque en la hoja exportada (px). */
+const EV_H_PRINT = 44;
 
 /* ============================ helpers puros ============================ */
 
-const MES_ABBR = [
-  "ene", "feb", "mar", "abr", "may", "jun",
-  "jul", "ago", "sep", "oct", "nov", "dic",
-];
 const MES_NOMBRE = [
   "enero", "febrero", "marzo", "abril", "mayo", "junio",
   "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
 ];
-const DOW_ABBR = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá"];
 
 /** Duración asumida de una mesa de final para detectar superposición (min). */
 const EXAM_DUR_MIN = 180;
@@ -217,6 +236,8 @@ interface Ghost {
   fecha: string;
   hora: string;
   llamado: FinalLlamado;
+  /** nace del hover sobre esa materia (resaltado), no del toggle «Otras fechas». */
+  hover: boolean;
 }
 
 interface FinalRow {
@@ -251,13 +272,15 @@ interface FinalRow {
   hasBoth: boolean;
   /** opciones de mesa del período visible, en orden (manual sola; oficial 1.º→2.º). */
   opciones: Opcion[];
+  /** la materia se está cursando: el final queda pendiente para cuando termine. */
+  cursando: boolean;
 }
 
 /* ============================ componente ============================ */
 
 export default function FinalesCombinadorView() {
   const { state, dispatch } = usePlanner();
-  const { approved, finalDone } = state;
+  const { approved, finalDone, cursando } = state;
   const { periodo, anio, mesas, seleccion, reminderHs, margenDias } =
     state.finales;
 
@@ -270,6 +293,27 @@ export default function FinalesCombinadorView() {
   const [dlOpen, setDlOpen] = useState(false);
   const [ghostsOn, setGhostsOn] = useState(false);
   const dlRef = useRef<HTMLDivElement | null>(null);
+  // Materia bajo el cursor (bloque del calendario, fila del panel o del editor):
+  // sus otras mesas del período aparecen como chips fantasma resaltados. La
+  // salida se demora un poco para poder llegar con el puntero al chip y hacer
+  // clic sin que desaparezca en el camino.
+  const [hoverCode, setHoverCode] = useState<string | null>(null);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverIn = (code: string) => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = null;
+    setHoverCode(code);
+  };
+  const hoverOut = () => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setHoverCode(null), 400);
+  };
+  useEffect(
+    () => () => {
+      if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    },
+    [],
+  );
 
   // Cierre del menú de descarga por click-fuera / Escape (patrón del menú ⋯ de
   // PlanView). El effect solo corre client-side → static-export safe.
@@ -313,7 +357,8 @@ export default function FinalesCombinadorView() {
   const rows: FinalRow[] = useMemo(() => {
     const finalesOk = finalesAprobados(approved, finalDone);
     const codes: string[] = [];
-    for (const c of approved)
+    // aprobadas sin final + lo que se está cursando (disjuntos por invariante)
+    for (const c of [...approved, ...cursando])
       if (!finalDone.has(c) && byId.has(c) && tieneFinal(c)) codes.push(c);
     // orden estable: por año/cuatri/nombre (para color y listado)
     codes.sort((a, b) => {
@@ -413,11 +458,12 @@ export default function FinalesCombinadorView() {
         manual,
         hasBoth: !!oficiales.primer && !!oficiales.segundo,
         opciones,
+        cursando: cursando.has(code),
       };
     });
     // mesasVersion: recomputa cuando el parser carga/limpia mesas oficiales.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [approved, finalDone, mesas, seleccion, periodo, anio, month, year, mesasVersion]);
+  }, [approved, finalDone, cursando, mesas, seleccion, periodo, anio, month, year, mesasVersion]);
 
   const eligibles = useMemo(() => rows.filter((r) => !r.blocked), [rows]);
   const blocked = useMemo(() => rows.filter((r) => r.blocked), [rows]);
@@ -439,58 +485,21 @@ export default function FinalesCombinadorView() {
   // nombre corto por código para tooltips de correlativa
   const nombreDe = (code: string) => byId.get(code)?.nombre ?? code;
 
-  // ----- conflictos entre los seleccionados con fecha en el período -----
-  const { pisanCodes, flags } = useMemo(() => {
+  // ----- cruces entre los seleccionados con fecha en el período: los pares
+  // que se superponen se marcan en el calendario («se pisan»). -----
+  const pisanCodes = useMemo(() => {
     const pisan = new Set<string>();
-    const fl: { kind: "caution" | "warn"; title: string; body: string }[] = [];
-    const withMesa = selectedInPeriod
-      .slice()
-      .sort(
-        (a, b) =>
-          a.mesa!.fecha.localeCompare(b.mesa!.fecha) ||
-          toMin(a.mesa!.hora) - toMin(b.mesa!.hora),
-      );
-    // se pisan (pares que se superponen)
+    const withMesa = selectedInPeriod;
     for (let i = 0; i < withMesa.length; i++) {
       for (let j = i + 1; j < withMesa.length; j++) {
         if (mesasPisan(withMesa[i].mesa!, withMesa[j].mesa!)) {
           pisan.add(withMesa[i].code);
           pisan.add(withMesa[j].code);
-          fl.push({
-            kind: "caution",
-            title: "Se pisan",
-            body: `${withMesa[i].nombre} (${ddmm(withMesa[i].mesa!.fecha)} · ${withMesa[i].mesa!.hora}) y ${withMesa[j].nombre} (${ddmm(withMesa[j].mesa!.fecha)} · ${withMesa[j].mesa!.hora}) se superponen. No podés rendir las dos en este llamado.`,
-          });
         }
       }
     }
-    // sin margen / poco margen (consecutivos por fecha, sin superponerse)
-    for (let i = 0; i < withMesa.length - 1; i++) {
-      const a = withMesa[i];
-      const b = withMesa[i + 1];
-      if (mesasPisan(a.mesa!, b.mesa!)) continue;
-      const dd = dayDiff(a.mesa!.fecha, b.mesa!.fecha);
-      if (dd === 0) {
-        // mismo día sin cruzarse en hora: se pueden rendir las dos, pero no
-        // queda ningún margen de estudio entre una y otra.
-        fl.push({
-          kind: "warn",
-          title: "Dos finales el mismo día",
-          body: `${a.nombre} (${a.mesa!.hora}) y ${b.nombre} (${b.mesa!.hora}) caen el mismo día (${ddmm(a.mesa!.fecha)}). No se superponen en horario, pero no tenés margen de estudio entre uno y otro.`,
-        });
-        continue;
-      }
-      const prep = dd - 1; // días completos de preparación entre ambos
-      if (prep < margenDias) {
-        fl.push({
-          kind: "warn",
-          title: "Poco margen de repaso",
-          body: `${prep === 0 ? "Ningún día completo" : `Solo ${prep} día${prep === 1 ? "" : "s"}`} para preparar entre ${a.nombre} (${ddmm(a.mesa!.fecha)}) y ${b.nombre} (${ddmm(b.mesa!.fecha)}).`,
-        });
-      }
-    }
-    return { pisanCodes: pisan, flags: fl };
-  }, [selectedInPeriod, margenDias]);
+    return pisan;
+  }, [selectedInPeriod]);
 
   // ----- ¿agregar un pendiente pisaría lo ya elegido? (aviso en el panel) -----
   const wouldPisar = (r: FinalRow): boolean => {
@@ -498,17 +507,20 @@ export default function FinalesCombinadorView() {
     return selectedInPeriod.some((s) => mesasPisan(s.mesa!, r.mesa!));
   };
 
-  // ----- mesas fantasma (toggle «Otras fechas») -----
+  // ----- mesas fantasma (toggle «Otras fechas» o hover sobre una materia) -----
   // Para cada final elegible (no bloqueado y no asignado a OTRO período) tomamos
   // sus opciones de mesa del período visible EXCLUYENDO la que ya se ve pintada:
   // si la fila está elegida acá, se excluye su mesa activa (misma fecha+hora);
   // si no está elegida, van todas sus opciones. Cada una es un chip fantasma
-  // clickeable que asigna/mueve ese final a ese llamado.
+  // clickeable que asigna/mueve ese final a ese llamado. Con el toggle apagado,
+  // solo entran las de la materia bajo el cursor (resaltadas).
   const ghosts = useMemo<Ghost[]>(() => {
-    if (!ghostsOn) return [];
+    if (!ghostsOn && !hoverCode) return [];
     const out: Ghost[] = [];
     for (const r of rows) {
       if (r.blocked || r.assignedElsewhere) continue;
+      const hover = r.code === hoverCode;
+      if (!ghostsOn && !hover) continue;
       for (const opt of r.opciones) {
         if (
           r.selected &&
@@ -525,77 +537,82 @@ export default function FinalesCombinadorView() {
           fecha: opt.mesa.fecha,
           hora: opt.mesa.hora,
           llamado: opt.llamado,
+          hover,
         });
       }
     }
     return out;
-  }, [ghostsOn, rows]);
+  }, [ghostsOn, hoverCode, rows]);
 
-  // ----- calendario del mes del llamado -----
-  const calendar = useMemo(() => {
-    const first = new Date(year, month - 1, 1);
-    const daysInMonth = new Date(year, month, 0).getDate();
-    // offset del día 1 respecto del lunes (Lu=0 … Do=6)
-    const startOffset = (first.getDay() + 6) % 7;
-
-    // mesas ubicadas por fecha
-    const byDate = new Map<string, FinalRow[]>();
+  // ----- calendario del mes del llamado (grilla compartida MonthCalendar) -----
+  // Mesas y fantasmas indexados por fecha; las semanas se arman con
+  // buildMonthWeeks, extendidas para cubrir TODAS las mesas disponibles (no
+  // solo las visibles) así la grilla no cambia de alto al prender el toggle ni
+  // al pasar el cursor por una materia (Febrero → primeros días de marzo).
+  const byDate = useMemo(() => {
+    const m = new Map<string, FinalRow[]>();
     for (const r of selectedInPeriod) {
       const k = r.mesa!.fecha;
-      const arr = byDate.get(k);
+      const arr = m.get(k);
       if (arr) arr.push(r);
-      else byDate.set(k, [r]);
+      else m.set(k, [r]);
     }
-    // chips fantasma ubicados por fecha (solo si el toggle está activo).
-    const ghostsByDate = new Map<string, Ghost[]>();
+    return m;
+  }, [selectedInPeriod]);
+  const ghostsByDate = useMemo(() => {
+    const m = new Map<string, Ghost[]>();
     for (const g of ghosts) {
-      const arr = ghostsByDate.get(g.fecha);
+      const arr = m.get(g.fecha);
       if (arr) arr.push(g);
-      else ghostsByDate.set(g.fecha, [g]);
+      else m.set(g.fecha, [g]);
     }
-
-    // El llamado de Febrero se extiende a los primeros días de marzo: si hay
-    // mesas elegidas (o fantasmas) después de fin de mes, se agregan semanas
-    // para cubrirlas (los otros períodos nunca tienen mesas fuera de su mes).
-    let lastDay = daysInMonth;
-    const stretch = (fecha: string) => {
-      const d = parseISO(fecha);
-      if (d.getMonth() !== month - 1)
-        lastDay = Math.max(lastDay, daysInMonth + d.getDate());
-    };
-    for (const r of selectedInPeriod) stretch(r.mesa!.fecha);
-    for (const g of ghosts) stretch(g.fecha);
-    const numWeeks = Math.ceil((startOffset + lastDay) / 7);
-
-    const weeks = [];
-    for (let w = 0; w < numWeeks; w++) {
-      const days = [];
-      const inMonthNums: number[] = [];
-      for (let dow = 0; dow < 6; dow++) {
-        // Lu..Sá (se omite domingo, como el mock)
-        const offset = w * 7 + dow - startOffset;
-        const d = new Date(year, month - 1, 1 + offset);
-        const inMonth = d.getMonth() === month - 1;
-        const iso = isoOf(d);
-        // las celdas fuera de mes también aceptan mesas (marzo en Febrero).
-        const exams = byDate.get(iso) ?? [];
-        const dayGhosts = ghostsByDate.get(iso) ?? [];
-        if (inMonth) inMonthNums.push(d.getDate());
-        days.push({ iso, dayNum: d.getDate(), inMonth, exams, ghosts: dayGhosts });
-      }
-      const hasExams = days.some((d) => d.exams.length > 0);
-      // los fantasmas NO cuentan para conflictos, pero sí para que una semana
-      // solo-con-fantasmas NO quede atenuada (así se ven bien).
-      const hasGhosts = days.some((d) => d.ghosts.length > 0);
-      const label =
-        inMonthNums.length > 0
-          ? `${inMonthNums[0]}–${inMonthNums[inMonthNums.length - 1]} ${MES_ABBR[month - 1]}`
-          : // semana enteramente del mes siguiente (cola de marzo en Febrero)
-            `${days[0].dayNum}–${days[days.length - 1].dayNum} ${MES_ABBR[month % 12]}`;
-      weeks.push({ days, hasExams, hasGhosts, label });
+    return m;
+  }, [ghosts]);
+  // Todas las opciones de mesa de los finales elegibles fijan la extensión de
+  // la grilla. El alto uniforme de las celdas sale del máximo de mesas
+  // ELEGIDAS en un día más un lugar para el fantasma del hover: no depende
+  // de lo que se muestre en cada momento. Con «Otras fechas» prendido, una
+  // celda con más chips que lugares se desplaza por dentro (no crece).
+  const allOptionDates = useMemo(() => {
+    const dates: string[] = [];
+    for (const r of rows) {
+      if (r.blocked || r.assignedElsewhere) continue;
+      for (const opt of r.opciones) dates.push(opt.mesa.fecha);
     }
-    return weeks;
-  }, [selectedInPeriod, ghosts, month, year]);
+    for (const r of selectedInPeriod) dates.push(r.mesa!.fecha);
+    return dates;
+  }, [rows, selectedInPeriod]);
+  const maxPerDay = useMemo(() => {
+    let max = 0;
+    byDate.forEach((l) => {
+      if (l.length > max) max = l.length;
+    });
+    return max + 1;
+  }, [byDate]);
+  const weeks = useMemo(
+    () => buildMonthWeeks(month, year, allOptionDates),
+    [month, year, allOptionDates],
+  );
+  const cellHeight = mcalCellHeight(maxPerDay, EV_H);
+  // semanas sin mesas elegidas ni fantasmas del toggle → atenuadas (los
+  // fantasmas del hover no cuentan: la semana no debe prenderse y apagarse)
+  const weekActive = useMemo(() => {
+    const on = new Set<number>();
+    weeks.forEach((wk, wi) => {
+      const active = wk.some(
+        (d) =>
+          (byDate.get(d.iso)?.length ?? 0) > 0 ||
+          (ghostsOn && (ghostsByDate.get(d.iso)?.length ?? 0) > 0),
+      );
+      if (active) on.add(wi);
+    });
+    return on;
+  }, [weeks, byDate, ghostsByDate, ghostsOn]);
+  const weekOf = useMemo(() => {
+    const m = new Map<string, number>();
+    weeks.forEach((wk, wi) => wk.forEach((d) => m.set(d.iso, wi)));
+    return m;
+  }, [weeks]);
 
   // finales elegidos sin fecha cargada (para el editor "Fechas de mesa")
   const editorRows = selectedRows; // todos los elegidos, con o sin mesa
@@ -771,9 +788,14 @@ export default function FinalesCombinadorView() {
     setDlOpen(false);
   };
 
-  // ----- PDF / imprimir (arma el HTML con el módulo compartido y lo abre) -----
-  const exportarPDF = () => {
-    if (includables.length === 0) return;
+  // ----- hoja exportable (PDF / imagen): el MISMO MonthCalendar de la vista,
+  // renderizado estático con bloques sin interacción, más la lista de mesas.
+  const mesLabel =
+    MES_NOMBRE[month - 1].charAt(0).toUpperCase() +
+    MES_NOMBRE[month - 1].slice(1) +
+    " " +
+    year;
+  const buildSheetArgs = () => {
     // filas ordenadas por fecha+hora; `llamado` legible solo para las oficiales.
     const exportRows: FinalesExportRow[] = includables
       .slice()
@@ -792,20 +814,101 @@ export default function FinalesCombinadorView() {
         source: r.source === "oficial" ? "oficial" : "manual",
         color: r.color,
       }));
+    // el calendario impreso solo lleva las mesas elegidas: celdas para el
+    // máximo de mesas elegidas en un día, sin extender por fantasmas.
+    const printByDate = new Map<string, FinalesExportRow[]>();
+    for (const r of exportRows) {
+      const arr = printByDate.get(r.fecha);
+      if (arr) arr.push(r);
+      else printByDate.set(r.fecha, [r]);
+    }
+    let printMax = 1;
+    printByDate.forEach((l) => {
+      if (l.length > printMax) printMax = l.length;
+    });
+    const printWeeks = buildMonthWeeks(
+      month,
+      year,
+      exportRows.map((r) => r.fecha),
+    );
+    const calendarHTML = renderStaticHTML(
+      <MonthCalendar
+        weeks={printWeeks}
+        cellHeight={mcalCellHeight(printMax, EV_H_PRINT)}
+        style={{ ["--mcal-ev" as string]: `${EV_H_PRINT}px` }}
+        showNum={(d) => (printByDate.get(d.iso)?.length ?? 0) > 0}
+        dayClass={(d) => (printByDate.has(d.iso) ? "has-ev" : "")}
+        renderDay={(d) =>
+          (printByDate.get(d.iso) ?? []).map((r) => (
+            <MonthCalendarEvent
+              key={r.abbr + r.fecha}
+              name={r.nombre}
+              time={r.hora}
+              tag={r.llamado ? r.llamado.replace(/\.º llamado/, "º") : "manual"}
+              color={r.color}
+              dashed={r.source === "manual"}
+            />
+          ))
+        }
+      />,
+    );
+    return {
+      periodoLabel: PERIODO_LABEL[periodo],
+      anioReal,
+      mesLabel,
+      rows: exportRows,
+      margenDias,
+      generado: nowStr(),
+      calendarHTML,
+      calendarCSS: MONTH_CALENDAR_PRINT_CSS,
+    };
+  };
+
+  // PDF / imprimir: abre el documento (A4, una página, fondo blanco) y dispara print.
+  const exportarPDF = () => {
+    if (includables.length === 0) return;
     openForPrint(
-      buildFinalesHTML({
-        periodoLabel: PERIODO_LABEL[periodo],
-        anioReal,
-        month,
-        year,
-        rows: exportRows,
-        margenDias,
-        generado: nowStr(),
-        autoPrint: true,
-      }),
-      `finales-${periodo}-${anioReal}-studyvaults.html`,
+      buildFinalesHTML({ ...buildSheetArgs(), autoPrint: true }),
+      `finales-${periodo}-${anioReal}-cuatris.html`,
     );
     setDlOpen(false);
+  };
+
+  // Imagen PNG: la misma hoja rasterizada a 2x (A4 vertical, fondo blanco).
+  // Si la hoja mide más que la página, se escala para que entre completa.
+  const exportarPNG = async () => {
+    if (includables.length === 0) return;
+    setDlOpen(false);
+    const { html, css } = buildFinalesSheet(buildSheetArgs());
+    // medir la hoja para escalarla a una página
+    const probe = document.createElement("div");
+    probe.style.cssText = `position:fixed;left:-10000px;top:0;width:${SHEET_W}px;visibility:hidden`;
+    probe.innerHTML = `<style>${css}</style>${html}`;
+    document.body.appendChild(probe);
+    const natural = probe.querySelector<HTMLElement>(".sheet")?.scrollHeight ?? SHEET_H;
+    probe.remove();
+    const avail = SHEET_H - SHEET_PAD * 2;
+    const k = Math.min(1, avail / Math.max(1, natural - SHEET_PAD * 2));
+    const wrapped =
+      k < 1
+        ? `<div style="transform:scale(${k});transform-origin:top left;width:${SHEET_W}px">${html}</div>`
+        : html;
+    try {
+      const blob = await htmlToPngBlob(wrapped, css, {
+        width: SHEET_W,
+        height: SHEET_H,
+        scale: 2,
+      });
+      downloadBlob(blob, `finales-${periodo}-${anioReal}-cuatris.png`);
+      setExportMsg("Imagen descargada (A4, fondo blanco)");
+    } catch (e) {
+      // navegadores que no rasterizan foreignObject (Safari): versión imprimible
+      console.warn("No se pudo generar la imagen; se abre el PDF.", e);
+      openForPrint(
+        buildFinalesHTML({ ...buildSheetArgs(), autoPrint: false }),
+        `finales-${periodo}-${anioReal}-cuatris.html`,
+      );
+    }
   };
 
   // click en un chip fantasma: asigna/mueve ese final a ese llamado del período.
@@ -819,13 +922,6 @@ export default function FinalesCombinadorView() {
   if (rows.length === 0) {
     return (
       <section className="view-panel fin" aria-label="Combinación de finales">
-        <div className="panel-head">
-          <h2>Combinación de finales</h2>
-          <p>
-            Sumá tus finales pendientes y armá una combinación sin
-            superposiciones, con margen de repaso.
-          </p>
-        </div>
         <div className="fin__empty">
           <span className="fin__empty-ico" aria-hidden="true">
             <IconGraduation />
@@ -872,9 +968,7 @@ export default function FinalesCombinadorView() {
       blocked.length > 0
         ? `${blocked.length} bloqueado${blocked.length === 1 ? "" : "s"} por correlativa de final`
         : null,
-      flags.some((f) => f.kind === "caution")
-        ? "revisá los cruces marcados"
-        : null,
+      pisanCodes.size > 0 ? "revisá los cruces marcados" : null,
     ]
       .filter(Boolean)
       .join(" · ") || "sin conflictos detectados en la selección actual";
@@ -898,14 +992,6 @@ export default function FinalesCombinadorView() {
 
   return (
     <section className="view-panel fin" aria-label="Combinación de finales">
-      <div className="panel-head">
-        <h2>Combinación de finales</h2>
-        <p>
-          Sumá tus finales pendientes y armá una combinación sin
-          superposiciones, con margen de repaso.
-        </p>
-      </div>
-
       {/* ---- barra: período + año (decisión principal) · panel + sugerir ---- */}
       <div className="fin__bar">
         <div className="fin__bar-left">
@@ -973,34 +1059,6 @@ export default function FinalesCombinadorView() {
           </button>
         </div>
       </div>
-
-      {/* ---- resumen (una línea + sub; la combinación se ve en el calendario) ---- */}
-      <div className="fin__resumen">
-        <span className="fin__resumen-ico" aria-hidden="true">
-          <IconGraduation />
-        </span>
-        <div className="fin__resumen-body">
-          <div className="fin__resumen-main">{resumenMain}</div>
-          <div className="fin__resumen-sub">{resumenSub}</div>
-        </div>
-      </div>
-
-      {/* ---- conflictos ---- */}
-      {flags.length > 0 && (
-        <div className="fin__flags" aria-label="Conflictos detectados">
-          {flags.map((f, i) => (
-            <div key={i} className={"fin__flag " + f.kind}>
-              <span className="fin__flag-ico" aria-hidden="true">
-                {f.kind === "caution" ? <IconAlert /> : <IconClock size={16} />}
-              </span>
-              <div className="fin__flag-txt">
-                <div className="fin__flag-title">{f.title}</div>
-                <div className="fin__flag-body">{f.body}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
 
       {/* ---- calendario + panel de pendientes (protagonista) ---- */}
       <div className="fin__row">
@@ -1075,6 +1133,20 @@ export default function FinalesCombinadorView() {
                     >
                       <IconPrinter size={15} /> PDF / imprimir
                     </button>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      className="fin__dl-item"
+                      disabled={includables.length === 0}
+                      title={
+                        includables.length === 0
+                          ? "Elegí finales con fecha primero"
+                          : undefined
+                      }
+                      onClick={exportarPNG}
+                    >
+                      <IconImage size={15} /> Imagen (.png)
+                    </button>
                     <hr className="fin__dl-sep" />
                     {/* ajustes de planificación, fuera de la barra primaria */}
                     <label className="fin__dl-aviso">
@@ -1128,27 +1200,45 @@ export default function FinalesCombinadorView() {
           )}
 
           <div className="fin__cal-scroll">
-            <div
+            <MonthCalendar
               className="fin__agenda"
-              role="grid"
-              aria-label={`Calendario de mesas — ${MES_NOMBRE[month - 1]} ${year}`}
-            >
-              <div className="fin__ag-corner" />
-              {DOW_ABBR.map((d) => (
-                <div key={d} className="fin__ag-daylabel">
-                  {d}
-                </div>
-              ))}
-              {calendar.map((wk, wi) => (
-                <FinalesWeek
-                  key={wi}
-                  week={wk}
+              label={`Calendario de mesas — ${MES_NOMBRE[month - 1]} ${year}`}
+              weeks={weeks}
+              cellHeight={cellHeight}
+              style={{ ["--fin-ev" as string]: `${EV_H}px` }}
+              showNum={(d) =>
+                (byDate.get(d.iso)?.length ?? 0) > 0 ||
+                (ghostsByDate.get(d.iso)?.length ?? 0) > 0
+              }
+              dayClass={(d) =>
+                d.inMonth && !weekActive.has(weekOf.get(d.iso) ?? -1)
+                  ? "is-dim"
+                  : ""
+              }
+              renderDay={(d) => (
+                <FinalesDay
+                  exams={byDate.get(d.iso) ?? []}
+                  ghosts={ghostsByDate.get(d.iso) ?? []}
                   pisanCodes={pisanCodes}
                   conMesasReales={conMesasReales}
                   onToggleLlamado={toggleLlamado}
                   onGhost={rendirFantasma}
+                  onHoverIn={hoverIn}
+                  onHoverOut={hoverOut}
                 />
-              ))}
+              )}
+            />
+          </div>
+
+          {/* ---- resumen: DEBAJO del calendario (el llamado a la acción queda
+              lo más arriba posible). Los cruces se marcan en el calendario. ---- */}
+          <div className="fin__resumen">
+            <span className="fin__resumen-ico" aria-hidden="true">
+              <IconGraduation />
+            </span>
+            <div className="fin__resumen-body">
+              <div className="fin__resumen-main">{resumenMain}</div>
+              <div className="fin__resumen-sub">{resumenSub}</div>
             </div>
           </div>
 
@@ -1161,7 +1251,12 @@ export default function FinalesCombinadorView() {
               </div>
               <ul className="fin__mesas-list">
                 {editorRows.map((r) => (
-                  <li key={r.code} className="fin__mesa-row">
+                  <li
+                    key={r.code}
+                    className="fin__mesa-row"
+                    onPointerEnter={() => hoverIn(r.code)}
+                    onPointerLeave={hoverOut}
+                  >
                     <span
                       className="fin__mesa-dot"
                       style={cvar("--c-color", r.color)}
@@ -1315,12 +1410,26 @@ export default function FinalesCombinadorView() {
                       // al llamado visible (en lugar del botón «+»).
                       const elsewhere = r.assignedElsewhere;
                       return (
-                        <li key={r.code} className="fin__srow" tabIndex={0}>
+                        <li
+                          key={r.code}
+                          className="fin__srow"
+                          tabIndex={0}
+                          onPointerEnter={() => hoverIn(r.code)}
+                          onPointerLeave={hoverOut}
+                        >
                           <span
                             className="fin__fin-dot"
                             style={cvar("--c-color", r.color)}
                           />
                           <span className="fin__srow-name">{r.nombre}</span>
+                          {r.cursando && (
+                            <span
+                              className="fin__srow-cursando"
+                              title="La estás cursando: el final queda para cuando termine el cuatrimestre"
+                            >
+                              cursando
+                            </span>
+                          )}
                           <span className="fin__srow-cr">{r.creditos} cr</span>
                           {elsewhere ? (
                             <>
@@ -1504,137 +1613,138 @@ export default function FinalesCombinadorView() {
   );
 }
 
-/* ---- una semana del calendario (fila) ---- */
-function FinalesWeek({
-  week,
+/* ---- contenido de una celda del calendario (mesas elegidas + fantasmas) ---- */
+function FinalesDay({
+  exams,
+  ghosts,
   pisanCodes,
   conMesasReales,
   onToggleLlamado,
   onGhost,
+  onHoverIn,
+  onHoverOut,
 }: {
-  week: {
-    label: string;
-    hasExams: boolean;
-    hasGhosts: boolean;
-    days: {
-      iso: string;
-      dayNum: number;
-      inMonth: boolean;
-      exams: FinalRow[];
-      ghosts: Ghost[];
-    }[];
-  };
+  exams: FinalRow[];
+  ghosts: Ghost[];
   pisanCodes: Set<string>;
   conMesasReales: boolean;
   onToggleLlamado: (r: FinalRow) => void;
   onGhost: (g: Ghost) => void;
+  onHoverIn: (code: string) => void;
+  onHoverOut: () => void;
 }) {
-  // una semana con mesas elegidas O con fantasmas no se atenúa (así los
-  // fantasmas se ven); solo dim las semanas realmente vacías.
-  const active = week.hasExams || week.hasGhosts;
+  const conflictDay = exams.some((e) => pisanCodes.has(e.code));
   return (
     <>
-      <div className={"fin__ag-week" + (active ? "" : " is-dim")}>
-        {week.label}
-      </div>
-      {week.days.map((d, i) => {
-        const conflictDay = d.exams.some((e) => pisanCodes.has(e.code));
-        return (
-          <div
-            key={i}
-            className={
-              "fin__ag-day" +
-              (!d.inMonth ? " is-out" : "") +
-              (d.inMonth && !active ? " is-dim" : "")
-            }
-          >
-            {(d.inMonth || d.exams.length > 0 || d.ghosts.length > 0) && (
-              <span className="fin__ag-num">{d.dayNum}</span>
-            )}
-            {conflictDay && (
-              <span className="fin__day-conflict">
-                <IconAlert /> se pisan
+      {conflictDay && (
+        <span className="fin__day-conflict">
+          <IconAlert /> se pisan
+        </span>
+      )}
+      {exams.map((e) => (
+        <div
+          key={e.code}
+          className={
+            "fin__exam" + (pisanCodes.has(e.code) ? " is-conflict" : "")
+          }
+          style={cvar("--c-color", e.color)}
+          onPointerEnter={() => onHoverIn(e.code)}
+          onPointerLeave={onHoverOut}
+        >
+          <span className="fin__exam-name">{e.nombre}</span>
+          <span className="fin__exam-meta">
+            {e.mesa!.hora}
+            {/* «oficial» es lo normal y no se rotula (lo dice el editor);
+                sí se marca la fecha manual y la de ejemplo (sin planilla). */}
+            {e.source === "manual" ? (
+              <span className="fin__badge is-manual">manual</span>
+            ) : !conMesasReales ? (
+              <span className="fin__badge is-ejemplo" title="Fecha de ejemplo (sin planilla oficial)">
+                ej.
               </span>
-            )}
-            {d.exams.map((e) => (
-              <div
-                key={e.code}
-                className={
-                  "fin__exam" + (pisanCodes.has(e.code) ? " is-conflict" : "")
-                }
-                style={cvar("--c-color", e.color)}
-              >
-                <span className="fin__exam-name">{e.nombre}</span>
-                <span className="fin__exam-meta">
-                  {e.mesa!.hora}
-                  {/* Sin mesas para el llamado, la fecha se marca «ejemplo». */}
-                  <span
-                    className={
-                      "fin__badge " +
-                      (e.source === "manual"
-                        ? "is-manual"
-                        : conMesasReales
-                          ? "is-oficial"
-                          : "is-ejemplo")
-                    }
-                  >
-                    {e.source === "manual"
-                      ? "manual"
-                      : conMesasReales
-                        ? "oficial"
-                        : "ejemplo"}
-                  </span>
-                  {e.source === "oficial" &&
-                    e.llamado &&
-                    (e.hasBoth ? (
-                      // ambos llamados oficiales → el badge alterna 1.º↔2.º.
-                      <button
-                        type="button"
-                        className="fin__badge is-llamado fin__llbtn"
-                        aria-label={`${e.nombre}: ${LLAMADO_LABEL[e.llamado]} — cambiar de llamado`}
-                        title={`Cambiar al ${e.llamado === "primer" ? "2.º" : "1.º"} llamado`}
-                        onClick={(ev) => {
-                          ev.stopPropagation();
-                          onToggleLlamado(e);
-                        }}
-                      >
-                        {LLAMADO_ORD[e.llamado]}
-                      </button>
-                    ) : (
-                      <span className="fin__badge is-llamado">
-                        {LLAMADO_ORD[e.llamado]}
-                      </span>
-                    ))}
+            ) : null}
+            {e.source === "oficial" &&
+              e.llamado &&
+              (e.hasBoth ? (
+                // ambos llamados oficiales → el mismo segmentado 1º|2º
+                // del panel y del editor (elige la mesa).
+                <span
+                  className="fin__llseg fin__llseg--sm"
+                  role="group"
+                  aria-label={`Llamado de ${e.nombre}`}
+                >
+                  {(["primer", "segundo"] as FinalLlamado[]).map((l) => (
+                    <button
+                      key={l}
+                      type="button"
+                      className={
+                        "fin__llseg-b" + (e.llamado === l ? " is-active" : "")
+                      }
+                      aria-pressed={e.llamado === l}
+                      aria-label={`${e.nombre}: ${LLAMADO_LABEL[l]}`}
+                      title={LLAMADO_LABEL[l]}
+                      onClick={(ev) => {
+                        ev.stopPropagation();
+                        if (e.llamado !== l) onToggleLlamado(e);
+                      }}
+                    >
+                      {LLAMADO_ORD[l]}
+                    </button>
+                  ))}
                 </span>
-              </div>
-            ))}
-            {d.ghosts.map((g) => (
-              <button
-                key={g.key}
-                type="button"
-                className="fin__exam is-ghost"
-                style={cvar("--c-color", g.color)}
-                aria-label={`Rendir ${g.nombre} el ${ddmm(g.fecha)} (${LLAMADO_LABEL[g.llamado]})`}
-                title={`Agregar ${g.nombre} — ${LLAMADO_LABEL[g.llamado]}`}
-                onClick={() => onGhost(g)}
-              >
-                <span className="fin__exam-name">{g.nombre}</span>
-                <span className="fin__exam-meta">
-                  {g.hora}
-                  <span className="fin__badge is-llamado">
-                    {LLAMADO_ORD[g.llamado]}
-                  </span>
+              ) : (
+                <span className="fin__badge is-llamado">
+                  {LLAMADO_ORD[e.llamado]}
                 </span>
-              </button>
-            ))}
-          </div>
-        );
-      })}
+              ))}
+          </span>
+        </div>
+      ))}
+      {ghosts.map((g) => (
+        <button
+          key={g.key}
+          type="button"
+          className={"fin__exam is-ghost" + (g.hover ? " is-hover" : "")}
+          style={cvar("--c-color", g.color)}
+          aria-label={`Rendir ${g.nombre} el ${ddmm(g.fecha)} (${LLAMADO_LABEL[g.llamado]})`}
+          title={`Agregar ${g.nombre} — ${LLAMADO_LABEL[g.llamado]}`}
+          onClick={() => onGhost(g)}
+          onPointerEnter={() => onHoverIn(g.code)}
+          onPointerLeave={onHoverOut}
+        >
+          <span className="fin__exam-name">{g.nombre}</span>
+          <span className="fin__exam-meta">
+            {g.hora}
+            <span className="fin__badge is-llamado">
+              {LLAMADO_ORD[g.llamado]}
+            </span>
+          </span>
+        </button>
+      ))}
     </>
   );
 }
 
 /* ---- íconos locales que no están en icons.tsx ---- */
+function IconImage({ size = 15 }: { size?: number }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2" />
+      <circle cx="9" cy="10" r="1.6" />
+      <path d="M20.5 16.5 15 11l-7 8" />
+    </svg>
+  );
+}
 function IconAlert() {
   return (
     <svg

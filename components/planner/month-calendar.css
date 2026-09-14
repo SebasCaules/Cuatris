@@ -1,0 +1,59 @@
+/* Calendario mensual compartido (MonthCalendar) — estilos de PANTALLA con los
+   tokens del planner. El documento exportado usa MONTH_CALENDAR_PRINT_CSS con
+   las mismas clases. Todas las celdas miden `--mcal-cell` (lo fija el
+   consumidor): la grilla nunca cambia de alto por el contenido. */
+.planner .mcal {
+  min-width: 600px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--panel);
+}
+.planner .mcal__dow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  padding: 6px 0;
+}
+.planner .mcal__day {
+  position: relative;
+  box-sizing: border-box;
+  height: var(--mcal-cell, 100px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  padding: 5px 5px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+/* la primera celda de cada fila no repite el borde */
+.planner .mcal__dow:nth-child(6n + 1),
+.planner .mcal__day:nth-child(6n + 1) {
+  border-left: 0;
+}
+.planner .mcal__day.is-out {
+  background: color-mix(in srgb, var(--bg) 55%, var(--panel));
+}
+.planner .mcal__day.is-dim {
+  background: color-mix(in srgb, var(--bg) 35%, var(--panel));
+}
+.planner .mcal__num {
+  font-family: var(--f-m);
+  font-size: 10px;
+  line-height: 1.2;
+  color: var(--muted);
+  align-self: flex-start;
+}
