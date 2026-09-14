@@ -1,65 +1,19 @@
 "use client";
 
-import { memo, useMemo, type Dispatch } from "react";
+import { memo, useMemo, useState, type Dispatch } from "react";
 import { usePlanner, type Action } from "@/components/planner/state";
-import {
-  EstadoControl,
-  CheckSingle,
-  CheckDouble,
-} from "@/components/planner/EstadoControl";
+import { EstadoControl } from "@/components/planner/EstadoControl";
 import { estadoOf, tieneFinal } from "@/lib/planner/estado";
 import { PLAN, hasHorario, byId } from "@/lib/planner/model";
 import { isAsync } from "@/lib/planner/time";
 import { isAvailable } from "@/lib/planner/metrics";
 import { FICHAS } from "@/lib/planner/fichas";
-import { MinorBadge, MinorBadges } from "@/components/planner/MinorBadge";
+import { MinorBadges } from "@/components/planner/MinorBadge";
 import { AvailLock } from "@/components/planner/CardSignals";
-import { MINORS } from "@/lib/planner/minors";
+import { SearchField, ElectFilters, MinorsFilter } from "@/components/planner/ViewTools";
 import type { Materia } from "@/lib/planner/types";
 import "../cards.css";
 
-/** Leyenda colapsable (cerrada por defecto): decodifica de una vez las familias
- *  de señales de la card (avance · minor · disponibilidad). Como se lee una sola
- *  vez, va en un <details> discreto y no empuja la grilla. El bloque "Avance"
- *  es consistente con la leyenda de CuatriView (misma codificación del control). */
-function CardLegend() {
-  return (
-    <details className="legend-details">
-      <summary>Cómo leer las señales</summary>
-      <div className="card-legend" role="note" aria-label="Cómo leer las señales de cada card">
-        <div className="cl-group">
-          <span className="cl-h">Avance — tocá el círculo</span>
-          <span className="cl-items">
-            <span className="cl-row">
-              <span className="estado-ctl st-pending" aria-hidden="true" /> pendiente
-            </span>
-            <span className="cl-row">
-              <span className="estado-ctl st-regular" aria-hidden="true"><CheckSingle /></span> cursada — falta el final
-            </span>
-            <span className="cl-row">
-              <span className="estado-ctl st-final" aria-hidden="true"><CheckDouble /></span> final aprobado
-            </span>
-          </span>
-        </div>
-        <div className="cl-group">
-          <span className="cl-h">Minor que completa</span>
-          <span className="cl-items">
-            {MINORS.map((m) => (
-              <MinorBadge key={m.id} minor={m} variant="logo" />
-            ))}
-          </span>
-        </div>
-        <div className="cl-group">
-          <span className="cl-h">Disponibilidad</span>
-          <span className="cl-items">
-            <span className="cl-row"><AvailLock ok /> cursable</span>
-            <span className="cl-row"><AvailLock ok={false} /> requisitos</span>
-          </span>
-        </div>
-      </div>
-    </details>
-  );
-}
 
 /** Día completo → sigla de 2 letras (espejo del preview del drawer). */
 const DAY_AB: Record<string, string> = {
@@ -204,15 +158,27 @@ const ElectCard = memo(function ElectCard({
   );
 });
 
-export default function ElectivasView() {
+/**
+ * Sección «Electivas»: la grilla de cards con el filtro de minors y su leyenda.
+ * Vive dentro de la vista «Materias» (CuatriView), debajo de los años de
+ * obligatorias; comparte con ella la búsqueda y los filtros «solo cursables» /
+ * «solo con horario», que están en la cabecera de la vista. `id="electivas"`
+ * es el ancla a la que llega el deep-link `?view=elect`.
+ */
+export function ElectivasSection() {
   const { state, dispatch } = usePlanner();
   const { approved, finalDone, combo, areasOn, search, fDisp, fHor } = state;
+  // Búsqueda propia de la sección (además de la global de la cabecera, que
+  // filtra las dos listas): local al componente, sin tocar el estado global.
+  const [q2, setQ2] = useState("");
 
   const list = useMemo(() => {
     const q = search.toLowerCase();
-    const passSearch = (m: Materia) =>
-      !q ||
-      (m.codigo + " " + m.nombre + " " + m.abbr).toLowerCase().includes(q);
+    const q2n = q2.trim().toLowerCase();
+    const passSearch = (m: Materia) => {
+      const txt = (m.codigo + " " + m.nombre + " " + m.abbr).toLowerCase();
+      return (!q || txt.includes(q)) && (!q2n || txt.includes(q2n));
+    };
     let l = PLAN.electivas.filter(passSearch).filter((m) => {
       const a = m.areas || [];
       // Sin área asignada: pasan solo cuando no hay filtro de áreas activo —
@@ -224,13 +190,14 @@ export default function ElectivasView() {
     if (fHor) l = l.filter((m) => hasHorario(m.codigo));
     l = [...l].sort((a, b) => a.codigo.localeCompare(b.codigo));
     return l;
-  }, [search, areasOn, fDisp, fHor, approved]);
+  }, [search, q2, areasOn, fDisp, fHor, approved]);
 
   // ¿Hay algún filtro activo que limpiar? (incluye áreas apagadas). Solo con
   // esto mostramos el atajo "Limpiar filtros" en el empty state.
   const hasFilters =
-    search !== "" || fDisp || fHor || areasOn.size < PLAN.areas.length;
+    search !== "" || q2 !== "" || fDisp || fHor || areasOn.size < PLAN.areas.length;
   const clearFilters = () => {
+    setQ2("");
     dispatch({ type: "SET_SEARCH", value: "" });
     dispatch({ type: "SET_FILTER", key: "fDisp", value: false });
     dispatch({ type: "SET_FILTER", key: "fHor", value: false });
@@ -241,15 +208,41 @@ export default function ElectivasView() {
   };
 
   return (
-    <section className="view-panel">
-      <div className="panel-head">
-        <h2>Materias electivas</h2>
-        <p>
-          {PLAN.electivas.length} materias. Filtrá por área para orientar un
-          minor.
-        </p>
+    <section className="elect-section" id="electivas" aria-labelledby="electivasH">
+      <div className="elect-section__head">
+        <h3 id="electivasH" className="elect-section__t">
+          Electivas
+          <span className="elect-section__n" aria-label={`${list.length} de ${PLAN.electivas.length} electivas`}>
+            {list.length === PLAN.electivas.length
+              ? PLAN.electivas.length
+              : `${list.length} / ${PLAN.electivas.length}`}
+          </span>
+        </h3>
+        <div className="field vtools__search elect-section__search">
+          <svg
+            className="field__ic"
+            viewBox="0 0 24 24"
+            width="15"
+            height="15"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.2-3.2" />
+          </svg>
+          <input
+            type="search"
+            placeholder="Buscar electiva"
+            aria-label="Buscar electiva por código o nombre"
+            autoComplete="off"
+            value={q2}
+            onChange={(e) => setQ2(e.target.value)}
+          />
+        </div>
+        <MinorsFilter compact />
       </div>
-      <CardLegend />
       <div className="card-grid card-grid--el">
         {list.length === 0 ? (
           <div className="empty">
@@ -283,6 +276,25 @@ export default function ElectivasView() {
           })
         )}
       </div>
+    </section>
+  );
+}
+
+/**
+ * Página «Electivas» de antes. La vista se fusionó con «Materias»: la
+ * navegación ya no la ofrece y `SET_VIEW elect` se normaliza a `cuatri`, pero
+ * el mapa de vistas la conserva por si algún enlace viejo la pide.
+ */
+export default function ElectivasView() {
+  return (
+    <section className="view-panel">
+      <div className="panel-head panel-head--tools">
+        <div className="vtools">
+          <SearchField placeholder="Buscar electiva" />
+          <ElectFilters />
+        </div>
+      </div>
+      <ElectivasSection />
     </section>
   );
 }

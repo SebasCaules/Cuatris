@@ -197,3 +197,7 @@
 @media (prefers-reduced-motion: reduce){
   .planner .grafo-node,.planner .grafo-edge,.planner .grafo-node .gn-rect,.planner .grafo-stage{transition-duration:.01ms}
 }
+
+/* Forma = acción: el porcentaje de zoom es una lectura, no un control → sin
+   borde (los botones +/− de al lado sí lo llevan). */
+.planner .grafo-zoom{border:none;background:transparent}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import PlannerApp from "@/components/planner/PlannerApp";
+import PlannerPage from "@/components/shell/PlannerPage";
 
 // "Planificador · Cuatris" es el título con el que llega la página; PlannerApp
 // lo reemplaza por "<vista> · Cuatris" al montar y en cada cambio de vista.
@@ -12,5 +12,5 @@ export const metadata: Metadata = {
  *  filtros y el drawer abierto viajan en la query (?view=…), así que recargar
  *  o compartir el link reproduce el estado. */
 export default function Page() {
-  return <PlannerApp />;
+  return <PlannerPage />;
 }

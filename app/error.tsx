@@ -5,6 +5,7 @@
 // + toggle de tema) sigue montado.
 import { useEffect } from "react";
 import { Button } from "@studyvaults/ui";
+import Header from "@/components/shell/Header";
 
 export default function Error({
   error,
@@ -18,6 +19,8 @@ export default function Error({
   }, [error]);
 
   return (
+    <>
+    <Header />
     <section
       style={{
         minHeight: "60vh",
@@ -61,5 +64,6 @@ export default function Error({
         </Button>
       </div>
     </section>
+    </>
   );
 }

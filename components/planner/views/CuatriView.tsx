@@ -14,9 +14,12 @@ import { isAvailable } from "@/lib/planner/metrics";
 import { EstadoControl, estadoOf, tieneFinal } from "@/components/planner/EstadoControl";
 import { AvailLock } from "@/components/planner/CardSignals";
 import { Tooltip } from "@/components/planner/Tooltip";
+import { SearchField, ElectFilters, ResetApproved } from "@/components/planner/ViewTools";
+import { ElectivasSection } from "./ElectivasView";
 import type { Estado } from "@/lib/planner/estado";
 import type { Materia } from "@/lib/planner/types";
 import "../cards.css";
+import "../materias.css";
 
 const CUATRI_LABEL: Record<string, string> = { "1": "1.º cuatrimestre", "2": "2.º cuatrimestre" };
 
@@ -214,8 +217,15 @@ export default function CuatriView() {
 
   return (
     <section className="view-panel">
-      <div className="panel-head">
-        <h2>Mis materias</h2>
+      {/* Una sola vista para todas las materias: los años de obligatorias
+          arriba y las electivas debajo. La búsqueda y los filtros de la
+          cabecera valen para las dos listas. */}
+      <div className="panel-head panel-head--tools">
+        <div className="vtools">
+          <SearchField />
+          <ElectFilters />
+          <ResetApproved />
+        </div>
       </div>
       {years.length === 0 ? (
         <div className="empty">
@@ -300,12 +310,20 @@ export default function CuatriView() {
                     </button>
                   </Tooltip>
                 </header>
+                {/* Plegado animado: el envoltorio es una grilla cuyo único
+                    track va de 1fr a 0fr (alto real → 0, sin medir nada); el
+                    interior recorta y se desvanece. `inert` saca del tab-order
+                    lo plegado. */}
                 <div
                   id={bodyId}
+                  className={"cq-year__body" + (isCollapsed ? " is-closed" : "")}
+                  inert={isCollapsed}
+                >
+                <div className="cq-year__inner">
+                <div
                   className={
                     "cq-year__cols" + (y.sems.length === 1 ? " cq-year__cols--solo" : "")
                   }
-                  hidden={isCollapsed}
                 >
                   {y.sems.map((s) => {
                     const b = bucketsOf(s.ms, approved, finalDone, cursando);
@@ -336,11 +354,14 @@ export default function CuatriView() {
                     );
                   })}
                 </div>
+                </div>
+                </div>
               </section>
             );
           })}
         </div>
       )}
+      <ElectivasSection />
     </section>
   );
 }

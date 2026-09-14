@@ -1,33 +1,32 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { ThemeToggle } from "@studyvaults/ui";
 import CuatrisMark from "./CuatrisMark";
-import { STUDYVAULTS_URL } from "@/lib/site";
 
 /**
- * Barra superior del standalone: marca, origen del dato y toggle de tema.
- * Reusa el chrome `.nav` del sistema de diseño sin el menú del portal
- * (no hay más rutas que el planificador) ni el buscador global.
+ * Barra superior del standalone: marca, navegación entre vistas del planner
+ * (`nav`, la entrega PlannerApp vía su prop `chrome`), herramientas (`tools`:
+ * referencias y progreso) y toggle de tema. Reusa el chrome `.nav` del sistema
+ * de diseño sin el menú del portal ni el buscador global. Sin `nav`/`tools`
+ * (404, error) queda solo la marca y el tema.
  */
-export default function Header() {
+export default function Header({
+  nav,
+  tools,
+}: {
+  nav?: ReactNode;
+  tools?: ReactNode;
+}) {
   return (
-    <header className="nav cuatris-nav" role="banner">
+    <header className={"nav cuatris-nav" + (nav ? " cuatris-nav--views" : "")} role="banner">
       <div className="nav__inner">
         <Link className="brand" href="/" prefetch={false}>
           <CuatrisMark />
           <span className="brand__name">Cuatris</span>
         </Link>
+        {nav}
         <span className="nav__spacer" />
-        <span className="nav__meta">
-          Ing. en Informática · <b>ITBA</b> · plan S10-Rev23
-        </span>
-        <a
-          className="nav__link"
-          href={STUDYVAULTS_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          StudyVaults
-        </a>
+        {tools}
         <ThemeToggle variant="desktop" />
       </div>
     </header>

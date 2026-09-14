@@ -4,6 +4,41 @@ import { toMin } from "@/lib/planner/time";
 import type { WeekBlock } from "@/lib/planner/types";
 
 /**
+ * Reparto horizontal de los bloques de un día que se pisan en el tiempo: los
+ * que coinciden forman un racimo y cada uno recibe una columna (la primera
+ * cuya última materia ya terminó); el racimo se divide en tantas columnas como
+ * haga falta. Devuelve, por índice de bloque, `[columna, columnas del racimo]`.
+ * Sin solapamientos todo queda en [0, 1] (ancho completo, como siempre).
+ */
+export function layoutDayColumns(blocks: WeekBlock[]): [number, number][] {
+  const out: [number, number][] = blocks.map(() => [0, 1]);
+  const items = blocks
+    .map((b, i) => ({ i, s: toMin(b.desde), e: toMin(b.hasta) }))
+    .sort((a, b) => a.s - b.s || b.e - a.e);
+  let cluster: { i: number; col: number }[] = [];
+  let colEnds: number[] = [];
+  let clusterEnd = -Infinity;
+  const flush = () => {
+    const n = colEnds.length;
+    cluster.forEach(({ i, col }) => (out[i] = [col, n]));
+    cluster = [];
+    colEnds = [];
+  };
+  for (const it of items) {
+    if (it.s >= clusterEnd && cluster.length) flush();
+    let col = colEnds.findIndex((end) => end <= it.s);
+    if (col === -1) {
+      col = colEnds.length;
+      colEnds.push(it.e);
+    } else colEnds[col] = it.e;
+    cluster.push({ i: it.i, col });
+    clusterEnd = Math.max(clusterEnd, it.e);
+  }
+  if (cluster.length) flush();
+  return out;
+}
+
+/**
  * Timetable diseñado de una cursada: calendario semanal con bloques del color
  * de la materia, días libres marcados y ensamblado escalonado. Compartido por
  * el Combinador y el Plan de cursada. `compact` achica la escala para tarjetas.
@@ -79,6 +114,9 @@ export default function CursadaCalendar({
         </div>
         {days.map((d) => {
           const dayBlocks = blocks.filter((b) => b.dia === d);
+          const columns = layoutDayColumns(dayBlocks);
+          // inset lateral del bloque (mismo valor que el left/right del CSS)
+          const inset = compact ? 2 : 4;
           return (
             <div
               className={"cmbcal__col" + (dayBlocks.length === 0 ? " is-free" : "")}
@@ -94,6 +132,17 @@ export default function CursadaCalendar({
                 const top = (toMin(b.desde) - minM) * PX;
                 const h = (toMin(b.hasta) - toMin(b.desde)) * PX;
                 const idx = order++;
+                // Bloques que se pisan en horario: lado a lado en vez de uno
+                // encima del otro (la marca «se pisa» sigue diciendo qué pasa).
+                const [col, ncols] = columns[i];
+                const split: React.CSSProperties =
+                  ncols > 1
+                    ? {
+                        left: `calc(${(col / ncols) * 100}% + ${inset}px)`,
+                        right: "auto",
+                        width: `calc(${100 / ncols}% - ${inset * 2}px)`,
+                      }
+                    : {};
                 // Cuántas líneas de la abreviatura caben sin agrandar el bloque:
                 // descontamos el padding vertical y la fila de rango horario (solo
                 // fuera de compacto), y dividimos por el alto de línea de la escala.
@@ -123,6 +172,7 @@ export default function CursadaCalendar({
                       {
                         top,
                         height: h,
+                        ...split,
                         "--blk": b.color,
                         "--i": idx,
                       } as React.CSSProperties

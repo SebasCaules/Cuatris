@@ -15,9 +15,40 @@ main.page > .planner { flex: 1 1 auto; }
 
 /* header standalone: sin burger, el toggle de tema queda siempre visible */
 .cuatris-nav .nav__inner .theme-toggle--desktop { display: inline-flex !important; }
-.cuatris-nav .nav__link { white-space: nowrap; }
-@media (max-width: 560px) {
-  .cuatris-nav .nav__inner .nav__link { display: none; }
+.cuatris-nav .nav__inner { gap: 16px; }
+.cuatris-nav .vnav { margin-left: 8px; }
+/* entre 1001 y 1280 px la fila va justa (cinco pestañas + carrera + tools) */
+@media (min-width: 1001px) and (max-width: 1280px) {
+  .cuatris-nav .nav__inner { gap: 10px; }
+  .cuatris-nav .vnav { margin-left: 0; }
+}
+
+/* Móvil / tablet: la navegación de vistas pasa a una segunda fila de la barra
+   (tira horizontal con scroll propio) y la barra crece; --nav-h se redefine
+   para que el planner (padding-top, sticky, tooltips) siga despejándola. */
+@media (max-width: 1000px) {
+  :root { --nav-h: 112px; }
+  .cuatris-nav .nav__inner {
+    flex-wrap: wrap;
+    align-content: flex-start;
+    row-gap: 0;
+    padding-top: 10px;
+    height: 100%;
+  }
+  .cuatris-nav .vnav {
+    order: 10;
+    flex: 1 0 100%;
+    margin: 6px -24px 0;
+    padding: 0 24px 8px;
+    width: calc(100% + 48px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .cuatris-nav .vnav::-webkit-scrollbar { display: none; }
+  .cuatris-nav .vnav__tab { padding: 7px 11px; font-size: 14px; }
+  .cuatris-nav .vnav__util { display: none; } /* Referencias sigue en ?view=ref */
 }
 
 /* footer de una sola franja */

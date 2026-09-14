@@ -80,8 +80,13 @@ export const IconTrash = (p: IconProps) => (
 
 export const IconRotateCcw = (p: IconProps) => (
   <Svg {...p}>
-    <path d="M4 5v5h5" />
-    <path d="M4.5 10a8 8 0 1 1-1.5 5.5" />
+    {/* el glifo (flecha + arco) no está centrado en el viewBox: se corre para
+        que su caja quede en el centro y el ícono no se vea desplazado en los
+        botones redondos. */}
+    <g transform="translate(1 -1.9)">
+      <path d="M4 5v5h5" />
+      <path d="M4.5 10a8 8 0 1 1-1.5 5.5" />
+    </g>
   </Svg>
 );
 

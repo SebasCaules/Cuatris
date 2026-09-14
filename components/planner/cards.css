@@ -142,9 +142,33 @@
 }
 .planner .cq-year__toggle:hover{color:var(--ink);border-color:var(--line)}
 .planner .cq-year__toggle:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
-.planner .cq-year__chev{transition:transform var(--dur-base) var(--ease)}
+.planner .cq-year__chev{transition:transform var(--dur-slow) var(--ease-spring)}
 .planner .cq-year.is-collapsed .cq-year__chev{transform:rotate(-90deg)}
-.planner .cq-year__cols[hidden]{display:none}
+/* plegado/desplegado animado del cuerpo del año: el track de la grilla va de
+   1fr a 0fr (alto real ↔ 0 sin medir con JS) y el interior recorta, se
+   desvanece y sube apenas — abrir es un poco más lento que cerrar, y la
+   línea bajo la cabecera se apaga al final del cierre. */
+.planner .cq-year__body{
+  display:grid;grid-template-rows:1fr;
+  transition:grid-template-rows var(--dur-slow) var(--ease-out);
+}
+.planner .cq-year__body.is-closed{
+  grid-template-rows:0fr;
+  transition:grid-template-rows var(--dur-base) var(--ease-in-out);
+}
+.planner .cq-year__inner{
+  min-height:0;overflow:hidden;
+  transition:opacity var(--dur-slow) var(--ease-out) .06s,transform var(--dur-slow) var(--ease-out);
+}
+.planner .cq-year__body.is-closed .cq-year__inner{
+  opacity:0;transform:translateY(-8px);
+  transition:opacity var(--dur-fast) var(--ease-in-out),transform var(--dur-base) var(--ease-in-out);
+}
+.planner .cq-year__h{transition:border-bottom-color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out)}
+.planner .cq-year.is-collapsed .cq-year__h{transition-delay:var(--dur-base),0s}
+@media (prefers-reduced-motion:reduce){
+  .planner .cq-year__body,.planner .cq-year__inner,.planner .cq-year__chev{transition:none}
+}
 .planner .cq-year__t{font-family:var(--f-d);font-weight:500;font-size:16.5px;letter-spacing:-.01em;color:var(--ink);margin:0}
 .planner .cq-year__ciclo{font-family:var(--f-m);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 .planner .cq-year__prog{margin-left:auto;display:flex;align-items:center;gap:9px}

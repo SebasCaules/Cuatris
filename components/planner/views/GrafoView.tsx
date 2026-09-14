@@ -550,14 +550,6 @@ export default function GrafoView() {
 
   return (
     <section className="view-panel grafo-view" id="panel-grafo">
-      <div className="panel-head">
-        <h2>Mapa de correlativas</h2>
-        <p>
-          Cada columna es un cuatrimestre de la carrera (1º·1c &rarr; 5º·2c): las
-          correlativas fluyen de izquierda a derecha.
-        </p>
-      </div>
-
       <div className="grafo-toolbar">
         <div className="grafo-legend" aria-label="Referencia de colores">
           <span className="lg">

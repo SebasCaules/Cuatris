@@ -115,10 +115,21 @@
 /* Tira de métricas inline en una fila (~37px de alto) — reemplaza las 4
    tarjetas .stats/.stat: mismo dato, mucho menos alto vertical. */
 .planner .statline{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 20px}
-.planner .statline__it{font-family:var(--f-m);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);white-space:nowrap}
+.planner .statline__it{display:inline-flex;align-items:baseline;font-family:var(--f-m);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);white-space:nowrap}
 .planner .statline__it b{font-family:var(--f-d);font-weight:500;font-size:19px;line-height:1;letter-spacing:-.01em;color:var(--ink);margin-right:2px}
 .planner .statline__it--elec b{color:var(--brass-2);margin-right:0}
 .planner .statline__of{font-style:normal;font-family:var(--f-m);font-size:12px;color:var(--faint);margin-right:2px}
+/* pastilla «● 165/231» al lado del stat: cómo queda la cifra, sobre su
+   total, al aprobar lo que se cursa. El punto es el glifo de «cursando»
+   (mismo color que en la lista); el tooltip lo dice en palabras. */
+.planner .statline__cur{
+  display:inline-flex;align-items:center;gap:4px;align-self:center;margin-left:7px;
+  padding:2px 8px 2px 6px;border-radius:999px;border:none;
+  background:color-mix(in srgb,var(--slate) 14%,transparent);
+  font-family:var(--f-m);font-size:10.5px;font-weight:600;letter-spacing:.02em;text-transform:none;color:var(--link);
+}
+.planner .statline__cur svg{width:10px;height:10px;color:var(--link)}
+.planner .statline__cur-of{font-style:normal;font-weight:400;color:color-mix(in srgb,var(--link) 70%,var(--muted))}
 .planner .statline__sep{flex:none;align-self:center;width:1px;height:14px;background:var(--line)}
 
 /* F10: copia window.location.href (la URL ya refleja vista/filtros/drawer).
@@ -134,6 +145,9 @@
 /* ===================== SHELL ===================== */
 .planner .shell{position:relative;z-index:2;display:grid;grid-template-columns:230px 1fr;gap:clamp(16px,2.4vw,34px);
   padding:clamp(16px,2.4vw,32px) clamp(16px,3vw,44px) 36px;align-items:start}
+/* sin rail: la navegación vive en la barra superior (ViewNav) y el contenido
+   ocupa todo el ancho en cualquier vista */
+.planner.planner--topnav .shell{grid-template-columns:1fr}
 .planner .side{position:sticky;top:calc(var(--nav-h) + 52px);display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - var(--nav-h) - 64px);overflow:auto;padding-right:5px}
 .planner .side>*{flex:0 0 auto}
 .planner.side-collapsed .shell{grid-template-columns:1fr}
@@ -1652,10 +1666,11 @@
      sin la tira horizontal que rompía la consistencia espacial). Excluye el
      estado colapsado (ahí el reclamo del ancho es total, no compacto). */
   .planner.rail-nav-only:not(.side-collapsed) .shell{grid-template-columns:190px 1fr}
-  .planner:not(.side-collapsed) .main{
+  .planner:not(.side-collapsed):not(.planner--topnav) .main{
     border-left:1px solid var(--line-2);
     padding-left:clamp(18px,1.8vw,26px);
   }
+  .planner.planner--topnav .shell{padding-left:clamp(16px,3vw,44px)}
   /* Pin exacto del rail: nace justo debajo del topbar (nav 68 + topbar 52 —
      ahora la tira inline de métricas, no las tarjetas — + padding-top del shell)
      → queda clavado desde scroll 0 y el scroll de la pantalla principal NO lo mueve. */
@@ -1984,3 +1999,250 @@
   background:color-mix(in srgb, var(--slate) 16%, var(--surface-2));
 }
 .planner .estado-ctl.st-cursando svg{width:14px;height:14px}
+
+
+/* =========================================================================
+   NAVEGACIÓN EN LA BARRA SUPERIOR (ViewNav / NavTools) + HERRAMIENTAS DE VISTA
+   El rail izquierdo desapareció: las vistas se eligen en la navbar del sitio
+   (PlannerApp las entrega vía `chrome`) y los controles que colgaban del rail
+   viven en la cabecera de la vista que los usa (ViewTools).
+   ========================================================================= */
+.planner .vnav{display:flex;align-items:center;gap:2px;min-width:0}
+.planner .vnav__tab{
+  flex:none;padding:8px 12px;border:none;border-radius:8px;background:transparent;
+  font-family:var(--f-d);font-size:14.5px;letter-spacing:-.005em;color:var(--muted);
+  white-space:nowrap;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out);
+}
+.planner .vnav__tab:hover{background:var(--panel-2);color:var(--ink)}
+.planner .vnav__tab.is-active{background:var(--brass-soft);color:var(--ink);font-weight:600}
+.planner .vnav__tab:focus-visible{outline:none;box-shadow:0 0 0 3px var(--brass-soft)}
+.planner .vnav__tools{display:flex;align-items:center;gap:4px;flex:none}
+.planner .vnav__util{
+  padding:8px 10px;border:none;background:transparent;border-radius:8px;
+  font-family:var(--f-b);font-size:12.5px;color:var(--faint);cursor:pointer;white-space:nowrap;
+  transition:color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out);
+}
+.planner .vnav__util:hover{color:var(--ink-soft);background:var(--panel-2)}
+.planner .vnav__util.is-active{color:var(--brass)}
+.planner .vnav__icon{
+  width:40px;height:40px;display:inline-grid;place-items:center;flex:none;
+  border:1px solid var(--hairline-strong);border-radius:var(--r-ctrl,8px);background:transparent;
+  color:var(--ink);cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out);
+}
+.planner .vnav__icon:hover{background:var(--hairline);border-color:var(--ring)}
+/* sin chrome del sitio: tira propia arriba del contenido */
+.planner .vnav-strip{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px clamp(16px,3vw,44px);border-bottom:1px solid var(--line)}
+.planner .vnav-strip .vnav{flex-wrap:wrap}
+.planner .vnav-strip .vnav__tools{margin-left:auto}
+
+/* cabecera de vista con herramientas a la derecha (búsqueda, filtros, reset) */
+.planner .panel-head--tools{display:flex;align-items:flex-end;justify-content:space-between;gap:12px 24px;flex-wrap:wrap}
+.planner .panel-head__txt{min-width:0}
+.planner .vtools{display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap;margin-left:auto}
+.planner .vtools__search{width:min(100%,260px)}
+.planner .vtools__search input{padding:9px 12px 9px 34px;border-radius:8px;border-color:transparent;background:var(--panel-2);font-size:13.5px}
+.planner .vtools__search input::placeholder{color:var(--faint)}
+.planner .vtools__search input:focus{border-color:var(--brass);background:var(--panel);box-shadow:0 0 0 3px var(--brass-soft)}
+.planner .vtools__search:focus-within .field__ic{color:var(--brass)}
+.planner .vtools__search input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.planner .vtools__filters{display:flex;align-items:center;gap:4px 14px;flex-wrap:wrap}
+.planner .vtools__filters .chk{padding:4px 0;font-size:13px;white-space:nowrap}
+.planner .vtools__reset{padding:6px 0;border:none;background:transparent;color:var(--faint);font-size:12px}
+.planner .vtools__reset:hover{color:var(--oxblood);border:none}
+/* minors · áreas como fila de píldoras con su avance (Electivas) */
+.planner .vtools__minors{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px;margin:-4px 0 14px}
+.planner .vtools__minors .minrow{
+  display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;
+  background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 11px;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),opacity var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out);
+}
+.planner .vtools__minors .minrow:hover{background:var(--panel-2);border-color:var(--line-2)}
+.planner .vtools__minors .minrow__top{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft)}
+.planner .vtools__minors .minrow .swatch{width:9px;height:9px;border-radius:2px;flex:none}
+.planner .vtools__minors .minrow__name{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.planner .vtools__minors .minrow b{font-family:var(--f-m);font-weight:400;font-size:11px;color:var(--muted);flex:none;margin-left:auto}
+.planner .vtools__minors .minrow .minibar{height:3px;border-radius:3px;background:var(--panel-3);overflow:hidden}
+.planner .vtools__minors .minrow.off{opacity:.45}
+.planner .vtools__minors .minrow.off:hover{opacity:.75}
+@media (max-width:640px){
+  .planner .panel-head--tools{align-items:stretch}
+  .planner .vtools{margin-left:0;width:100%}
+  .planner .vtools__search{width:100%}
+}
+
+/* =========================================================================
+   Calendarios: caja de borde para bloques y celdas
+   -------------------------------------------------------------------------
+   El sitio no declara `box-sizing:border-box` global, así que los bloques
+   (`.cmbcal-blk`, `.gblock`) medían su `height` sin contar padding ni borde y
+   quedaban 6–12 px más altos que su franja horaria: una materia de 15–18 tapaba
+   el título de la que empieza a las 18 en la misma columna. Lo mismo hacía
+   cada celda de hora (`border-top` fuera del alto), que corría las líneas de
+   la grilla 1 px por hora respecto de los bloques. Con `border-box`, alto y
+   franja coinciden y los bloques consecutivos se tocan sin pisarse.
+   ========================================================================= */
+.planner .cmbcal-blk,.planner .cmbcal__cell,.planner .cmbcal__hour,
+.planner .gblock,.planner .gcell,.planner .gtime{box-sizing:border-box}
+
+/* Navegación con etiquetas descriptivas («Combinador de horarios», «Mapa de
+   correlativas»): entre 1000 y 1280 px la fila queda justa, así que las
+   pestañas se ajustan un poco antes que recortar la última. */
+@media (min-width:1001px) and (max-width:1280px){
+  .planner .vnav__tab{padding:8px 7px;font-size:13px;letter-spacing:-.012em}
+  .planner .vnav{gap:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+  .planner .vnav::-webkit-scrollbar{display:none}
+  .planner .vnav__tools{gap:2px}
+  .planner .vnav__util{padding:8px 7px}
+}
+
+/* =========================================================================
+   Barra de herramientas de «Materias y electivas»
+   -------------------------------------------------------------------------
+   Sin título de vista (el navbar ya la nombra): una sola fila con la
+   búsqueda, dos chips de filtro que se prenden y apagan, y el reset de
+   aprobadas como botón de ícono al final (con tooltip). Pisa las reglas
+   `.vtools*` de arriba.
+   ========================================================================= */
+.planner .panel-head--tools{align-items:center;padding-bottom:10px;margin-bottom:12px}
+.planner .panel-head--tools .vtools{margin-left:0;width:100%;gap:8px;flex-wrap:nowrap}
+.planner .vtools__search{flex:1 1 200px;min-width:140px;max-width:320px}
+.planner .vtools__search input{padding:7px 12px 7px 32px;font-size:13px}
+.planner .vtools__filters{gap:6px;flex-wrap:nowrap}
+.planner .vtools__chip{
+  display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px 0 8px;
+  border-radius:999px;border:1px solid var(--line);background:var(--panel);
+  color:var(--muted);font-family:var(--f-b);font-size:12.5px;white-space:nowrap;cursor:pointer;
+  transition:color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out);
+}
+.planner .vtools__chip:hover{color:var(--ink);border-color:var(--line-2);background:var(--panel-2)}
+.planner .vtools__chip:focus-visible{outline:none;box-shadow:var(--ring)}
+.planner .vtools__chip-ic{
+  display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;
+  border:1px solid var(--line-2);color:transparent;
+  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out);
+}
+.planner .vtools__chip.is-on{color:var(--ink);border-color:var(--brass);background:color-mix(in srgb,var(--brass) 10%,var(--panel))}
+.planner .vtools__chip.is-on .vtools__chip-ic{background:var(--brass);border-color:var(--brass);color:var(--block-ink)}
+.planner .vtools__reset{
+  margin-left:auto;flex:none;display:inline-grid;place-items:center;width:32px;height:32px;padding:0;
+  border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer;
+  transition:color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out);
+}
+.planner .vtools__reset:hover{color:var(--oxblood);border-color:color-mix(in srgb,var(--oxblood) 40%,var(--line));background:var(--panel-2)}
+.planner .vtools__reset:focus-visible{outline:none;box-shadow:var(--ring)}
+@media (max-width:640px){
+  .planner .panel-head--tools .vtools{flex-wrap:wrap}
+  .planner .vtools__search{flex-basis:100%;max-width:none}
+}
+
+/* Switches: la pista mide con border-box, así el botón queda centrado (con
+   content-box el borde sumaba 2 px y el botón quedaba 1 px arriba y a la
+   izquierda de su lugar). */
+.planner .cmb-switch__track,.planner .pv-switch{box-sizing:border-box}
+
+/* =========================================================================
+   Forma = acción. Lo que se puede tocar lleva borde/relleno y hover; lo que
+   solo informa (contadores, etiquetas de estado) es texto o tinte plano, sin
+   borde, para no parecer un botón.
+   ========================================================================= */
+.planner .cmbx-tag{border:none;padding:4px 9px}
+.planner .plan2-recgrp__count{border:none;padding:2px 8px}
+.planner .pool-h i{border:none;padding:2px 8px}
+
+/* ---------------------------------------------------------------------------
+   Selector de carrera (barra superior): botón con código + nombre y un menú
+   propio. El código va en mono como los de las materias; la carrera activa se
+   marca con brass. Las carreras sin plan se ven atenuadas y no se eligen.
+   --------------------------------------------------------------------------- */
+.planner .carrera{position:relative;flex:none}
+.planner .carrera__btn{
+  display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 10px 0 6px;
+  border:1px solid var(--hairline-strong);border-radius:var(--r-ctrl,8px);background:transparent;
+  color:var(--ink);font-family:var(--f-b);font-size:12.5px;cursor:pointer;max-width:260px;
+  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out);
+}
+.planner .carrera__btn:hover,.planner .carrera__btn.is-open{background:var(--hairline);border-color:var(--ring)}
+.planner .carrera__btn:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.planner .carrera__btn[aria-busy="true"]{color:var(--faint)}
+.planner .carrera__code{
+  font-family:var(--f-m);font-size:11px;font-weight:600;letter-spacing:.04em;
+  padding:3px 6px;border-radius:6px;background:var(--brass-soft);color:var(--brass);
+}
+.planner .carrera__name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:150px}
+.planner .carrera__btn svg{flex:none;color:var(--faint)}
+.planner .carrera__menu{
+  position:absolute;top:calc(100% + 6px);right:0;z-index:60;min-width:340px;max-height:min(70vh,520px);overflow-y:auto;
+  padding:6px;border:1px solid var(--line);border-radius:10px;background:var(--panel);
+  box-shadow:0 12px 32px rgba(0,0,0,.18);
+}
+.planner .carrera__item{
+  display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;
+  padding:8px 10px;border:none;border-radius:8px;background:transparent;text-align:left;
+  font-family:var(--f-b);font-size:13px;color:var(--ink);cursor:pointer;
+}
+.planner .carrera__item:hover,.planner .carrera__item:focus-visible{background:var(--panel-2);outline:none}
+.planner .carrera__item.is-active{color:var(--brass)}
+.planner .carrera__item.is-active .carrera__item-code{background:var(--brass-soft);color:var(--brass)}
+.planner .carrera__item:disabled{color:var(--faint);cursor:not-allowed}
+.planner .carrera__item:disabled:hover{background:transparent}
+.planner .carrera__item-code{font-family:var(--f-m);font-size:11px;font-weight:600;letter-spacing:.04em;padding:3px 0;border-radius:6px;background:var(--panel-2);text-align:center;color:var(--ink-soft)}
+.planner .carrera__item:disabled .carrera__item-code{color:var(--faint)}
+.planner .carrera__item-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.planner .carrera__item-plan{font-family:var(--f-m);font-size:10.5px;color:var(--faint);white-space:nowrap}
+.planner .mnr-th-req{font-family:var(--f-m);font-size:10px;font-weight:400;color:var(--faint)}
+/* La fila de la barra va justa con las cinco pestañas descriptivas: entre
+   1001 y 1280 px el botón muestra solo el código (el nombre completo queda
+   en el tooltip y en el menú). Debajo de 1000 px las pestañas pasan a una
+   segunda fila y vuelve a haber lugar para el nombre; en teléfonos angostos
+   se recorta otra vez. */
+@media (min-width:1001px) and (max-width:1280px), (max-width:600px){
+  .planner .carrera__name{display:none}
+  .planner .carrera__btn{padding:0 6px 0 5px;max-width:none;gap:4px}
+}
+@media (max-width:600px){
+  .planner .carrera__menu{min-width:280px;right:auto;left:0}
+}
+
+/* ---------------------------------------------------------------------------
+   Elegir carrera (primera visita): ocupa el lugar de la vista. Tarjetas con el
+   código en mono, el nombre corto y el tipo de título + plan en pequeño; la
+   que ya tiene progreso guardado en este navegador lo dice.
+   --------------------------------------------------------------------------- */
+.planner .cpick{max-width:1040px;margin:0 auto;padding:clamp(24px,5vh,56px) clamp(16px,3vw,44px) 48px}
+.planner .cpick__head{max-width:560px;margin-bottom:28px}
+.planner .cpick__kick{display:block;font-family:var(--f-m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);margin-bottom:10px}
+.planner .cpick__head h2{margin:0 0 10px;font-family:var(--f-d);font-size:clamp(26px,3.4vw,34px);font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.planner .cpick__head p{margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft)}
+.planner .cpick__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.planner .cpick__card{
+  position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:12px;row-gap:2px;align-items:center;
+  min-height:72px;padding:12px 14px;text-align:left;
+  border:1px solid var(--line);border-radius:var(--r);background:var(--panel);color:var(--ink);
+  font-family:var(--f-b);cursor:pointer;
+  transition:border-color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out);
+}
+.planner .cpick__card:hover:not(:disabled){border-color:var(--brass);background:var(--panel-2);transform:translateY(-1px)}
+.planner .cpick__card:focus-visible{outline:none;box-shadow:0 0 0 3px var(--brass-soft);border-color:var(--brass)}
+.planner .cpick__card:disabled{cursor:not-allowed;color:var(--faint);background:transparent}
+.planner .cpick__card.is-loading{border-color:var(--brass)}
+.planner .cpick__code{
+  grid-row:1/3;align-self:center;min-width:44px;padding:8px 6px;text-align:center;
+  font-family:var(--f-m);font-size:12px;font-weight:600;letter-spacing:.04em;
+  border-radius:8px;background:var(--brass-soft);color:var(--brass);
+}
+.planner .cpick__card:disabled .cpick__code{background:var(--panel-2);color:var(--faint)}
+.planner .cpick__name{font-family:var(--f-d);font-size:16px;line-height:1.2;color:inherit}
+.planner .cpick__meta{display:flex;align-items:baseline;gap:8px;min-width:0;font-size:11.5px;color:var(--faint)}
+.planner .cpick__tipo{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.planner .cpick__plan{flex:none;font-family:var(--f-m);font-size:10.5px}
+.planner .cpick__saved{
+  display:inline-flex;align-items:center;gap:4px;margin-left:auto;padding-left:6px;
+  font-family:var(--f-m);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--brass);white-space:nowrap;
+}
+.planner .cpick__card.has-progress{border-color:color-mix(in srgb,var(--brass) 45%,var(--line))}
+.planner .carrera__name.is-empty{color:var(--muted)}
+@media (max-width:600px){
+  .planner .cpick__grid{grid-template-columns:1fr}
+}

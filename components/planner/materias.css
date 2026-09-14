@@ -1,0 +1,70 @@
+/* Vista «Materias»: obligatorias por año arriba, electivas debajo, en una
+   sola página. Solo la cabecera de la sección de electivas es propia; la
+   grilla y las cards siguen en cards.css. */
+.planner .elect-section {
+  margin-top: 34px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+/* Cabecera de la sección en una sola fila: título con contador y búsqueda a
+   la izquierda, minors compactos (siglas + barra) a la derecha. */
+.planner .elect-section__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.planner .elect-section__t {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--f-d);
+  font-weight: 500;
+  font-size: clamp(18px, 2vw, 22px);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.planner .elect-section__n {
+  font-family: var(--f-m);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+.planner .elect-section__search {
+  flex: 0 1 240px;
+  min-width: 160px;
+}
+.planner .elect-section__search input {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+/* minors compactos: fila de pastillas del ancho justo, con su barra */
+.planner .elect-section .vtools__minors--compact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 0 auto;
+}
+.planner .elect-section .vtools__minors--compact .minrow {
+  width: auto;
+  min-width: 84px;
+  gap: 4px;
+  padding: 5px 9px 6px;
+  border-radius: 999px;
+}
+.planner .elect-section .vtools__minors--compact .minrow__top {
+  gap: 6px;
+  font-family: var(--f-m);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.planner .elect-section .vtools__minors--compact .minrow b {
+  font-size: 10px;
+  margin-left: 2px;
+}
+.planner .elect-section .vtools__minors--compact .minrow .minibar {
+  height: 2px;
+}

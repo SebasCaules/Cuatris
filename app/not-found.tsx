@@ -1,7 +1,10 @@
 import { Button, Eyebrow } from "@studyvaults/ui";
+import Header from "@/components/shell/Header";
 
 export default function NotFound() {
   return (
+    <>
+    <Header />
     <section
       style={{
         flex: 1,
@@ -32,5 +35,6 @@ export default function NotFound() {
         </Button>
       </div>
     </section>
+    </>
   );
 }

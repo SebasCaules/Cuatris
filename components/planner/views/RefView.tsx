@@ -18,13 +18,6 @@ export default function RefView() {
 
   return (
     <section className="view-panel">
-      <div className="panel-head">
-        <h2>Referencias de materias</h2>
-        <p>
-          Abreviaturas usadas en las grillas. Buscá por abreviatura, código o
-          nombre.
-        </p>
-      </div>
       <div className="ref-search">
         <input
           type="text"
