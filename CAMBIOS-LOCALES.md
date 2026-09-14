@@ -174,6 +174,20 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
 - `DetailDrawer.tsx` + `planner.css` (`.dr-corr-nota`): aviso bajo los chips de
   correlativas (también en el HTML exportado).
 
+## 12. Inglés I/II: requisito señalado en su cuatrimestre, no una materia del plan
+
+- `scripts/build-planner-data.mjs`: `REQUISITO_RE` (`/^ingl[eé]s\b/i`) → `Plan.requisitos`
+  (también dentro de `noPlanificables`), para el plan curado de Informática y para los del SGA.
+  `lib/planner/types.ts` (`requisitos`), `lib/planner/model.ts` (`REQUISITOS`, `esRequisito`;
+  al recargar el plan entran a `NO_PLANIFICABLES`, así no van al pool ni al optimizador).
+- `views/PlanView.tsx`: `reqByIdx` ubica cada requisito no aprobado en el cuatrimestre donde
+  el plan pone las obligatorias de su misma etapa nominal (año/cuatri del plan de estudios;
+  el último de ellos); si esa etapa ya pasó, en el primer cuatri planificado; sin ubicación
+  nominal, en el último. `ReqLine` lo dibuja en la tarjeta del Calendario (bajo el
+  calendario) y en la del Roadmap: casilla punteada + nombre + «aprobado para este cuatri»,
+  con tooltip y clic al detalle. Desaparece al marcarlo aprobado en «Materias».
+- `planview.css`: `.pv-reqs`, `.pv-req*` (dos líneas en la tarjeta angosta del Roadmap).
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

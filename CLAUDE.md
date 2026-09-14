@@ -55,7 +55,8 @@ y no se retoma sin pedido explícito del autor.
   defecto) sigue saliendo del plan curado `data/plan/data.js` de StudyVaults; las demás, del
   SGA. Horarios (`data/plan/horarios/`, contrato 1.1.0) y finales son compartidos.
   `scripts/build-planner-data.mjs` arma `lib/planner/data.json` (S) y
-  `lib/planner/carreras/<CODIGO>.json` + `index.ts` (generados, fuera de git). No hay
+  `lib/planner/carreras/<CODIGO>.json` + `index.ts` (generados, fuera de git). Inglés I/II
+  son `requisitos` (sin cursada): no se planifican; el plan los señala en su cuatrimestre. No hay
   carrera por defecto: la primera visita muestra el selector (`CarreraPicker`). La carrera
   activa viaja en `?carrera=` y en `localStorage` (`plan_carrera_v1`); el progreso de cada
   carrera se guarda con claves propias (Informática conserva las históricas).

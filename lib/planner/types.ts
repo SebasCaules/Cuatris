@@ -147,6 +147,10 @@ export interface Plan {
   /** obligatorias que el optimizador no ubica en un cuatrimestre (práctica
    *  laboral, regímenes sin cursada): se marcan pero no se planifican. */
   noPlanificables?: string[];
+  /** Requisitos sin cursada (Inglés I/II): están en `noPlanificables` y el
+   *  plan los muestra como «tener aprobado» en el cuatrimestre que les toca
+   *  en vez de ubicarlos como una materia más. */
+  requisitos?: string[];
   /** materias ANUALES: se cursan en dos cuatrimestres consecutivos y sus
    *  créditos se reparten en mitades (Proyecto Final: 12 cr = 6 + 6). El
    *  optimizador las ubica como dos mitades seguidas. */

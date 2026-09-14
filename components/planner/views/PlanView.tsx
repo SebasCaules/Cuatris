@@ -19,6 +19,7 @@ import {
   PALETTE,
   DAYS,
   PLAN,
+  REQUISITOS,
 } from "@/lib/planner/model";
 import { approvedCredits, electiveCredits } from "@/lib/planner/metrics";
 import { isAsync, slotsConflict, comModalidad, salaLabel } from "@/lib/planner/time";
@@ -100,6 +101,7 @@ import "@/components/planner/planview.css";
 // créditos electivos requeridos por el plan ACTIVO (cambia con la carrera)
 const elecReq = () => PLAN.creditosElectivasReq ?? 27;
 const EMPTY_BLOCKS: WeekBlock[] = [];
+const EMPTY_CODES: string[] = [];
 
 /* ---------- iconos locales (no existen en icons.tsx) ---------- */
 const IconDots = ({ size = 16, ...rest }: IconProps) => (
@@ -900,6 +902,46 @@ function NowCard({
 }
 
 /* ---------- tarjeta de cuatrimestre (tab Calendario) ---------- */
+/* ---------- requisitos sin cursada (Inglés I/II) que tocan en este cuatri ----------
+ * No son materias del cuatrimestre: una línea discreta, fuera del calendario y
+ * de la cuenta de créditos, que dice que hay que tenerlos aprobados al llegar
+ * acá. Al tocarla se abre el detalle; se marcan aprobados en «Materias». */
+function ReqLine({ codes }: { codes: string[] }) {
+  const { dispatch } = usePlanner();
+  if (!codes.length) return null;
+  return (
+    <div className="pv-reqs">
+      {codes.map((c) => {
+        const m = byId.get(c);
+        return (
+          <Tooltip
+            key={c}
+            width={236}
+            content={
+              <>
+                <b>{m?.nombre ?? c}</b> · requisito sin cursada
+                <br />
+                Hay que tenerlo aprobado al llegar a este cuatrimestre. Se
+                marca en «Materias».
+              </>
+            }
+          >
+            <button
+              type="button"
+              className="pv-req"
+              onClick={() => dispatch({ type: "OPEN_DRAWER", code: c })}
+            >
+              <span className="pv-req__box" aria-hidden="true" />
+              <span className="pv-req__name">{m?.nombre ?? c}</span>
+              <span className="pv-req__hint">aprobado para este cuatri</span>
+            </button>
+          </Tooltip>
+        );
+      })}
+    </div>
+  );
+}
+
 function SemCard({
   it,
   i,
@@ -915,10 +957,13 @@ function SemCard({
   onFinalize,
   onUnlock,
   onDownload,
+  reqs = EMPTY_CODES,
 }: {
   it: PlacedMateria[];
   i: number;
   start: PlanStart;
+  /** requisitos sin cursada (Inglés) que hay que tener aprobados al llegar acá */
+  reqs?: string[];
   /** bloques fantasma de la vista previa (hover sobre una materia de la lista) */
   ghosts: WeekBlock[];
   /** la materia previsualizada entra en este cuatri */
@@ -1222,6 +1267,8 @@ function SemCard({
         />
       </div>
 
+      <ReqLine codes={reqs} />
+
       <div className="pv-sem__foot">
         <div className="pv-loadbar" aria-hidden="true">
           <i style={{ width: `${load}%` }} />
@@ -1263,6 +1310,7 @@ function RoadmapStop({
   recOn,
   locked,
   onUnlock,
+  reqs = EMPTY_CODES,
 }: {
   it: PlacedMateria[];
   i: number;
@@ -1274,6 +1322,8 @@ function RoadmapStop({
   recOn: boolean;
   locked: boolean;
   onUnlock: (idx: number) => void;
+  /** requisitos sin cursada (Inglés) que hay que tener aprobados al llegar acá */
+  reqs?: string[];
 }) {
   const { state, dispatch } = usePlanner();
   const cu = cuatriAt(start, i);
@@ -1492,6 +1542,8 @@ function RoadmapStop({
             );
           })}
         </div>
+
+        <ReqLine codes={reqs} />
 
         <div className="rmap-stop__foot">
           <span className="rmap-stop__acc">
@@ -2189,6 +2241,40 @@ export default function PlanView() {
     () => R.items.map((it, i) => ({ it, i })).filter((x) => x.it.length),
     [R],
   );
+
+  // Requisitos sin cursada (Inglés I/II): no se planifican como materia; cada
+  // uno se señala en el cuatri donde el plan ubica las obligatorias de su
+  // misma etapa nominal (año y cuatrimestre del plan de estudios) — «al
+  // llegar acá, tenelo aprobado». Si esa etapa ya quedó atrás, va al primer
+  // cuatri planificado; sin ubicación en el plan, al último (para recibirse).
+  const reqByIdx = useMemo(() => {
+    const map = new Map<number, string[]>();
+    if (!used.length) return map;
+    const first = used[0].i;
+    const last = used[used.length - 1].i;
+    for (const code of REQUISITOS) {
+      if (approved.has(code)) continue;
+      const r = byId.get(code);
+      if (!r) continue;
+      let due = -1;
+      if (r.anio != null) {
+        R.items.forEach((its, i) => {
+          if (
+            its.some(
+              (x) =>
+                x.m.tipo === "obligatoria" &&
+                x.m.anio === r.anio &&
+                (r.cuatri == null || x.m.cuatri === r.cuatri),
+            )
+          )
+            due = Math.max(due, i);
+        });
+        if (due < 0) due = first;
+      } else due = last;
+      map.set(due, [...(map.get(due) ?? []), code]);
+    }
+    return map;
+  }, [R, used, approved]);
 
   const previewFit = useMemo(
     () =>
@@ -3140,6 +3226,7 @@ export default function PlanView() {
                       onFinalize={finalizeCuatri}
                       onUnlock={unlockCuatri}
                       onDownload={downloadCuatri}
+                      reqs={reqByIdx.get(i)}
                     />
                   ))}
                   {previewExt && (
@@ -3175,6 +3262,7 @@ export default function PlanView() {
                       recOn={recOn}
                       locked={PL.lockedIdx.has(i)}
                       onUnlock={unlockCuatri}
+                      reqs={reqByIdx.get(i)}
                     />
                   ))}
                 </ol>

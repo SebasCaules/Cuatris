@@ -956,6 +956,78 @@
   padding: 8px 2px;
 }
 
+/* requisito sin cursada (Inglés I/II) que toca en este cuatri: una línea
+   discreta fuera del calendario y de la cuenta de créditos; casilla punteada
+   = pendiente de marcar en «Materias». Misma pieza en el Roadmap. */
+.planner .pv-reqs {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+}
+.planner .pv-req {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 3px 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--f-b);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.planner .pv-req:hover .pv-req__name,
+.planner .pv-req:focus-visible .pv-req__name {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.planner .pv-req:focus-visible {
+  outline: none;
+  border-radius: 4px;
+  box-shadow: var(--ring);
+}
+.planner .pv-req__box {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  border: 1.5px dashed var(--line-2);
+  border-radius: 3px;
+}
+.planner .pv-req__name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.planner .pv-req__hint {
+  flex: none;
+  font-family: var(--f-m);
+  font-size: 9.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+/* en la tarjeta angosta del Roadmap la pista baja a una segunda línea */
+.planner .rmap-stop__card .pv-reqs {
+  margin-top: 0;
+}
+.planner .rmap-stop__card .pv-req {
+  display: grid;
+  grid-template-columns: 11px minmax(0, 1fr);
+  column-gap: 7px;
+  row-gap: 1px;
+}
+.planner .rmap-stop__card .pv-req__name {
+  white-space: normal;
+}
+.planner .rmap-stop__card .pv-req__hint {
+  grid-column: 2;
+}
+
 /* pie: barra de carga + métricas + chip de finalizado */
 .planner .pv-sem__foot {
   margin-top: 11px;

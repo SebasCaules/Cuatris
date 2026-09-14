@@ -44,6 +44,9 @@ export const byId: Map<string, MateriaM> = new Map();
 // de 0 cr, sin cursada). Se marcan en «Mis materias» como cualquier otra, pero
 // el plan no las ubica en un cuatrimestre. Las fija cada plan (`noPlanificables`).
 export const NO_PLANIFICABLES: Set<string> = new Set();
+/** Requisitos sin cursada (Inglés I/II): no planificables; el plan los señala
+ *  como «tener aprobado» en el cuatrimestre nominal que les corresponde. */
+export const REQUISITOS: Set<string> = new Set();
 /** Materias anuales (dos cuatrimestres consecutivos, créditos en mitades). */
 export const ANUALES: Set<string> = new Set();
 
@@ -62,6 +65,11 @@ function rebuild() {
   }
   NO_PLANIFICABLES.clear();
   for (const c of PLAN.noPlanificables ?? ["72.98"]) NO_PLANIFICABLES.add(c);
+  REQUISITOS.clear();
+  for (const c of PLAN.requisitos ?? []) {
+    REQUISITOS.add(c);
+    NO_PLANIFICABLES.add(c);
+  }
   ANUALES.clear();
   for (const c of PLAN.anuales ?? ["72.45"]) ANUALES.add(c);
   for (const k of Object.keys(AREA_COLOR)) delete AREA_COLOR[k];
@@ -88,6 +96,7 @@ export const hasHorario = (c: string) => {
   return !!(m && m.horario && m.horario.comisiones.length);
 };
 export const esPlanificable = (c: string) => !NO_PLANIFICABLES.has(c);
+export const esRequisito = (c: string) => REQUISITOS.has(c);
 export const esAnual = (c: string) => ANUALES.has(c);
 
 export const remainingOblig = (approved: Set<string>) =>

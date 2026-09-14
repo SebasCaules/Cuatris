@@ -174,6 +174,11 @@ function autoAbbr(nombre) {
 // Final» sin esa marca no se asume anual (Química lo parte en I y II).
 const NO_PLANIFICABLE_RE = /pr[aá]ctica (laboral|profesional)/i;
 const ANUAL_RE = /\(anual\)/i;
+// Requisitos sin cursada (Inglés I/II, 0 cr): no se planifican como materia;
+// el plan los muestra como «tener aprobado» en el cuatrimestre que les toca.
+const REQUISITO_RE = /^ingl[eé]s\b/i;
+const requisitosDe = (obligatorias) =>
+  obligatorias.filter((m) => REQUISITO_RE.test(m.nombre)).map((m) => m.codigo);
 
 /** Colores para las áreas de electivas que no tienen uno curado (AREA_COLOR
  *  en model.ts cubre las de Informática). */
@@ -261,7 +266,11 @@ function armarPlan(sga, abbrs, horariosAll, periodoLabel) {
     creditosElectivasReq,
     tituloAnalista: intermedio?.creditos ?? null,
     tituloFinal: principal ? { nombre: principal.titulo, creditos: principal.creditos } : null,
-    noPlanificables: obligatorias.filter((m) => NO_PLANIFICABLE_RE.test(m.nombre)).map((m) => m.codigo),
+    noPlanificables: [
+      ...obligatorias.filter((m) => NO_PLANIFICABLE_RE.test(m.nombre)).map((m) => m.codigo),
+      ...requisitosDe(obligatorias),
+    ],
+    requisitos: requisitosDe(obligatorias),
     anuales: obligatorias
       .filter((m) => ANUAL_RE.test(m.nombre) && !NO_PLANIFICABLE_RE.test(m.nombre) && m.creditos > 0)
       .map((m) => m.codigo),
@@ -295,9 +304,11 @@ const planS = {
     ? recortarHorarios(horariosAll, [...curado.obligatorias, ...curado.electivas])
     : curado.horarios,
   tituloFinal: { nombre: "Ingeniero/a en Informática", creditos: 243 },
-  // 72.98 Práctica Laboral: régimen especial (0 cr, sin cursada). 72.45
-  // Proyecto Final es ANUAL: 12 cr en dos cuatrimestres consecutivos.
-  noPlanificables: ["72.98"],
+  // 72.98 Práctica Laboral: régimen especial (0 cr, sin cursada). Inglés I/II:
+  // requisitos sin cursada, señalados en su cuatrimestre. 72.45 Proyecto Final
+  // es ANUAL: 12 cr en dos cuatrimestres consecutivos.
+  noPlanificables: ["72.98", ...requisitosDe(curado.obligatorias)],
+  requisitos: requisitosDe(curado.obligatorias),
   anuales: ["72.45"],
 };
 mkdirSync(DEST_DIR, { recursive: true });
