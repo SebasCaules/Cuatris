@@ -1,12 +1,15 @@
 "use client";
 
-// Guardar o cargar el progreso completo del planner, desde cualquier vista.
-// El estado vive solo en localStorage: sin esto, cambiar de navegador (o venir
-// desde el planner de StudyVaults) obliga a marcar todo de nuevo. Es la card
-// «Preferencias» del IOModal del Plan de cursada, promovida a un modal propio y
-// colgada del rail; reusa el mismo bundle (.json portable), la misma
-// confirmación destructiva y el mismo acuse, así los dos caminos se comportan
-// igual. Portalea a `.planner` en <body> como MinorsModal/IOModal.
+// Perfiles y progreso, desde cualquier vista. Arriba, los perfiles (varias
+// configuraciones guardadas aparte en este navegador: PerfilesPanel). Abajo,
+// guardar o cargar el progreso del perfil activo como .json: el estado vive
+// solo en localStorage y sin esto cambiar de navegador (o venir desde el
+// planner de StudyVaults) obliga a marcar todo de nuevo. Es la card
+// «Preferencias» del IOModal del Plan de cursada, promovida a un modal propio;
+// reusa el mismo bundle (.json portable), la misma confirmación destructiva y
+// el mismo acuse, así los dos caminos se comportan igual. Sin carrera activa
+// (selector de primera visita) se muestra solo la card de perfiles.
+// Portalea a `.planner` en <body> como MinorsModal/IOModal.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePlanner } from "@/components/planner/state";
@@ -25,6 +28,7 @@ import {
 } from "@/lib/planner/persist";
 import { downloadTextFile } from "@/lib/planner/download";
 import { IconClose, IconDownload, IconUpload } from "@/components/planner/icons";
+import PerfilesPanel from "@/components/planner/PerfilesPanel";
 
 const nowStr = () => {
   const d = new Date();
@@ -32,7 +36,14 @@ const nowStr = () => {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 };
 
-export default function ProgresoModal({ onClose }: { onClose: () => void }) {
+export default function ProgresoModal({
+  onClose,
+  soloPerfiles = false,
+}: {
+  onClose: () => void;
+  /** sin carrera activa: solo la card de perfiles (no hay progreso que llevar) */
+  soloPerfiles?: boolean;
+}) {
   const { state, dispatch } = usePlanner();
   const fileRef = useRef<HTMLInputElement | null>(null);
   const panelRef = useModalFocus<HTMLDivElement>();
@@ -120,15 +131,22 @@ export default function ProgresoModal({ onClose }: { onClose: () => void }) {
           </button>
           <header className="mnr-head">
             <span className="mnr-kick">Tu progreso</span>
-            <h3 id="prog-title">Guardar o cargar</h3>
+            <h3 id="prog-title">Perfiles y archivo</h3>
             <p>
-              Todo lo que marcaste y armaste vive en este navegador. Un archivo{" "}
-              <b>.json</b> lo lleva a otro dispositivo — o lo trae desde el
-              planificador de StudyVaults.
+              Todo lo que marcaste y armaste vive en este navegador, en el
+              perfil activo. Un archivo <b>.json</b> lo lleva a otro
+              dispositivo — o lo trae desde el planificador de StudyVaults.
             </p>
           </header>
 
+          <PerfilesPanel />
+
+          {!soloPerfiles && (
           <section className="plan2-io__card">
+            <div className="plan2-io__cardtop">
+              <span className="plan2-io__kick">Archivo</span>
+              <h4>Guardar o cargar un .json</h4>
+            </div>
             <div className="prog-modal__stats" aria-label="Contenido a guardar">
               <span>
                 <b>{resumen.oblig}</b> obligatorias
@@ -177,6 +195,7 @@ export default function ProgresoModal({ onClose }: { onClose: () => void }) {
               </p>
             )}
           </section>
+          )}
         </div>
       </div>
       {phase === "confirm" && summary && (

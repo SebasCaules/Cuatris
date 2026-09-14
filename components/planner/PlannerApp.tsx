@@ -25,6 +25,11 @@ import {
   saveSidebar,
   saveView,
   saveCarreraPref,
+  loadCarreraPref,
+  loadPerfiles,
+  activarPerfil,
+  setPersistPerfil,
+  type Perfil,
 } from "@/lib/planner/persist";
 import { readParams, writeParams } from "@/lib/url-state/core";
 import { decodePlannerUrl, encodePlannerUrl } from "@/lib/planner/url-state";
@@ -332,8 +337,13 @@ function PlannerInner({
         <h1 className="sr-only">Planificador de cursada</h1>
         {chrome ? chrome(null, null) : null}
         <div className="shell">
-          <div className="main">{listo && <CarreraPicker />}</div>
+          <div className="main">
+            {listo && <CarreraPicker onPerfiles={() => setProgresoOpen(true)} />}
+          </div>
         </div>
+        {progresoOpen && (
+          <ProgresoModal soloPerfiles onClose={() => setProgresoOpen(false)} />
+        )}
       </div>
     );
   }
@@ -402,17 +412,25 @@ function PlannerInner({
 }
 
 /** Elige la carrera y monta el planner con su plan. El primer render (SSR y
- *  cliente) no muestra ninguna carrera; al montar se resuelve la pedida
- *  (?carrera= → preferencia guardada), se trae su plan si hace falta y se
- *  monta el árbol con `key`: PLAN/byId ya apuntan al plan nuevo y la
- *  persistencia a sus claves, así todo (estado, memos, vistas) se calcula
- *  para esa carrera. Sin carrera pedida, PlannerInner muestra el selector. */
+ *  cliente) no muestra ninguna carrera; al montar se apunta la persistencia
+ *  al perfil activo, se resuelve la carrera pedida (?carrera= → preferencia
+ *  guardada del perfil), se trae su plan si hace falta y se monta el árbol
+ *  con `key`: PLAN/byId ya apuntan al plan nuevo y la persistencia a sus
+ *  claves, así todo (estado, memos, vistas) se calcula para ese perfil y esa
+ *  carrera. Sin carrera pedida, PlannerInner muestra el selector. */
 export default function PlannerApp({ chrome }: { chrome?: PlannerChrome }) {
   const [carrera, setCarrera] = useState<string | null>(null);
   const [listo, setListo] = useState(false);
   const [cargando, setCargando] = useState<string | null>(null);
+  const [perfil, setPerfil] = useState<string>("");
+  const [perfiles, setPerfiles] = useState<Perfil[]>([]);
 
   useEffect(() => {
+    // perfil activo primero: de él salen la carrera guardada y las claves
+    const reg = loadPerfiles();
+    setPersistPerfil(reg.activo);
+    setPerfil(reg.activo);
+    setPerfiles(reg.perfiles);
     const pedida = carreraPedida(readParams());
     if (!pedida) {
       setListo(true);
@@ -440,6 +458,41 @@ export default function PlannerApp({ chrome }: { chrome?: PlannerChrome }) {
     };
   }, []);
 
+  const refrescarPerfiles = useCallback(() => {
+    setPerfiles(loadPerfiles().perfiles);
+  }, []);
+
+  // Cambiar de perfil: la persistencia pasa a sus claves y la carrera es la
+  // que ese perfil tenga guardada (ninguna → selector). La URL deja de decir
+  // la carrera anterior. El árbol se remonta por `key` (perfil + carrera).
+  const cambiarPerfil = useCallback(
+    async (id: string) => {
+      if (id === perfil || cargando) return;
+      activarPerfil(id);
+      setPerfil(id);
+      setPerfiles(loadPerfiles().perfiles);
+      const pref = loadCarreraPref();
+      if (!pref) {
+        writeParams((p) => p.delete(CARRERA_URL_KEY));
+        setCarrera(null);
+        return;
+      }
+      setCargando(pref);
+      try {
+        await activarCarrera(pref);
+        writeParams((p) => p.set(CARRERA_URL_KEY, pref));
+        setCarrera(pref);
+      } catch (e) {
+        console.warn("[planner] no se pudo cargar la carrera", pref, e);
+        writeParams((p) => p.delete(CARRERA_URL_KEY));
+        setCarrera(null);
+      } finally {
+        setCargando(null);
+      }
+    },
+    [perfil, cargando],
+  );
+
   const cambiar = useCallback(
     async (codigo: string) => {
       if (codigo === carrera || cargando) return;
@@ -460,9 +513,11 @@ export default function PlannerApp({ chrome }: { chrome?: PlannerChrome }) {
   );
 
   return (
-    <CarreraContext.Provider value={{ codigo: carrera, cargando, cambiar }}>
+    <CarreraContext.Provider
+      value={{ codigo: carrera, cargando, cambiar, perfil, perfiles, cambiarPerfil, refrescarPerfiles }}
+    >
       <PlannerErrorBoundary>
-        <PlannerProvider key={carrera ?? "-"}>
+        <PlannerProvider key={`${perfil}/${carrera ?? "-"}`}>
           <PlannerInner chrome={chrome} listo={listo} carrera={carrera} />
         </PlannerProvider>
       </PlannerErrorBoundary>

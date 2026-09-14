@@ -2254,6 +2254,68 @@
   .planner .cpick__grid{grid-template-columns:1fr}
 }
 
+.planner .cpick__perfil{
+  display:inline-flex;align-items:center;gap:4px;margin-top:12px;padding:5px 9px;
+  border:1px solid var(--line);border-radius:999px;background:transparent;
+  font-family:var(--f-m);font-size:11px;letter-spacing:.02em;color:var(--muted);cursor:pointer;
+  transition:border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out);
+}
+.planner .cpick__perfil b{font-weight:600;color:var(--ink-soft)}
+.planner .cpick__perfil:hover{border-color:var(--brass);color:var(--ink)}
+
+/* botón de la barra con el nombre del perfil activo (cuando hay más de uno) */
+.planner .vnav__icon--label{width:auto;gap:6px;padding:0 10px 0 9px}
+.planner .vnav__icon-txt{font-family:var(--f-b);font-size:12.5px;max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (min-width:1001px) and (max-width:1280px), (max-width:600px){
+  .planner .vnav__icon-txt{display:none}
+  .planner .vnav__icon--label{width:40px;padding:0}
+}
+
+/* ---------------------------------------------------------------------------
+   Perfiles (PerfilesPanel, dentro del modal de progreso): lista de perfiles con
+   el activo marcado, renombrar/borrar en cada fila, y el formulario del nombre
+   al crear o renombrar. Reusa .plan2-io__card y los .btn del planner.
+   --------------------------------------------------------------------------- */
+.planner .perf__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.planner .perf__item{display:flex;align-items:center;gap:6px;min-width:0}
+.planner .perf__pick{
+  flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:9px;
+  padding:7px 9px;border:1px solid transparent;border-radius:8px;background:transparent;
+  font-family:var(--f-b);font-size:13.5px;color:var(--ink-soft);text-align:left;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out);
+}
+.planner .perf__pick:hover:not(:disabled){background:var(--panel);border-color:var(--line)}
+.planner .perf__pick:disabled{cursor:default}
+.planner .perf__item.is-active .perf__pick{background:var(--panel);border-color:color-mix(in srgb,var(--brass) 45%,var(--line));color:var(--ink)}
+.planner .perf__mark{
+  width:16px;height:16px;flex:none;display:inline-grid;place-items:center;
+  border:1px solid var(--line-2);border-radius:50%;color:var(--brass);
+}
+.planner .perf__item.is-active .perf__mark{border-color:var(--brass);background:var(--brass-soft)}
+.planner .perf__name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.planner .perf__tag{margin-left:auto;font-family:var(--f-m);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--brass)}
+.planner .perf__txtbtn{
+  flex:none;padding:4px 6px;border:none;background:transparent;border-radius:6px;
+  font-family:var(--f-m);font-size:10.5px;color:var(--faint);cursor:pointer;
+}
+.planner .perf__txtbtn:hover{color:var(--ink-soft);background:var(--panel)}
+.planner .perf__ico{
+  flex:none;width:26px;height:26px;display:inline-grid;place-items:center;
+  border:none;background:transparent;border-radius:6px;color:var(--faint);cursor:pointer;
+}
+.planner .perf__ico:hover:not(:disabled){color:var(--oxblood);background:var(--panel)}
+.planner .perf__item--confirm{
+  flex-wrap:wrap;gap:8px;padding:8px 9px;border-radius:8px;
+  border:1px solid color-mix(in srgb,var(--oxblood) 45%,transparent);background:color-mix(in srgb,var(--oxblood) 8%,var(--panel));
+}
+.planner .perf__q{flex:1 1 100%;font-size:12.5px;line-height:1.45;color:var(--ink-soft)}
+.planner .perf__q b{color:var(--ink)}
+.planner .perf__del{background:var(--oxblood);border-color:var(--oxblood);color:#fff}
+.planner .perf__form{display:flex;flex-direction:column;gap:10px}
+.planner .perf__field{gap:6px}
+.planner .perf__field span{font-family:var(--f-m);font-size:10px;letter-spacing:.05em;color:var(--muted)}
+.planner .perf__field input{width:100%;box-sizing:border-box;font-family:var(--f-b);font-size:14px}
+
 /* ---------------------------------------------------------------------------
    Vuelo de la tarjeta elegida hasta el selector de la barra (carreraVuelo.ts).
    La copia es una caja fija con dos caras superpuestas —la tarjeta y el botón

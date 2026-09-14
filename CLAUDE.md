@@ -60,6 +60,9 @@ y no se retoma sin pedido explícito del autor.
   carrera por defecto: la primera visita muestra el selector (`CarreraPicker`). La carrera
   activa viaja en `?carrera=` y en `localStorage` (`plan_carrera_v1`); el progreso de cada
   carrera se guarda con claves propias (Informática conserva las históricas).
+- **Perfiles**: varias configuraciones en el mismo navegador (`lib/planner/persist.ts`):
+  el principal usa las claves históricas y los demás el prefijo `p:<id>:`; registro en
+  `plan_perfiles_v1`. Se manejan desde el modal de progreso (`PerfilesPanel`).
 - **Idioma**: documentación, comentarios, commits y todo lo dirigido al autor en español
   neutro (tú/usted). Los **textos de la interfaz** del planner están en voseo porque hablan a
   estudiantes del ITBA (igual que en StudyVaults): no «corregirlos».

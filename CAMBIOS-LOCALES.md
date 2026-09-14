@@ -195,6 +195,27 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   a `/planificar/?view=…`. `components/planner/ViewNav.tsx` las importa de ahí y las
   re-exporta.
 
+## 14. Perfiles: varias configuraciones guardadas en el navegador (2026-09-14)
+
+- `lib/planner/persist.ts`: cada perfil es un espacio de claves. El principal (id `""`,
+  «Principal») usa las claves históricas tal cual; los demás las mismas con el prefijo
+  `p:<id>:` delante del de carrera (`p:<id>:c:K:plan_aprobadas_v3`), y su propia
+  `plan_carrera_v1`. Registro global `plan_perfiles_v1` (`{activo, perfiles[]}`).
+  `setPersistPerfil`, `loadPerfiles`, `crearPerfil(nombre, desde)` (copia todas las claves
+  del perfil de origen), `renombrarPerfil`, `activarPerfil`, `borrarPerfil`/`vaciarPerfil`.
+  `plan_cols_v1` sigue global (preferencia de pantalla).
+- `PlannerApp.tsx`: al montar apunta la persistencia al perfil activo antes de resolver la
+  carrera; `cambiarPerfil(id)` activa el perfil, carga la carrera que tenga guardada (o
+  muestra el selector) y remonta el árbol (`key` = perfil + carrera). `carreraContext.ts`
+  expone `perfil`, `perfiles`, `cambiarPerfil`, `refrescarPerfiles`.
+- `PerfilesPanel.tsx` (nuevo), card de arriba de `ProgresoModal` («Perfiles y archivo»):
+  lista (tocar = activar), renombrar, borrar con confirmación en línea (el principal no se
+  borra), «Guardar como perfil nuevo» (copia la configuración actual y la activa) y «Nuevo
+  perfil vacío» (arranca de cero: pide la carrera). El modal también se abre desde el
+  selector de carrera (`CarreraPicker` → «Perfil X», solo la card de perfiles).
+  `ViewNav.tsx`: el botón de progreso de la barra muestra el nombre del perfil activo cuando
+  hay más de uno. `planner.css`: `.perf*`, `.cpick__perfil`, `.vnav__icon--label`.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

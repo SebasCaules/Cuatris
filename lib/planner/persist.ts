@@ -42,40 +42,199 @@ const K: { -readonly [P in keyof typeof K_BASE]: string } = { ...K_BASE };
 /** Carrera cuyo estado se lee y escribe. */
 export const PERSIST_DEFAULT_CARRERA = "S";
 let persistCarrera = PERSIST_DEFAULT_CARRERA;
-/** Clave de la carrera elegida (compartida por todas las carreras). */
+/** Clave de la carrera elegida (una por perfil, compartida por sus carreras). */
 export const K_CARRERA = "plan_carrera_v1";
+
+// ---------------------------------------------------------------------------
+// Perfiles: configuraciones completas guardadas aparte en este navegador
+// (carrera elegida + progreso, plan, combinaciones y finales de cada carrera).
+// Cada perfil es un espacio de claves: el principal (id "") usa las claves
+// históricas tal cual; los demás las mismas con el prefijo `p:<id>:`, por
+// delante del de carrera. Cambiar de perfil = cambiar el prefijo y remontar el
+// planner, igual que al cambiar de carrera. El registro de perfiles y cuál
+// está activo son globales (`plan_perfiles_v1`).
+// ---------------------------------------------------------------------------
+export const PERFIL_PRINCIPAL = "";
+export const NOMBRE_PERFIL_PRINCIPAL = "Principal";
+export const K_PERFILES = "plan_perfiles_v1";
+let persistPerfil = PERFIL_PRINCIPAL;
+
+export interface Perfil {
+  id: string;
+  nombre: string;
+  /** fecha de creación (ISO) */
+  creado: string;
+}
+export interface Perfiles {
+  activo: string;
+  perfiles: Perfil[];
+}
+
+const prefijoPerfil = (id: string) => (id === PERFIL_PRINCIPAL ? "" : `p:${id}:`);
+const prefijoCarrera = (codigo: string) =>
+  codigo === PERSIST_DEFAULT_CARRERA ? "" : `c:${codigo}:`;
+
+function recalcularClaves(): void {
+  const prefix = prefijoPerfil(persistPerfil) + prefijoCarrera(persistCarrera);
+  for (const k of Object.keys(K_BASE) as (keyof typeof K_BASE)[]) K[k] = prefix + K_BASE[k];
+}
 
 /** Apunta la persistencia a otra carrera. Llamar ANTES de hidratar el estado. */
 export function setPersistCarrera(codigo: string): void {
   persistCarrera = codigo;
-  const prefix = codigo === PERSIST_DEFAULT_CARRERA ? "" : `c:${codigo}:`;
-  for (const k of Object.keys(K_BASE) as (keyof typeof K_BASE)[]) K[k] = prefix + K_BASE[k];
+  recalcularClaves();
 }
 export const getPersistCarrera = (): string => persistCarrera;
 
-/** ¿Hay materias aprobadas guardadas para esa carrera en este navegador?
+/** Apunta la persistencia a otro perfil (y a su carrera elegida, si tiene).
+ *  Llamar ANTES de resolver la carrera e hidratar. */
+export function setPersistPerfil(id: string): void {
+  persistPerfil = id;
+  recalcularClaves();
+}
+export const getPersistPerfil = (): string => persistPerfil;
+
+/** ¿Hay materias aprobadas guardadas para esa carrera (en el perfil activo)?
  *  (para señalar en el selector dónde está el progreso del usuario). */
 export function tieneProgreso(codigo: string): boolean {
-  const prefix = codigo === PERSIST_DEFAULT_CARRERA ? "" : `c:${codigo}:`;
   try {
-    const raw = localStorage.getItem(prefix + K_BASE.approved);
+    const raw = localStorage.getItem(
+      prefijoPerfil(persistPerfil) + prefijoCarrera(codigo) + K_BASE.approved,
+    );
     return !!raw && raw !== "[]";
   } catch {
     return false;
   }
 }
 
-/** Carrera guardada por el usuario (null si nunca eligió). */
+/** Carrera guardada por el usuario en el perfil activo (null si nunca eligió). */
 export function loadCarreraPref(): string | null {
   try {
-    return localStorage.getItem(K_CARRERA);
+    return localStorage.getItem(prefijoPerfil(persistPerfil) + K_CARRERA);
   } catch {
     return null;
   }
 }
 export function saveCarreraPref(codigo: string): void {
   try {
-    localStorage.setItem(K_CARRERA, codigo);
+    localStorage.setItem(prefijoPerfil(persistPerfil) + K_CARRERA, codigo);
+  } catch {
+    /* almacenamiento no disponible */
+  }
+}
+
+const isPerfil = (x: unknown): x is Perfil =>
+  !!x &&
+  typeof x === "object" &&
+  typeof (x as Perfil).id === "string" &&
+  typeof (x as Perfil).nombre === "string";
+
+/** Registro de perfiles. Siempre incluye el principal primero; si el activo
+ *  guardado ya no existe, vuelve al principal. */
+export function loadPerfiles(): Perfiles {
+  let activo = PERFIL_PRINCIPAL;
+  let perfiles: Perfil[] = [];
+  try {
+    const raw = localStorage.getItem(K_PERFILES);
+    const v = raw ? (JSON.parse(raw) as Partial<Perfiles>) : null;
+    if (v && Array.isArray(v.perfiles)) perfiles = v.perfiles.filter(isPerfil);
+    if (v && typeof v.activo === "string") activo = v.activo;
+  } catch {
+    /* sin registro */
+  }
+  const principal = perfiles.find((p) => p.id === PERFIL_PRINCIPAL) ?? {
+    id: PERFIL_PRINCIPAL,
+    nombre: NOMBRE_PERFIL_PRINCIPAL,
+    creado: "",
+  };
+  perfiles = [principal, ...perfiles.filter((p) => p.id !== PERFIL_PRINCIPAL)];
+  if (!perfiles.some((p) => p.id === activo)) activo = PERFIL_PRINCIPAL;
+  return { activo, perfiles };
+}
+function savePerfiles(v: Perfiles): void {
+  try {
+    localStorage.setItem(K_PERFILES, JSON.stringify(v));
+  } catch {
+    /* almacenamiento no disponible */
+  }
+}
+
+/** Claves de localStorage que pertenecen a un perfil: las de estado de cada
+ *  carrera y su carrera elegida. Devuelve la clave «pelada» (sin el prefijo
+ *  del perfil) o null si no es de ese perfil. */
+function claveDePerfil(key: string, id: string): string | null {
+  const pp = prefijoPerfil(id);
+  if (pp) return key.startsWith(pp) ? key.slice(pp.length) : null;
+  if (key.startsWith("p:")) return null;
+  const pelada = key.replace(/^c:[A-Za-z0-9]+:/, "");
+  return pelada === K_CARRERA || Object.values(K_BASE).includes(pelada as never) ? key : null;
+}
+function clavesDe(id: string): string[] {
+  const out: string[] = [];
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && claveDePerfil(k, id) != null) out.push(k);
+    }
+  } catch {
+    /* sin almacenamiento */
+  }
+  return out;
+}
+
+/** Crea un perfil (vacío, o copia de `desde`: todo lo guardado en ese perfil,
+ *  carrera elegida incluida) y lo registra. No lo activa. */
+export function crearPerfil(nombre: string, desde: string | null = null): Perfil {
+  const reg = loadPerfiles();
+  const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  const perfil: Perfil = { id, nombre: nombre.trim() || "Perfil", creado: new Date().toISOString() };
+  if (desde != null) {
+    try {
+      for (const k of clavesDe(desde)) {
+        const pelada = claveDePerfil(k, desde);
+        const v = localStorage.getItem(k);
+        if (pelada != null && v != null) localStorage.setItem(prefijoPerfil(id) + pelada, v);
+      }
+    } catch {
+      /* almacenamiento no disponible */
+    }
+  }
+  savePerfiles({ ...reg, perfiles: [...reg.perfiles, perfil] });
+  return perfil;
+}
+
+export function renombrarPerfil(id: string, nombre: string): void {
+  const reg = loadPerfiles();
+  savePerfiles({
+    ...reg,
+    perfiles: reg.perfiles.map((p) => (p.id === id ? { ...p, nombre: nombre.trim() || p.nombre } : p)),
+  });
+}
+
+/** Marca el perfil activo en el registro y apunta la persistencia a él. */
+export function activarPerfil(id: string): void {
+  const reg = loadPerfiles();
+  if (!reg.perfiles.some((p) => p.id === id)) return;
+  savePerfiles({ ...reg, activo: id });
+  setPersistPerfil(id);
+}
+
+/** Borra un perfil y todo lo guardado en él. El principal no se borra (se
+ *  puede vaciar con `vaciarPerfil`). Si era el activo, queda activo el principal. */
+export function borrarPerfil(id: string): void {
+  if (id === PERFIL_PRINCIPAL) return;
+  vaciarPerfil(id);
+  const reg = loadPerfiles();
+  savePerfiles({
+    activo: reg.activo === id ? PERFIL_PRINCIPAL : reg.activo,
+    perfiles: reg.perfiles.filter((p) => p.id !== id),
+  });
+}
+
+/** Elimina todo lo guardado de un perfil (queda como recién creado). */
+export function vaciarPerfil(id: string): void {
+  try {
+    for (const k of clavesDe(id)) localStorage.removeItem(k);
   } catch {
     /* almacenamiento no disponible */
   }
