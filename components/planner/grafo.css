@@ -382,6 +382,9 @@
   border-radius:6px;
   font-family:var(--f-m); font-size:11px; font-weight:600;
 }
+/* los glifos crudos de EstadoControl (CheckDouble, CheckSingle, CheckFilled,
+   DotCursando) solo traen viewBox: el tamaño lo pone quien los usa. */
+.planner .grafo-card__status svg{ width:13px; height:13px; flex:none; }
 .planner .grafo-card__status.is-final{
   color:var(--status-go-text);
   background:color-mix(in srgb, var(--status-go) 14%, transparent);

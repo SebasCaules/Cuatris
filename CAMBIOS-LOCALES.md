@@ -326,6 +326,44 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   pide el título («3 / 27 cr · faltan 24») y los minors. Antes mezclaba «créditos hasta hoy»
   con minors proyectados; el «hoy» ya está en la barra de métricas.
 
+## 18. Mapa de correlativas v2 (2026-09-14, noche)
+
+Rediseño y reconstrucción completos de la vista «Mapa de correlativas» bajo una sola idea:
+describir lo mínimo y que todo sea interactivo (plan en `docs/planes/mapa-correlativas/`).
+Sin leyenda, pistas, contador ni porcentaje de zoom: cada estado se lee por forma y color
+(los mismos glifos y colores que `EstadoControl`) y, al posarse, por un tooltip o por la
+tarjeta de la materia.
+
+- `lib/planner/layoutGraph.ts` (reescrito): `computeGraphLayout(plan, { electivas })` es puro
+  (recibe el plan; solo `import type`) y parte de TODAS las materias, aisladas incluidas.
+  Columnas por cuatrimestre nominal (año solo si falta el cuatrimestre; camino más largo si
+  no hay nada), electivas un cuatrimestre después de su última correlativa y nunca antes de
+  la columna donde el plan nominal acumula los créditos que piden; pasada de validez (toda
+  arista va a la derecha; las columnas más allá del plan nominal no llevan cabecera);
+  mediana por posición normalizada; espinazo de obligatorias arriba (misma fila con la capa
+  de electivas encendida o apagada) y electivas colgando de un riel, en sub-columnas de 14.
+  `GraphLayout` cambia de forma (`columns[].cx/width/year`, `bands`, `spineBottom`,
+  `hasElectivas`, `GRAPH_METRICS`).
+- `components/planner/grafo/` (nuevo): `useViewport.ts` (pan, rueda, pinch, tap/doble tap,
+  `fitAll`/`frame`/`centerOn`, transformación imperativa; `fitTransform`/`zoomAtPoint`
+  puras), `grafoModel.ts` (adyacencia, cadena aguas arriba/abajo, `statusOf` con la misma
+  verdad que `isAvailable` + `estadoOf`, frontera, búsqueda, vecinos por teclado),
+  `GrafoStage.tsx` (SVG: bandas de año, cabeceras, riel, aristas en dos tonos, nodos con
+  glifo de estado), `GrafoCard.tsx` (tarjeta de hover/fijada con «Requiere», «Habilita»,
+  `EstadoControl` y «Ver detalle»), `GrafoControls.tsx` (acercar, alejar, ver todo, ir a
+  donde estoy — con `Tooltip`, sin `title=`) y `GrafoMinimap.tsx`.
+- `views/GrafoView.tsx` (reescrito): chips «Electivas» (capa, persistida) y «Cursables»
+  (foco) con el mismo `vtools__chip` de «Materias»; búsqueda en vivo (Enter centra y fija;
+  si solo coinciden electivas, enciende la capa); hover = cadena (necesita en tinta,
+  destraba en acento) + tarjeta; clic = fijar; doble clic o «Ver detalle» = `DetailDrawer`
+  (antes el clic abría el drawer); Esc suelta; roving tabindex con flechas; encuadre inicial
+  en la frontera (primer cuatrimestre con obligatorias pendientes).
+- `components/planner/grafo.css` (reescrito): todo por tokens, cero hex.
+- `lib/planner/persist.ts`: `plan_grafo_electivas_v1` (`loadGrafoElectivas`/
+  `saveGrafoElectivas`), preferencia de pantalla global.
+- Fuera del espejo: `scripts/test-grafo-*.mts` (`npm run test:grafo`, Node 23 con type
+  stripping; `tsconfig` con `allowImportingTsExtensions`).
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

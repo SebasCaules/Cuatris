@@ -44,7 +44,7 @@ export interface ViewportApi {
   viewportRef: RefObject<HTMLDivElement | null>;
   stageRef: RefObject<SVGGElement | null>;
   get(): Transform;
-  /** clamp de escala + aplica + notifica */
+  /** clamp de escala + aplica + notifica; cuenta como interacción del usuario */
   set(t: Transform): void;
   /** anclado al centro; marca interacción */
   zoomBy(factor: number): void;
@@ -216,7 +216,11 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
     return { ...tf.current };
   }
 
+  // `set` es navegación explícita desde afuera (el minimapa): cuenta como
+  // interacción del usuario — un resize posterior no debe pisar esa vista.
   function set(t: Transform) {
+    userInteracted.current = true;
+    wantFit.current = false;
     applyInternal(t, VIEWPORT_LIMITS.MIN_SCALE);
   }
 
@@ -332,7 +336,18 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
   // ---------- puntero: pan, pinch, tap y doble tap ----------
   // Punteros activos (dedo o mouse) por id: con 1 activo es pan; con 2, pinch.
   const pointers = useRef(new Map<number, { x: number; y: number }>());
-  const drag = useRef({ down: false, moved: false, x0: 0, y0: 0, tx0: 0, ty0: 0 });
+  // `target` = elemento bajo el puntero en el pointerdown. Hace falta guardarlo
+  // porque con setPointerCapture el pointerup llega retargeteado al viewport
+  // (ya no dice sobre qué nodo se soltó).
+  const drag = useRef<{
+    down: boolean;
+    moved: boolean;
+    x0: number;
+    y0: number;
+    tx0: number;
+    ty0: number;
+    target: Element | null;
+  }>({ down: false, moved: false, x0: 0, y0: 0, tx0: 0, ty0: 0, target: null });
   // Snapshot del gesto de pinch anterior (distancia + punto medio en
   // pantalla): cada nuevo frame se expresa como "factor respecto del
   // anterior", no respecto del inicio del gesto.
@@ -382,6 +397,7 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
         y0: e.clientY,
         tx0: tf.current.tx,
         ty0: tf.current.ty,
+        target: e.target as Element,
       };
     } else if (pointers.current.size === 2) {
       // Segundo dedo: arranca el pinch. El pan de un solo dedo se cancela acá
@@ -480,6 +496,7 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
           y0: rest[0].y,
           tx0: tf.current.tx,
           ty0: tf.current.ty,
+          target: null,
         };
       }
     }
@@ -489,8 +506,9 @@ export function useViewport(opts: ViewportOptions): ViewportApi {
       viewportRef.current?.classList.remove("is-panning");
       drag.current.down = false;
       if (wasTap && !cancelled) {
-        handleTap(e.target as Element, e.nativeEvent);
+        handleTap(drag.current.target ?? (e.target as Element), e.nativeEvent);
       }
+      drag.current.target = null;
     }
   }
 
