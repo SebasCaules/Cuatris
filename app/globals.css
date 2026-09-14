@@ -27,7 +27,9 @@ main.page > .planner { flex: 1 1 auto; }
    (tira horizontal con scroll propio) y la barra crece; --nav-h se redefine
    para que el planner (padding-top, sticky, tooltips) siga despejándola. */
 @media (max-width: 1000px) {
-  :root { --nav-h: 112px; }
+  /* solo cuando la barra lleva las pestañas del planner (la portada y el
+     404 conservan la barra de una fila) */
+  :root:has(.cuatris-nav--views) { --nav-h: 112px; }
   .cuatris-nav .nav__inner {
     flex-wrap: wrap;
     align-content: flex-start;

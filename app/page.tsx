@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
-import PlannerPage from "@/components/shell/PlannerPage";
+import Landing from "@/components/shell/Landing";
 
-// "Planificador · Cuatris" es el título con el que llega la página; PlannerApp
-// lo reemplaza por "<vista> · Cuatris" al montar y en cada cambio de vista.
-// `absolute`: el template del layout no aplica a la página de su mismo segmento.
 export const metadata: Metadata = {
-  title: { absolute: "Planificador · Cuatris" },
+  title: { absolute: "Cuatris — Planificador de cursada · ITBA" },
 };
 
-/** La única ruta del standalone: el planificador completo. La vista, los
- *  filtros y el drawer abierto viajan en la query (?view=…), así que recargar
- *  o compartir el link reproduce el estado. */
+/** Portada: explica en tres pasos cómo se usa el planificador (elegir carrera,
+ *  marcar materias, planificar) y de dónde salen los datos. El planificador
+ *  vive en /planificar/. */
 export default function Page() {
-  return <PlannerPage />;
+  return <Landing />;
 }

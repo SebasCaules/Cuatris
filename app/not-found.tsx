@@ -28,11 +28,16 @@ export default function NotFound() {
           Esta página no existe.
         </h1>
         <p style={{ color: "var(--text-secondary)", margin: "0 0 28px" }}>
-          Cuatris tiene una sola página: el planificador.
+          Cuatris tiene dos páginas: la portada y el planificador.
         </p>
-        <Button variant="primary" href="/">
-          Ir al planificador
-        </Button>
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+          <Button variant="primary" href="/planificar/">
+            Ir al planificador
+          </Button>
+          <Button variant="ghost" href="/">
+            Ir a la portada
+          </Button>
+        </div>
       </div>
     </section>
     </>

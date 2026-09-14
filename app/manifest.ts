@@ -14,7 +14,9 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "Cuatris",
     description:
       "Planificador de cursada para las carreras de grado del ITBA: correlativas, horarios sin choques, plan de cursada y finales.",
-    start_url: `${BASE_PATH}/`,
+    // instalada como app abre directo en el planificador (la portada es
+    // para quien llega por primera vez)
+    start_url: `${BASE_PATH}/planificar/`,
     scope: `${BASE_PATH}/`,
     display: "standalone",
     lang: "es",

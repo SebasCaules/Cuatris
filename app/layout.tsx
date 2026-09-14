@@ -79,7 +79,8 @@ export default function RootLayout({
         </a>
         <AmbientLayer />
         {/* la barra superior la monta cada página (el planner le entrega su
-            navegación de vistas; 404 y error la muestran sola) */}
+            navegación de vistas; la portada, un link al planificador; 404 y
+            error la muestran sola) */}
         <main id="main" className="page">
           {children}
         </main>
