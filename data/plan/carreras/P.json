@@ -1,0 +1,1056 @@
+{
+ "carrera": {
+  "codigo": "P",
+  "nombre": "Ingeniería en Petróleo",
+  "escuela": "Escuela de Gestión y Tecnología",
+  "nivel": "Grado"
+ },
+ "plan": "P22",
+ "planes": [
+  {
+   "nombre": "P22",
+   "version": "1",
+   "desde": "Primer Cuat. 2023",
+   "hasta": "Verano 2024",
+   "elegido": true
+  },
+  {
+   "nombre": "P05-Rev.18",
+   "version": "1",
+   "desde": "Segundo Cuat. 2018",
+   "hasta": "",
+   "elegido": false
+  },
+  {
+   "nombre": "P-13",
+   "version": "1",
+   "desde": "Primer Cuat. 2013",
+   "hasta": "",
+   "elegido": false
+  },
+  {
+   "nombre": "P05",
+   "version": "1",
+   "desde": "Primer Cuat. 2005",
+   "hasta": "",
+   "elegido": false
+  }
+ ],
+ "vacio": false,
+ "capturado": "2026-09-13",
+ "bloques": [
+  {
+   "nombre": "PLAN P22",
+   "tituloOtorgado": null,
+   "requisito": "Aprobar todos los items (suma 240 créditos)",
+   "creditos": 240,
+   "tipo": "todos",
+   "secciones": [
+    {
+     "nombre": "Año 1 - Cuatrimestre 1",
+     "anio": 1,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.67",
+       "nombre": "Química General",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "71.58",
+       "nombre": "Informática General",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.01",
+       "nombre": "Análisis Matemático I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "93.18",
+       "nombre": "Álgebra Lineal",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.33",
+       "nombre": "Tecnología y Sociedad",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 1 - Cuatrimestre 2",
+     "anio": 1,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "12.34",
+       "nombre": "Química Orgánica para Petroleo",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.67"
+       ]
+      },
+      {
+       "codigo": "31.08",
+       "nombre": "Sistemas de Representación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "46.01",
+       "nombre": "Introducción a la Ingeniería en Petróleo",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.02",
+       "nombre": "Análisis Matemático II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01",
+        "93.18"
+       ]
+      },
+      {
+       "codigo": "93.41",
+       "nombre": "Física I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 1",
+     "anio": 2,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "71.59",
+       "nombre": "Estructura de Datos y Programación",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.58"
+       ]
+      },
+      {
+       "codigo": "92.03",
+       "nombre": "Análisis Matemático III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01",
+        "93.18"
+       ]
+      },
+      {
+       "codigo": "93.24",
+       "nombre": "Probabilidad y Estadística",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02"
+       ]
+      },
+      {
+       "codigo": "93.42",
+       "nombre": "Física II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 2",
+     "anio": 2,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "16.55",
+       "nombre": "Biología",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.33"
+       ]
+      },
+      {
+       "codigo": "31.19",
+       "nombre": "Estática y Resistencia de Materiales",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03",
+        "31.08"
+       ]
+      },
+      {
+       "codigo": "46.21",
+       "nombre": "Geología I",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.01",
+        "93.42"
+       ]
+      },
+      {
+       "codigo": "92.05",
+       "nombre": "Análisis Matemático IV",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02",
+        "92.03"
+       ]
+      },
+      {
+       "codigo": "93.07",
+       "nombre": "Métodos Numéricos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03"
+       ]
+      },
+      {
+       "codigo": "93.43",
+       "nombre": "Física III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03",
+        "93.41"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 1",
+     "anio": 3,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "21.06",
+       "nombre": "Electrotecnia",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "31.21",
+       "nombre": "Termodinámica",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.42"
+       ]
+      },
+      {
+       "codigo": "31.22",
+       "nombre": "Mecánica de Fluidos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03"
+       ]
+      },
+      {
+       "codigo": "46.22",
+       "nombre": "Geofísica de Reservorios",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.21"
+       ]
+      },
+      {
+       "codigo": "93.61",
+       "nombre": "Física IV",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "94.43",
+       "nombre": "Metodología del Diseño",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 2",
+     "anio": 3,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "11.15",
+       "nombre": "Organización Industrial",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "12.83",
+       "nombre": "Seguridad Ocupacional y Ambiental",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.34",
+        "16.55"
+       ]
+      },
+      {
+       "codigo": "21.09",
+       "nombre": "Máquinas Eléctricas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.06"
+       ]
+      },
+      {
+       "codigo": "30.70",
+       "nombre": "Introducción a Mecánica de Rocas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "31.19"
+       ]
+      },
+      {
+       "codigo": "46.41",
+       "nombre": "Petrofísica y Fluidos de Reservorio",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "31.21",
+        "31.22",
+        "46.21"
+       ]
+      },
+      {
+       "codigo": "46.61",
+       "nombre": "Ingeniería de Perforación I",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.21",
+        "31.19"
+       ]
+      },
+      {
+       "codigo": "94.44",
+       "nombre": "Proyecto Interdisciplinario",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.43"
+       ]
+      },
+      {
+       "codigo": "94.51",
+       "nombre": "Inglés I",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 4 - Cuatrimestre 1",
+     "anio": 4,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "46.23",
+       "nombre": "Geología II",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.22",
+        "46.41"
+       ]
+      },
+      {
+       "codigo": "46.42",
+       "nombre": "Registros de Pozo I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.61",
+        "46.41"
+       ]
+      },
+      {
+       "codigo": "46.44",
+       "nombre": "Análisis de Transientes de Presión",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "30.70",
+        "92.05",
+        "46.41"
+       ]
+      },
+      {
+       "codigo": "46.46",
+       "nombre": "Ingeniería de Reservorios",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.41"
+       ]
+      },
+      {
+       "codigo": "46.63",
+       "nombre": "Ingeniería de Workover I",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.61"
+       ]
+      },
+      {
+       "codigo": "46.65",
+       "nombre": "Instalaciones de Superficie",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "31.21",
+        "12.34",
+        "46.41"
+       ]
+      },
+      {
+       "codigo": "71.90",
+       "nombre": "Certificaciones tecnológicas",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 4 - Cuatrimestre 2",
+     "anio": 4,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "46.66",
+       "nombre": "Gas y Gasolina Natural",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.65"
+       ]
+      },
+      {
+       "codigo": "46.67",
+       "nombre": "Ingeniería de Producción I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.65",
+        "46.41",
+        "21.09"
+       ]
+      },
+      {
+       "codigo": "46.81",
+       "nombre": "Gestión Ambiental en la Industria",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.83"
+       ]
+      },
+      {
+       "codigo": "46.82",
+       "nombre": "Evaluación de Proyectos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.46"
+       ]
+      },
+      {
+       "codigo": "61.27",
+       "nombre": "Análisis de Coyuntura Económica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.15"
+       ]
+      },
+      {
+       "codigo": "94.52",
+       "nombre": "Inglés II",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.51"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 1",
+     "anio": 5,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "46.69",
+       "nombre": "Transporte y Cadena de Valor de los Hidrocarburos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.66",
+        "46.67"
+       ]
+      },
+      {
+       "codigo": "46.83",
+       "nombre": "Desarrollo de Yacimientos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.23",
+        "46.66",
+        "46.82",
+        "46.67",
+        "46.42"
+       ]
+      },
+      {
+       "codigo": "61.16",
+       "nombre": "Introducción a las Finanzas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.27"
+       ]
+      },
+      {
+       "codigo": "61.31",
+       "nombre": "Derecho para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 2",
+     "anio": 5,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "46.02",
+       "nombre": "Práctica de Campo I",
+       "creditos": 0,
+       "creditosReq": 72,
+       "correlativas": [
+        "46.21",
+        "46.41",
+        "46.67"
+       ]
+      },
+      {
+       "codigo": "46.03",
+       "nombre": "Práctica de Campo II",
+       "creditos": 0,
+       "creditosReq": 144,
+       "correlativas": [
+        "46.02",
+        "46.63",
+        "46.46"
+       ]
+      },
+      {
+       "codigo": "46.70",
+       "nombre": "Industrialización y Economía de los Hidrocarburos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.69"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "ELECTIVAS GENERALES",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 13 créditos",
+   "creditos": 13,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "10.08",
+       "nombre": "Energías Renovables",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.10",
+       "nombre": "Organización de la Producción I",
+       "creditos": 6,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.58",
+       "nombre": "Dinámica de Sistemas",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.84",
+       "nombre": "Gestión de Proyectos",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "12.02",
+       "nombre": "Química II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.06",
+       "nombre": "Storytelling aplicado a los negocios",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.79",
+       "nombre": "Metodología de la Investigación",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "17.09",
+       "nombre": "Industrias Químicas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "31.21"
+       ]
+      },
+      {
+       "codigo": "17.15",
+       "nombre": "Introducción a la Ingeniería Ambiental",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "17.22",
+       "nombre": "Cálculo de Huella de Carbono en Organizaciones",
+       "creditos": 1,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "17.23",
+       "nombre": "Triple Impacto: Estrategias para el Desarrollo Sostenible",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "30.24",
+       "nombre": "Metalurgia Física I",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "47.84"
+       ]
+      },
+      {
+       "codigo": "31.30",
+       "nombre": "Materiales Poliméricos",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "48.01",
+       "nombre": "Oil & Gas Investment and Economics",
+       "creditos": 1,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "48.02",
+       "nombre": "AI: Data Management Course & Digital Transformation",
+       "creditos": 1,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "48.03",
+       "nombre": "Negociación - Contratos Oil & Gas",
+       "creditos": 1,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "61.10",
+       "nombre": "Economía Internacional",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "61.50",
+       "nombre": "Finanzas de la Empresa",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "71.22",
+       "nombre": "Sistemas de Inteligencia Artificial",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.88"
+       ]
+      },
+      {
+       "codigo": "71.56",
+       "nombre": "Programación Básica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "71.88",
+       "nombre": "Gestión de Datos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59"
+       ]
+      },
+      {
+       "codigo": "92.06",
+       "nombre": "Análisis Matemático V",
+       "creditos": 6,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.92",
+       "nombre": "Complementos de Física de la Relatividad",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.99",
+       "nombre": "Complementos de Análisis Matemático IV",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.23",
+       "nombre": "Formación General III",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.24",
+       "nombre": "Metodología del Aprendizaje",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "ELECTIVAS PETRÓLEO",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 24 créditos",
+   "creditos": 24,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "17.08",
+       "nombre": "Seguridad de Procesos",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "47.24",
+       "nombre": "Geoestadística",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.22",
+        "93.07"
+       ]
+      },
+      {
+       "codigo": "47.43",
+       "nombre": "Registros de Pozo II",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.42"
+       ]
+      },
+      {
+       "codigo": "47.45",
+       "nombre": "Análisis de Transientes de Caudal",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.44"
+       ]
+      },
+      {
+       "codigo": "47.47",
+       "nombre": "Recuperación Asistida de Petróleo",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.46"
+       ]
+      },
+      {
+       "codigo": "47.48",
+       "nombre": "Simulación de Reservorios",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.23",
+        "46.46"
+       ]
+      },
+      {
+       "codigo": "47.49",
+       "nombre": "Recursos y Reservas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.46",
+        "46.82"
+       ]
+      },
+      {
+       "codigo": "47.62",
+       "nombre": "Ingeniería de Perforación II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.61"
+       ]
+      },
+      {
+       "codigo": "47.64",
+       "nombre": "Ingeniería de Workover II",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.63"
+       ]
+      },
+      {
+       "codigo": "47.68",
+       "nombre": "Ingeniería de Producción II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.67"
+       ]
+      },
+      {
+       "codigo": "47.71",
+       "nombre": "Fluidos de Perforación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "47.62"
+       ]
+      },
+      {
+       "codigo": "47.72",
+       "nombre": "Geomecánica y Diseño de Fracturas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "47.64"
+       ]
+      },
+      {
+       "codigo": "47.73",
+       "nombre": "Operaciones Offshore - Petróleo y LNG",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "47.84",
+       "nombre": "Ciencia de los Materiales",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "31.19"
+       ]
+      },
+      {
+       "codigo": "47.85",
+       "nombre": "Trabajo de Investigación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.44"
+       ]
+      },
+      {
+       "codigo": "47.86",
+       "nombre": "Transición Energética y Sustentabilidad",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.81"
+       ]
+      },
+      {
+       "codigo": "47.87",
+       "nombre": "Desarrollo de Negocios",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "46.82"
+       ]
+      },
+      {
+       "codigo": "47.88",
+       "nombre": "Introducción a la Energía Geotermal",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.83"
+       ]
+      },
+      {
+       "codigo": "47.89",
+       "nombre": "Introducción a la Generación de Energía Cerrada",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.83"
+       ]
+      },
+      {
+       "codigo": "47.90",
+       "nombre": "Introducción a la Producción de Litio",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.83"
+       ]
+      },
+      {
+       "codigo": "48.04",
+       "nombre": "El Gas Natural Licuado - Tecnología, Mercados y Negocios",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.27"
+       ]
+      },
+      {
+       "codigo": "48.05",
+       "nombre": "La Cadena de valor del Gas Natural",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.27"
+       ]
+      },
+      {
+       "codigo": "92.09",
+       "nombre": "Complementos de Análisis Matemático IV",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.15",
+       "nombre": "Complementos de Física Mecánica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "31.19"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "titulos": [
+  {
+   "tipo": "Principal",
+   "titulo": "Ingeniero/a en Petróleo",
+   "requisitos": "Aprobar P22 y sumar 240 créditos",
+   "creditos": 240
+  }
+ ]
+}

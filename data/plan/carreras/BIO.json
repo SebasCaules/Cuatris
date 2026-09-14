@@ -1,0 +1,1415 @@
+{
+ "carrera": {
+  "codigo": "BIO",
+  "nombre": "Bioingeniería",
+  "escuela": "Escuela de Gestión y Tecnología",
+  "nivel": "Grado"
+ },
+ "plan": "BIO 22",
+ "planes": [
+  {
+   "nombre": "BIO 22",
+   "version": "1",
+   "desde": "Primer Cuat. 2023",
+   "hasta": "Verano 2024",
+   "elegido": true
+  },
+  {
+   "nombre": "Bio-13",
+   "version": "1",
+   "desde": "Segundo Cuat. 2013",
+   "hasta": "",
+   "elegido": false
+  }
+ ],
+ "vacio": false,
+ "capturado": "2026-09-13",
+ "bloques": [
+  {
+   "nombre": "PLAN BIO22",
+   "tituloOtorgado": null,
+   "requisito": "Aprobar todos los items (suma 240 créditos)",
+   "creditos": 240,
+   "tipo": "todos",
+   "secciones": [
+    {
+     "nombre": "Año 1 - Cuatrimestre 1",
+     "anio": 1,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.67",
+       "nombre": "Química General",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "71.58",
+       "nombre": "Informática General",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.01",
+       "nombre": "Análisis Matemático I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "93.18",
+       "nombre": "Álgebra Lineal",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.33",
+       "nombre": "Tecnología y Sociedad",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 1 - Cuatrimestre 2",
+     "anio": 1,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "13.02",
+       "nombre": "Fundamentos de Química Orgánica",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.67"
+       ]
+      },
+      {
+       "codigo": "16.55",
+       "nombre": "Biología",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "31.08",
+       "nombre": "Sistemas de Representación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.02",
+       "nombre": "Análisis Matemático II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01",
+        "93.18"
+       ]
+      },
+      {
+       "codigo": "93.41",
+       "nombre": "Física I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01"
+       ]
+      },
+      {
+       "codigo": "94.51",
+       "nombre": "Inglés I",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 1",
+     "anio": 2,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "16.01",
+       "nombre": "Biología Molecular y Celular",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "13.02",
+        "16.55"
+       ]
+      },
+      {
+       "codigo": "71.59",
+       "nombre": "Estructura de Datos y Programación",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.58"
+       ]
+      },
+      {
+       "codigo": "92.03",
+       "nombre": "Análisis Matemático III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01",
+        "93.18"
+       ]
+      },
+      {
+       "codigo": "93.42",
+       "nombre": "Física II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 2",
+     "anio": 2,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "16.02",
+       "nombre": "Histología y Anatomía",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "92.04",
+       "nombre": "Análisis Matemático IV",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02",
+        "92.03"
+       ]
+      },
+      {
+       "codigo": "93.24",
+       "nombre": "Probabilidad y Estadística",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02"
+       ]
+      },
+      {
+       "codigo": "93.43",
+       "nombre": "Física III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03",
+        "93.41"
+       ]
+      },
+      {
+       "codigo": "94.52",
+       "nombre": "Inglés II",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.51"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 1",
+     "anio": 3,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "16.03",
+       "nombre": "Fisiología",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.02"
+       ]
+      },
+      {
+       "codigo": "16.64",
+       "nombre": "Mecánica de biomateriales y tejidos",
+       "creditos": 8,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.02",
+        "93.41"
+       ]
+      },
+      {
+       "codigo": "21.06",
+       "nombre": "Electrotecnia",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "93.61",
+       "nombre": "Física IV",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.42",
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "94.43",
+       "nombre": "Metodología del Diseño",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 2",
+     "anio": 3,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "16.24",
+       "nombre": "Ingeniería de Rehabilitación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.44",
+       "nombre": "Física Médica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.61"
+       ]
+      },
+      {
+       "codigo": "16.68",
+       "nombre": "Señales y Sistemas",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.04"
+       ]
+      },
+      {
+       "codigo": "23.02",
+       "nombre": "Electrónica Analógica y Digital",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59",
+        "21.06",
+        "92.04"
+       ]
+      },
+      {
+       "codigo": "93.54",
+       "nombre": "Métodos Numéricos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59",
+        "92.03"
+       ]
+      },
+      {
+       "codigo": "94.44",
+       "nombre": "Proyecto Interdisciplinario",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.43"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 4 - Cuatrimestre 1",
+     "anio": 4,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "11.15",
+       "nombre": "Organización Industrial",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "16.17",
+       "nombre": "Instrumentación Biomédica I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.68",
+        "23.02"
+       ]
+      },
+      {
+       "codigo": "16.63",
+       "nombre": "Procesamiento de Señales e Imágenes Biomédicas",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.68"
+       ]
+      },
+      {
+       "codigo": "23.16",
+       "nombre": "Sistemas de Control",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.68"
+       ]
+      },
+      {
+       "codigo": "61.27",
+       "nombre": "Análisis de Coyuntura Económica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 4 - Cuatrimestre 2",
+     "anio": 4,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "12.83",
+       "nombre": "Seguridad Ocupacional y Ambiental",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.06"
+       ]
+      },
+      {
+       "codigo": "16.18",
+       "nombre": "Instrumentación Biomédica II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.17"
+       ]
+      },
+      {
+       "codigo": "16.25",
+       "nombre": "Ingeniería Clínica",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.17"
+       ]
+      },
+      {
+       "codigo": "61.16",
+       "nombre": "Introducción a las Finanzas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.15",
+        "61.27"
+       ]
+      },
+      {
+       "codigo": "61.31",
+       "nombre": "Derecho para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 120,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 1",
+     "anio": 5,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "16.30",
+       "nombre": "Proyecto Final de Carrera (Anual)",
+       "creditos": 6,
+       "creditosReq": 192,
+       "correlativas": [
+        "16.63"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 2",
+     "anio": 5,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "94.65",
+       "nombre": "Practica Profesional supervisada",
+       "creditos": 0,
+       "creditosReq": 144,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "ELECTIVAS",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 48 créditos",
+   "creditos": 48,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "10.07",
+       "nombre": "Creatividad",
+       "creditos": 3,
+       "creditosReq": 120,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.08",
+       "nombre": "Energías Renovables",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.09",
+       "nombre": "Formación para Emprendedores",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.19",
+       "nombre": "Prototipado e Impresión 3D",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.76",
+       "nombre": "Gestión de Calidad",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.15"
+       ]
+      },
+      {
+       "codigo": "14.72",
+       "nombre": "Analytics",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.13",
+       "nombre": "Innovación en materiales Biobasados",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "16.04",
+       "nombre": "Neurociencias y Desarrollo Productivo",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.09",
+       "nombre": "Ventilación Mecánica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.14",
+       "nombre": "Fisiología Cuantitativa",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.19",
+       "nombre": "Biosensores",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "23.02"
+       ]
+      },
+      {
+       "codigo": "16.20",
+       "nombre": "Biomedicina Estructural y Computacional",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59",
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "16.21",
+       "nombre": "Bioinformática",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59",
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "16.22",
+       "nombre": "Informática Médica",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59"
+       ]
+      },
+      {
+       "codigo": "16.23",
+       "nombre": "Órganos Artificiales",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03",
+        "23.02",
+        "16.64"
+       ]
+      },
+      {
+       "codigo": "16.27",
+       "nombre": "Ingeniería de Tejidos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "16.29",
+       "nombre": "Diseño de Fármacos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.20",
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "16.32",
+       "nombre": "Redes Neuronales en Bioingeniería",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "16.43",
+       "nombre": "Bioestadística",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "16.45",
+       "nombre": "Edición Genética",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.55"
+       ]
+      },
+      {
+       "codigo": "16.46",
+       "nombre": "Reprogramación celular y epigenética",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.55"
+       ]
+      },
+      {
+       "codigo": "16.51",
+       "nombre": "Int. a la Ciencia de Datos Aplicados a la Salud",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "16.52",
+       "nombre": "Inmunología Biológica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03",
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "16.53",
+       "nombre": "Biotecnología aplicada",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "16.54",
+       "nombre": "Regulaciones Biomédicas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.25"
+       ]
+      },
+      {
+       "codigo": "16.57",
+       "nombre": "Robótica Bioinspirada",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "23.16"
+       ]
+      },
+      {
+       "codigo": "16.58",
+       "nombre": "Biomecánica del Deporte",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.63",
+        "16.64"
+       ]
+      },
+      {
+       "codigo": "16.59",
+       "nombre": "Microfluídica",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.41"
+       ]
+      },
+      {
+       "codigo": "16.65",
+       "nombre": "Genética del Comportamiento",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "16.66",
+       "nombre": "Reprogramación Celular",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "16.67",
+       "nombre": "Inmunología Biológica y Evasión Inmune",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "16.69",
+       "nombre": "Nanotecnología en Medicina y Cuidado de la Salud",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "16.71",
+       "nombre": "Ingeniería del Cerebro y el Comportamiento",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.72",
+       "nombre": "Análisis y Tratamiento de Imágenes",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.63"
+       ]
+      },
+      {
+       "codigo": "16.73",
+       "nombre": "Sistemas de Imágenes en Diagnóstico Médico",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.63"
+       ]
+      },
+      {
+       "codigo": "16.74",
+       "nombre": "Interfaces Cerebro Computadora y Neurorobótica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.63"
+       ]
+      },
+      {
+       "codigo": "16.75",
+       "nombre": "Gestión de Procesos Hospitalarios",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.25"
+       ]
+      },
+      {
+       "codigo": "16.76",
+       "nombre": "Bases Fisicomatemáticas de la Biomecánica del Deporte",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.64"
+       ]
+      },
+      {
+       "codigo": "16.77",
+       "nombre": "Tecnologías emergentes en plantas con aplicaciones terapéuticas",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.78",
+       "nombre": "Enfermedades del Sistema Nervioso: Implicancias e innovaciones",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.79",
+       "nombre": "Neurociencias",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03",
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "16.80",
+       "nombre": "Microfluídica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "23.02",
+        "16.64"
+       ]
+      },
+      {
+       "codigo": "16.81",
+       "nombre": "Neurobiología del Aprendizaje y Control del Movimiento",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.82",
+       "nombre": "Neurociencia Computacional",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59",
+        "92.03",
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "16.83",
+       "nombre": "Introducción a cultivos celulares derivados de tejido nervioso",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.55"
+       ]
+      },
+      {
+       "codigo": "16.84",
+       "nombre": "Informática en Salud",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.02",
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.85",
+       "nombre": "Procesamiento Avanzado de Imágenes en Biología y Biomedicina",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.63"
+       ]
+      },
+      {
+       "codigo": "16.87",
+       "nombre": "Microfabricación",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.01",
+        "92.04",
+        "93.61"
+       ]
+      },
+      {
+       "codigo": "16.88",
+       "nombre": "Avances Tecnol. para el estudio del SNC en mod. animales",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.63",
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.89",
+       "nombre": "Laboratorio de Neurobiología de la Memoria",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.79"
+       ]
+      },
+      {
+       "codigo": "16.90",
+       "nombre": "Laboratorio de Inmunología Biológica",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.52"
+       ]
+      },
+      {
+       "codigo": "16.91",
+       "nombre": "Sistemas Embebidos: Aplicaciones en Biomedicina",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59",
+        "23.02"
+       ]
+      },
+      {
+       "codigo": "16.92",
+       "nombre": "Nanocarriers biológicos: vesículas extracelulares y su potencial biotecnológico",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.93",
+       "nombre": "Análisis crítico de evidencia en bioingeniería",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03"
+       ]
+      },
+      {
+       "codigo": "16.94",
+       "nombre": "Biomimética",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.55"
+       ]
+      },
+      {
+       "codigo": "16.95",
+       "nombre": "Startups basadas en ciencia",
+       "creditos": 1,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "16.96",
+       "nombre": "Laboratorio de Bioimpresión",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.64"
+       ]
+      },
+      {
+       "codigo": "16.97",
+       "nombre": "Modelado en mecánica cardiovascular",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.03",
+        "16.64"
+       ]
+      },
+      {
+       "codigo": "16.98",
+       "nombre": "Glicobiología Funcional",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.67",
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "17.15",
+       "nombre": "Introducción a la Ingeniería Ambiental",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.83"
+       ]
+      },
+      {
+       "codigo": "17.16",
+       "nombre": "Introducción a la Nanotecnología",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.42",
+        "16.64"
+       ]
+      },
+      {
+       "codigo": "22.57",
+       "nombre": "Microprocesadores y Control",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "23.02"
+       ]
+      },
+      {
+       "codigo": "22.94",
+       "nombre": "Control Discreto",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "22.57"
+       ]
+      },
+      {
+       "codigo": "23.05",
+       "nombre": "Acústica para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.04"
+       ]
+      },
+      {
+       "codigo": "23.08",
+       "nombre": "Control Avanzado",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "23.16"
+       ]
+      },
+      {
+       "codigo": "23.15",
+       "nombre": "Realidad Virtual",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59"
+       ]
+      },
+      {
+       "codigo": "25.88",
+       "nombre": "Redes Neuronales III",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.32"
+       ]
+      },
+      {
+       "codigo": "30.41",
+       "nombre": "Diseño Mecánico I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.41",
+        "16.64",
+        "31.08"
+       ]
+      },
+      {
+       "codigo": "30.63",
+       "nombre": "Cadenas de Valor Circulares",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.83"
+       ]
+      },
+      {
+       "codigo": "30.64",
+       "nombre": "Bioenergía",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.83"
+       ]
+      },
+      {
+       "codigo": "31.25",
+       "nombre": "Termodinámica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "61.05",
+       "nombre": "Economía de la Salud",
+       "creditos": 3,
+       "creditosReq": 120,
+       "correlativas": [
+        "61.27"
+       ]
+      },
+      {
+       "codigo": "71.22",
+       "nombre": "Sistemas de Inteligencia Artificial",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59",
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "71.38",
+       "nombre": "Programación web",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59"
+       ]
+      },
+      {
+       "codigo": "71.77",
+       "nombre": "Fundamentos de programación y análisis de datos",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59"
+       ]
+      },
+      {
+       "codigo": "71.88",
+       "nombre": "Gestión de Datos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59"
+       ]
+      },
+      {
+       "codigo": "71.94",
+       "nombre": "Introducción al Diseño de Bases de Datos Relacionales y No-Relacionales",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59"
+       ]
+      },
+      {
+       "codigo": "72.75",
+       "nombre": "Aprendizaje Automático (Machine Learning)",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24",
+        "92.04"
+       ]
+      },
+      {
+       "codigo": "72.87",
+       "nombre": "Diseño Sonoro para Animación y Videojuegos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59"
+       ]
+      },
+      {
+       "codigo": "72.90",
+       "nombre": "Internet de las Cosas (IoT)",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59"
+       ]
+      },
+      {
+       "codigo": "72.96",
+       "nombre": "Proyecto de Aplicaciones Móviles",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.38"
+       ]
+      },
+      {
+       "codigo": "73.61",
+       "nombre": "Neurorobótica",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.54",
+        "92.04"
+       ]
+      },
+      {
+       "codigo": "73.63",
+       "nombre": "Redes Equivariantes",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.32"
+       ]
+      },
+      {
+       "codigo": "73.66",
+       "nombre": "Procesamiento de Imágenes Satelitales",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "73.67",
+       "nombre": "Análisis de series de tiempo con Inteligencia Artificial",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.75"
+       ]
+      },
+      {
+       "codigo": "73.70",
+       "nombre": "Análisis de datos en neurociencias",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "74.60",
+       "nombre": "Visión por Computadora (Computer Vision)",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.63"
+       ]
+      },
+      {
+       "codigo": "74.61",
+       "nombre": "Current AI techniques for scientific discovery",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.75",
+       "nombre": "Fund. del desarrollo de software y análisis de datos en Python",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.59"
+       ]
+      },
+      {
+       "codigo": "82.12",
+       "nombre": "Análisis de Información Biomédica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "81.75"
+       ]
+      },
+      {
+       "codigo": "82.19",
+       "nombre": "Analítica del Deporte",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.07",
+       "nombre": "Análisis Matemático V",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.04"
+       ]
+      },
+      {
+       "codigo": "92.08",
+       "nombre": "Procesos Estocásticos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "92.09",
+       "nombre": "Complementos de Análisis Matemático IV",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.90",
+       "nombre": "Complementos de Matemática",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.92",
+       "nombre": "Complementos de Física de la Relatividad",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.97",
+       "nombre": "Complementos de Matemática V",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "93.75",
+       "nombre": "Métodos Numéricos Avanzados",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.54"
+       ]
+      },
+      {
+       "codigo": "94.19",
+       "nombre": "Comportamiento Organizacional",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.15"
+       ]
+      },
+      {
+       "codigo": "94.24",
+       "nombre": "Metodología del Aprendizaje",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.40",
+       "nombre": "Estructura de las Organizaciones",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.19"
+       ]
+      },
+      {
+       "codigo": "94.42",
+       "nombre": "Comunicación Estratégica",
+       "creditos": 3,
+       "creditosReq": 120,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "titulos": [
+  {
+   "tipo": "Principal",
+   "titulo": "Bioingeniero/a",
+   "requisitos": "Aprobar BIO 22 y sumar 240 créditos",
+   "creditos": 240
+  }
+ ]
+}

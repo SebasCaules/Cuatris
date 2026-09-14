@@ -1,0 +1,1695 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description"
+	content="Sistema de Gesti&oacute;n Acad&eacute;mica" />
+<meta name="keywords" content="academica, gestion" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="../../../css/bootstrap.css" type="text/css" rel="stylesheet"/>
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="../../../css/itba_bootstrap.css" type="text/css" rel="stylesheet"/>
+<script src="../../../js/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="../../../js/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRVhLnwK6Xt2XUzmDb5rEL3LyVOGdQenvKLJg6cKXTudsxmjFoX-n0wC9iZeNW0T7TPgvaJxrcFBg/X5E87/mDb9a/oX-53/sVVa2"></script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRkIHSE4F8KjLsgOrqfLXUgeS1FdngABiY-grLb5kAceQP65u0gCbPEOWOU3B2z5lQ/X5E87/IRk91/eQPe3/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="fyBfZ9p6trNW53J6lD3KPg/fyBce/J6l0f";
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../fyBfZ9p6trMbAo1n2OJdLA2uzlEDaCSxEBogmd5NF6b2l4RdXxc2ibSnmLhBz9fUzhSCoDfNdaY/fyBce/CoDf7',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id1f2'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div id="id1f3" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<![If !IE]> <a href="../../../app2/"><div class="logo"></div></a> <![endif]>
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp&nbsp&nbsp<a href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHgh0PBNGW44noivxUPlBreuw/fyBce/MbAdb">[Salir]</a> <a id="id1f4" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg2VbJFAb-gzd9qCrVklQn6PCcCwL6eDJdzBrt4qWlJnDpnvsOhxKN27fp54tnSJCyXVRwh_1TuQA/fyBce/JnD2f" class="dropdown-toggle" data-toggle="dropdown"><span>Inicio</span><b
+		class="caret"></b></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg2VbJFAb-gzd9qCrVklQn6PCcCwL6eDJdu9tlo1ckQ5vZoHshNIsRZb1k2YlKJNvPfZg4Mdl8GQDHLW42SONJWzE-dJgdF9_x788i2S_vNWCXz5_QdZYh9fDHTqyBLtIekyVo48BKsGA/fyBce/MTH50"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg2VbJFAb-gzd9qCrVklQn6PCcCwL6eDJdCJ9jY-p6M4O2rp0Wy6Rzo4YhuFSWiw7gUfWPGNR2yTWjcjWJjUmRIUMqK9uPgJosc0FEKyCENvsxJ4i3iXyUIH6YOErYMrHczj6UvSReII4/fyBce/MTH50"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg2VbJFAb-gzd9qCrVklQn6PCcCwL6eDJdCJ9jY-p6M4O2rp0Wy6Rzo4YhuFSWiw7gUfWPGNR2yTWjcjWJjUmRIUMqK9uPgJosVXW7lB7Uw35x8IDfWqaiTdAA-P5KQtfR0rZzN9nBtGU/fyBce/MTH50"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg2VbJFAb-gzd9qCrVklQn6PCcCwL6eDJdCJ9jY-p6M4O2rp0Wy6Rzo4YhuFSWiw7gUfWPGNR2yTWjcjWJjUmRIUMqK9uPgJosYu_2ga12wJw2dZD5U6evFRAeSTIhqZ6XaSdympLbL40/fyBce/MTH50"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg2VbJFAb-gzd9qCrVklQn6PCcCwL6eDJdCJ9jY-p6M4O2rp0Wy6Rzo4YhuFSWiw7gUfWPGNR2yTWjcjWJjUmRIUMqK9uPgJos9MYqUKnGJe5HYOwV2QZurWBeuZV1bCpThxZg3McGGiY/fyBce/MTH50"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg2VbJFAb-gzd9qCrVklQn6PCcCwL6eDJdFsxVu409GnTM-vU83JFplBGUUTKS5jW8Ol1FAk9tSs4gP6W39b1pagQz-7NdW0IO-8QLr3IJCGlv4NLgzyVlD2gXlMu8fHnZQEIVWbsW_0w/fyBce/MTH50"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg2VbJFAb-gzd9qCrVklQn6PCcCwL6eDJd5RDsL11b7fSZCXG3DjQeqNr35GiF7IQPkv_pHjHAWbLIcO96WNModzAGuoSpzbjlQE5efnHH4rSnKGih0K4zwsKBb0QXAl6pK1-rBbpxvbo/fyBce/MTH50"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id1f5">
+  
+</div>
+			
+
+<h3>Detalle de Planes de estudio</h3>
+
+<div class="backgroundBordered">
+	<h4>Plan de estudio:  <span>S10-Rev23</span></h4>
+
+	
+	<div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id1f7">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Ciclo Básico</span>
+	
+	
+		<span style="font-weight: normal;">
+			 ( Título otorgado:
+			<span>Analista en Tecnologia Informática</span> )
+		</span>
+	
+	- <span>Requisito: Aprobar todos los items (suma 147 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  <tr>
+		  	<td>  <div id="id1f8">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id1f9">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV0eyNoBZndvQuMRR-jSuXtOPOHBpJ_dleWtunCRctFMQhqO3aOf9KWR/fyBce/8lsae"><span>31.08 - Sistemas de Representación</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV0eyNoBZndvQuMRR-jSuXtOPOHBpJ_dleWMqF9rwIj-KbaapuNUqgUB/fyBce/8lsae"><span>72.03 - Introducción a la Informática</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV0eyNoBZndvQuMRR-jSuXtOPOHBpJ_dleVgv8-0TesnewcBhs8pDFTw/fyBce/8lsae"><span>93.26 - Análisis Matemático I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV0eyNoBZndvQuMRR-jSuXtOPOHBpJ_dleWsY2r7Cu-YT0ZK-ALogUal/fyBce/8lsae"><span>93.58 - Álgebra</span></a></td>
+				<td>9</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV0eyNoBZndvQuMRR-jSuXtOPOHBpJ_dleW8KJDBFVG1y4_pZ8FzqIaP/fyBce/8lsae"><span>94.24 - Metodología del Aprendizaje</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id1fa">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id1fb">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1TNHt7HB658k0A4d4JU_phjETqKSrPSms87kpeWU9mXbBBN6FS-fRt/fyBce/8lsae"><span>72.31 - Programación Imperativa</span></a></td>
+				<td>9</td>
+				<td>0</td>
+				
+				<td> <span>93.58 &nbsp;</span><span>72.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1TNHt7HB658k0A4d4JU_phjETqKSrPSmu1gefsAPlW68sSWc8bV161/fyBce/8lsae"><span>93.28 - Análisis Matemático II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.58 &nbsp;</span><span>93.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1TNHt7HB658k0A4d4JU_phjETqKSrPSmvJi0LBRFirrjdztSqWTPsi/fyBce/8lsae"><span>93.41 - Física I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1TNHt7HB658k0A4d4JU_phjETqKSrPSmvE8YXT5lnw33hVN7pe5jCI/fyBce/8lsae"><span>93.59 - Matemática Discreta</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.58 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id1fc">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id1fd">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV3PGviuQ61bmwjr0MHpJZoZuyyHUXVlEJWZd8ah3CA_FhA5Hav18fby/fyBce/8lsae"><span>12.09 - Química</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV3PGviuQ61bmwjr0MHpJZoZuyyHUXVlEJVAiOv6khm5l8JNpJHiBKDb/fyBce/8lsae"><span>72.32 - Diseño y Procesamiento de Documentos XML</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.31 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV3PGviuQ61bmwjr0MHpJZoZuyyHUXVlEJUyuJXd6pYRSGFZD-U7CFD_/fyBce/8lsae"><span>72.33 - Programación Orientada a Objetos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.31 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV3PGviuQ61bmwjr0MHpJZoZuyyHUXVlEJXKF7sHuByUhb-yxQDl3sJF/fyBce/8lsae"><span>93.35 - Lógica Computacional</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.58 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV3PGviuQ61bmwjr0MHpJZoZuyyHUXVlEJVzXjaL6zgeUfMY1lepuN-K/fyBce/8lsae"><span>93.43 - Física III</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.28 &nbsp;</span><span>93.41 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id1fe">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id1ff">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV3E1Xe5MkHxpY3V9FE7E3mkgtKHujozFbvUiG6VOZWmy1A0pWoaKjC6/fyBce/8lsae"><span>72.08 - Arquitectura de Computadoras</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.31 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV3E1Xe5MkHxpY3V9FE7E3mkgtKHujozFbtfsS6X47eSk0ifIpYL5FQG/fyBce/8lsae"><span>72.34 - Estructura de Datos y Algoritmos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.59 &nbsp;</span><span>72.33 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV3E1Xe5MkHxpY3V9FE7E3mkgtKHujozFbsBLiBfHIXyfdSXtmHOJxlD/fyBce/8lsae"><span>93.24 - Probabilidad y Estadística</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.28 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV3E1Xe5MkHxpY3V9FE7E3mkgtKHujozFbv_JG-S_U_McqRdwXif4DW_/fyBce/8lsae"><span>93.42 - Física II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.28 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id200">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id201">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1RnrVXZYWFO8YX1nVEBLpbmpcSJ8naPYE8PDHYBnw6wYeHqYYTrHEM/fyBce/8lsae"><span>72.11 - Sistemas Operativos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.08 &nbsp;</span><span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1RnrVXZYWFO8YX1nVEBLpbmpcSJ8naPYFKw-jlZiZThf2ECeP9Vc6E/fyBce/8lsae"><span>72.35 - Ingenieria de Software I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.33 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1RnrVXZYWFO8YX1nVEBLpbmpcSJ8naPYG3IIwUdY65poFHP2R0FIvj/fyBce/8lsae"><span>72.36 - Interacción Hombre-Computadora (HCI)</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.33 &nbsp;</span><span>72.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1RnrVXZYWFO8YX1nVEBLpbmpcSJ8naPYFI1vfoZ3k0B7twkh_Q8USs/fyBce/8lsae"><span>72.37 - Base de Datos I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span><span>93.35 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id202">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id203">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1Cs9FBUY6pH2eVs148LzHj2hwiNI-m-s-DOXGtHEPvFp_akb6l1gYM/fyBce/8lsae"><span>72.07 - Protocolos de Comunicación</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1Cs9FBUY6pH2eVs148LzHj2hwiNI-m-s8S2LnpkIBQgJGMsx5NQjQS/fyBce/8lsae"><span>72.38 - Proyecto de Aplicaciones Web</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.11 &nbsp;</span><span>72.37 &nbsp;</span><span>72.36 &nbsp;</span><span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1Cs9FBUY6pH2eVs148LzHj2hwiNI-m-s-xENaSbcOtOHbfdCBu_gX8/fyBce/8lsae"><span>72.39 - Autómatas, Teoría de Lenguajes y Compiladores</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1Cs9FBUY6pH2eVs148LzHj2hwiNI-m-s8gcDGRlBRrz-CzI6mrxmJc/fyBce/8lsae"><span>93.07 - Métodos Numéricos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.28 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1Cs9FBUY6pH2eVs148LzHj2hwiNI-m-s-MGVEcdzchym1quD3E0dNl/fyBce/8lsae"><span>94.21 - Formación General I</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygZGcXFV5OcV1Cs9FBUY6pH2eVs148LzHj2hwiNI-m-s-V7ek2l_gY1VGi5sqM8CpI/fyBce/8lsae"><span>94.51 - Inglés I</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr>
+	      
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id204">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Ciclo Profesional</span>
+	
+	
+	- <span>Requisito: Aprobar todos los items (suma 96 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  <tr>
+		  	<td>  <div id="id205">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id206">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_DBQAIRnQqc2LH2YndXisYzdcWCVnbAH8ZvOwgWSsLdtDs_eDM1PrDb/fyBce/8lsae"><span>61.23 - Economía para Ingenieros</span></a></td>
+				<td>3</td>
+				<td>120</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_DBQAIRnQqc2LH2YndXisYzdcWCVnbAH8ZuyXg_w9XnlqUg62XNA09J/fyBce/8lsae"><span>61.32 - Derecho para Ingenieros</span></a></td>
+				<td>3</td>
+				<td>120</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_DBQAIRnQqc2LH2YndXisYzdcWCVnbAH8ankZxD-XJYaHx2rQeQ2ImR/fyBce/8lsae"><span>72.40 - Ingenieria del Software II</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_DBQAIRnQqc2LH2YndXisYzdcWCVnbAH8b9iZjOf9DwlU5w-S38qjvf/fyBce/8lsae"><span>72.41 - Base de Datos II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.37 &nbsp;</span><span>72.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_DBQAIRnQqc2LH2YndXisYzdcWCVnbAH8a3yBw40qktGBko3QmYK21q/fyBce/8lsae"><span>72.42 - Programación de Objetos Distribuidos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.07 &nbsp;</span><span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_DBQAIRnQqc2LH2YndXisYzdcWCVnbAH8ZJP2yePWdoGjniCIHlUA6V/fyBce/8lsae"><span>93.75 - Métodos Numéricos Avanzados</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.07 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id207">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id208">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_BhB5j_I4Ay3n5tO2Rg1a48MrY9ZhtaFpITujZL5-AQgbQW8-yHWjDm/fyBce/8lsae"><span>72.25 - Simulación de Sistemas</span></a></td>
+				<td>6</td>
+				<td>140</td>
+				
+				<td> <span>93.75 &nbsp;</span><span>72.34 &nbsp;</span><span>93.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_BhB5j_I4Ay3n5tO2Rg1a48MrY9ZhtaFpKIFI3hTzpgbK73Dq9_caEp/fyBce/8lsae"><span>72.27 - Sistemas de Inteligencia Artificial</span></a></td>
+				<td>6</td>
+				<td>120</td>
+				
+				<td> <span>93.75 &nbsp;</span><span>93.24 &nbsp;</span><span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_BhB5j_I4Ay3n5tO2Rg1a48MrY9ZhtaFpJeW8ojb5qubINhTvPZ5BLr/fyBce/8lsae"><span>72.43 - Gestión de Proyectos Informáticos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_BhB5j_I4Ay3n5tO2Rg1a48MrY9ZhtaFpKq-7Q23PXNHoCmVBhZi-2O/fyBce/8lsae"><span>72.44 - Criptografía y Seguridad</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Electivas</span></em></span></td>
+				<td>27</td>
+				<td>27</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id209">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id20a">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_A3B5StWqeQn8qFOe3q4WGiWkGjyAQOPRPqr7nwPDlXXLtQPSnrRj7P/fyBce/8lsae"><span>12.83 - Seguridad Ocupacional y Ambiental</span></a></td>
+				<td>3</td>
+				<td>140</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_A3B5StWqeQn8qFOe3q4WGiWkGjyAQOPRM3PmC_kK9FZ14B7qD2N5yr/fyBce/8lsae"><span>72.20 - Redes de Información</span></a></td>
+				<td>6</td>
+				<td>171</td>
+				
+				<td> <span>72.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_A3B5StWqeQn8qFOe3q4WGiWkGjyAQOPRN_gNWvWkJ9IkhsXQVCsHd9/fyBce/8lsae"><span>72.45 - Proyecto Final </span></a></td>
+				<td>12</td>
+				<td>160</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id20b">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id20c">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_CmGqqq6Z7smTNgsIElLVEVIrt77ekGZyUAWKx3lEElVlFs3QqHo2Yy/fyBce/8lsae"><span>72.98 - Práctica Laboral</span></a></td>
+				<td>0</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_CmGqqq6Z7smTNgsIElLVEVIrt77ekGZyXs5CJNQfrJaOjHuLuXAJ2B/fyBce/8lsae"><span>94.23 - Formación General III</span></a></td>
+				<td>3</td>
+				<td>168</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygA-n90-B72_CmGqqq6Z7smTNgsIElLVEVIrt77ekGZyWlip6yRts3nXE8YT9eP62H/fyBce/8lsae"><span>94.52 - Inglés II</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr>
+	      
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id20d">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Electivas</span>
+	
+	
+	- <span>Requisito: Juntar 27 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id20e">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id20f">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHhqCDps1rWS3UDTeVTJO6Iw/fyBce/eVTd2"><span>10.07 - Creatividad</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3qad-LVP95VXw/fyBce/LVP15"><span>10.09 - Formación para Emprendedores</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHy5MriyWaDfj5K9fzYSKP_g/fyBce/fzY14"><span>11.36 - Innovación y Competitividad</span></a></td>
+				<td>3</td>
+				<td>192</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHlZ51jt_oTPb5CMwv63hfIw/fyBce/wv6e6"><span>11.83 - Gestión de Operaciones</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHOTEdqinpM-j3zVdom8rxfg/fyBce/dome1"><span>16.04 - Neurociencias y Desarrollo Productivo</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHPTakwIpVMiNUlsbEWrS3Tw/fyBce/bEWd3"><span>16.50 - Introducción a la Bioinformática</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHGIfX5Rv9eP2UQssS6nfW4w/fyBce/sS6f5"><span>16.57 - Robótica Bioinspirada</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.08 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHnybn9WyP1RcXrXd8YRtnKg/fyBce/d8Yb4"><span>16.68 - Señales y Sistemas</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.75 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJLclfnLQmWJY4FI0og-C6Q/fyBce/I0o57"><span>16.82 - Neurociencia Computacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.28 &nbsp;</span><span>72.34 &nbsp;</span><span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJ5ysT1LYL4o6dQzD6gT75Q/fyBce/zD69b"><span>16.95 - Startups basadas en ciencia</span></a></td>
+				<td>1</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3pU1GD-W2vO1Q/fyBce/D-W8d"><span>22.09 - Fundamentos Electrónicos de la Informática</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3pTg-cyWn8WeA/fyBce/cyW00"><span>22.48 - Procesamiento de Imágenes</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.75 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3pG0G5vrbq6Qg/fyBce/5vra0"><span>23.15 - Realidad Virtual</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.58 &nbsp;</span><span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3qzGdzss0Snpg/fyBce/zss79"><span>25.04 - Computación Cuántica</span></a></td>
+				<td>6</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3rGeq7FYfUn0Q/fyBce/7FYf9"><span>25.27 - Sistemas Embebidos</span></a></td>
+				<td>6</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3qBFzKXLTBDIQ/fyBce/KXLce"><span>48.02 - AI: Data Management Course &amp; Digital Transformation</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3rHL4uTMRshQg/fyBce/uTM7d"><span>61.08 - Derecho Digital</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>61.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3r7_uTWZCO_aA/fyBce/TWZ56"><span>61.11 - Derecho Laboral y Seguridad Social en la Empresa</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>61.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3quTvvLS0EJbA/fyBce/vLSac"><span>61.13 - Práctica Contractual</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>61.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3qKbRVGVBxRlA/fyBce/VGVa4"><span>61.16 - Introducción a las Finanzas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>61.23 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHy5MriyWaDfgdWhtu3YsRQA/fyBce/tu3d1"><span>61.50 - Finanzas de la Empresa</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>61.23 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHy5MriyWaDfiFZOj4rLGRJw/fyBce/j4rd7"><span>68.99 - Introducción a la Ciencia de Ciudades</span></a></td>
+				<td>1</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHy5MriyWaDfhLhwtg5o7IDQ/fyBce/tg541"><span>71.48 - Introducción a la realidad aumentada</span></a></td>
+				<td>1</td>
+				<td>51</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHy5MriyWaDfiwNXBpUxbO5Q/fyBce/BpU96"><span>72.02 - Organización Básica de la Computadora</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHy5MriyWaDfg-qFd_p7qKZw/fyBce/d_pf4"><span>72.18 - Programación Funcional</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHy5MriyWaDfhqZrelDIM-AA/fyBce/elDcc"><span>72.22 - Sistemas Tolerantes a Fallas</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHy5MriyWaDfizZY4-YUr_Ng/fyBce/4-Y7f"><span>72.23 - Diseño y Construcción de Compiladores</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHy5MriyWaDfjLY6FUoCmuwQ/fyBce/FUo3f"><span>72.28 - Topología de Internet: Análisis y Modelado</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHy5MriyWaDfgBADpNNBmVWg/fyBce/pNN3f"><span>72.29 - Tipos para Lenguajes de Programación</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHy5MriyWaDfiztJr9DkvAxw/fyBce/r9D9c"><span>72.46 - Robótica Basada en Comportamiento</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHlZ51jt_oTPZrZw8_wLgFig/fyBce/8_w4f"><span>72.49 - Sistemas Tolerantes a Fallas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.42 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHlZ51jt_oTPYjRIeJnC7jfg/fyBce/eJnb8"><span>72.50 - Introducción al Desarrollo de Videojuegos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHlZ51jt_oTPaK23b5e4RPRQ/fyBce/b5ef1"><span>72.51 - Tecnologías para Web 2.0 y Redes Sociales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.42 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHlZ51jt_oTPbtguEmcuK--g/fyBce/Emcfa"><span>72.52 - Análisis y Tratamiento de Imágenes</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.75 &nbsp;</span><span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHlZ51jt_oTPYYoqHMJqiyaQ/fyBce/HMJe4"><span>72.53 - Visión Computacional 3D</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHlZ51jt_oTPZMfO9pcxU__A/fyBce/9pcfb"><span>72.54 - OLAP y Explotación de Datos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span><span>72.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHlZ51jt_oTPZZdlmaWpaupA/fyBce/maWe2"><span>72.55 - Ontologías en la Web</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.32 &nbsp;</span><span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHlZ51jt_oTPaRbRVhXuuX0w/fyBce/VhXb5"><span>72.56 - Automatización e Integración de Sistemas de Información</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHlZ51jt_oTPaGTKQrYfsUsA/fyBce/QrY67"><span>72.57 - Sistemas Embebidos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHlZ51jt_oTPbB5hBXV4avgw/fyBce/BXV2f"><span>72.58 - Computación Gráfica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHOTEdqinpM-i6l4BWbr1Wiw/fyBce/BWb0c"><span>72.59 - Sistemas de Inteligencia Artificial II</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHOTEdqinpM-gGn7eN-J52_w/fyBce/eN-33"><span>72.60 - Programación Funcional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHOTEdqinpM-gWEjoQjRL_sw/fyBce/oQj47"><span>72.61 - Taller de Diseño de Videojuegos</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHOTEdqinpM-hMgvW5b5Lwpg/fyBce/W5b03"><span>72.64 - Cloud Computing</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHOTEdqinpM-hEm0Pe-RXOjg/fyBce/Pe-37"><span>72.65 - Desarrollo de Videojuegos 2D en iPhone OS</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHOTEdqinpM-gyYg0IX8p37g/fyBce/0IX1e"><span>72.66 - Sistemas Embebidos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHOTEdqinpM-iNWpJmkZzh7g/fyBce/Jmk27"><span>72.67 - Robótica Cinemática Computacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHOTEdqinpM-g_ge2eyAZjYg/fyBce/2eya5"><span>72.68 - Arte y Ciencia Interactivos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHOTEdqinpM-invqG2p2qrVQ/fyBce/G2p74"><span>72.69 - Seguridad de Software basada en Flujo de Información</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHOTEdqinpM-gTDNJsYLYQoA/fyBce/JsY2f"><span>72.70 - Modelos e Imágenes Fractales</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHPTakwIpVMiPFbGEBjOdwiA/fyBce/EBj1c"><span>72.71 - Integración de Sistemas de Información</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.07 &nbsp;</span><span>72.37 &nbsp;</span><span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHPTakwIpVMiMFhEBu4aznag/fyBce/Bu460"><span>72.72 - Análisis y Verificación de Modelos y Códigos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHPTakwIpVMiMs0cJhp3wTxw/fyBce/Jhp41"><span>72.73 - Aprendizaje por Refuerzo en Robótica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHPTakwIpVMiOLe9-IvJy_Xw/fyBce/-Iv59"><span>72.74 - Visualización de Información</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.31 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHPTakwIpVMiPvNp4bgG7fYQ/fyBce/4bg48"><span>72.75 - Aprendizaje Automático (Machine Learning)</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.75 &nbsp;</span><span>72.34 &nbsp;</span><span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHPTakwIpVMiNwfRmTs0Q_8A/fyBce/mTs9b"><span>72.77 - Técnicas Automáticas para  Testing de Software</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHPTakwIpVMiN3FnheHWHmXQ/fyBce/heH6a"><span>72.78 - OLAP Espacial</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHPTakwIpVMiM0bQEjMimPPw/fyBce/EjM57"><span>72.79 - Sistemas Multiagente I</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHPTakwIpVMiN8pkxazivaVg/fyBce/xazf0"><span>72.80 - Big Data</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHPTakwIpVMiMszeKfecsABQ/fyBce/Kfe79"><span>72.81 - Simulación y Animación de Sistemas Multipartículas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHGIfX5Rv9eP0jR6EW7dLReA/fyBce/EW7c4"><span>72.82 - Tópicos de NOSQL</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHGIfX5Rv9eP1WSiGWCHMZpQ/fyBce/GWC12"><span>72.83 - Técnicas Avanzadas de HCI con Uso de Rastreadores de Ojos y Manos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHGIfX5Rv9eP31bSEN8kkLbA/fyBce/EN81e"><span>72.84 - Base de Datos Espaciales y Sistemas de Información Geográfica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHGIfX5Rv9eP0uw9GtRZDTgQ/fyBce/GtR74"><span>72.85 - Análisis de Datos en la Web Semántica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.32 &nbsp;</span><span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHGIfX5Rv9eP1nib_P9M6-gQ/fyBce/_P9d7"><span>72.86 - Técnicas Avanzadas en Videojuegos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.97 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHGIfX5Rv9eP29m7hkfKfjBQ/fyBce/hkfa2"><span>72.87 - Diseño Sonoro para Animación y Videojuegos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHGIfX5Rv9eP0ac_NiyNKWyg/fyBce/Niyfd"><span>72.88 - Introducción a la Neurociencia Computacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.75 &nbsp;</span><span>93.24 &nbsp;</span><span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHGIfX5Rv9eP2Yi9upXMDzig/fyBce/upXac"><span>72.89 - Moneda Digital Descentralizada</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.44 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHGIfX5Rv9eP1YN--rdDmi4Q/fyBce/-rdce"><span>72.90 - Internet de las Cosas (IoT)</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.07 &nbsp;</span><span>93.43 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHGIfX5Rv9eP1w2zldi-NjCg/fyBce/ldie0"><span>72.92 - El Paradigma NoSQL - Bases de Datos de Grafos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHnybn9WyP1Rd7srID4ZJauA/fyBce/ID4c8"><span>72.94 - Introducción a los Sistemas Embebidos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.08 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHnybn9WyP1Rfiei8y2-UN_w/fyBce/8y2d0"><span>72.95 - Proyecto de Innovación Científico-Tecnológico</span></a></td>
+				<td>12</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHnybn9WyP1RdcitB2oWGeZQ/fyBce/B2o4e"><span>72.96 - Proyecto de Aplicaciones Móviles</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.38 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHnybn9WyP1Rfwg7KKbJF4AA/fyBce/KKb81"><span>72.97 - Introducción a la Programación de Videojuegos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHnybn9WyP1RcnsncUAae9YQ/fyBce/cUA4e"><span>73.21 - Desarrollo de Aplicaciones Móviles Multiplataforma</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.38 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHnybn9WyP1RdwWWLWMA_Zew/fyBce/LWM41"><span>73.22 - Fundamentos de DevOps</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHnybn9WyP1Re1HMHyEJE0wA/fyBce/HyEf3"><span>73.23 - Programación Orientada a Datos</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHnybn9WyP1RcB_qCSycnwhQ/fyBce/CSy08"><span>73.24 - Diseño de Runtimes Concurrentes</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHnybn9WyP1RdaHIlBaU5rag/fyBce/lBa9a"><span>73.30 - Desarrollo profesional de software: del código al producto</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.38 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHnybn9WyP1Rf_7uC0bxR19g/fyBce/C0b84"><span>73.31 - Spec-Driven Development</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.38 &nbsp;</span><span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJLclfnLQmWIzhYSYLJMiRQ/fyBce/SYL05"><span>73.40 - ARQUITECTURA DE MICROSERVICIOS</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.07 &nbsp;</span><span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJLclfnLQmWJHzj88pQTz0g/fyBce/88p1f"><span>73.50 - Infraestructura de Cómputo: Data Center, Cloud y Edge</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.20 &nbsp;</span><span>72.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJLclfnLQmWJSTKR9gGcrDA/fyBce/R9g9f"><span>73.60 - Introducción a la Robótica Empresarial</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJLclfnLQmWJ9_HZD-SRtLw/fyBce/ZD-72"><span>73.61 - Neurorobótica</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJLclfnLQmWII83kWMe2MeQ/fyBce/kWMc0"><span>73.62 - Introducción a la Programación Paralela</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.33 &nbsp;</span><span>72.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJLclfnLQmWKoLooVSbE9fg/fyBce/oVS1b"><span>73.63 - Redes Equivariantes</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJLclfnLQmWKti_ZGJoiOvg/fyBce/ZGJ1c"><span>73.64 - Temas Avanzados en Deep Learning</span></a></td>
+				<td>2</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJLclfnLQmWIPyNM41hmgEA/fyBce/M4159"><span>73.65 - Procesamiento del Lenguaje Natural</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJLclfnLQmWIJ-Mu2tg-ZGw/fyBce/u2t66"><span>73.66 - Procesamiento de Imágenes Satelitales</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJLclfnLQmWKbD1Q1j0Dwmg/fyBce/Q1j89"><span>73.67 - Análisis de series de tiempo con Inteligencia Artificial</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJ5ysT1LYL4oVLLPPm91FlQ/fyBce/PPm9c"><span>73.68 - Tecnologías Emergentes para Aprendizaje Automático e Inteligencia Artificial</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJ5ysT1LYL4pL_uWFuctw2Q/fyBce/WFu35"><span>73.69 - Large Language Models</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJ5ysT1LYL4reQVtTOpZ1VA/fyBce/tTOde"><span>73.70 - Análisis de datos en neurociencias</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJ5ysT1LYL4oBmStbWUEAmQ/fyBce/tbW78"><span>73.80 - SEGURIDAD OFENSIVA</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.44 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJ5ysT1LYL4oRxKItn9s5Xw/fyBce/Itnd2"><span>73.81 - Ciberseguridad Ofensiva y Defensiva</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.44 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJ5ysT1LYL4rwGS3lDlSqqw/fyBce/3lD5a"><span>73.82 - Bases de Datos Espaciales y de Movilidad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.37 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJ5ysT1LYL4owUwqqfV_yeA/fyBce/qqf65"><span>73.83 - Gestión estratégica de la Ciberseguridad</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.44 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJ5ysT1LYL4qc2qDxdiVoJQ/fyBce/Dxd5f"><span>73.84 - Ciencia de Datos Aplicada</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJ5ysT1LYL4oPX4i8iDp-2Q/fyBce/i8ie9"><span>73.89 - Introducción a Blockchain y Criptomonedas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.44 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHJ5ysT1LYL4ojAePgc_rXnw/fyBce/Pgccb"><span>73.98 - Desarrollo Integral de Videojuegos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.97 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3rXVUnMFoljgA/fyBce/nMFc6"><span>74.60 - Visión por Computadora (Computer Vision)</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3qKbKbfEYkFXw/fyBce/bfEd0"><span>74.61 - Current AI techniques for scientific discovery</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>72.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3okxuB_uSvZag/fyBce/B_u97"><span>81.13 - Futuros Posibles</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3p1o_LIBUD2cA/fyBce/LIBa4"><span>81.14 - Product Management</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3qPV84lzi9QqA/fyBce/4lz31"><span>81.16 - Negociación</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3rKA5L6G_9gxQ/fyBce/L6G2c"><span>81.57 - Arquitectura de soluciones digitales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.07 &nbsp;</span><span>72.37 &nbsp;</span><span>72.35 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3piV8Q44MR_Xw/fyBce/Q44e0"><span>81.74 - Introducción a la realidad aumentada</span></a></td>
+				<td>1</td>
+				<td>51</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3ocKv3J8vlPlA/fyBce/3J810"><span>81.76 - Tecnologías para las Finanzas</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3qNsCZ5lbLsuA/fyBce/Z5lf0"><span>81.94 - Experiencia Inmersiva de Innovación Tecnológica</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3qz7aXHGQjtGg/fyBce/XHG06"><span>82.08 - Cloud Computing</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>72.32 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3rlc4DY2MeAkg/fyBce/DY27c"><span>82.18 - Procesamiento del Lenguaje Natural</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3qiDusY0hM7CQ/fyBce/sY009"><span>82.21 - Factibilidad de Proyectos Data Driven</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>61.23 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3oxc2WQjhZFxw/fyBce/WQj2f"><span>94.26 - Comunicación Organizacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3p3UBdBpgDwEQ/fyBce/dBpa1"><span>94.42 - Comunicación Estratégica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3plVr7Wd3QKug/fyBce/7Wd23"><span>94.62 - Ética en los Negocios</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3q0Z1kjfm_7pg/fyBce/kjf56"><span>94.64 - Prácticas Expositivas</span></a></td>
+				<td>3</td>
+				<td>120</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3rlW3b8To5TAg/fyBce/b8T6d"><span>94.65 - Practica Profesional supervisada</span></a></td>
+				<td>0</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3qdmFYW3XknFg/fyBce/YW354"><span>94.78 - Gestión de Capital Emprendedor y Venture Capital</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>10.09 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMbAo1n2OJdLMR7IwN-MTHg8lsZIw0vVikxEoXv9BnqNY7l1u8L-wygWe4y3kxVv76Bk6v9zL3cEf-q4L2b4p3mLMN609OQu_8HB5rod3alN9XbquIw6mkHNQCJ6peUJ3qlgMAwzKQa9g/fyBce/Awz63"><span>94.92 - Escritura Académica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div>
+	
+
+	<div id="id210">
+		
+		<div style="clear:both;">
+</div>
+	</div>
+	
+	<div id="id211">
+
+<h4>Títulos otorgados</h4>
+<table class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr class="blue">
+			<td>Tipo</td>
+			<td>Título</td>
+			<td>Requisitos</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span>Intermedio</span></td>
+			<td><span>Analista en Tecnologia Informática</span></td>
+			<td><span>Aprobar Ciclo Básico y sumar 147 créditos</span></td>
+		</tr><tr>
+			<td><span>Principal</span></td>
+			<td><span>Ingeniero/a en Informática</span></td>
+			<td><span>Aprobar S10-Rev23 y sumar 243 créditos</span></td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+
+</div>
+
+
+		</div>
+		<div id="id1f2"></div>
+	</div>
+</body>
+</html>

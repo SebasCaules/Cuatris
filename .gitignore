@@ -8,8 +8,9 @@ next-env.d.ts
 *.log
 npm-debug.log*
 
-# generado por scripts/build-planner-data.mjs a partir de data/plan/data.js
+# generado por scripts/build-planner-data.mjs a partir de data/plan/
 lib/planner/data.json
+lib/planner/carreras/
 
 # ---- proyecto anterior, congelado en deprecated/ ----
 # material crudo: nunca entra al repositorio
@@ -30,3 +31,6 @@ triage.json
 
 # ---- sistema ----
 .DS_Store
+
+# pantallas intermedias del SGA que guarda data/plan/bajar-carreras.py (diagnóstico)
+data/plan/sga-carreras/debug/

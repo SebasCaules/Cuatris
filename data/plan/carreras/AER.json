@@ -1,0 +1,29 @@
+{
+ "carrera": {
+  "codigo": "AER",
+  "nombre": "Ingeniería Aeroespacial",
+  "escuela": "Escuela de Gestión y Tecnología",
+  "nivel": "Grado"
+ },
+ "plan": "AER 25",
+ "planes": [
+  {
+   "nombre": "AER 25",
+   "version": "1",
+   "desde": "Segundo Cuat. 2025",
+   "hasta": "",
+   "elegido": true
+  }
+ ],
+ "vacio": true,
+ "capturado": "2026-09-13",
+ "bloques": [],
+ "titulos": [
+  {
+   "tipo": "Principal",
+   "titulo": "Ingeniero/a Aeroespacial",
+   "requisitos": "Aprobar AER 25 (sumar 0 créditos)",
+   "creditos": 0
+  }
+ ]
+}

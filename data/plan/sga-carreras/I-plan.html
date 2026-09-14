@@ -1,0 +1,2020 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description"
+	content="Sistema de Gesti&oacute;n Acad&eacute;mica" />
+<meta name="keywords" content="academica, gestion" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="../../../css/bootstrap.css" type="text/css" rel="stylesheet"/>
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="../../../css/itba_bootstrap.css" type="text/css" rel="stylesheet"/>
+<script src="../../../js/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="../../../js/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRVhLnwK6Xt2XUzmDb5rEL3LyVOGdQenvKLJg6cKXTudsxmjFoX-n0wC9iZeNW0T7TPgvaJxrcFBg/X5E87/mDb9a/oX-53/sVVa2"></script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRkIHSE4F8KjLsgOrqfLXUgeS1FdngABiY-grLb5kAceQP65u0gCbPEOWOU3B2z5lQ/X5E87/IRk91/eQPe3/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="fyBfZ9p6trPmZqCsL0lSSA/fyBce/CsLbb";
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../fyBfZ9p6trO5YaCMcnp7K0G2oIa0V4Ip2TstYcMyj3hmR41PK7LEbQu5ljrLp5J7bwf3-K5vufk/fyBce/3-Kd0',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id23e'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div id="id23f" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<![If !IE]> <a href="../../../app2/"><div class="logo"></div></a> <![endif]>
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp&nbsp&nbsp<a href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYOXsaT3KrMMYpLjGRIV004g/fyBce/O5Yf2">[Salir]</a> <a id="id240" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYTdEdipOiaUdEapJ9nq7rpIPNivJoG3L-RY0qKojPiIxihOYsoV8o3yEe_J57NbJ4VgErT6c3ECc/fyBce/iIx17" class="dropdown-toggle" data-toggle="dropdown"><span>Inicio</span><b
+		class="caret"></b></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYTdEdipOiaUdEapJ9nq7rpIPNivJoG3L-Jj4er1rXH2ecKL_EK4YlJiECgVRUArGqOZnm6vrwNBVfw7_nKm_V5rBGvA5ynIW30Pk9LNwNs8K19HnG-djmgM6BR436JVXhm_0Vr5SLiGc/fyBce/PRDd1"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYTdEdipOiaUdEapJ9nq7rpIPNivJoG3L-_vvTQnL5t8llil7bvsXdd4O5svNpsuK_oGpn9jfm07VV56Niuinuh030_4gJUu9w7iWo0eNgQWIedz_evmgH1a5xWbkNN2XZ3PoW8TPZ61Y/fyBce/PRDd1"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYTdEdipOiaUdEapJ9nq7rpIPNivJoG3L-_vvTQnL5t8llil7bvsXdd4O5svNpsuK_oGpn9jfm07VV56Niuinuh030_4gJUu9ww5TBq14gsUcUQIBMuzw3tXJsfC-EWM7ECQ9EJLX6DsQ/fyBce/PRDd1"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYTdEdipOiaUdEapJ9nq7rpIPNivJoG3L-_vvTQnL5t8llil7bvsXdd4O5svNpsuK_oGpn9jfm07VV56Niuinuh030_4gJUu9w77ABJewxS5fsAACS9jijwoJSL2xKF7IVAqN-edt7WWo/fyBce/PRDd1"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYTdEdipOiaUdEapJ9nq7rpIPNivJoG3L-_vvTQnL5t8llil7bvsXdd4O5svNpsuK_oGpn9jfm07VV56Niuinuh030_4gJUu9wIw8snzviLo5L3szEUpkAxjdYoZBFiHBCZmZ_jephoyM/fyBce/PRDd1"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYTdEdipOiaUdEapJ9nq7rpIPNivJoG3L-oB6MTc_ZKdfJGu77_JWsgeQ6uaQkuiEhXpms3H6Qoi-DUK7hbG1KIdL6DyoFUux2y-3Y4gE00Ks_EttciCeeFLm5Mf7F0c9URwcrBY5C_As/fyBce/PRDd1"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYTdEdipOiaUdEapJ9nq7rpIPNivJoG3L-655RDp1OeSvcQif2gmRRO23BRk2H7o5VNWiV38_1YUbzkHpsboKCX9NRZCepM9fufr6NMTIrz5ffYmC1DU0TwCaO4jDYoymTpQZJUJOJKks/fyBce/PRDd1"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id241">
+  
+</div>
+			
+
+<h3>Detalle de Planes de estudio</h3>
+
+<div class="backgroundBordered">
+	<h4>Plan de estudio:  <span>I22</span></h4>
+
+	
+	<div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id243">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>PLAN I22</span>
+	
+	
+	- <span>Requisito: Aprobar todos los items (suma 240 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  <tr>
+		  	<td>  <div id="id244">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id245">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZKPiPmm-PtCyLgEB1bM7BKdJCVc2rwYZOHsQVtFaEvi72hUtNdTlaTD/fyBce/d0v59"><span>12.67 - Química General</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZKPiPmm-PtCyLgEB1bM7BKdJCVc2rwYZOGe6WrmS2ASkd0Q7EGxi6wD/fyBce/d0v59"><span>71.20 - Informática General</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZKPiPmm-PtCyLgEB1bM7BKdJCVc2rwYZOE8bprP3O2y9Xh2jn5Tx43u/fyBce/d0v59"><span>92.01 - Análisis Matemático I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZKPiPmm-PtCyLgEB1bM7BKdJCVc2rwYZOFb22TvK56rFhRHS3sDgcnD/fyBce/d0v59"><span>93.18 - Álgebra Lineal</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZKPiPmm-PtCyLgEB1bM7BKdJCVc2rwYZOF4HAph0P4QUK49DgafUvoz/fyBce/d0v59"><span>94.33 - Tecnología y Sociedad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id246">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id247">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIxeCivUo-9Xu_GPFdbs27LNVrAHYlx62PF1DW92G2JqAdqQ2yRvnhl/fyBce/d0v59"><span>16.55 - Biología</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIxeCivUo-9Xu_GPFdbs27LNVrAHYlx62NS_NJ-MAoiEMRCLYi887VQ/fyBce/d0v59"><span>31.08 - Sistemas de Representación</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIxeCivUo-9Xu_GPFdbs27LNVrAHYlx62NymuB5h9IoZ3Ph_0j4Dpob/fyBce/d0v59"><span>92.02 - Análisis Matemático II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span><span>93.18 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIxeCivUo-9Xu_GPFdbs27LNVrAHYlx62MIeqsWyjUvCzYTuBiESm7G/fyBce/d0v59"><span>93.41 - Física I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Gestión de datos (obligatoria)</span></em></span></td>
+				<td>6</td>
+				
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id248">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id249">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIvByKKra1LHI-AxC3ojysVVERcZIU78tE-zK4xlXjX7oUMBpP8Nnsl/fyBce/d0v59"><span>30.89 - Mecánica de Sólidos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIvByKKra1LHI-AxC3ojysVVERcZIU78tE5rSZl3CEy51MQE8-BT2Ok/fyBce/d0v59"><span>92.03 - Análisis Matemático III</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span><span>93.18 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIvByKKra1LHI-AxC3ojysVVERcZIU78tFzPP3KsIPI5EwTGHpxZFCM/fyBce/d0v59"><span>93.36 - Probabilidad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>92.02 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIvByKKra1LHI-AxC3ojysVVERcZIU78tFPKl1RKAhpxf0sUGb0aTXm/fyBce/d0v59"><span>93.42 - Física II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.02 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id24a">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id24b">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZLtAZlQZg2E78XQygonXB-1i8kDV7PBFXr_4YIA2H0KxLu_5IVHSOPg/fyBce/d0v59"><span>11.28 - Sistemas Complejos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZLtAZlQZg2E78XQygonXB-1i8kDV7PBFXqHi4f_5y0UYYHPWwh6mdUt/fyBce/d0v59"><span>11.67 - Estadística Aplicada</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.36 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZLtAZlQZg2E78XQygonXB-1i8kDV7PBFXrgKzho6eDfY5Q3Bnh3i8vQ/fyBce/d0v59"><span>31.24 - Mecánica de Fluidos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span><span>93.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZLtAZlQZg2E78XQygonXB-1i8kDV7PBFXr9NNkM4AcQ-JqiWjDtWmv4/fyBce/d0v59"><span>92.05 - Análisis Matemático IV</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZLtAZlQZg2E78XQygonXB-1i8kDV7PBFXqcJhgETyMb8hxOs9Aj6uDN/fyBce/d0v59"><span>93.07 - Métodos Numéricos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZLtAZlQZg2E78XQygonXB-1i8kDV7PBFXqpjZ7DqRM_jPZsuG6sAAVf/fyBce/d0v59"><span>93.43 - Física III</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id24c">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id24d">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZI2C__UaljfMrIB6iFYSIMs3nVD4rcn8w9hjVSMmBBRUKmA-GLFaftL/fyBce/d0v59"><span>11.10 - Organización de la Producción I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZI2C__UaljfMrIB6iFYSIMs3nVD4rcn8w8Ef0a-Hp8tn8ejNebCZ7Qn/fyBce/d0v59"><span>11.16 - Materiales y Procesos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>30.89 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZI2C__UaljfMrIB6iFYSIMs3nVD4rcn8w81VXKY-YUCF1LgJ4_qqAnf/fyBce/d0v59"><span>21.30 - Principios y Aplicaciones Eléctricas</span></a></td>
+				<td>5</td>
+				<td>0</td>
+				
+				<td> <span>93.43 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZI2C__UaljfMrIB6iFYSIMs3nVD4rcn8w8QyJLriCpT19Pfc14cA_1j/fyBce/d0v59"><span>93.61 - Física IV</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>93.43 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZI2C__UaljfMrIB6iFYSIMs3nVD4rcn8w_hLYTPwPCLzRsWoOXEWWQS/fyBce/d0v59"><span>94.43 - Metodología del Diseño</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id24e">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id24f">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZJpb-BCaazR5g0LfUMD4YnvxvCjUDHeoe9be-PEdTZ9ZemUl1siuG_q/fyBce/d0v59"><span>11.20 - Supply Chain</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>11.10 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZJpb-BCaazR5g0LfUMD4YnvxvCjUDHeoe9adC0FQ9SjpwbCurtYrgEW/fyBce/d0v59"><span>11.51 - Investigación Operativa</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>11.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZJpb-BCaazR5g0LfUMD4YnvxvCjUDHeoe8HuviX3S9N12vfPa2xKRZl/fyBce/d0v59"><span>30.32 - Termodinámica y sus aplicaciones</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.42 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZJpb-BCaazR5g0LfUMD4YnvxvCjUDHeoe9E-AuwDyBsLaKYxygPzEil/fyBce/d0v59"><span>94.44 - Proyecto Interdisciplinario</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>94.43 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id250">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id251">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZLIlQ1eFltNnSMp99ApMd4T0MYU0O6ZhN9B5XMpxxi_fi2UDJjKEXGF/fyBce/d0v59"><span>11.75 - Tecnologías y Procesos de Producción</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>11.16 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZLIlQ1eFltNnSMp99ApMd4T0MYU0O6ZhN-ljFRCumr0cUDcOR3zBTFv/fyBce/d0v59"><span>23.17 - Electrónica e Instrumentación</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZLIlQ1eFltNnSMp99ApMd4T0MYU0O6ZhN9N1oes9o6mTqtmPQxUC9TR/fyBce/d0v59"><span>61.09 - Economía Empresaria</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>11.10 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZLIlQ1eFltNnSMp99ApMd4T0MYU0O6ZhN8MWze8gnqX3xZBhA0GZAHh/fyBce/d0v59"><span>71.90 - Certificaciones tecnológicas</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZLIlQ1eFltNnSMp99ApMd4T0MYU0O6ZhN87s1I-NeDV-63KW_1BEZkl/fyBce/d0v59"><span>94.51 - Inglés I</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id252">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id253">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIlAv650n5X530hCB5hWHyVJPqzyc3blQq0Q-Pd2q1oE4AKoDufb4Jo/fyBce/d0v59"><span>10.02 - Gestión Ambiental</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>11.75 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIlAv650n5X530hCB5hWHyVJPqzyc3blQp4x-Cvm51VXZsp95SsiqJ1/fyBce/d0v59"><span>11.63 - Simulación</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>11.51 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIlAv650n5X530hCB5hWHyVJPqzyc3blQoak2xWmr3ZRC7ykOFNNwNw/fyBce/d0v59"><span>61.28 - Economía</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>61.09 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZIlAv650n5X530hCB5hWHyVJPqzyc3blQqudV3jeV3zmryGFYe8uffF/fyBce/d0v59"><span>61.31 - Derecho para Ingenieros</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id254">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id255">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZJQAfeESjm_y4B4l92kak1J_UOoG0Vjc8xHlOWWV_0ogZ4OtODOJCif/fyBce/d0v59"><span>10.01 - Proyecto Final de Ingeniería Industrial (Anual)</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>94.44 &nbsp;</span><span>11.51 &nbsp;</span><span>61.09 &nbsp;</span><span>11.20 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id256">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id257">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZJFKNycYg5vckd0bNKpPFzbZGcsh1etmqQii7-MMxG3iNq3NVM3DdKB/fyBce/d0v59"><span>94.52 - Inglés II</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> <span>94.51 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChx_8H_aMAZJFKNycYg5vckd0bNKpPFzbZGcsh1etmqQCItuxRKY9rlJb0cXbmMbn/fyBce/d0v59"><span>94.65 - Practica Profesional supervisada</span></a></td>
+				<td>0</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr>
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id258">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id259">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><span target="_blank"><em><span>Bloque I Electivas</span></em></span></td>
+				<td>6</td>
+				
+				
+				<td> </td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Bloque II Electivas General</span></em></span></td>
+				<td>43</td>
+				
+				
+				<td> </td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Bloque III Electivas Gestión</span></em></span></td>
+				<td>3</td>
+				
+				
+				<td> </td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Bloque IV Electivas Tics</span></em></span></td>
+				<td>3</td>
+				
+				
+				<td> </td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Bloque V Electivas Energía</span></em></span></td>
+				<td>4</td>
+				
+				
+				<td> </td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Bloque VI Electivas Finanzas</span></em></span></td>
+				<td>6</td>
+				
+				
+				<td> </td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Bloque VII Electivas  Tecnología</span></em></span></td>
+				<td>6</td>
+				
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id25a">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Bloque I Electivas</span>
+	
+	
+	- <span>Requisito: Juntar 6 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id25b">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id25c">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pChoNbZkh4Sbc03zeOYuN61kkypOweFmfrGao3m3rEsvsvNaEMTsMoLNXQobAMtIQ0ICa2AznNBT3PAY-U6ErTiQ/fyBce/-U64d"><span>71.45 - Estructura de Datos y Programación</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>71.20 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id25d">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Bloque II Electivas General</span>
+	
+	
+	- <span>Requisito: Juntar 43 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id25e">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id25f">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPBBvVCNY2yY6KvSeq9I7FRg/fyBce/eq9ac"><span>10.07 - Creatividad</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPDmQn7aQ-KmQ0JYWToKRmDw/fyBce/WToc1"><span>10.09 - Formación para Emprendedores</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPuB-EoalscnNX13r6QaEmqw/fyBce/r6Q1c"><span>10.15 - Agroindustria</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPp92RaQzIvYk2SbGJkbSjZQ/fyBce/GJkd7"><span>10.16 - Machine Learning para Negocios</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> <span>92.03 &nbsp;</span><span>93.36 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPRb7skztTrf9To6MIW9EVrQ/fyBce/MIW5a"><span>10.21 - Herramientas Avanzadas de la Calidad</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> <span>11.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP65RmYuzBLJSQs4133WDhcA/fyBce/13390"><span>10.22 - Machine Learning Avanzada</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> <span>10.16 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP7-OWVXQEAdIi5_B32P_tgA/fyBce/B3240"><span>10.23 - Agroindustria II</span></a></td>
+				<td>3</td>
+				<td>145</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPEMZpqG45-tyt3EZ2Lz9Qmw/fyBce/Z2L43"><span>11.39 - Marketing</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPGrDFyLBhyQxRL2BLIJraww/fyBce/BLIee"><span>11.59 - Logística</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> <span>11.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPe0N94B3Xpw6QTTPmgmSSGg/fyBce/Pmge9"><span>11.76 - Gestión de Calidad</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPDmQn7aQ-KmTSYiiLrILrzg/fyBce/iLr9e"><span>11.84 - Gestión de Proyectos</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPDmQn7aQ-KmRBKFqcLihWcg/fyBce/qcLb9"><span>11.91 - Metodología de la Investigación</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPDmQn7aQ-KmSLVA_q1KUwPA/fyBce/_q1de"><span>14.03 - Gestión de la Innovación</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPDmQn7aQ-KmT5p2KkiTfzVQ/fyBce/Kki68"><span>14.14 - Introducción a la Consultoría</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPDmQn7aQ-KmTmp9RpFU7dlA/fyBce/RpF97"><span>14.37 - Análisis de Encuestas</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPDmQn7aQ-KmSB56CftOhiFg/fyBce/Cft80"><span>14.40 - Ingeniería y Cambio Climático</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPDmQn7aQ-KmQ9sHeUzWxijQ/fyBce/eUzc9"><span>14.46 - Lean Manufacturing</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPDmQn7aQ-KmSIAUKq4rlylw/fyBce/Kq44d"><span>14.59 - Lean Six Sigma White Belt</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPDmQn7aQ-KmSVMYZzl4GDeg/fyBce/Zzl9b"><span>14.67 - Bem1105x Pricing Options with Mathematical Models</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPDmQn7aQ-KmTXFbKaDvNchQ/fyBce/KaD6d"><span>14.72 - Analytics</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPuB-EoalscnP2mJv-zrKmcg/fyBce/v-z22"><span>14.77 - Diseño de Producto</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPuB-EoalscnMkysuQw6HvSg/fyBce/uQw1a"><span>14.97 - Diseño Circular: Sustentabilidad e Innovación en la Cadena de Valor.</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPuB-EoalscnNqOEVXrkK19A/fyBce/VXrdf"><span>14.99 - Electric Cars Technology</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPuB-EoalscnMR9GpPwiOqdQ/fyBce/pPwc6"><span>15.06 - Storytelling aplicado a los negocios</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPuB-EoalscnPJS12T4NDDDg/fyBce/2T441"><span>15.07 - Conceptos de Minería para Ing. Industriales</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPuB-EoalscnNHS2tV4nvsAQ/fyBce/tV421"><span>15.11 - Aplicaciones avanzadas de estadística</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>11.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPuB-EoalscnO9l0ij4Ot_Vg/fyBce/ij4e2"><span>15.12 - Análisis Estratégico del Mercado</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPuB-EoalscnMXvqcdjz4vTw/fyBce/cdj38"><span>15.13 - Innovación en materiales Biobasados</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPuB-EoalscnPlooW54PmXOQ/fyBce/W54d5"><span>15.14 - Proyecto I</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPuB-EoalscnNlEEEe5yU38A/fyBce/Ee554"><span>15.16 - Supply Chain leadership</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>11.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPp92RaQzIvYk7iD_X7SaveQ/fyBce/_X74d"><span>15.61 - Mecánica de Fluidos Computacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPp92RaQzIvYnIt2EPpSsHDA/fyBce/EPpb4"><span>15.62 - Ciclos reales en motores de combustión interna</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPp92RaQzIvYkry5nbHdBNhA/fyBce/nbHa3"><span>15.63 - Deformación y fractura de materiales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPp92RaQzIvYnJdafLqBBkIA/fyBce/fLqba"><span>15.69 - Factibilidad de proyectos Data Driven</span></a></td>
+				<td>3</td>
+				<td>145</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPp92RaQzIvYlAb3m4QqhCpw/fyBce/m4Q99"><span>15.70 - Service Design</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPp92RaQzIvYmfu4vf75H8FQ/fyBce/vf756"><span>15.71 - Introducción a la realidad virtual</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPp92RaQzIvYkE1jfp7wUXNw/fyBce/fp71c"><span>15.72 - Growth Hacking</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPp92RaQzIvYkJhvM8Wm_CRg/fyBce/M8W3b"><span>15.75 - Filosofía</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPp92RaQzIvYmQgbNW9Limiw/fyBce/NW96f"><span>15.76 - Prácticas Expositivas</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPp92RaQzIvYkc7wo-BE1Hkw/fyBce/o-B83"><span>15.77 - Química Inorgánica</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPRb7skztTrf-Xq38SyM1ihg/fyBce/8Sy1d"><span>15.80 - Seminario Internacional I</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPRb7skztTrf_cvw_QDz-5RQ/fyBce/_QD11"><span>15.81 - Seminario Internacional II</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPRb7skztTrf-rgxfrh9q8GQ/fyBce/frhab"><span>15.82 - Seminario Internacional III</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPRb7skztTrf8cb1UZLooBcA/fyBce/UZL76"><span>15.83 - Seminario Internacional IV</span></a></td>
+				<td>2</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPRb7skztTrf-7Uu06pxNaDA/fyBce/06pb9"><span>15.84 - Gestión de la Operación Diaria a través de DMS y KPIs Estratégicos</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPRb7skztTrf9tNUmTKtm8EQ/fyBce/mTK73"><span>15.85 - Logística Internacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>11.10 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPRb7skztTrf9cKLJ3j6X2rw/fyBce/J3j80"><span>15.86 - Analítica para la Cadena de Suministro</span></a></td>
+				<td>2</td>
+				<td>0</td>
+				
+				<td> <span>11.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPRb7skztTrf_aIk5u2hpXOw/fyBce/5u231"><span>15.87 - Simulación para la Cadena de Suministro</span></a></td>
+				<td>2</td>
+				<td>0</td>
+				
+				<td> <span>11.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPRb7skztTrf_XdnDoSxtVRg/fyBce/DoSa7"><span>15.89 - Mejora continua de procesos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>11.67 &nbsp;</span><span>11.10 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPRb7skztTrf9Q11HG8RStPw/fyBce/HG8b8"><span>16.04 - Neurociencias y Desarrollo Productivo</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP65RmYuzBLJTGevmcP7rnSQ/fyBce/mcP39"><span>21.44 - Instalaciones Eléctricas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP65RmYuzBLJSZvJoRW1PIjQ/fyBce/oRW63"><span>23.15 - Realidad Virtual</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>71.45 &nbsp;</span><span>71.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP65RmYuzBLJTHFOGpEyrqaA/fyBce/GpEab"><span>31.67 - Procesos de Manufactura I</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP65RmYuzBLJQ6Z3_aMmBOlA/fyBce/_aM0a"><span>47.73 - Operaciones Offshore - Petróleo y LNG</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP65RmYuzBLJSnTyGA-Bp3Xw/fyBce/GA-f2"><span>48.02 - AI: Data Management Course &amp; Digital Transformation</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP65RmYuzBLJT2WK1QMx3K8g/fyBce/1QM2c"><span>48.04 - El Gas Natural Licuado - Tecnología,  Mercados y Negocios</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>61.28 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP65RmYuzBLJRRPpXUeVjHAw/fyBce/XUe87"><span>48.05 - La Cadena de valor del Gas Natural</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>61.28 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP65RmYuzBLJS0jc0z1OO1Nw/fyBce/0z1f6"><span>61.11 - Derecho Laboral y Seguridad Social en la Empresa</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>61.31 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP65RmYuzBLJQobcmRx_545w/fyBce/mRx42"><span>61.34 - Valuación de Empresas</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>61.50 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP65RmYuzBLJQobVQJr66USQ/fyBce/QJr28"><span>71.22 - Sistemas de Inteligencia Artificial</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP7-OWVXQEAdJY_CRIz1JdWQ/fyBce/RIza2"><span>81.04 - Teoría de Juegos y Estrategia</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP7-OWVXQEAdJ4Be3SoBYiRg/fyBce/3Soee"><span>81.21 - Gestión de Ventas</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP7-OWVXQEAdKsarI9oYv4eQ/fyBce/I9ofe"><span>81.51 - Gestión de Empresas Familiares</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP7-OWVXQEAdLybeMiue3CZQ/fyBce/Miu58"><span>81.53 - Negocios en Internet</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP7-OWVXQEAdLL0uhQ9--j0g/fyBce/hQ9af"><span>81.59 - Gestión de Servicios</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP7-OWVXQEAdKnLoM2L0uYnw/fyBce/M2L16"><span>81.65 - Logística Internacional</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> <span>11.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP7-OWVXQEAdJnVx4iDeR4zQ/fyBce/4iD6e"><span>81.73 - Introducción a la IOT</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP7-OWVXQEAdLuP2niW2DTCw/fyBce/niWfb"><span>81.74 - Introducción a la realidad aumentada</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP7-OWVXQEAdJd3fn1rUhIWg/fyBce/n1rce"><span>81.94 - Experiencia Inmersiva de Innovación Tecnológica</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvP7-OWVXQEAdIKDROJX8Lztg/fyBce/OJXcc"><span>82.07 - Blockchain (Moneda digital descentralizada)</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPEMZpqG45-txiMdhtLAM3Gg/fyBce/htL2f"><span>82.08 - Cloud Computing</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPEMZpqG45-txi5qGFHo3rRA/fyBce/GFHf8"><span>82.17 - Análisis Multivariado</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> <span>11.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPEMZpqG45-tzxEQy4MdIvbg/fyBce/y4M21"><span>92.99 - Complementos de Análisis Matemático IV</span></a></td>
+				<td>2</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPEMZpqG45-tyfOpTiwU6NxA/fyBce/Tiwc1"><span>94.13 - Gestión de Organizaciones Sociales</span></a></td>
+				<td>6</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPEMZpqG45-ty63pVZTAy6iQ/fyBce/VZT1f"><span>94.19 - Comportamiento Organizacional</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> <span>94.33 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPEMZpqG45-txUgUWjz9pBpw/fyBce/Wjzd6"><span>94.27 - Administración de Recursos Humanos</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPEMZpqG45-txo7p26w-Coog/fyBce/26w02"><span>94.40 - Estructura de las Organizaciones</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCngM12zURTlAwXGvGJ9RJStM8_2vKtjqa530RcibgGVgfxZ4VfKHsFXQaNyBMUSvPEMZpqG45-twi4x8tsE6W8A/fyBce/8ts26"><span>94.42 - Comunicación Estratégica</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id260">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Bloque III Electivas Gestión</span>
+	
+	
+	- <span>Requisito: Juntar 3 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id261">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id262">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCuIYCFx3kvVueH0jREu_MYv8xNum6DZhgHN6WtF6Z1M_x_wVjzKyacw3h1D00RnIgR604TuXExYlTEQZ9nF92LQ/fyBce/Z9nae"><span>11.46 - Planeamiento Estratégico</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCuIYCFx3kvVueH0jREu_MYv8xNum6DZhgHN6WtF6Z1M_x_wVjzKyacw3h1D00RnIgYaXzAGLn8cAFDAsdWr-m6g/fyBce/sdW35"><span>11.73 - Teoría de la Decisión</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id263">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Bloque IV Electivas Tics</span>
+	
+	
+	- <span>Requisito: Juntar 3 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id264">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id265">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCdfH8ZHPeKBxkot3B3Hi0Khnf8ur1VWFChGCzJP1dy2PoBpdadh4hsWVjeWpfB1NLMTQFzmf9TB2j38AJFoiKZw/fyBce/AJFec"><span>15.65 - Derecho digital</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCdfH8ZHPeKBxkot3B3Hi0Khnf8ur1VWFChGCzJP1dy2PoBpdadh4hsWVjeWpfB1NLikdih_aGWfCmR-DY4-azhQ/fyBce/DY47e"><span>15.67 - Programación web</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCdfH8ZHPeKBxkot3B3Hi0Khnf8ur1VWFChGCzJP1dy2PoBpdadh4hsWVjeWpfB1NLObrASftrDs8uZiPkpO-6jA/fyBce/Pkp94"><span>15.68 - Programación Básica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCdfH8ZHPeKBxkot3B3Hi0Khnf8ur1VWFChGCzJP1dy2PoBpdadh4hsWVjeWpfB1NLGZF98rASzKMQljn4bljzVQ/fyBce/n4b4b"><span>81.03 - Sistemas de Información</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id266">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Bloque V Electivas Energía</span>
+	
+	
+	- <span>Requisito: Juntar 4 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id267">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id268">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pC72z_IvFSkfNBRtbt7sWhj86c0971CSKIifG904C6gj0o6IxuEVRCLf_iPuEA2HO53rvejW0Ao5NYov6KbmpBrA/fyBce/6Kb4c"><span>10.08 - Energías Renovables</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pC72z_IvFSkfNBRtbt7sWhj86c0971CSKIifG904C6gj0o6IxuEVRCLf_iPuEA2HO52oDagigHWD-zsBLZvBZF3w/fyBce/LZvf7"><span>10.12 - Energías Convencionales</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pC72z_IvFSkfNBRtbt7sWhj86c0971CSKIifG904C6gj0o6IxuEVRCLf_iPuEA2HO5C3Eul2d1pOQyq80dfp8NWg/fyBce/0df21"><span>10.18 - Demanda Energética</span></a></td>
+				<td>2</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pC72z_IvFSkfNBRtbt7sWhj86c0971CSKIifG904C6gj0o6IxuEVRCLf_iPuEA2HO5KRMmHRfmZDLsDXHsAEU92A/fyBce/HsAd5"><span>10.19 - Tecnologías Energéticas Disruptivas</span></a></td>
+				<td>2</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pC72z_IvFSkfNBRtbt7sWhj86c0971CSKIifG904C6gj0o6IxuEVRCLf_iPuEA2HO5m41AlU5sul28vJBENHerNA/fyBce/BENaa"><span>10.20 - Introducción al Desarrollo Energético Sustentable</span></a></td>
+				<td>2</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pC72z_IvFSkfNBRtbt7sWhj86c0971CSKIifG904C6gj0o6IxuEVRCLf_iPuEA2HO5ygTu8v1vyxG79xpbMKf9LQ/fyBce/pbMea"><span>10.24 - Economía de la Transición Energética</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pC72z_IvFSkfNBRtbt7sWhj86c0971CSKIifG904C6gj0o6IxuEVRCLf_iPuEA2HO5BqdlzWbRS07lPLSuGADcUA/fyBce/SuG24"><span>14.52 - Eficiencia Energética</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pC72z_IvFSkfNBRtbt7sWhj86c0971CSKIifG904C6gj0o6IxuEVRCLf_iPuEA2HO5Iu5I-cDgnFY6Hz7yfVe-mQ/fyBce/7yf63"><span>15.15 - Tecnologías del Hidrógeno</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pC72z_IvFSkfNBRtbt7sWhj86c0971CSKIifG904C6gj0o6IxuEVRCLf_iPuEA2HO5UP_xjXy5Ke54XV0LjQvTyA/fyBce/0Ljbd"><span>34.98 - Baterías y Acumulación de Energía</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>30.32 &nbsp;</span><span>12.67 &nbsp;</span><span>23.17 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pC72z_IvFSkfNBRtbt7sWhj86c0971CSKIifG904C6gj0o6IxuEVRCLf_iPuEA2HO55CVYuUyf7X8YqXr6sfL_mw/fyBce/r6s3e"><span>47.86 - Transición Energética y Sustentabilidad</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id269">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Bloque VI Electivas Finanzas</span>
+	
+	
+	- <span>Requisito: Juntar 6 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id26a">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id26b">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCcOn1dZQKmZv5Z4VMsWztOQKuL8BCKHwaFj8ZxpN26PowDKbDQ2s58ZYNCVAIg5-b4jVhgslIaIhFWiny-v9Hnw/fyBce/ny-c1"><span>15.64 - Sistema Monetario y Financiero en Argentina</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCcOn1dZQKmZv5Z4VMsWztOQKuL8BCKHwaFj8ZxpN26PowDKbDQ2s58ZYNCVAIg5-b42NEWbYiwlrX3jVBoALyhw/fyBce/VBod2"><span>61.30 - Econometría Aplicada</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> <span>11.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCcOn1dZQKmZv5Z4VMsWztOQKuL8BCKHwaFj8ZxpN26PowDKbDQ2s58ZYNCVAIg5-bX4PrMQfzzuhYE42gnPmaxQ/fyBce/2gnf8"><span>61.50 - Finanzas de la Empresa</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCcOn1dZQKmZv5Z4VMsWztOQKuL8BCKHwaFj8ZxpN26PowDKbDQ2s58ZYNCVAIg5-bgX7uhVlrDTHKic78X4ciiQ/fyBce/78X66"><span>61.93 - Estrategia Financiera</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>61.09 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id26c">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Bloque VII Electivas  Tecnología</span>
+	
+	
+	- <span>Requisito: Juntar 6 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id26d">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id26e">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCc2rdjasOEW4QKI2PHWWRypPeAPWKjPX3kstTklsdkwxUkHqCeMcWoiLgqA78pS_1f-CUn2ZuOHiFSJy0y7s5-w/fyBce/y0y91"><span>10.04 - Plantas Industriales</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCc2rdjasOEW4QKI2PHWWRypPeAPWKjPX3kstTklsdkwxUkHqCeMcWoiLgqA78pS_1WmGrqqZZiX3miZX7TraAUA/fyBce/X7Tf4"><span>11.14 - Diseño de Producto</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> <span>11.16 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCc2rdjasOEW4QKI2PHWWRypPeAPWKjPX3kstTklsdkwxUkHqCeMcWoiLgqA78pS_1oX3CO9KouggJ-zIhVhqD0A/fyBce/IhV86"><span>11.19 - Prototipado e Impresión 3D</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCc2rdjasOEW4QKI2PHWWRypPeAPWKjPX3kstTklsdkwxUkHqCeMcWoiLgqA78pS_1SKXlZwNCRicdse13tDz-Lg/fyBce/13td1"><span>11.33 - Gestión de la tecnología</span></a></td>
+				<td>3</td>
+				<td>160</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id26f">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Gestión de datos (obligatoria)</span>
+	
+	
+	- <span>Requisito: Aprobar 1 item(s) (suma 6 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id270">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id271">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCKA0jC2IHj0uEv_IZ_iwwSGufqN1Cx7hQMyx21g8OYeK5K0eV0n0qmDIzPBc10B0OCf1zMJ6pMCtlLBeZdv-s8Q/fyBce/eZd9e"><span>71.78 - Gestión de Datos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>71.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trO5YaCMcnp7K7vyeiu6PRDYd0vD7XspPtYfvYUBo9EJ_uki96jNI3pCKA0jC2IHj0uEv_IZ_iwwSGufqN1Cx7hQMyx21g8OYeK5K0eV0n0qmDIzPBc10B0OtF8x65PaDnn7y0OiqrVfmw/fyBce/Oiq96"><span>71.88 - Gestión de Datos</span></a></td>
+				<td>6</td>
+				<td>900</td>
+				
+				<td> <span>71.20 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div>
+	
+
+	<div id="id272">
+		
+		<div style="clear:both;">
+</div>
+	</div>
+	
+	<div id="id273">
+
+<h4>Títulos otorgados</h4>
+<table class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr class="blue">
+			<td>Tipo</td>
+			<td>Título</td>
+			<td>Requisitos</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span>Principal</span></td>
+			<td><span>Ingeniero/a Industrial</span></td>
+			<td><span>Aprobar I22 (sumar 240 créditos)</span></td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+
+</div>
+
+
+		</div>
+		<div id="id23e"></div>
+	</div>
+</body>
+</html>

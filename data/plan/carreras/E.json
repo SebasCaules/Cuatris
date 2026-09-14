@@ -1,0 +1,620 @@
+{
+ "carrera": {
+  "codigo": "E",
+  "nombre": "Ingeniería Electricista",
+  "escuela": "Escuela de Gestión y Tecnología",
+  "nivel": "Grado"
+ },
+ "plan": "E 11",
+ "planes": [
+  {
+   "nombre": "E 11",
+   "version": "1",
+   "desde": "Primer Cuat. 2011",
+   "hasta": "",
+   "elegido": true
+  },
+  {
+   "nombre": "E 11A",
+   "version": "1",
+   "desde": "Primer Cuat. 2011",
+   "hasta": "",
+   "elegido": false
+  }
+ ],
+ "vacio": false,
+ "capturado": "2026-09-13",
+ "bloques": [
+  {
+   "nombre": "Ciclo Básico",
+   "tituloOtorgado": null,
+   "requisito": "Aprobar todos los items (suma 147 créditos)",
+   "creditos": 147,
+   "tipo": "todos",
+   "secciones": [
+    {
+     "nombre": "Año 1 - Cuatrimestre 1",
+     "anio": 1,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.01",
+       "nombre": "Química I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.06",
+       "nombre": "Introducción a la Computación",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "93.17",
+       "nombre": "Matemática I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "93.18",
+       "nombre": "Álgebra Lineal",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 1 - Cuatrimestre 2",
+     "anio": 1,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "22.07",
+       "nombre": "Programación I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "22.06"
+       ]
+      },
+      {
+       "codigo": "31.08",
+       "nombre": "Sistemas de Representación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "93.02",
+       "nombre": "Matemática II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.18",
+        "93.17"
+       ]
+      },
+      {
+       "codigo": "93.41",
+       "nombre": "Física I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.17"
+       ]
+      },
+      {
+       "codigo": "94.21",
+       "nombre": "Formación General I",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 1",
+     "anio": 2,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "31.19",
+       "nombre": "Estática y Resistencia de Materiales",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.02",
+        "93.41",
+        "31.08"
+       ]
+      },
+      {
+       "codigo": "93.03",
+       "nombre": "Matemática III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.18",
+        "93.17"
+       ]
+      },
+      {
+       "codigo": "93.24",
+       "nombre": "Probabilidad y Estadística",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.02"
+       ]
+      },
+      {
+       "codigo": "93.42",
+       "nombre": "Física II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.02"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 2",
+     "anio": 2,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "31.21",
+       "nombre": "Termodinámica",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.42"
+       ]
+      },
+      {
+       "codigo": "93.07",
+       "nombre": "Métodos Numéricos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.03"
+       ]
+      },
+      {
+       "codigo": "93.43",
+       "nombre": "Física III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.03",
+        "93.41"
+       ]
+      },
+      {
+       "codigo": "93.65",
+       "nombre": "Matemática IV",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.02",
+        "93.03"
+       ]
+      },
+      {
+       "codigo": "94.24",
+       "nombre": "Metodología del Aprendizaje",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 1",
+     "anio": 3,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "21.32",
+       "nombre": "Tecnología de Mat. Eléctricos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.65",
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "21.71",
+       "nombre": "Electrotecnia I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.65"
+       ]
+      },
+      {
+       "codigo": "22.08",
+       "nombre": "Algoritmos y Estructura de Datos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.02",
+        "22.07"
+       ]
+      },
+      {
+       "codigo": "93.44",
+       "nombre": "Física IV",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.42",
+        "93.43"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 2",
+     "anio": 3,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "21.74",
+       "nombre": "Instrumentos y Mediciones Eléctricas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.71"
+       ]
+      },
+      {
+       "codigo": "21.80",
+       "nombre": "Máquinas Eléctricas I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.71",
+        "21.32"
+       ]
+      },
+      {
+       "codigo": "22.20",
+       "nombre": "Electrónica General",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.71"
+       ]
+      },
+      {
+       "codigo": "22.37",
+       "nombre": "Electromagnetismo",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.65",
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "22.42",
+       "nombre": "Laboratorio de Electrónica",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.71"
+       ]
+      },
+      {
+       "codigo": "31.24",
+       "nombre": "Mecánica de Fluidos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.65"
+       ]
+      },
+      {
+       "codigo": "31.27",
+       "nombre": "Mecanismos y Elementos de Máquinas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "31.17"
+       ]
+      },
+      {
+       "codigo": "94.51",
+       "nombre": "Inglés I",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Ciclo Profesional",
+   "tituloOtorgado": null,
+   "requisito": "Aprobar todos los items (suma 93 créditos)",
+   "creditos": 93,
+   "tipo": "todos",
+   "secciones": [
+    {
+     "nombre": "Año 4 - Cuatrimestre 1",
+     "anio": 4,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "11.15",
+       "nombre": "Organización Industrial",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "21.79",
+       "nombre": "Electrotecnia II",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.71"
+       ]
+      },
+      {
+       "codigo": "21.81",
+       "nombre": "Máquinas Eléctricas II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.80"
+       ]
+      },
+      {
+       "codigo": "22.58",
+       "nombre": "Instrumentación y Control",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "22.20"
+       ]
+      },
+      {
+       "codigo": "31.38",
+       "nombre": "Turbomáquinas",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "31.21",
+        "31.24"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 4 - Cuatrimestre 2",
+     "anio": 4,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "21.65",
+       "nombre": "Instalaciones Eléctricas y Luminotecnia",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.81"
+       ]
+      },
+      {
+       "codigo": "21.82",
+       "nombre": "Centrales Eléctricas",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.74",
+        "22.58",
+        "21.81"
+       ]
+      },
+      {
+       "codigo": "21.83",
+       "nombre": "Transmisión de la Energía Eléctrica",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.79",
+        "22.37"
+       ]
+      },
+      {
+       "codigo": "61.23",
+       "nombre": "Economía para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 1",
+     "anio": 5,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.83",
+       "nombre": "Seguridad Ocupacional y Ambiental",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.71"
+       ]
+      },
+      {
+       "codigo": "21.45",
+       "nombre": "Eficiencia Energética",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.65"
+       ]
+      },
+      {
+       "codigo": "21.84",
+       "nombre": "Proyecto Final",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.83",
+        "21.82",
+        "21.65"
+       ]
+      },
+      {
+       "codigo": "21.85",
+       "nombre": "Sistemas Eléctricos de Potencia",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.83",
+        "21.81"
+       ]
+      },
+      {
+       "codigo": "21.86",
+       "nombre": "Diseño de Líneas de Transmisión y Estaciones Transformadoras",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.83"
+       ]
+      },
+      {
+       "codigo": "22.28",
+       "nombre": "Electrónica de Potencia",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "22.20"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 2",
+     "anio": 5,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "21.72",
+       "nombre": "Mantenimiento de Máquinas e Instalaciones Eléctricas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.65",
+        "21.81"
+       ]
+      },
+      {
+       "codigo": "21.73",
+       "nombre": "Energías Alternativas",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.82",
+        "21.65"
+       ]
+      },
+      {
+       "codigo": "21.87",
+       "nombre": "Mercado Eléctrico",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.83",
+        "61.23"
+       ]
+      },
+      {
+       "codigo": "21.88",
+       "nombre": "Distribución de la Energía Eléctrica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "21.83",
+        "21.65"
+       ]
+      },
+      {
+       "codigo": "21.98",
+       "nombre": "Práctica Laboral",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "61.31",
+       "nombre": "Derecho para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.52",
+       "nombre": "Inglés II",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.51"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Electivas",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 3 créditos",
+   "creditos": 3,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "94.23",
+       "nombre": "Formación General III",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.21"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "titulos": [
+  {
+   "tipo": "Principal",
+   "titulo": "Ingeniero Electricista",
+   "requisitos": "Aprobar E 11 y sumar 240 créditos",
+   "creditos": 240
+  }
+ ]
+}

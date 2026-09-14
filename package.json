@@ -14,6 +14,7 @@
     "start": "next start",
     "typecheck": "node scripts/build-planner-data.mjs && tsc --noEmit",
     "datos": "node scripts/build-planner-data.mjs && node scripts/build-finales-flags-data.mjs && node scripts/build-mesas-finales-data.mjs",
+    "carreras": "node scripts/build-carreras-data.mjs",
     "sync": "bash scripts/sync-desde-studyvaults.sh"
   },
   "dependencies": {

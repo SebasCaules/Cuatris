@@ -1,0 +1,1196 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description"
+	content="Sistema de Gesti&oacute;n Acad&eacute;mica" />
+<meta name="keywords" content="academica, gestion" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="../../../css/bootstrap.css" type="text/css" rel="stylesheet"/>
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="../../../css/itba_bootstrap.css" type="text/css" rel="stylesheet"/>
+<script src="../../../js/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="../../../js/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRVhLnwK6Xt2XUzmDb5rEL3LyVOGdQenvKLJg6cKXTudsxmjFoX-n0wC9iZeNW0T7TPgvaJxrcFBg/X5E87/mDb9a/oX-53/sVVa2"></script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRkIHSE4F8KjLsgOrqfLXUgeS1FdngABiY-grLb5kAceQP65u0gCbPEOWOU3B2z5lQ/X5E87/IRk91/eQPe3/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="fyBfZ9p6trOAjupKWCFlnA/fyBce/pKWbb";
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../fyBfZ9p6trNIZDWVnockcTV-16gFw4XWtV4EH5x1VSGcIMvr1mp9y1cObvywblRCcsi2XRkC1EY/fyBce/2XR1b',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id160'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div id="id161" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<![If !IE]> <a href="../../../app2/"><div class="logo"></div></a> <![endif]>
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp&nbsp&nbsp<a href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYTYynbbGx17PrWFH2zMC3Cg/fyBce/NIZfe">[Salir]</a> <a id="id162" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYxfT-FX6m5TIvz2CE826OCr9IcXBRZXzWGbBuAMcuSBV3CfwBa-MAq8EWU3xF-sE2oDFXbw2rjpc/fyBce/SBVd6" class="dropdown-toggle" data-toggle="dropdown"><span>Inicio</span><b
+		class="caret"></b></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYxfT-FX6m5TIvz2CE826OCr9IcXBRZXzWfpG--VpssQa2cAqhBJyO5UpMI7quFqxYG7rjmu5bzzKrXZB7h22uqLGviqJYXSZChhMlxQmar74VFkclAhWs_Z1buNYUkMuYXLVY6NcMNRY/fyBce/Tle3c"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYxfT-FX6m5TIvz2CE826OCr9IcXBRZXzW9QNFHa36dVAaLqjqHkRDauvvKLRpnV6TVAwbPABjsk-_uWHOQJoXkTsRkAtqvS9iukqn2cfDHUMZQ78rSOfQuh5f_396xkwiOOuNMBNbYlQ/fyBce/Tle3c"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYxfT-FX6m5TIvz2CE826OCr9IcXBRZXzW9QNFHa36dVAaLqjqHkRDauvvKLRpnV6TVAwbPABjsk-_uWHOQJoXkTsRkAtqvS9iNRrkEz9z0om5CWHEdHb13SWoPMKtlCkC9WPDMjAj2W0/fyBce/Tle3c"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYxfT-FX6m5TIvz2CE826OCr9IcXBRZXzW9QNFHa36dVAaLqjqHkRDauvvKLRpnV6TVAwbPABjsk-_uWHOQJoXkTsRkAtqvS9iVYdnu9I4Ruxi3UMfBXnyQc-tuveuOSoA2KNA3_Qcdek/fyBce/Tle3c"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYxfT-FX6m5TIvz2CE826OCr9IcXBRZXzW9QNFHa36dVAaLqjqHkRDauvvKLRpnV6TVAwbPABjsk-_uWHOQJoXkTsRkAtqvS9iCzvXTUTV9E_3EmrJwqRbnXM5ckKBcVidkDYDnXCzgU8/fyBce/Tle3c"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYxfT-FX6m5TIvz2CE826OCr9IcXBRZXzWjIMZcDyKOFJCDp32gp5yCSpa-5BXSwo66nheef4LGlQZOqX68sIPAKHne9fiyPv49yHnu_0FE9LH9v6mu7Cc42Xs_VemOStMHuRZu3LSKps/fyBce/Tle3c"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYxfT-FX6m5TIvz2CE826OCr9IcXBRZXzWldei7FAuqCU36xfkOUZLfB_cfh__1skiYFura1utLQwqy4tHawxsSi6nDQ1L7E4QbSjTKMegtVodtECIRwUnt0HhNgaATpDe7HrrzbszyGY/fyBce/Tle3c"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id163">
+  
+</div>
+			
+
+<h3>Detalle de Planes de estudio</h3>
+
+<div class="backgroundBordered">
+	<h4>Plan de estudio:  <span>C23</span></h4>
+
+	
+	<div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id165">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Básico</span>
+	
+	
+	- <span>Requisito: Aprobar todos los items (suma 221 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  <tr>
+		  	<td>  <div id="id166">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id167">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxTW3rNQ_F2S3k67Da7QOaD-P8L9-AFM2c_E-lq8kS2K-d-NKYHrcXh/fyBce/ioReb"><span>12.67 - Química General</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxTW3rNQ_F2S3k67Da7QOaD-P8L9-AFM2dqliglXpzF7YtLRRo1XETd/fyBce/ioReb"><span>71.58 - Informática General</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxTW3rNQ_F2S3k67Da7QOaD-P8L9-AFM2e9tNEgTryTc3Wzw-WEwq2s/fyBce/ioReb"><span>92.01 - Análisis Matemático I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxTW3rNQ_F2S3k67Da7QOaD-P8L9-AFM2f1064sSICCuPWogOzBvtXO/fyBce/ioReb"><span>93.18 - Álgebra Lineal</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxTW3rNQ_F2S3k67Da7QOaD-P8L9-AFM2dhijjWXHJQjCal9rghF0LM/fyBce/ioReb"><span>94.33 - Tecnología y Sociedad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id168">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id169">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxzaMwmJYCrN13TuZVJotly4BBHAJZAkco2rPv_37WfwQbj8niwmmIlx/fyBce/ioReb"><span>16.55 - Biología</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxzaMwmJYCrN13TuZVJotly4BBHAJZAkco0G_Tn1cJlwW-dl2FwTB_uj/fyBce/ioReb"><span>31.08 - Sistemas de Representación</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxzaMwmJYCrN13TuZVJotly4BBHAJZAkco2nOaYlO2KO8VcNBpptugbg/fyBce/ioReb"><span>67.04 - Introducción a la temática social</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxzaMwmJYCrN13TuZVJotly4BBHAJZAkco1c2G5SmSWOl_ZRKcw8AAag/fyBce/ioReb"><span>71.90 - Certificaciones tecnológicas</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxzaMwmJYCrN13TuZVJotly4BBHAJZAkco0oDsF4aupc5OMZRfAxo7nP/fyBce/ioReb"><span>92.02 - Análisis Matemático II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span><span>93.18 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxzaMwmJYCrN13TuZVJotly4BBHAJZAkco3CNOqa0dyUcOCudemfL7Oq/fyBce/ioReb"><span>93.41 - Física I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id16a">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id16b">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxwc1_zdQnm9JWp13IuT2uMePvd6Ag4XJaemWuN2oqa9IKV2WWatYwh/fyBce/ioReb"><span>67.02 - Estática</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.18 &nbsp;</span><span>93.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxwc1_zdQnm9JWp13IuT2uMePvd6Ag4XJaOj164n1HQrOSXf5hFG4Ur/fyBce/ioReb"><span>92.03 - Análisis Matemático III</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span><span>93.18 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxwc1_zdQnm9JWp13IuT2uMePvd6Ag4XJbpSzM-R2SLPajR1WGQnb3R/fyBce/ioReb"><span>93.24 - Probabilidad y Estadística</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.02 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxwc1_zdQnm9JWp13IuT2uMePvd6Ag4XJYgE-adu5Sk5xFAErHsFl91/fyBce/ioReb"><span>93.42 - Física II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.02 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxwc1_zdQnm9JWp13IuT2uMePvd6Ag4XJYKOLDpnn3iHm76jP2_2AyR/fyBce/ioReb"><span>94.51 - Inglés I</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id16c">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id16d">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwouD4ozXZGEuACCjBfeA5Na1rWeJww8qMpF0i8Kc2DiJtNGaXrG4dR/fyBce/ioReb"><span>31.22 - Mecánica de Fluidos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span><span>93.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwouD4ozXZGEuACCjBfeA5Na1rWeJww8qOO74JOgNMcAfsICibON_YI/fyBce/ioReb"><span>67.01 - Tecnología de materiales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.41 &nbsp;</span><span>12.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwouD4ozXZGEuACCjBfeA5Na1rWeJww8qP3sLyP_Hnl0GZyowzrwSzX/fyBce/ioReb"><span>67.03 - Resistencia de Materiales</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>67.02 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwouD4ozXZGEuACCjBfeA5Na1rWeJww8qOZO1qJiKQfHbm2cJtbH3tv/fyBce/ioReb"><span>93.43 - Física III</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span><span>93.41 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id16e">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id16f">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxweq_WRst-AycbZ0ozxloSI23zND6rrkjV4jun8nYlxrxIcjehYgaW8/fyBce/ioReb"><span>11.15 - Organización Industrial</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxweq_WRst-AycbZ0ozxloSI23zND6rrkjXq_cc523aQj6ersluvd3zY/fyBce/ioReb"><span>67.05 - Tecnología del Hormigón</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>67.01 &nbsp;</span><span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxweq_WRst-AycbZ0ozxloSI23zND6rrkjW5JL0QlktiozoKjRcEYb4A/fyBce/ioReb"><span>67.06 - Construcciones</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>67.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxweq_WRst-AycbZ0ozxloSI23zND6rrkjWulU6VTfs2U_IwjqtD5S3p/fyBce/ioReb"><span>67.08 - Análisis Estructural</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>67.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxweq_WRst-AycbZ0ozxloSI23zND6rrkjWLjBXV0L6kTnrV0ZNU2iHG/fyBce/ioReb"><span>93.07 - Métodos Numéricos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>71.58 &nbsp;</span><span>92.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxweq_WRst-AycbZ0ozxloSI23zND6rrkjUIGQTFBuyFw11ksmLji9ZJ/fyBce/ioReb"><span>94.43 - Metodología del Diseño</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id170">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id171">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwWXsFj_r8b_l2bYTUF5RytH01M9Pr1u4RJP4jY0aQyBRZdvzZuyifn/fyBce/ioReb"><span>46.21 - Geología I</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.42 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwWXsFj_r8b_l2bYTUF5RytH01M9Pr1u4SF1PuwHeHplyZ8RPnd9inV/fyBce/ioReb"><span>67.07 - Geotopografía</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.18 &nbsp;</span><span>93.42 &nbsp;</span><span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwWXsFj_r8b_l2bYTUF5RytH01M9Pr1u4SRDSlZD0mvHDjVzMWKCM4S/fyBce/ioReb"><span>67.09 - Instalaciones</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>67.06 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwWXsFj_r8b_l2bYTUF5RytH01M9Pr1u4SVtZJqzy3g_436d0dWJZQ8/fyBce/ioReb"><span>67.10 - Hormigón I</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>67.03 &nbsp;</span><span>67.06 &nbsp;</span><span>67.05 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwWXsFj_r8b_l2bYTUF5RytH01M9Pr1u4QHgYkEqE0Fh9DW0Uwbo9r1/fyBce/ioReb"><span>94.44 - Proyecto Interdisciplinario</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>94.43 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwWXsFj_r8b_l2bYTUF5RytH01M9Pr1u4RM980L4wbcVoEPkjw4F30V/fyBce/ioReb"><span>94.52 - Inglés II</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> <span>94.51 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id172">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id173">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxIvLcBckXtmtBDSeXZ5i1DpSdGeRKQfFeGxwDRPviKnADPtvcplp8Q/fyBce/ioReb"><span>61.27 - Análisis de Coyuntura Económica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxIvLcBckXtmtBDSeXZ5i1DpSdGeRKQfFfym_N0TLFANq6JRukovH5B/fyBce/ioReb"><span>61.31 - Derecho para Ingenieros</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>94.33 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxIvLcBckXtmtBDSeXZ5i1DpSdGeRKQfFemQBgbTjVtrNtxNMb_TslZ/fyBce/ioReb"><span>67.11 - Evaluación de Impacto Ambiental y Social</span></a></td>
+				<td>2</td>
+				<td>0</td>
+				
+				<td> <span>16.55 &nbsp;</span><span>12.67 &nbsp;</span><span>67.06 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxIvLcBckXtmtBDSeXZ5i1DpSdGeRKQfFdpwzSrTJFWJOXi6ORED4BD/fyBce/ioReb"><span>67.12 - Geotecnia</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>31.22 &nbsp;</span><span>67.03 &nbsp;</span><span>67.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxxIvLcBckXtmtBDSeXZ5i1DpSdGeRKQfFe9H-1G44yxUhxgHeFu26pC/fyBce/ioReb"><span>67.13 - Hidrología y obras hidráulicas</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>67.03 &nbsp;</span><span>31.22 &nbsp;</span><span>67.07 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id174">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id175">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwY3ULmZ8j1wrztRDtyj4RHuRHhPgYHX-nfmvq08hJeRF37NIrrw8lR/fyBce/ioReb"><span>67.14 - Hormigón II</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>67.10 &nbsp;</span><span>93.07 &nbsp;</span><span>67.08 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwY3ULmZ8j1wrztRDtyj4RHuRHhPgYHX-lm0UjATCWazMGYk2LgyX_Z/fyBce/ioReb"><span>67.15 - Planeamiento territorial y urbano</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>94.33 &nbsp;</span><span>61.31 &nbsp;</span><span>67.07 &nbsp;</span><span>67.06 &nbsp;</span><span>67.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwY3ULmZ8j1wrztRDtyj4RHuRHhPgYHX-mwk7Etc-CY-PQTg48uqF1t/fyBce/ioReb"><span>67.16 - Vías de Comunicación</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>67.07 &nbsp;</span><span>67.12 &nbsp;</span><span>67.06 &nbsp;</span><span>67.05 &nbsp;</span><span>67.13 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwY3ULmZ8j1wrztRDtyj4RHuRHhPgYHX-nrNE5mhTsiUePV4MgHrB3A/fyBce/ioReb"><span>67.17 - Higiene y Seguridad en Obras Civiles</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>94.33 &nbsp;</span><span>67.06 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id176">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id177">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwYQ46GpQiIJpLrOp8TxiftI3RLZW_JsmSWqD0hfjWnUDbt_Q-92b5i/fyBce/ioReb"><span>17.20 - Agua y Efluentes Líquidos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>67.09 &nbsp;</span><span>67.12 &nbsp;</span><span>67.13 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwYQ46GpQiIJpLrOp8TxiftI3RLZW_JsmTdNVB8vZRRMUuc9W5-Lk5l/fyBce/ioReb"><span>67.18 - Proyecto Final</span></a></td>
+				<td>6</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwYQ46GpQiIJpLrOp8TxiftI3RLZW_JsmTVE2EkpB3pjvXVoNeW2MJY/fyBce/ioReb"><span>67.19 - Cimentaciones</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>67.10 &nbsp;</span><span>67.08 &nbsp;</span><span>67.12 &nbsp;</span><span>67.13 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwYQ46GpQiIJpLrOp8TxiftI3RLZW_JsmSOHfbHXhQJShnGz_oraKph/fyBce/ioReb"><span>67.20 - Estructuras Metálicas y de Madera</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>67.10 &nbsp;</span><span>67.08 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwYQ46GpQiIJpLrOp8TxiftI3RLZW_JsmQ7OMZ60whw-_3Wj77akL1u/fyBce/ioReb"><span>67.21 - Organización y conducción de obras</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>11.15 &nbsp;</span><span>67.10 &nbsp;</span><span>67.09 &nbsp;</span><span>67.12 &nbsp;</span><span>67.06 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwYQ46GpQiIJpLrOp8TxiftI3RLZW_JsmScyK6cjYNksz2en8T3-FFt/fyBce/ioReb"><span>67.22 - Auditorías ambientales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>67.11 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id178">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id179">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI2429kkUBJedzxwEWcmKqJEsLpsGF2QnEy9-F_JycOYvNaQ39coazyL38n7U8kn8Dk9J/fyBce/ioReb"><span>94.65 - Practica Profesional supervisada</span></a></td>
+				<td>0</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Electivas</span></em></span></td>
+				<td>30</td>
+				<td>30</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr>
+	      
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id17a">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Electivas</span>
+	
+	
+	- <span>Requisito: Juntar 30 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id17b">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id17c">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jEgMUYMVKEDTxL5GoH1EVYw/fyBce/GoH7f"><span>10.07 - Creatividad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jNqG8KneoXpx8lHFXLc-O-w/fyBce/FXLa9"><span>10.08 - Energías Renovables</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j9kUY-Ur3MOdc0Urdb32VMA/fyBce/rdb9f"><span>10.09 - Formación para Emprendedores</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jN627x7R5wAECUWKE3KX_Gw/fyBce/KE338"><span>10.12 - Energías Convencionales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jM2cprS3JaVMEMSF4hrNKaQ/fyBce/F4h29"><span>11.05 - Calidad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jlap7CE0KsdltQXJYP17TuA/fyBce/JYP60"><span>11.19 - Prototipado e Impresión 3D</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jod4RWaiR1_1-0mdQTVaalQ/fyBce/dQT46"><span>11.39 - Marketing</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j0wg3SG9W5xOeT4RrCVd6qg/fyBce/RrCf2"><span>11.46 - Planeamiento Estratégico</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jzMeGwB_G37c3uCeVSuu4Ag/fyBce/eVSd1"><span>11.73 - Teoría de la Decisión</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jeSqU7imQ2Pv5OzvTdX0C1w/fyBce/vTd35"><span>11.76 - Gestión de Calidad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jNqG8KneoXpx-BA7QhXtvpg/fyBce/7Qh0d"><span>11.84 - Gestión de Proyectos</span></a></td>
+				<td>3</td>
+				<td>160</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jNqG8KneoXpzo0QzVDF9Q-w/fyBce/zVDf7"><span>11.89 - Formulación y Evaluación de Proyectos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jNqG8KneoXpx1j5pGCE93sA/fyBce/pGCeb"><span>16.04 - Neurociencias y Desarrollo Productivo</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jNqG8KneoXpzIAGLFy0En6g/fyBce/LFy4e"><span>25.63 - Redes Neuronales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jNqG8KneoXpweHvTmQiE66g/fyBce/TmQ57"><span>25.64 - Deep Learning</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jNqG8KneoXpzyQ8WyIRvsEA/fyBce/WyI66"><span>25.66 - Acústica para Ingenieros</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jNqG8KneoXpxgUiVmpz9mVg/fyBce/Vmpb8"><span>25.69 - Introducción a la Investigación</span></a></td>
+				<td>3</td>
+				<td>183</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jNqG8KneoXpxIcIE0CcW2Yw/fyBce/E0Ca7"><span>46.82 - Evaluación de Proyectos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jNqG8KneoXpyREngFvus2-A/fyBce/gFv46"><span>47.87 - Desarrollo de Negocios</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jNqG8KneoXpwtCTVwBjlPCQ/fyBce/VwB60"><span>61.04 - Sistema Monetario y Financiero en Argentina</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j9kUY-Ur3MOeeuaTS3MPyBQ/fyBce/TS373"><span>61.09 - Economía Empresaria</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j9kUY-Ur3MOfo5iO-S21mDg/fyBce/O-S74"><span>61.16 - Introducción a las Finanzas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>11.15 &nbsp;</span><span>61.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j9kUY-Ur3MOdLG-JPZIbqmQ/fyBce/JPZc3"><span>61.50 - Finanzas de la Empresa</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j9kUY-Ur3MOcCjOseiXxzbA/fyBce/sei76"><span>67.23 - Sustentabilidad y eficiencia energética en la construcción</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.42 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j9kUY-Ur3MOfXG6LlXvHBTw/fyBce/LlX27"><span>68.99 - Introducción a la Ciencia de Ciudades</span></a></td>
+				<td>1</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j9kUY-Ur3MOePye-l4fg59A/fyBce/-l484"><span>71.22 - Sistemas de Inteligencia Artificial</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>71.88 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j9kUY-Ur3MOdOKRxDNO9lXg/fyBce/xDN71"><span>71.59 - Estructura de Datos y Programación</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>71.58 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j9kUY-Ur3MOeED4WRpSklVg/fyBce/WRp64"><span>71.88 - Gestión de Datos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>71.59 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j9kUY-Ur3MOcs47mzB5gNmg/fyBce/mzB64"><span>81.59 - Gestión de Servicios</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8j9kUY-Ur3MOcEyqb8jFprfw/fyBce/b8j83"><span>92.04 - Análisis Matemático IV</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.02 &nbsp;</span><span>92.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jN627x7R5wAFjBFR5JKwsNg/fyBce/R5Jc6"><span>92.07 - Análisis Matemático V</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>92.04 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jN627x7R5wAFOuM0r3cHErw/fyBce/0r380"><span>92.20 - Representación Gráfica para Ingeniería Civil</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>31.08 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jN627x7R5wAHV5BxQCb2izQ/fyBce/xQCc9"><span>92.97 - Complementos de Matemática V</span></a></td>
+				<td>2</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jN627x7R5wAHostDtbirbEw/fyBce/Dtba1"><span>93.75 - Métodos Numéricos Avanzados</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jN627x7R5wAHMXVvYTLDSMA/fyBce/vYT10"><span>94.40 - Estructura de las Organizaciones</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>94.44 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jN627x7R5wAGmC9jXT2gz4Q/fyBce/jXT55"><span>94.42 - Comunicación Estratégica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jN627x7R5wAGsulkUvbNaxg/fyBce/kUv8b"><span>94.61 - Filosofía</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trNIZDWVnockcWDXSODmTleYioR_hJ5Xen8E383KebOIlcAEEY3hI242IGzzgRcDw1AEsENY12yDCrSOMwX0mGCtiwpkLZzjP_qQD-Bcx6NO773xlgQg1G8jN627x7R5wAHF1dH20u_zSA/fyBce/H20d5"><span>94.62 - Ética en los Negocios</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div>
+	
+
+	<div id="id17d">
+		
+		<div style="clear:both;">
+</div>
+	</div>
+	
+	<div id="id17e">
+
+<h4>Títulos otorgados</h4>
+<table class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr class="blue">
+			<td>Tipo</td>
+			<td>Título</td>
+			<td>Requisitos</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span>Principal</span></td>
+			<td><span>Ingeniero/a Civil</span></td>
+			<td><span>Aprobar C23 y sumar 221 créditos</span></td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+
+</div>
+
+
+		</div>
+		<div id="id160"></div>
+	</div>
+</body>
+</html>

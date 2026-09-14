@@ -1,0 +1,1560 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description"
+	content="Sistema de Gesti&oacute;n Acad&eacute;mica" />
+<meta name="keywords" content="academica, gestion" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="../../../css/bootstrap.css" type="text/css" rel="stylesheet"/>
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="../../../css/itba_bootstrap.css" type="text/css" rel="stylesheet"/>
+<script src="../../../js/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="../../../js/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRVhLnwK6Xt2XUzmDb5rEL3LyVOGdQenvKLJg6cKXTudsxmjFoX-n0wC9iZeNW0T7TPgvaJxrcFBg/X5E87/mDb9a/oX-53/sVVa2"></script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRkIHSE4F8KjLsgOrqfLXUgeS1FdngABiY-grLb5kAceQP65u0gCbPEOWOU3B2z5lQ/X5E87/IRk91/eQPe3/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="fyBfZ9p6trOygBrQecZTmQ/fyBce/rQe25";
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../fyBfZ9p6trPGfK4SK9BsqSCvmP7twj4V5AYLEDRfzlW5pI-O-VEOYINfS18c18WsnGbJkQNSHF8/fyBce/JkQaf',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id2cb'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div id="id2cc" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<![If !IE]> <a href="../../../app2/"><div class="logo"></div></a> <![endif]>
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp&nbsp&nbsp<a href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6bm6DvOP9gUlb3s1UMRGPkA/fyBce/PGfee">[Salir]</a> <a id="id2cd" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6dZt4yTcjFx08qYKxQC0FPXcigr32SvrTCHcbpEpNmzETzkR7WNYPYUTrBliKlX5I8LQAgcUfE8U/fyBce/mzE67" class="dropdown-toggle" data-toggle="dropdown"><span>Inicio</span><b
+		class="caret"></b></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6dZt4yTcjFx08qYKxQC0FPXcigr32SvrTx6elUEMS6vn3tZ9t_zXC6MOzSHJIisf8C8-e_Aycztp4PSw9g6QdlHdLmJjxnSgq8bwLYO9UnsjMFSI-SLHEero-Jaxop2NeNvCeI5Q5eok/fyBce/odRac"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6dZt4yTcjFx08qYKxQC0FPXcigr32SvrT4-5vO952ZaNyIiJIg7Ez0-kMqpfZXa3-Wn6Syw6M04J0ywUq28B8IHSfwm1yCxwv5_fC4g9gXqB_inIUzgXUvhWnfr0Pym8B9HeyEXP259A/fyBce/odRac"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6dZt4yTcjFx08qYKxQC0FPXcigr32SvrT4-5vO952ZaNyIiJIg7Ez0-kMqpfZXa3-Wn6Syw6M04J0ywUq28B8IHSfwm1yCxwvfFRnEvX-gUg3cmmZpzxLJZdbkHnB0LOsWsuZalwruEs/fyBce/odRac"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6dZt4yTcjFx08qYKxQC0FPXcigr32SvrT4-5vO952ZaNyIiJIg7Ez0-kMqpfZXa3-Wn6Syw6M04J0ywUq28B8IHSfwm1yCxwv5GfQLh1iGUm_Ip88wZzepjFtGW8uitznyRkpKPYh1IY/fyBce/odRac"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6dZt4yTcjFx08qYKxQC0FPXcigr32SvrT4-5vO952ZaNyIiJIg7Ez0-kMqpfZXa3-Wn6Syw6M04J0ywUq28B8IHSfwm1yCxwvUrallxCzKJhABQakZ2YhlMVhk2zCLvlVkv4ubs8nJFw/fyBce/odRac"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6dZt4yTcjFx08qYKxQC0FPXcigr32SvrTO_RRBFeF7vetSin7svh4DNdqWQZEKU8A6HCAj8nSgMzQriVYCPfIaKpoqBo7XeRQVOoOWup1dIKMCkgAeTkUw4ReaTBsN2XpIzebe9F1VAM/fyBce/odRac"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6dZt4yTcjFx08qYKxQC0FPXcigr32SvrTb3jkPJbiiWRUW5s4tAIhWJTQGV9EZ65T2w0tOxKxr5kqZtJUkLVUJq8kwfMZd1VXJwpcUVYOoB4SEmack9JxemU7MBkNCf7IfzpgIWAiRU8/fyBce/odRac"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id2ce">
+  
+</div>
+			
+
+<h3>Detalle de Planes de estudio</h3>
+
+<div class="backgroundBordered">
+	<h4>Plan de estudio:  <span>Q22</span></h4>
+
+	
+	<div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id2d0">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Ciclo Básico</span>
+	
+	
+	- <span>Requisito: Aprobar todos los items (suma 144 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  <tr>
+		  	<td>  <div id="id2d1">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id2d2">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8mMvyRw4qXl1c-eJnpibW1-iFbnpSFcSnRHmnE6Qc8HimWAee_rrek/fyBce/g9ve3"><span>12.67 - Química General</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8mMvyRw4qXl1c-eJnpibW1-iFbnpSFcSnSMb_Pl281re7SDdDcJtf5/fyBce/g9ve3"><span>71.58 - Informática General</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8mMvyRw4qXl1c-eJnpibW1-iFbnpSFcSkHBxWkaTdJ0IPVZFybyYY_/fyBce/g9ve3"><span>92.01 - Análisis Matemático I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8mMvyRw4qXl1c-eJnpibW1-iFbnpSFcSmmILr8atm1nKanEJ5NnPRX/fyBce/g9ve3"><span>93.18 - Álgebra Lineal</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8mMvyRw4qXl1c-eJnpibW1-iFbnpSFcSk9q_JF3y67Dsh1ayZI4JND/fyBce/g9ve3"><span>94.33 - Tecnología y Sociedad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id2d3">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id2d4">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8TESRJISDkH7kLtS3oCsSBUGNIObDmvMIPPKbUD5sK_2cvhV-OK8oT/fyBce/g9ve3"><span>13.01 - Química Inorgánica</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>12.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8TESRJISDkH7kLtS3oCsSBUGNIObDmvMLzelnVTLp5977KD__1kE5p/fyBce/g9ve3"><span>17.01 - Introducción a la Ingeniería Química</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8TESRJISDkH7kLtS3oCsSBUGNIObDmvMKnUG-xQqKnr--JF7vfQLTp/fyBce/g9ve3"><span>31.08 - Sistemas de Representación</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8TESRJISDkH7kLtS3oCsSBUGNIObDmvMKAwGGc56QpexVBa3tx4Ivx/fyBce/g9ve3"><span>71.90 - Certificaciones tecnológicas</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8TESRJISDkH7kLtS3oCsSBUGNIObDmvMJmUyWBDkiECn-AdtKlgT9n/fyBce/g9ve3"><span>92.02 - Análisis Matemático II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span><span>93.18 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8TESRJISDkH7kLtS3oCsSBUGNIObDmvMLfBkReeQOIxJeizl_OORFL/fyBce/g9ve3"><span>93.41 - Física I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id2d5">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id2d6">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X-OGsooCgkas__iL9XKKXP18u6u0UQrLd1m-L2nuEmvZbrX4C_qZpQr/fyBce/g9ve3"><span>13.03 - Química Orgánica I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>13.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X-OGsooCgkas__iL9XKKXP18u6u0UQrLd3A-oMWB9XTCg8CiZPmQOkn/fyBce/g9ve3"><span>16.55 - Biología</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X-OGsooCgkas__iL9XKKXP18u6u0UQrLd1gjmGyWAhjL8Zg0Cf1-rFd/fyBce/g9ve3"><span>17.02 - Procesos Industriales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.41 &nbsp;</span><span>17.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X-OGsooCgkas__iL9XKKXP18u6u0UQrLd0G51d4QyRurnqlWFjTLEXj/fyBce/g9ve3"><span>92.03 - Análisis Matemático III</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span><span>93.18 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X-OGsooCgkas__iL9XKKXP18u6u0UQrLd1krhh1rNW7n5tM5NqOEPvA/fyBce/g9ve3"><span>93.42 - Física II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.02 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id2d7">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id2d8">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8p_Ow9bvTObbCN_g7zQVcyvuQxqoI2pHwFAeTUdgc2-qm3Gh52w2UB/fyBce/g9ve3"><span>12.33 - Química Orgánica II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>13.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8p_Ow9bvTObbCN_g7zQVcyvuQxqoI2pHz47nlJVVmaXsS14PWjcQqj/fyBce/g9ve3"><span>92.05 - Análisis Matemático IV</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>92.02 &nbsp;</span><span>92.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8p_Ow9bvTObbCN_g7zQVcyvuQxqoI2pHyyaMw1pgoxf-udb28kgAX4/fyBce/g9ve3"><span>93.07 - Métodos Numéricos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8p_Ow9bvTObbCN_g7zQVcyvuQxqoI2pHy5PCjs8uXnquu2dbOIPsKv/fyBce/g9ve3"><span>93.24 - Probabilidad y Estadística</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.02 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8p_Ow9bvTObbCN_g7zQVcyvuQxqoI2pHzSlBs909el3LIA7TaMUPRx/fyBce/g9ve3"><span>93.43 - Física III</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span><span>93.41 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id2d9">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id2da">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8lqc8r_wrSfQNWjukRWG390XAXWpF3E22wouAqkA9AAD0D2rrXeQRe/fyBce/g9ve3"><span>12.19 - Química Analítica</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>13.01 &nbsp;</span><span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8lqc8r_wrSfQNWjukRWG390XAXWpF3E20BGB55UGb8cb9KT2voq_rr/fyBce/g9ve3"><span>12.20 - Química-Física</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span><span>17.02 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8lqc8r_wrSfQNWjukRWG390XAXWpF3E23CpnNJsJpNv_wg_lmQsBvh/fyBce/g9ve3"><span>17.03 - Bioquímica y Microbiología Aplicadas</span></a></td>
+				<td>5</td>
+				<td>0</td>
+				
+				<td> <span>12.33 &nbsp;</span><span>16.55 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8lqc8r_wrSfQNWjukRWG390XAXWpF3E21lFt3reVNjqmAR6-uLBL-K/fyBce/g9ve3"><span>30.62 - Materiales para la Industria Química</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>13.01 &nbsp;</span><span>93.42 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8lqc8r_wrSfQNWjukRWG390XAXWpF3E22cTHqCs4IpnqH5G3Yt1nPl/fyBce/g9ve3"><span>94.43 - Metodología del Diseño</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id2db">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id2dc">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8sg3XE4gJvyraIhpNv0DZLCANfRSnT-M5U_izti14oTbGhSE4uyhsC/fyBce/g9ve3"><span>12.26 - Termodinámica</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>12.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8sg3XE4gJvyraIhpNv0DZLCANfRSnT-M5CMOEZBri8zzSK0pmETknR/fyBce/g9ve3"><span>17.04 - Fenómenos de Transporte</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>12.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8sg3XE4gJvyraIhpNv0DZLCANfRSnT-M5peTSoOJI4iCpRxrrzCnkA/fyBce/g9ve3"><span>21.06 - Electrotecnia</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.43 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8sg3XE4gJvyraIhpNv0DZLCANfRSnT-M4RViRiyUIyePJWfbsxrnMt/fyBce/g9ve3"><span>30.61 - Instalaciones Mecánicas en Plantas de Proceso</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>30.62 &nbsp;</span><span>93.41 &nbsp;</span><span>31.08 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8sg3XE4gJvyraIhpNv0DZLCANfRSnT-M7dXzGeYaNmvc7MjVw6USWC/fyBce/g9ve3"><span>94.44 - Proyecto Interdisciplinario</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>94.43 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUCZQfyow42X8sg3XE4gJvyraIhpNv0DZLCANfRSnT-M7KILwWYQa0UsyFjg6J8hZT/fyBce/g9ve3"><span>94.51 - Inglés I</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr>
+	      
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id2dd">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Ciclo Profesional</span>
+	
+	
+	- <span>Requisito: Aprobar todos los items (suma 96 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  <tr>
+		  	<td>  <div id="id2de">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id2df">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFdbdjSZCOhtXP0lFu8lOtx1U8DSoCINWWHAF_AYqmYCqaCwpTZxTLUJ/fyBce/g9ve3"><span>12.11 - Operaciones Unitarias I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>30.61 &nbsp;</span><span>17.04 &nbsp;</span><span>12.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFdbdjSZCOhtXP0lFu8lOtx1U8DSoCINWWEntobB3UOnPXusPIi870bv/fyBce/g9ve3"><span>12.12 - Operaciones Unitarias II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>17.04 &nbsp;</span><span>12.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFdbdjSZCOhtXP0lFu8lOtx1U8DSoCINWWFHEytUCWz8HOXPClNS0ILV/fyBce/g9ve3"><span>12.24 - Ingenieria de Reacciones y Reactores I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>17.04 &nbsp;</span><span>93.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFdbdjSZCOhtXP0lFu8lOtx1U8DSoCINWWH7R-QAGUK3OogiiciWUWFi/fyBce/g9ve3"><span>61.31 - Derecho para Ingenieros</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id2e0">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id2e1">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFdiOxNp0qTYZ5wHOC0-0zp3jU0hFLHjFYBtki3jp3azv7BsA_V-yuaK/fyBce/g9ve3"><span>12.13 - Operaciones Unitarias III</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>12.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFdiOxNp0qTYZ5wHOC0-0zp3jU0hFLHjFYAYrKT5xR9dg4ixeORlpbxb/fyBce/g9ve3"><span>12.25 - Ingeniería de Reacciones y Reactores II</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>12.24 &nbsp;</span><span>12.11 &nbsp;</span><span>17.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFdiOxNp0qTYZ5wHOC0-0zp3jU0hFLHjFYAEqiztriUg-uSzgrat3mmT/fyBce/g9ve3"><span>12.27 - Simulación de Procesos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.11 &nbsp;</span><span>12.12 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFdiOxNp0qTYZ5wHOC0-0zp3jU0hFLHjFYDXEFcwL8OoKEvE6XJs950R/fyBce/g9ve3"><span>17.05 - Control de Procesos</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>12.12 &nbsp;</span><span>92.05 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id2e2">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id2e3">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFeGPxwFXMAajIZb1xLtZOjNgblrgW68oBbsf2pn_pVIzDfLmQi6uSIz/fyBce/g9ve3"><span>11.15 - Organización Industrial</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFeGPxwFXMAajIZb1xLtZOjNgblrgW68oBYh9xKYNdWYEfc0vEWFsqmY/fyBce/g9ve3"><span>12.85 - Diseño Conceptual de Procesos</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>12.24 &nbsp;</span><span>12.13 &nbsp;</span><span>12.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFeGPxwFXMAajIZb1xLtZOjNgblrgW68oBYx1uH5t2_1gRxVpNVGRqy0/fyBce/g9ve3"><span>17.06 - Proyecto Final de Carrera I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>12.13 &nbsp;</span><span>12.27 &nbsp;</span><span>17.05 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFeGPxwFXMAajIZb1xLtZOjNgblrgW68oBZzKLHrEYLRr3bGCtWXudMG/fyBce/g9ve3"><span>61.27 - Análisis de Coyuntura Económica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFeGPxwFXMAajIZb1xLtZOjNgblrgW68oBb4ALOwSGysCWT5jE5OGUJM/fyBce/g9ve3"><span>94.52 - Inglés II</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> <span>94.51 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id2e4">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id2e5">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFfuUkpxiQTREDTyPo5vXZBRAUQymEhnVEdzEJyM3z1gmkOIpq_9F1rp/fyBce/g9ve3"><span>12.66 - Gestión de la Salud y la Seguridad en el Trabajo</span></a></td>
+				<td>3</td>
+				<td>168</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFfuUkpxiQTREDTyPo5vXZBRAUQymEhnVEcoz6Iy8MOUGLC3RAXp_kq0/fyBce/g9ve3"><span>17.07 - Proyecto Final de Carrera II</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>17.06 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFfuUkpxiQTREDTyPo5vXZBRAUQymEhnVEcpRDBFoFyD4uLS09evoRqM/fyBce/g9ve3"><span>17.15 - Introducción a la Ingeniería Ambiental</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFfuUkpxiQTREDTyPo5vXZBRAUQymEhnVEdLc3zB7sMcFTUCehSMKeEJ/fyBce/g9ve3"><span>61.16 - Introducción a las Finanzas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>11.15 &nbsp;</span><span>61.27 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUR7g8BvZ9nFfuUkpxiQTREDTyPo5vXZBRAUQymEhnVEe92u6eLI3Vm29SK5e-WOMr/fyBce/g9ve3"><span>94.65 - Practica Profesional supervisada</span></a></td>
+				<td>0</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Electivas</span></em></span></td>
+				<td>30</td>
+				<td>30</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr>
+	      
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id2e6">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Electivas</span>
+	
+	
+	- <span>Requisito: Juntar 30 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id2e7">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id2e8">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNJ5HSyX48MjXvXbIgFbFQgQ/fyBce/IgF47"><span>10.07 - Creatividad</span></a></td>
+				<td>3</td>
+				<td>76</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN1wdKH91uh8335xINDLciZg/fyBce/INDae"><span>10.08 - Energías Renovables</span></a></td>
+				<td>3</td>
+				<td>149</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNChnZa6rpDHlZv_paFOJ7eQ/fyBce/paFb4"><span>10.09 - Formación para Emprendedores</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN50qCB9Qp9hfuwG_xbwBQ-w/fyBce/_xb58"><span>10.12 - Energías Convencionales</span></a></td>
+				<td>3</td>
+				<td>95</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNXgHdUSu4YUOAB6p9fQWDAQ/fyBce/p9f7c"><span>10.15 - Agroindustria</span></a></td>
+				<td>3</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN8w4KzqTwcbgH1CTyEsDb9w/fyBce/TyE7f"><span>10.16 - Machine Learning para Negocios</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span><span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN6b_lTMDNUpQ6tDYvZoKiiQ/fyBce/YvZ2c"><span>10.23 - Agroindustria II</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNB7upMqr1ccFCVGVp9Mptkw/fyBce/Vp90e"><span>11.16 - Materiales y Procesos</span></a></td>
+				<td>6</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNiHnw78Ju3SltDCsIC-lckg/fyBce/sIC2c"><span>11.19 - Prototipado e Impresión 3D</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNhPm-7bUzUExJXks8Oz6lJg/fyBce/s8O19"><span>11.39 - Marketing</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN1wdKH91uh83P-xl2z-n-Vg/fyBce/l2zc3"><span>11.46 - Planeamiento Estratégico</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN1wdKH91uh818clw-qXRtCQ/fyBce/w-qba"><span>11.51 - Investigación Operativa</span></a></td>
+				<td>6</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN1wdKH91uh81-Wdtix_OBkQ/fyBce/tixe2"><span>11.67 - Estadística Aplicada</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN1wdKH91uh80iFjMpTlO6Mw/fyBce/MpT80"><span>11.73 - Teoría de la Decisión</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN1wdKH91uh83Eu0Jr9Ss_zg/fyBce/Jr9e0"><span>11.76 - Gestión de Calidad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN1wdKH91uh83wcaLvlteDYQ/fyBce/Lvl11"><span>11.84 - Gestión de Proyectos</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN1wdKH91uh83PPpH6OfUZEw/fyBce/H6Ob0"><span>12.23 - Reactores de Polimerización</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.25 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN1wdKH91uh802YgbcW442eA/fyBce/bcW55"><span>12.28 - Residuos sólidos y residuos peligrosos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN1wdKH91uh83sA--wmcOyVA/fyBce/-wmc2"><span>12.29 - Modelado Matemático en Ingeniería Química</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>17.04 &nbsp;</span><span>93.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN1wdKH91uh81cHA6k9TK-Sg/fyBce/6k903"><span>12.36 - Química de Macromoléculas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.33 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNChnZa6rpDHlQ9T-FzqFcjQ/fyBce/-Fzd0"><span>12.37 - Físico-Química de Superficies</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNChnZa6rpDHmMWvvVIL_DaA/fyBce/vVI78"><span>12.46 - Introducción al Proceso de Fabricación de Aceros</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>30.62 &nbsp;</span><span>13.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNChnZa6rpDHn2usLraQmLsQ/fyBce/Lra4a"><span>12.51 - Tecnología de los Alimentos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>17.04 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNChnZa6rpDHn3sR72nAml2g/fyBce/72n62"><span>12.52 - Bioquímica de los Alimentos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.33 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNChnZa6rpDHlBXnUAbTkJMA/fyBce/UAbf5"><span>12.53 - Introducción a la Ing de los Alimentos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>17.04 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNChnZa6rpDHliiNDM5aRGiw/fyBce/DM54b"><span>12.57 - Seguridad e Inocuidad Alimentaria</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNChnZa6rpDHmDE7jpENQpUg/fyBce/jpEae"><span>12.68 - Partículas en Agua</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>13.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNChnZa6rpDHlLUQAFruYB8Q/fyBce/AFr5c"><span>12.87 - Tratamiento de Efluentes</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNChnZa6rpDHmWLU-_M4kPSw/fyBce/-_M3a"><span>12.94 - Introducción a la Ingeniería Nuclear</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNChnZa6rpDHmvwdbMdYrApw/fyBce/bMd58"><span>12.96 - Trabajo Supervisado I</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN50qCB9Qp9hcu9YuQp7qa7A/fyBce/uQp13"><span>15.15 - Tecnologías del Hidrógeno</span></a></td>
+				<td>1</td>
+				<td>72</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN50qCB9Qp9hdb6OgijlZJ-A/fyBce/gija7"><span>16.04 - Neurociencias y Desarrollo Productivo</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN50qCB9Qp9hfWhSgdSk8AAg/fyBce/gdSa5"><span>16.12 - Biomateriales</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN50qCB9Qp9hf4ftvPpjZGzA/fyBce/vPp85"><span>16.53 - Biotecnología aplicada</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>17.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN50qCB9Qp9heLenwpLjeAlg/fyBce/wpLe2"><span>16.87 - Microfabricación</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>30.62 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN50qCB9Qp9heIyTtlMVPPuQ/fyBce/tlM44"><span>17.08 - Seguridad de Procesos</span></a></td>
+				<td>3</td>
+				<td>150</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN50qCB9Qp9hcFrhQo8_spRw/fyBce/Qo8b9"><span>17.09 - Industrias Químicas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN50qCB9Qp9hcPhe8f3z-e-w/fyBce/8f354"><span>17.10 - Desar. de Yacimientos, Produc., Tratam. y Comerc. de Gas y Petróleo</span></a></td>
+				<td>3</td>
+				<td>168</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN50qCB9Qp9hc1iElzJMg9-Q/fyBce/lzJcb"><span>17.11 - Química del Agua y Aplicaciones Tecnológicas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>13.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN50qCB9Qp9hcJlNxUXE1ZuQ/fyBce/xUX9a"><span>17.12 - Trabajo de Laboratorio Ambiental</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNXgHdUSu4YUNtpMbL4-VaUg/fyBce/bL4f9"><span>17.13 - Introducción a los Balances Poblacionales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>17.04 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNXgHdUSu4YUP21dUXBoaiHw/fyBce/UXB0e"><span>17.14 - Control de Procesos Avanzado</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>17.05 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNXgHdUSu4YUMdjchSfS-Xqg/fyBce/hSf3a"><span>17.16 - Introducción a la Nanotecnología</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNXgHdUSu4YUNGnbDjPXVGaw/fyBce/DjPb9"><span>17.17 - Seminario de Diseño Asistido por Computadora (CAD)</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNXgHdUSu4YUOkv4b_4L7zIQ/fyBce/b_476"><span>17.18 - Caracterización de Suelos y Remediación</span></a></td>
+				<td>2</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNXgHdUSu4YUNhZ0NLW3APxA/fyBce/NLW88"><span>17.19 - Calidad de Aire</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNXgHdUSu4YUP4HIT05qDa9A/fyBce/T0508"><span>17.20 - Agua y Efluentes Líquidos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNXgHdUSu4YUPS6z-GW77g3w/fyBce/-GWdc"><span>17.21 - Introducción a la Temática Social</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNXgHdUSu4YUObOXc_2pxI8Q/fyBce/c_215"><span>17.22 - Cálculo de Huella de Carbono en Organizaciones</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNXgHdUSu4YUOCdj_-VFgQ5w/fyBce/_-V87"><span>17.23 - Triple Impacto: Estrategias para el Desarrollo Sostenible</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN8w4KzqTwcbiTIDQw90MaeA/fyBce/Qw932"><span>17.24 - Introducción al Proceso de Producción de Cerveza</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.11 &nbsp;</span><span>12.12 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN8w4KzqTwcbh52sHZkWKiNg/fyBce/HZk68"><span>17.25 - Diseño de Productos Alimenticios</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN8w4KzqTwcbjro3EQ8w4srg/fyBce/EQ8ab"><span>17.26 - Intensificación de Procesos Químicos</span></a></td>
+				<td>1</td>
+				<td>0</td>
+				
+				<td> <span>12.25 &nbsp;</span><span>12.13 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN8w4KzqTwcbgavMwnQi-uqA/fyBce/wnQ89"><span>21.09 - Máquinas Eléctricas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN8w4KzqTwcbhCrqQNC7vP9w/fyBce/QNCb5"><span>30.14 - Mecánica de Fluidos Computacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>17.04 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN8w4KzqTwcbgwOgynhizAIw/fyBce/ynhe2"><span>30.24 - Metalurgia Física I</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>30.62 &nbsp;</span><span>30.61 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN8w4KzqTwcbgGj52uZYcJKw/fyBce/2uZ76"><span>30.48 - Termofluidos II</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>17.04 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN8w4KzqTwcbjrJ9_B_u-I6g/fyBce/_B_6b"><span>30.69 - Tecnologías del Hidrógeno</span></a></td>
+				<td>2</td>
+				<td>0</td>
+				
+				<td> <span>30.62 &nbsp;</span><span>12.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN8w4KzqTwcbhcO3hm65Fuzg/fyBce/hm6d0"><span>31.30 - Materiales Poliméricos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>30.62 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN8w4KzqTwcbi16x98cYkzqA/fyBce/98cb3"><span>31.90 - Integridad Estructural</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>30.61 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN6b_lTMDNUpRj1CFh1yPNpA/fyBce/Fh17e"><span>31.94 - Tecnología de Materiales Compuestos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>30.62 &nbsp;</span><span>30.61 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN6b_lTMDNUpTBuE9jPmeeHQ/fyBce/9jPce"><span>31.96 - Deformación y Fractura de Materiales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>30.62 &nbsp;</span><span>30.61 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN6b_lTMDNUpQAnoRFnxaovw/fyBce/RFn09"><span>31.97 - Corrosión y Degradación de Materiales</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>30.62 &nbsp;</span><span>12.19 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN6b_lTMDNUpSTHLssQLnr4A/fyBce/ssQf0"><span>41.19 - Desarrollo de Negocios</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN6b_lTMDNUpTNCkrhR396fQ/fyBce/rhR4b"><span>46.21 - Geología I</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN6b_lTMDNUpSwYI75hS2z4w/fyBce/75he9"><span>46.41 - Petrofísica y Fluidos de Reservorio</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>46.21 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN6b_lTMDNUpR27zGdcQzepg/fyBce/Gdc95"><span>46.44 - Análisis de Transientes de Presión</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>46.21 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN6b_lTMDNUpT5QcgZNPTRCQ/fyBce/gZNca"><span>46.46 - Ingeniería de Reservorios</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>46.41 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN6b_lTMDNUpTd1OsCO6G13w/fyBce/sCO1e"><span>46.61 - Ingeniería de Perforación I</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>46.21 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyN6b_lTMDNUpRRPrU1-so0Cw/fyBce/U1-d0"><span>46.65 - Instalaciones de Superficie</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.13 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNB7upMqr1ccEuIzSih2O22g/fyBce/Sih11"><span>46.66 - Gas y Gasolina Natural</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNB7upMqr1ccGDd4FvEzKQOg/fyBce/FvE24"><span>46.67 - Ingeniería de Producción I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>46.65 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNB7upMqr1ccFCtBOkJEgGag/fyBce/OkJcd"><span>46.69 - Transporte y Cadena de Valor de los Hidrocarburos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNB7upMqr1ccGPdrPoQrKAQg/fyBce/PoQ31"><span>46.70 - Industrialización y Economía de los Hidrocarburos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.11 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNB7upMqr1ccFX1ouYwfBesw/fyBce/uYw92"><span>47.48 - Simulación de Reservorios</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>46.46 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNB7upMqr1ccFC1J8CJbmbJw/fyBce/8CJfe"><span>47.73 - Operaciones Offshore - Petróleo y LNG</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>46.66 &nbsp;</span><span>46.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNB7upMqr1ccH1VXkMCKIfVg/fyBce/kMCe0"><span>47.86 - Transición Energética y Sustentabilidad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>12.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNB7upMqr1ccFj6bzzQqFrAw/fyBce/zzQa0"><span>48.01 - Oil &amp; Gas Investment and Economics</span></a></td>
+				<td>1</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNB7upMqr1ccFjps8aF5DE6w/fyBce/8aF7c"><span>61.04 - Sistema Monetario y Financiero en Argentina</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNB7upMqr1ccGisrSG6qmK4w/fyBce/SG6a1"><span>61.50 - Finanzas de la Empresa</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNiHnw78Ju3Snk6XEx7hn2gA/fyBce/Ex7d3"><span>61.82 - Macroeconomía</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNiHnw78Ju3SkRMO55NstA4g/fyBce/55N8d"><span>71.22 - Sistemas de Inteligencia Artificial</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>71.58 &nbsp;</span><span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNiHnw78Ju3SkyReGeUcCb1Q/fyBce/GeUb6"><span>72.75 - Aprendizaje Automático (Machine Learning)</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>71.58 &nbsp;</span><span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNiHnw78Ju3Smb8NOsj6cnXA/fyBce/Osj65"><span>81.59 - Gestión de Servicios</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNiHnw78Ju3Sn1a-eeD59w8w/fyBce/eeD83"><span>92.99 - Complementos de Análisis Matemático IV</span></a></td>
+				<td>2</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNiHnw78Ju3SmerXD23PiPyQ/fyBce/D2354"><span>93.51 - Mecánica General</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNiHnw78Ju3SnJdzA3_1rdfQ/fyBce/A3_cc"><span>93.61 - Física IV</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>93.42 &nbsp;</span><span>93.43 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNiHnw78Ju3SlbwYMy8gx8yA/fyBce/My80b"><span>94.19 - Comportamiento Organizacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNiHnw78Ju3Sl7rBfdj207LA/fyBce/fdj1b"><span>94.24 - Metodología del Aprendizaje</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNiHnw78Ju3Sn1hM5ZmWV65w/fyBce/5Zm77"><span>94.27 - Administración de Recursos Humanos</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNhPm-7bUzUEzQQ1v8iF-N8g/fyBce/v8i16"><span>94.40 - Estructura de las Organizaciones</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPGfK4SK9BsqSZB1_M5odR6g9v2Q7QnI1XYBGVAglMUbEZUQgGFuEZUm23J5Gt52gKQLx3-OJXFLpZBrGaLhRT8q3EkXYjbdbFugV1JmdHBxvWjdGgvzwyNhPm-7bUzUEzuyW90qUu5OA/fyBce/90q49"><span>94.64 - Prácticas Expositivas</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div>
+	
+
+	<div id="id2e9">
+		
+		<div style="clear:both;">
+</div>
+	</div>
+	
+	<div id="id2ea">
+
+<h4>Títulos otorgados</h4>
+<table class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr class="blue">
+			<td>Tipo</td>
+			<td>Título</td>
+			<td>Requisitos</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span>Principal</span></td>
+			<td><span>Ingeniero/a Químico/a</span></td>
+			<td><span>Aprobar Q22 y sumar 240 créditos</span></td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+
+</div>
+
+
+		</div>
+		<div id="id2cb"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,1531 @@
+{
+ "carrera": {
+  "codigo": "S",
+  "nombre": "Ingeniería en Informática",
+  "escuela": "Escuela de Gestión y Tecnología",
+  "nivel": "Grado"
+ },
+ "plan": "S10-Rev23",
+ "planes": [
+  {
+   "nombre": "S10-Rev23",
+   "version": "1",
+   "desde": "Segundo Cuat. 2024",
+   "hasta": "Segundo Cuat. 2024",
+   "elegido": true
+  },
+  {
+   "nombre": "S10 - Rev18",
+   "version": "1",
+   "desde": "Segundo Cuat. 2018",
+   "hasta": "",
+   "elegido": false
+  },
+  {
+   "nombre": "S10 A - Rev18",
+   "version": "1",
+   "desde": "Segundo Cuat. 2018",
+   "hasta": "",
+   "elegido": false
+  }
+ ],
+ "vacio": false,
+ "capturado": "2026-09-13",
+ "bloques": [
+  {
+   "nombre": "Ciclo Básico",
+   "tituloOtorgado": "Analista en Tecnologia Informática",
+   "requisito": "Aprobar todos los items (suma 147 créditos)",
+   "creditos": 147,
+   "tipo": "todos",
+   "secciones": [
+    {
+     "nombre": "Año 1 - Cuatrimestre 1",
+     "anio": 1,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "31.08",
+       "nombre": "Sistemas de Representación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.03",
+       "nombre": "Introducción a la Informática",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "93.26",
+       "nombre": "Análisis Matemático I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "93.58",
+       "nombre": "Álgebra",
+       "creditos": 9,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.24",
+       "nombre": "Metodología del Aprendizaje",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 1 - Cuatrimestre 2",
+     "anio": 1,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "72.31",
+       "nombre": "Programación Imperativa",
+       "creditos": 9,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.58",
+        "72.03"
+       ]
+      },
+      {
+       "codigo": "93.28",
+       "nombre": "Análisis Matemático II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.58",
+        "93.26"
+       ]
+      },
+      {
+       "codigo": "93.41",
+       "nombre": "Física I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.26"
+       ]
+      },
+      {
+       "codigo": "93.59",
+       "nombre": "Matemática Discreta",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.58"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 1",
+     "anio": 2,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.09",
+       "nombre": "Química",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.32",
+       "nombre": "Diseño y Procesamiento de Documentos XML",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.31"
+       ]
+      },
+      {
+       "codigo": "72.33",
+       "nombre": "Programación Orientada a Objetos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.31"
+       ]
+      },
+      {
+       "codigo": "93.35",
+       "nombre": "Lógica Computacional",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.58"
+       ]
+      },
+      {
+       "codigo": "93.43",
+       "nombre": "Física III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.28",
+        "93.41"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 2",
+     "anio": 2,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "72.08",
+       "nombre": "Arquitectura de Computadoras",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.31"
+       ]
+      },
+      {
+       "codigo": "72.34",
+       "nombre": "Estructura de Datos y Algoritmos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.59",
+        "72.33"
+       ]
+      },
+      {
+       "codigo": "93.24",
+       "nombre": "Probabilidad y Estadística",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.28"
+       ]
+      },
+      {
+       "codigo": "93.42",
+       "nombre": "Física II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.28"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 1",
+     "anio": 3,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "72.11",
+       "nombre": "Sistemas Operativos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.08",
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.35",
+       "nombre": "Ingenieria de Software I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.33"
+       ]
+      },
+      {
+       "codigo": "72.36",
+       "nombre": "Interacción Hombre-Computadora (HCI)",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.33",
+        "72.32"
+       ]
+      },
+      {
+       "codigo": "72.37",
+       "nombre": "Base de Datos I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34",
+        "93.35"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 2",
+     "anio": 3,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "72.07",
+       "nombre": "Protocolos de Comunicación",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.11"
+       ]
+      },
+      {
+       "codigo": "72.38",
+       "nombre": "Proyecto de Aplicaciones Web",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.11",
+        "72.37",
+        "72.36",
+        "72.35"
+       ]
+      },
+      {
+       "codigo": "72.39",
+       "nombre": "Autómatas, Teoría de Lenguajes y Compiladores",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "93.07",
+       "nombre": "Métodos Numéricos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.28"
+       ]
+      },
+      {
+       "codigo": "94.21",
+       "nombre": "Formación General I",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.51",
+       "nombre": "Inglés I",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Ciclo Profesional",
+   "tituloOtorgado": null,
+   "requisito": "Aprobar todos los items (suma 96 créditos)",
+   "creditos": 96,
+   "tipo": "todos",
+   "secciones": [
+    {
+     "nombre": "Año 4 - Cuatrimestre 1",
+     "anio": 4,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "61.23",
+       "nombre": "Economía para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 120,
+       "correlativas": []
+      },
+      {
+       "codigo": "61.32",
+       "nombre": "Derecho para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 120,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.40",
+       "nombre": "Ingenieria del Software II",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.35"
+       ]
+      },
+      {
+       "codigo": "72.41",
+       "nombre": "Base de Datos II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.37",
+        "72.11"
+       ]
+      },
+      {
+       "codigo": "72.42",
+       "nombre": "Programación de Objetos Distribuidos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.07",
+        "72.37"
+       ]
+      },
+      {
+       "codigo": "93.75",
+       "nombre": "Métodos Numéricos Avanzados",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.07"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 4 - Cuatrimestre 2",
+     "anio": 4,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "72.25",
+       "nombre": "Simulación de Sistemas",
+       "creditos": 6,
+       "creditosReq": 140,
+       "correlativas": [
+        "93.75",
+        "72.34",
+        "93.07"
+       ]
+      },
+      {
+       "codigo": "72.27",
+       "nombre": "Sistemas de Inteligencia Artificial",
+       "creditos": 6,
+       "creditosReq": 120,
+       "correlativas": [
+        "93.75",
+        "93.24",
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.43",
+       "nombre": "Gestión de Proyectos Informáticos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.44",
+       "nombre": "Criptografía y Seguridad",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.07"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 1",
+     "anio": 5,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.83",
+       "nombre": "Seguridad Ocupacional y Ambiental",
+       "creditos": 3,
+       "creditosReq": 140,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.20",
+       "nombre": "Redes de Información",
+       "creditos": 6,
+       "creditosReq": 171,
+       "correlativas": [
+        "72.07"
+       ]
+      },
+      {
+       "codigo": "72.45",
+       "nombre": "Proyecto Final",
+       "creditos": 12,
+       "creditosReq": 160,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 2",
+     "anio": 5,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "72.98",
+       "nombre": "Práctica Laboral",
+       "creditos": 0,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.23",
+       "nombre": "Formación General III",
+       "creditos": 3,
+       "creditosReq": 168,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.52",
+       "nombre": "Inglés II",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Electivas",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 27 créditos",
+   "creditos": 27,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "10.07",
+       "nombre": "Creatividad",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.09",
+       "nombre": "Formación para Emprendedores",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.36",
+       "nombre": "Innovación y Competitividad",
+       "creditos": 3,
+       "creditosReq": 192,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.83",
+       "nombre": "Gestión de Operaciones",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "16.04",
+       "nombre": "Neurociencias y Desarrollo Productivo",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "16.50",
+       "nombre": "Introducción a la Bioinformática",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.37"
+       ]
+      },
+      {
+       "codigo": "16.57",
+       "nombre": "Robótica Bioinspirada",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.08"
+       ]
+      },
+      {
+       "codigo": "16.68",
+       "nombre": "Señales y Sistemas",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.75"
+       ]
+      },
+      {
+       "codigo": "16.82",
+       "nombre": "Neurociencia Computacional",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.28",
+        "72.34",
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "16.95",
+       "nombre": "Startups basadas en ciencia",
+       "creditos": 1,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.09",
+       "nombre": "Fundamentos Electrónicos de la Informática",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.48",
+       "nombre": "Procesamiento de Imágenes",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.75"
+       ]
+      },
+      {
+       "codigo": "23.15",
+       "nombre": "Realidad Virtual",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.58",
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "25.04",
+       "nombre": "Computación Cuántica",
+       "creditos": 6,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.27",
+       "nombre": "Sistemas Embebidos",
+       "creditos": 6,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "48.02",
+       "nombre": "AI: Data Management Course & Digital Transformation",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "61.08",
+       "nombre": "Derecho Digital",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.32"
+       ]
+      },
+      {
+       "codigo": "61.11",
+       "nombre": "Derecho Laboral y Seguridad Social en la Empresa",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.32"
+       ]
+      },
+      {
+       "codigo": "61.13",
+       "nombre": "Práctica Contractual",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.32"
+       ]
+      },
+      {
+       "codigo": "61.16",
+       "nombre": "Introducción a las Finanzas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.23"
+       ]
+      },
+      {
+       "codigo": "61.50",
+       "nombre": "Finanzas de la Empresa",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.23"
+       ]
+      },
+      {
+       "codigo": "68.99",
+       "nombre": "Introducción a la Ciencia de Ciudades",
+       "creditos": 1,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "71.48",
+       "nombre": "Introducción a la realidad aumentada",
+       "creditos": 1,
+       "creditosReq": 51,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.02",
+       "nombre": "Organización Básica de la Computadora",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.18",
+       "nombre": "Programación Funcional",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.22",
+       "nombre": "Sistemas Tolerantes a Fallas",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.23",
+       "nombre": "Diseño y Construcción de Compiladores",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.28",
+       "nombre": "Topología de Internet: Análisis y Modelado",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.29",
+       "nombre": "Tipos para Lenguajes de Programación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.46",
+       "nombre": "Robótica Basada en Comportamiento",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.27"
+       ]
+      },
+      {
+       "codigo": "72.49",
+       "nombre": "Sistemas Tolerantes a Fallas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.42"
+       ]
+      },
+      {
+       "codigo": "72.50",
+       "nombre": "Introducción al Desarrollo de Videojuegos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.51",
+       "nombre": "Tecnologías para Web 2.0 y Redes Sociales",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.42"
+       ]
+      },
+      {
+       "codigo": "72.52",
+       "nombre": "Análisis y Tratamiento de Imágenes",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.75",
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.53",
+       "nombre": "Visión Computacional 3D",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.54",
+       "nombre": "OLAP y Explotación de Datos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24",
+        "72.41"
+       ]
+      },
+      {
+       "codigo": "72.55",
+       "nombre": "Ontologías en la Web",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.32",
+        "72.37"
+       ]
+      },
+      {
+       "codigo": "72.56",
+       "nombre": "Automatización e Integración de Sistemas de Información",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.57",
+       "nombre": "Sistemas Embebidos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.58",
+       "nombre": "Computación Gráfica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.59",
+       "nombre": "Sistemas de Inteligencia Artificial II",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.27"
+       ]
+      },
+      {
+       "codigo": "72.60",
+       "nombre": "Programación Funcional",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.61",
+       "nombre": "Taller de Diseño de Videojuegos",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.64",
+       "nombre": "Cloud Computing",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.32"
+       ]
+      },
+      {
+       "codigo": "72.65",
+       "nombre": "Desarrollo de Videojuegos 2D en iPhone OS",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.66",
+       "nombre": "Sistemas Embebidos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.67",
+       "nombre": "Robótica Cinemática Computacional",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.68",
+       "nombre": "Arte y Ciencia Interactivos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.69",
+       "nombre": "Seguridad de Software basada en Flujo de Información",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.70",
+       "nombre": "Modelos e Imágenes Fractales",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.71",
+       "nombre": "Integración de Sistemas de Información",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.07",
+        "72.37",
+        "72.35"
+       ]
+      },
+      {
+       "codigo": "72.72",
+       "nombre": "Análisis y Verificación de Modelos y Códigos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.73",
+       "nombre": "Aprendizaje por Refuerzo en Robótica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.74",
+       "nombre": "Visualización de Información",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.31"
+       ]
+      },
+      {
+       "codigo": "72.75",
+       "nombre": "Aprendizaje Automático (Machine Learning)",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.75",
+        "72.34",
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "72.77",
+       "nombre": "Técnicas Automáticas para Testing de Software",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.78",
+       "nombre": "OLAP Espacial",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.79",
+       "nombre": "Sistemas Multiagente I",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.80",
+       "nombre": "Big Data",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.41"
+       ]
+      },
+      {
+       "codigo": "72.81",
+       "nombre": "Simulación y Animación de Sistemas Multipartículas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.82",
+       "nombre": "Tópicos de NOSQL",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.41"
+       ]
+      },
+      {
+       "codigo": "72.83",
+       "nombre": "Técnicas Avanzadas de HCI con Uso de Rastreadores de Ojos y Manos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.84",
+       "nombre": "Base de Datos Espaciales y Sistemas de Información Geográfica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.37"
+       ]
+      },
+      {
+       "codigo": "72.85",
+       "nombre": "Análisis de Datos en la Web Semántica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.32",
+        "72.37"
+       ]
+      },
+      {
+       "codigo": "72.86",
+       "nombre": "Técnicas Avanzadas en Videojuegos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.97"
+       ]
+      },
+      {
+       "codigo": "72.87",
+       "nombre": "Diseño Sonoro para Animación y Videojuegos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.88",
+       "nombre": "Introducción a la Neurociencia Computacional",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.75",
+        "93.24",
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "72.89",
+       "nombre": "Moneda Digital Descentralizada",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.44"
+       ]
+      },
+      {
+       "codigo": "72.90",
+       "nombre": "Internet de las Cosas (IoT)",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.07",
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "72.92",
+       "nombre": "El Paradigma NoSQL - Bases de Datos de Grafos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.41"
+       ]
+      },
+      {
+       "codigo": "72.94",
+       "nombre": "Introducción a los Sistemas Embebidos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.08"
+       ]
+      },
+      {
+       "codigo": "72.95",
+       "nombre": "Proyecto de Innovación Científico-Tecnológico",
+       "creditos": 12,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.96",
+       "nombre": "Proyecto de Aplicaciones Móviles",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.38"
+       ]
+      },
+      {
+       "codigo": "72.97",
+       "nombre": "Introducción a la Programación de Videojuegos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "73.21",
+       "nombre": "Desarrollo de Aplicaciones Móviles Multiplataforma",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.38"
+       ]
+      },
+      {
+       "codigo": "73.22",
+       "nombre": "Fundamentos de DevOps",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.35"
+       ]
+      },
+      {
+       "codigo": "73.23",
+       "nombre": "Programación Orientada a Datos",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "73.24",
+       "nombre": "Diseño de Runtimes Concurrentes",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.34"
+       ]
+      },
+      {
+       "codigo": "73.30",
+       "nombre": "Desarrollo profesional de software: del código al producto",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.38"
+       ]
+      },
+      {
+       "codigo": "73.31",
+       "nombre": "Spec-Driven Development",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.38",
+        "72.35"
+       ]
+      },
+      {
+       "codigo": "73.40",
+       "nombre": "ARQUITECTURA DE MICROSERVICIOS",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.07",
+        "72.35"
+       ]
+      },
+      {
+       "codigo": "73.50",
+       "nombre": "Infraestructura de Cómputo: Data Center, Cloud y Edge",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.20",
+        "72.41"
+       ]
+      },
+      {
+       "codigo": "73.60",
+       "nombre": "Introducción a la Robótica Empresarial",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "73.61",
+       "nombre": "Neurorobótica",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "73.62",
+       "nombre": "Introducción a la Programación Paralela",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.33",
+        "72.11"
+       ]
+      },
+      {
+       "codigo": "73.63",
+       "nombre": "Redes Equivariantes",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.27"
+       ]
+      },
+      {
+       "codigo": "73.64",
+       "nombre": "Temas Avanzados en Deep Learning",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.27"
+       ]
+      },
+      {
+       "codigo": "73.65",
+       "nombre": "Procesamiento del Lenguaje Natural",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.07"
+       ]
+      },
+      {
+       "codigo": "73.66",
+       "nombre": "Procesamiento de Imágenes Satelitales",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "73.67",
+       "nombre": "Análisis de series de tiempo con Inteligencia Artificial",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.27"
+       ]
+      },
+      {
+       "codigo": "73.68",
+       "nombre": "Tecnologías Emergentes para Aprendizaje Automático e Inteligencia Artificial",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.27"
+       ]
+      },
+      {
+       "codigo": "73.69",
+       "nombre": "Large Language Models",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.27"
+       ]
+      },
+      {
+       "codigo": "73.70",
+       "nombre": "Análisis de datos en neurociencias",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "73.80",
+       "nombre": "SEGURIDAD OFENSIVA",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.44"
+       ]
+      },
+      {
+       "codigo": "73.81",
+       "nombre": "Ciberseguridad Ofensiva y Defensiva",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.44"
+       ]
+      },
+      {
+       "codigo": "73.82",
+       "nombre": "Bases de Datos Espaciales y de Movilidad",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.37"
+       ]
+      },
+      {
+       "codigo": "73.83",
+       "nombre": "Gestión estratégica de la Ciberseguridad",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.44"
+       ]
+      },
+      {
+       "codigo": "73.84",
+       "nombre": "Ciencia de Datos Aplicada",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.27"
+       ]
+      },
+      {
+       "codigo": "73.89",
+       "nombre": "Introducción a Blockchain y Criptomonedas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.44"
+       ]
+      },
+      {
+       "codigo": "73.98",
+       "nombre": "Desarrollo Integral de Videojuegos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.97"
+       ]
+      },
+      {
+       "codigo": "74.60",
+       "nombre": "Visión por Computadora (Computer Vision)",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "74.61",
+       "nombre": "Current AI techniques for scientific discovery",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.27"
+       ]
+      },
+      {
+       "codigo": "81.13",
+       "nombre": "Futuros Posibles",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.14",
+       "nombre": "Product Management",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.16",
+       "nombre": "Negociación",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.57",
+       "nombre": "Arquitectura de soluciones digitales",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.07",
+        "72.37",
+        "72.35"
+       ]
+      },
+      {
+       "codigo": "81.74",
+       "nombre": "Introducción a la realidad aumentada",
+       "creditos": 1,
+       "creditosReq": 51,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.76",
+       "nombre": "Tecnologías para las Finanzas",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.94",
+       "nombre": "Experiencia Inmersiva de Innovación Tecnológica",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "82.08",
+       "nombre": "Cloud Computing",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.32"
+       ]
+      },
+      {
+       "codigo": "82.18",
+       "nombre": "Procesamiento del Lenguaje Natural",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.07"
+       ]
+      },
+      {
+       "codigo": "82.21",
+       "nombre": "Factibilidad de Proyectos Data Driven",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.23"
+       ]
+      },
+      {
+       "codigo": "94.26",
+       "nombre": "Comunicación Organizacional",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.42",
+       "nombre": "Comunicación Estratégica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.62",
+       "nombre": "Ética en los Negocios",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.64",
+       "nombre": "Prácticas Expositivas",
+       "creditos": 3,
+       "creditosReq": 120,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.65",
+       "nombre": "Practica Profesional supervisada",
+       "creditos": 0,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.78",
+       "nombre": "Gestión de Capital Emprendedor y Venture Capital",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "10.09"
+       ]
+      },
+      {
+       "codigo": "94.92",
+       "nombre": "Escritura Académica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "titulos": [
+  {
+   "tipo": "Intermedio",
+   "titulo": "Analista en Tecnologia Informática",
+   "requisitos": "Aprobar Ciclo Básico y sumar 147 créditos",
+   "creditos": 147
+  },
+  {
+   "tipo": "Principal",
+   "titulo": "Ingeniero/a en Informática",
+   "requisitos": "Aprobar S10-Rev23 y sumar 243 créditos",
+   "creditos": 243
+  }
+ ]
+}

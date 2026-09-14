@@ -1,0 +1,500 @@
+{
+ "carrera": {
+  "codigo": "B",
+  "nombre": "Ingeniería en Biotecnología",
+  "escuela": "Escuela de Gestión y Tecnología",
+  "nivel": "Grado"
+ },
+ "plan": "B 25",
+ "planes": [
+  {
+   "nombre": "B 25",
+   "version": "1",
+   "desde": "Primer Cuat. 2025",
+   "hasta": "",
+   "elegido": true
+  }
+ ],
+ "vacio": false,
+ "capturado": "2026-09-13",
+ "bloques": [
+  {
+   "nombre": "Ciclo Básico",
+   "tituloOtorgado": null,
+   "requisito": "Aprobar todos los items (suma 144 créditos)",
+   "creditos": 144,
+   "tipo": "todos",
+   "secciones": [
+    {
+     "nombre": "Año 1 - Cuatrimestre 1",
+     "anio": 1,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.67",
+       "nombre": "Química General",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "71.58",
+       "nombre": "Informática General",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.01",
+       "nombre": "Análisis Matemático I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "93.18",
+       "nombre": "Álgebra Lineal",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.33",
+       "nombre": "Tecnología y Sociedad",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 1 - Cuatrimestre 2",
+     "anio": 1,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "13.02",
+       "nombre": "Fundamentos de Química Orgánica",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.67"
+       ]
+      },
+      {
+       "codigo": "16.55",
+       "nombre": "Biología",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "18.01",
+       "nombre": "Introducción a la Biotecnología",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "31.08",
+       "nombre": "Sistemas de Representación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.02",
+       "nombre": "Análisis Matemático II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01",
+        "93.18"
+       ]
+      },
+      {
+       "codigo": "93.41",
+       "nombre": "Física I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01"
+       ]
+      },
+      {
+       "codigo": "94.51",
+       "nombre": "Inglés I",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 1",
+     "anio": 2,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.19",
+       "nombre": "Química Analítica",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01",
+        "93.41",
+        "12.67"
+       ]
+      },
+      {
+       "codigo": "17.03",
+       "nombre": "Bioquímica y Microbiología Aplicadas",
+       "creditos": 5,
+       "creditosReq": 0,
+       "correlativas": [
+        "13.02",
+        "16.55"
+       ]
+      },
+      {
+       "codigo": "92.03",
+       "nombre": "Análisis Matemático III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01",
+        "93.18"
+       ]
+      },
+      {
+       "codigo": "93.42",
+       "nombre": "Física II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 2",
+     "anio": 2,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "12.20",
+       "nombre": "Química-Física",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03"
+       ]
+      },
+      {
+       "codigo": "16.01",
+       "nombre": "Biología Molecular y Celular",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "16.55",
+        "12.19"
+       ]
+      },
+      {
+       "codigo": "92.05",
+       "nombre": "Análisis Matemático IV",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02",
+        "92.03"
+       ]
+      },
+      {
+       "codigo": "93.24",
+       "nombre": "Probabilidad y Estadística",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02"
+       ]
+      },
+      {
+       "codigo": "94.52",
+       "nombre": "Inglés II",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.51"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 1",
+     "anio": 3,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.26",
+       "nombre": "Termodinámica",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.20"
+       ]
+      },
+      {
+       "codigo": "17.04",
+       "nombre": "Fenómenos de Transporte",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "12.20"
+       ]
+      },
+      {
+       "codigo": "18.02",
+       "nombre": "Fisiología y Genética de Microorganismos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "17.03",
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "93.54",
+       "nombre": "Métodos Numéricos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03"
+       ]
+      },
+      {
+       "codigo": "94.43",
+       "nombre": "Metodología del Diseño",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 2",
+     "anio": 3,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "11.15",
+       "nombre": "Organización Industrial",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "12.11",
+       "nombre": "Operaciones Unitarias I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "17.04",
+        "12.26"
+       ]
+      },
+      {
+       "codigo": "18.03",
+       "nombre": "Bioprocesos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "18.02",
+        "17.04",
+        "12.26"
+       ]
+      },
+      {
+       "codigo": "25.23",
+       "nombre": "Sistemas de Control",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.58",
+        "93.42",
+        "92.05",
+        "12.26"
+       ]
+      },
+      {
+       "codigo": "94.44",
+       "nombre": "Proyecto Interdisciplinario",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.43"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Ciclo Profesional",
+   "tituloOtorgado": null,
+   "requisito": "Aprobar todos los items (suma 96 créditos)",
+   "creditos": 96,
+   "tipo": "todos",
+   "secciones": [
+    {
+     "nombre": "Año 4 - Cuatrimestre 1",
+     "anio": 4,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "15.88",
+       "nombre": "Calidad de Organizaciones",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.15"
+       ]
+      },
+      {
+       "codigo": "18.04",
+       "nombre": "Separaciones Biotecnológicas",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "17.03",
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "18.05",
+       "nombre": "Biodepuraciones y biorremediación",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "18.02"
+       ]
+      },
+      {
+       "codigo": "18.06",
+       "nombre": "Ingeniería Genética",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "18.02",
+        "16.01"
+       ]
+      },
+      {
+       "codigo": "61.27",
+       "nombre": "Análisis de Coyuntura Económica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "61.31",
+       "nombre": "Derecho para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 4 - Cuatrimestre 2",
+     "anio": 4,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "11.84",
+       "nombre": "Gestión de Proyectos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "12.83",
+       "nombre": "Seguridad Ocupacional y Ambiental",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.15"
+       ]
+      },
+      {
+       "codigo": "61.16",
+       "nombre": "Introducción a las Finanzas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.15",
+        "61.27"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 1",
+     "anio": 5,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "18.07",
+       "nombre": "Proyecto final de carrera (Anual)",
+       "creditos": 6,
+       "creditosReq": 192,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 2",
+     "anio": 5,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "94.65",
+       "nombre": "Practica Profesional supervisada",
+       "creditos": 0,
+       "creditosReq": 144,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Electivas",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 60 créditos",
+   "creditos": 60,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": []
+    }
+   ]
+  }
+ ],
+ "titulos": [
+  {
+   "tipo": "Principal",
+   "titulo": "Ingeniero/a en Biotecnología",
+   "requisitos": "Aprobar B 25 y sumar 240 créditos",
+   "creditos": 240
+  }
+ ]
+}

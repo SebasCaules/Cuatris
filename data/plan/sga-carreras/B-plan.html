@@ -1,0 +1,960 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description"
+	content="Sistema de Gesti&oacute;n Acad&eacute;mica" />
+<meta name="keywords" content="academica, gestion" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="../../../css/bootstrap.css" type="text/css" rel="stylesheet"/>
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="../../../css/itba_bootstrap.css" type="text/css" rel="stylesheet"/>
+<script src="../../../js/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="../../../js/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRVhLnwK6Xt2XUzmDb5rEL3LyVOGdQenvKLJg6cKXTudsxmjFoX-n0wC9iZeNW0T7TPgvaJxrcFBg/X5E87/mDb9a/oX-53/sVVa2"></script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRkIHSE4F8KjLsgOrqfLXUgeS1FdngABiY-grLb5kAceQP65u0gCbPEOWOU3B2z5lQ/X5E87/IRk91/eQPe3/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="fyBfZ9p6trN66a88bbbEmA/fyBce/88b11";
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../fyBfZ9p6trPpqO8n0Mz1fuxgYu95RDvn851wuUMh_q0L130PgBxIRfshryZQRt1b6FGqa3UBQRU/fyBce/qa342',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id1cd'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div id="id1ce" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<![If !IE]> <a href="../../../app2/"><div class="logo"></div></a> <![endif]>
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp&nbsp&nbsp<a href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-lmTLCpdbOKGd9cqKWGEkhA/fyBce/Ppq80">[Salir]</a> <a id="id1cf" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-bdOCLupQr3BYcTeJAmVXuE-VwwM1Dl6FAFOwMLoBP35nsBlBZQ7U_iib2zgt0TsxnczvWJcHCeA/fyBce/P3511" class="dropdown-toggle" data-toggle="dropdown"><span>Inicio</span><b
+		class="caret"></b></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-bdOCLupQr3BYcTeJAmVXuE-VwwM1Dl6FFt1K2Y4lPSKP3yZ3ED1ST2DNv-6BfPHjVI3MG76QalOLpdI53jPdHAcJd0sJ2pNAey3U7BLl7nO-4TrvpwihqbRajPW98CbuDP_7ke1mo9w/fyBce/n77ad"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-bdOCLupQr3BYcTeJAmVXuE-VwwM1Dl6FL8GU2jGYM0jTfIY3F3YFzi-iiyTagHzusD6qQ_JHmBcNELAYIP1jclu_Lu7Fo2XJr41SoW1zxF7DBA9tkdstfSHd0MSiqZGW4UioHCa_-OI/fyBce/n77ad"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-bdOCLupQr3BYcTeJAmVXuE-VwwM1Dl6FL8GU2jGYM0jTfIY3F3YFzi-iiyTagHzusD6qQ_JHmBcNELAYIP1jclu_Lu7Fo2XJrfD545zJXmb96Z3rZpiDeQeTYdAgdPMbv1_SOZUX1N4/fyBce/n77ad"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-bdOCLupQr3BYcTeJAmVXuE-VwwM1Dl6FL8GU2jGYM0jTfIY3F3YFzi-iiyTagHzusD6qQ_JHmBcNELAYIP1jclu_Lu7Fo2XJQICqIdgl_cHJ1pBdK_BAcUTuk4nEBwdpeaKp6BROEc0/fyBce/n77ad"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-bdOCLupQr3BYcTeJAmVXuE-VwwM1Dl6FL8GU2jGYM0jTfIY3F3YFzi-iiyTagHzusD6qQ_JHmBcNELAYIP1jclu_Lu7Fo2XJl90rL-1TaWGGXsbHsnVhMiTEETRrIPjvluBwZyzqyQM/fyBce/n77ad"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-bdOCLupQr3BYcTeJAmVXuE-VwwM1Dl6FmgRF8csRPoUJDft5gGiha4hIQwhD_QTY_ErGM0ozxCPbWwl0bDFVBq7tLLwU3CAeF8GFdAGul-mplGGDhtHdKkL8BP-WJjTRFattJZOxdcc/fyBce/n77ad"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-bdOCLupQr3BYcTeJAmVXuE-VwwM1Dl6Ff6MAV33x6a_kXDvWxHygE0QRf6anioJqH5qGGHg0joznUUmGh9CwCjTMW2vwRL4FdAC_3YzjC_YveVW5NW_FoX6XYkKhImEBD0eIcgEggeM/fyBce/n77ad"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id1d0">
+  
+</div>
+			
+
+<h3>Detalle de Planes de estudio</h3>
+
+<div class="backgroundBordered">
+	<h4>Plan de estudio:  <span>B 25</span></h4>
+
+	
+	<div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id1d2">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Ciclo Básico</span>
+	
+	
+	- <span>Requisito: Aprobar todos los items (suma 144 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  <tr>
+		  	<td>  <div id="id1d3">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id1d4">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK1MeyrD7a0e-K8dbhhwSUb5sYM0Oo0WXYXnirYMzsI89mQf8xRq9bTx/fyBce/Msx31"><span>12.67 - Química General</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK1MeyrD7a0e-K8dbhhwSUb5sYM0Oo0WXYVpYNIoOe1snDhEqLzwd9-i/fyBce/Msx31"><span>71.58 - Informática General</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK1MeyrD7a0e-K8dbhhwSUb5sYM0Oo0WXYUNQ7nYvj-xRp5kXGf-sLaU/fyBce/Msx31"><span>92.01 - Análisis Matemático I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK1MeyrD7a0e-K8dbhhwSUb5sYM0Oo0WXYWBkAbVGA8Ifo_qQtR0QUhk/fyBce/Msx31"><span>93.18 - Álgebra Lineal</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK1MeyrD7a0e-K8dbhhwSUb5sYM0Oo0WXYVH7Lk4V1UxuWjw4oyt__Zl/fyBce/Msx31"><span>94.33 - Tecnología y Sociedad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id1d5">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id1d6">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK26xq_HvSpR18BkbwAgzNcia1hbG5dcdvMlc9mbFfZWOJyTb5ORP9TD/fyBce/Msx31"><span>13.02 - Fundamentos de Química Orgánica</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>12.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK26xq_HvSpR18BkbwAgzNcia1hbG5dcdvMaa_2JKSR5_9jGEGXZGZoW/fyBce/Msx31"><span>16.55 - Biología</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK26xq_HvSpR18BkbwAgzNcia1hbG5dcdvPmrwj15PF5jDYh6oTwx20o/fyBce/Msx31"><span>18.01 - Introducción a la Biotecnología</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK26xq_HvSpR18BkbwAgzNcia1hbG5dcdvMA-bTsH_hprDAf7_O1Z20_/fyBce/Msx31"><span>31.08 - Sistemas de Representación</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK26xq_HvSpR18BkbwAgzNcia1hbG5dcdvNIJBA2kPwDKjuiABVHF19r/fyBce/Msx31"><span>92.02 - Análisis Matemático II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span><span>93.18 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK26xq_HvSpR18BkbwAgzNcia1hbG5dcdvNwYnTr-8oYL9AyJReAwURN/fyBce/Msx31"><span>93.41 - Física I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK26xq_HvSpR18BkbwAgzNcia1hbG5dcdvO130SrSuwl3x4VoA57GB20/fyBce/Msx31"><span>94.51 - Inglés I</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id1d7">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id1d8">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK02CjykifnAEpcievH_KH-WExOisFEB0N062UX32YAGF4zfYrY1PaXe/fyBce/Msx31"><span>12.19 - Química Analítica</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span><span>93.41 &nbsp;</span><span>12.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK02CjykifnAEpcievH_KH-WExOisFEB0N3SR_HJYD2lesVfEhw3X_aW/fyBce/Msx31"><span>17.03 - Bioquímica y Microbiología Aplicadas</span></a></td>
+				<td>5</td>
+				<td>0</td>
+				
+				<td> <span>13.02 &nbsp;</span><span>16.55 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK02CjykifnAEpcievH_KH-WExOisFEB0N1Y3tPPcG-LQz5SVf-7hYhW/fyBce/Msx31"><span>92.03 - Análisis Matemático III</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.01 &nbsp;</span><span>93.18 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK02CjykifnAEpcievH_KH-WExOisFEB0N0K4UyKKZkdhta5mcNw53Zk/fyBce/Msx31"><span>93.42 - Física II</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.02 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id1d9">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id1da">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK3fGgETA8JbN1HApi3YUuBzIZseiyw_z9hopn8nmTSKyKbiKWxrVeiS/fyBce/Msx31"><span>12.20 - Química-Física</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK3fGgETA8JbN1HApi3YUuBzIZseiyw_z9gaaPaI28w5esrmkDNOKkOX/fyBce/Msx31"><span>16.01 - Biología Molecular y Celular</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>16.55 &nbsp;</span><span>12.19 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK3fGgETA8JbN1HApi3YUuBzIZseiyw_z9hugX0FyFGt9dD4k8OSqy_i/fyBce/Msx31"><span>92.05 - Análisis Matemático IV</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>92.02 &nbsp;</span><span>92.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK3fGgETA8JbN1HApi3YUuBzIZseiyw_z9iOkiAecJCkAuVRPc_otNvH/fyBce/Msx31"><span>93.24 - Probabilidad y Estadística</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>92.02 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK3fGgETA8JbN1HApi3YUuBzIZseiyw_z9gkhm-VM7bMTY7L4us1rL99/fyBce/Msx31"><span>94.52 - Inglés II</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> <span>94.51 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id1db">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id1dc">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK2pRz5jJ1BMpFQpJIZdi2y_jcokhp3I6Alfl9pMOID_lZqnsbHQvQzY/fyBce/Msx31"><span>12.26 - Termodinámica</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>12.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK2pRz5jJ1BMpFQpJIZdi2y_jcokhp3I6Ak19GAXepoZHJ2gLvpgvZBq/fyBce/Msx31"><span>17.04 - Fenómenos de Transporte</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>12.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK2pRz5jJ1BMpFQpJIZdi2y_jcokhp3I6AlXLaLdQpyAQrP1zFNGWrK8/fyBce/Msx31"><span>18.02 - Fisiología y Genética de Microorganismos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>17.03 &nbsp;</span><span>16.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK2pRz5jJ1BMpFQpJIZdi2y_jcokhp3I6AlLzqvlPn8yY6RATUW4G72A/fyBce/Msx31"><span>93.54 - Métodos Numéricos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>92.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK2pRz5jJ1BMpFQpJIZdi2y_jcokhp3I6An1yEOTtc37A48blQrN3Adl/fyBce/Msx31"><span>94.43 - Metodología del Diseño</span></a></td>
+				<td>3</td>
+				<td>96</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id1dd">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id1de">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK06E-yfM1CfBnCcggGER7ZcZ3BE9ygLr2PcCUs-di3n6hEskSoe7S4G/fyBce/Msx31"><span>11.15 - Organización Industrial</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK06E-yfM1CfBnCcggGER7ZcZ3BE9ygLr2OqVu3g9W0A7D_UrE6uhTmd/fyBce/Msx31"><span>12.11 - Operaciones Unitarias I</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>17.04 &nbsp;</span><span>12.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK06E-yfM1CfBnCcggGER7ZcZ3BE9ygLr2NouUqi_QPIPLfzhJRa9SDN/fyBce/Msx31"><span>18.03 - Bioprocesos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>18.02 &nbsp;</span><span>17.04 &nbsp;</span><span>12.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK06E-yfM1CfBnCcggGER7ZcZ3BE9ygLr2PNhl0xhDt1beajhw-qhGub/fyBce/Msx31"><span>25.23 - Sistemas de Control</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>71.58 &nbsp;</span><span>93.42 &nbsp;</span><span>92.05 &nbsp;</span><span>12.26 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAbwNPKM_9RK06E-yfM1CfBnCcggGER7ZcZ3BE9ygLr2OIBEAxfrvYfWLdUL0h5Tx-/fyBce/Msx31"><span>94.44 - Proyecto Interdisciplinario</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>94.43 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr>
+	      
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id1df">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Ciclo Profesional</span>
+	
+	
+	- <span>Requisito: Aprobar todos los items (suma 96 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  <tr>
+		  	<td>  <div id="id1e0">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id1e1">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAVAUsYhFSdrXnbs1h-I1dm1Ms5knqVKyiKdfhIr9eCcejf9DaBlccbgJoTxb_OGcU/fyBce/Msx31"><span>15.88 - Calidad de Organizaciones</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>11.15 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAVAUsYhFSdrXnbs1h-I1dm1Ms5knqVKyiKdfhIr9eCcddilIvFZU7hFI-yWW2AewH/fyBce/Msx31"><span>18.04 - Separaciones Biotecnológicas</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>17.03 &nbsp;</span><span>16.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAVAUsYhFSdrXnbs1h-I1dm1Ms5knqVKyiKdfhIr9eCceTPrRjMUSFVh_hN2NKiBj8/fyBce/Msx31"><span>18.05 - Biodepuraciones y biorremediación</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>18.02 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAVAUsYhFSdrXnbs1h-I1dm1Ms5knqVKyiKdfhIr9eCcc20KwuYfkDrIMzULifBFm8/fyBce/Msx31"><span>18.06 - Ingeniería Genética</span></a></td>
+				<td>4</td>
+				<td>0</td>
+				
+				<td> <span>18.02 &nbsp;</span><span>16.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAVAUsYhFSdrXnbs1h-I1dm1Ms5knqVKyiKdfhIr9eCccCxz5fwf4OFdrRCnqeVnpg/fyBce/Msx31"><span>61.27 - Análisis de Coyuntura Económica</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>93.24 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAVAUsYhFSdrXnbs1h-I1dm1Ms5knqVKyiKdfhIr9eCccOz0NtF7WRNaSlX4eZWCZP/fyBce/Msx31"><span>61.31 - Derecho para Ingenieros</span></a></td>
+				<td>3</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id1e2">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id1e3">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAVAUsYhFSdrUDl8aMrE9YbSeIytVKEjJWJ8n044aqmSpHRLexoM3bTgbZPzIrEsxc/fyBce/Msx31"><span>11.84 - Gestión de Proyectos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAVAUsYhFSdrUDl8aMrE9YbSeIytVKEjJWJ8n044aqmSqjTKNuVcZ0WD54aXuJCFaO/fyBce/Msx31"><span>12.83 - Seguridad Ocupacional y Ambiental</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>11.15 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAVAUsYhFSdrUDl8aMrE9YbSeIytVKEjJWJ8n044aqmSp3KYd3__9MmLS5-d8Chkg_/fyBce/Msx31"><span>61.16 - Introducción a las Finanzas</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>11.15 &nbsp;</span><span>61.27 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id1e4">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id1e5">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAVAUsYhFSdrU1yBepdndTxAc4MO6yN1PMFiqqF30bs3o1AfdT0m5ho6-rk8iuSBVZ/fyBce/Msx31"><span>18.07 - Proyecto final de carrera (Anual)</span></a></td>
+				<td>6</td>
+				<td>192</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id1e6">
+		<div class="row">
+			<h4>
+				<span>Año 5 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id1e7">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trPpqO8n0Mz1fke0kwMbn77-Msxi_KQX0yzRHkSMJvrg9BDAJ7y3JpuAVAUsYhFSdrXtmQZTZ7UHoJUM-ofjqGl7OhTH_vD4-IjmJEGrPeN2NDLd7yKE8Nf3/fyBce/Msx31"><span>94.65 - Practica Profesional supervisada</span></a></td>
+				<td>0</td>
+				<td>144</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Electivas</span></em></span></td>
+				<td>60</td>
+				<td>60</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr>
+	      
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id1e8">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Electivas</span>
+	
+	
+	- <span>Requisito: Juntar 60 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id1e9">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id1ea">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div>
+	
+
+	<div id="id1eb">
+		
+		<div style="clear:both;">
+</div>
+	</div>
+	
+	<div id="id1ec">
+
+<h4>Títulos otorgados</h4>
+<table class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr class="blue">
+			<td>Tipo</td>
+			<td>Título</td>
+			<td>Requisitos</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span>Principal</span></td>
+			<td><span>Ingeniero/a en Biotecnología</span></td>
+			<td><span>Aprobar B 25 y sumar 240 créditos</span></td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+
+</div>
+
+
+		</div>
+		<div id="id1cd"></div>
+	</div>
+</body>
+</html>

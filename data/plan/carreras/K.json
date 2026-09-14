@@ -1,0 +1,1136 @@
+{
+ "carrera": {
+  "codigo": "K",
+  "nombre": "Ingeniería Electrónica",
+  "escuela": "Escuela de Gestión y Tecnología",
+  "nivel": "Grado"
+ },
+ "plan": "K22",
+ "planes": [
+  {
+   "nombre": "K22",
+   "version": "1",
+   "desde": "Primer Cuat. 2023",
+   "hasta": "Verano 2024",
+   "elegido": true
+  },
+  {
+   "nombre": "K07-Rev.18",
+   "version": "1",
+   "desde": "Segundo Cuat. 2018",
+   "hasta": "",
+   "elegido": false
+  },
+  {
+   "nombre": "K07A-Rev.18",
+   "version": "1",
+   "desde": "Segundo Cuat. 2018",
+   "hasta": "",
+   "elegido": false
+  }
+ ],
+ "vacio": false,
+ "capturado": "2026-09-13",
+ "bloques": [
+  {
+   "nombre": "Ciclo Basico",
+   "tituloOtorgado": null,
+   "requisito": "Aprobar todos los items (suma 240 créditos)",
+   "creditos": 240,
+   "tipo": "todos",
+   "secciones": [
+    {
+     "nombre": "Año 1 - Cuatrimestre 1",
+     "anio": 1,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.67",
+       "nombre": "Química General",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "71.93",
+       "nombre": "Principios de Informática",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.01",
+       "nombre": "Análisis Matemático I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "93.18",
+       "nombre": "Álgebra Lineal",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.33",
+       "nombre": "Tecnología y Sociedad",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 1 - Cuatrimestre 2",
+     "anio": 1,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "25.01",
+       "nombre": "Fundamentos de Electrónica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.93"
+       ]
+      },
+      {
+       "codigo": "25.02",
+       "nombre": "Programación I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.93"
+       ]
+      },
+      {
+       "codigo": "31.08",
+       "nombre": "Sistemas de Representación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.02",
+       "nombre": "Análisis Matemático II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01",
+        "93.18"
+       ]
+      },
+      {
+       "codigo": "93.41",
+       "nombre": "Física I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 1",
+     "anio": 2,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "25.03",
+       "nombre": "Algoritmos y Estructuras de Datos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.02"
+       ]
+      },
+      {
+       "codigo": "92.03",
+       "nombre": "Análisis Matemático III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01",
+        "93.18"
+       ]
+      },
+      {
+       "codigo": "93.16",
+       "nombre": "Matemática Discreta",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.18"
+       ]
+      },
+      {
+       "codigo": "93.24",
+       "nombre": "Probabilidad y Estadística",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02"
+       ]
+      },
+      {
+       "codigo": "93.42",
+       "nombre": "Física II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 2",
+     "anio": 2,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "16.55",
+       "nombre": "Biología",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.10",
+       "nombre": "Teoría de Circuitos 1",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03",
+        "25.01"
+       ]
+      },
+      {
+       "codigo": "92.04",
+       "nombre": "Análisis Matemático IV",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02",
+        "92.03"
+       ]
+      },
+      {
+       "codigo": "93.07",
+       "nombre": "Métodos Numéricos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03",
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "93.43",
+       "nombre": "Física III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03",
+        "93.41"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 1",
+     "anio": 3,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "25.12",
+       "nombre": "Tecnología de Materiales Electrónicos",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.42",
+        "25.10"
+       ]
+      },
+      {
+       "codigo": "25.13",
+       "nombre": "Laboratorio de Electrónica 1",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.10"
+       ]
+      },
+      {
+       "codigo": "25.18",
+       "nombre": "Física Electrónica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.04",
+        "25.10"
+       ]
+      },
+      {
+       "codigo": "92.07",
+       "nombre": "Análisis Matemático V",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.04"
+       ]
+      },
+      {
+       "codigo": "93.61",
+       "nombre": "Física IV",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.42",
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "94.43",
+       "nombre": "Metodología del Diseño",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": [
+        "93.24"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 2",
+     "anio": 3,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "25.14",
+       "nombre": "Teoría de Circuitos 2",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.10",
+        "25.12",
+        "92.07"
+       ]
+      },
+      {
+       "codigo": "25.15",
+       "nombre": "Electrónica I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.18"
+       ]
+      },
+      {
+       "codigo": "25.16",
+       "nombre": "Laboratorio de Electrónica 2",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.13"
+       ]
+      },
+      {
+       "codigo": "25.17",
+       "nombre": "Electrónica II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.13"
+       ]
+      },
+      {
+       "codigo": "94.44",
+       "nombre": "Proyecto Interdisciplinario",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.43"
+       ]
+      },
+      {
+       "codigo": "94.51",
+       "nombre": "Inglés I",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 4 - Cuatrimestre 1",
+     "anio": 4,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "25.20",
+       "nombre": "Análisis de Señales y Sistemas Digitales",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24",
+        "25.14"
+       ]
+      },
+      {
+       "codigo": "25.21",
+       "nombre": "Electrónica III",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.15"
+       ]
+      },
+      {
+       "codigo": "25.22",
+       "nombre": "Electromagnetismo",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.43",
+        "92.07"
+       ]
+      },
+      {
+       "codigo": "25.23",
+       "nombre": "Sistemas de Control",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.07"
+       ]
+      },
+      {
+       "codigo": "25.24",
+       "nombre": "Laboratorio de Electrónica 3",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.16"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 4 - Cuatrimestre 2",
+     "anio": 4,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "11.15",
+       "nombre": "Organización Industrial",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      },
+      {
+       "codigo": "25.26",
+       "nombre": "Transmisión de la Información",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.22",
+        "25.20"
+       ]
+      },
+      {
+       "codigo": "25.27",
+       "nombre": "Sistemas Embebidos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.17",
+        "25.16",
+        "25.03"
+       ]
+      },
+      {
+       "codigo": "25.28",
+       "nombre": "Electrónica IV",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.24",
+        "25.23",
+        "25.12"
+       ]
+      },
+      {
+       "codigo": "61.27",
+       "nombre": "Análisis de Coyuntura Económica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.24"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 1",
+     "anio": 5,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.83",
+       "nombre": "Seguridad Ocupacional y Ambiental",
+       "creditos": 3,
+       "creditosReq": 120,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.30",
+       "nombre": "Electrónica V",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.27"
+       ]
+      },
+      {
+       "codigo": "25.31",
+       "nombre": "Proyectos Electrónicos",
+       "creditos": 4,
+       "creditosReq": 168,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.32",
+       "nombre": "Proyecto Integrador (anual) (Anual)",
+       "creditos": 6,
+       "creditosReq": 168,
+       "correlativas": []
+      },
+      {
+       "codigo": "61.16",
+       "nombre": "Introducción a las Finanzas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.15",
+        "61.27"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 2",
+     "anio": 5,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "61.31",
+       "nombre": "Derecho para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.52",
+       "nombre": "Inglés II",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.51"
+       ]
+      },
+      {
+       "codigo": "94.65",
+       "nombre": "Practica Profesional supervisada",
+       "creditos": 0,
+       "creditosReq": 144,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "ELECTIVAS",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 27 créditos",
+   "creditos": 27,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "10.07",
+       "nombre": "Creatividad",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.09",
+       "nombre": "Formación para Emprendedores",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.34",
+       "nombre": "Taller de Modelización de Productos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "12.02",
+       "nombre": "Química II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.72",
+       "nombre": "Analytics",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.89",
+       "nombre": "Ventas",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.09",
+       "nombre": "Agile, Lean y Lean Six Sigma",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.79",
+       "nombre": "Metodología de la Investigación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "16.04",
+       "nombre": "Neurociencias y Desarrollo Productivo",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "16.87",
+       "nombre": "Microfabricación",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.22",
+       "nombre": "Antenas y Radiopropagacion",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.29",
+       "nombre": "Microondas",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.46",
+       "nombre": "Procesamiento Adaptativo de Señales",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.47",
+       "nombre": "Procesamiento de Voz",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.48",
+       "nombre": "Procesamiento de Imágenes",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.64",
+       "nombre": "Comunicaciones Digitales",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.66",
+       "nombre": "Redes Digitales",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.88",
+       "nombre": "Sensores y Actuadores",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.90",
+       "nombre": "Automación Industrial",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "22.93",
+       "nombre": "Control Automático",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "23.05",
+       "nombre": "Acústica para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.07"
+       ]
+      },
+      {
+       "codigo": "23.10",
+       "nombre": "Formación General II",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.04",
+       "nombre": "Computación Cuántica",
+       "creditos": 6,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.40",
+       "nombre": "Transmisión Digital y Codificación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.26"
+       ]
+      },
+      {
+       "codigo": "25.41",
+       "nombre": "Sistemas de Comunicaciones de Datos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.26"
+       ]
+      },
+      {
+       "codigo": "25.42",
+       "nombre": "Análisis de Sistemas Estocásticos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.26"
+       ]
+      },
+      {
+       "codigo": "25.43",
+       "nombre": "Laboratorio de Procesamiento de Señales",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": [
+        "25.20"
+       ]
+      },
+      {
+       "codigo": "25.51",
+       "nombre": "Electrónica aplicada a Movilidad Eléctrica",
+       "creditos": 4,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.52",
+       "nombre": "Electrónica de Potencia",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.28"
+       ]
+      },
+      {
+       "codigo": "25.53",
+       "nombre": "Señales Aleatorias",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.26"
+       ]
+      },
+      {
+       "codigo": "25.54",
+       "nombre": "Física Electrónica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.55",
+       "nombre": "Microelectrónica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.17",
+        "25.15"
+       ]
+      },
+      {
+       "codigo": "25.56",
+       "nombre": "Diseño Físico de Circuitos Integrados",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.55"
+       ]
+      },
+      {
+       "codigo": "25.57",
+       "nombre": "Diseño Analógico de Circuitos Integrados (Anual)",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.56"
+       ]
+      },
+      {
+       "codigo": "25.59",
+       "nombre": "Dispositivos Lógicos Programables",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.56"
+       ]
+      },
+      {
+       "codigo": "25.60",
+       "nombre": "Control Avanzado",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.23"
+       ]
+      },
+      {
+       "codigo": "25.61",
+       "nombre": "Tecnologías para el agro",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.62",
+       "nombre": "Electrónica Aeroespacial",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.63",
+       "nombre": "Redes Neuronales",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.64",
+       "nombre": "Deep Learning",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.65",
+       "nombre": "Realidad Virtual",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.18",
+        "25.03"
+       ]
+      },
+      {
+       "codigo": "25.66",
+       "nombre": "Acústica para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.07"
+       ]
+      },
+      {
+       "codigo": "25.67",
+       "nombre": "Laboratorio de Dsp_fpga",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.17",
+        "25.20"
+       ]
+      },
+      {
+       "codigo": "25.68",
+       "nombre": "Electrónica aplicada a Energías alternativas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.28"
+       ]
+      },
+      {
+       "codigo": "25.70",
+       "nombre": "Diseño analógico de circuitos integrados",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.56"
+       ]
+      },
+      {
+       "codigo": "25.71",
+       "nombre": "Diseño analógico de Sistemas integrados",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.70"
+       ]
+      },
+      {
+       "codigo": "25.72",
+       "nombre": "Diseño digital de circuitos integrados",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.56"
+       ]
+      },
+      {
+       "codigo": "25.73",
+       "nombre": "Verificación de Circuitos Digitales Integrados",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.72"
+       ]
+      },
+      {
+       "codigo": "25.74",
+       "nombre": "Verificación de Sistemas Digitales",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.18"
+       ]
+      },
+      {
+       "codigo": "25.80",
+       "nombre": "Introducción a la programación orientada a objetos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.81",
+       "nombre": "Principios de Electrotecnia",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.82",
+       "nombre": "Circuitos de Audio",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.83",
+       "nombre": "Guías de ondas",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.84",
+       "nombre": "Convertidores de potencia",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.85",
+       "nombre": "Programación en bajo nivel",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.86",
+       "nombre": "Procesamiento Avanzado de Señales",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.53"
+       ]
+      },
+      {
+       "codigo": "25.87",
+       "nombre": "Redes Neuronales II",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.63"
+       ]
+      },
+      {
+       "codigo": "25.88",
+       "nombre": "Redes Neuronales III",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "25.63"
+       ]
+      },
+      {
+       "codigo": "25.89",
+       "nombre": "Laboratorio de simulaciones de señales aleatorias",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "25.90",
+       "nombre": "Sistemas de energía espaciales",
+       "creditos": 3,
+       "creditosReq": 144,
+       "correlativas": [
+        "25.15"
+       ]
+      },
+      {
+       "codigo": "31.81",
+       "nombre": "Tecnología de Máquinas",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "31.99",
+       "nombre": "Mecatrónica Aplicada",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "34.99",
+       "nombre": "Energía Solar Fotovoltaica, aplicaciones terrestres y espaciales",
+       "creditos": 1,
+       "creditosReq": 144,
+       "correlativas": []
+      },
+      {
+       "codigo": "72.75",
+       "nombre": "Aprendizaje Automático (Machine Learning)",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "73.67",
+       "nombre": "Análisis de series de tiempo con Inteligencia Artificial",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "72.75"
+       ]
+      },
+      {
+       "codigo": "81.83",
+       "nombre": "Tecnología e Innovación Aplicada a la Industria",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.92",
+       "nombre": "Complementos de Física de la Relatividad",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.97",
+       "nombre": "Complementos de Matemática V",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.24",
+       "nombre": "Metodología del Aprendizaje",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.42",
+       "nombre": "Comunicación Estratégica",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.78",
+       "nombre": "Gestión de Capital Emprendedor y Venture Capital",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "10.09"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "titulos": [
+  {
+   "tipo": "Principal",
+   "titulo": "Ingeniero/a Electrónico/a",
+   "requisitos": "Aprobar K22 y sumar 240 créditos",
+   "creditos": 240
+  }
+ ]
+}

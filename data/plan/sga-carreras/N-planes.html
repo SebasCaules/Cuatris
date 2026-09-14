@@ -1,0 +1,365 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description"
+	content="Sistema de Gesti&oacute;n Acad&eacute;mica" />
+<meta name="keywords" content="academica, gestion" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="../../../css/bootstrap.css" type="text/css" rel="stylesheet"/>
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="../../../css/itba_bootstrap.css" type="text/css" rel="stylesheet"/>
+<script src="../../../js/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="../../../js/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRVhLnwK6Xt2XUzmDb5rEL3LyVOGdQenvKLJg6cKXTudsxmjFoX-n0wC9iZeNW0T7TPgvaJxrcFBg/X5E87/mDb9a/oX-53/sVVa2"></script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRkIHSE4F8KjLsgOrqfLXUgeS1FdngABiY-grLb5kAceQP65u0gCbPEOWOU3B2z5lQ/X5E87/IRk91/eQPe3/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="fyBfZ9p6trP99lY7P7xkNQ/fyBce/Y7P91";
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../fyBfZ9p6trPlpjtObDbpQbKY8pcgImSZ6zsAI5xb7bw3qklLX_pJw8SbgZaOkbmn8DFbXSaVnWs/fyBce/bXS4c',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id29f'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div id="id2a0" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<![If !IE]> <a href="../../../app2/"><div class="logo"></div></a> <![endif]>
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp&nbsp&nbsp<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqbPmjfYtrExdMsLuCxDMRULQ/fyBce/Plpc3">[Salir]</a> <a id="id2a1" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqbEjeaEgucOCGhnEveImXbNlgvfFH_Fyl9T1PPqB1_ZuTRRar0xnLN1I30Dj1kK7zrnh9mbIMFxJo/fyBce/ZuT98" class="dropdown-toggle" data-toggle="dropdown"><span>Inicio</span><b
+		class="caret"></b></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqbEjeaEgucOCGhnEveImXbNlgvfFH_Fyl95VkuHDBRwAKDb0oDKfs6emz41tImE37c1mxV4nG8S4DJ7GqFAf6ci_Ov84I5_QGWfvxiySDuzHDOzY3qPxxNlDwxokSIzyNpbF9V9KejqQQ/fyBce/eDqa1"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqbEjeaEgucOCGhnEveImXbNlgvfFH_Fyl9TMIO02OJoiLbSAjkoIjnwwKrDuYuDmpuiy2MGjpBclvDX92R4YgCUISfZWe4w9ZwPPnlRIPUeUxe5hGAF62trcSVfbkCdUsFhBiQ1tGam_0/fyBce/eDqa1"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqbEjeaEgucOCGhnEveImXbNlgvfFH_Fyl9TMIO02OJoiLbSAjkoIjnwwKrDuYuDmpuiy2MGjpBclvDX92R4YgCUISfZWe4w9ZwvpajlVaA_FF0CO7nUzXpIl5Uod4nmKOM76ngq00WBws/fyBce/eDqa1"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqbEjeaEgucOCGhnEveImXbNlgvfFH_Fyl9TMIO02OJoiLbSAjkoIjnwwKrDuYuDmpuiy2MGjpBclvDX92R4YgCUISfZWe4w9ZwooukRSsovXPusimCzAKMkvblitkmiFdIkyjtQ1FCPMQ/fyBce/eDqa1"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqbEjeaEgucOCGhnEveImXbNlgvfFH_Fyl9TMIO02OJoiLbSAjkoIjnwwKrDuYuDmpuiy2MGjpBclvDX92R4YgCUISfZWe4w9ZwU0wD1ipCnTaMQ5flpbPn85OGuGUM_jcNs1RIdr1_2cc/fyBce/eDqa1"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqbEjeaEgucOCGhnEveImXbNlgvfFH_Fyl9Lv_skkfqyj8nvYH9iIlw7xfrpIMqi2n-WbO_vBDjz41Ds67wT_83jSRsQRwo7OHygYeAfsBW7ugRnAhWSq_oNSqrQioX3jKNX-U1xnMVzUg/fyBce/eDqa1"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqbEjeaEgucOCGhnEveImXbNlgvfFH_Fyl9rojxxTj9OpqBM0ZULZUVB3qcjlWa512hM63SsPbOjjZ9VsFgqV9YdysldcNXIwBxNq2n7GZzqPJCnM1cL71H3w4ix9U802dFBkKZ6Yk5HuQ/fyBce/eDqa1"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id2a2">
+  
+</div>
+			
+
+<br/>
+<p>
+<span class="caption bold" style="font-size: 16px; color:#2153AA;">Nombre de la Carrera:</span>&nbsp;&nbsp;&nbsp;<span class="value">Ingeniería Naval</span>
+</p>
+<p>
+<span class="caption bold" style="font-size: 16px; color:#2153AA;">Nombre Oficial de la Carrera :</span>&nbsp;&nbsp;&nbsp;<span class="value">Ingeniería Naval</span>
+</p>
+
+<br/>
+<h3>Listado de Planes de estudio</h3>
+
+<div class="backgroundBordered">
+	
+	<div id="id2a3">
+	
+		
+		
+		<p></p>
+		<table class="table table-bordered table-condensed table-hover">
+			<thead>
+				<tr class="blue">
+					<th class="centered">Nombre de la Carrera</th>
+					<th class="centered">Version</th>
+					<th class="centered">Activo desde</th>
+					<th class="centered">Activo hasta</th>
+					<th class="centered">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><span>N22</span></td>
+					<td align="center" class="width5"><span>1</span></td>
+					<td align="center" class="width20"><span>Segundo Cuat. 2024</span></td>
+					<td align="center" class="width20"><span></span></td>
+					<td align="center" class="width10">
+						
+						<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqb805sCqpG7MSmTwgYuVobn7fQ3FSKjOld0xNJU2BNPPBlhyW0MTLPlUEpPo_a3lbeZvoqJx5KMUQ/fyBce/PPB71" title="Ver detalles" alt="Ver detalles"><img src="../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039"/></a>
+						
+					</td>
+				</tr><tr>
+					<td><span>N18 Agosto</span></td>
+					<td align="center" class="width5"><span>1</span></td>
+					<td align="center" class="width20"><span>Primer Cuat. 2018</span></td>
+					<td align="center" class="width20"><span>Segundo Cuat. 2020</span></td>
+					<td align="center" class="width10">
+						
+						<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqb805sCqpG7MSmTwgYuVobn7fQ3FSKjOld0xNJU2BNPPBlhyW0MTLPlZI6OPz5hpIg3l26y56lLS4/fyBce/PPB71" title="Ver detalles" alt="Ver detalles"><img src="../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039"/></a>
+						
+					</td>
+				</tr><tr>
+					<td><span>N18 Marzo</span></td>
+					<td align="center" class="width5"><span>1</span></td>
+					<td align="center" class="width20"><span>Primer Cuat. 2018</span></td>
+					<td align="center" class="width20"><span>Segundo Cuat. 2020</span></td>
+					<td align="center" class="width10">
+						
+						<a href="../../fyBfZ9p6trPlpjtObDbpQZuEVXUIeDqb805sCqpG7MSmTwgYuVobn7fQ3FSKjOld0xNJU2BNPPBlhyW0MTLPlaG6pBNSzfhfZnk2b-bydVU/fyBce/PPB71" title="Ver detalles" alt="Ver detalles"><img src="../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039"/></a>
+						
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+		</div>
+		<div id="id29f"></div>
+	</div>
+</body>
+</html>

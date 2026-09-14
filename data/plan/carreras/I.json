@@ -1,0 +1,1383 @@
+{
+ "carrera": {
+  "codigo": "I",
+  "nombre": "Ingeniería Industrial",
+  "escuela": "Escuela de Gestión y Tecnología",
+  "nivel": "Grado"
+ },
+ "plan": "I22",
+ "planes": [
+  {
+   "nombre": "I22",
+   "version": "1",
+   "desde": "Segundo Cuat. 2022",
+   "hasta": "Segundo Cuat. 2024",
+   "elegido": true
+  },
+  {
+   "nombre": "I-13",
+   "version": "1",
+   "desde": "Primer Cuat. 2013",
+   "hasta": "",
+   "elegido": false
+  },
+  {
+   "nombre": "I-13T",
+   "version": "1",
+   "desde": "Primer Cuat. 2013",
+   "hasta": "",
+   "elegido": false
+  }
+ ],
+ "vacio": false,
+ "capturado": "2026-09-13",
+ "bloques": [
+  {
+   "nombre": "PLAN I22",
+   "tituloOtorgado": null,
+   "requisito": "Aprobar todos los items (suma 240 créditos)",
+   "creditos": 240,
+   "tipo": "todos",
+   "secciones": [
+    {
+     "nombre": "Año 1 - Cuatrimestre 1",
+     "anio": 1,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "12.67",
+       "nombre": "Química General",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "71.20",
+       "nombre": "Informática General",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.01",
+       "nombre": "Análisis Matemático I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "93.18",
+       "nombre": "Álgebra Lineal",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.33",
+       "nombre": "Tecnología y Sociedad",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 1 - Cuatrimestre 2",
+     "anio": 1,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "16.55",
+       "nombre": "Biología",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "31.08",
+       "nombre": "Sistemas de Representación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "92.02",
+       "nombre": "Análisis Matemático II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01",
+        "93.18"
+       ]
+      },
+      {
+       "codigo": "93.41",
+       "nombre": "Física I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 1",
+     "anio": 2,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "30.89",
+       "nombre": "Mecánica de Sólidos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.41"
+       ]
+      },
+      {
+       "codigo": "92.03",
+       "nombre": "Análisis Matemático III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.01",
+        "93.18"
+       ]
+      },
+      {
+       "codigo": "93.36",
+       "nombre": "Probabilidad",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02"
+       ]
+      },
+      {
+       "codigo": "93.42",
+       "nombre": "Física II",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.02"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 2 - Cuatrimestre 2",
+     "anio": 2,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "11.28",
+       "nombre": "Sistemas Complejos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.67",
+       "nombre": "Estadística Aplicada",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.36"
+       ]
+      },
+      {
+       "codigo": "31.24",
+       "nombre": "Mecánica de Fluidos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03",
+        "93.41"
+       ]
+      },
+      {
+       "codigo": "92.05",
+       "nombre": "Análisis Matemático IV",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03"
+       ]
+      },
+      {
+       "codigo": "93.07",
+       "nombre": "Métodos Numéricos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03"
+       ]
+      },
+      {
+       "codigo": "93.43",
+       "nombre": "Física III",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "92.03"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 1",
+     "anio": 3,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "11.10",
+       "nombre": "Organización de la Producción I",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.16",
+       "nombre": "Materiales y Procesos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "30.89"
+       ]
+      },
+      {
+       "codigo": "21.30",
+       "nombre": "Principios y Aplicaciones Eléctricas",
+       "creditos": 5,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "93.61",
+       "nombre": "Física IV",
+       "creditos": 4,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.43"
+       ]
+      },
+      {
+       "codigo": "94.43",
+       "nombre": "Metodología del Diseño",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 3 - Cuatrimestre 2",
+     "anio": 3,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "11.20",
+       "nombre": "Supply Chain",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.10"
+       ]
+      },
+      {
+       "codigo": "11.51",
+       "nombre": "Investigación Operativa",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.67"
+       ]
+      },
+      {
+       "codigo": "30.32",
+       "nombre": "Termodinámica y sus aplicaciones",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "93.42"
+       ]
+      },
+      {
+       "codigo": "94.44",
+       "nombre": "Proyecto Interdisciplinario",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.43"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 4 - Cuatrimestre 1",
+     "anio": 4,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "11.75",
+       "nombre": "Tecnologías y Procesos de Producción",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.16"
+       ]
+      },
+      {
+       "codigo": "23.17",
+       "nombre": "Electrónica e Instrumentación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "61.09",
+       "nombre": "Economía Empresaria",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.10"
+       ]
+      },
+      {
+       "codigo": "71.90",
+       "nombre": "Certificaciones tecnológicas",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.51",
+       "nombre": "Inglés I",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 4 - Cuatrimestre 2",
+     "anio": 4,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "10.02",
+       "nombre": "Gestión Ambiental",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.75"
+       ]
+      },
+      {
+       "codigo": "11.63",
+       "nombre": "Simulación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.51"
+       ]
+      },
+      {
+       "codigo": "61.28",
+       "nombre": "Economía",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.09"
+       ]
+      },
+      {
+       "codigo": "61.31",
+       "nombre": "Derecho para Ingenieros",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 1",
+     "anio": 5,
+     "cuatri": 1,
+     "materias": [
+      {
+       "codigo": "10.01",
+       "nombre": "Proyecto Final de Ingeniería Industrial (Anual)",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.44",
+        "11.51",
+        "61.09",
+        "11.20"
+       ]
+      }
+     ]
+    },
+    {
+     "nombre": "Año 5 - Cuatrimestre 2",
+     "anio": 5,
+     "cuatri": 2,
+     "materias": [
+      {
+       "codigo": "94.52",
+       "nombre": "Inglés II",
+       "creditos": 0,
+       "creditosReq": 0,
+       "correlativas": [
+        "94.51"
+       ]
+      },
+      {
+       "codigo": "94.65",
+       "nombre": "Practica Profesional supervisada",
+       "creditos": 0,
+       "creditosReq": 144,
+       "correlativas": []
+      }
+     ]
+    },
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": []
+    }
+   ]
+  },
+  {
+   "nombre": "Bloque I Electivas",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 6 créditos",
+   "creditos": 6,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "71.45",
+       "nombre": "Estructura de Datos y Programación",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.20"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Bloque II Electivas General",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 43 créditos",
+   "creditos": 43,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "10.07",
+       "nombre": "Creatividad",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.09",
+       "nombre": "Formación para Emprendedores",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.15",
+       "nombre": "Agroindustria",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.16",
+       "nombre": "Machine Learning para Negocios",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": [
+        "92.03",
+        "93.36"
+       ]
+      },
+      {
+       "codigo": "10.21",
+       "nombre": "Herramientas Avanzadas de la Calidad",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": [
+        "11.67"
+       ]
+      },
+      {
+       "codigo": "10.22",
+       "nombre": "Machine Learning Avanzada",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": [
+        "10.16"
+       ]
+      },
+      {
+       "codigo": "10.23",
+       "nombre": "Agroindustria II",
+       "creditos": 3,
+       "creditosReq": 145,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.39",
+       "nombre": "Marketing",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.59",
+       "nombre": "Logística",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": [
+        "11.20"
+       ]
+      },
+      {
+       "codigo": "11.76",
+       "nombre": "Gestión de Calidad",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.84",
+       "nombre": "Gestión de Proyectos",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.91",
+       "nombre": "Metodología de la Investigación",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.03",
+       "nombre": "Gestión de la Innovación",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.14",
+       "nombre": "Introducción a la Consultoría",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.37",
+       "nombre": "Análisis de Encuestas",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.40",
+       "nombre": "Ingeniería y Cambio Climático",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.46",
+       "nombre": "Lean Manufacturing",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.59",
+       "nombre": "Lean Six Sigma White Belt",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.67",
+       "nombre": "Bem1105x Pricing Options with Mathematical Models",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.72",
+       "nombre": "Analytics",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.77",
+       "nombre": "Diseño de Producto",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.97",
+       "nombre": "Diseño Circular: Sustentabilidad e Innovación en la Cadena de Valor.",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.99",
+       "nombre": "Electric Cars Technology",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.06",
+       "nombre": "Storytelling aplicado a los negocios",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.07",
+       "nombre": "Conceptos de Minería para Ing. Industriales",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.11",
+       "nombre": "Aplicaciones avanzadas de estadística",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.67"
+       ]
+      },
+      {
+       "codigo": "15.12",
+       "nombre": "Análisis Estratégico del Mercado",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.13",
+       "nombre": "Innovación en materiales Biobasados",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.14",
+       "nombre": "Proyecto I",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.16",
+       "nombre": "Supply Chain leadership",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.20"
+       ]
+      },
+      {
+       "codigo": "15.61",
+       "nombre": "Mecánica de Fluidos Computacional",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.62",
+       "nombre": "Ciclos reales en motores de combustión interna",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.63",
+       "nombre": "Deformación y fractura de materiales",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.69",
+       "nombre": "Factibilidad de proyectos Data Driven",
+       "creditos": 3,
+       "creditosReq": 145,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.70",
+       "nombre": "Service Design",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.71",
+       "nombre": "Introducción a la realidad virtual",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.72",
+       "nombre": "Growth Hacking",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.75",
+       "nombre": "Filosofía",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.76",
+       "nombre": "Prácticas Expositivas",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.77",
+       "nombre": "Química Inorgánica",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.80",
+       "nombre": "Seminario Internacional I",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.81",
+       "nombre": "Seminario Internacional II",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.82",
+       "nombre": "Seminario Internacional III",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.83",
+       "nombre": "Seminario Internacional IV",
+       "creditos": 2,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.84",
+       "nombre": "Gestión de la Operación Diaria a través de DMS y KPIs Estratégicos",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.85",
+       "nombre": "Logística Internacional",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.10"
+       ]
+      },
+      {
+       "codigo": "15.86",
+       "nombre": "Analítica para la Cadena de Suministro",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.20"
+       ]
+      },
+      {
+       "codigo": "15.87",
+       "nombre": "Simulación para la Cadena de Suministro",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.20"
+       ]
+      },
+      {
+       "codigo": "15.89",
+       "nombre": "Mejora continua de procesos",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "11.67",
+        "11.10"
+       ]
+      },
+      {
+       "codigo": "16.04",
+       "nombre": "Neurociencias y Desarrollo Productivo",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "21.44",
+       "nombre": "Instalaciones Eléctricas",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "23.15",
+       "nombre": "Realidad Virtual",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.45",
+        "71.20"
+       ]
+      },
+      {
+       "codigo": "31.67",
+       "nombre": "Procesos de Manufactura I",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "47.73",
+       "nombre": "Operaciones Offshore - Petróleo y LNG",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "48.02",
+       "nombre": "AI: Data Management Course & Digital Transformation",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "48.04",
+       "nombre": "El Gas Natural Licuado - Tecnología, Mercados y Negocios",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.28"
+       ]
+      },
+      {
+       "codigo": "48.05",
+       "nombre": "La Cadena de valor del Gas Natural",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.28"
+       ]
+      },
+      {
+       "codigo": "61.11",
+       "nombre": "Derecho Laboral y Seguridad Social en la Empresa",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.31"
+       ]
+      },
+      {
+       "codigo": "61.34",
+       "nombre": "Valuación de Empresas",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.50"
+       ]
+      },
+      {
+       "codigo": "71.22",
+       "nombre": "Sistemas de Inteligencia Artificial",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.04",
+       "nombre": "Teoría de Juegos y Estrategia",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.21",
+       "nombre": "Gestión de Ventas",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.51",
+       "nombre": "Gestión de Empresas Familiares",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.53",
+       "nombre": "Negocios en Internet",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.59",
+       "nombre": "Gestión de Servicios",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.65",
+       "nombre": "Logística Internacional",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": [
+        "11.20"
+       ]
+      },
+      {
+       "codigo": "81.73",
+       "nombre": "Introducción a la IOT",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.74",
+       "nombre": "Introducción a la realidad aumentada",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.94",
+       "nombre": "Experiencia Inmersiva de Innovación Tecnológica",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "82.07",
+       "nombre": "Blockchain (Moneda digital descentralizada)",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "82.08",
+       "nombre": "Cloud Computing",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "82.17",
+       "nombre": "Análisis Multivariado",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": [
+        "11.67"
+       ]
+      },
+      {
+       "codigo": "92.99",
+       "nombre": "Complementos de Análisis Matemático IV",
+       "creditos": 2,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.13",
+       "nombre": "Gestión de Organizaciones Sociales",
+       "creditos": 6,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.19",
+       "nombre": "Comportamiento Organizacional",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": [
+        "94.33"
+       ]
+      },
+      {
+       "codigo": "94.27",
+       "nombre": "Administración de Recursos Humanos",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.40",
+       "nombre": "Estructura de las Organizaciones",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "94.42",
+       "nombre": "Comunicación Estratégica",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Bloque III Electivas Gestión",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 3 créditos",
+   "creditos": 3,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "11.46",
+       "nombre": "Planeamiento Estratégico",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.73",
+       "nombre": "Teoría de la Decisión",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Bloque IV Electivas Tics",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 3 créditos",
+   "creditos": 3,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "15.65",
+       "nombre": "Derecho digital",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.67",
+       "nombre": "Programación web",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.68",
+       "nombre": "Programación Básica",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "81.03",
+       "nombre": "Sistemas de Información",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Bloque V Electivas Energía",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 4 créditos",
+   "creditos": 4,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "10.08",
+       "nombre": "Energías Renovables",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.12",
+       "nombre": "Energías Convencionales",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.18",
+       "nombre": "Demanda Energética",
+       "creditos": 2,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.19",
+       "nombre": "Tecnologías Energéticas Disruptivas",
+       "creditos": 2,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.20",
+       "nombre": "Introducción al Desarrollo Energético Sustentable",
+       "creditos": 2,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "10.24",
+       "nombre": "Economía de la Transición Energética",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "14.52",
+       "nombre": "Eficiencia Energética",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": []
+      },
+      {
+       "codigo": "15.15",
+       "nombre": "Tecnologías del Hidrógeno",
+       "creditos": 1,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "34.98",
+       "nombre": "Baterías y Acumulación de Energía",
+       "creditos": 1,
+       "creditosReq": 0,
+       "correlativas": [
+        "30.32",
+        "12.67",
+        "23.17"
+       ]
+      },
+      {
+       "codigo": "47.86",
+       "nombre": "Transición Energética y Sustentabilidad",
+       "creditos": 3,
+       "creditosReq": 96,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Bloque VI Electivas Finanzas",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 6 créditos",
+   "creditos": 6,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "15.64",
+       "nombre": "Sistema Monetario y Financiero en Argentina",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "61.30",
+       "nombre": "Econometría Aplicada",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": [
+        "11.67"
+       ]
+      },
+      {
+       "codigo": "61.50",
+       "nombre": "Finanzas de la Empresa",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "61.93",
+       "nombre": "Estrategia Financiera",
+       "creditos": 3,
+       "creditosReq": 0,
+       "correlativas": [
+        "61.09"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Bloque VII Electivas Tecnología",
+   "tituloOtorgado": null,
+   "requisito": "Juntar 6 créditos",
+   "creditos": 6,
+   "tipo": "creditos",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "10.04",
+       "nombre": "Plantas Industriales",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.14",
+       "nombre": "Diseño de Producto",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": [
+        "11.16"
+       ]
+      },
+      {
+       "codigo": "11.19",
+       "nombre": "Prototipado e Impresión 3D",
+       "creditos": 3,
+       "creditosReq": 72,
+       "correlativas": []
+      },
+      {
+       "codigo": "11.33",
+       "nombre": "Gestión de la tecnología",
+       "creditos": 3,
+       "creditosReq": 160,
+       "correlativas": []
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "nombre": "Gestión de datos (obligatoria)",
+   "tituloOtorgado": null,
+   "requisito": "Aprobar 1 item(s) (suma 6 créditos)",
+   "creditos": 6,
+   "tipo": "uno",
+   "secciones": [
+    {
+     "nombre": null,
+     "anio": null,
+     "cuatri": null,
+     "materias": [
+      {
+       "codigo": "71.78",
+       "nombre": "Gestión de Datos",
+       "creditos": 6,
+       "creditosReq": 0,
+       "correlativas": [
+        "71.20"
+       ]
+      },
+      {
+       "codigo": "71.88",
+       "nombre": "Gestión de Datos",
+       "creditos": 6,
+       "creditosReq": 900,
+       "correlativas": [
+        "71.20"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "titulos": [
+  {
+   "tipo": "Principal",
+   "titulo": "Ingeniero/a Industrial",
+   "requisitos": "Aprobar I22 (sumar 240 créditos)",
+   "creditos": 240
+  }
+ ]
+}

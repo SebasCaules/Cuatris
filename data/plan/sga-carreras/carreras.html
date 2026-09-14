@@ -1,0 +1,843 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description"
+	content="Sistema de Gesti&oacute;n Acad&eacute;mica" />
+<meta name="keywords" content="academica, gestion" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="../../../../css/bootstrap.css" type="text/css" rel="stylesheet"/>
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="../../../../css/itba_bootstrap.css" type="text/css" rel="stylesheet"/>
+<script src="../../../../js/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="../../../../js/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="../../../../img/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="../../../../img/favicon.ico" type="image/x-icon"/>
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="../../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRVhLnwK6Xt2XUzmDb5rEL3LyVOGdQenvKLJg6cKXTudsxmjFoX-n0wC9iZeNW0T7TPgvaJxrcFBg/X5E87/mDb9a/oX-53/sVVa2"></script>
+<script type="text/javascript" src="../../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRkIHSE4F8KjLsgOrqfLXUgeS1FdngABiY-grLb5kAceQP65u0gCbPEOWOU3B2z5lQ/X5E87/IRk91/eQPe3/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoFFijACSWTOfAXio2ubnCcr7J1iUTOZ2xu4VIIEheA9Y/L7E59/bnC46/OZ296";
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../../fyBfZ9p6trM5e0aZzLv4UWO023aP4Tng7j8Vo69dqBaoiaGA7NqiDYCFZPaGQysAeE5goD9Y2-M/fyBce/goD9b',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id119'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+
+
+	<script type="text/javascript" id="org-apache-wicket-extensions-markup-html-repeater-data-table-filter-FilterToolbar-0">
+/*<![CDATA[*/
+
+
+	function _filter_focus(ctrl, trackerId) {
+		document.getElementById(trackerId).value=ctrl.id;
+	}
+	
+	function _filter_focus_restore(trackerId) {
+		var tracker=document.getElementById(trackerId);
+		if (tracker!=null) {
+			var focused=tracker.value;
+			if (focused!="") {
+				document.getElementById(focused).focus();
+			}
+		}
+	}
+	
+	
+/*]]>*/
+</script>
+
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { _filter_focus_restore('id11afocus');;});
+/*]]>*/
+</script>
+
+</head>
+<body>
+	<div id="id11b" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<![If !IE]> <a href="../../../../app2/"><div class="logo"></div></a> <![endif]>
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp&nbsp&nbsp<a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMz0dND7uwQHgeS1lfMonmcAg/fyBce/M5ebc">[Salir]</a> <a id="id11c" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMz7rgeeiu-H7Vi4EwWj76cVQg4ErwU_n7m-RE_SEvBROcE3Y5iia318pfsuxmjCgV-lO-xla8V-qo/fyBce/ROca5" class="dropdown-toggle" data-toggle="dropdown"><span>Inicio</span><b
+		class="caret"></b></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMz7rgeeiu-H7Vi4EwWj76cVQg4ErwU_n7mC0g3-2FsCt8tTQJg-efVsuojsb0Zz6ZQcAfs2lnowngxoNva0urkQJBdCrlkBQ4eYEI2HrOs9F34XO44ttK65SRqgTDFXKjQSNjukA3o6uY/fyBce/-dM25"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMz7rgeeiu-H7Vi4EwWj76cVQg4ErwU_n7m-2s9hUJ84ESYVhHF49nWJ3-CCcMzJC10kTR25ClhHZ-_R7L19qHZMt5ke7nDj6IKi8AujtmFhxqScmGbuo6NBaXR46aNFMxMR93OQTIrixw/fyBce/-dM25"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMz7rgeeiu-H7Vi4EwWj76cVQg4ErwU_n7m-2s9hUJ84ESYVhHF49nWJ3-CCcMzJC10kTR25ClhHZ-_R7L19qHZMt5ke7nDj6IKSMOBIs0x-q3h7-wU3OdbSk7gssqUc04Gk4_5C74tGWo/fyBce/-dM25"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMz7rgeeiu-H7Vi4EwWj76cVQg4ErwU_n7m-2s9hUJ84ESYVhHF49nWJ3-CCcMzJC10kTR25ClhHZ-_R7L19qHZMt5ke7nDj6IKRMff81bJMgugwPXLHAOFDtP7ZEYxwF8pbulVEdAYwJI/fyBce/-dM25"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMz7rgeeiu-H7Vi4EwWj76cVQg4ErwU_n7m-2s9hUJ84ESYVhHF49nWJ3-CCcMzJC10kTR25ClhHZ-_R7L19qHZMt5ke7nDj6IKY3WIKjmdyhlqZ1DPMvZ2ZnJctIT0YIJmsdwDS2H69ys/fyBce/-dM25"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../../L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMz7rgeeiu-H7Vi4EwWj76cVQg4ErwU_n7meJ-WPsnsr5FgebEKVex0OKbYRh8Nb8lV_Y7z0BCUylDT8_N6hoLoEW9MwXAQYPoHIstbr7F5tvAZx0qrFcOHjW_fVsduDJzz1D3gkrkq6Co/fyBce/-dM25"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMz7rgeeiu-H7Vi4EwWj76cVQg4ErwU_n7mkTpCzl9DQaKngYDZLfLtRSYLbUQWcZ_EsTYPSaLVRw_UrwLBbgGVpEJykHFrq0e_EeM4jnyPd8t8k-w2yIBD9MTZj0LMU-fmpf09JOEg7J0/fyBce/-dM25"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id11d">
+  
+</div>
+			
+
+		<div class="row">
+			<div class="span4 pull-right backgroundBordered">
+				
+				<div id="id11e">
+			Nivel: 
+				<span>Grado</span>
+			<a id="id11f" href="#" onclick="var wcall=wicketAjaxGet(&#039;../../../fyBfZ9p6trM5e0aZzLv4UWO023aP4Tng7j8Vo69dqBayHUiIygC6xrS98MuBzSaYDYFKcZKUlaVE2Gv8YEsZOg/fyBce/23a5f&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;id11f&#039;) != null;}.bind(this));return !wcall;">[Modificar]</a>
+		</div>
+			</div>
+		</div>
+		
+		
+
+		
+
+		
+
+		
+
+		
+
+		<h3>
+			Listado de carreras
+		</h3>
+
+		<div class="backgroundBordered">
+			<h4>
+				Carreras
+			</h4>
+			<p>
+				
+			</p>
+						
+			<div align="center" id="id120">
+		<div>
+	<div style="text-align:left;">
+	<strong>Referencias:</strong>
+	<span>
+		<span style="clear:none; padding-left:10px;">
+			<img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r6LYSzWhyUysORYS5aIYm6E/X5E87/lr039/lr039/lr039"/> = 
+			<span>Desactivar carrera</span>
+		</span> 
+	</span><span>
+		<span style="clear:none; padding-left:10px;">
+			<img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r5kjvNZohZlr5nqaRglttLM/X5E87/lr039/lr039/lr039"/> = 
+			<span>Editar carrera</span>
+		</span> 
+	</span><span>
+		<span style="clear:none; padding-left:10px;">
+			<img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r6paBNXr4dZSO2NWqspbfAI/X5E87/lr039/lr039/lr039"/> = 
+			<span>Eliminar carrera</span>
+		</span> 
+	</span><span>
+		<span style="clear:none; padding-left:10px;">
+			<img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039"/> = 
+			<span>Ver detalles</span>
+		</span> 
+	</span><span>
+		<span style="clear:none; padding-left:10px;">
+			<img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039"/> = 
+			<span>Ver títulos</span>
+		</span> 
+	</span>
+	</div>
+</div>
+		<form id="id11a" method="post" action="../../../fyBfZ9p6trM5e0aZzLv4UWhn6Ynuj-eB40LA7K2kgKdWfZLc_T6SA8DbwVXGSyw7iAJNiZxR9_E/fyBce/NiZde"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="id11a_hf_0" id="id11a_hf_0" /></div><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="text" autocomplete="off"/><input type="submit" name="results:topToolbars:toolbars:32651:filters:7:filter:go" onclick=" var b=document.getElementById('id121'); if (b!=null&amp;&amp;b.onclick!=null&amp;&amp;typeof(b.onclick) != 'undefined') {  var r = b.onclick.bind(b)(); if (r != false) b.click(); } else { b.click(); };  return false;"  /></div>
+			<table id="id122" class="table table-bordered table-condensed table-hover">
+
+<thead>
+	
+	<tr class="blue">
+		<td colspan="7">
+			<a href="../../../fyBfZ9p6trOzSQ6ennNtCsRwoAYxUViwguytPJ_aj-DnrXuNa8k-wGncWjpMtllf4zPV26xXHIe55AyTntOaCLU-qwZGijij6fVge6zG251joTZyY7VItoCwif30lRzsGDtDpE2iUFk/fyBce/j6f29" title="Descargar" alt="Descargar"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r8AyQgtMCoULUgB8KemmHwc/X5E87/lr039/lr039/lr039"/></a> [Descargar Todos los Planes de Estudio]
+		</td>
+	</tr>
+
+	<tr class="blue">
+		<td colspan="7">
+			<div class="navigatorLabel">
+				
+			</div>
+			<div class="navigator">
+				
+			</div>
+		</td>
+	</tr>
+
+	<tr class="headers">
+		
+			<th class="wicket_orderNone width10"><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa4slfbP89fUcjy2YjYYYTr1aQ_JZ98YbiDAmk9pT6cPVmkI6Z-_8OtNUMjEEmwJ4reDzj85CCrc6g/fyBce/85C65" id="id123" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#039;../../../fyBfZ9p6trM5e0aZzLv4UWO023aP4Tng7j8Vo69dqBbwl1OcRAZDPl4_B0B-1km-NPlxrvHjUadokF50Ev47h4VxKX4so4NhS2ncLVXcG_VKbNp8zS9Q539ZcujPf5vJnM2suYQoZgnlZCfAJrDpZxxeujvPNNF9/fyBce/7j874&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;id123&#039;) != null;}.bind(this));return !wcall;"><span>Código</span></a></th>
+		
+			<th class="wicket_orderUp width35 left"><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa4slfbP89fUcjy2YjYYYTr1aQ_JZ98YbiDAmk9pT6cPVjPK-GJEv2YvxuMVK37e41NTXhLXtFmCvw/fyBce/LXt97" id="id124" class="wicket_orderUp" onclick="var wcall=wicketAjaxGet(&#039;../../../fyBfZ9p6trM5e0aZzLv4UWO023aP4Tng7j8Vo69dqBbwl1OcRAZDPl4_B0B-1km-NPlxrvHjUadokF50Ev47h4VxKX4so4NhS2ncLVXcG_VKbNp8zS9Q539ZcujPf5vJIEg-B3n3vmU3n5Pd-4n9KE_766NAfUoS/fyBce/7j874&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;id124&#039;) != null;}.bind(this));return !wcall;"><span>Nombre</span></a></th>
+		
+			<th class="wicket_orderNone width20 left"><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa4slfbP89fUcjy2YjYYYTr1aQ_JZ98YbiDAmk9pT6cPVi5otE6Hpc-U-Ycjp9qr2AIaDtHuldLGNQ/fyBce/Hul5e" id="id125" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#039;../../../fyBfZ9p6trM5e0aZzLv4UWO023aP4Tng7j8Vo69dqBbwl1OcRAZDPl4_B0B-1km-NPlxrvHjUadokF50Ev47h4VxKX4so4NhS2ncLVXcG_VKbNp8zS9Q539ZcujPf5vJNyo9M3R4tewHvL-oyyy8ggXKvTCzomnt/fyBce/7j874&#039;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#039;id125&#039;) != null;}.bind(this));return !wcall;"><span>Escuela</span></a></th>
+		
+			<th class="width10"><span>Nivel</span></th>
+		
+			<th class="width10"><span>Nivel Informativo</span></th>
+		
+			<th class="width5"><span>Activa</span></th>
+		
+			<th><span>Acciones</span></th>
+		
+	</tr>
+
+	<tr class="filters-tr">
+		
+			<td class="filter-td"><input type="text" value="" name="results:topToolbars:toolbars:32651:filters:1:filter:filter" id="id126" onfocus="_filter_focus(this, &#039;id11afocus&#039;);" style="width:100%" class="valid" maxlength="8"/></td>
+		
+			<td class="filter-td"><input type="text" value="" name="results:topToolbars:toolbars:32651:filters:2:filter:filter" id="id127" onfocus="_filter_focus(this, &#039;id11afocus&#039;);" style="width:100%" class="valid" maxlength="150"/></td>
+		
+			<td class="filter-td"><input type="text" value="" name="results:topToolbars:toolbars:32651:filters:3:filter:filter" id="id128" onfocus="_filter_focus(this, &#039;id11afocus&#039;);" style="width:100%" class="valid" maxlength="150"/></td>
+		
+			<td class="filter-td"><select name="results:topToolbars:toolbars:32651:filters:4:filter:filter" id="id129" onfocus="_filter_focus(this, &#039;id11afocus&#039;);" style="width:100%" class="valid">
+<option value="0">Ingreso</option>
+<option selected="selected" value="1">Grado</option>
+<option value="2">Posgrado</option>
+<option value="3">Educación Ejecutiva</option>
+</select></td>
+		
+			<td class="filter-td"><select name="results:topToolbars:toolbars:32651:filters:5:filter:filter" id="id12a" onfocus="_filter_focus(this, &#039;id11afocus&#039;);" style="width:100%" class="valid">
+<option selected="selected" value="">Seleccione uno</option>
+<option value="0">Ingreso</option>
+<option value="1">Grado</option>
+<option value="2">Posgrado</option>
+<option value="3">Doctorado</option>
+<option value="4">Educación Ejecutiva</option>
+</select></td>
+		
+			<td class="filter-td">
+		<input type="checkbox" checked="checked" name="results:topToolbars:toolbars:32651:filters:6:filter:filter" class="valid"/>
+		</td>
+		
+			<td class="filter-td">
+			<a href="#" onclick="var e=document.getElementById(&#039;id11a_hf_0&#039;); e.name=&#039;results:topToolbars:toolbars:32651:filters:7:filter:go&#039;; e.value=&#039;x&#039;;var f=document.getElementById(&#039;id11a&#039;);var ff=f;if (ff.onsubmit != undefined) { if (ff.onsubmit()==false) return false; }f.submit();e.value=&#039;&#039;;e.name=&#039;&#039;;return false;" title="Filtrar" alt="Filtrar"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlpEUXPsRxp5xhnDMIFkvfidHGbQp6n16VZeJVb8sa_YJpnVPlSi7gcqYZizj4UORwCk6CqP7PLomNmDUkO8cRh-29hV4SpcYSw/X5E87/j4Uba/izj08/a_Yfa"></img></a>
+			<a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa4slfbP89fUcjy2YjYYYTr1aQ_JZ98YbiC4tRrhZFHPJcl8TN0lj8Y68ADOQiJqiDllBHe1igKDFQ/fyBce/e1i1c" title="Limpiar" alt="Limpiar"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlpEUXPsRxp5xhnDMIFkvfidHGbQp6n16VZeJVb8sa_YJpnVPlSi7gcqYZizj4UORwDLMFmnoG3GsMbie_vX1EVMETjWsEoX0i8/X5E87/j4Uba/izj08/a_Yfa"></img></a>
+		</td>
+		
+	</tr>
+
+</thead>
+
+<tbody>
+	<tr class="even">
+		<td class="width10">
+			<span>BIO</span>
+		</td><td class="width35 left">
+			<span>Bioingeniería</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:19:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRChM5GLbyy8Km5c7w8OJZbYQcWiQn0BL3HZww_lC4HtGuJCWHJ85YSU/fyBce/Km592"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRChM5GLbyy8Km5c7w8OJZbYQcWiQn0BL3PSmOu_vtNe84tvArZ7NJxA/fyBce/Km592"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width10">
+			<span>AER</span>
+		</td><td class="width35 left">
+			<span>Ingeniería Aeroespacial</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:20:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRDzO5sFMKmZy2ObndbFzEBTg2bN1Zf18TzaRoRAtart9lt85yH0AWLY/fyBce/y2Oc5"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRDzO5sFMKmZy2ObndbFzEBTg2bN1Zf18T0pSirffG-EwwHSQHgAta1U/fyBce/y2Oc5"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width10">
+			<span>C</span>
+		</td><td class="width35 left">
+			<span>Ingeniería Civil</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:21:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRHV4sVkBe7-n1SZ0DaDYHqoubZtQ5mO7VAtjYQqUF65dAEuw5S7VlDA/fyBce/n1Saf"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRHV4sVkBe7-n1SZ0DaDYHqoubZtQ5mO7VMiENklpOSmwEQnAGUgEgpY/fyBce/n1Saf"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width10">
+			<span>E</span>
+		</td><td class="width35 left">
+			<span>Ingeniería Electricista</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:22:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRB5vuaE9NEvX-67gHMfSsFHhB6_cbUQGsUxMisyP-RxfKEq61PbXhlA/fyBce/X-600"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRB5vuaE9NEvX-67gHMfSsFHhB6_cbUQGsfpGl8yMbEog6VOkPv8HTDc/fyBce/X-600"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width10">
+			<span>K</span>
+		</td><td class="width35 left">
+			<span>Ingeniería Electrónica</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:23:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRMJGZMe3JLsONCZKhnjrtRYMikK_iCul-dgCNa6MOYpwS0BzDSQmUdc/fyBce/ONC73"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRMJGZMe3JLsONCZKhnjrtRYMikK_iCul-V5CB2fevymFb7IRCUrccMI/fyBce/ONC73"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width10">
+			<span>B</span>
+		</td><td class="width35 left">
+			<span>Ingeniería en Biotecnología</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:24:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRD7PpJBxq-BpepgzOe-p1NoCtno0XUbdYSq3DaY1hk3BFNSCsLrIdJM/fyBce/pep9a"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRD7PpJBxq-BpepgzOe-p1NoCtno0XUbdYchiAnWSDv_ukLObXojiPpk/fyBce/pep9a"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width10">
+			<span>S</span>
+		</td><td class="width35 left">
+			<span>Ingeniería en Informática</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:25:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRDtnolfz6iHL9lnnC-pLcxbQ2r4omqszcCpKLQ3W0jBn-cJtReRzFzA/fyBce/L9lde"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRDtnolfz6iHL9lnnC-pLcxbQ2r4omqszcDq5ut54YUoheVHzC8eSLYY/fyBce/L9lde"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width10">
+			<span>P</span>
+		</td><td class="width35 left">
+			<span>Ingeniería en Petróleo</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:26:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRA7UExhoKrUzcmsNhcEhsgdEvcVVLaQIBqzQCYSU0k259xQbcShhaes/fyBce/zcm83"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRA7UExhoKrUzcmsNhcEhsgdEvcVVLaQIBp0Jc-JXUUah8hk0ojutUaw/fyBce/zcm83"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width10">
+			<span>I</span>
+		</td><td class="width35 left">
+			<span>Ingeniería Industrial</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:27:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRGmSpZrn69tuD4XYaNgMDtLxNDB2bi4fzlrqsf4uF6xCCDUk96BXE0A/fyBce/uD474"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRGmSpZrn69tuD4XYaNgMDtLxNDB2bi4fzkcxIJdJVCpcv-oqmXur6MM/fyBce/uD474"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width10">
+			<span>M</span>
+		</td><td class="width35 left">
+			<span>Ingeniería Mecánica</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:28:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRB94klLcCio3mrPxZJJiSGo6PDsvC81Itiko46Mv2FJ51zZCE-NozIc/fyBce/3mrb7"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRB94klLcCio3mrPxZJJiSGo6PDsvC81ItgPgYQrcjlwozjZpbVPm_SI/fyBce/3mrb7"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width10">
+			<span>N</span>
+		</td><td class="width35 left">
+			<span>Ingeniería Naval</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:29:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRIxDD7dJG6CMT8wJBHo0W_4-MGfvZm0coEEGElkroEjPzYPtVNTyqmA/fyBce/MT840"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRIxDD7dJG6CMT8wJBHo0W_4-MGfvZm0coNYwhhkb_-XDO2vxIj0qBs8/fyBce/MT840"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width10">
+			<span>Q</span>
+		</td><td class="width35 left">
+			<span>Ingeniería Química</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:30:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRDGeSfJQDJQkl7YGtJt2mVPI7OGaER4M1JVmJznzWKeEI4BmIMRSaKE/fyBce/kl785"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRDGeSfJQDJQkl7YGtJt2mVPI7OGaER4M1MxB_riiY3DZZasyljl6QxY/fyBce/kl785"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width10">
+			<span>X</span>
+		</td><td class="width35 left">
+			<span>Intercambio</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:31:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRM5eB7bTQJeWZUrlDHAMvz4YgvzOXFUPLgHE05lX8KrnyReFRpCkess/fyBce/WZUc1"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRM5eB7bTQJeWZUrlDHAMvz4YgvzOXFUPLvzLIARdFSWHmpdf3RFFOho/fyBce/WZUc1"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width10">
+			<span>L</span>
+		</td><td class="width35 left">
+			<span>Lic.en Administración y Sistemas</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:32:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRKVx9ZvzCc5uPPiBd2KYFmgWq0q8ZlfsZ0qEjq-Tlo3ZLZuJ08zxSyY/fyBce/uPPc4"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRKVx9ZvzCc5uPPiBd2KYFmgWq0q8ZlfsZz6T0nu2A6VcFcaGHVaQgpQ/fyBce/uPPc4"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width10">
+			<span>LAES</span>
+		</td><td class="width35 left">
+			<span>Licenciatura en Analítica Empresarial y Social</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:33:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxREAM2zImf2Pze54bmrJ3UsadTdflivkeLCt5v9UQIV2aHJr9QaRI78o/fyBce/ze5a9"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxREAM2zImf2Pze54bmrJ3UsadTdflivkeLA68i9RGw-ZjOMWLFAysf44/fyBce/ze5a9"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width10">
+			<span>LCA</span>
+		</td><td class="width35 left">
+			<span>Licenciatura en Ciencias Aplicadas</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:34:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRLIuop2Tqt3_0WjY5Rj5YLnI8MsXi5mr0SJlRGIsKzY-0snCKsnLOfg/fyBce/_0W15"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRLIuop2Tqt3_0WjY5Rj5YLnI8MsXi5mr0QiHVIANEI-MsRdlqFZp9LY/fyBce/_0W15"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width10">
+			<span>LCC</span>
+		</td><td class="width35 left">
+			<span>Licenciatura en Ciencias del Comportamiento</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:35:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRBHj8SVycGrhRP-PXkYJEqUDiTZOeSl53_ZWooqg51rJhbkK9_cnps4/fyBce/hRPf5"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRBHj8SVycGrhRP-PXkYJEqUDiTZOeSl533wmsvkTI-Su0P0Doc8Nh3k/fyBce/hRPf5"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width10">
+			<span>LN</span>
+		</td><td class="width35 left">
+			<span>Licenciatura en Gestión de Negocios</span>
+		</td><td class="width20 left">
+			<span>Escuela de Gestión y Tecnología</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:36:cells:6:cell:checkbox" disabled="disabled" class="valid"/>
+</span>
+		</td><td align="center">
+			<span>
+	<span></span><span></span><span></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRIw3ftq0cYZ-k6ax2j_VSmYNQPfpD8QtLTQanxIAf1-SENaqQDr41YA/fyBce/-k657"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229QdMnCMqYMshXVezmaH9kE9XG6ogn2p9r3YNAKMMmOWlSNx2Lo6W6A4/X5E87/lr039/lr039/lr039" title="Ver detalles" alt="Ver detalles"></img></a></span><span><a href="../../../fyBfZ9p6trM5e0aZzLv4UYQNyqVK-dMzTBcQsLRYhcP6bPbGGGZPvjckR9HtenukfoAabl2IQa6PIrdT-gIxRIw3ftq0cYZ-k6ax2j_VSmYNQPfpD8QtLcKYuPenECU3SH3CEtfdfa4/fyBce/-k657"><img src="../../../X5EA-RpmG5-t7GSByiSpoqywCrfZCLw1Ye_8e-S3wlr0CiPMmO229ckLgHW-yP-vp4YDRdQNEwD_vLXNqjKHuMN-qwvODyd1_mNOw_k8xsw/X5E87/lr039/lr039/lr039/lr039" title="Ver títulos" alt="Ver títulos"></img></a></span>
+</span>
+		</td>
+	</tr>
+</tbody>
+</table>
+		<div style='display:inline'><input type="hidden" name="id11afocus" id="id11afocus" value=""/></div></form>
+	</div>
+			
+			
+		</div>
+
+	
+	
+		</div>
+		<div id="id119"></div>
+	</div>
+</body>
+</html>

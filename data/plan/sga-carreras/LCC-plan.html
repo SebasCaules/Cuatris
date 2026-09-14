@@ -1,0 +1,846 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description"
+	content="Sistema de Gesti&oacute;n Acad&eacute;mica" />
+<meta name="keywords" content="academica, gestion" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="../../../css/bootstrap.css" type="text/css" rel="stylesheet"/>
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="../../../css/itba_bootstrap.css" type="text/css" rel="stylesheet"/>
+<script src="../../../js/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="../../../js/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRVhLnwK6Xt2XUzmDb5rEL3LyVOGdQenvKLJg6cKXTudsxmjFoX-n0wC9iZeNW0T7TPgvaJxrcFBg/X5E87/mDb9a/oX-53/sVVa2"></script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRkIHSE4F8KjLsgOrqfLXUgeS1FdngABiY-grLb5kAceQP65u0gCbPEOWOU3B2z5lQ/X5E87/IRk91/eQPe3/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="fyBfZ9p6trN4WyFzAl8asQ/fyBce/FzAdc";
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../fyBfZ9p6trMyHCmg8lg6cyOX4Nv5wQoIVuQBEDwud04Ow-3wlpzEezI69JT_GMl9AgB-bIP5nHs/fyBce/-bIc3',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id3a3'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div id="id3a4" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<![If !IE]> <a href="../../../app2/"><div class="logo"></div></a> <![endif]>
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp&nbsp&nbsp<a href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVgIEOApNAfaf49M6Frx9HOg/fyBce/MyH1b">[Salir]</a> <a id="id3a5" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVqstoetwkCOfNYDbC8alIA3ZOfvEJzPkkMwJmFed4qP1fAlYKyO_uSD9eMO548tOeCxfSGQZ2OZg/fyBce/qP121" class="dropdown-toggle" data-toggle="dropdown"><span>Inicio</span><b
+		class="caret"></b></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVqstoetwkCOfNYDbC8alIA3ZOfvEJzPkk9xMiQJI_8K_ctc2U3CSxgm7SdptkllQxdJwzOXUaQgWBH5wucadJwmLbSLfn7JVq1LkPDTnTgX_cB_erFAlLFogh1wHXd-bV0PawPBAppNM/fyBce/xJX95"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVqstoetwkCOfNYDbC8alIA3ZOfvEJzPkkLyd2M9uH-iI3uLSTOu5MLtJ88T7ceVI1cFchRYcSCzonxLUGZF4WrcWk7B7qHP94hIKenk5xtgRzKhLeoswnUxX1YTyMJIVmwZTDY97IWGE/fyBce/xJX95"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVqstoetwkCOfNYDbC8alIA3ZOfvEJzPkkLyd2M9uH-iI3uLSTOu5MLtJ88T7ceVI1cFchRYcSCzonxLUGZF4WrcWk7B7qHP94260VfuHXwRcVJP0TTc9wJwFMU02zjR2B-Xbhc47no1w/fyBce/xJX95"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVqstoetwkCOfNYDbC8alIA3ZOfvEJzPkkLyd2M9uH-iI3uLSTOu5MLtJ88T7ceVI1cFchRYcSCzonxLUGZF4WrcWk7B7qHP94pYD1fHjZ1XwX9KpdvNGONudMllwzd5rgBAvOYP3HIao/fyBce/xJX95"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVqstoetwkCOfNYDbC8alIA3ZOfvEJzPkkLyd2M9uH-iI3uLSTOu5MLtJ88T7ceVI1cFchRYcSCzonxLUGZF4WrcWk7B7qHP949xZZhUBVxLk1k9EZ2qafpUZ69JET4JGfcCxbU5qfVao/fyBce/xJX95"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVqstoetwkCOfNYDbC8alIA3ZOfvEJzPkkitKl5Ne6quiSMBR5C_suEkqoXdx8jXviWA570twNciyME7SxKMf8jr2ZKK0vIcPSZJlzMAUDPmiDQ_8Ai26dedP19DhFktmWfjmRpok8Nfo/fyBce/xJX95"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVqstoetwkCOfNYDbC8alIA3ZOfvEJzPkkoy4LoDXtMeo9iqSxFhW4OwCshc2Ap44SmqBlRS7UOdsJL5Y7gMZ-BgfMBVE8l6zJldo3xuUEiMoYQ9cvRf--4D5dDQOYbmI8SlHuP3TJ64k/fyBce/xJX95"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id3a6">
+  
+</div>
+			
+
+<h3>Detalle de Planes de estudio</h3>
+
+<div class="backgroundBordered">
+	<h4>Plan de estudio:  <span>LCC 25</span></h4>
+
+	
+	<div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id3a8">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Ciclo Básico</span>
+	
+	
+	- <span>Requisito: Aprobar todos los items (suma 192 créditos)</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  <tr>
+		  	<td>  <div id="id3a9">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id3aa">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM5r9TglTYsSRKMMqD8F2mkuv4rzvK5ZE8ifu8npfHOMVI0jf1kMJ5yo/fyBce/vuK2b"><span>19.01 - Fundamentos del comportamiento humano</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM5r9TglTYsSRKMMqD8F2mkuv4rzvK5ZE8iE2CVDRiDwyoAdOcsmm5_3/fyBce/vuK2b"><span>19.02 - Filosofía de la mente</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM5r9TglTYsSRKMMqD8F2mkuv4rzvK5ZE8hgoqcxYjEzKEAFS96AP6CD/fyBce/vuK2b"><span>93.20 - Análisis Matemático</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM5r9TglTYsSRKMMqD8F2mkuv4rzvK5ZE8hr6tKKl5Pl5Ve9RVtKCwzR/fyBce/vuK2b"><span>93.21 - Álgebra</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM5r9TglTYsSRKMMqD8F2mkuv4rzvK5ZE8gYLc2CDxeiw3CvZrWT10xG/fyBce/vuK2b"><span>94.33 - Tecnología y Sociedad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id3ab">
+		<div class="row">
+			<h4>
+				<span>Año 1 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id3ac">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6uVox8gWcWMNMdQn2p-6KUArybV5qnV18cf8siXgyPrQbphwNrKft9/fyBce/vuK2b"><span>19.03 - Psicología cognitiva</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>19.01 &nbsp;</span><span>19.02 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6uVox8gWcWMNMdQn2p-6KUArybV5qnV1_W3mgD9o5h5u7rTeZwiSW2/fyBce/vuK2b"><span>19.04 - Neurofisiología y Neuroanatomía</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6uVox8gWcWMNMdQn2p-6KUArybV5qnV1_GtefUzhdQMOu9c3A2Nu-k/fyBce/vuK2b"><span>71.20 - Informática General</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6uVox8gWcWMNMdQn2p-6KUArybV5qnV1_x2KBLm8ZSs0xqc2Cm-Pon/fyBce/vuK2b"><span>71.90 - Certificaciones tecnológicas</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6uVox8gWcWMNMdQn2p-6KUArybV5qnV1_gHO4nJL_d_aZX-hnfM4Pp/fyBce/vuK2b"><span>92.10 - Matemática Aplicada</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.20 &nbsp;</span><span>93.21 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6uVox8gWcWMNMdQn2p-6KUArybV5qnV18heuZQIwyprof5dIyCd6qf/fyBce/vuK2b"><span>94.34 - Economía y Sociedad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>94.33 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6uVox8gWcWMNMdQn2p-6KUArybV5qnV1-T0aI9tzIJssn_7w3Dz9XH/fyBce/vuK2b"><span>94.90 - Inglés I (analista)</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id3ad">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id3ae">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM78fgnG7MYgdIwS79LjGnZfbpqGHEqJNj7iqWzXojD7Tm1Sx4D3t8hQ/fyBce/vuK2b"><span>11.28 - Sistemas Complejos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM78fgnG7MYgdIwS79LjGnZfbpqGHEqJNj6LomDNt1t9wXa-3AuRjy9Q/fyBce/vuK2b"><span>19.05 - Psicología del Desarrollo</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>19.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM78fgnG7MYgdIwS79LjGnZfbpqGHEqJNj6OXYynLQmJ6FmcopMZ6Xch/fyBce/vuK2b"><span>61.17 - Economía del Comportamiento</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>94.34 &nbsp;</span><span>19.03 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM78fgnG7MYgdIwS79LjGnZfbpqGHEqJNj7gfN7vhU1F9SlX9SYVvh8g/fyBce/vuK2b"><span>71.88 - Gestión de Datos</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>71.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM78fgnG7MYgdIwS79LjGnZfbpqGHEqJNj7HU-gP9xuKzFzrL2NAjE02/fyBce/vuK2b"><span>93.36 - Probabilidad</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>92.10 &nbsp;</span><span>93.20 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id3af">
+		<div class="row">
+			<h4>
+				<span>Año 2 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id3b0">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM54g0shLpKNqwtJcjHJINhzc5f2QGLAO-tU3cZW6q1r-3XlIiFgdUXD/fyBce/vuK2b"><span>11.67 - Estadística Aplicada</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>93.36 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM54g0shLpKNqwtJcjHJINhzc5f2QGLAO-s2PMzVOqdcmoXFirchFpRM/fyBce/vuK2b"><span>19.06 - Lenguaje y cognición</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM54g0shLpKNqwtJcjHJINhzc5f2QGLAO-us-lMYHiRCbf-XpRbYxkLr/fyBce/vuK2b"><span>19.07 - Cerebro y neurociencias cognitivas</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>19.03 &nbsp;</span><span>19.04 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM54g0shLpKNqwtJcjHJINhzc5f2QGLAO-sfwXoM0Lk6KSvBnhAMx7LE/fyBce/vuK2b"><span>94.66 - Metodología de la Investigación en Ciencias del comportamiento</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>11.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM54g0shLpKNqwtJcjHJINhzc5f2QGLAO-vmz-Vx-pyJhkJwmHd8yTuz/fyBce/vuK2b"><span>94.91 - Inglés II (licenciado)</span></a></td>
+				<td>0</td>
+				<td>0</td>
+				
+				<td> <span>94.90 &nbsp;</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id3b1">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id3b2">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6GEYq_xhpKl7crvT6b2fD4WUEE1-puErN-hqp2kKJ4HBvoeoUuul3w/fyBce/vuK2b"><span>19.08 - Neurotecnología</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6GEYq_xhpKl7crvT6b2fD4WUEE1-puErP2iTZ5x2fR16PS_mik743F/fyBce/vuK2b"><span>71.22 - Sistemas de Inteligencia Artificial</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>92.10 &nbsp;</span><span>71.20 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6GEYq_xhpKl7crvT6b2fD4WUEE1-puErNJXCXwIVOeXpAOhXhy4wL0/fyBce/vuK2b"><span>81.92 - Gestión de proyectos de innovación y transformación</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6GEYq_xhpKl7crvT6b2fD4WUEE1-puErO7vehxHj88XAhA7GHvjE4k/fyBce/vuK2b"><span>82.04 - Analítica Descriptiva</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>11.67 &nbsp;</span><span>71.88 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6GEYq_xhpKl7crvT6b2fD4WUEE1-puErMJj5qw_UdzMUxyI9xxjZDK/fyBce/vuK2b"><span>94.67 - Ética profesional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id3b3">
+		<div class="row">
+			<h4>
+				<span>Año 3 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id3b4">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM7iSDzUZTvDFR8f70SDJjh7rhBV1d6cMUx0E-8BtsubXt530ZZDn20q/fyBce/vuK2b"><span>19.09 - Neurociencia aplicada al comportamiento del consumidor</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>19.07 &nbsp;</span><span>19.06 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM7iSDzUZTvDFR8f70SDJjh7rhBV1d6cMUxMdsRnZGUFXZ7V_fQcRByY/fyBce/vuK2b"><span>19.10 - Medición y evaluación de la conducta</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>19.01 &nbsp;</span><span>94.66 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM7iSDzUZTvDFR8f70SDJjh7rhBV1d6cMUycYxYghyR7iaTL6cS38GFL/fyBce/vuK2b"><span>61.05 - Economía de la Salud</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>94.34 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM7iSDzUZTvDFR8f70SDJjh7rhBV1d6cMUxc86gQwOnbjZBSbrwFda5I/fyBce/vuK2b"><span>82.05 - Análisis Predictivo</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> <span>11.67 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM7iSDzUZTvDFR8f70SDJjh7rhBV1d6cMUzyv80JVw4tBeDnd2caq6Yd/fyBce/vuK2b"><span>94.35 - Antropología cognitiva</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id3b5">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 1</span> 
+			</h4>
+		</div>
+		<div id="id3b6">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6-JRYVewHmdAuqsMvzhGBkkbajs4MlxnbC3pTY1cYZSgGNraQGvvCn/fyBce/vuK2b"><span>19.11 - Sistemas sociotécnicos adaptativos</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6-JRYVewHmdAuqsMvzhGBkkbajs4MlxnZ4p3QiAd2QYqACBRAf0iVY/fyBce/vuK2b"><span>19.12 - Técnicas de modificación del comportamiento</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>19.01 &nbsp;</span></td>
+			</tr><tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6-JRYVewHmdAuqsMvzhGBkkbajs4MlxnaM2L3P_3zvqHmRPMY44BRf/fyBce/vuK2b"><span>19.13 - Proyecto final de carrera (Anual)</span></a></td>
+				<td>6</td>
+				<td>0</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr><tr>
+		  	<td>  <div id="id3b7">
+		<div class="row">
+			<h4>
+				<span>Año 4 - Cuatrimestre 2</span> 
+			</h4>
+		</div>
+		<div id="id3b8">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				<th class="width15">Créditos requeridos</th>
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a target="_blank" href="../../fyBfZ9p6trMyHCmg8lg6c8yW51bQxJXVvuK5ikKVUjN-_DiGbm3NezPhEFtz7iV0DKKLm6SrvM6IaGv9FH9aJmaLRG5gbQqsirNM1HekD9BJP9OL3ulxEbkzeRgiNeDQ/fyBce/vuK2b"><span>19.14 - Cognición afectiva y motivacional</span></a></td>
+				<td>3</td>
+				<td>0</td>
+				
+				<td> <span>19.07 &nbsp;</span></td>
+			</tr><tr>
+				<td><span target="_blank"><em><span>Electivas</span></em></span></td>
+				<td>33</td>
+				<td>33</td>
+				
+				<td> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+		
+	</div> </td>
+	      </tr>
+	      
+		  </tbody>
+		</table>
+	</div><div>
+		<table class="table table-bordered table-condensed">
+		  <thead>
+		  	<tr class="blue"> 
+		  		<th>
+		  			<div id="id3b9">
+		<div class="row">
+			<h4>
+				<span></span> 
+			</h4>
+		</div>
+		<div>
+	<span>Electivas</span>
+	
+	
+	- <span>Requisito: Juntar 33 créditos</span>
+	
+</div>
+		
+	</div>
+		  		</th> 
+		  	</tr>
+		  </thead>
+		  <tbody>
+		  
+	      <div>
+			  <tr> 
+			  	<td> 
+			  		<div id="id3ba">
+		<div class="row">
+			<h4>
+				<span>Contenido:</span> 
+			</h4>
+		</div>
+		<div id="id3bb">
+	<table class="table table-bordered table-condensed table-hover">
+		<thead>
+			<tr class="blue">
+				<th class="width40">Materia</th>
+				<th class="width10">Créditos</th>
+				
+				
+				<th class="width25">Correlativas</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+</div>
+		
+	</div> 
+			  	</td> 
+			  </tr>
+		  </div>
+		  </tbody>
+		</table>
+	</div>
+	
+
+	<div id="id3bc">
+		
+		<div style="clear:both;">
+</div>
+	</div>
+	
+	<div id="id3bd">
+
+<h4>Títulos otorgados</h4>
+<table class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr class="blue">
+			<td>Tipo</td>
+			<td>Título</td>
+			<td>Requisitos</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span>Principal</span></td>
+			<td><span>Licenciado/a en Ciencias del Comportamiento</span></td>
+			<td><span>Aprobar LCC 25 y sumar 192 créditos</span></td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
+
+</div>
+
+
+		</div>
+		<div id="id3a3"></div>
+	</div>
+</body>
+</html>
