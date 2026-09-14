@@ -208,13 +208,20 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   carrera; `cambiarPerfil(id)` activa el perfil, carga la carrera que tenga guardada (o
   muestra el selector) y remonta el árbol (`key` = perfil + carrera). `carreraContext.ts`
   expone `perfil`, `perfiles`, `cambiarPerfil`, `refrescarPerfiles`.
-- `PerfilesPanel.tsx` (nuevo), card de arriba de `ProgresoModal` («Perfiles y archivo»):
-  lista (tocar = activar), renombrar, borrar con confirmación en línea (el principal no se
-  borra), «Guardar como perfil nuevo» (copia la configuración actual y la activa) y «Nuevo
-  perfil vacío» (arranca de cero: pide la carrera). El modal también se abre desde el
-  selector de carrera (`CarreraPicker` → «Perfil X», solo la card de perfiles).
-  `ViewNav.tsx`: el botón de progreso de la barra muestra el nombre del perfil activo cuando
-  hay más de uno. `planner.css`: `.perf*`, `.cpick__perfil`, `.vnav__icon--label`.
+- `PerfilMenu.tsx` (nuevo): avatar con las iniciales del perfil activo en la esquina
+  derecha de la barra (también con el selector de carrera) y menú propio: lista (tocar =
+  activar), renombrar, borrar con confirmación en línea (el principal no se borra), «Guardar
+  como perfil nuevo» (copia la configuración actual y la activa) y «Nuevo perfil vacío»
+  (arranca de cero: pide la carrera). Al pie, el tema (`ThemeToggle` variante mobile) y
+  «Referencias», que salen de la barra para despejarla. `planner.css`: `.pmenu*`.
+- Se eliminó `ProgresoModal.tsx` (guardar/cargar el progreso como .json desde la barra) y el
+  link «o cargá un progreso guardado» del banner de primer uso; el .json de preferencias
+  sigue en Importar / Exportar del Plan de cursada (`IOModal`). `ViewNav.tsx`: `NavTools`
+  queda solo con el selector de carrera. `PlannerChrome` pasa a `(nav, tools, perfil)` y
+  `Header` (standalone) ubica `perfil` a la derecha; sin él muestra el toggle de tema.
+- `Topbar.tsx`: las pastillas «● N/total» de cursando usan el `Tooltip` del planner (antes
+  `title=`): dicen qué materias se cursan y qué cambia al aprobarlas; el botón de copiar
+  link también. `app/globals.css`: `.nav__inner` en border-box (desbordaba 48 px en angosto).
 
 ## Fuera de los directorios espejados (no lo toca el sync)
 

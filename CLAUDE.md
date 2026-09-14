@@ -62,7 +62,8 @@ y no se retoma sin pedido explícito del autor.
   carrera se guarda con claves propias (Informática conserva las históricas).
 - **Perfiles**: varias configuraciones en el mismo navegador (`lib/planner/persist.ts`):
   el principal usa las claves históricas y los demás el prefijo `p:<id>:`; registro en
-  `plan_perfiles_v1`. Se manejan desde el modal de progreso (`PerfilesPanel`).
+  `plan_perfiles_v1`. Se manejan desde el avatar de la esquina derecha de la barra
+  (`PerfilMenu`, que también lleva el tema y «Referencias»).
 - **Idioma**: documentación, comentarios, commits y todo lo dirigido al autor en español
   neutro (tú/usted). Los **textos de la interfaz** del planner están en voseo porque hablan a
   estudiantes del ITBA (igual que en StudyVaults): no «corregirlos».
