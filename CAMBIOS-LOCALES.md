@@ -288,6 +288,26 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   de la tarjeta de muestra, flechas que avanzan al posarse, marcas que crecen; el icono del
   tema gira al posarse (`app/globals.css`).
 
+## 17. Ajustes varios (2026-09-14, tarde)
+
+- `Topbar.tsx`: la tira de métricas se muestra siempre (antes se escondía con 0 aprobadas
+  y en un perfil nuevo parecía que faltaba); los tooltips de las pastillas de cursando
+  quedan en dos líneas: «Al terminar la cursada (SDS · Cripto)» y la cifra que queda.
+- `lib/planner/texto.ts` (nuevo): `normalizar` (minúsculas, sin tildes). Lo usan todos los
+  buscadores: Materias/Electivas (`ViewTools`, `Sidebar`, `url-state` guardan la consulta
+  normalizada; `CuatriView`, `ElectivasView` comparan normalizado), pool del plan
+  (`PlanView`), `RefView`, `GrafoView` y `CombinadorView` (que ya tenía su `norm`).
+- `views/PlanView.tsx`: en el panel «Materias del plan», bajo las obligatorias, un plegable
+  «Quitadas del plan» lista las obligatorias pendientes que el usuario sacó, con
+  «restablecer» por materia y «restablecer todas» (`PLAN_POOL_ADD`). CSS `.pool-out*`,
+  `.pool-restore`.
+- `views/PlanView.tsx` + `planview.css`: la «Vista previa» (hover sobre una electiva) pasa a
+  la fila de pestañas, en el hueco entre Calendario/Plan/Minors y las acciones: antes
+  flotaba a caballo del borde de esa barra.
+- Portada: la barra es la misma que en el planner (a todo el ancho, `Header` sin modificador;
+  `app/globals.css`) y lleva un avatar-link al planificador (`.ld-avatar`, mismo dibujo que
+  `PerfilMenu`).
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título
