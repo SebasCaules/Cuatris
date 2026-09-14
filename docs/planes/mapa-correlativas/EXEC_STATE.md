@@ -20,7 +20,7 @@ Rama `mapa-correlativas` (worktree `.claude/worktrees/mapa-correlativas`, creada
 | Transversal · U9 persist + package.json | DONE | 3f577ab | `loadGrafoElectivas`/`saveGrafoElectivas`, `npm run test:grafo` |
 | Transversal · U10 docs (CAMBIOS-LOCALES §18) | DONE | c443d3e | |
 | Cierre · U11 smoke con datos | DONE | | dev (S, LCA, I, B, P; claro/oscuro; 400 px; teclado) y build estático servido bajo `/Cuatris/` |
-| Cierre · U12 auditoría final adversarial + fixes + gates + veredicto | DONE | (siguiente) | 6 auditores Fable (53 hallazgos: 6 altas —3 duplicados—, 19 medias, 28 bajas). La refutación por agente se frenó a pedido del autor (25 agentes Fable era desproporcionado): adjudicó el orquestador (Opus). Detalle abajo |
+| Cierre · U12 auditoría final adversarial + fixes + gates + veredicto | DONE | 8a3e539 | 6 auditores Fable (53 hallazgos: 6 altas —3 duplicados—, 19 medias, 28 bajas). La refutación por agente se frenó a pedido del autor (25 agentes Fable era desproporcionado): adjudicó el orquestador (Opus). Detalle abajo |
 | Merge a `main` | TODO | | push solo a pedido del autor |
 
 ## Decisiones N0
