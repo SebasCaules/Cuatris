@@ -469,7 +469,7 @@ export function parsePreferences(text: string): Persisted | null {
   const planOpts: PlanOpts | null = start
     ? {
         start,
-        maxCred: isNum(po.maxCred) ? po.maxCred : 18,
+        maxCred: isNum(po.maxCred) ? po.maxCred : 24,
         maxMat: isNum(po.maxMat) ? po.maxMat : 5,
         avoid: typeof po.avoid === "boolean" ? po.avoid : true,
         method: (po.method === "cuatris" ||

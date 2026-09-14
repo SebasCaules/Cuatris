@@ -977,7 +977,9 @@
 
 /* tarjeta de cuatrimestre — compacta, con las materias siempre desplegadas */
 .planner .rmap-stop__card{
-  height:100%;display:flex;flex-direction:column;gap:9px;
+  /* border-box: con content-box el 100% + padding desbordaba la celda de la
+     grilla y la tarjeta pisaba la fila de abajo */
+  box-sizing:border-box;height:100%;display:flex;flex-direction:column;gap:9px;
   background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
   padding:12px 13px;animation:cmb-grid-in .3s var(--ease,ease) both;transition:border-color .18s,box-shadow .18s;
 }

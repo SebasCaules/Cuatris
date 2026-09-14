@@ -78,7 +78,7 @@ export function initialState(): PlannerState {
       // se empieza a planificar en el cuatrimestre que SIGUE al que está en
       // curso: lo que se cursa hoy ya está decidido (marcado como «cursando»).
       start: nextCuatri(),
-      maxCred: 18,
+      maxCred: 24,
       maxMat: 5,
       avoid: true,
       method: "cuatris",

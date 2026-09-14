@@ -2095,11 +2095,6 @@ export default function PlanView() {
   const [minorsOpen, setMinorsOpen] = useState(false);
   const [recsHidden, setRecsHidden] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
-  // Primera corrida (0 aprobadas): la proyección de toda la carrera arranca
-  // plegada — el primer render enfoca el próximo paso, no los 14 cuatrimestres.
-  // Se despliega con un click; al marcar ≥1 aprobada deja de aplicar.
-  const [showFullCareer, setShowFullCareer] = useState(false);
-
   // sin límite: el recomendador devuelve TODAS las electivas candidatas, ya
   // rankeadas. Recommendations las agrupa según si alargan o no la carrera.
   // Con el recomendador oculto no computamos nada: corre optimizePlan por
@@ -2443,16 +2438,10 @@ export default function PlanView() {
   };
 
   // Con 0 aprobadas el plan es la carrera entera: no la hacemos protagonista.
-  // Plegada por default hasta que el usuario dé señal (marca una aprobada o
-  // pide «Ver toda la carrera»). El próximo cuatrimestre real sí se muestra.
-  const careerFolded =
-    used.length > 0 && approved.size === 0 && !showFullCareer;
-
-  // Tab default según el tamaño del plan: si usa más de 6 cuatrimestres, abrimos
-  // en Roadmap (más compacto que el Calendario para planes largos). Es SOLO el
-  // default inicial (inicializador lazy: corre una vez con el plan ya calculado);
-  // dentro de la sesión no pisa la elección del usuario.
-  const [tab, setTab] = useState<PlanTab>(() => (used.length > 6 ? "road" : "cal"));
+  // Siempre se abre en el Calendario (también con la carrera recién empezada
+  // y el plan largo): es la vista que muestra la cursada de verdad, y el
+  // carrusel permite elegir cuántos cuatrimestres ver a la vez.
+  const [tab, setTab] = useState<PlanTab>("cal");
 
   // Cuatrimestres a la vista en el carrusel (2 por default). Preferencia de
   // pantalla guardada aparte del progreso; se lee tras montar (localStorage).
@@ -2785,11 +2774,11 @@ export default function PlanView() {
   // (evita el salto solo→split cuando llega el resultado del primer paint).
   const showSidePlaceholder =
     recOn && recsPending && recs.length === 0 && tab !== "min";
-  const showPreviewSlot = used.length > 0 && !careerFolded && tab !== "min";
+  const showPreviewSlot = used.length > 0 && tab !== "min";
 
   return (
     <section className="view-panel pv">
-      {used.length > 0 && !careerFolded && (
+      {used.length > 0 && (
         <>
           {/* Configuración general: parámetros a la izquierda, resultado a la
               derecha, en un solo panel compacto. Contexto del calendario, no
@@ -2930,7 +2919,7 @@ export default function PlanView() {
         </>
       )}
 
-      {used.length > 0 && !careerFolded && (
+      {used.length > 0 && (
         <div className="pv-tabs">
           <div
             className="pv-tablist"
@@ -3105,44 +3094,6 @@ export default function PlanView() {
             <p>Agregá materias al plan para ver tu camino a recibirte.</p>
           </div>
         </div>
-      ) : careerFolded ? (
-        <div className="pv-firstrun">
-          {/* Proyección de toda la carrera reducida a un renglón secundario:
-              el dato existe pero no es el protagonista. */}
-          <div className="pv-firstrun__proj">
-            <span className="pv-firstrun__projtxt">
-              Plan completo de la carrera: <b>{flat.length}</b> materias en{" "}
-              <b>{used.length}</b> cuatrimestres · te recibís en{" "}
-              <b>{cuatriName(gradCu)}</b> · {pct}% de créditos
-            </span>
-            <button
-              type="button"
-              className="pv-firstrun__more"
-              onClick={() => setShowFullCareer(true)}
-            >
-              <IconRoute size={14} /> Ver toda la carrera
-            </button>
-          </div>
-
-          {/* El próximo cuatrimestre real, dentro del fold: el paso concreto. */}
-          <div className="pv-firstrun__next">
-            <span className="pv-firstrun__nextlbl">Tu próximo cuatrimestre</span>
-            <ol className="rmap">
-              <RoadmapStop
-                it={used[0].it}
-                i={used[0].i}
-                start={PL.start}
-                accBefore={R.accBefore}
-                maxCred={PL.maxCred}
-                maxMat={PL.maxMat}
-                previewCode={preview}
-                recOn={recOn}
-                locked={PL.lockedIdx.has(used[0].i)}
-                onUnlock={unlockCuatri}
-              />
-            </ol>
-          </div>
-        </div>
       ) : (
         tab === "min" ? (
           <MinorsPanel
@@ -3261,7 +3212,7 @@ export default function PlanView() {
 
       {/* "Cómo se armó este plan": guarda el selector del método (no es una
           decisión frecuente) + la nota detallada, todo plegado y discreto. */}
-      {used.length > 0 && !careerFolded && (
+      {used.length > 0 && (
         <div className="plan2-opt">
           <details className="plan2-optnote-d">
             <summary>Cómo se armó este plan</summary>
@@ -3295,7 +3246,7 @@ export default function PlanView() {
 
       {/* Observaciones plegadas por default: el contador del summary ya dice
           cuántas hay; el detalle se abre a demanda. */}
-      {warns.length > 0 && !careerFolded && (
+      {warns.length > 0 && (
         <details className="plan2-warns">
           <summary className="plan2-warns__h">
             Observaciones <i>{warns.length}</i>
