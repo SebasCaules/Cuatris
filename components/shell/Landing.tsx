@@ -22,7 +22,8 @@ const vista = (view: string) => `${PLANNER}?view=${view}`;
 
 /** Las mismas pestañas de la barra del planificador, como links: desde la
  *  portada se entra directo a la vista que se busca. Sin tooltip (el del
- *  planner viaja con su CSS): el paso 03 explica cada pestaña. */
+ *  planner viaja con su CSS): el paso 03 explica cada pestaña. El avatar de
+ *  la esquina (mismo dibujo que PerfilMenu) también lleva al planificador. */
 function LandingNav() {
   return (
     <nav className="vnav ld-vnav" aria-label="Vistas del planificador">
@@ -125,7 +126,19 @@ export default function Landing() {
   return (
     <>
       <LegacyRedirect />
-      <Header nav={<LandingNav />} />
+      <Header
+        nav={<LandingNav />}
+        perfil={
+          <Link className="ld-avatar" href={PLANNER} prefetch={false} aria-label="Tu perfil, en el planificador">
+            <span className="ld-avatar__circle" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+                <circle cx="12" cy="7.6" r="4.4" />
+                <path d="M3.2 22c.4-5 4-7.8 8.8-7.8s8.4 2.8 8.8 7.8c0 .6-.4 1-1 1H4.2c-.6 0-1-.4-1-1Z" />
+              </svg>
+            </span>
+          </Link>
+        }
+      />
 
       {/* 1 · HERO */}
       <section className="ld-hero">

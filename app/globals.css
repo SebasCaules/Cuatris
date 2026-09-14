@@ -18,10 +18,10 @@ main.page > .planner { flex: 1 1 auto; }
 /* border-box: .nav__inner es width:100% + padding y en pantallas angostas
    desbordaba 48 px (lo último de la fila quedaba fuera de la vista) */
 .cuatris-nav .nav__inner { --nav-px: 24px; box-sizing: border-box; gap: 16px; padding: 0 var(--nav-px); }
-/* barra del planner: a todo el ancho, con el mismo margen lateral que el
-   contenido (topbar y shell usan clamp(16px,3vw,44px)); así el tema y el
-   perfil quedan pegados al borde derecho en cualquier pantalla */
-.cuatris-nav--app .nav__inner { --nav-px: clamp(16px, 3vw, 44px); max-width: none; }
+/* la barra va siempre a todo el ancho (portada y planner iguales), con el
+   margen lateral del contenido del planner (topbar y shell usan
+   clamp(16px,3vw,44px)); así el tema y el perfil quedan en el borde derecho */
+.cuatris-nav .nav__inner { --nav-px: clamp(16px, 3vw, 44px); max-width: none; }
 /* toggle de tema más chico que el icono de perfil; el icono gira al posarse */
 .cuatris-nav .theme-toggle--desktop { width: 32px; height: 32px; margin-left: 0; }
 .cuatris-nav .theme-toggle--desktop svg { width: 15px; height: 15px; transition: transform var(--dur) var(--ease); }

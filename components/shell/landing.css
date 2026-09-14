@@ -23,6 +23,36 @@
 .ld-vnav .vnav__tab:hover { background: var(--surface-3); color: var(--ink-strong); }
 .ld-vnav .vnav__tab:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
 
+/* avatar de la barra (mismo dibujo y medidas que .pmenu__btn del planner) */
+.ld-avatar {
+  width: 40px;
+  height: 40px;
+  margin-left: 4px;
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  text-decoration: none;
+}
+.ld-avatar__circle {
+  width: 36px;
+  height: 36px;
+  display: inline-grid;
+  place-items: end center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--accent);
+  color: color-mix(in srgb, var(--hex-brown) 78%, var(--accent));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hex-brown) 12%, transparent);
+  transition: box-shadow var(--dur-fast) var(--ease);
+}
+.ld-avatar__circle svg { display: block; margin-bottom: -3px; }
+.ld-avatar:hover .ld-avatar__circle {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hex-brown) 12%, transparent), 0 0 0 3px var(--accent-soft);
+}
+.ld-avatar:focus-visible { outline: none; }
+.ld-avatar:focus-visible .ld-avatar__circle { box-shadow: 0 0 0 3px var(--accent); }
+
 /* ---- hero: copy + tarjeta de muestra, fondo con grilla y blobs ---- */
 .ld-hero {
   position: relative;

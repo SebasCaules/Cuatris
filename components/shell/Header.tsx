@@ -8,8 +8,9 @@ import CuatrisMark from "./CuatrisMark";
  * (`nav`, la entrega PlannerApp vía su prop `chrome`), herramientas (`tools`:
  * hoy vacías), toggle de tema y, en la esquina derecha, el menú de perfil
  * (`perfil`: carrera, perfiles y referencias). Reusa el chrome `.nav` del
- * sistema de diseño sin el menú del portal ni el buscador global. Sin
- * `nav`/`perfil` (portada, 404, error) quedan la marca y el tema.
+ * sistema de diseño sin el menú del portal ni el buscador global, siempre a
+ * todo el ancho: la portada monta la misma barra (pestañas como links y un
+ * avatar que lleva al planificador), así no cambia entre páginas.
  */
 export default function Header({
   nav,
@@ -22,13 +23,7 @@ export default function Header({
 }) {
   return (
     <header
-      className={
-        "nav cuatris-nav" +
-        (nav ? " cuatris-nav--views" : "") +
-        // barra de la app (con perfil): a todo el ancho, alineada con el
-        // contenido fluido del planner; la portada conserva la fila centrada
-        (perfil ? " cuatris-nav--app" : "")
-      }
+      className={"nav cuatris-nav" + (nav ? " cuatris-nav--views" : "")}
       role="banner"
     >
       <div className="nav__inner">
