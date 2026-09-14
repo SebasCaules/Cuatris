@@ -18,9 +18,8 @@ import { IconCheck } from "./icons";
 const tipoDe = (nombre: string): string =>
   /^ingenier/i.test(nombre) ? "Ingeniería" : /^lic/i.test(nombre) ? "Licenciatura" : "";
 
-export default function CarreraPicker({ onPerfiles }: { onPerfiles?: () => void }) {
-  const { cargando, cambiar, perfil, perfiles } = useCarrera();
-  const nombrePerfil = perfiles.find((p) => p.id === perfil)?.nombre;
+export default function CarreraPicker() {
+  const { cargando, cambiar } = useCarrera();
   // progreso guardado por carrera: solo cliente (localStorage), tras montar
   const [conProgreso, setConProgreso] = useState<Set<string>>(() => new Set());
   useEffect(() => {
@@ -37,14 +36,6 @@ export default function CarreraPicker({ onPerfiles }: { onPerfiles?: () => void 
           guarda su propio progreso en este navegador; podés cambiarla cuando
           quieras desde la barra.
         </p>
-        {onPerfiles && nombrePerfil && (
-          <Tooltip content="Cambiar de perfil o crear uno: cada perfil guarda su propia configuración" width={230}>
-            <button type="button" className="cpick__perfil" onClick={onPerfiles}>
-              Perfil <b>{nombrePerfil}</b>
-              {perfiles.length > 1 ? ` · ${perfiles.length} perfiles` : ""}
-            </button>
-          </Tooltip>
-        )}
       </header>
       <div className="cpick__grid" role="list">
         {CARRERAS.map((c) => {

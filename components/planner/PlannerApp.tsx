@@ -36,7 +36,7 @@ import { decodePlannerUrl, encodePlannerUrl } from "@/lib/planner/url-state";
 import { llamadoVigente } from "@/lib/planner/finalesData";
 import Topbar from "./Topbar";
 import { ViewNav, NavTools } from "./ViewNav";
-import ProgresoModal from "./ProgresoModal";
+import PerfilMenu from "./PerfilMenu";
 import { Tooltip } from "./Tooltip";
 import DetailDrawer from "./DetailDrawer";
 import FichaReader from "./FichaReader";
@@ -72,9 +72,10 @@ const VIEW_TITLES: Record<keyof typeof VIEWS, string> = {
 };
 
 /** Chrome del sitio alrededor de la navegación del planner: recibe la nav de
- *  vistas y las herramientas (referencias, progreso) y devuelve la barra
- *  superior. Sin chrome, la nav se dibuja como tira propia arriba del contenido. */
-export type PlannerChrome = (nav: ReactNode, tools: ReactNode) => ReactNode;
+ *  vistas, las herramientas (carrera, referencias) y el menú de perfiles
+ *  (esquina derecha) y devuelve la barra superior. Sin chrome, la nav se
+ *  dibuja como tira propia arriba del contenido. */
+export type PlannerChrome = (nav: ReactNode, tools: ReactNode, perfil: ReactNode) => ReactNode;
 
 function PlannerInner({
   chrome,
@@ -88,7 +89,6 @@ function PlannerInner({
   carrera: string | null;
 }) {
   const { state, dispatch } = usePlanner();
-  const [progresoOpen, setProgresoOpen] = useState(false);
   // con carrera cargada y plan en PLAN: el planner de verdad
   const activo = listo && carrera != null;
 
@@ -318,7 +318,9 @@ function PlannerInner({
   // los controles que colgaban del rail (búsqueda, filtros, minors, reset) van
   // en la cabecera de la vista que los usa (ViewTools).
   const nav = <ViewNav />;
-  const tools = <NavTools onProgreso={() => setProgresoOpen(true)} />;
+  const tools = <NavTools />;
+  // perfiles: siempre en la barra (también con el selector de carrera)
+  const perfilMenu = <PerfilMenu />;
 
   // Banner de primer uso: usuario sin nada marcado y que no lo cerró. Se va
   // solo al marcar la primera materia (approved.size > 0) o con la ×.
@@ -335,15 +337,14 @@ function PlannerInner({
     return (
       <div className="planner planner--topnav">
         <h1 className="sr-only">Planificador de cursada</h1>
-        {chrome ? chrome(null, null) : null}
-        <div className="shell">
-          <div className="main">
-            {listo && <CarreraPicker onPerfiles={() => setProgresoOpen(true)} />}
-          </div>
-        </div>
-        {progresoOpen && (
-          <ProgresoModal soloPerfiles onClose={() => setProgresoOpen(false)} />
+        {chrome ? (
+          chrome(null, null, listo ? perfilMenu : null)
+        ) : (
+          <div className="vnav-strip">{listo && perfilMenu}</div>
         )}
+        <div className="shell">
+          <div className="main">{listo && <CarreraPicker />}</div>
+        </div>
       </div>
     );
   }
@@ -352,11 +353,12 @@ function PlannerInner({
     <div className="planner planner--topnav">
       <h1 className="sr-only">Planificador de cursada</h1>
       {chrome ? (
-        chrome(nav, tools)
+        chrome(nav, tools, perfilMenu)
       ) : (
         <div className="vnav-strip">
           {nav}
           {tools}
+          {perfilMenu}
         </div>
       )}
       <Topbar />
@@ -376,15 +378,6 @@ function PlannerInner({
               Marcar mis aprobadas
             </button>
           )}
-          {/* segunda puerta de entrada: quien ya tiene un .json (otro
-              navegador, o el planner de StudyVaults) no tiene que marcar nada */}
-          <button
-            type="button"
-            className="first-run__load"
-            onClick={() => setProgresoOpen(true)}
-          >
-            o cargá un progreso guardado
-          </button>
           <Tooltip content="No volver a mostrar esta guía" width={170}>
             <button
               type="button"
@@ -404,9 +397,6 @@ function PlannerInner({
       </div>
       <DetailDrawer />
       <FichaReader />
-      {progresoOpen && (
-        <ProgresoModal onClose={() => setProgresoOpen(false)} />
-      )}
     </div>
   );
 }
