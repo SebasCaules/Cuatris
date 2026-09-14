@@ -214,7 +214,8 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   (también con el selector de carrera), a la derecha del toggle de tema, y panel propio en
   secciones: quién (perfil activo y carrera); CARRERA, que se cambia ahí mismo con la lista
   en línea (`CarreraLista.tsx`, extraída de `CarreraSwitch.tsx`, que se elimina junto con
-  `NavTools`); PERFILES (tocar = activar; «renombrar»/«borrar» en palabras, con
+  `NavTools`); PERFILES (tocar = activar; lápiz para renombrar y tacho clásico —`IconBin`,
+  con tapa y ranuras: el cono fino de `IconTrash` no se leía— para borrar, con
   confirmación en línea; el principal no se borra; «Guardar como perfil nuevo» copia la
   configuración actual y la activa; «Nuevo perfil vacío» arranca de cero y pide la
   carrera); y «Referencias» al pie. `planner.css`: `.pmenu*`, `.clist`.

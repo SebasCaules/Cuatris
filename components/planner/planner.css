@@ -2258,16 +2258,16 @@
 .planner .pmenu__item.is-active .pmenu__mark{border-color:var(--brass);background:var(--brass-soft)}
 .planner .pmenu__mark--plus{border-style:dashed;color:var(--muted)}
 .planner .pmenu__row--new:hover .pmenu__mark--plus{border-color:var(--brass);color:var(--brass)}
-/* acciones por fila, en palabras (un icono de tacho no se entendía) */
-.planner .pmenu__acciones{flex:none;display:inline-flex;align-items:center;gap:2px;padding-right:2px}
-.planner .pmenu__txtbtn{
-  padding:4px 5px;border:none;background:transparent;border-radius:6px;
-  font-family:var(--f-m);font-size:10.5px;letter-spacing:.02em;color:var(--faint);cursor:pointer;
+/* acciones por fila: lápiz (renombrar) y tacho clásico (borrar) */
+.planner .pmenu__acciones{flex:none;display:inline-flex;align-items:center;gap:1px;padding-right:2px}
+.planner .pmenu__ico{
+  width:30px;height:30px;display:inline-grid;place-items:center;
+  border:none;background:transparent;border-radius:7px;color:var(--muted);cursor:pointer;
   transition:color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out);
 }
-.planner .pmenu__txtbtn:hover:not(:disabled){color:var(--ink);background:var(--panel-2)}
-.planner .pmenu__txtbtn--del:hover:not(:disabled){color:var(--oxblood)}
-.planner .pmenu__txtbtn:disabled{cursor:default;opacity:.6}
+.planner .pmenu__ico:hover:not(:disabled){color:var(--ink);background:var(--panel-2)}
+.planner .pmenu__ico--del:hover:not(:disabled){color:var(--oxblood);background:color-mix(in srgb,var(--oxblood) 10%,var(--panel))}
+.planner .pmenu__ico:disabled{cursor:default;opacity:.6}
 .planner .pmenu__confirm{
   display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 9px;border-radius:8px;
   border:1px solid color-mix(in srgb,var(--oxblood) 45%,transparent);background:color-mix(in srgb,var(--oxblood) 8%,var(--panel));

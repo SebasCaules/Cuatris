@@ -18,7 +18,7 @@ import { usePlanner } from "./state";
 import { Tooltip } from "./Tooltip";
 import CarreraLista from "./CarreraLista";
 import { aterrizar } from "./carreraVuelo";
-import { IconCheck, IconChevronDown, IconPlus, IconUser } from "./icons";
+import { IconBin, IconCheck, IconChevronDown, IconPencil, IconPlus, IconUser } from "./icons";
 import { carreraInfo, nombreCorto } from "@/lib/planner/carreras";
 import {
   PERFIL_PRINCIPAL,
@@ -237,21 +237,21 @@ export default function PerfilMenu() {
                       </span>
                     </button>
                     <span className="pmenu__acciones">
-                      <Tooltip content="Cambiarle el nombre" width={130} placement="bottom">
+                      <Tooltip content="Renombrar" width={110} placement="bottom">
                         <button
                           type="button"
-                          className="pmenu__txtbtn"
+                          className="pmenu__ico"
                           aria-label={`Renombrar ${p.nombre}`}
                           onClick={() => abrirForm({ tipo: "renombrar", perfil: p })}
                         >
-                          renombrar
+                          <IconPencil size={15} />
                         </button>
                       </Tooltip>
                       {p.id !== PERFIL_PRINCIPAL && (
                         <Tooltip content="Borrar este perfil y todo lo guardado en él" width={200} placement="bottom">
                           <button
                             type="button"
-                            className="pmenu__txtbtn pmenu__txtbtn--del"
+                            className="pmenu__ico pmenu__ico--del"
                             aria-label={`Borrar el perfil ${p.nombre}`}
                             disabled={ocupado}
                             onClick={() => {
@@ -259,7 +259,7 @@ export default function PerfilMenu() {
                               setBorrando(p);
                             }}
                           >
-                            borrar
+                            <IconBin size={15} />
                           </button>
                         </Tooltip>
                       )}

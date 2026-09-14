@@ -130,6 +130,25 @@ export const IconUser = (p: IconProps) => (
   </Svg>
 );
 
+/** Lápiz (renombrar / editar). */
+export const IconPencil = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4 20h4l10.5-10.5a1.8 1.8 0 0 0 0-2.6l-1.4-1.4a1.8 1.8 0 0 0-2.6 0L4 16v4Z" />
+    <path d="M13 7l4 4" />
+  </Svg>
+);
+
+/** Tacho de basura clásico (tapa con asa, cuerpo ancho, dos ranuras): se lee
+ *  como «borrar» aun chico, a diferencia del cono fino de IconTrash. */
+export const IconBin = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4 7h16" />
+    <path d="M9.5 7V5.2a1.2 1.2 0 0 1 1.2-1.2h2.6a1.2 1.2 0 0 1 1.2 1.2V7" />
+    <path d="M6.5 7l.8 12a1.5 1.5 0 0 0 1.5 1.4h6.4a1.5 1.5 0 0 0 1.5-1.4l.8-12" />
+    <path d="M10 11v6M14 11v6" />
+  </Svg>
+);
+
 export const IconChevronDown = (p: IconProps) => (
   <Svg {...p}>
     <path d="M6 9.5l6 6 6-6" />
