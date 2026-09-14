@@ -31,9 +31,9 @@ let pendiente: Vuelo | null = null;
 const sinMovimiento = (): boolean =>
   typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/** El mismo icono de persona de PerfilMenu (IconUser), como marcado. */
+/** El mismo avatar de PerfilMenu (IconAvatar dentro de .pmenu__avatar), como marcado. */
 const ICONO_PERFIL =
-  '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M5 19.5c.9-3.4 3.6-5 7-5s6.1 1.6 7 5"/></svg>';
+  '<span class="pmenu__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><circle cx="12" cy="7.6" r="4.4"/><path d="M3.2 22c.4-5 4-7.8 8.8-7.8s8.4 2.8 8.8 7.8c0 .6-.4 1-1 1H4.2c-.6 0-1-.4-1-1Z"/></svg></span>';
 
 function ubicar(el: HTMLElement, r: { left: number; top: number; width: number; height: number }) {
   el.style.left = `${r.left}px`;

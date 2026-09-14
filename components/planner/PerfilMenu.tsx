@@ -1,6 +1,7 @@
 "use client";
 
-// Perfil, en la esquina derecha de la barra: un icono de persona abre el menú
+// Perfil, en la esquina derecha de la barra: un avatar (silueta rellena sobre
+// un círculo del color del perfil) abre el menú
 // del perfil activo. Arriba, quién es (nombre y carrera). Después, en
 // secciones: la CARRERA del perfil (se cambia ahí mismo, con la lista en
 // línea), el COLOR del perfil (icono de la barra), los PERFILES guardados en
@@ -20,7 +21,7 @@ import { usePlanner } from "./state";
 import { Tooltip } from "./Tooltip";
 import CarreraLista from "./CarreraLista";
 import { aterrizar } from "./carreraVuelo";
-import { IconBin, IconCheck, IconChevronDown, IconPencil, IconPlus, IconUser } from "./icons";
+import { IconAvatar, IconBin, IconCheck, IconChevronDown, IconPencil, IconPlus } from "./icons";
 import { carreraInfo, nombreCorto } from "@/lib/planner/carreras";
 import { PERFIL_COLORES } from "@/lib/planner/perfilColores";
 import {
@@ -164,7 +165,9 @@ export default function PerfilMenu() {
           aria-label={`Perfil ${nombreActivo}`}
           onClick={() => setOpen((v) => !v)}
         >
-          <IconUser size={20} />
+          <span className="pmenu__avatar" aria-hidden="true">
+            <IconAvatar size={28} />
+          </span>
         </button>
       </Tooltip>
 
@@ -173,7 +176,7 @@ export default function PerfilMenu() {
           {/* quién: perfil activo y su carrera */}
           <div className="pmenu__who">
             <span className="pmenu__who-ico" aria-hidden="true" style={colorStyle(activo?.color)}>
-              <IconUser size={18} />
+              <IconAvatar size={26} />
             </span>
             <span className="pmenu__who-txt">
               <b>{nombreActivo}</b>

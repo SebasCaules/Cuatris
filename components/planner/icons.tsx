@@ -122,12 +122,29 @@ export const IconChevronRight = (p: IconProps) => (
   </Svg>
 );
 
-/** Silueta de persona (perfil / cuenta). */
+/** Silueta de persona (perfil / cuenta), en trazo. */
 export const IconUser = (p: IconProps) => (
   <Svg {...p}>
     <circle cx="12" cy="8.5" r="3.6" />
     <path d="M5 19.5c.9-3.4 3.6-5 7-5s6.1 1.6 7 5" />
   </Svg>
+);
+
+/** Silueta de persona RELLENA (cabeza y busto): el avatar clásico de cuenta.
+ *  Va sola (sin el wrapper de trazo) porque es una forma sólida. */
+export const IconAvatar = ({ size = 16, className, ...rest }: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="currentColor"
+    className={className}
+    aria-hidden="true"
+    {...rest}
+  >
+    <circle cx="12" cy="7.6" r="4.4" />
+    <path d="M3.2 22c.4-5 4-7.8 8.8-7.8s8.4 2.8 8.8 7.8c0 .6-.4 1-1 1H4.2c-.6 0-1-.4-1-1Z" />
+  </svg>
 );
 
 /** Lápiz (renombrar / editar). */

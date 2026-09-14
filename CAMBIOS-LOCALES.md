@@ -210,7 +210,8 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   carrera; `cambiarPerfil(id)` activa el perfil, carga la carrera que tenga guardada (o
   muestra el selector) y remonta el árbol (`key` = perfil + carrera). `carreraContext.ts`
   expone `perfil`, `perfiles`, `cambiarPerfil`, `refrescarPerfiles`.
-- `PerfilMenu.tsx` (nuevo): icono de persona (`IconUser`) en la esquina derecha de la barra
+- `PerfilMenu.tsx` (nuevo): avatar clásico (`IconAvatar`, silueta rellena de cabeza y busto
+  recortada por un círculo lleno del color del perfil) en la esquina derecha de la barra
   (también con el selector de carrera), a la derecha del toggle de tema, y panel propio en
   secciones: quién (perfil activo y carrera); CARRERA, que se cambia ahí mismo con la lista
   en línea (`CarreraLista.tsx`, extraída de `CarreraSwitch.tsx`, que se elimina junto con

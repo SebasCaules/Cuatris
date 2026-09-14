@@ -2153,16 +2153,27 @@
    comparten .pmenu__row: marca a la izquierda, texto + pista chica.
    --------------------------------------------------------------------------- */
 .planner .pmenu{position:relative;flex:none;margin-left:4px}
-/* --pf: color del perfil (lo pone el componente); sin él, el acento */
+/* --pf: color del perfil (lo pone el componente); sin él, el acento.
+   El avatar clásico: círculo lleno del color del perfil con la silueta
+   (cabeza y busto) recortada por el borde inferior. */
 .planner .pmenu__btn{
   --pf:var(--brass);
   width:40px;height:40px;display:inline-grid;place-items:center;padding:0;
-  border:1px solid color-mix(in srgb,var(--pf) 45%,transparent);border-radius:50%;
-  background:color-mix(in srgb,var(--pf) 16%,transparent);color:color-mix(in srgb,var(--pf) 72%,var(--ink));cursor:pointer;
-  transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out);
+  border:none;border-radius:50%;background:transparent;cursor:pointer;
+  transition:box-shadow var(--dur-fast) var(--ease-out);
 }
-.planner .pmenu__btn:hover,.planner .pmenu__btn.is-open{background:color-mix(in srgb,var(--pf) 30%,transparent);border-color:var(--pf)}
-.planner .pmenu__btn:focus-visible{outline:2px solid var(--pf);outline-offset:2px}
+.planner .pmenu__avatar{
+  width:36px;height:36px;display:inline-grid;place-items:end center;overflow:hidden;border-radius:50%;
+  background:var(--pf);color:color-mix(in srgb,var(--block-ink) 78%,var(--pf));
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--block-ink) 12%,transparent);
+  transition:box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out);
+}
+.planner .pmenu__avatar svg{display:block;margin-bottom:-3px}
+.planner .pmenu__btn:hover .pmenu__avatar,.planner .pmenu__btn.is-open .pmenu__avatar{
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--block-ink) 12%,transparent),0 0 0 3px color-mix(in srgb,var(--pf) 35%,transparent);
+}
+.planner .pmenu__btn:focus-visible{outline:none}
+.planner .pmenu__btn:focus-visible .pmenu__avatar{box-shadow:0 0 0 3px var(--pf)}
 .planner .pmenu__panel{
   position:absolute;top:calc(100% + 6px);right:0;z-index:60;width:min(360px,calc(100vw - 24px));
   padding:6px;border:1px solid var(--line);border-radius:12px;background:var(--panel);
@@ -2172,9 +2183,11 @@
 .planner .pmenu__who{display:flex;align-items:center;gap:11px;padding:8px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:4px}
 .planner .pmenu__who-ico{
   --pf:var(--brass);
-  width:36px;height:36px;flex:none;display:inline-grid;place-items:center;border-radius:50%;
-  background:color-mix(in srgb,var(--pf) 18%,transparent);color:color-mix(in srgb,var(--pf) 72%,var(--ink));
+  width:36px;height:36px;flex:none;display:inline-grid;place-items:end center;overflow:hidden;border-radius:50%;
+  background:var(--pf);color:color-mix(in srgb,var(--block-ink) 78%,var(--pf));
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--block-ink) 12%,transparent);
 }
+.planner .pmenu__who-ico svg{display:block;margin-bottom:-3px}
 .planner .pmenu__who-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
 .planner .pmenu__who-txt b{font-family:var(--f-d);font-weight:600;font-size:15px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .planner .pmenu__who-txt small{font-family:var(--f-m);font-size:10.5px;letter-spacing:.02em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -2272,7 +2285,7 @@
   transition:left .52s var(--ease-in-out),top .52s var(--ease-in-out),width .52s var(--ease-in-out),height .52s var(--ease-in-out),
     border-radius .52s var(--ease-in-out),border-color .52s var(--ease-in-out),background-color .52s var(--ease-in-out),
     box-shadow .52s var(--ease-in-out),transform .3s var(--ease-out);
-  border-radius:50%;border-color:var(--brass);background:var(--brass-soft);box-shadow:0 0 0 rgba(0,0,0,0);
+  border-radius:50%;border-color:transparent;background:transparent;box-shadow:0 0 0 rgba(0,0,0,0);
 }
 .planner.cvuelo.is-fuera{transition:opacity .24s var(--ease-out);opacity:0}
 .planner.cvuelo .cvuelo__card{
@@ -2280,8 +2293,8 @@
   transition:opacity .22s var(--ease-out);
 }
 .planner.cvuelo .cvuelo__btn{
-  position:absolute;inset:0;width:auto;height:auto;border:none;background:transparent;color:var(--brass);opacity:0;
-  transition:opacity .26s var(--ease-out) .2s;
+  position:absolute;inset:0;width:auto;height:auto;border:none;background:transparent;opacity:0;
+  display:grid;place-items:center;transition:opacity .26s var(--ease-out) .2s;
 }
 .planner.cvuelo.is-volando .cvuelo__card{opacity:0}
 .planner.cvuelo.is-volando .cvuelo__btn{opacity:1}
