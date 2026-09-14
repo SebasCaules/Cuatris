@@ -171,6 +171,9 @@
 }
 .planner .cq-year__t{font-family:var(--f-d);font-weight:500;font-size:16.5px;letter-spacing:-.01em;color:var(--ink);margin:0}
 .planner .cq-year__ciclo{font-family:var(--f-m);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+/* card «Electivas» después del último año: las marcadas, con las mismas filas */
+.planner .cq-year--elec .cq-year__t{color:var(--brass)}
+.planner .cq-elec-empty{margin:8px 2px 4px;font-size:12.5px;color:var(--faint)}
 .planner .cq-year__prog{margin-left:auto;display:flex;align-items:center;gap:9px}
 .planner .cq-year__bar{display:flex;width:96px;height:3px;border-radius:3px;background:var(--panel-3);overflow:hidden}
 .planner .cq-year__bar i{display:block;height:100%}

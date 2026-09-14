@@ -173,6 +173,21 @@ export default function CuatriView() {
     );
     return out;
   }, [years, approved, finalDone, cursando]);
+  // Electivas con algún estado (cursando, cursada, final): van en una card
+  // propia después del último año, con las mismas filas que las obligatorias.
+  // Se respetan búsqueda y filtros de la cabecera, como en los años.
+  const electivasMarcadas = useMemo(() => {
+    const q = normalizar(search);
+    return PLAN.electivas
+      .filter((m) => approved.has(m.codigo) || cursando.has(m.codigo))
+      .filter((m) => !q || normalizar(`${m.codigo} ${m.nombre} ${m.abbr}`).includes(q))
+      .filter((m) => !fDisp || approved.has(m.codigo) || isAvailable(m, approved))
+      .filter((m) => !fHor || hasHorario(m.codigo))
+      .sort((a, b) => a.codigo.localeCompare(b.codigo));
+  }, [approved, cursando, search, fDisp, fHor]);
+  // «año» ficticio para plegar/desplegar la card de electivas
+  const ANIO_ELECTIVAS = -1;
+
   const [collapsed, setCollapsed] = useState<Set<number>>(
     () => new Set([...completeByYear].filter(([, c]) => c).map(([a]) => a)),
   );
@@ -361,6 +376,99 @@ export default function CuatriView() {
               </section>
             );
           })}
+          {(() => {
+            const ms = electivasMarcadas;
+            const { done, mid, doing, avance } = bucketsOf(ms, approved, finalDone, cursando);
+            const n = ms.length || 1;
+            const isCollapsed = collapsed.has(ANIO_ELECTIVAS);
+            const bodyId = "cq-year-electivas";
+            return (
+              <section
+                className={"cq-year cq-year--elec" + (isCollapsed ? " is-collapsed" : "")}
+                style={{ "--yi": years.length } as React.CSSProperties}
+              >
+                <header className="cq-year__h" onClick={() => toggleYear(ANIO_ELECTIVAS)}>
+                  <h3 className="cq-year__t">Electivas</h3>
+                  <span className="cq-year__ciclo">las que marcaste</span>
+                  <Tooltip
+                    width={210}
+                    content={
+                      ms.length ? (
+                        <>
+                          <b>{done}</b> con final · <b>{mid}</b> cursadas, falta final ·{" "}
+                          <b>{doing}</b> cursando
+                        </>
+                      ) : (
+                        "Marcá electivas en la grilla de abajo y aparecen acá"
+                      )
+                    }
+                  >
+                    <span className="cq-year__prog" tabIndex={-1}>
+                      <span className="cq-year__bar" aria-hidden="true">
+                        <i className="seg-done" style={{ width: `${(done / n) * 100}%` }} />
+                        <i className="seg-mid" style={{ width: `${(mid / n) * 100}%` }} />
+                        <i className="seg-doing" style={{ width: `${(doing / n) * 100}%` }} />
+                      </span>
+                      <span className="cq-year__n">
+                        <b>{avance}</b>/{ms.length}
+                      </span>
+                    </span>
+                  </Tooltip>
+                  <Tooltip content={isCollapsed ? "Desplegar" : "Plegar"} width={110}>
+                    <button
+                      type="button"
+                      className="cq-year__toggle"
+                      aria-expanded={!isCollapsed}
+                      aria-controls={bodyId}
+                      aria-label={isCollapsed ? "Desplegar electivas" : "Plegar electivas"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleYear(ANIO_ELECTIVAS);
+                      }}
+                    >
+                      <svg
+                        className="cq-year__chev"
+                        viewBox="0 0 24 24"
+                        width="14"
+                        height="14"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="m6 9 6 6 6-6" />
+                      </svg>
+                    </button>
+                  </Tooltip>
+                </header>
+                <div
+                  id={bodyId}
+                  className={"cq-year__body" + (isCollapsed ? " is-closed" : "")}
+                  inert={isCollapsed}
+                >
+                  <div className="cq-year__inner">
+                    <div className="cq-year__cols cq-year__cols--solo">
+                      <div className="cq-sem">
+                        {ms.length ? (
+                          <ul className="cq-list" aria-label="Electivas marcadas">
+                            {ms.map((m, ri) => (
+                              <QRow key={m.codigo} m={m} orden={ri} />
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="cq-elec-empty">
+                            Nada todavía: marcá electivas en la grilla de abajo y aparecen acá.
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            );
+          })()}
         </div>
       )}
       <ElectivasSection />
