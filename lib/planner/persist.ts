@@ -14,7 +14,11 @@ import type {
   ViewKey,
 } from "./types";
 
-const K = {
+// Claves de la carrera por defecto (Informática): las históricas, sin prefijo,
+// para no perder el estado de nadie. Las demás carreras usan las mismas claves
+// con el prefijo `c:<CODIGO>:` (setPersistCarrera): cada carrera guarda su
+// propio progreso, plan y finales.
+const K_BASE = {
   view: "plan_view_v1",
   approved: "plan_aprobadas_v3",
   finalDone: "plan_finales_v1",
@@ -32,6 +36,50 @@ const K = {
   introDismissed: "plan_intro_dismissed_v1",
   comboSolo: "plan_combo_solo_v1",
 } as const;
+
+/** Claves activas (mutable in place: todo el módulo las lee de acá). */
+const K: { -readonly [P in keyof typeof K_BASE]: string } = { ...K_BASE };
+/** Carrera cuyo estado se lee y escribe. */
+export const PERSIST_DEFAULT_CARRERA = "S";
+let persistCarrera = PERSIST_DEFAULT_CARRERA;
+/** Clave de la carrera elegida (compartida por todas las carreras). */
+export const K_CARRERA = "plan_carrera_v1";
+
+/** Apunta la persistencia a otra carrera. Llamar ANTES de hidratar el estado. */
+export function setPersistCarrera(codigo: string): void {
+  persistCarrera = codigo;
+  const prefix = codigo === PERSIST_DEFAULT_CARRERA ? "" : `c:${codigo}:`;
+  for (const k of Object.keys(K_BASE) as (keyof typeof K_BASE)[]) K[k] = prefix + K_BASE[k];
+}
+export const getPersistCarrera = (): string => persistCarrera;
+
+/** ¿Hay materias aprobadas guardadas para esa carrera en este navegador?
+ *  (para señalar en el selector dónde está el progreso del usuario). */
+export function tieneProgreso(codigo: string): boolean {
+  const prefix = codigo === PERSIST_DEFAULT_CARRERA ? "" : `c:${codigo}:`;
+  try {
+    const raw = localStorage.getItem(prefix + K_BASE.approved);
+    return !!raw && raw !== "[]";
+  } catch {
+    return false;
+  }
+}
+
+/** Carrera guardada por el usuario (null si nunca eligió). */
+export function loadCarreraPref(): string | null {
+  try {
+    return localStorage.getItem(K_CARRERA);
+  } catch {
+    return null;
+  }
+}
+export function saveCarreraPref(codigo: string): void {
+  try {
+    localStorage.setItem(K_CARRERA, codigo);
+  } catch {
+    /* almacenamiento no disponible */
+  }
+}
 
 export interface PlanOpts {
   start: PlanStart;
@@ -226,6 +274,8 @@ export interface PreferenceBundle {
   app: typeof PREF_APP;
   v: number;
   exported?: string; // fecha legible, informativa
+  /** carrera cuyo progreso es (código del SGA); ausente en bundles viejos = Informática. */
+  carrera?: string;
   approved: string[];
   finalDone: string[];
   /** opcional: bundles anteriores al estado «cursando» no lo traen */
@@ -252,6 +302,7 @@ export function buildPreferenceBundle(
     app: PREF_APP,
     v: PREF_VERSION,
     exported,
+    carrera: persistCarrera,
     approved: [...state.approved],
     finalDone: [...state.finalDone],
     cursando: [...state.cursando],

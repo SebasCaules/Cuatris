@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { PlannerProvider, usePlanner } from "./state";
 import PlannerErrorBoundary from "./PlannerErrorBoundary";
+import { CarreraContext } from "./carreraContext";
+import CarreraPicker from "./CarreraPicker";
+import { activarCarrera, carreraPedida, CARRERA_URL_KEY } from "@/lib/planner/carreras";
 import {
   loadPersisted,
   saveApproved,
@@ -20,12 +23,13 @@ import {
   savePlanPool,
   saveSidebar,
   saveView,
+  saveCarreraPref,
 } from "@/lib/planner/persist";
 import { readParams, writeParams } from "@/lib/url-state/core";
 import { decodePlannerUrl, encodePlannerUrl } from "@/lib/planner/url-state";
 import { llamadoVigente } from "@/lib/planner/finalesData";
 import Topbar from "./Topbar";
-import Sidebar from "./Sidebar";
+import { ViewNav, NavTools } from "./ViewNav";
 import ProgresoModal from "./ProgresoModal";
 import { Tooltip } from "./Tooltip";
 import DetailDrawer from "./DetailDrawer";
@@ -52,18 +56,35 @@ const VIEWS = {
 // Título de la pestaña del navegador por vista: en una app de una sola ruta el
 // historial y las pestañas abiertas se distinguen por acá, no por la URL.
 const VIEW_TITLES: Record<keyof typeof VIEWS, string> = {
-  cuatri: "Mis materias",
-  elect: "Electivas",
+  cuatri: "Materias y electivas",
+  elect: "Materias y electivas",
   combo: "Combinador de horarios",
   plan: "Plan de cursada",
-  grafo: "Correlativas",
+  grafo: "Mapa de correlativas",
   finales: "Combinador de finales",
-  ref: "Referencias",
+  ref: "Referencias de materias",
 };
 
-function PlannerInner() {
+/** Chrome del sitio alrededor de la navegación del planner: recibe la nav de
+ *  vistas y las herramientas (referencias, progreso) y devuelve la barra
+ *  superior. Sin chrome, la nav se dibuja como tira propia arriba del contenido. */
+export type PlannerChrome = (nav: ReactNode, tools: ReactNode) => ReactNode;
+
+function PlannerInner({
+  chrome,
+  listo,
+  carrera,
+}: {
+  chrome?: PlannerChrome;
+  /** PlannerApp ya resolvió qué carrera va (o que no hay ninguna). */
+  listo: boolean;
+  /** carrera cargada; null = todavía no eligió → se muestra el selector. */
+  carrera: string | null;
+}) {
   const { state, dispatch } = usePlanner();
   const [progresoOpen, setProgresoOpen] = useState(false);
+  // con carrera cargada y plan en PLAN: el planner de verdad
+  const activo = listo && carrera != null;
 
   // document.title = "<vista> · <sitio>". El sufijo se toma del título con el
   // que llegó la página (lo que haya después del primer " · ", o todo si no
@@ -94,7 +115,10 @@ function PlannerInner() {
   // HYDRATE_URL corre sobre el estado que acaba de dejar HYDRATE, así la
   // intención explícita del link pisa lo persistido en esas mismas claves
   // antes de que el effect de escritura de abajo pueda correr).
+  // Espera a `activo`: hasta que PlannerApp resolvió qué carrera va (y hay
+  // una), no se hidrata ni se escribe nada en nombre de ninguna.
   useEffect(() => {
+    if (!activo) return;
     const persisted = loadPersisted();
     dispatch({ type: "HYDRATE", payload: persisted });
     const url = decodePlannerUrl(readParams());
@@ -105,6 +129,12 @@ function PlannerInner() {
     // persistida → se conserva el default (cuatri) que ya trae el estado.
     if (!url.view && persisted.view)
       dispatch({ type: "SET_VIEW", view: persisted.view });
+    // `?view=elect` (enlace viejo): la vista es «Materias» y se baja hasta la
+    // sección de electivas, que es lo que ese enlace prometía.
+    if (url.view === "elect")
+      requestAnimationFrame(() =>
+        document.getElementById("electivas")?.scrollIntoView({ block: "start" }),
+      );
     // Sin finales guardados (primera visita), abrir el combinador en el llamado
     // vigente en vez del default fijo del estado inicial, que envejece. Va acá
     // y no en `initialFinales()` a propósito: depende de la fecha del sistema y
@@ -115,7 +145,7 @@ function PlannerInner() {
       dispatch({ type: "SET_FINALES_PERIODO", periodo });
       dispatch({ type: "SET_FINALES_ANIO", anio });
     }
-  }, [dispatch]);
+  }, [dispatch, activo]);
 
   // ---- F02: Atrás/Adelante cierra y reabre drawer/ficha en vez de salir ----
   // Tres piezas que se coordinan vía refs (no hace falta más estado/re-render):
@@ -278,25 +308,46 @@ function PlannerInner() {
 
   const View = VIEWS[state.view];
 
-  // CPT-03: solo "Mis materias" y "Electivas" cuelgan controles del rail
-  // (búsqueda/filtros/minors). En las otras 5 vistas el rail solo navega, así
-  // que pasa a modo compacto (más angosto) y le devuelve ese ancho al contenido
-  // —la navegación nunca desaparece; colapsar sigue disponible como reclamo total—.
-  const railHasControls = state.view === "cuatri" || state.view === "elect";
+  // La navegación vive en la barra superior del sitio (sin rail izquierdo):
+  // los controles que colgaban del rail (búsqueda, filtros, minors, reset) van
+  // en la cabecera de la vista que los usa (ViewTools).
+  const nav = <ViewNav />;
+  const tools = <NavTools onProgreso={() => setProgresoOpen(true)} />;
 
   // Banner de primer uso: usuario sin nada marcado y que no lo cerró. Se va
   // solo al marcar la primera materia (approved.size > 0) o con la ×.
   const showIntro =
-    state.hydrated && state.approved.size === 0 && !state.introDismissed;
+    activo && state.hydrated && state.approved.size === 0 && !state.introDismissed;
+
+  // Sin carrera elegida (primera visita): el selector ocupa el lugar de la
+  // vista; nada del planner tiene sentido hasta entonces. Mientras PlannerApp
+  // resuelve la carrera (SSR y primer render), el cuerpo queda vacío: así ni
+  // se ve otra carrera ni se hidrata nada de más.
+  // Sin carrera no hay vistas ni herramientas que valgan: la barra queda con
+  // la marca sola y el selector es la página.
+  if (!activo) {
+    return (
+      <div className="planner planner--topnav">
+        <h1 className="sr-only">Planificador de cursada</h1>
+        {chrome ? chrome(null, null) : null}
+        <div className="shell">
+          <div className="main">{listo && <CarreraPicker />}</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div
-      className={
-        `planner${state.sideCollapsed ? " side-collapsed" : ""}` +
-        (railHasControls ? "" : " rail-nav-only")
-      }
-    >
-      <h1 className="sr-only">Planificador de electivas</h1>
+    <div className="planner planner--topnav">
+      <h1 className="sr-only">Planificador de cursada</h1>
+      {chrome ? (
+        chrome(nav, tools)
+      ) : (
+        <div className="vnav-strip">
+          {nav}
+          {tools}
+        </div>
+      )}
       <Topbar />
       {showIntro && (
         <div className="first-run" role="note">
@@ -336,37 +387,10 @@ function PlannerInner() {
         </div>
       )}
       <div className="shell">
-        <Sidebar onProgreso={() => setProgresoOpen(true)} />
         <div className="main">
           <View />
         </div>
       </div>
-      {state.sideCollapsed && (
-        <Tooltip content="Mostrar el panel de control" width={150}>
-        <button
-          type="button"
-          className="side__reveal"
-          aria-label="Mostrar el panel de control"
-          onClick={() => dispatch({ type: "TOGGLE_SIDEBAR" })}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            width="15"
-            height="15"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.7"
-            aria-hidden="true"
-          >
-            <path
-              d="M9.5 6.5 15 12l-5.5 5.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-        </Tooltip>
-      )}
       <DetailDrawer />
       <FichaReader />
       {progresoOpen && (
@@ -376,12 +400,70 @@ function PlannerInner() {
   );
 }
 
-export default function PlannerApp() {
+/** Elige la carrera y monta el planner con su plan. El primer render (SSR y
+ *  cliente) no muestra ninguna carrera; al montar se resuelve la pedida
+ *  (?carrera= → preferencia guardada), se trae su plan si hace falta y se
+ *  monta el árbol con `key`: PLAN/byId ya apuntan al plan nuevo y la
+ *  persistencia a sus claves, así todo (estado, memos, vistas) se calcula
+ *  para esa carrera. Sin carrera pedida, PlannerInner muestra el selector. */
+export default function PlannerApp({ chrome }: { chrome?: PlannerChrome }) {
+  const [carrera, setCarrera] = useState<string | null>(null);
+  const [listo, setListo] = useState(false);
+  const [cargando, setCargando] = useState<string | null>(null);
+
+  useEffect(() => {
+    const pedida = carreraPedida(readParams());
+    if (!pedida) {
+      setListo(true);
+      return;
+    }
+    let vivo = true;
+    setCargando(pedida);
+    activarCarrera(pedida)
+      .then(() => {
+        if (!vivo) return;
+        // la URL siempre dice qué carrera se ve (recargar o compartir el link
+        // la reproduce), también cuando salió de la preferencia guardada
+        writeParams((p) => p.set(CARRERA_URL_KEY, pedida));
+        setCarrera(pedida);
+      })
+      .catch((e) => console.warn("[planner] no se pudo cargar la carrera", pedida, e))
+      .finally(() => {
+        if (vivo) {
+          setCargando(null);
+          setListo(true);
+        }
+      });
+    return () => {
+      vivo = false;
+    };
+  }, []);
+
+  const cambiar = useCallback(
+    async (codigo: string) => {
+      if (codigo === carrera || cargando) return;
+      setCargando(codigo);
+      try {
+        await activarCarrera(codigo);
+        saveCarreraPref(codigo);
+        writeParams((p) => p.set(CARRERA_URL_KEY, codigo));
+        setCarrera(codigo);
+      } catch (e) {
+        console.warn("[planner] no se pudo cargar la carrera", codigo, e);
+      } finally {
+        setCargando(null);
+      }
+    },
+    [carrera, cargando],
+  );
+
   return (
-    <PlannerErrorBoundary>
-      <PlannerProvider>
-        <PlannerInner />
-      </PlannerProvider>
-    </PlannerErrorBoundary>
+    <CarreraContext.Provider value={{ codigo: carrera, cargando, cambiar }}>
+      <PlannerErrorBoundary>
+        <PlannerProvider key={carrera ?? "-"}>
+          <PlannerInner chrome={chrome} listo={listo} carrera={carrera} />
+        </PlannerProvider>
+      </PlannerErrorBoundary>
+    </CarreraContext.Provider>
   );
 }

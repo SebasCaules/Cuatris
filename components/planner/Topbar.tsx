@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePlanner } from "./state";
+import { DotCursando } from "./EstadoControl";
 import { PLAN } from "@/lib/planner/model";
 import {
   approvedCredits,
@@ -9,14 +10,20 @@ import {
   availableCount,
 } from "@/lib/planner/metrics";
 
-// créditos electivos requeridos por el plan de estudios (misma fuente que PlanView)
-const ELEC_REQ = PLAN.creditosElectivasReq ?? 27;
-
 /** Barra superior con la tira inline de métricas (port de updateMetrics) y el
  *  botón "Compartir" icon-only (la URL ya refleja vista/filtros/drawer → deep-link). */
 export default function Topbar() {
   const { state } = usePlanner();
-  const { approved } = state;
+  const { approved, cursando } = state;
+  // créditos electivos requeridos por el plan de estudios (misma fuente que
+  // PlanView) y totales de la carrera para leer «cómo queda» cada stat:
+  // créditos de todas las obligatorias más los electivos exigidos; cantidad de
+  // obligatorias; materias. Se leen en el render: cambian con la carrera.
+  const ELEC_REQ = PLAN.creditosElectivasReq ?? 27;
+  const CRED_TOTAL =
+    PLAN.obligatorias.reduce((s, m) => s + (m.creditos || 0), 0) + ELEC_REQ;
+  const OBLIG_TOTAL = PLAN.obligatorias.length;
+  const MAT_TOTAL = PLAN.obligatorias.length + PLAN.electivas.length;
   const [copied, setCopied] = useState(false);
   const copiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -36,6 +43,45 @@ export default function Topbar() {
     () => PLAN.obligatorias.filter((m) => !approved.has(m.codigo)).length,
     [approved]
   );
+
+  // Las mismas cuatro cifras contando lo que se está cursando como si ya
+  // estuviera aprobado: es a dónde llega el progreso al cerrar el cuatrimestre.
+  // Van al lado de cada stat, en el azul de «cursando», solo cuando difieren.
+  const proj = useMemo(() => {
+    if (cursando.size === 0) return null;
+    const con = new Set([...approved, ...cursando]);
+    return {
+      creditos: approvedCredits(con),
+      elec: Math.min(electiveCredits(con), ELEC_REQ),
+      disp: availableCount(con),
+      restan: PLAN.obligatorias.filter((m) => !con.has(m.codigo)).length,
+    };
+  }, [approved, cursando]);
+  // Pastilla al lado del stat: el punto de «cursando» (el mismo glifo que
+  // marca esas materias en la lista) y cómo queda la cifra sobre su total al
+  // aprobar lo que se cursa («● 165/231»). El tooltip lo explica en palabras.
+  const Cur = ({
+    v,
+    base,
+    total,
+    tip,
+  }: {
+    v: number;
+    base: number;
+    total: number;
+    tip: string;
+  }) => {
+    if (!proj || v === base) return null;
+    return (
+      <span className="statline__cur" title={tip} aria-label={tip}>
+        <DotCursando />
+        {v}
+        <i className="statline__cur-of">/{total}</i>
+      </span>
+    );
+  };
+  const nCur = cursando.size;
+  const cursandoTxt = `${nCur} ${nCur === 1 ? "materia" : "materias"} que cursás`;
 
   const handleShare = () => {
     if (typeof window === "undefined" || typeof navigator === "undefined")
@@ -65,19 +111,43 @@ export default function Topbar() {
       <div className="statline">
         <span className="statline__it">
           <b>{statCreditos}</b> cr aprobados
+          <Cur
+            v={proj?.creditos ?? statCreditos}
+            base={statCreditos}
+            total={CRED_TOTAL}
+            tip={`Al aprobar las ${cursandoTxt} llegás a ${proj?.creditos ?? statCreditos} de los ${CRED_TOTAL} créditos de la carrera (hoy tenés ${statCreditos}).`}
+          />
         </span>
         <span className="statline__sep" aria-hidden="true" />
         <span className="statline__it statline__it--elec">
           <b>{statElec}</b>
           <i className="statline__of">/{ELEC_REQ}</i> electivos
+          <Cur
+            v={proj?.elec ?? statElec}
+            base={statElec}
+            total={ELEC_REQ}
+            tip={`Al aprobar las ${cursandoTxt} sumás ${proj?.elec ?? statElec} de los ${ELEC_REQ} créditos electivos que pide el plan (hoy ${statElec}).`}
+          />
         </span>
         <span className="statline__sep" aria-hidden="true" />
         <span className="statline__it">
           <b>{statDisp}</b> cursables
+          <Cur
+            v={proj?.disp ?? statDisp}
+            base={statDisp}
+            total={MAT_TOTAL - approved.size - nCur}
+            tip={`Al aprobar las ${cursandoTxt} vas a poder cursar ${proj?.disp ?? statDisp} de las ${MAT_TOTAL - approved.size - nCur} materias que te quedan (hoy ${statDisp}): sus correlativas quedan cubiertas.`}
+          />
         </span>
         <span className="statline__sep" aria-hidden="true" />
         <span className="statline__it">
           <b>{statRestan}</b> oblig. restantes
+          <Cur
+            v={proj?.restan ?? statRestan}
+            base={statRestan}
+            total={OBLIG_TOTAL}
+            tip={`Al aprobar las ${cursandoTxt} te quedan ${proj?.restan ?? statRestan} de las ${OBLIG_TOTAL} obligatorias de la carrera (hoy ${statRestan}).`}
+          />
         </span>
       </div>
       )}

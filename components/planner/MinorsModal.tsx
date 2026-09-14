@@ -8,11 +8,11 @@ import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { useModalFocus } from "@/components/planner/useModalFocus";
 import { PLAN, AREA_COLOR, byId, credOf } from "@/lib/planner/model";
+import { minorReqOf } from "@/lib/planner/minors";
 import { cuatriAt, cuatriLabel, cuatriName } from "@/lib/planner/optimize";
 import { IconClose, IconCheck } from "@/components/planner/icons";
 import type { PlacedMateria, PlanStart } from "@/lib/planner/types";
 
-const MINOR_REQ = 14;
 
 // etiquetas cortas para los encabezados de columna
 const AREA_SHORT: Record<string, string> = {
@@ -111,7 +111,10 @@ export default function MinorsModal({
     return { rows, finals };
   }, [used, start, approved, areas]);
 
-  const completed = finals.filter((f) => f.total >= MINOR_REQ);
+  const completed = finals.filter((f) => f.total >= minorReqOf(f.area));
+  // un solo requisito para todas las áreas (Informática: 14) o uno por bloque
+  const reqs = new Set(areas.map((a) => minorReqOf(a)));
+  const reqUnico = reqs.size === 1 ? [...reqs][0] : null;
 
   // Portal a <body>: el modal es position:fixed y .view-panel tiene un transform
   // (animación de entrada) que crearía un containing block y lo descentraría.
@@ -129,7 +132,11 @@ export default function MinorsModal({
           <h3>Créditos de minors por cuatrimestre</h3>
           <p>
             Créditos electivos acumulados en cada área a medida que avanza el plan.
-            Un minor se completa con <b>{MINOR_REQ}</b> créditos del área.
+            {reqUnico != null ? (
+              <> Un minor se completa con <b>{reqUnico}</b> créditos del área.</>
+            ) : (
+              <> Cada área se completa con los créditos que fija el plan (entre paréntesis).</>
+            )}
           </p>
         </header>
 
@@ -145,6 +152,9 @@ export default function MinorsModal({
                       style={{ background: AREA_COLOR[a] }}
                     />
                     {AREA_SHORT[a] || a}
+                    {reqUnico == null && (
+                      <span className="mnr-th-req"> ({minorReqOf(a)})</span>
+                    )}
                   </th>
                 ))}
               </tr>
@@ -157,7 +167,7 @@ export default function MinorsModal({
                     {r.tag && <span className="mnr-cu__tag">{r.tag}</span>}
                   </td>
                   {r.cells.map((c) => {
-                    const done = c.total >= MINOR_REQ;
+                    const done = c.total >= minorReqOf(c.area);
                     const empty = c.total === 0;
                     return (
                       <td
@@ -195,8 +205,8 @@ export default function MinorsModal({
             </span>
           ) : (
             <span className="mnr-foot__none">
-              Con este plan ningún área llega a {MINOR_REQ} créditos. Agregá
-              electivas del área para completar un minor.
+              Con este plan ningún área llega a sus créditos. Agregá
+              electivas del área para completarla.
             </span>
           )}
         </footer>

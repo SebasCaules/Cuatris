@@ -115,7 +115,9 @@ function buildMateriaHTML(m: MateriaM, ficha: Ficha | undefined): string {
 
   const subParts = [
     ob
-      ? `Obligatoria · ${esc(m.ciclo)} · Año ${esc(m.anio)} (${esc(m.cuatri)}.º cuat.)`
+      ? ["Obligatoria", m.ciclo ? esc(m.ciclo) : "", m.anio != null ? `Año ${esc(m.anio)}${m.cuatri != null ? ` (${esc(m.cuatri)}.º cuat.)` : ""}` : ""]
+          .filter(Boolean)
+          .join(" · ")
       : "Electiva",
     `${esc(m.creditos)} créditos`,
     m.creditosReq ? `requiere ${esc(m.creditosReq)}` : "",
@@ -449,7 +451,7 @@ function DrawerModal({ m, code }: { m: MateriaM; code: string }) {
   // "requiere N cr" pasó junto a la cursabilidad y el depto vive en Horario.
   const metaItems: string[] = [
     ...(ob
-      ? ["Obligatoria", m.ciclo, `Año ${m.anio}`, `${m.cuatri}.º cuat.`]
+      ? ["Obligatoria", m.ciclo, m.anio != null ? `Año ${m.anio}` : "", m.cuatri != null ? `${m.cuatri}.º cuat.` : ""]
       : ["Electiva"]),
     `${m.creditos} créditos`,
   ].filter(Boolean) as string[];

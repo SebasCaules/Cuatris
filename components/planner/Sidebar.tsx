@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { usePlanner } from "./state";
 import { useModalFocus } from "./useModalFocus";
 import { PLAN, AREA_COLOR, credOf, byId } from "@/lib/planner/model";
-import { MINOR_REQ } from "@/lib/planner/minors";
+import { minorReqOf } from "@/lib/planner/minors";
 import type { ViewKey } from "@/lib/planner/types";
 
 // Triángulo de aviso: mismo trazo que el reset del plan, para que ambas
@@ -95,14 +95,13 @@ function ResetApprovedConfirm({
 // se recalcula. "Referencias" ya no es hermana de nav — baja al pie del rail
 // como acceso secundario (sigue deep-linkeable con ?view=ref).
 const FLOW_VIEWS: { view: ViewKey; label: string }[] = [
-  { view: "cuatri", label: "Mis materias" },
-  { view: "elect", label: "Electivas" },
-  { view: "combo", label: "Combinador de horarios" },
+  { view: "cuatri", label: "Materias y electivas" },
   { view: "plan", label: "Plan de cursada" },
+  { view: "combo", label: "Combinador de horarios" },
   { view: "finales", label: "Combinador de finales" },
 ];
 const REF_VIEWS: { view: ViewKey; label: string }[] = [
-  { view: "grafo", label: "Correlativas" },
+  { view: "grafo", label: "Mapa de correlativas" },
 ];
 
 /**
@@ -199,9 +198,9 @@ export default function Sidebar({
   //  · áreas/minors + gauge de electivas → solo "Electivas".
   //  · el resto de las vistas tienen su propia búsqueda interna, así que el
   //    rail queda solo con la navegación.
-  const showSearch = view === "cuatri" || view === "elect";
-  const showFilters = view === "elect";
-  const showElect = view === "elect";
+  const showSearch = view === "cuatri";
+  const showFilters = view === "cuatri";
+  const showElect = view === "cuatri";
 
   return (
     <aside className="side" aria-label="Panel de control">
@@ -323,12 +322,12 @@ export default function Sidebar({
                 <span className="minrow__top">
                   <span className="swatch" style={{ background: AREA_COLOR[a] }} />
                   <span className="minrow__name">{a}</span>
-                  <b>{s}/{MINOR_REQ}</b>
+                  <b>{s}/{minorReqOf(a)}</b>
                 </span>
                 <span className="minibar">
                   <i
                     style={{
-                      width: Math.min(100, (s / MINOR_REQ) * 100) + "%",
+                      width: Math.min(100, (s / minorReqOf(a)) * 100) + "%",
                       background: AREA_COLOR[a],
                     }}
                   />

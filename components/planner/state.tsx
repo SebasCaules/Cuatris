@@ -8,7 +8,12 @@ import {
   type Dispatch,
   type ReactNode,
 } from "react";
-import { PLAN, esPlanificable, remainingOblig } from "@/lib/planner/model";
+import { PLAN, esAnual, esPlanificable, remainingOblig } from "@/lib/planner/model";
+import { nextCuatri } from "@/lib/planner/optimize";
+
+/** «Electivas» se fusionó con «Materias»: cualquier pedido de la vista vieja
+ *  (deep-link, vista persistida, rail viejo) cae en la vista unificada. */
+const normalizeView = (v: ViewKey): ViewKey => (v === "elect" ? "cuatri" : v);
 import { tieneFinal, type Estado } from "@/lib/planner/estado";
 import type { Persisted } from "@/lib/planner/persist";
 import type { PlannerUrlState } from "@/lib/planner/url-state";
@@ -70,7 +75,9 @@ export function initialState(): PlannerState {
     plan: {
       pool: new Set<string>(remainingOblig(approved)),
       fixed: new Map<string, number>(),
-      start: { parity: 2, year: 2026 },
+      // se empieza a planificar en el cuatrimestre que SIGUE al que está en
+      // curso: lo que se cursa hoy ya está decidido (marcado como «cursando»).
+      start: nextCuatri(),
       maxCred: 18,
       maxMat: 5,
       avoid: true,
@@ -174,7 +181,13 @@ export function reducer(s: PlannerState, a: Action): PlannerState {
         plan: {
           ...s.plan,
           pool: p.pool
-            ? new Set(p.pool.filter(esPlanificable))
+            ? new Set([
+                ...p.pool.filter(esPlanificable),
+                // migración: las anuales (Proyecto Final) antes no se
+                // planificaban y no están en ningún pool guardado; entran
+                // solas si todavía no se aprobaron.
+                ...remainingOblig(approved).filter(esAnual),
+              ])
             : new Set(remainingOblig(approved)),
           fixed: p.fixed ? new Map(p.fixed) : s.plan.fixed,
           lockedIdx: p.lockedIdx ? new Set(p.lockedIdx) : s.plan.lockedIdx,
@@ -219,7 +232,7 @@ export function reducer(s: PlannerState, a: Action): PlannerState {
       const u = a.payload;
       return {
         ...s,
-        view: u.view ?? s.view,
+        view: u.view ? normalizeView(u.view) : s.view,
         search: u.search ?? s.search,
         areasOn: u.areasOn ? new Set(u.areasOn) : s.areasOn,
         fDisp: u.fDisp ?? s.fDisp,
@@ -230,7 +243,7 @@ export function reducer(s: PlannerState, a: Action): PlannerState {
       };
     }
     case "SET_VIEW":
-      return { ...s, view: a.view };
+      return { ...s, view: normalizeView(a.view) };
     case "SET_ESTADO": {
       const approved = new Set(s.approved);
       const finalDone = new Set(s.finalDone);

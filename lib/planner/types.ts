@@ -26,6 +26,9 @@ export interface Horario {
   fin?: string;
   depto?: string;
   comisiones: Comision[];
+  /** códigos con los que el SGA dicta este curso en conjunto (misma aula y
+   *  horario bajo otro código, típicamente el de otra carrera). */
+  conjunto?: string[];
 }
 
 export type Tipo = "obligatoria" | "electiva";
@@ -119,7 +122,19 @@ export interface Edge {
 }
 
 export interface Plan {
+  /** carrera a la que pertenece el plan (código del SGA: "S", "I", "K"…). */
+  carrera?: { codigo: string; nombre: string };
+  /** id del plan de estudios en el SGA ("S10-Rev23", "I22"…). */
+  planId?: string;
+  /** período de los horarios cargados, legible ("2.º cuatrimestre 2026"). */
+  periodoLabel?: string;
+  /** áreas de electivas: minors (Informática) o bloques de electivas del plan
+   *  (las demás carreras, cuando el plan tiene más de un bloque). */
   areas: string[];
+  /** créditos que exige cada área (bloque del plan); si falta, `minorReq`. */
+  areaReq?: Record<string, number>;
+  /** créditos para completar un minor cuando el área no fija los suyos. */
+  minorReq?: number;
   obligatorias: Materia[];
   electivas: Materia[];
   horarios: Record<string, Horario>;
@@ -127,6 +142,15 @@ export interface Plan {
   aprobadasDefault: string[];
   creditosElectivasReq?: number;
   tituloAnalista?: unknown;
+  /** título principal de la carrera y sus créditos. */
+  tituloFinal?: { nombre: string; creditos: number | null } | null;
+  /** obligatorias que el optimizador no ubica en un cuatrimestre (práctica
+   *  laboral, regímenes sin cursada): se marcan pero no se planifican. */
+  noPlanificables?: string[];
+  /** materias ANUALES: se cursan en dos cuatrimestres consecutivos y sus
+   *  créditos se reparten en mitades (Proyecto Final: 12 cr = 6 + 6). El
+   *  optimizador las ubica como dos mitades seguidas. */
+  anuales?: string[];
   generado?: string;
 }
 
@@ -199,10 +223,13 @@ export interface PlanStart {
   year: number;
 }
 
-/** Una materia ubicada en un cuatrimestre del plan, con su comisión elegida. */
+/** Una materia ubicada en un cuatrimestre del plan, con su comisión elegida.
+ *  Una materia anual ocupa dos entradas en cuatrimestres consecutivos
+ *  (`parte` 1 y 2), cada una con la mitad de los créditos en `m.creditos`. */
 export interface PlacedMateria {
   m: MateriaM;
   com: Comision | null;
+  parte?: 1 | 2;
 }
 
 export interface PlanResult {

@@ -1,19 +1,30 @@
-// Modelo estático del planner: PLAN tipado + map byId (materia → con horario).
-// Derivado de datos estáticos → se construye una vez al importar (sin DOM).
+// Modelo del planner: PLAN tipado + map byId (materia → con horario).
+// Arranca con la carrera por defecto (data.json, en el bundle) y se construye
+// al importar (sin DOM). Cambiar de carrera (`loadPlan`) REEMPLAZA el contenido
+// de PLAN/byId en su lugar —mismas referencias, mismos imports en toda la app—
+// y avisa a los módulos que derivan tablas de PLAN (minors, colores) para que
+// se rearmen; la app remonta su árbol con `key` para recalcular todo lo demás.
 import rawData from "./data.json";
 import type { Materia, MateriaM, Plan } from "./types";
 
-export const PLAN = rawData as unknown as Plan;
+export const PLAN = { ...(rawData as unknown as Plan) } as Plan;
 
 export const DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
 export const DAYS6 = [...DAYS, "Sábado"];
 
-export const AREA_COLOR: Record<string, string> = {
+// Colores curados de los minors de Informática; las áreas de otras carreras
+// (bloques de electivas del plan) toman uno de AREA_PALETTE al cargar el plan.
+const AREA_COLOR_CURADO: Record<string, string> = {
   "Ciencia de Datos": "#85a2c2",
   "Imágenes y Realidad Virtual": "#c592ab",
   "Inteligencia Artificial": "#a9b27e",
   "Arquitectura de Software": "#a497c0",
 };
+const AREA_PALETTE = [
+  "#85a2c2", "#c592ab", "#a9b27e", "#a497c0", "#c9a97a", "#7fb8b0",
+  "#b89c8a", "#9aa7c9", "#c28c8c", "#8fb08f", "#b3a0c9", "#a3b7a0",
+];
+export const AREA_COLOR: Record<string, string> = {};
 
 // Paleta para colorear materias en las grillas (combinador / plan): doce pasteles
 // de hue nítido, uno cada 30° de la rueda. NO van en orden de rueda — el orden
@@ -27,8 +38,46 @@ export const PALETTE = [
 
 // Map codigo → materia con su horario resuelto (espejo de buildModel()).
 export const byId: Map<string, MateriaM> = new Map();
-for (const m of [...PLAN.obligatorias, ...PLAN.electivas]) {
-  byId.set(m.codigo, { ...m, horario: PLAN.horarios[m.codigo] || null });
+
+// Obligatorias que NO entran al optimizador de cuatrimestres (Informática:
+// 72.45 Proyecto Final es anual y 72.98 Práctica Laboral es un régimen especial
+// de 0 cr, sin cursada). Se marcan en «Mis materias» como cualquier otra, pero
+// el plan no las ubica en un cuatrimestre. Las fija cada plan (`noPlanificables`).
+export const NO_PLANIFICABLES: Set<string> = new Set();
+/** Materias anuales (dos cuatrimestres consecutivos, créditos en mitades). */
+export const ANUALES: Set<string> = new Set();
+
+const listeners = new Set<() => void>();
+/** Registra un callback que corre cada vez que se carga otro plan (para
+ *  módulos con tablas derivadas de PLAN). Devuelve el des-registro. */
+export function onPlanChange(fn: () => void): () => void {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
+}
+
+function rebuild() {
+  byId.clear();
+  for (const m of [...PLAN.obligatorias, ...PLAN.electivas]) {
+    byId.set(m.codigo, { ...m, horario: PLAN.horarios[m.codigo] || null });
+  }
+  NO_PLANIFICABLES.clear();
+  for (const c of PLAN.noPlanificables ?? ["72.98"]) NO_PLANIFICABLES.add(c);
+  ANUALES.clear();
+  for (const c of PLAN.anuales ?? ["72.45"]) ANUALES.add(c);
+  for (const k of Object.keys(AREA_COLOR)) delete AREA_COLOR[k];
+  PLAN.areas.forEach((a, i) => {
+    AREA_COLOR[a] = AREA_COLOR_CURADO[a] ?? AREA_PALETTE[i % AREA_PALETTE.length];
+  });
+}
+rebuild();
+
+/** Reemplaza el plan activo por el de otra carrera (in place) y rearma las
+ *  tablas derivadas. Quien lo llama remonta la app para que todo se recalcule. */
+export function loadPlan(data: Plan): void {
+  for (const k of Object.keys(PLAN)) delete (PLAN as unknown as Record<string, unknown>)[k];
+  Object.assign(PLAN, data);
+  rebuild();
+  listeners.forEach((fn) => fn());
 }
 
 export const credOf = (c: string) => Number(byId.get(c)?.creditos) || 0;
@@ -38,12 +87,8 @@ export const hasHorario = (c: string) => {
   const m = byId.get(c);
   return !!(m && m.horario && m.horario.comisiones.length);
 };
-// Obligatorias que NO entran al optimizador de cuatrimestres: 72.45 Proyecto
-// Final es anual y 72.98 Práctica Laboral es un régimen especial (0 cr, sin
-// cursada). Se marcan en «Mis materias» como cualquier otra, pero el plan no las
-// ubica en un cuatrimestre.
-export const NO_PLANIFICABLES: ReadonlySet<string> = new Set(["72.45", "72.98"]);
 export const esPlanificable = (c: string) => !NO_PLANIFICABLES.has(c);
+export const esAnual = (c: string) => ANUALES.has(c);
 
 export const remainingOblig = (approved: Set<string>) =>
   PLAN.obligatorias

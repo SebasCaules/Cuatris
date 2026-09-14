@@ -46,6 +46,78 @@ solo en el Plan de cursada, detrás de «Importar / Exportar»).
   `<Tooltip>` en vez de `title=` (regla del autor). El resto de los `title=` del planner
   (~60) queda como en StudyVaults, donde se está haciendo esa migración.
 
+## 5. Varias carreras (2026-09-13)
+
+El planner deja de estar atado a Informática: hay un plan por carrera de grado del ITBA
+(bajado del SGA) y un selector en la barra. Las horas y los finales son compartidos.
+
+- `lib/planner/types.ts`: `Plan` suma `carrera`, `planId`, `periodoLabel`, `areaReq`,
+  `minorReq`, `tituloFinal`, `noPlanificables`; `Horario.conjunto`.
+- `lib/planner/model.ts`: `PLAN`, `byId`, `NO_PLANIFICABLES` y `AREA_COLOR` pasan a ser
+  mutables y se reemplazan **in place** con `loadPlan(plan)`; `onPlanChange(fn)` avisa a los
+  módulos con tablas derivadas. Colores automáticos (`AREA_PALETTE`) para áreas sin curar.
+- `lib/planner/minors.ts`: `MINORS` se rearma al cambiar de plan; `Minor.req` y
+  `minorReqOf(area)` (créditos por bloque, `Plan.areaReq`, o `minorReq`/14); siglas
+  automáticas para los bloques de electivas del SGA.
+- `lib/planner/url-state.ts`: las áreas válidas se leen del plan activo (no al importar).
+- `lib/planner/persist.ts`: claves por carrera (`setPersistCarrera`: Informática conserva
+  las históricas, las demás llevan prefijo `c:<CODIGO>:`), preferencia `plan_carrera_v1`
+  (`loadCarreraPref`/`saveCarreraPref`), `carrera` en el bundle exportado.
+- `lib/planner/carreras.ts` (nuevo): registro, `carreraPedida(params)` (URL → preferencia →
+  default), `fetchPlan` (import() diferido, cacheado) y `activarCarrera`. Lee
+  `lib/planner/carreras/index.ts`, que genera `scripts/build-planner-data.mjs`.
+- `components/planner/carreraContext.ts`, `CarreraSwitch.tsx` y `CarreraPicker.tsx` (nuevos):
+  contexto de carrera activa, el selector de la barra (menú propio, carreras sin plan
+  deshabilitadas con tooltip) y la pantalla de elección de la primera visita (tarjetas;
+  marca las carreras con progreso guardado, `tieneProgreso` en persist.ts).
+- `components/planner/PlannerApp.tsx`: no hay carrera por defecto. Al montar resuelve la
+  pedida (`?carrera=` → preferencia guardada); sin ninguna, `PlannerInner` muestra el
+  `CarreraPicker` con la barra reducida a la marca. Con carrera, carga su plan y remonta
+  `PlannerProvider` con `key={carrera}`; no hidrata ni escribe hasta entonces. `cambiar()`
+  escribe `?carrera=` y la preferencia.
+- `components/planner/ViewNav.tsx`: `NavTools` monta `CarreraSwitch`.
+- `components/planner/Topbar.tsx`, `views/PlanView.tsx`, `views/CombinadorView.tsx`,
+  `ViewTools.tsx`: las constantes derivadas de `PLAN` (créditos electivos, totales, período
+  de los horarios) se leen en el render; `MinorsModal.tsx`, `Sidebar.tsx`, `ViewTools.tsx`,
+  `PlanView.tsx` usan `minorReqOf`/`Minor.req` en vez de `MINOR_REQ`.
+- `components/planner/DetailDrawer.tsx`: obligatorias sin año/cuatrimestre (planes con listas
+  planas) no muestran «Año null».
+- **Materias anuales** (`Plan.anuales`; Informática: 72.45 Proyecto Final, 12 cr en un año
+  continuo). `lib/planner/model.ts`: `ANUALES`/`esAnual`, y 72.45 deja de ser «no
+  planificable». `lib/planner/optimize.ts`: el optimizador las ubica como dos mitades en
+  cuatrimestres consecutivos (`PlacedMateria.parte`, `m.creditos` a la mitad, sigla `PF¹`/`PF²`,
+  sin paridad), exigiendo lugar en los dos; las mitades no se compactan ni rebalancean sueltas
+  y los dependientes van después de la segunda. `components/planner/state.tsx`: al hidratar,
+  las anuales pendientes entran al pool guardado (antes no existían ahí).
+- `components/planner/planner.css`: reglas `.carrera*` y `.mnr-th-req`.
+
+Fuera del espejo, lo que alimenta esto: `data/plan/sga-carreras/` + `bajar-carreras.py`,
+`data/plan/carreras/`, `data/plan/horarios/` (contrato 1.1.0), `scripts/build-carreras-data.mjs`
+y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios convertidos).
+
+## 6. Optimizador: orden del plan de estudios y comisiones por idas a la facultad
+
+- `lib/planner/optimize.ts`: las obligatorias se colocan en el orden nominal de su plan
+  (año/cuatrimestre) y en cada cuatrimestre sólo entran las que están a lo sumo
+  `ORDEN_VENTANA` (2) cuatrimestres por delante de la obligatoria pendiente más temprana; si
+  con esa ventana no entra ninguna, se abre de a un año (nunca deja un cuatrimestre vacío).
+  Vale al colocar, compactar y rebalancear. Electivas y materias fijadas no participan.
+- `lib/planner/time.ts`: `viajesDe(coms)` cuenta las idas a la facultad (bloques
+  presenciales del mismo día y sede pegados o con menos de `VIAJE_GAP_MIN` = 120 min de
+  espera cuentan una; cambio de sede o virtual/asincrónico no). `optimize.ts`: `chooseCom`
+  y `resolveComs` eligen por idas › días › espera › orden de cátedra, y siempre prefieren
+  una comisión sin superposición si existe (con «evitar superposiciones» apagado la materia
+  entra igual con la menos mala). `views/CombinadorView.tsx`: las opciones se ordenan
+  primero por idas.
+
+## 7. Arrastre entre cuatrimestres: el carrusel corre solo
+
+- `components/planner/views/PlanView.tsx` (`startDrag`): cerca de los bordes de la pista (96 px,
+  o más allá) el carrusel se desplaza de forma continua (hasta ~1.400 px/s) y el cuatri
+  destino se recalcula aunque el puntero esté quieto; durante el arrastre la pista lleva
+  `is-dragging` (sin scroll-snap: con snap cada avance volvía a la misma tarjeta).
+- `components/planner/planview.css`: regla `.pv-track.is-dragging`.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (manifest instalable, iconos PNG, título de página), `components/shell/`,

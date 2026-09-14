@@ -45,8 +45,18 @@ y no se retoma sin pedido explícito del autor.
   pliega solo, componentes propios (nada nativo con aspecto por defecto), tipografía
   Newsreader + JetBrains Mono vía `next/font`. Ver `components/planner/DESIGN.md`.
 - **Datos**: no inventar códigos, horarios, aulas ni nombres; solo lo que está en `data/plan/`
-  o en el SGA verificado. Credenciales del SGA: nunca (el scraper lo corre el autor, ver
-  `data/plan/SCRAPING.md`).
+  o en el SGA verificado. Credenciales del SGA: nunca (los scrapers los corre el autor:
+  `data/plan/bajar-carreras.py` para los planes de estudio, `deprecated/tools/cuatris/sga`
+  para los horarios; ver `data/plan/SCRAPING.md`).
+- **Carreras**: hay un plan por carrera de grado (`data/plan/carreras/<CODIGO>.json`, bajado
+  del SGA con `bajar-carreras.py` + `npm run carreras`). Informática (S, la carrera por
+  defecto) sigue saliendo del plan curado `data/plan/data.js` de StudyVaults; las demás, del
+  SGA. Horarios (`data/plan/horarios/`, contrato 1.1.0) y finales son compartidos.
+  `scripts/build-planner-data.mjs` arma `lib/planner/data.json` (S) y
+  `lib/planner/carreras/<CODIGO>.json` + `index.ts` (generados, fuera de git). No hay
+  carrera por defecto: la primera visita muestra el selector (`CarreraPicker`). La carrera
+  activa viaja en `?carrera=` y en `localStorage` (`plan_carrera_v1`); el progreso de cada
+  carrera se guarda con claves propias (Informática conserva las históricas).
 - **Idioma**: documentación, comentarios, commits y todo lo dirigido al autor en español
   neutro (tú/usted). Los **textos de la interfaz** del planner están en voseo porque hablan a
   estudiantes del ITBA (igual que en StudyVaults): no «corregirlos».
@@ -63,6 +73,8 @@ npm ci                      dependencias
 npm run typecheck           regenera data.json + tsc --noEmit
 npm run build               next build → out/ (prebuild regenera lib/planner/data.json)
 npm run datos               regenera finalesFlags.ts y mesasFinales.ts desde data/plan/finales-*.csv
+npm run carreras            HTML del SGA en data/plan/sga-carreras/ → data/plan/carreras.json + carreras/<CODIGO>.json
+python3 data/plan/bajar-carreras.py   baja esos HTML del SGA (login del autor; ~40 peticiones)
 npm run sync                trae el planner desde StudyVaults (ver arriba)
 node scripts/build-fichas-data.mjs   PDFs → lib/planner/fichas.ts (requiere pdftotext)
 ```

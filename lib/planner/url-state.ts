@@ -22,7 +22,8 @@ const VIEW_KEYS: readonly ViewKey[] = [
   "ref",
 ];
 const VIEWS = new Set<string>(VIEW_KEYS);
-const ALL_AREAS = new Set(PLAN.areas);
+// las áreas válidas son las del plan ACTIVO (cambian con la carrera)
+const isArea = (a: string) => PLAN.areas.includes(a);
 
 /** Slices de vista/navegación decodificadas de la URL. Cada campo queda
  *  `undefined` cuando su clave no está presente o el valor no valida — el
@@ -51,7 +52,7 @@ export function decodePlannerUrl(p: URLSearchParams): PlannerUrlState {
 
   const areasRaw = p.get("areas");
   if (areasRaw != null) {
-    const valid = [...csv.decode(areasRaw)].filter((a) => ALL_AREAS.has(a));
+    const valid = [...csv.decode(areasRaw)].filter(isArea);
     if (valid.length) out.areasOn = valid;
   }
 
@@ -89,8 +90,8 @@ export function encodePlannerUrl(
   setOrDelete(p, "pq", state.search, state.search !== "");
 
   const allAreasOn =
-    state.areasOn.size === ALL_AREAS.size &&
-    [...state.areasOn].every((a) => ALL_AREAS.has(a));
+    state.areasOn.size === PLAN.areas.length &&
+    [...state.areasOn].every(isArea);
   setOrDelete(p, "areas", csv.encode(state.areasOn), !allAreasOn);
 
   setOrDelete(p, "disp", "1", state.fDisp);
