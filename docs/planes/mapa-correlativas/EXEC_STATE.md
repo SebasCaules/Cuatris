@@ -8,16 +8,17 @@ Rama `mapa-correlativas` (worktree `.claude/worktrees/mapa-correlativas`, creada
 | Paso | Estado | Commit | Notas |
 |---|---|---|---|
 | F0 reconciliación + PLAN/EXEC_STATE/FIXES | DONE | (este) | 12 gaps (G-01…G-12), todos con fix asignado |
-| Ola 1 · U1 layout puro + test | TODO | | |
-| Ola 1 · U2 hook de viewport + test | TODO | | |
-| Ola 1 · U6 modelo puro + test | TODO | | |
-| Ola 1 · U8 CSS | TODO | | |
-| Ola 1 · integración + gates + commit | TODO | | |
+| Ola 1 · U1 layout puro + test | DONE | 3f577ab | 1 vuelta de fix (columna fantasma por créditos; comparador no transitivo). Ajuste N0-10 del orquestador |
+| Ola 1 · U2 hook de viewport + test | DONE | 3f577ab | VERDE a la primera |
+| Ola 1 · U6 modelo puro + test | DONE | 3f577ab | VERDE; `neighborOf` ↑↓ ahora recorre sub-columna por sub-columna (orquestador) |
+| Ola 1 · U8 CSS | DONE | 3f577ab | VERDE (1 media: `r` del punto → agregado en CSS) |
+| Ola 1 · integración + gates + commit | DONE | 3f577ab | typecheck · build · test:grafo limpios; GrafoView viejo puenteado a la firma nueva hasta la ola 2. 10 agentes, 1,46 M tokens |
 | Ola 2 · U3 tarjeta | TODO | | |
 | Ola 2 · U4 controles + minimapa | TODO | | |
 | Ola 2 · U5 stage SVG | TODO | | |
 | Ola 2 · U7 GrafoView (orquestador) + integración + gates + commit | TODO | | |
-| Transversal · U9 persist + package.json · U10 docs | TODO | | |
+| Transversal · U9 persist + package.json | DONE | 3f577ab | `loadGrafoElectivas`/`saveGrafoElectivas`, `npm run test:grafo` |
+| Transversal · U10 docs (CAMBIOS-LOCALES §18) | TODO | | |
 | Cierre · U11 smoke con datos | TODO | | |
 | Cierre · U12 auditoría final adversarial + fixes + gates + veredicto | TODO | | |
 | Merge a `main` | TODO | | push solo a pedido del autor |
@@ -45,6 +46,12 @@ Rama `mapa-correlativas` (worktree `.claude/worktrees/mapa-correlativas`, creada
   pendientes), no a 1.º año.
 - **N0-9** Modelos: workers Sonnet (effort high en U1/U2/U5), verificadores de ola Sonnet
   high, auditores y refutadores del cierre en Fable.
+
+- **N0-10** El ancho de las columnas depende de la capa: con electivas apagadas todas miden
+  `NODE_W` (espinazo compacto, sin huecos); encendidas, las columnas con sub-columnas se
+  ensanchan y corren a las siguientes. La fila (`y`) y la columna de cada obligatoria no
+  cambian. (El builder de U1 había fijado la geometría con el grafo completo para cumplir
+  el test (d) al pie de la letra; el test pasa a exigir columna e `y`, no `x`.)
 
 ## Veredicto final
 
