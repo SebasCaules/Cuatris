@@ -12,7 +12,7 @@
 import { loadCarrera, mkPL, check } from "./harness";
 import { best as refBest } from "./referencia";
 import { PLAN, byId, remainingOblig, topeNominal, esAnual } from "../../lib/planner/model";
-import { optimizePlan } from "../../lib/planner/optimize";
+import { optimizePlan, planOverlaps } from "../../lib/planner/optimize";
 import { CARRERAS } from "../../lib/planner/carreras/index";
 import type { OptMethod, PlanState } from "../../lib/planner/types";
 
@@ -136,6 +136,8 @@ for (const code of codes) {
   }
   const tope = topeNominal();
   for (const sc of scenariosFor(code)) {
+    // por (método, tope): el plan con «evitar superposiciones» y sin él
+    const porModo: Record<string, { last: number; unpl: number; overlaps: number }> = {};
     for (const avoid of [true, false]) {
       const res: Record<string, ReturnType<typeof check>> = {};
       const caps: [number, number][] =
@@ -165,6 +167,22 @@ for (const code of codes) {
             }
           }
           res[`${method}/${mc}`] = ck;
+          porModo[`${method}/${mc}/${avoid}`] = { last: ck.last, unpl: ck.unplaced.length, overlaps: planOverlaps(R.items).length };
+          // con «evitar superposiciones» apagado, los choques se toleran SOLO si
+          // acortan el plan: si termina igual que con él encendido, no puede haber
+          if (!avoid) {
+            const con = porModo[`${method}/${mc}/true`];
+            const sin = porModo[`${method}/${mc}/false`];
+            // (las forzadas por el usuario —fijadas que se pisan entre sí— están en los dos)
+            if (con && sin && sin.last === con.last && sin.unpl === con.unpl && sin.overlaps > con.overlaps) {
+              fails++;
+              console.log(`CHOQUES INNECESARIOS ${label}: ${sin.overlaps} superposiciones con el mismo egreso que evitándolas`);
+            }
+            if (con && sin && (sin.unpl > con.unpl || (sin.unpl === con.unpl && sin.last > con.last))) {
+              fails++;
+              console.log(`SIN EVITAR MÁS TARDE ${label}: ${sin.last} vs ${con.last}`);
+            }
+          }
           if (method === "cuatris" && !sc.fixedCom) {
             // mismo horizonte que el plan (el optimizador lo extiende si hace falta)
             const ref = refBest(PL, sc.ap, 120, 3, R.items.length);

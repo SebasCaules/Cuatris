@@ -45,6 +45,15 @@
 //      cargado (misma paridad) mientras eso reduzca el desbalance, sin crear
 //      cuatrimestres nuevos ni dejar materias sin ubicar.
 //
+// «EVITAR SUPERPOSICIONES» APAGADO no es ignorar el horario: es tolerar
+// choques SOLO si acortan el plan. El plan sin choques (la misma búsqueda con
+// `avoid`) es candidato y gana si termina igual; los choques cuentan en el
+// vector justo después del egreso; compactar y rebalancear nunca crean uno; y
+// `repairOverlaps` mueve cada materia que se pisa a otro cuatrimestre del
+// mismo rango con comisión libre. `PlanResult.delayed` explica, con `avoid`
+// encendido, qué materia queda más tarde sólo por el horario y con quién se
+// pisa (la UI ofrece el plan alternativo con sus choques).
+//
 // ESQUELETO + RELLENO: con electivas en el pool, la búsqueda cara corre sobre
 // el ESQUELETO (obligatorias y lo fijado a un cuatrimestre) y se memoiza por
 // firma del input; las electivas rellenan después el lugar que sobra (sólo
@@ -80,7 +89,7 @@
 import { PLAN, byId, esAnual, onPlanChange } from "./model";
 import { MAX_PLAN_CUATRIS } from "./consts";
 import { approvedCredits } from "./metrics";
-import { comConflict, isAsync, viajesDe } from "./time";
+import { comConflict, isAsync, slotsConflict, toMin, viajesDe } from "./time";
 import type {
   Comision,
   MateriaM,
@@ -90,6 +99,8 @@ import type {
   PlanState,
   OptMethod,
   UnplacedReason,
+  DelayedBy,
+  Slot,
 } from "./types";
 
 export const cuatriAt = (start: PlanStart, i: number): PlanStart => {
@@ -909,7 +920,9 @@ function compact(
           let reComs: (Comision | null)[] | null = null;
           if (comsM.length) {
             let cJ: Comision | null;
-            if (PL.avoid && !hasFreeCom(comsM, items[j], fixedCom?.get(it.m.codigo))) {
+            // adelantar nunca crea una superposición (tampoco con `avoid`
+            // apagado: los choques sólo se toleran al colocar, donde acortan)
+            if (!hasFreeCom(comsM, items[j], fixedCom?.get(it.m.codigo))) {
               // ninguna comisión libre contra lo elegido: probar reeligiendo
               // las comisiones del cuatrimestre destino.
               const re = resolveComs(items[j], it.m, fixedCom);
@@ -1102,7 +1115,8 @@ function rebalance(
           const prevCom = it.com;
           let comJ = it.com;
           if (comsM.length) {
-            if (PL.avoid && !hasFreeCom(comsM, items[j], fixedCom?.get(it.m.codigo))) continue;
+            // emparejar la carga nunca crea una superposición
+            if (!hasFreeCom(comsM, items[j], fixedCom?.get(it.m.codigo))) continue;
             comJ = chooseCom(
               comsM,
               items[j],
@@ -1187,16 +1201,30 @@ const viajesDiasOf = (items: PlacedMateria[][]): { viajes: number; dias: number 
   return { viajes, dias };
 };
 
+// Pares de materias que se pisan en el mismo cuatrimestre (con `avoid`
+// apagado, lo que se quiere minimizar después del egreso).
+const overlapsOf = (items: PlacedMateria[][]): number => {
+  let n = 0;
+  for (const it of items)
+    for (let p = 0; p < it.length; p++)
+      for (let q = p + 1; q < it.length; q++)
+        if (it[p].com && it[q].com && conflicts(it[p].com!, it[q].com!)) n++;
+  return n;
+};
+
 /** Vector lexicográfico (menor es mejor) con el que se comparan dos
- *  colocaciones del mismo pool. El egreso va siempre primero. */
+ *  colocaciones del mismo pool. El egreso va siempre primero; después, las
+ *  superposiciones (0 por construcción con `avoid`; con `avoid` apagado son
+ *  lo que se tolera SOLO si acorta el plan). */
 function scoreOf(PL: PlanState, method: OptMethod, r: PlaceResult): number[] {
   const last = lastCuatri(r.items);
   const used = usedCuatris(r.items);
   const dev = orderDevOf(PL, r.items);
+  const overlaps = overlapsOf(r.items);
   const { viajes, dias } = viajesDiasOf(r.items);
   return method === "dias"
-    ? [r.remaining.length, last, dias, viajes, used, dev]
-    : [r.remaining.length, last, used, dev, viajes, dias];
+    ? [r.remaining.length, last, overlaps, dias, viajes, used, dev]
+    : [r.remaining.length, last, overlaps, used, dev, viajes, dias];
 }
 
 const betterScore = (a: number[], b: number[]): boolean => {
@@ -1237,7 +1265,92 @@ function placeAndCompact(
     ...opts,
     ventana,
   });
+  if (!PL.avoid) repairOverlaps(PL, approved, fixedCom, r.items, r.placedIdx, N);
   return { ...r, moved };
+}
+
+/* ---------- reparación de superposiciones (avoid apagado) ---------- */
+// «Evitar superposiciones» apagado quiere decir tolerarlas SI acortan el plan,
+// no ignorar el horario: después de colocar y compactar, cada materia que se
+// pisa con otra del mismo cuatrimestre se intenta mover a otro cuatrimestre
+// del mismo rango (sin correr el egreso) donde tenga una comisión libre y siga
+// cumpliendo paridad, correlativas, dependientes, créditos y topes. Cada
+// movimiento baja el total de pares en conflicto, así que termina.
+function repairOverlaps(
+  PL: PlanState,
+  approved: Set<string>,
+  fixedCom: Map<string, string> | undefined,
+  items: PlacedMateria[][],
+  placedIdx: Record<string, number>,
+  N: number,
+): number {
+  const credOfCuatri = (it: PlacedMateria[]) =>
+    it.reduce((s, x) => s + (x.m.creditos || 0), 0);
+  const last = lastCuatri(items);
+  if (last < 1) return 0;
+  const conflictsAt = (x: PlacedMateria, it: PlacedMateria[]) =>
+    x.com ? it.filter((y) => y !== x && y.com && conflicts(y.com, x.com!)).length : 0;
+  const dependentsOf = new Map<string, string[]>();
+  for (let i = 0; i <= last; i++)
+    for (const { m } of items[i])
+      for (const c of m.correlativas || []) {
+        const arr = dependentsOf.get(c);
+        if (arr) arr.push(m.codigo);
+        else dependentsOf.set(c, [m.codigo]);
+      }
+  let moved = 0;
+  let changed = true;
+  let guard = 0;
+  while (changed && guard++ < 200) {
+    changed = false;
+    const accB: number[] = [];
+    let a2 = approvedCredits(approved);
+    for (let i = 0; i < N; i++) {
+      accB[i] = a2;
+      a2 += credOfCuatri(items[i]);
+    }
+    findMove: for (let i = 0; i <= last; i++) {
+      if (PL.lockedIdx.has(i)) continue;
+      for (const it of items[i]) {
+        if (!it.com || it.parte || esAnual(it.m.codigo)) continue;
+        if (PL.fixed.get(it.m.codigo) != null) continue;
+        const here = conflictsAt(it, items[i]);
+        if (!here) continue;
+        const coms = comsOf(it.m);
+        const fx = fixedCom?.get(it.m.codigo);
+        for (let j = 0; j <= last; j++) {
+          if (j === i || PL.lockedIdx.has(j) || !parityOk(PL, it.m, j)) continue;
+          if (items[j].length >= capMat(PL, j)) continue;
+          if (items[j].length > 0 && credOfCuatri(items[j]) + (it.m.creditos || 0) > capCred(PL, j)) continue;
+          if ((it.m.creditosReq || 0) > accB[j]) continue;
+          if (
+            !(it.m.correlativas || []).every(
+              (c) => approved.has(c) || (placedIdx[c] !== undefined && placedIdx[c] < j),
+            )
+          )
+            continue;
+          if ((dependentsOf.get(it.m.codigo) || []).some((d) => placedIdx[d] !== undefined && placedIdx[d] <= j)) continue;
+          if (!hasFreeCom(coms, items[j], fx)) continue;
+          const prevCom: Comision | null = it.com;
+          it.com = chooseCom(coms, items[j], true, fx);
+          items[i] = items[i].filter((x) => x !== it);
+          items[j].push(it);
+          placedIdx[it.m.codigo] = j;
+          if (!feasible(PL, approved, items, N) || conflictsAt(it, items[j])) {
+            items[j] = items[j].filter((x) => x !== it);
+            items[i].push(it);
+            placedIdx[it.m.codigo] = i;
+            it.com = prevCom;
+            continue;
+          }
+          moved++;
+          changed = true;
+          break findMove;
+        }
+      }
+    }
+  }
+  return moved;
 }
 
 /**
@@ -1260,8 +1373,11 @@ function searchPlacement(
   const bound = lowerBoundLast(PL, approved, mats, N);
   let best = placeAndCompact(PL, approved, fixedCom, mats, buildCriticalOrder(mats), N, copts, true);
   let bestScore = scoreOf(PL, method, best);
+  // en la cota y (con `avoid` apagado) sin choques: no hay nada mejor
   const atBound = (r: BaseResult) =>
-    r.remaining.length <= bound.unplaceable && lastCuatri(r.items) <= bound.last;
+    r.remaining.length <= bound.unplaceable &&
+    lastCuatri(r.items) <= bound.last &&
+    (PL.avoid || overlapsOf(r.items) === 0);
   if (atBound(best)) return best;
   const consider = (r: BaseResult) => {
     const s = scoreOf(PL, method, r);
@@ -1270,6 +1386,14 @@ function searchPlacement(
       bestScore = s;
     }
   };
+  if (!PL.avoid) {
+    // con «Evitar superposiciones» apagado, el plan SIN choques (la misma
+    // búsqueda completa con `avoid`) es candidato: si termina igual, gana —
+    // las superposiciones sólo se toleran si acortan el plan.
+    const hard: PlanState = { ...PL, avoid: true };
+    consider(searchPlacement(hard, approved, fixedCom, mats, N, method, restarts));
+    if (atBound(best)) return best;
+  }
   const L = Math.max(bound.last, 0);
   consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, L), N, copts, false));
   if (atBound(best)) return best;
@@ -1458,7 +1582,11 @@ function basePlacement(
   // ahorra (es lo que más cuesta en el recomendador). En modo `quick` corre
   // sin reinicios.
   const bound = lowerBoundLast(PL, approved, mats, N);
-  if (layered.remaining.length <= bound.unplaceable && lastCuatri(layered.items) <= bound.last)
+  if (
+    layered.remaining.length <= bound.unplaceable &&
+    lastCuatri(layered.items) <= bound.last &&
+    (PL.avoid || overlapsOf(layered.items) === 0)
+  )
     return layered;
   const mixed = searchPlacement(PL, approved, fixedCom, mats, N, method, quick ? 0 : MIXED_RESTARTS);
   return betterScore(scoreOf(PL, method, mixed), scoreOf(PL, method, layered)) ? mixed : layered;
@@ -1493,6 +1621,108 @@ function explainUnplaced(
     else why.set(m.codigo, { kind: "sinLugar" });
   }
   return why;
+}
+
+/* ---------- retrasadas por superposición ---------- */
+
+/** Materias que están más tarde de lo que podrían SOLO por el horario: para
+ *  cada una, los cuatrimestres anteriores donde entraba por paridad,
+ *  correlativas, créditos y topes pero ninguna de sus comisiones queda libre
+ *  contra lo ya puesto. Es lo que el plan tiene que poder explicar cuando
+ *  termina después de la cota («Cuántica se pisa con Redes y con SIA»). Con
+ *  `avoid` apagado no hay retrasos de este tipo. */
+function explainDelays(
+  PL: PlanState,
+  approved: Set<string>,
+  items: PlacedMateria[][],
+  accBefore: number[],
+): Map<string, DelayedBy[]> {
+  const out = new Map<string, DelayedBy[]>();
+  if (!PL.avoid) return out;
+  const idxOf: Record<string, number> = {};
+  items.forEach((it, i) => it.forEach((x) => (idxOf[x.m.codigo] = i)));
+  items.forEach((it, i) => {
+    for (const x of it) {
+      const m = x.m;
+      if (x.parte || esAnual(m.codigo)) continue; // las anuales van en par
+      if (PL.fixed.get(m.codigo) != null) continue;
+      const coms = comsOf(m);
+      if (!coms.length) continue;
+      const by: DelayedBy[] = [];
+      for (let j = 0; j < i; j++) {
+        if (PL.lockedIdx.has(j) || !parityOk(PL, m, j)) continue;
+        if ((m.creditosReq || 0) > accBefore[j]) continue;
+        if (
+          !(m.correlativas || []).every(
+            (c) => approved.has(c) || (idxOf[c] !== undefined && idxOf[c] < j),
+          )
+        )
+          continue;
+        // (sin mirar los topes: si el cuatrimestre está lleno es porque otras
+        // ocuparon el lugar que esta no pudo usar por el horario)
+        // si alguna comisión queda libre, no es el horario lo que la frena
+        if (hasFreeCom(coms, items[j])) continue;
+        const codes = items[j]
+          .filter((y) => y.com && coms.some((c) => conflicts(y.com!, c)))
+          .map((y) => y.m.codigo);
+        by.push({ idx: j, codes: [...new Set(codes)] });
+      }
+      if (by.length) out.set(m.codigo, by);
+    }
+  });
+  return out;
+}
+
+/** Superposiciones que quedaron en un plan (con `avoid` apagado): por
+ *  cuatrimestre, cada par de materias cuyas comisiones se pisan y cuándo
+ *  («jue 18:00–19:00»; con cambio de sede sin margen, «jue 18:00, cambio de
+ *  sede»). */
+export interface PlanOverlap {
+  idx: number;
+  a: PlacedMateria;
+  b: PlacedMateria;
+  cuando: string;
+}
+
+const DIA3: Record<string, string> = {
+  Lunes: "lun",
+  Martes: "mar",
+  Miércoles: "mié",
+  Jueves: "jue",
+  Viernes: "vie",
+  Sábado: "sáb",
+};
+
+const cuandoSePisan = (ca: Comision, cb: Comision): string => {
+  const partes: string[] = [];
+  const A = ca.slots.filter((s: Slot) => !isAsync(s));
+  const B = cb.slots.filter((s: Slot) => !isAsync(s));
+  for (const x of A)
+    for (const y of B) {
+      if (!slotsConflict(x, y)) continue;
+      const dia = DIA3[x.dia] ?? x.dia;
+      const ini = Math.max(toMin(x.desde), toMin(y.desde));
+      const fin = Math.min(toMin(x.hasta), toMin(y.hasta));
+      if (ini < fin) {
+        const hm = (v: number) => `${Math.floor(v / 60)}:${String(v % 60).padStart(2, "0")}`;
+        partes.push(`${dia} ${hm(ini)}–${hm(fin)}`);
+      } else partes.push(`${dia} ${x.hasta === y.desde ? x.hasta : y.hasta}, cambio de sede`);
+    }
+  return [...new Set(partes)].join(" · ");
+};
+
+export function planOverlaps(items: PlacedMateria[][]): PlanOverlap[] {
+  const out: PlanOverlap[] = [];
+  items.forEach((it, idx) => {
+    for (let p = 0; p < it.length; p++)
+      for (let q = p + 1; q < it.length; q++) {
+        const a = it[p];
+        const b = it[q];
+        if (!a.com || !b.com || !conflicts(a.com, b.com)) continue;
+        out.push({ idx, a, b, cuando: cuandoSePisan(a.com, b.com) });
+      }
+  });
+  return out;
 }
 
 /* ---------- entrypoint ---------- */
@@ -1561,6 +1791,7 @@ export function optimizePlan(
     moved,
     minLast: bound.last,
     unplacedWhy: explainUnplaced(PL, approved, mats, remaining),
+    delayed: explainDelays(PL, approved, items, accBefore),
   };
 }
 

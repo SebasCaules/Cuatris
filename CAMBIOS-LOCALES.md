@@ -386,6 +386,19 @@ superposiciones o por un requisito de créditos que le deja una única ventana (
   - `explainUnplaced` «creditos» compara contra lo aprobado más TODO el pool sin la materia
     (antes, contra lo colocado: con topes mínimos culpaba a los créditos por una materia que
     quedó afuera por el tope).
+- «Evitar superposiciones» apagado = tolerar choques sólo si acortan el plan (antes ignoraba
+  el horario y dejaba choques gratuitos): el plan sin choques es candidato y gana si termina
+  igual; los choques van en el vector justo después del egreso; compactar y rebalancear
+  nunca crean uno; `repairOverlaps` mueve cada materia que se pisa a otro cuatrimestre del
+  mismo rango con comisión libre. Caso que lo motivó: fin de carrera con PF, SIA, Redes,
+  GPI y seis electivas: Cuántica (una sola comisión) se pisa con Redes en el 1.º y con SIA
+  en el 2.º, así que con «evitar» el plan da 3 cuatrimestres y sin evitar, 2 con un choque
+  de una hora (antes, 2 con tres choques).
+- `PlanResult.delayed` (`explainDelays`): con «evitar» encendido, qué materia queda más
+  tarde sólo por el horario y con quién se pisa en cada cuatrimestre anterior;
+  `planOverlaps(items)` lista los choques de un plan con el momento («jue 18:00–19:00»,
+  «lun 19:00, cambio de sede»). El check agrega: sin evitar nunca termina más tarde ni
+  deja choques cuando evitándolos termina igual.
 
 ## 19. Plan de cursada: el objetivo se elige junto a «Evitar superposiciones» (2026-09-14)
 
@@ -406,6 +419,11 @@ superposiciones o por un requisito de créditos que le deja una única ventana (
   con muchos minors (Industrial: nueve) el resultado aplastaba los parámetros a una columna;
   ahora las pastillas envuelven. El banner se apila por debajo de 1100 px (antes 980): con
   cinco campos más el switch, lado a lado envolvía en tres o cuatro filas.
+- Resultado del plan: con «Evitar superposiciones» encendido y un plan alternativo más corto
+  permitiéndolas, una línea «Con superposiciones: 2c-27 · 1 choque» (tooltip con cada choque
+  y su horario; clic apaga el switch). Con el switch apagado, «N superposiciones» junto a
+  la cantidad de materias, con el detalle en tooltip. Observaciones: la materia retrasada
+  sólo por el horario dice en qué cuatrimestres se pisa y con quién.
 - Tras la auditoría adversarial: `aria-label` y roving tabindex con flechas/Home/End en los
   radios del objetivo; `box-sizing: border-box` en `.pv-seg--obj` (medía 42 px, no 34);
   «mínimo posible» en `--accent-text` (contraste AA); hover de los iconos con fondo

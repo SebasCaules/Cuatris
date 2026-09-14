@@ -253,6 +253,15 @@ export type UnplacedReason =
   | { kind: "creditos"; req: number; max: number }
   | { kind: "sinLugar" };
 
+/** Una materia que el plan pone más tarde de lo que podría SOLO por las
+ *  superposiciones (`avoid`): en cada cuatrimestre anterior `idx` entraba por
+ *  paridad, correlativas, créditos y topes, pero todas sus comisiones se pisan
+ *  con `codes` (materias ya puestas ahí). */
+export interface DelayedBy {
+  idx: number;
+  codes: string[];
+}
+
 export interface PlanResult {
   items: PlacedMateria[][]; // por índice de cuatrimestre
   unplaced: MateriaM[];
@@ -263,6 +272,9 @@ export interface PlanResult {
   minLast?: number;
   /** motivo por materia sin ubicar (código → motivo). */
   unplacedWhy?: Map<string, UnplacedReason>;
+  /** materias retrasadas por superposición (código → cuatrimestres anteriores
+   *  donde entraban salvo por el horario). Vacío con `avoid` apagado. */
+  delayed?: Map<string, DelayedBy[]>;
 }
 
 export interface PlanState {

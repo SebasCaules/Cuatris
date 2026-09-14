@@ -27,6 +27,7 @@ import { approvedCredits, electiveCredits } from "@/lib/planner/metrics";
 import { isAsync, slotsConflict, comModalidad, salaLabel } from "@/lib/planner/time";
 import {
   optimizePlan,
+  planOverlaps,
   assignComs,
   compareCuatri,
   cuatriAt,
@@ -36,6 +37,7 @@ import {
   cuatriName,
   OPT_METHODS,
   type OptMethodMeta,
+  type PlanOverlap,
 } from "@/lib/planner/optimize";
 import { recommendElectives, type Recommendation } from "@/lib/planner/recommend";
 import {
@@ -2243,6 +2245,29 @@ export default function PlanView() {
   // comprometido.
   const R = baseR;
 
+  // Con «Evitar superposiciones» encendido, el mismo plan permitiéndolas: si
+  // termina antes, el resultado lo ofrece («Con superposiciones: 2.º cuat.
+  // 2027 · 1 choque»), con el detalle de cada choque. Con «Evitar
+  // superposiciones» apagado, los choques del plan actual.
+  const altR = useMemo(
+    () => (PL.avoid ? optimizePlan({ ...PL, avoid: false }, settled, state.fixedCom) : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      PL.pool,
+      PL.fixed,
+      PL.start,
+      PL.maxCred,
+      PL.maxMat,
+      PL.avoid,
+      PL.method,
+      PL.capCredByIdx,
+      PL.capMatByIdx,
+      settled,
+      state.fixedCom,
+    ],
+  );
+  const overlapsNow = useMemo<PlanOverlap[]>(() => (PL.avoid ? [] : planOverlaps(R.items)), [PL.avoid, R]);
+
   // El primer cuatrimestre que se puede planificar es el que SIGUE al que está
   // en curso (por fecha): lo que se cursa hoy ya está decidido y vive en la
   // tarjeta «en curso» del carrusel, no en el plan.
@@ -2584,6 +2609,20 @@ export default function PlanView() {
   // selects «fijar en»: hasta un cuatrimestre después del último usado (el
   // plan extiende su horizonte cuando hace falta; MAX_PLAN_CUATRIS es el tope)
   const fixRange = Math.min(MAX_PLAN_CUATRIS, Math.max(14, lastIdx + 2));
+  // alternativa permitiendo superposiciones: sólo si termina antes (o ubica más)
+  const altHint = useMemo(() => {
+    if (!altR) return null;
+    let altLast = -1;
+    altR.items.forEach((it, i) => {
+      if (it.length) altLast = i;
+    });
+    if (altLast < 0) return null;
+    const mejora =
+      altR.unplaced.length < R.unplaced.length ||
+      (altR.unplaced.length === R.unplaced.length && altLast < lastIdx);
+    if (!mejora) return null;
+    return { last: altLast, overlaps: planOverlaps(altR.items) };
+  }, [altR, R.unplaced.length, lastIdx]);
   // créditos electivos comprometidos (sin el preview) → para el panel de recos
   const elecCommitted =
     electiveCredits(settled) +
@@ -2659,6 +2698,22 @@ export default function PlanView() {
         );
     }),
   );
+  if (R.delayed && R.minLast != null) {
+    const idxOf = new Map<string, number>();
+    R.items.forEach((it, i) => it.forEach((x) => idxOf.set(x.m.codigo, i)));
+    for (const [code, by] of R.delayed) {
+      const i = idxOf.get(code);
+      if (i === undefined || i <= R.minLast) continue;
+      const m = byId.get(code);
+      if (!m) continue;
+      const donde = by
+        .map((b) => `en ${cuatriLabel(cuatriAt(PL.start, b.idx))} con ${b.codes.map(abbrOf).join(", ")}`)
+        .join(", ");
+      warns.push(
+        `${m.abbr} · ${m.nombre}: su comisión se pisa ${donde}; con «Evitar superposiciones» encendido queda en ${cuatriLabel(cuatriAt(PL.start, i))}.`,
+      );
+    }
+  }
   R.unplaced.forEach((m) => {
     const why = R.unplacedWhy?.get(m.codigo);
     let motivo: string;
@@ -3006,7 +3061,58 @@ export default function PlanView() {
                         </Tooltip>
                       </>
                     )}
+                    {overlapsNow.length > 0 && (
+                      <>
+                        {" · "}
+                        <Tooltip
+                          width={280}
+                          content={
+                            <>
+                              {overlapsNow.map((o, k) => (
+                                <span key={k} style={{ display: "block" }}>
+                                  {cuatriLabel(cuatriAt(PL.start, o.idx))}: <b>{o.a.m.abbr}</b> y{" "}
+                                  <b>{o.b.m.abbr}</b> ({o.cuando})
+                                </span>
+                              ))}
+                            </>
+                          }
+                        >
+                          <span className="pv-result__min pv-result__min--warn" tabIndex={0}>
+                            {overlapsNow.length}{" "}
+                            {overlapsNow.length === 1 ? "superposición" : "superposiciones"}
+                          </span>
+                        </Tooltip>
+                      </>
+                    )}
                   </span>
+                  {altHint && (
+                    <Tooltip
+                      width={300}
+                      content={
+                        <>
+                          Permitiendo superposiciones el plan termina en{" "}
+                          <b>{cuatriName(cuatriAt(PL.start, altHint.last))}</b>:
+                          {altHint.overlaps.map((o, k) => (
+                            <span key={k} style={{ display: "block" }}>
+                              {cuatriLabel(cuatriAt(PL.start, o.idx))}: <b>{o.a.m.abbr}</b> y{" "}
+                              <b>{o.b.m.abbr}</b> ({o.cuando})
+                            </span>
+                          ))}
+                          Clic para apagar «Evitar superposiciones».
+                        </>
+                      }
+                    >
+                      <button
+                        type="button"
+                        className="pv-result__alt"
+                        onClick={() => dispatch({ type: "SET_PLAN_AVOID", value: false })}
+                      >
+                        Con superposiciones: <b>{cuatriLabel(cuatriAt(PL.start, altHint.last))}</b> ·{" "}
+                        {altHint.overlaps.length}{" "}
+                        {altHint.overlaps.length === 1 ? "choque" : "choques"}
+                      </button>
+                    </Tooltip>
+                  )}
                 </div>
               </div>
               {/* Todo lo de este bloque es AL FINAL DEL PLAN (igual que «Te
