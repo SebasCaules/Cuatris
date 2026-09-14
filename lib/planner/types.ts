@@ -205,6 +205,10 @@ export interface FinalesState {
    *  así se planifican varios períodos juntos sin duplicar finales.
    *  (Antes: Set<string> de códigos del período visible — migrado en persist.) */
   seleccion: Map<string, FinalAsignacion>;
+  /** finales agregados a mano a la lista de pendientes (códigos): los que no
+   *  salen del progreso (sin cursada marcada) o, ignorando el progreso, todos
+   *  los que se combinan. Persistido con el resto del combinador. */
+  extra: Set<string>;
   /** anticipación del recordatorio de inscripción para el .ics (hs): 48 | 72 | 96. */
   reminderHs: number;
   /** margen mínimo de repaso deseado entre finales (días). */
@@ -298,9 +302,12 @@ export interface PlannerState {
    *  `approved`: al aprobar sale de acá). No cuenta como aprobada en nada. */
   cursando: Set<string>;
   combo: Set<string>;
-  /** modo "ignorar el progreso" del combinador: arma horarios ofreciendo también
-   *  las materias ya aprobadas y se desacopla del plan (no guarda al plan). Se
-   *  persiste en localStorage (conserva la preferencia entre recargas). */
+  /** modo "ignorar mi progreso", compartido por los dos combinadores (horarios
+   *  y finales): en horarios arma combinaciones ofreciendo también las
+   *  materias ya aprobadas y se desacopla del plan (no guarda al plan); en
+   *  finales, la lista de pendientes deja de filtrar por progreso. En la UI es
+   *  el switch «Mi progreso» (`ProgresoSwitch.tsx`). Se persiste en
+   *  localStorage (conserva la preferencia entre recargas). */
   comboSolo: boolean;
   fixedCom: Map<string, string>;
   areasOn: Set<string>;

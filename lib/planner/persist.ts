@@ -298,6 +298,10 @@ export interface PersistedFinales {
   /** asignación por materia. El formato viejo era `string[]` (solo códigos):
    *  `parseFinales` lo migra a pares con el período persistido y 1.º llamado. */
   seleccion: [string, FinalAsignacion][];
+  /** códigos de `FinalesState.extra`. Ausente = vacío; se omite al serializar
+   *  si está vacío para no cambiar la firma de instantáneas guardadas antes de
+   *  esta versión. */
+  extra?: string[];
   reminderHs: number;
   margenDias: number;
 }
@@ -427,6 +431,7 @@ export const serializeFinales = (f: FinalesState): PersistedFinales => ({
   anio: f.anio,
   mesas: [...f.mesas],
   seleccion: [...f.seleccion],
+  ...(f.extra.size ? { extra: [...f.extra] } : {}),
   reminderHs: f.reminderHs,
   margenDias: f.margenDias,
 });
@@ -647,6 +652,7 @@ function parseFinales(x: unknown): PersistedFinales | null {
     anio: isNum(f.anio) ? f.anio : 2026,
     mesas,
     seleccion,
+    extra: isStrArr(f.extra) && f.extra.length ? f.extra : undefined,
     reminderHs: isNum(f.reminderHs) ? f.reminderHs : 72,
     margenDias: isNum(f.margenDias) ? f.margenDias : 2,
   };

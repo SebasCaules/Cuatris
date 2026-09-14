@@ -35,6 +35,7 @@ export function initialFinales(): FinalesState {
     anio: 2026,
     mesas: new Map<string, MesaFinal>(),
     seleccion: new Map<string, FinalAsignacion>(),
+    extra: new Set<string>(),
     reminderHs: 72,
     margenDias: 2,
   };
@@ -156,7 +157,10 @@ export type Action =
   // asignación por materia: en qué período+llamado se rinde (null = quitar).
   | { type: "SET_FINAL_ASIGNACION"; code: string; asignacion: FinalAsignacion | null }
   | { type: "SET_FINALES_REMINDER"; hs: number }
-  | { type: "SET_FINALES_MARGEN"; dias: number };
+  | { type: "SET_FINALES_MARGEN"; dias: number }
+  // finales agregados a mano a la lista de pendientes (ver FinalesState.extra)
+  | { type: "FINALES_EXTRA_ADD"; code: string }
+  | { type: "FINALES_EXTRA_REMOVE"; code: string };
 
 export function reducer(s: PlannerState, a: Action): PlannerState {
   switch (a.type) {
@@ -188,6 +192,7 @@ export function reducer(s: PlannerState, a: Action): PlannerState {
               anio: p.finales.anio,
               mesas: new Map(p.finales.mesas),
               seleccion: new Map(p.finales.seleccion),
+              extra: new Set(p.finales.extra ?? []),
               reminderHs: p.finales.reminderHs,
               margenDias: p.finales.margenDias,
             }
@@ -495,6 +500,19 @@ export function reducer(s: PlannerState, a: Action): PlannerState {
       return { ...s, finales: { ...s.finales, reminderHs: a.hs } };
     case "SET_FINALES_MARGEN":
       return { ...s, finales: { ...s.finales, margenDias: a.dias } };
+    case "FINALES_EXTRA_ADD": {
+      if (s.finales.extra.has(a.code)) return s;
+      const extra = new Set(s.finales.extra);
+      extra.add(a.code);
+      return { ...s, finales: { ...s.finales, extra } };
+    }
+    case "FINALES_EXTRA_REMOVE": {
+      const extra = new Set(s.finales.extra);
+      extra.delete(a.code);
+      const seleccion = new Map(s.finales.seleccion);
+      seleccion.delete(a.code);
+      return { ...s, finales: { ...s.finales, extra, seleccion } };
+    }
     default:
       return s;
   }
