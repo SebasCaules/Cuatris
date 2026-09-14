@@ -5,8 +5,9 @@
    barra), pulso de «cursando», menú de perfil y feedback de pulsación.
    Todo CSS: los componentes solo exponen índices (--i / --yi / --ri) y
    remontan con `key` lo que tiene que volver a entrar. Tokens de motion del
-   planner (--ease-out, --ease-spring, --dur-*). Con prefers-reduced-motion
-   no hay nada de esto (queda solo la maqueta).
+   planner (--ease-out, --dur-*); el «pop» sale de los keyframes (pasa por
+   1.18 y vuelve), no de un easing elástico. Con prefers-reduced-motion no
+   hay nada de esto (queda solo la maqueta).
    ========================================================================= */
 
 /* ---- maqueta (vale siempre): el icono de la casilla va en un wrapper para
@@ -39,7 +40,7 @@
   .planner .plan2-recs{animation:planner-fade-up .4s var(--ease-out) backwards;animation-delay:160ms}
 
   /* ---- pops de estado ---- */
-  .planner .estado-ctl__ico{animation:mo-pop .34s var(--ease-spring) backwards}
+  .planner .estado-ctl__ico{animation:mo-pop .34s var(--ease-out) backwards}
   .planner .statline__num{animation:mo-stat .38s var(--ease-out) backwards}
   .planner .vnav__tab.is-active,.planner .pv-tab[aria-selected="true"]{animation:mo-tab .3s var(--ease-out)}
 
