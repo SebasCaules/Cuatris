@@ -64,7 +64,9 @@ y no se retoma sin pedido explícito del autor.
   el principal usa las claves históricas y los demás el prefijo `p:<id>:`; registro en
   `plan_perfiles_v1` (con color por perfil). Cualquiera se borra; sin ninguno se crea uno
   vacío. Se manejan desde el icono de perfil de la esquina derecha de la barra
-  (`PerfilMenu`: carrera del perfil, color, perfiles y «Referencias»).
+  (`PerfilMenu`: carrera del perfil, color, perfiles y «Referencias»). El estado se
+  autoguarda como borrador; ⌘S / Ctrl+S guarda una instantánea (`plan_guardado_v1`) y el
+  avatar marca con un punto los cambios sin guardar (`perfilGuardado.ts`).
 - **Idioma**: documentación, comentarios, commits y todo lo dirigido al autor en español
   neutro (tú/usted). Los **textos de la interfaz** del planner están en voseo porque hablan a
   estudiantes del ITBA (igual que en StudyVaults): no «corregirlos».

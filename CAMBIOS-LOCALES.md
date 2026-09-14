@@ -237,6 +237,22 @@ y el `build-planner-data.mjs` reescrito (un JSON por carrera + horarios converti
   `title=`): dicen qué materias se cursan y qué cambia al aprobarlas; el botón de copiar
   link también. `app/globals.css`: `.nav__inner` en border-box (desbordaba 48 px en angosto).
 
+## 14b. Guardar el perfil (⌘S / Ctrl+S) y aviso de cambios sin guardar
+
+- `lib/planner/persist.ts`: instantánea por perfil y carrera (`plan_guardado_v1`, el mismo
+  bundle del .json): `saveSnapshot`, `loadSnapshot`, `firmaEstado`/`firmaDeBundle` (el
+  bundle sin fecha ni `sideCollapsed`, para comparar). El borrador se sigue autoguardando.
+- `components/planner/perfilGuardado.ts` (nuevo): `usePerfilGuardado()` → `sinGuardar`
+  (firma actual ≠ guardada; un perfil en blanco nunca guardado no cuenta), `nuncaGuardado`,
+  `fecha`, `atajo` (⌘S o Ctrl+S según plataforma), `guardar`, `descartar` (HYDRATE con la
+  instantánea). `PlannerApp` registra el atajo (window keydown, `preventDefault` del guardar
+  página) y muestra el aviso «Perfil guardado» (`.pv-toast--ok`, 1,8 s).
+- `PerfilMenu.tsx`: punto coral en el avatar cuando hay cambios sin guardar (`is-dirty`,
+  también en el tooltip), línea de estado bajo el nombre («Cambios sin guardar» / «Nunca
+  guardado» / «Guardado 17:52» / «Sin cambios»), fila «Guardar perfil ⌘S» y, con cambios
+  sobre una instantánea, «Descartar cambios» con confirmación. `planner.css`: `.pmenu__kbd`,
+  `.pmenu__saved`, `.pmenu__btn.is-dirty::after`; `planview.css`: `.pv-toast--ok`.
+
 ## 15. Plan de cursada: la fila de pestañas queda con el Recomendador (y 2 · 3 · 4)
 
 - `views/PlanView.tsx`: se quitan de `.pv-tabs__actions` «Agregar electiva» (redundante con

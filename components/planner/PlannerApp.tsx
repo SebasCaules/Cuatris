@@ -37,6 +37,8 @@ import { llamadoVigente } from "@/lib/planner/finalesData";
 import Topbar from "./Topbar";
 import { ViewNav } from "./ViewNav";
 import PerfilMenu from "./PerfilMenu";
+import { usePerfilGuardado } from "./perfilGuardado";
+import { IconCheck } from "./icons";
 import { Tooltip } from "./Tooltip";
 import DetailDrawer from "./DetailDrawer";
 import FichaReader from "./FichaReader";
@@ -92,6 +94,32 @@ function PlannerInner({
   const { state, dispatch } = usePlanner();
   // con carrera cargada y plan en PLAN: el planner de verdad
   const activo = listo && carrera != null;
+
+  // Guardar el perfil (⌘S / Ctrl+S) y aviso de «guardado». El estado se
+  // autoguarda como borrador; esto marca la instantánea a la que volver.
+  const guardado = usePerfilGuardado();
+  const [avisoGuardado, setAvisoGuardado] = useState<string | null>(null);
+  const avisoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const guardarConAviso = useCallback(() => {
+    guardado.guardar();
+    setAvisoGuardado(`Perfil guardado${guardado.atajo ? ` · ${guardado.atajo}` : ""}`);
+    if (avisoTimer.current) clearTimeout(avisoTimer.current);
+    avisoTimer.current = setTimeout(() => setAvisoGuardado(null), 1800);
+  }, [guardado]);
+  useEffect(() => {
+    if (!activo) return;
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey && e.key.toLowerCase() === "s") {
+        e.preventDefault(); // el navegador guardaría la página
+        guardarConAviso();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [activo, guardarConAviso]);
+  useEffect(() => () => {
+    if (avisoTimer.current) clearTimeout(avisoTimer.current);
+  }, []);
 
   // document.title = "<vista> · <sitio>". El sufijo se toma del título con el
   // que llegó la página (lo que haya después del primer " · ", o todo si no
@@ -321,8 +349,10 @@ function PlannerInner({
   const nav = <ViewNav />;
   const tools = null;
   // perfil (con la carrera adentro): siempre en la barra, también con el
-  // selector de primera visita
-  const perfilMenu = <PerfilMenu />;
+  // selector de primera visita (ahí no hay nada que guardar)
+  const perfilMenu = (
+    <PerfilMenu guardado={activo ? { ...guardado, guardar: guardarConAviso } : null} />
+  );
 
   // Banner de primer uso: usuario sin nada marcado y que no lo cerró. Se va
   // solo al marcar la primera materia (approved.size > 0) o con la ×.
@@ -399,6 +429,12 @@ function PlannerInner({
       </div>
       <DetailDrawer />
       <FichaReader />
+      {avisoGuardado && (
+        <div className="planner pv-toast pv-toast--ok" role="status">
+          <IconCheck size={15} />
+          <span>{avisoGuardado}</span>
+        </div>
+      )}
     </div>
   );
 }

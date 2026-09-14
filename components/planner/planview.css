@@ -1662,6 +1662,13 @@
   margin-top: 1px;
   color: var(--status-warn-text);
 }
+/* variante de confirmación (perfil guardado): verde, sin botón de cerrar */
+.planner.pv-toast--ok {
+  align-items: center;
+  border-color: color-mix(in srgb, var(--status-go) 45%, transparent);
+  border-left-color: var(--status-go);
+}
+.planner.pv-toast--ok > svg { margin-top: 0; color: var(--status-go-text); }
 .planner.pv-toast .pv-toast__x {
   flex: none;
   width: 22px;

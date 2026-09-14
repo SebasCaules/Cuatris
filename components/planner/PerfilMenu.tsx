@@ -23,6 +23,7 @@ import CarreraLista from "./CarreraLista";
 import { aterrizar } from "./carreraVuelo";
 import { IconAvatar, IconBin, IconCheck, IconChevronDown, IconPencil, IconPlus } from "./icons";
 import { carreraInfo, nombreCorto } from "@/lib/planner/carreras";
+import { fechaCorta, type PerfilGuardado } from "./perfilGuardado";
 import { PERFIL_COLORES } from "@/lib/planner/perfilColores";
 import {
   borrarPerfil,
@@ -34,7 +35,12 @@ import {
 
 type Modo = { tipo: "copiar" } | { tipo: "nuevo" } | { tipo: "renombrar"; perfil: Perfil } | null;
 
-export default function PerfilMenu() {
+export default function PerfilMenu({
+  guardado,
+}: {
+  /** guardar/descartar y estado de la instantánea; null sin carrera activa */
+  guardado: PerfilGuardado | null;
+}) {
   const { codigo, cargando, cambiar, perfil, perfiles, cambiarPerfil, refrescarPerfiles } =
     useCarrera();
   const { state, dispatch } = usePlanner();
@@ -50,6 +56,18 @@ export default function PerfilMenu() {
   const nombreActivo = activo?.nombre ?? "Principal";
   const carrera = codigo ? carreraInfo(codigo) : undefined;
   const ocupado = cargando != null;
+  const sinGuardar = guardado?.sinGuardar ?? false;
+  const [confirmDescartar, setConfirmDescartar] = useState(false);
+  // línea de estado de la instantánea
+  const estadoGuardado = !guardado
+    ? null
+    : guardado.sinGuardar
+      ? guardado.nuncaGuardado
+        ? "Nunca guardado"
+        : "Cambios sin guardar"
+      : guardado.fecha
+        ? `Guardado ${fechaCorta(guardado.fecha)}`
+        : "Sin cambios";
   // color del perfil como variable CSS (sin color, el acento del sitio)
   const colorStyle = (c?: string) =>
     (c ? { "--pf": c } : undefined) as React.CSSProperties | undefined;
@@ -81,6 +99,7 @@ export default function PerfilMenu() {
       setNombre("");
       setBorrando(null);
       setCarrerasAbiertas(false);
+      setConfirmDescartar(false);
     }
   }, [open]);
 
@@ -148,21 +167,23 @@ export default function PerfilMenu() {
             <b>{nombreActivo}</b>
             {carrera ? ` · ${nombreCorto(carrera.nombre)}` : ""}
             <br />
-            Perfil: carrera, color, otros perfiles
+            {sinGuardar
+              ? `Cambios sin guardar · ${guardado?.atajo || "Ctrl+S"} para guardar`
+              : "Perfil: carrera, color, otros perfiles"}
           </>
         }
-        width={200}
+        width={210}
         placement="bottom"
       >
         <button
           ref={btnRef}
           type="button"
-          className={"pmenu__btn" + (open ? " is-open" : "")}
+          className={"pmenu__btn" + (open ? " is-open" : "") + (sinGuardar ? " is-dirty" : "")}
           style={colorStyle(activo?.color)}
           aria-haspopup="dialog"
           aria-expanded={open}
           aria-controls={menuId}
-          aria-label={`Perfil ${nombreActivo}`}
+          aria-label={`Perfil ${nombreActivo}${sinGuardar ? " (cambios sin guardar)" : ""}`}
           onClick={() => setOpen((v) => !v)}
         >
           <span className="pmenu__avatar" aria-hidden="true">
@@ -181,8 +202,59 @@ export default function PerfilMenu() {
             <span className="pmenu__who-txt">
               <b>{nombreActivo}</b>
               <small>{carrera ? `${carrera.codigo} · ${nombreCorto(carrera.nombre)}` : "Sin carrera"}</small>
+              {estadoGuardado && (
+                <small className={"pmenu__saved" + (sinGuardar ? " is-dirty" : "")}>
+                  {estadoGuardado}
+                </small>
+              )}
             </span>
           </div>
+
+          {/* GUARDAR: la instantánea del perfil (el borrador se guarda solo) */}
+          {guardado && (
+            <section className="pmenu__sec pmenu__sec--save" aria-label="Guardar">
+              <button
+                type="button"
+                className={"pmenu__row pmenu__row--save" + (sinGuardar ? " is-dirty" : "")}
+                onClick={() => {
+                  guardado.guardar();
+                  setConfirmDescartar(false);
+                }}
+              >
+                <span className={"pmenu__mark" + (sinGuardar ? " pmenu__mark--dirty" : "")} aria-hidden="true">
+                  {!sinGuardar && <IconCheck size={11} />}
+                </span>
+                <span className="pmenu__row-txt">Guardar perfil</span>
+                {guardado.atajo && <kbd className="pmenu__kbd">{guardado.atajo}</kbd>}
+              </button>
+              {sinGuardar && !guardado.nuncaGuardado &&
+                (confirmDescartar ? (
+                  <div className="pmenu__confirm" role="alert">
+                    <span className="pmenu__q">¿Volver a lo guardado? Se pierden los cambios.</span>
+                    <button
+                      type="button"
+                      className="btn btn--sm pmenu__del"
+                      onClick={() => {
+                        guardado.descartar();
+                        setConfirmDescartar(false);
+                      }}
+                    >
+                      Descartar
+                    </button>
+                    <button type="button" className="btn btn--ghost btn--sm" onClick={() => setConfirmDescartar(false)}>
+                      Cancelar
+                    </button>
+                  </div>
+                ) : (
+                  <Tooltip content="Vuelve a como estaba la última vez que guardaste" width={200} placement="bottom">
+                    <button type="button" className="pmenu__row" onClick={() => setConfirmDescartar(true)}>
+                      <span className="pmenu__mark pmenu__mark--plus" aria-hidden="true" />
+                      <span className="pmenu__row-txt">Descartar cambios</span>
+                    </button>
+                  </Tooltip>
+                ))}
+            </section>
+          )}
 
           {/* CARRERA del perfil: se cambia acá, con la lista en línea */}
           <section className="pmenu__sec" aria-labelledby={`${menuId}-car`}>

@@ -35,6 +35,8 @@ const K_BASE = {
   finalesCombo: "plan_finales_combo_v1",
   introDismissed: "plan_intro_dismissed_v1",
   comboSolo: "plan_combo_solo_v1",
+  /** instantánea guardada por el usuario (⌘S): ver `saveSnapshot` */
+  snapshot: "plan_guardado_v1",
 } as const;
 
 /** Claves activas (mutable in place: todo el módulo las lee de acá). */
@@ -523,6 +525,38 @@ export function buildPreferenceBundle(
     sideCollapsed: state.sideCollapsed,
     comboSolo: state.comboSolo,
   };
+}
+
+// ---------------------------------------------------------------------------
+// Instantánea guardada del perfil (por carrera). Todo lo demás se autoguarda
+// como borrador para no perder nada al recargar; la instantánea es lo que el
+// usuario «guardó» a propósito (⌘S / Ctrl+S) y el punto al que puede volver
+// con «Descartar cambios». Es el mismo bundle del .json de preferencias.
+// ---------------------------------------------------------------------------
+/** Firma del estado para saber si hay cambios sin guardar: el bundle sin la
+ *  fecha ni lo puramente de pantalla. */
+export function firmaDeBundle(b: PreferenceBundle): string {
+  const { exported: _e, sideCollapsed: _s, ...resto } = b;
+  void _e;
+  void _s;
+  return JSON.stringify(resto);
+}
+export const firmaEstado = (state: PlannerState): string =>
+  firmaDeBundle(buildPreferenceBundle(state));
+
+/** Guarda la instantánea del estado actual; devuelve la fecha (ISO). */
+export function saveSnapshot(state: PlannerState): string {
+  const fecha = new Date().toISOString();
+  write(K.snapshot, buildPreferenceBundle(state, fecha));
+  return fecha;
+}
+/** Instantánea guardada de la carrera activa del perfil activo, o null. */
+export function loadSnapshot(): { fecha: string | null; firma: string; persisted: Persisted } | null {
+  const raw = read<PreferenceBundle>(K.snapshot);
+  if (!raw || typeof raw !== "object") return null;
+  const persisted = parsePreferences(JSON.stringify(raw));
+  if (!persisted) return null;
+  return { fecha: typeof raw.exported === "string" ? raw.exported : null, firma: firmaDeBundle(raw), persisted };
 }
 
 /** Serializa el bundle a texto JSON legible (para descargar como archivo). */

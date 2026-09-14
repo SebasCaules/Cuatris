@@ -2179,6 +2179,22 @@
   padding:6px;border:1px solid var(--line);border-radius:12px;background:var(--panel);
   box-shadow:0 12px 32px rgba(0,0,0,.18);display:flex;flex-direction:column;gap:2px;
 }
+/* cambios sin guardar: punto en el avatar (con borde del color del fondo de
+   la barra para que se lea sobre cualquier color de perfil) */
+.planner .pmenu__btn{position:relative}
+.planner .pmenu__btn.is-dirty::after{
+  content:"";position:absolute;right:0;top:0;width:12px;height:12px;border-radius:50%;
+  background:var(--brass);border:2px solid var(--bg);box-sizing:border-box;
+}
+.planner .pmenu__saved{color:var(--faint)}
+.planner .pmenu__saved.is-dirty{color:var(--brass)}
+.planner .pmenu__saved.is-dirty::before{content:"● "}
+.planner .pmenu__row--save.is-dirty{color:var(--ink)}
+.planner .pmenu__mark--dirty{border-color:var(--brass);background:var(--brass-soft)}
+.planner .pmenu__kbd{
+  margin-left:auto;flex:none;padding:2px 6px;border:1px solid var(--line-2);border-bottom-width:2px;border-radius:5px;
+  font-family:var(--f-m);font-size:10px;color:var(--muted);background:var(--panel-2);
+}
 /* quién: perfil activo y carrera */
 .planner .pmenu__who{display:flex;align-items:center;gap:11px;padding:8px 10px 10px;border-bottom:1px solid var(--line);margin-bottom:4px}
 .planner .pmenu__who-ico{
