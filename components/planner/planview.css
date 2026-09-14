@@ -17,7 +17,10 @@
    protagonista es el calendario de abajo. */
 .planner .pv-config {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  /* el resultado toma lo que necesita hasta la mitad del panel: con muchos
+     minors (Industrial: nueve) sus pastillas envuelven en vez de aplastar los
+     parámetros a una columna */
+  grid-template-columns: minmax(0, 1fr) fit-content(52%);
   gap: 12px 24px;
   align-items: center;
   padding: 12px 18px;
@@ -329,6 +332,74 @@
   color: var(--block-ink);
   font-weight: 700;
 }
+/* Objetivo del plan: segmentado de tres en la fila de parámetros. El elegido
+   se despliega (icono + nombre, en brass); los otros dos quedan como icono
+   solo, con tooltip: se lee lo elegido, se descubre el resto por forma y
+   posición, y cambiar es un clic. Misma altura (34px) que el resto. */
+.planner .pv-seg--obj {
+  height: 34px;
+  align-items: center;
+  flex-wrap: nowrap;
+  padding: 3px;
+}
+.planner .pv-seg__opt--ic {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 9px;
+  color: var(--muted);
+}
+.planner .pv-seg__opt--ic > svg {
+  flex: none;
+}
+.planner .pv-seg__opt--ic .pv-seg__txt {
+  display: none;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.planner .pv-seg__opt--ic[aria-checked="true"] {
+  background: var(--brass);
+  color: var(--block-ink);
+  padding: 0 12px 0 10px;
+}
+.planner .pv-seg__opt--ic[aria-checked="true"] .pv-seg__txt {
+  /* ancho fijo (la etiqueta más larga): el segmentado no cambia de tamaño al
+     elegir, así la fila no se reacomoda bajo el cursor */
+  display: inline-block;
+  width: 15ch;
+  text-align: left;
+}
+/* objetivo + switch envuelven juntos: son «cómo se arma», no parámetros */
+.planner .pv-field-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  align-items: flex-end;
+}
+.planner .pv-seg__opt--ic:not([aria-checked="true"]):hover {
+  color: var(--ink);
+  background: var(--panel-2);
+}
+.planner .pv-seg__opt--ic:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 1px;
+}
+
+/* «mínimo posible»: la fecha de egreso coincide con la cota inferior */
+.planner .pv-result__min {
+  color: var(--brass);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: help;
+  border-bottom: 1px dotted currentColor;
+}
+.planner .pv-result__min:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 /* sin label "Horario" (redundante): el switch ocupa un slot de la misma fila,
    con el mismo alto de control (36px) para alinear con selects e inputs. */
 .planner .pv-field--sw {
@@ -1492,26 +1563,12 @@
   }
 }
 
-/* ============================ OPTIMIZAR PARA (bajo el board) =============== */
-/* El segmentado del método salió del banner: vive acá SIEMPRE visible, con la
-   nota "Cómo se armó este plan" plegada debajo. */
+/* ============================ CÓMO SE ARMÓ (bajo el board) ================= */
+/* La nota "Cómo se armó este plan", plegada. El objetivo se elige arriba, en
+   la fila de parámetros (.pv-seg--obj). */
 .planner .plan2-opt {
   margin-top: 2px;
 }
-.planner .plan2-opt__head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.planner .plan2-opt__lbl {
-  font-family: var(--f-m);
-  font-size: 10px;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-/* la nota queda pegada al segmentado, no colgando del board */
 .planner .plan2-opt .plan2-optnote-d {
   margin-top: 6px;
 }
@@ -1565,16 +1622,6 @@
   font-weight: 600;
 }
 
-/* El selector "Optimizar para" vive DENTRO de "Cómo se armó este plan"
-   (.plan2-opt__ctl): no es una decisión frecuente, así que queda guardado
-   ahí junto a la nota del método. */
-.planner .plan2-opt__ctl {
-  display: flex;
-  align-items: center;
-  gap: 8px 12px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
 
 
 /* ============================ TAG "FIJADA" =============================== */

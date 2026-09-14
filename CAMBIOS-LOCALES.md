@@ -367,6 +367,25 @@ superposiciones o por un requisito de créditos que le deja una única ventana (
   consistencia «dias»/«balance» nunca más tarde que «cuatris», sobre 16 carreras × 18
   escenarios × 3 métodos × 2 topes × 2 modos.
 
+## 19. Plan de cursada: el objetivo se elige junto a «Evitar superposiciones» (2026-09-14)
+
+- `views/PlanView.tsx`: el segmentado «Optimizar para» sale del plegable «Cómo se armó este
+  plan» (donde no se encontraba) y pasa a la fila de parámetros, con rótulo «Objetivo», al
+  lado del switch de superposiciones: los dos envuelven juntos (`.pv-field-group`, son «cómo
+  se arma», no parámetros). Segmentado de tres (`.pv-seg--obj`): el elegido se despliega
+  (icono + nombre, en brass) y los otros dos quedan como icono con tooltip
+  (`OPT_METHODS[].objetivo`); ancho fijo para que la fila no se reacomode bajo el cursor.
+  Iconos: birrete (recibirte antes), calendario (menos días), balanza (carga pareja).
+- `lib/planner/optimize.ts`: etiquetas de `OPT_METHODS` («Menos días» en vez de «Menos días de
+  campus») y objetivos redactados como promesa («Misma fecha de egreso, …»).
+- Resultado del plan: «mínimo posible» junto a la cantidad de cuatrimestres cuando el egreso
+  coincide con `PlanResult.minLast` (tooltip: no hay plan más corto con estas restricciones);
+  la nota «Cómo se armó este plan» explica el objetivo elegido, la cota y el criterio
+  secundario.
+- `planview.css`: `.pv-config` con `grid-template-columns: minmax(0,1fr) fit-content(52%)`:
+  con muchos minors (Industrial: nueve) el resultado aplastaba los parámetros a una columna;
+  ahora las pastillas envuelven.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

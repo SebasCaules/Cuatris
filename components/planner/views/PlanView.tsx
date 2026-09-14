@@ -66,6 +66,7 @@ import {
   IconClose,
   IconGraduationCap,
   IconCalendar,
+  IconScale,
   IconRoute,
   IconDownload,
   IconGrip,
@@ -273,27 +274,49 @@ function NumField({
   );
 }
 
+/* ---------- icono de cada objetivo ---------- */
+function MethodIcon({ method, size }: { method: OptMethod; size: number }) {
+  if (method === "dias") return <IconCalendar size={size} />;
+  if (method === "balance") return <IconScale size={size} />;
+  return <IconGraduationCap size={size} />;
+}
+
 /* ---------- texto del método ---------- */
 function methodText(
   R: PlanResult,
   PL: { method: OptMethod; maxCred: number; maxMat: number; avoid: boolean },
+  lastIdx: number,
 ) {
   const meta = OPT_METHODS.find((m) => m.key === PL.method);
-  const objetivo = meta?.objetivo ?? "minimizar la cantidad de cuatrimestres";
+  const objetivo = meta?.objetivo ?? "Minimizar la cantidad de cuatrimestres.";
+  const minimo = R.minLast != null && R.minLast === lastIdx && R.unplaced.length === 0;
+  const secundario =
+    PL.method === "dias"
+      ? "entre los planes que terminan ahí, el de menos días de campus por semana."
+      : PL.method === "balance"
+        ? "entre los planes que terminan ahí, el de carga más pareja entre cuatrimestres."
+        : "entre los planes que terminan ahí, el que más respeta el orden del plan de estudios y menos idas a la facultad pide.";
   return (
     <>
-      <b>Optimización aplicada.</b> Objetivo: {objetivo} Orden de prioridad:
-      obligatorias · camino crítico de correlativas · más créditos · mayor
-      requisito de créditos. Las comisiones se eligen para concentrar la
-      cursada en menos días en el campus. Restricciones respetadas: paridad
-      1.º/2.º cuatrimestre · correlativas · créditos requeridos
+      <b>{meta?.label ?? "Recibirte antes"}.</b> {objetivo} Primero se busca
+      la fecha de egreso más temprana —varias colocaciones (orden del plan de
+      estudios, urgencia por correlativas y reinicios) y se queda con la que
+      termina antes— y después, {secundario}{" "}
+      {minimo
+        ? "El egreso coincide con la cota mínima: no existe plan más corto con estas restricciones."
+        : R.minLast != null && R.minLast >= 0
+          ? `Cota teórica: ${R.minLast + 1} cuatrimestres (calculada sin combinar los topes con los créditos requeridos ni las superposiciones, así que puede no ser alcanzable).`
+          : ""}{" "}
+      Restricciones respetadas: paridad 1.º/2.º cuatrimestre · correlativas ·
+      créditos requeridos
       {PL.avoid
         ? " · sin superposición horaria (incluye traslados entre sedes)"
         : ""}
-      . Tope por cuatrimestre: {PL.maxCred} créditos y {PL.maxMat} materias.{" "}
+      . Tope por cuatrimestre: {PL.maxCred} créditos y {PL.maxMat} materias. Las
+      comisiones se eligen para pedir menos idas a la facultad.{" "}
       {R.moved
         ? `Compactación: ${R.moved} materia(s) adelantadas a cuatrimestres con lugar.`
-        : `Sin compactación adicional necesaria.`}
+        : ""}
     </>
   );
 }
@@ -2849,26 +2872,69 @@ export default function PlanView() {
                 />
               </div>
 
-              <div className="pv-field pv-field--sw">
-                <Tooltip
-                  width={220}
-                  content="Con esto encendido, el plan no pone dos materias que se pisen en el mismo cuatrimestre."
-                >
-                  <button
-                    type="button"
-                    className={"cmb-switch" + (PL.avoid ? " on" : "")}
-                    role="switch"
-                    aria-checked={PL.avoid}
-                    onClick={() =>
-                      dispatch({ type: "SET_PLAN_AVOID", value: !PL.avoid })
-                    }
+              {/* Objetivo del plan: segmentado de tres, con el elegido
+                  desplegado (icono + nombre) y los otros dos como icono con
+                  tooltip. Un clic cambia; los tres terminan lo antes posible
+                  (el egreso es el objetivo primario de cualquiera) y difieren
+                  en cómo reparten la cursada. */}
+              <div className="pv-field-group">
+                <div className="pv-field pv-field--obj">
+                  <span className="pv-field__lbl" id="pcObjLbl">
+                    Objetivo
+                  </span>
+                  <div
+                    className="pv-seg pv-seg--obj"
+                    role="radiogroup"
+                    aria-labelledby="pcObjLbl"
                   >
-                    <span className="cmb-switch__track">
-                      <span className="cmb-switch__knob" />
-                    </span>
-                    Evitar superposiciones
-                  </button>
-                </Tooltip>
+                    {OPT_METHODS.map((m: OptMethodMeta) => (
+                      <Tooltip
+                        key={m.key}
+                        width={236}
+                        content={
+                          <>
+                            <b>{m.label}</b> · {m.objetivo}
+                          </>
+                        }
+                      >
+                        <button
+                          type="button"
+                          role="radio"
+                          aria-checked={PL.method === m.key}
+                          className="pv-seg__opt pv-seg__opt--ic"
+                          onClick={() =>
+                            dispatch({ type: "SET_PLAN_METHOD", value: m.key })
+                          }
+                        >
+                          <MethodIcon method={m.key} size={14} />
+                          <span className="pv-seg__txt">{m.label}</span>
+                        </button>
+                      </Tooltip>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pv-field pv-field--sw">
+                  <Tooltip
+                    width={220}
+                    content="Con esto encendido, el plan no pone dos materias que se pisen en el mismo cuatrimestre."
+                  >
+                    <button
+                      type="button"
+                      className={"cmb-switch" + (PL.avoid ? " on" : "")}
+                      role="switch"
+                      aria-checked={PL.avoid}
+                      onClick={() =>
+                        dispatch({ type: "SET_PLAN_AVOID", value: !PL.avoid })
+                      }
+                    >
+                      <span className="cmb-switch__track">
+                        <span className="cmb-switch__knob" />
+                      </span>
+                      Evitar superposiciones
+                    </button>
+                  </Tooltip>
+                </div>
               </div>
             </div>
 
@@ -2881,6 +2947,19 @@ export default function PlanView() {
                   <span className="pv-result__sub">
                     {used.length} {used.length === 1 ? "cuatrimestre" : "cuatrimestres"} ·{" "}
                     {flat.length} materias
+                    {R.minLast != null && R.minLast === lastIdx && R.unplaced.length === 0 && (
+                      <>
+                        {" · "}
+                        <Tooltip
+                          width={250}
+                          content="No hay plan más corto con estas correlativas, requisitos de créditos y topes por cuatrimestre: cualquier objetivo termina acá."
+                        >
+                          <span className="pv-result__min" tabIndex={0}>
+                            mínimo posible
+                          </span>
+                        </Tooltip>
+                      </>
+                    )}
                   </span>
                 </div>
               </div>
@@ -3185,36 +3264,13 @@ export default function PlanView() {
         )
       )}
 
-      {/* "Cómo se armó este plan": guarda el selector del método (no es una
-          decisión frecuente) + la nota detallada, todo plegado y discreto. */}
+      {/* "Cómo se armó este plan": la nota detallada del método, plegada y
+          discreta (el objetivo se elige arriba, junto a los parámetros). */}
       {used.length > 0 && (
         <div className="plan2-opt">
           <details className="plan2-optnote-d">
             <summary>Cómo se armó este plan</summary>
-            <div className="plan2-opt__ctl">
-              <span className="plan2-opt__lbl">Optimizar para</span>
-              <div
-                className="pv-seg"
-                role="group"
-                aria-label="Método de optimización del plan"
-              >
-                {OPT_METHODS.map((m: OptMethodMeta) => (
-                  <button
-                    key={m.key}
-                    type="button"
-                    className="pv-seg__opt"
-                    aria-pressed={PL.method === m.key}
-                    title={m.objetivo}
-                    onClick={() =>
-                      dispatch({ type: "SET_PLAN_METHOD", value: m.key })
-                    }
-                  >
-                    {m.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <p className="plan2-method">{methodText(R, PL)}</p>
+            <p className="plan2-method">{methodText(R, PL, lastIdx)}</p>
           </details>
         </div>
       )}

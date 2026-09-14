@@ -143,21 +143,22 @@ export const OPT_METHODS: OptMethodMeta[] = [
     key: "cuatris",
     label: "Recibirte antes",
     short: "menos cuatrimestres",
-    objetivo: "Minimizar la cantidad de cuatrimestres hasta recibirte.",
+    objetivo:
+      "Terminar lo antes posible: cada cuatrimestre lleva todo lo que entra en los topes.",
   },
   {
     key: "dias",
-    label: "Menos días de campus",
+    label: "Menos días",
     short: "concentrar la cursada",
     objetivo:
-      "Concentrar las materias en la menor cantidad de días por semana.",
+      "Misma fecha de egreso, pero con la cursada concentrada en menos días de campus por semana.",
   },
   {
     key: "balance",
     label: "Carga pareja",
     short: "equilibrar cada cuatri",
     objetivo:
-      "Repartir créditos y materias de forma equilibrada entre cuatrimestres.",
+      "Misma fecha de egreso, con los créditos repartidos parejo entre cuatrimestres.",
   },
 ];
 
