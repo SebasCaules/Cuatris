@@ -1161,6 +1161,30 @@
   background:var(--panel-3);border:1px solid var(--line);border-radius:999px;min-width:18px;text-align:center;padding:1px 7px;font-size:10.5px}
 .planner .pool-list{display:flex;flex-direction:column;max-height:330px;overflow:auto;margin:0 -4px;padding:0 4px}
 .planner .pool-none{margin:4px 0;color:var(--faint);font-size:12.5px}
+/* obligatorias quitadas del plan: plegadas bajo la lista, con «restablecer» */
+.planner .pool-out{margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.planner .pool-out__h{
+  display:flex;align-items:center;gap:8px;list-style:none;cursor:pointer;
+  font-family:var(--f-m);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:4px 2px;
+}
+.planner .pool-out__h::-webkit-details-marker{display:none}
+.planner .pool-out__h::before{content:"▸";font-size:9px;color:var(--faint);transition:transform var(--dur-fast) var(--ease-out)}
+.planner .pool-out[open] .pool-out__h::before{transform:rotate(90deg)}
+.planner .pool-out__h i{font-style:normal;color:var(--ink)}
+.planner .pool-out__all{
+  margin-left:auto;padding:2px 6px;border:none;background:transparent;border-radius:5px;
+  font-family:var(--f-m);font-size:10px;letter-spacing:.02em;text-transform:none;color:var(--brass);cursor:pointer;
+}
+.planner .pool-out__all:hover{background:var(--panel-2)}
+.planner .pool-list--out{max-height:200px}
+.planner .pool-item--out{cursor:default;opacity:.85}
+.planner .pool-item--out .pab{background:var(--panel-2);color:var(--muted)}
+.planner .pool-restore{
+  flex:none;display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;
+  background:var(--panel);font-family:var(--f-m);font-size:10px;letter-spacing:.02em;color:var(--ink-soft);cursor:pointer;
+  transition:border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out);
+}
+.planner .pool-restore:hover{border-color:var(--brass);color:var(--brass);background:var(--brass-soft)}
 
 .planner .pool-item{
   display:flex;align-items:center;gap:10px;padding:8px 9px;border-radius:var(--r);

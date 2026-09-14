@@ -20,6 +20,7 @@ import {
   DAYS,
   PLAN,
   REQUISITOS,
+  remainingOblig,
 } from "@/lib/planner/model";
 import { approvedCredits, electiveCredits } from "@/lib/planner/metrics";
 import { isAsync, slotsConflict, comModalidad, salaLabel } from "@/lib/planner/time";
@@ -89,6 +90,7 @@ import type {
   PlanStart,
   WeekBlock,
 } from "@/lib/planner/types";
+import { normalizar } from "@/lib/planner/texto";
 import "@/components/planner/planview.css";
 
 // créditos electivos requeridos por el plan ACTIVO (cambia con la carrera)
@@ -1842,6 +1844,16 @@ function PlanPool({
     () => new Set([...state.approved, ...state.cursando]),
     [state.approved, state.cursando],
   );
+  // obligatorias pendientes que el usuario quitó del plan: se pueden volver a poner
+  const quitadas = useMemo(
+    () =>
+      remainingOblig(settled)
+        .filter((c) => !state.plan.pool.has(c))
+        .map((c) => byId.get(c)!)
+        .filter(Boolean)
+        .sort(planPriority),
+    [state.plan.pool, settled],
+  );
   const { obs, els } = useMemo(() => {
     const codes = [...state.plan.pool].filter((c) => !settled.has(c));
     const obs = codes
@@ -1865,14 +1877,14 @@ function PlanPool({
   };
 
   const matches = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = normalizar(query.trim());
     if (!q) return [];
     return PLAN.electivas
       .filter(
         (m) =>
           !state.plan.pool.has(m.codigo) &&
           !settled.has(m.codigo) &&
-          (m.codigo + " " + m.nombre + " " + m.abbr).toLowerCase().includes(q),
+          normalizar(m.codigo + " " + m.nombre + " " + m.abbr).includes(q),
       )
       .slice(0, 12);
   }, [query, state.plan.pool, settled]);
@@ -1975,6 +1987,44 @@ function PlanPool({
             <p className="pool-none">Sin obligatorias pendientes.</p>
           )}
         </div>
+        {quitadas.length > 0 && (
+          <details className="pool-out">
+            <summary className="pool-out__h">
+              Quitadas del plan <i>{quitadas.length}</i>
+              <button
+                type="button"
+                className="pool-out__all"
+                onClick={(e) => {
+                  e.preventDefault();
+                  for (const m of quitadas) dispatch({ type: "PLAN_POOL_ADD", code: m.codigo });
+                }}
+              >
+                restablecer todas
+              </button>
+            </summary>
+            <div className="pool-list pool-list--out">
+              {quitadas.map((m) => (
+                <div className="pool-item pool-item--out" key={m.codigo}>
+                  <span className="pab">{m.abbr}</span>
+                  <span className="pn">
+                    {m.nombre}
+                    <span className="pc">{m.codigo}</span>
+                  </span>
+                  <Tooltip content="Volver a ponerla en el plan" width={150}>
+                    <button
+                      type="button"
+                      className="pool-restore"
+                      aria-label={`Restablecer ${m.nombre} en el plan`}
+                      onClick={() => dispatch({ type: "PLAN_POOL_ADD", code: m.codigo })}
+                    >
+                      <IconRotateCcw size={12} /> restablecer
+                    </button>
+                  </Tooltip>
+                </div>
+              ))}
+            </div>
+          </details>
+        )}
       </div>
       <div className="pool-col">
         <div className="pool-h">
@@ -2895,6 +2945,47 @@ export default function PlanView() {
             </button>
           </div>
 
+          {/* Vista previa (hover sobre una materia de la lista): va en la misma
+              fila que las pestañas, en el hueco del medio, así no pisa la barra
+              ni la primera tarjeta ni mueve el tablero. */}
+          {showPreviewSlot && (
+          <div
+            className={
+              "plan2-preview-slot" +
+              (previewInfo && previewInfo.m ? " is-on" : "")
+            }
+            aria-live="polite"
+          >
+            <span className="plan2-preview-slot__hint" aria-hidden="true" />
+            {previewInfo && previewInfo.m && (
+              <span className="plan2-preview-slot__msg">
+                <span className="plan2-preview-banner__dot" aria-hidden="true" />
+                <span>
+                  Vista previa: <b>{previewInfo.m.abbr}</b>{" "}
+                  {previewInfo.idxs.length > 0 ? (
+                    <>
+                      entra en{" "}
+                      <b>
+                        {previewInfo.idxs
+                          .map((i) => cuatriLabel(cuatriAt(PL.start, i)))
+                          .join(" · ")}
+                      </b>
+                    </>
+                  ) : previewInfo.ext !== null ? (
+                    <>
+                      no entra en el plan actual: abre un cuatrimestre nuevo en{" "}
+                      <b>{cuatriLabel(cuatriAt(PL.start, previewInfo.ext))}</b>{" "}
+                      (alarga la carrera)
+                    </>
+                  ) : (
+                    "no entra en ningún cuatrimestre del plan (correlativas, créditos, tope o superposición)"
+                  )}
+                </span>
+              </span>
+            )}
+          </div>
+        )}
+
           <div className="pv-tabs__actions">
             {tab === "cal" && (
               <Tooltip content="Cuántos cuatrimestres se ven a la vez en el carrusel" width={190}>
@@ -2933,45 +3024,6 @@ export default function PlanView() {
         </div>
       )}
 
-      {/* Slot de vista previa: espacio RESERVADO y persistente para no empujar
-          el board por cada hover (idle = hint tenue, hover = pill brass). */}
-      {showPreviewSlot && (
-        <div
-          className={
-            "plan2-preview-slot" +
-            (previewInfo && previewInfo.m ? " is-on" : "")
-          }
-          aria-live="polite"
-        >
-          <span className="plan2-preview-slot__hint" aria-hidden="true" />
-          {previewInfo && previewInfo.m && (
-            <span className="plan2-preview-slot__msg">
-              <span className="plan2-preview-banner__dot" aria-hidden="true" />
-              <span>
-                Vista previa: <b>{previewInfo.m.abbr}</b>{" "}
-                {previewInfo.idxs.length > 0 ? (
-                  <>
-                    entra en{" "}
-                    <b>
-                      {previewInfo.idxs
-                        .map((i) => cuatriLabel(cuatriAt(PL.start, i)))
-                        .join(" · ")}
-                    </b>
-                  </>
-                ) : previewInfo.ext !== null ? (
-                  <>
-                    no entra en el plan actual: abre un cuatrimestre nuevo en{" "}
-                    <b>{cuatriLabel(cuatriAt(PL.start, previewInfo.ext))}</b>{" "}
-                    (alarga la carrera)
-                  </>
-                ) : (
-                  "no entra en ningún cuatrimestre del plan (correlativas, créditos, tope o superposición)"
-                )}
-              </span>
-            </span>
-          )}
-        </div>
-      )}
 
       {used.length === 0 ? (
         <div className="plan2-board">

@@ -329,26 +329,31 @@
   min-height: 34px;
 }
 
-/* Slot de vista previa: no ocupa lugar. El pill flota sobre el borde superior
-   del tablero (posición absoluta), así aparece y desaparece sin mover nada. */
+/* Vista previa: vive en la fila de pestañas, en el hueco entre las pestañas y
+   las acciones. No ocupa alto propio (la fila ya lo tiene) ni mueve el
+   tablero; en angosto, donde la fila envuelve, ocupa su propia línea. */
 .planner .view-panel .plan2-preview-slot {
-  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
   min-height: 0;
-  height: 0;
   margin: 0;
-  overflow: visible;
-  z-index: 8;
+  display: flex;
+  justify-content: center;
 }
 .planner .view-panel .plan2-preview-slot__hint {
   display: none;
 }
 .planner .view-panel .plan2-preview-slot__msg {
-  position: absolute;
-  top: -13px; /* a caballo del borde: no tapa el título de la primera tarjeta */
-  left: 10px;
   padding: 4px 12px;
   font-size: 11.5px;
-  box-shadow: var(--shadow-2);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.planner .view-panel .plan2-preview-slot__msg > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ============================ TAB STRIP ==================================== */
