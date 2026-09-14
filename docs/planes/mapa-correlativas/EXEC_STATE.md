@@ -13,13 +13,13 @@ Rama `mapa-correlativas` (worktree `.claude/worktrees/mapa-correlativas`, creada
 | Ola 1 · U6 modelo puro + test | DONE | 3f577ab | VERDE; `neighborOf` ↑↓ ahora recorre sub-columna por sub-columna (orquestador) |
 | Ola 1 · U8 CSS | DONE | 3f577ab | VERDE (1 media: `r` del punto → agregado en CSS) |
 | Ola 1 · integración + gates + commit | DONE | 3f577ab | typecheck · build · test:grafo limpios; GrafoView viejo puenteado a la firma nueva hasta la ola 2. 10 agentes, 1,46 M tokens |
-| Ola 2 · U3 tarjeta | TODO | | |
-| Ola 2 · U4 controles + minimapa | TODO | | |
-| Ola 2 · U5 stage SVG | TODO | | |
-| Ola 2 · U7 GrafoView (orquestador) + integración + gates + commit | TODO | | |
+| Ola 2 · U3 tarjeta | DONE | c443d3e | VERDE (1 baja: tamaño de los glifos → regla en grafo.css) |
+| Ola 2 · U4 controles + minimapa | DONE | c443d3e | VERDE a la primera |
+| Ola 2 · U5 stage SVG | DONE | c443d3e | VERDE a la primera |
+| Ola 2 · U7 GrafoView (orquestador) + integración + gates + commit | DONE | c443d3e | Smoke en dev (S, LCA, I, B, P; claro/oscuro; 400 px; teclado). Fixes del orquestador: tap con pointer capture (target del pointerdown), encuadre de la frontera sin hueco a la izquierda y apoyado arriba con la capa encendida, foco por teclado que se revela. 6 agentes, 0,91 M tokens |
 | Transversal · U9 persist + package.json | DONE | 3f577ab | `loadGrafoElectivas`/`saveGrafoElectivas`, `npm run test:grafo` |
-| Transversal · U10 docs (CAMBIOS-LOCALES §18) | TODO | | |
-| Cierre · U11 smoke con datos | TODO | | |
+| Transversal · U10 docs (CAMBIOS-LOCALES §18) | DONE | c443d3e | |
+| Cierre · U11 smoke con datos | DOING | | dev verificado; falta el build estático servido |
 | Cierre · U12 auditoría final adversarial + fixes + gates + veredicto | TODO | | |
 | Merge a `main` | TODO | | push solo a pedido del autor |
 
@@ -52,6 +52,11 @@ Rama `mapa-correlativas` (worktree `.claude/worktrees/mapa-correlativas`, creada
   ensanchan y corren a las siguientes. La fila (`y`) y la columna de cada obligatoria no
   cambian. (El builder de U1 había fijado la geometría con el grafo completo para cumplir
   el test (d) al pie de la letra; el test pasa a exigir columna e `y`, no `x`.)
+
+- **N0-11** `viewport.set` (minimapa) cuenta como interacción del usuario: un resize
+  posterior no pisa esa vista.
+- **N0-12** El tap se decide por el elemento bajo el puntero en el `pointerdown` (con
+  `setPointerCapture` el `pointerup` llega retargeteado al viewport).
 
 ## Veredicto final
 
