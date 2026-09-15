@@ -16,7 +16,11 @@
     "datos": "node scripts/build-planner-data.mjs && node scripts/build-finales-flags-data.mjs && node scripts/build-mesas-finales-data.mjs",
     "carreras": "node scripts/build-carreras-data.mjs",
     "sync": "bash scripts/sync-desde-studyvaults.sh",
-    "check:optimizador": "tsx scripts/optimizer-check/run.ts"
+    "check:optimizador": "tsx scripts/optimizer-check/run.ts",
+    "test:grafo": "node scripts/build-planner-data.mjs && node scripts/test-grafo-layout.mts && node scripts/test-grafo-model.mts && node scripts/test-grafo-viewport.mts"
+  },
+  "engines": {
+    "node": ">=22.18"
   },
   "dependencies": {
     "@studyvaults/ui": "*",

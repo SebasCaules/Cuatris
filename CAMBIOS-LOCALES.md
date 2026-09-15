@@ -512,6 +512,53 @@ cursadas marcadas.
   `perfilGuardado.ts`: `enBlanco` también mira `finales.extra` (un perfil nunca guardado con
   finales agregados a mano cuenta como «sin guardar»).
 
+## 21. Mapa de correlativas v2 (2026-09-14, noche)
+
+Rediseño y reconstrucción completos de la vista «Mapa de correlativas» bajo una sola idea:
+describir lo mínimo y que todo sea interactivo (plan en `docs/planes/mapa-correlativas/`).
+Sin leyenda, pistas, contador ni porcentaje de zoom: cada estado se lee por forma y color
+(los mismos glifos y colores que `EstadoControl`) y, al posarse, por un tooltip o por la
+tarjeta de la materia.
+
+- `lib/planner/layoutGraph.ts` (reescrito): `computeGraphLayout(plan, { electivas })` es puro
+  (recibe el plan; solo `import type`) y parte de TODAS las materias, aisladas incluidas.
+  Columnas por cuatrimestre nominal (año solo si falta el cuatrimestre; camino más largo si
+  no hay nada), electivas un cuatrimestre después de su última correlativa y nunca antes de
+  la columna donde el plan nominal acumula los créditos que piden; pasada de validez (toda
+  arista va a la derecha; las columnas más allá del plan nominal no llevan cabecera);
+  mediana por posición normalizada más una transposición geométrica del espinazo; espinazo
+  de obligatorias arriba (misma fila con la capa de electivas encendida o apagada) y
+  electivas colgando de un riel, en sub-columnas de 14; planes con año pero sin
+  cuatrimestre (LCA) parten cada año en tantas columnas como su cadena más larga.
+  `GraphLayout` cambia de forma: `GraphNode` suma `col/w/h`; `GraphColumn` pasa a
+  `{index, x (borde izquierdo; antes era el centro), cx, width, year, top|null, sub|null}`;
+  se agregan `bands`, `spineBottom` y `hasElectivas` (electivas en el lienzo); se quitan
+  `nodeW/nodeH/headerH` (las medidas viven en `GRAPH_METRICS`); `computeGraphLayout(plan,
+  { electivas })` reemplaza a `computeGraphLayout()` sin argumentos.
+- `components/planner/grafo/` (nuevo): `useViewport.ts` (pan acotado, rueda —también en
+  líneas y ctrl+rueda del trackpad—, pinch, tap/doble tap, `fitAll`/`frame`/`centerOn`,
+  piso de escala que sigue al encuadre, transformación imperativa;
+  `fitTransform`/`zoomAtPoint` puras), `grafoModel.ts` (adyacencia, cadena aguas arriba/abajo, `statusOf` con la misma
+  verdad que `isAvailable` + `estadoOf`, frontera, búsqueda, vecinos por teclado),
+  `GrafoStage.tsx` (SVG: bandas de año, cabeceras, riel, aristas en dos tonos, nodos con
+  los glifos de `EstadoControl`), `GrafoCard.tsx` (tarjeta de hover/fijada con «Requiere»,
+  «Habilita», `EstadoControl` y «Ver detalle»), `GrafoControls.tsx` (acercar, alejar, ver
+  todo, ir a donde estoy — con `Tooltip`, sin `title=`) y `GrafoMinimap.tsx`. «Cursando» va
+  en slate/`--link` como en el resto del planner; los textos de estado usan variantes de
+  texto (`--status-*-text`, `--link`, `--accent-text`).
+- `views/GrafoView.tsx` (reescrito): chips «Electivas» (capa, persistida) y «Cursables»
+  (foco) con el mismo `vtools__chip` de «Materias»; búsqueda en vivo (Enter centra y fija;
+  si solo coinciden electivas, enciende la capa); hover = cadena (necesita en tinta,
+  destraba en acento) + tarjeta; clic = fijar; doble clic o «Ver detalle» = `DetailDrawer`
+  (antes el clic abría el drawer); Esc suelta; roving tabindex con flechas; encuadre inicial
+  en la frontera (primer cuatrimestre con obligatorias pendientes).
+- `components/planner/grafo.css` (reescrito): todo por tokens, cero hex.
+- `lib/planner/persist.ts`: `plan_grafo_electivas_v1` (`loadGrafoElectivas`/
+  `saveGrafoElectivas`), preferencia de pantalla global.
+- Fuera del espejo: `scripts/test-grafo-*.mts` (`npm run test:grafo`, regenera los datos y
+  corre los tres; Node ≥ 22.18 con type stripping, `engines` en `package.json`; `tsconfig`
+  con `allowImportingTsExtensions`).
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

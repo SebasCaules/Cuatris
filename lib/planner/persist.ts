@@ -280,6 +280,25 @@ export function savePlanCols(n: PlanCols): void {
   }
 }
 
+/** Capa de electivas del Mapa de correlativas (encendida/apagada). Preferencia
+ *  de pantalla, no de progreso: una sola clave para todas las carreras y
+ *  perfiles. Apagada por defecto: el espinazo de obligatorias se lee entero. */
+export const K_GRAFO_ELECTIVAS = "plan_grafo_electivas_v1";
+export function loadGrafoElectivas(): boolean {
+  try {
+    return localStorage.getItem(K_GRAFO_ELECTIVAS) === "1";
+  } catch {
+    return false;
+  }
+}
+export function saveGrafoElectivas(on: boolean): void {
+  try {
+    localStorage.setItem(K_GRAFO_ELECTIVAS, on ? "1" : "0");
+  } catch {
+    /* almacenamiento no disponible */
+  }
+}
+
 export interface PlanOpts {
   start: PlanStart;
   maxCred: number;
