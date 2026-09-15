@@ -144,14 +144,6 @@
   cursor: not-allowed;
 }
 
-/* buscador de finales (MateriaPicker compartido): a todo el ancho entre la
-   barra y la fila calendario+panel; el borde/fondo ya los trae .cmbx-picker. */
-.planner .fin__picker {
-  margin-bottom: 12px;
-  /* la invitación del panel lo trae a la vista: que no quede bajo la barra */
-  scroll-margin-top: calc(var(--nav-h) + 12px);
-}
-
 /* ---- resumen: debajo del calendario, en su misma columna ---- */
 .planner .fin__resumen {
   display: flex;
@@ -456,7 +448,6 @@
     animation: none;
   }
   .planner .fin__add,
-  .planner .fin__add-lead,
   .planner .fin__srow-x {
     transition: none;
   }
@@ -610,8 +601,14 @@
 /* ---- panel de finales pendientes ---- */
 .planner .fin__side {
   flex: 0 0 288px;
+  /* sin esto, las filas del buscador (nombres en una línea) ensanchan el panel
+     y le roban ancho al calendario */
+  min-width: 0;
   align-self: stretch;
   border-left: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 .planner .fin__side-head {
   display: flex;
@@ -667,35 +664,12 @@
   outline: none;
   box-shadow: var(--ring);
 }
-/* invitación del panel cuando la lista está vacía (dibujo de .cmb9-addcell). */
-.planner .fin__add-lead {
+/* buscador de finales (MateriaPicker compartido) adentro del panel: la lista
+   scrollea acá (tope de alto en .mpick) y el calendario no se mueve. */
+.planner .fin__side-picker {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 12px;
-  min-height: 44px;
-  border: 1px dashed var(--line-2);
-  border-radius: 7px;
-  background: transparent;
-  color: var(--brass);
-  font-family: var(--f-m);
-  font-size: 11.5px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 8px 12px;
-  text-align: center;
-  line-height: 1.4;
-  transition:
-    background var(--dur-fast) var(--ease-out),
-    border-color var(--dur-fast) var(--ease-out);
-}
-.planner .fin__add-lead:hover {
-  background: var(--brass-soft);
-  border-color: var(--brass);
-}
-.planner .fin__add-lead:focus-visible {
-  outline: none;
-  box-shadow: var(--ring);
+  flex-direction: column;
+  min-height: 0;
 }
 .planner .fin__group {
   border-bottom: 1px solid var(--line);

@@ -1,14 +1,16 @@
 "use client";
 
 // Buscador de materias compartido por los dos combinadores (horarios y
-// finales): caja de búsqueda (código/nombre/abreviatura, sin tildes) + dos
-// columnas — Obligatorias sub-agrupadas por (año, cuatrimestre) y Electivas
-// por nombre — + grupo atenuado de coincidencias no agregables («búsqueda
-// honesta») + sin resultados. La lógica de filtrado y agrupado sale de
-// CombinadorView (fuente única).
+// finales). Vive en el panel lateral de cada vista (el de «Sugeridas» y el de
+// «Finales pendientes»): caja de búsqueda (código/nombre/abreviatura, sin
+// tildes) + una sola columna con Obligatorias sub-agrupadas por (año,
+// cuatrimestre) y Electivas por nombre + grupo atenuado de coincidencias no
+// agregables («búsqueda honesta») + sin resultados. La lista scrollea dentro
+// del panel: el calendario de la vista nunca se desplaza. La lógica de
+// filtrado y agrupado sale del picker histórico de CombinadorView.
 import "@/components/planner/combinador.css";
 
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useState, type ReactNode, type RefObject } from "react";
 import { normalizar } from "@/lib/planner/texto";
 import type { MateriaM } from "@/lib/planner/types";
 
@@ -40,6 +42,8 @@ export interface MateriaPickerProps {
   /** title= de la fila (comportamiento histórico; opcional). */
   rowTitle?: (m: MateriaM, added: boolean) => string;
   placeholder?: string;
+  /** ref de la caja de búsqueda (para enfocarla desde la vista). */
+  inputRef?: RefObject<HTMLInputElement | null>;
 }
 
 const defaultMeta = (m: MateriaM): ReactNode => {
@@ -61,7 +65,8 @@ export default function MateriaPicker({
   meta = defaultMeta,
   hint = null,
   rowTitle,
-  placeholder = "Buscá una materia (código o nombre)…",
+  placeholder = "Buscá una materia…",
+  inputRef,
 }: MateriaPickerProps) {
   const [q, setQ] = useState("");
   const needle = normalizar(q.trim());
@@ -140,13 +145,14 @@ export default function MateriaPicker({
   };
 
   return (
-    <div className="cmbx-picker">
-      <div className="cmb-search">
+    <div className="mpick">
+      <div className="cmb-search mpick__search">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.7">
           <circle cx="11" cy="11" r="7" />
           <path d="m20 20-3.2-3.2" />
         </svg>
         <input
+          ref={inputRef}
           type="text"
           value={q}
           onChange={(e) => setQ(e.target.value)}
@@ -172,47 +178,45 @@ export default function MateriaPicker({
           </button>
         </p>
       )}
-      <div className="cmb-list cmb9-picklist">
-        {/* Dos columnas en desktop: Obligatorias (por año·cuatri) | Electivas. */}
-        <div className="cmb9-pickcols">
-          {obligatorias.length > 0 && (
-            <div className="cmb-group cmb9-pickcol">
-              <div className="cmb-grouph">
-                <span className="dot dot--ob" /> Obligatorias
-                <i>{obligatorias.length}</i>
-              </div>
-              {obsGroups.ordered.map((g) => (
-                <div className="cmb9-subgroup" key={`${g.anio}-${g.cuatri}`}>
-                  <div className="cmb9-subh">
-                    <b>{anioLabel(g.anio)}</b>
-                    <span className="cmb9-subh__cu">· {g.cuatri}.º cuatri</span>
-                    <i>{g.mats.length}</i>
-                  </div>
-                  {g.mats.map(row)}
-                </div>
-              ))}
-              {obsGroups.otras.length > 0 && (
-                <div className="cmb9-subgroup">
-                  <div className="cmb9-subh">
-                    Otras<i>{obsGroups.otras.length}</i>
-                  </div>
-                  {obsGroups.otras.map(row)}
-                </div>
-              )}
+      <div className="cmb-list cmb9-picklist mpick__list">
+        {/* Una columna: Obligatorias (por año·cuatri) y después Electivas. */}
+        {obligatorias.length > 0 && (
+          <div className="cmb-group">
+            <div className="cmb-grouph">
+              <span className="dot dot--ob" /> Obligatorias
+              <i>{obligatorias.length}</i>
             </div>
-          )}
-          {electivas.length > 0 && (
-            <div className="cmb-group cmb9-pickcol">
-              <div className="cmb-grouph">
-                <span className="dot dot--el" /> Electivas
-                <i>{electivas.length}</i>
+            {obsGroups.ordered.map((g) => (
+              <div className="cmb9-subgroup" key={`${g.anio}-${g.cuatri}`}>
+                <div className="cmb9-subh">
+                  <b>{anioLabel(g.anio)}</b>
+                  <span className="cmb9-subh__cu">· {g.cuatri}.º cuatri</span>
+                  <i>{g.mats.length}</i>
+                </div>
+                {g.mats.map(row)}
               </div>
-              {electivas.map(row)}
+            ))}
+            {obsGroups.otras.length > 0 && (
+              <div className="cmb9-subgroup">
+                <div className="cmb9-subh">
+                  Otras<i>{obsGroups.otras.length}</i>
+                </div>
+                {obsGroups.otras.map(row)}
+              </div>
+            )}
+          </div>
+        )}
+        {electivas.length > 0 && (
+          <div className="cmb-group">
+            <div className="cmb-grouph">
+              <span className="dot dot--el" /> Electivas
+              <i>{electivas.length}</i>
             </div>
-          )}
-        </div>
+            {electivas.map(row)}
+          </div>
+        )}
         {/* Búsqueda honesta: materias del plan que matchean pero no son
-            agregables — atenuadas y sin acción, a lo ancho bajo las columnas. */}
+            agregables — atenuadas y sin acción, al final de la lista. */}
         {fantasmasFiltrados.length > 0 && (
           <div className="cmb-group cmb9-pickghost">
             <div className="cmb-grouph">

@@ -448,13 +448,17 @@ cursadas marcadas.
   `usaProgreso` (`!comboSolo && hayProgreso`). Quien tenía «Ignorar mi progreso» prendido
   en horarios ve también el combinador de finales en modo libre (mismo flag): el switch
   apagado, con su tooltip, es la vía de vuelta.
-- **Buscador compartido.** `components/planner/MateriaPicker.tsx` (nuevo): el picker del
-  combinador de horarios extraído tal cual (búsqueda sin tildes, Obligatorias por año ·
-  cuatrimestre | Electivas por nombre, grupo atenuado de coincidencias no agregables, sin
-  resultados, hint bajo el buscador), parametrizado (`candidatos`, `fantasmas`,
-  `fantasmaNota`, `added`, `onToggle`, `tag`, `meta`, `hint`, `rowTitle`, `placeholder`).
-  Importa `combinador.css` (las reglas `.cmb9-*` viven ahí). `anioLabel` se exporta desde
-  el componente. La consulta vive en el componente (se limpia al cerrar el buscador).
+- **Buscador compartido, en el panel lateral.** `components/planner/MateriaPicker.tsx`
+  (nuevo): el picker del combinador de horarios, ahora en UNA columna (búsqueda sin tildes,
+  Obligatorias por año · cuatrimestre y después Electivas por nombre, grupo atenuado de
+  coincidencias no agregables, sin resultados, hint bajo el buscador), parametrizado
+  (`candidatos`, `fantasmas`, `fantasmaNota`, `added`, `onToggle`, `tag`, `meta`, `hint`,
+  `rowTitle`, `placeholder`, `inputRef`). Vive **dentro del panel lateral de cada vista** —
+  el de «Sugeridas» en horarios y el de «Finales pendientes» en finales — y su lista
+  scrollea ahí (`.mpick`, tope `min(64vh, 600px)`): el calendario nunca se desplaza. Importa
+  `combinador.css` (las reglas `.cmb9-*` y `.mpick*` viven ahí; se fueron el picker a todo
+  el ancho `.cmb9-pickcols` y el resumen sticky `.cmb9-pickersum`). `anioLabel` se exporta
+  desde el componente. La consulta vive en el componente (se limpia al cerrar el buscador).
 - **Finales sin progreso** (`views/FinalesCombinadorView.tsx`, `finales.css`): la lista de
   pendientes es derivados del progreso ∪ `finales.extra` (`lib/planner/types.ts`; nuevo
   `Set` con los finales agregados a mano; acciones `FINALES_EXTRA_ADD` /
@@ -464,22 +468,25 @@ cursadas marcadas.
   apagado, o sin progreso, la lista es solo `extra`, sin correlativas y sin el chip
   «cursando» («Para combinar — Período» en vez de «Se pueden rendir»). Los derivados no se
   quitan (reflejan el progreso); los agregados tienen × (`.fin__srow-x`, tooltip «Quitar de
-  la lista»). El buscador se abre desde «+ Agregar» en la cabecera del panel (`.fin__add`, a
-  todo el ancho entre la barra y la fila calendario+panel, `.fin__picker`) y queda abierto
-  con la lista vacía junto a la invitación «＋ Elegí los finales a combinar»
-  (`.fin__add-lead`, que lleva hasta el buscador y enfoca su caja); el estado vacío «Ir a Mis
-  materias» desaparece (y su CSS `.fin__empty*`). Sobre el × la nota de la fila se calla
-  (`:has`), para no mostrar dos burbujas.
+  la lista»). El buscador se abre desde «+ Agregar» en la cabecera del panel (`.fin__add`) y
+  reemplaza la lista dentro del mismo panel (`.fin__side-picker`; «Listo» vuelve a la lista;
+  al abrirlo a pedido la caja recibe el foco); con la lista vacía queda abierto solo. El
+  estado vacío «Ir a Mis materias» desaparece (y su CSS `.fin__empty*`). Sobre el × la nota
+  de la fila se calla (`:has`), para no mostrar dos burbujas.
   Sin finales en la lista no se muestra el resumen. Los extra siguen en el buscador con ✓
   (solo se ocultan los derivados). Las materias que no rinden final aparecen atenuadas
   («no rinde final»).
 - **Horarios** (`views/CombinadorView.tsx`, `combinador.css`): el switch «Ignorar mi
   progreso» + InfoTip del header se reemplaza por `ProgresoSwitch` (se van `.cmb9-solowrap`
-  y `.cmb9-solo`); el picker inline pasa a `MateriaPicker`. «Sumar a mi plan» se gatea por
-  contenido (ninguna aprobada en la selección) en vez de por el modo: con `comboSolo`
-  persistido y sin progreso el switch no existe y el botón tiene que seguir apareciendo. En
-  las dos vistas, el buscador forzado por lista vacía queda abierto a pedido al elegir el
-  primer ítem (antes se cerraba solo).
+  y `.cmb9-solo`); el picker inline a todo el ancho (que empujaba el calendario bajo el
+  pliegue, con el resumen sticky «Ver semana» como parche) pasa a `MateriaPicker` dentro del
+  panel lateral: con el buscador abierto el panel muestra «Materias · N con horario» en vez de
+  «Sugeridas», y el calendario se queda donde está; el panel se muestra también en el estado
+  vacío y en «sin solución». La invitación «＋ Elegí las materias a cursar» enfoca la caja
+  de búsqueda. «Sumar a mi plan» se gatea por contenido (ninguna aprobada en la selección)
+  en vez de por el modo: con `comboSolo` persistido y sin progreso el switch no existe y el
+  botón tiene que seguir apareciendo. En las dos vistas, el buscador forzado por lista vacía
+  queda abierto a pedido al elegir el primer ítem (antes se cerraba solo).
 - **Persistencia** (`lib/planner/persist.ts`): `PersistedFinales.extra?: string[]`; se
   serializa solo si no está vacío, así la firma de las instantáneas guardadas antes no
   cambia (no aparece «cambios sin guardar»); `parseFinales` lo lee tolerante.

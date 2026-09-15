@@ -312,16 +312,12 @@ export default function FinalesCombinadorView() {
   // buscador de finales: abierto a pedido («+ Agregar») o forzado con la
   // lista vacía (empty state integrado, sin pantalla aparte).
   const [pickerOpen, setPickerOpen] = useState(false);
-  // contenedor del buscador: destino de la invitación del panel vacío (lo
-  // trae a la vista y enfoca su caja) y de aria-controls de «+ Agregar».
-  const pickerRef = useRef<HTMLDivElement | null>(null);
-  const irAlBuscador = () => {
-    setPickerOpen(true);
-    const el = pickerRef.current;
-    if (!el) return;
-    el.scrollIntoView({ block: "start", behavior: "smooth" });
-    el.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
-  };
+  // caja de búsqueda del panel: al abrir el buscador a pedido («+ Agregar»)
+  // recibe el foco; con la lista vacía (abierto a la fuerza) no roba el foco.
+  const searchRef = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    if (pickerOpen) searchRef.current?.focus({ preventScroll: true });
+  }, [pickerOpen]);
   const dlRef = useRef<HTMLDivElement | null>(null);
   // Materia bajo el cursor (bloque del calendario, fila del panel o del editor):
   // sus otras mesas del período aparecen como chips fantasma resaltados. La
@@ -1130,48 +1126,6 @@ export default function FinalesCombinadorView() {
         </div>
       </div>
 
-      {/* ---- buscador de finales: abierto a pedido o forzado con la lista
-          vacía (mismo picker compartido con el combinador de horarios) ---- */}
-      {showPicker && (
-        <div className="fin__picker" id="fin-picker" ref={pickerRef}>
-          <MateriaPicker
-            candidatos={candidatos}
-            fantasmas={sinFinal}
-            fantasmaNota="no rinde final"
-            added={(code) => extra.has(code)}
-            onToggle={(code) => {
-              // con la lista vacía el buscador está abierto a la fuerza; al
-              // sumar el primer final queda abierto a pedido (no se cierra solo)
-              if (rows.length === 0) setPickerOpen(true);
-              dispatch(
-                extra.has(code)
-                  ? { type: "FINALES_EXTRA_REMOVE", code }
-                  : { type: "FINALES_EXTRA_ADD", code },
-              );
-            }}
-            meta={(m) => `${m.creditos} cr`}
-            tag={(m) =>
-              !conProgreso && finalDone.has(m.codigo) ? (
-                <span className="cmb9-oktag">✓ final aprobado</span>
-              ) : null
-            }
-            placeholder="Buscá un final (código o nombre)…"
-            hint={
-              ocultosDone > 0
-                ? {
-                    text:
-                      ocultosDone === 1
-                        ? "Tu final aprobado no aparece"
-                        : `Tus ${ocultosDone} finales aprobados no aparecen`,
-                    action: ocultosDone === 1 ? "mostrarlo igual" : "mostrarlos igual",
-                    onAction: () => dispatch({ type: "SET_COMBO_SOLO", value: true }),
-                  }
-                : null
-            }
-          />
-        </div>
-      )}
-
       {/* ---- calendario + panel de pendientes (protagonista) ---- */}
       <div className="fin__row">
         <div className="fin__cal-wrap">
@@ -1522,17 +1476,49 @@ export default function FinalesCombinadorView() {
               )}
             </div>
 
-            {rows.length === 0 ? (
-              // el buscador ya está abierto arriba: la invitación lleva hasta él
-              <Tooltip content="Ir al buscador" width={120}>
-                <button
-                  type="button"
-                  className="fin__add-lead"
-                  onClick={irAlBuscador}
-                >
-                  ＋ Elegí los finales a combinar
-                </button>
-              </Tooltip>
+            {showPicker ? (
+              // buscador de finales (el mismo picker del combinador de
+              // horarios), adentro del panel: la lista scrollea acá y el
+              // calendario no se mueve. Abierto a pedido («+ Agregar») o a la
+              // fuerza con la lista vacía.
+              <div className="fin__side-picker" id="fin-picker">
+                <MateriaPicker
+                  inputRef={searchRef}
+                  candidatos={candidatos}
+                  fantasmas={sinFinal}
+                  fantasmaNota="no rinde final"
+                  added={(code) => extra.has(code)}
+                  onToggle={(code) => {
+                    // con la lista vacía el buscador está abierto a la fuerza; al
+                    // sumar el primer final queda abierto a pedido (no se cierra solo)
+                    if (rows.length === 0) setPickerOpen(true);
+                    dispatch(
+                      extra.has(code)
+                        ? { type: "FINALES_EXTRA_REMOVE", code }
+                        : { type: "FINALES_EXTRA_ADD", code },
+                    );
+                  }}
+                  meta={(m) => `${m.creditos} cr`}
+                  tag={(m) =>
+                    !conProgreso && finalDone.has(m.codigo) ? (
+                      <span className="cmb9-oktag">✓ final aprobado</span>
+                    ) : null
+                  }
+                  placeholder="Buscá un final…"
+                  hint={
+                    ocultosDone > 0
+                      ? {
+                          text:
+                            ocultosDone === 1
+                              ? "Tu final aprobado no aparece"
+                              : `Tus ${ocultosDone} finales aprobados no aparecen`,
+                          action: ocultosDone === 1 ? "mostrarlo igual" : "mostrarlos igual",
+                          onAction: () => dispatch({ type: "SET_COMBO_SOLO", value: true }),
+                        }
+                      : null
+                  }
+                />
+              </div>
             ) : (
             <>
                 <div

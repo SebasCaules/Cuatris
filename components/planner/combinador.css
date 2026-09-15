@@ -20,77 +20,6 @@
   min-width: 0;
 }
 
-/* ---------- resumen sticky «en vivo» (visible con el picker abierto) ---------- */
-/* Pineado bajo el navbar del portal: mantiene el resultado a la vista mientras
-   se elige, aunque el picker empuje la grilla fuera del viewport. */
-.planner .cmb9-pickersum {
-  position: sticky;
-  top: calc(var(--nav-h) + 8px);
-  z-index: 15;
-  display: flex;
-  align-items: center;
-  gap: 10px 14px;
-  flex-wrap: wrap;
-  padding: 8px 13px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--r);
-  box-shadow: var(--shadow-1);
-}
-.planner .cmb9-pickersum__lead {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 7px;
-  min-width: 0;
-  flex-wrap: wrap;
-}
-.planner .cmb9-pickersum__lead b {
-  font-family: var(--f-d);
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 1;
-  letter-spacing: -0.01em;
-}
-.planner .cmb9-pickersum__lead b.ok {
-  color: var(--sage);
-}
-.planner .cmb9-pickersum__lead b.warn {
-  color: var(--brass);
-}
-.planner .cmb9-pickersum__txt {
-  font-family: var(--f-m);
-  font-size: 11.5px;
-  color: var(--muted);
-}
-.planner .cmb9-pickersum__meta {
-  font-family: var(--f-m);
-  font-size: 11px;
-  color: var(--faint);
-  white-space: nowrap;
-}
-.planner .cmb9-pickersum__see {
-  margin-left: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  flex: none;
-  font-family: var(--f-m);
-  font-size: 11px;
-  color: var(--brass);
-  background: color-mix(in srgb, var(--brass) 10%, var(--panel));
-  border: 1px solid var(--brass);
-  border-radius: 999px;
-  padding: 5px 12px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background var(--dur-fast) var(--ease-out),
-    color var(--dur-fast) var(--ease-out);
-}
-.planner .cmb9-pickersum__see:hover {
-  background: var(--brass);
-  color: var(--block-ink);
-}
-
 /* ---------- header en filas (título · grilla de materias · preferencias) ---------- */
 .planner .cmb9-header {
   display: flex;
@@ -406,6 +335,8 @@
 /* ---------- recomendador slim lateral ---------- */
 .planner .cmb9-recside {
   flex: 0 0 250px;
+  /* las filas del buscador (nombres en una línea) no deben ensanchar el panel */
+  min-width: 0;
   align-self: stretch;
   background: var(--panel);
   border: 1px solid var(--line);
@@ -597,25 +528,45 @@
   pointer-events: auto;
 }
 
-/* ---------- picker: lista más alta + dos columnas (obligatorias | electivas) ---------- */
-/* override de planner.css (.cmbx-picker .cmb-list{max-height:288px}); la clase
-   extra .cmb9-picklist sube la especificidad para ganar sin depender del orden */
-.planner .cmbx-picker .cmb-list.cmb9-picklist {
-  max-height: min(62vh, 560px);
+/* ---------- picker en el panel lateral (MateriaPicker: .mpick) ---------- */
+/* Buscador + lista en UNA columna, dentro del panel de «Sugeridas» (horarios) o
+   de «Finales pendientes» (finales). La lista scrollea adentro del panel, con
+   un tope de alto: el calendario de al lado nunca se desplaza. */
+.planner .mpick {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
 }
-/* dos columnas en ≥880px; abajo, apiladas. El scroll lo maneja .cmb-list. */
-.planner .cmb9-pickcols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 16px;
-  align-items: start;
+.planner .mpick .cmb-search {
+  padding: 9px 11px;
 }
-@media (max-width: 880px) {
-  .planner .cmb9-pickcols {
-    grid-template-columns: 1fr;
-  }
+.planner .mpick .cmb-search input {
+  font-size: 13px;
 }
-/* «Sin horario cargado»: a lo ancho, debajo de las columnas, con un separador leve */
+.planner .mpick .cmb-list.cmb9-picklist {
+  max-height: min(64vh, 600px);
+}
+/* en el panel angosto la fila se aprieta: el nombre es lo que importa */
+.planner .mpick .cmb9-picklist .cmb-row {
+  gap: 7px;
+  padding: 4px 6px;
+}
+.planner .mpick .cmb9-picklist .cmb-row__code {
+  width: 36px;
+  font-size: 9.5px;
+  letter-spacing: 0;
+}
+.planner .mpick .cmb9-picklist .cmb-row__name {
+  font-size: 12.5px;
+}
+.planner .mpick .cmb9-picklist .cmb-row__meta {
+  font-size: 9.5px;
+}
+.planner .mpick .cmb9-subh {
+  padding: 5px 6px 4px 8px;
+}
+/* «Sin horario cargado» / «No rinde final»: al final, con un separador leve */
 .planner .cmb9-pickghost {
   border-top: 1px solid var(--line);
   padding-top: 8px;
@@ -857,7 +808,6 @@
   .planner .cmb9-mchip__x,
   .planner .cmb9-addcell,
   .planner .cmb9-hiddenhint__btn,
-  .planner .cmb9-pickersum__see,
   .planner .cmb-conflict__rm {
     transition: none;
   }

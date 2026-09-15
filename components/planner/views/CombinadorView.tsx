@@ -163,9 +163,9 @@ export default function CombinadorView() {
   const [saveIdx, setSaveIdx] = useState<string | null>(null);
   const dlRef = useRef<HTMLDivElement>(null);
   const saveRef = useRef<HTMLDivElement>(null);
-  // destino de "Ver semana" del resumen sticky: lleva la grilla al viewport
-  // cuando el picker abierto la empujó bajo el pliegue.
-  const bodyRef = useRef<HTMLDivElement>(null);
+  // caja de búsqueda del panel lateral: la invitación «＋ Elegí las materias a
+  // cursar» la enfoca (el buscador ya está abierto cuando no hay selección).
+  const searchRef = useRef<HTMLInputElement>(null);
 
   // ---------- materias combinables ----------
   const pool = useMemo(() => {
@@ -901,7 +901,10 @@ export default function CombinadorView() {
             (selected.length > 0 && showPicker ? " is-open" : "") +
             (selected.length === 0 ? " cmb9-addcell--lead" : "")
           }
-          onClick={() => setPickerOpen((o) => !o)}
+          onClick={() => {
+            if (selected.length === 0) searchRef.current?.focus();
+            else setPickerOpen((o) => !o);
+          }}
         >
           {selected.length === 0
             ? "＋ Elegí las materias a cursar"
@@ -966,143 +969,98 @@ export default function CombinadorView() {
     </header>
   );
 
-  // ---------- sub-render: buscador desplegable ----------
-  const picker = showPicker && (
-    <MateriaPicker
-      candidatos={candidatos}
-      fantasmas={ghostPool}
-      fantasmaNota="sin horario cargado"
-      added={(code) => combo.has(code)}
-      onToggle={(code) => {
-        // con la selección vacía el buscador está abierto a la fuerza; al
-        // elegir la primera materia queda abierto a pedido (no se cierra solo)
-        if (selected.length === 0) setPickerOpen(true);
-        dispatch({ type: "TOGGLE_COMBO", code });
-      }}
-      tag={(m) => (state.approved.has(m.codigo) ? <span className="cmb9-oktag">✓ aprobada</span> : null)}
-      rowTitle={(m, added) =>
-        `${m.codigo} · ${m.nombre} — ${added ? "quitar de" : "agregar a"} tu cuatrimestre`
-      }
-      hint={
-        !comboSolo && hiddenApproved > 0
-          ? {
-              text:
-                hiddenApproved === 1
-                  ? "Tu materia aprobada no aparece"
-                  : `Tus ${hiddenApproved} aprobadas no aparecen`,
-              action: hiddenApproved === 1 ? "mostrarla igual" : "mostrarlas igual",
-              onAction: () => dispatch({ type: "SET_COMBO_SOLO", value: true }),
-            }
-          : null
-      }
-    />
-  );
-
-  // ---------- sub-render: resumen sticky «en vivo» sobre el picker ----------
-  // Con el picker abierto, la barra de resultado y el calendario caen bajo el
-  // pliegue (el picker de ~80 materias los empuja). Esta tira compacta —pineada
-  // al tope— trae el resultado en vivo (cuántas cursadas entran + créditos/días)
-  // arriba del picker: el conteo se actualiza al togglear una materia sin
-  // scrollear (feedback en mobile), y «Ver semana» salta a la grilla en desktop.
-  // Solo aparece con el picker abierto y materias elegidas (si no, la grilla ya
-  // está a la vista y este resumen sería redundante).
-  const pickerSummary = showPicker && selected.length > 0 && (
-    <div className="cmb9-pickersum" role="status" aria-live="polite">
-      {result && total > 0 ? (
-        <>
-          <span className="cmb9-pickersum__lead">
-            <b className={comboParams.allowOverlap ? "warn" : "ok"}>
-              {total}
-              {result.truncated ? "+" : ""}
-            </b>
-            <span className="cmb9-pickersum__txt">
-              {comboParams.allowOverlap
-                ? total === 1
-                  ? "combinación posible"
-                  : "combinaciones posibles"
-                : total === 1
-                  ? "cursada sin superponerse"
-                  : "cursadas sin superponerse"}
-            </span>
-            <span className="cmb9-pickersum__meta">
-              · {cred} cr
-              {insights
-                ? ` · ${insights.dias} ${insights.dias === 1 ? "día" : "días"}`
-                : ""}
-            </span>
-          </span>
-          <button
-            type="button"
-            className="cmb9-pickersum__see"
-            onClick={() =>
-              bodyRef.current?.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              })
-            }
-          >
-            Ver semana
-            <svg
-              viewBox="0 0 24 24"
-              width="13"
-              height="13"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 5v13M6 12l6 6 6-6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-        </>
-      ) : (
-        <span className="cmb9-pickersum__lead">
-          <b className="warn">0</b>
-          <span className="cmb9-pickersum__txt">
-            por ahora no entran sin pisarse — ajustá las opciones abajo
-          </span>
-        </span>
-      )}
-    </div>
-  );
-
-  // ---------- sub-render: recomendador slim (cualquier materia) ----------
-  const recSide = recOpen && (
-    <aside
-      className="cmb9-recside"
-      aria-label="Materias sugeridas para tu cuatrimestre"
-    >
+  // ---------- sub-render: buscador (contenido del panel lateral) ----------
+  // Vive en el mismo panel que «Sugeridas»: la lista scrollea ahí adentro y el
+  // calendario no se mueve. Abierto a pedido («＋ Agregar») o a la fuerza sin
+  // selección.
+  const pickerPanel = (
+    <>
       <div className="cmb9-rechead">
-        <span className="cmb9-rechead__title">Sugeridas</span>
+        <span className="cmb9-rechead__title">Materias</span>
         <span className="cmb9-rechead__count">
-          {suggestions.length} para sumar
+          {candidatos.length} con horario
         </span>
       </div>
-      {suggestions.length === 0 ? (
-        <p className="cmb9-recempty">No quedan materias para sugerir ahora.</p>
-      ) : (
-        <ul className="recrow-list">
-          {suggestions.map(({ m, fit }) => (
-            <RecRow
-              key={m.codigo}
-              m={m}
-              muted={!fit}
-              signals={fit ? undefined : <RecSig tone="bad">se pisa</RecSig>}
-              title={
-                fit
-                  ? undefined
-                  : `${m.nombre} — se superpone con tu semana actual; activá «Superponer» o fijá otra comisión`
+      <MateriaPicker
+        inputRef={searchRef}
+        candidatos={candidatos}
+        fantasmas={ghostPool}
+        fantasmaNota="sin horario cargado"
+        added={(code) => combo.has(code)}
+        onToggle={(code) => {
+          // con la selección vacía el buscador está abierto a la fuerza; al
+          // elegir la primera materia queda abierto a pedido (no se cierra solo)
+          if (selected.length === 0) setPickerOpen(true);
+          dispatch({ type: "TOGGLE_COMBO", code });
+        }}
+        tag={(m) => (state.approved.has(m.codigo) ? <span className="cmb9-oktag">✓ aprobada</span> : null)}
+        rowTitle={(m, added) =>
+          `${m.codigo} · ${m.nombre} — ${added ? "quitar de" : "agregar a"} tu cuatrimestre`
+        }
+        hint={
+          !comboSolo && hiddenApproved > 0
+            ? {
+                text:
+                  hiddenApproved === 1
+                    ? "Tu materia aprobada no aparece"
+                    : `Tus ${hiddenApproved} aprobadas no aparecen`,
+                action: hiddenApproved === 1 ? "mostrarla igual" : "mostrarlas igual",
+                onAction: () => dispatch({ type: "SET_COMBO_SOLO", value: true }),
               }
-              addLabel={`Agregar ${m.nombre} a tu cuatrimestre`}
-              onAdd={() => dispatch({ type: "TOGGLE_COMBO", code: m.codigo })}
-              onOpen={() => dispatch({ type: "OPEN_DRAWER", code: m.codigo })}
-            />
-          ))}
-        </ul>
+            : null
+        }
+      />
+    </>
+  );
+
+  // ---------- sub-render: panel lateral (buscador o recomendador slim) ----------
+  // Un solo panel a la derecha del calendario: con el buscador abierto muestra
+  // el buscador; si no, el recomendador (solo cuando hay cursadas armadas y el
+  // usuario no lo escondió).
+  const hayResultado = Boolean(result && total > 0 && grid);
+  const showSide = showPicker || (recOpen && hayResultado);
+  const recSide = showSide && (
+    <aside
+      className="cmb9-recside"
+      aria-label={
+        showPicker
+          ? "Buscar materias para tu cuatrimestre"
+          : "Materias sugeridas para tu cuatrimestre"
+      }
+    >
+      {showPicker ? (
+        pickerPanel
+      ) : (
+        <>
+          <div className="cmb9-rechead">
+            <span className="cmb9-rechead__title">Sugeridas</span>
+            <span className="cmb9-rechead__count">
+              {suggestions.length} para sumar
+            </span>
+          </div>
+          {suggestions.length === 0 ? (
+            <p className="cmb9-recempty">No quedan materias para sugerir ahora.</p>
+          ) : (
+            <ul className="recrow-list">
+              {suggestions.map(({ m, fit }) => (
+                <RecRow
+                  key={m.codigo}
+                  m={m}
+                  muted={!fit}
+                  signals={fit ? undefined : <RecSig tone="bad">se pisa</RecSig>}
+                  title={
+                    fit
+                      ? undefined
+                      : `${m.nombre} — se superpone con tu semana actual; activá «Superponer» o fijá otra comisión`
+                  }
+                  addLabel={`Agregar ${m.nombre} a tu cuatrimestre`}
+                  onAdd={() => dispatch({ type: "TOGGLE_COMBO", code: m.codigo })}
+                  onOpen={() => dispatch({ type: "OPEN_DRAWER", code: m.codigo })}
+                />
+              ))}
+            </ul>
+          )}
+        </>
       )}
     </aside>
   );
@@ -1110,16 +1068,19 @@ export default function CombinadorView() {
   // ---------- sub-render: cuerpo (empty / resultado / sin solución) ----------
   const body =
     selected.length === 0 ? (
-      <div className="cmb2-empty">
-        <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" strokeWidth="1.3">
-          <rect x="3" y="4.5" width="18" height="16" rx="2.5" />
-          <path d="M3 9h18M8 2.5v4M16 2.5v4" />
-          <path d="M7 13h3M13.5 13h3.5M7 16.5h3" strokeWidth="1.5" />
-        </svg>
-        <p>
-          Elegí materias y acá vas a ver tu semana armada, con todas las cursadas
-          que entran sin pisarse.
-        </p>
+      <div className="cmb9-row">
+        <div className="cmb9-cal cmb2-empty">
+          <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" strokeWidth="1.3">
+            <rect x="3" y="4.5" width="18" height="16" rx="2.5" />
+            <path d="M3 9h18M8 2.5v4M16 2.5v4" />
+            <path d="M7 13h3M13.5 13h3.5M7 16.5h3" strokeWidth="1.5" />
+          </svg>
+          <p>
+            Elegí materias y acá vas a ver tu semana armada, con todas las cursadas
+            que entran sin pisarse.
+          </p>
+        </div>
+        {recSide}
       </div>
     ) : result && total > 0 && grid ? (
       <>
@@ -1217,76 +1178,79 @@ export default function CombinadorView() {
         </div>
       </>
     ) : (
-      <div className="cmb-nosol">
-        <div className="cmb-nosol__icon" aria-hidden="true">
-          ⚠
-        </div>
-        {modalityBlocks ? (
-          // Causa = filtro de modalidad: la superposición no es el problema, así
-          // que ofrecemos re-encender modalidades en vez del CTA de pisadas.
-          <>
-            <h4>Con la modalidad elegida no queda ninguna comisión</h4>
-            <p>Activá otra modalidad para volver a ver cursadas.</p>
-            <button
-              type="button"
-              className="cmb-nosol__cta"
-              onClick={() =>
-                MODAL_KEYS.forEach((k) =>
-                  dispatch({ type: "SET_MODAL", key: k, value: true }),
-                )
-              }
-            >
-              Activar modalidades
-            </button>
-          </>
-        ) : (
-          <>
-            <h4>No entra ninguna cursada sin que se pisen</h4>
-            <p>
-              Probá permitir que se superpongan, fijar otra comisión o sacar
-              alguna materia.
-            </p>
-            {!comboParams.allowOverlap && (
+      <div className="cmb9-row">
+        <div className="cmb9-cal cmb-nosol">
+          <div className="cmb-nosol__icon" aria-hidden="true">
+            ⚠
+          </div>
+          {modalityBlocks ? (
+            // Causa = filtro de modalidad: la superposición no es el problema, así
+            // que ofrecemos re-encender modalidades en vez del CTA de pisadas.
+            <>
+              <h4>Con la modalidad elegida no queda ninguna comisión</h4>
+              <p>Activá otra modalidad para volver a ver cursadas.</p>
               <button
                 type="button"
                 className="cmb-nosol__cta"
                 onClick={() =>
-                  dispatch({ type: "SET_ALLOW_OVERLAP", value: true })
+                  MODAL_KEYS.forEach((k) =>
+                    dispatch({ type: "SET_MODAL", key: k, value: true }),
+                  )
                 }
               >
-                Permitir que se superpongan
+                Activar modalidades
               </button>
-            )}
-            {result && result.conflictPairs.length > 0 && (
-              <div className="cmb-conflicts">
-                <span className="cmb-conflicts__h">Se pisan entre sí</span>
-                {result.conflictPairs.map(([a, b], i) => {
-                  // Botón de acción: quitar la materia menos esencial del par
-                  // (la electiva si hay una; si no, la segunda) para desatarlo.
-                  const drop =
-                    a.tipo === b.tipo ? b : a.tipo === "electiva" ? a : b;
-                  return (
-                    <div className="cmb-conflict" key={i}>
-                      <b>{a.abbr}</b> {a.nombre}
-                      <span className="cmb-conflict__x">⨯</span>
-                      <b>{b.abbr}</b> {b.nombre}
-                      <button
-                        type="button"
-                        className="cmb-conflict__rm"
-                        title={`Quitar ${drop.nombre} de tu cuatrimestre`}
-                        onClick={() =>
-                          dispatch({ type: "TOGGLE_COMBO", code: drop.codigo })
-                        }
-                      >
-                        Quitar {drop.abbr}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </>
-        )}
+            </>
+          ) : (
+            <>
+              <h4>No entra ninguna cursada sin que se pisen</h4>
+              <p>
+                Probá permitir que se superpongan, fijar otra comisión o sacar
+                alguna materia.
+              </p>
+              {!comboParams.allowOverlap && (
+                <button
+                  type="button"
+                  className="cmb-nosol__cta"
+                  onClick={() =>
+                    dispatch({ type: "SET_ALLOW_OVERLAP", value: true })
+                  }
+                >
+                  Permitir que se superpongan
+                </button>
+              )}
+              {result && result.conflictPairs.length > 0 && (
+                <div className="cmb-conflicts">
+                  <span className="cmb-conflicts__h">Se pisan entre sí</span>
+                  {result.conflictPairs.map(([a, b], i) => {
+                    // Botón de acción: quitar la materia menos esencial del par
+                    // (la electiva si hay una; si no, la segunda) para desatarlo.
+                    const drop =
+                      a.tipo === b.tipo ? b : a.tipo === "electiva" ? a : b;
+                    return (
+                      <div className="cmb-conflict" key={i}>
+                        <b>{a.abbr}</b> {a.nombre}
+                        <span className="cmb-conflict__x">⨯</span>
+                        <b>{b.abbr}</b> {b.nombre}
+                        <button
+                          type="button"
+                          className="cmb-conflict__rm"
+                          title={`Quitar ${drop.nombre} de tu cuatrimestre`}
+                          onClick={() =>
+                            dispatch({ type: "TOGGLE_COMBO", code: drop.codigo })
+                          }
+                        >
+                          Quitar {drop.abbr}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+        {recSide}
       </div>
     );
 
@@ -1294,11 +1258,7 @@ export default function CombinadorView() {
     <section className="view-panel" id="panel-combo">
       <div className="cmb9">
         {header}
-        {pickerSummary}
-        {picker}
-        <div className="cmb9-body" ref={bodyRef}>
-          {body}
-        </div>
+        <div className="cmb9-body">{body}</div>
       </div>
     </section>
   );
