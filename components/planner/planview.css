@@ -440,6 +440,108 @@
   border-radius: 2px;
 }
 
+/* «Otras combinaciones» abierto: ‹ 2 / 9 › · qué cambia · Usar esta · × */
+.planner .pv-combos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  margin-top: 6px;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.planner .pv-combos__nav {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.planner .pv-combos__btn {
+  width: 22px;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.planner .pv-combos__btn:hover:not(:disabled) {
+  color: var(--block-ink);
+  background: var(--brass);
+}
+.planner .pv-combos__btn:disabled {
+  color: var(--faint);
+  opacity: 0.5;
+  cursor: default;
+}
+.planner .pv-combos__btn:focus-visible {
+  outline: none;
+  color: var(--brass);
+}
+.planner .pv-combos__pos {
+  padding: 0 6px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+}
+.planner .pv-combos__desc b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.planner .pv-combos__use {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent-text);
+  border-bottom: 1px dotted currentColor;
+}
+.planner .pv-combos__use:hover {
+  color: var(--ink);
+}
+.planner .pv-combos__use:focus-visible,
+.planner .pv-combos__close:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.planner .pv-combos__close {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: var(--faint);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+.planner .pv-combos__close:hover {
+  color: var(--ink);
+  background: var(--line);
+}
+
 /* sin label "Horario" (redundante): el switch ocupa un slot de la misma fila,
    con el mismo alto de control (36px) para alinear con selects e inputs. */
 .planner .pv-field--sw {

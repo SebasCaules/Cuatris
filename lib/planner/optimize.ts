@@ -2286,6 +2286,173 @@ export function planOverlaps(items: PlacedMateria[][]): PlanOverlap[] {
   return out;
 }
 
+/* ---------- otras combinaciones del mismo plan ---------- */
+
+/** Otra forma de repartir las MISMAS materias del plan: una materia en otro
+ *  cuatrimestre, o dos intercambiadas. */
+export interface PlanAlternative {
+  /** el plan con ese cambio (mismas sin ubicar y cotas; `items`, `accBefore`
+   *  y `delayed` propios). */
+  result: PlanResult;
+  /** qué se movió respecto del plan base. */
+  changes: { code: string; from: number; to: number }[];
+}
+
+/** Evaluaciones tentativas como mucho (cada una revalida el plan entero y,
+ *  con `avoid`, puede reelegir comisiones): acota el costo en planes grandes. */
+const ALT_BUDGET = 900;
+
+/**
+ * Las otras combinaciones posibles del plan: cada movimiento de una materia
+ * libre (no fijada, no anual) a otro cuatrimestre del plan y cada intercambio
+ * de dos materias libres de cuatrimestres distintos que dejan un plan válido
+ * —correlativas, dependientes, créditos requeridos, paridad sin supuestos
+ * nuevos, topes y, con `avoid`, sin superposiciones (reeligiendo comisiones
+ * del cuatrimestre si hace falta)— que no termina más tarde ni suma
+ * superposiciones. Distintas entre sí por la distribución de materias (no
+ * por comisiones), ordenadas por el mismo vector con el que elige el
+ * optimizador (las más parecidas a un buen plan primero), hasta `limit`.
+ */
+export function planAlternatives(
+  PL: PlanState,
+  approved: Set<string>,
+  fixedCom: Map<string, string> | undefined,
+  base: PlanResult,
+  limit = 24,
+): PlanAlternative[] {
+  const N = base.items.length;
+  const last = lastCuatri(base.items);
+  if (last < 0) return [];
+  const method: OptMethod = PL.method ?? "cuatris";
+  const baseOverlaps = overlapsOf(base.items);
+  const placedIdx: Record<string, number> = {};
+  base.items.forEach((it, i) => it.forEach((x) => (placedIdx[x.m.codigo] = i)));
+  const dependentsOf = new Map<string, string[]>();
+  for (const it of base.items)
+    for (const { m } of it)
+      for (const c of m.correlativas || []) {
+        const arr = dependentsOf.get(c);
+        if (arr) arr.push(m.codigo);
+        else dependentsOf.set(c, [m.codigo]);
+      }
+  const libre = (x: PlacedMateria) =>
+    !x.parte && !esAnual(x.m.codigo) && PL.fixed.get(x.m.codigo) == null;
+  const credOfCuatri = (it: PlacedMateria[]) =>
+    it.reduce((s, x) => s + (x.m.creditos || 0), 0);
+  // ¿x puede vivir en j con `idx` como ubicación de las demás (paridad dura,
+  // correlativas, dependientes) y `it` como contenido de j (topes)?
+  const okEn = (x: PlacedMateria, j: number, idx: Record<string, number>, it: PlacedMateria[]): boolean => {
+    if (PL.lockedIdx.has(j) || !parityOk(PL, x.m, j)) return false;
+    if (!(x.m.correlativas || []).every((c) => approved.has(c) || (idx[c] !== undefined && idx[c] < j))) return false;
+    if ((dependentsOf.get(x.m.codigo) || []).some((d) => idx[d] !== undefined && idx[d] <= j)) return false;
+    if (it.length >= capMat(PL, j)) return false;
+    if (it.length > 0 && credOfCuatri(it) + (x.m.creditos || 0) > capCred(PL, j)) return false;
+    return true;
+  };
+  // x entra en `it` (el cuatrimestre destino, ya sin la que se va): su
+  // comisión y, si hace falta reelegir las demás, las nuevas. Sin asignación
+  // libre de superposiciones: null con `avoid`; sin él, la menos mala (el
+  // filtro de superposiciones de abajo decide si la combinación vale)
+  const comEn = (x: PlacedMateria, it: PlacedMateria[]): { com: Comision | null; re: (Comision | null)[] | null } | null => {
+    const coms = comsOf(x.m);
+    if (!coms.length) return { com: null, re: null };
+    const fx = fixedCom?.get(x.m.codigo);
+    if (hasFreeCom(coms, it, fx)) return { com: chooseCom(coms, it, PL.avoid, fx), re: null };
+    const re = resolveComs(it, x.m, fixedCom);
+    if (re) return { com: re.candCom, re: re.coms };
+    return PL.avoid ? null : { com: chooseCom(coms, it, PL.avoid, fx), re: null };
+  };
+  // copia del plan con x en j (y opcionalmente y en i); null si no es válido
+  const tentativo = (
+    x: PlacedMateria,
+    i: number,
+    j: number,
+    y: PlacedMateria | null,
+  ): PlacedMateria[][] | null => {
+    const items = base.items.map((it) => it.slice());
+    const idx = { ...placedIdx, [x.m.codigo]: j };
+    if (y) idx[y.m.codigo] = i;
+    const sinX = items[i].filter((z) => z !== x);
+    const sinY = y ? items[j].filter((z) => z !== y) : items[j];
+    if (!okEn(x, j, idx, sinY)) return null;
+    if (y && !okEn(y, i, idx, sinX)) return null;
+    const cx = comEn(x, sinY);
+    if (!cx) return null;
+    const cy = y ? comEn(y, sinX) : null;
+    if (y && !cy) return null;
+    // las comisiones reelegidas se aplican sobre copias: el plan base no se toca
+    const nuevoJ = sinY.map((z) => ({ ...z }));
+    if (cx.re) applyComs(nuevoJ, cx.re);
+    nuevoJ.push({ ...x, com: cx.com });
+    const nuevoI = sinX.map((z) => ({ ...z }));
+    if (y && cy) {
+      if (cy.re) applyComs(nuevoI, cy.re);
+      nuevoI.push({ ...y, com: cy.com });
+    }
+    items[i] = nuevoI;
+    items[j] = nuevoJ;
+    if (!feasible(PL, approved, items, N)) return null;
+    if (overlapsOf(items) > baseOverlaps) return null;
+    if (lastCuatri(items) > last) return null;
+    return items;
+  };
+  const firma = (items: PlacedMateria[][]) =>
+    items.map((it) => it.map((z) => z.m.codigo + (z.parte ?? "")).sort().join(",")).join("|");
+  const seen = new Set<string>([firma(base.items)]);
+  const out: { items: PlacedMateria[][]; changes: PlanAlternative["changes"]; score: number[] }[] = [];
+  let budget = ALT_BUDGET;
+  const admitir = (items: PlacedMateria[][] | null, changes: PlanAlternative["changes"]) => {
+    if (!items) return;
+    const f = firma(items);
+    if (seen.has(f)) return;
+    seen.add(f);
+    out.push({ items, changes, score: scoreOf(PL, method, { items, placedIdx: {}, remaining: base.unplaced }) });
+  };
+  // movimientos: x de i a j
+  for (let i = 0; i <= last && budget > 0; i++) {
+    if (PL.lockedIdx.has(i)) continue;
+    for (const x of base.items[i]) {
+      if (!libre(x)) continue;
+      for (let j = 0; j <= last && budget > 0; j++) {
+        if (j === i) continue;
+        budget--;
+        admitir(tentativo(x, i, j, null), [{ code: x.m.codigo, from: i, to: j }]);
+      }
+    }
+  }
+  // intercambios: x de i a j, y de j a i
+  for (let i = 0; i <= last && budget > 0; i++) {
+    if (PL.lockedIdx.has(i)) continue;
+    for (let j = i + 1; j <= last && budget > 0; j++) {
+      if (PL.lockedIdx.has(j)) continue;
+      for (const x of base.items[i]) {
+        if (!libre(x)) continue;
+        for (const y of base.items[j]) {
+          if (!libre(y) || budget <= 0) continue;
+          budget--;
+          admitir(tentativo(x, i, j, y), [
+            { code: x.m.codigo, from: i, to: j },
+            { code: y.m.codigo, from: j, to: i },
+          ]);
+        }
+      }
+    }
+  }
+  out.sort((a, b) => (betterScore(a.score, b.score) ? -1 : betterScore(b.score, a.score) ? 1 : 0));
+  return out.slice(0, limit).map(({ items, changes }) => {
+    const accBefore: number[] = [];
+    let acc = approvedCredits(approved);
+    for (let i = 0; i < N; i++) {
+      accBefore[i] = acc;
+      acc += credOfCuatri(items[i]);
+    }
+    return {
+      result: { ...base, items, accBefore, delayed: explainDelays(PL, approved, items, accBefore) },
+      changes,
+    };
+  });
+}
+
 /* ---------- entrypoint ---------- */
 
 export interface OptimizeOpts {

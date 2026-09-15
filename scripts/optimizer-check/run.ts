@@ -12,7 +12,7 @@
 import { loadCarrera, mkPL, check } from "./harness";
 import { best as refBest } from "./referencia";
 import { PLAN, byId, remainingOblig, topeNominal, esAnual } from "../../lib/planner/model";
-import { optimizePlan, planOverlaps } from "../../lib/planner/optimize";
+import { optimizePlan, planAlternatives, planOverlaps } from "../../lib/planner/optimize";
 import { recommendElectives, suggestFill } from "../../lib/planner/recommend";
 import { CARRERAS } from "../../lib/planner/carreras/index";
 import type { OptMethod, PlanState } from "../../lib/planner/types";
@@ -186,6 +186,25 @@ for (const code of codes) {
             if (con && sin && (sin.unpl > con.unpl || (sin.unpl === con.unpl && sin.last > con.last))) {
               fails++;
               console.log(`SIN EVITAR MÁS TARDE ${label}: ${sin.last} vs ${con.last}`);
+            }
+          }
+          // otras combinaciones: cada una cumple las invariantes del plan, no
+          // termina más tarde, no suma superposiciones ni supuestos de paridad
+          // y difiere del plan base en una materia movida o dos intercambiadas
+          if (method === "cuatris" && mc === tope.cred) {
+            const alts = planAlternatives(PL, sc.ap, sc.fixedCom, R);
+            const sigBase = R.items.map((it) => it.map((x) => x.m.codigo).sort().join(",")).join("|");
+            const seen = new Set<string>();
+            for (const a of alts) {
+              const ca = check(PL, sc.ap, a.result, sc.fixedCom);
+              const sig = a.result.items.map((it) => it.map((x) => x.m.codigo).sort().join(",")).join("|");
+              const dup = sig === sigBase || seen.has(sig);
+              seen.add(sig);
+              if (!ca.ok || ca.last > ck.last || ca.unplaced.length !== ck.unplaced.length || planOverlaps(a.result.items).length > planOverlaps(R.items).length || ca.parityViol.length > check(PL, sc.ap, R, sc.fixedCom).parityViol.length || dup || a.changes.length < 1 || a.changes.length > 2) {
+                fails++;
+                console.log(`COMBINACIÓN ${label}: ${a.changes.map((c) => `${c.code}:${c.from}→${c.to}`).join("+")} ${ca.errors.slice(0, 2).join(" | ")}${dup ? " duplicada" : ""}${ca.last > ck.last ? " termina más tarde" : ""}`);
+                break;
+              }
             }
           }
           if (method === "cuatris" && !sc.fixedCom) {

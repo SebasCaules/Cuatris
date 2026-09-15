@@ -28,6 +28,7 @@ import { approvedCredits, electiveCredits } from "@/lib/planner/metrics";
 import { isAsync, slotsConflict, comModalidad, salaLabel } from "@/lib/planner/time";
 import {
   optimizePlan,
+  planAlternatives,
   planOverlaps,
   parityOf,
   assignComs,
@@ -39,6 +40,7 @@ import {
   cuatriName,
   OPT_METHODS,
   type OptMethodMeta,
+  type PlanAlternative,
   type PlanOverlap,
 } from "@/lib/planner/optimize";
 import { recommendElectives, suggestFill, type Recommendation } from "@/lib/planner/recommend";
@@ -1351,6 +1353,7 @@ function RoadmapStop({
   reqs = EMPTY_CODES,
   orden = 0,
   fixRange = 14,
+  onBeforeChange,
 }: {
   it: PlacedMateria[];
   i: number;
@@ -1365,6 +1368,9 @@ function RoadmapStop({
   recOn: boolean;
   locked: boolean;
   onUnlock: (idx: number) => void;
+  /** antes de fijar o mover una materia desde acá (la vista puede estar
+   *  mostrando otra combinación del plan: se fija primero) */
+  onBeforeChange?: () => void;
   /** requisitos sin cursada (Inglés) que hay que tener aprobados al llegar acá */
   reqs?: string[];
   /** posición en la grilla (escalona la entrada, motion.css) */
@@ -1425,7 +1431,9 @@ function RoadmapStop({
           setDragOver(false);
           if (locked) return;
           const code = e.dataTransfer.getData("text/plain");
-          if (code) dispatch({ type: "PLAN_SET_FIXED", code, idx: i });
+          if (!code) return;
+          onBeforeChange?.();
+          dispatch({ type: "PLAN_SET_FIXED", code, idx: i });
         }}
       >
         <div className="rmap-stop__head">
@@ -1538,13 +1546,14 @@ function RoadmapStop({
                       className="rmap-mat__sel"
                       aria-label={`Fijar cuatrimestre de ${x.m.nombre}`}
                       value={fx === undefined ? "" : String(fx)}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        onBeforeChange?.();
                         dispatch({
                           type: "PLAN_SET_FIXED",
                           code: x.m.codigo,
                           idx: e.target.value === "" ? null : +e.target.value,
-                        })
-                      }
+                        });
+                      }}
                     >
                       <option value="">auto</option>
                       {Array.from({ length: fixRange }, (_, ci) => (
@@ -1870,6 +1879,7 @@ function PlanPool({
   dragging,
   onActed,
   fixRange = 14,
+  onBeforeChange,
 }: {
   start: PlanStart;
   /** cuántos cuatrimestres ofrece el select «fijar en» */
@@ -1880,6 +1890,8 @@ function PlanPool({
   dragging: string | null;
   /** avisa qué materia tocó el usuario, para que el carrusel la siga */
   onActed: (code: string) => void;
+  /** antes de fijar una materia desde acá (ver RoadmapStop) */
+  onBeforeChange?: () => void;
 }) {
   const { state, dispatch } = usePlanner();
   const [query, setQuery] = useState("");
@@ -1990,6 +2002,7 @@ function PlanPool({
           value={fx === undefined ? "" : String(fx)}
           onChange={(e) => {
             onActed(m.codigo);
+            onBeforeChange?.();
             dispatch({
               type: "PLAN_SET_FIXED",
               code: m.codigo,
@@ -2246,11 +2259,77 @@ export default function PlanView() {
     ],
   );
 
+  // Otras combinaciones: las demás formas de repartir estas mismas materias
+  // sin correr el egreso (una en otro cuatrimestre, o dos intercambiadas). Se
+  // calculan recién al abrir el recorrido y se recorren de a una; la elegida
+  // se ve en el plan entero (tarjetas, resumen, observaciones) como vista
+  // previa hasta que «Usar esta» la fija. Cualquier cambio del plan vuelve a
+  // la del optimizador (las combinaciones se rehacen sobre el plan nuevo).
+  const [combos, setCombos] = useState<{ open: boolean; idx: number }>({ open: false, idx: 0 });
+  const alts = useMemo<PlanAlternative[]>(
+    () => (combos.open ? planAlternatives(PL, settled, state.fixedCom, baseR) : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [combos.open, baseR],
+  );
+  useEffect(() => {
+    setCombos((c) => (c.idx ? { ...c, idx: 0 } : c));
+  }, [baseR]);
+  // (la posición se acota a las combinaciones que hay: al abrir se pide la
+  // primera sin saber todavía si existe)
+  const comboIdx = combos.open ? Math.min(combos.idx, alts.length) : 0;
+  const alt: PlanAlternative | null = comboIdx > 0 ? (alts[comboIdx - 1] ?? null) : null;
+  // Fijar la combinación que se está viendo con los menos pines que la
+  // reproducen: primero sólo las materias movidas; si con eso el optimizador
+  // arma otra cosa (a igual egreso prefiere lo suyo), se fijan además las que
+  // él cambió de lugar, y así hasta que el plan coincide (a lo sumo, todas).
+  // Lo que queda es exactamente lo que se veía. Lo hace «Usar esta» y también
+  // cualquier otra edición del plan mientras se la ve (arrastrar, fijar,
+  // finalizar): lo que el usuario tiene delante es lo que edita.
+  const altRef = useRef<PlanAlternative | null>(null);
+  altRef.current = alt;
+  const commitAlt = useCallback(() => {
+    const a = altRef.current;
+    if (!a) return;
+    const sigOf = (items: PlacedMateria[][]) => {
+      const out: string[] = [];
+      items.forEach((it, i) => it.forEach((x) => out.push(`${x.m.codigo}${x.parte ?? ""}:${i}`)));
+      return out.sort().join("|");
+    };
+    const target = sigOf(a.result.items);
+    // índice de cada materia (una anual se fija por su primera mitad)
+    const idxOf = new Map<string, number>();
+    a.result.items.forEach((it, i) =>
+      it.forEach((x) => {
+        if (!x.parte || x.parte === 1) idxOf.set(x.m.codigo, i);
+      }),
+    );
+    const codes = new Set(a.changes.map((c) => c.code));
+    for (let iter = 0; ; iter++) {
+      const fixed = new Map(PL.fixed);
+      for (const code of codes) fixed.set(code, idxOf.get(code)!);
+      const R2 = optimizePlan({ ...PL, fixed }, settled, state.fixedCom);
+      const movidas: string[] = [];
+      R2.items.forEach((it, i) =>
+        it.forEach((x) => {
+          if ((!x.parte || x.parte === 1) && idxOf.get(x.m.codigo) !== i) movidas.push(x.m.codigo);
+        }),
+      );
+      if (!movidas.length || sigOf(R2.items) === target || iter >= 4) {
+        if (movidas.length && iter >= 4) for (const code of idxOf.keys()) codes.add(code);
+        for (const code of codes)
+          if (PL.fixed.get(code) !== idxOf.get(code))
+            dispatch({ type: "PLAN_SET_FIXED", code, idx: idxOf.get(code)! });
+        return;
+      }
+      for (const code of movidas) codes.add(code);
+    }
+  }, [PL, settled, state.fixedCom, dispatch]);
+
   // La vista previa NO reoptimiza el plan (eso movía todas las tarjetas en cada
   // hover): se calcula dónde entra la materia hoy (`fitsOf`) y se dibujan
   // bloques fantasma en esos calendarios. El resultado efectivo es siempre el
-  // comprometido.
-  const R = baseR;
+  // comprometido (o la combinación alternativa que se está recorriendo).
+  const R = alt ? alt.result : baseR;
 
   // Con «Evitar superposiciones» encendido, el mismo plan permitiéndolas: si
   // termina antes, el resultado lo ofrece («Con superposiciones: 2.º cuat.
@@ -2484,8 +2563,9 @@ export default function PlanView() {
       // rechaza. Si no entra limpia (tope, choque, correlativa) igual se fija:
       // el feedback ámbar ya lo avisó y las observaciones lo detallan.
       if (PL.lockedIdx.has(target)) return;
-      if (baseR.items[target]?.some((x) => x.m.codigo === code)) return;
+      if (R.items[target]?.some((x) => x.m.codigo === code)) return;
       actedRef.current = code;
+      commitAlt();
       if (!PL.pool.has(code)) dispatch({ type: "PLAN_POOL_ADD", code });
       dispatch({ type: "PLAN_SET_FIXED", code, idx: target });
     };
@@ -2508,12 +2588,19 @@ export default function PlanView() {
     document.addEventListener("pointercancel", onCancel);
     document.addEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [baseR, PL, settled, state.fixedCom, used, dispatch]);
+  }, [R, PL, settled, state.fixedCom, used, dispatch, commitAlt]);
 
   // Ubicación actual de cada materia (código → índice de cuatri). Cuando cambia
   // —una materia nueva, movida, fijada o soltada— el carrusel corre hasta los
   // cuatris afectados. La vista previa (hover) no toca baseR: no desplaza nada.
   const carouselRef = useRef<CarouselHandle | null>(null);
+  // al pasar de combinación, el carrusel corre hasta los cuatris que cambian
+  useEffect(() => {
+    if (!alt) return;
+    const idxs = [...new Set(alt.changes.flatMap((c) => [c.to, c.from]))];
+    const id = requestAnimationFrame(() => carouselRef.current?.reveal(idxs));
+    return () => cancelAnimationFrame(id);
+  }, [alt]);
   const placement = useMemo(() => {
     const map = new Map<string, number>();
     baseR.items.forEach((it, i) => it.forEach((x) => map.set(x.m.codigo, i)));
@@ -2571,7 +2658,7 @@ export default function PlanView() {
     if (par !== null && par !== cu.parity) return false;
     const before = new Set(settled);
     let acc = approvedCredits(settled);
-    baseR.items.forEach((it) =>
+    R.items.forEach((it) =>
       it.forEach((x) => {
         if (x.m.codigo === drag.code) return;
         before.add(x.m.codigo);
@@ -2580,7 +2667,7 @@ export default function PlanView() {
     );
     if ((m.creditosReq || 0) > acc) return false;
     return (m.correlativas || []).every((c) => before.has(c));
-  }, [drag, newIdx, PL.start, settled, baseR]);
+  }, [drag, newIdx, PL.start, settled, R]);
 
   const dropStateOf = (i: number): "can" | "ok" | "warn" | "bad" | null => {
     if (!drag || !dragFit) return null;
@@ -2591,7 +2678,7 @@ export default function PlanView() {
     }
     const can = dragFit.idx.has(i);
     const blocked =
-      PL.lockedIdx.has(i) || baseR.items[i]?.some((x) => x.m.codigo === drag.code);
+      PL.lockedIdx.has(i) || R.items[i]?.some((x) => x.m.codigo === drag.code);
     if (drag.over === i) return blocked ? "bad" : can ? "ok" : "warn";
     return can ? "can" : null;
   };
@@ -2828,7 +2915,7 @@ export default function PlanView() {
       return;
     }
     const html = buildPlanHTML({
-      result: baseR,
+      result: R,
       start: PL.start,
       maxCred: PL.maxCred,
       maxMat: PL.maxMat,
@@ -2851,7 +2938,7 @@ export default function PlanView() {
   // vertical, fondo blanco); si mide más que la página se escala para que
   // entre entera. Sin rasterizador (Safari) cae al PDF.
   const downloadCuatriPNG = async (idx: number) => {
-    const placed = baseR.items[idx] ?? [];
+    const placed = R.items[idx] ?? [];
     const periodo = cuatriName(cuatriAt(PL.start, idx));
     const { html, css } = buildCuatriSheet({
       placed,
@@ -2893,9 +2980,11 @@ export default function PlanView() {
   // manuales previos. No pre-pineamos con PLAN_SET_FIXED — el reducer
   // descartaría de lockPins todo lo ya fijado y el unlock no liberaría nada.
   const finalizeCuatri = (idx: number) => {
-    const pinnedByLock = (baseR.items[idx] ?? [])
+    // (con una combinación a la vista, lo que se finaliza es lo que se ve)
+    commitAlt();
+    const pinnedByLock = (R.items[idx] ?? [])
       .map((x) => x.m.codigo)
-      .filter((code) => !PL.fixed.has(code));
+      .filter((code) => !PL.fixed.has(code) && !alt?.changes.some((c) => c.code === code));
     dispatch({ type: "PLAN_TOGGLE_LOCK", idx, pinnedByLock });
   };
   const unlockCuatri = (idx: number) =>
@@ -3234,6 +3323,90 @@ export default function PlanView() {
                       </button>
                     </Tooltip>
                   )}
+                  {/* Otras combinaciones: recorrer las demás formas de repartir
+                      estas mismas materias sin correr el egreso. Cerrado, un
+                      enlace; abierto, un paso a paso (1 = la del optimizador)
+                      con qué cambia en cada una y «Usar esta» para fijarla. */}
+                  {!combos.open ? (
+                    <Tooltip
+                      width={280}
+                      content="Otras formas de repartir estas mismas materias que terminan en la misma fecha: una materia en otro cuatrimestre, o dos intercambiadas. Clic para recorrerlas."
+                    >
+                      <button
+                        type="button"
+                        className="pv-result__alt"
+                        onClick={() => setCombos({ open: true, idx: 1 })}
+                      >
+                        Otras combinaciones
+                      </button>
+                    </Tooltip>
+                  ) : (
+                    <div className="pv-combos" role="group" aria-label="Otras combinaciones">
+                      <span className="pv-combos__nav">
+                        <Tooltip content="Combinación anterior" width={150}>
+                          <button
+                            type="button"
+                            className="pv-combos__btn"
+                            aria-label="Combinación anterior"
+                            disabled={comboIdx <= 0}
+                            onClick={() => setCombos((c) => ({ ...c, idx: Math.max(0, comboIdx - 1) }))}
+                          >
+                            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                              <path d="M15 5l-7 7 7 7" />
+                            </svg>
+                          </button>
+                        </Tooltip>
+                        <span className="pv-combos__pos" aria-live="polite">
+                          {comboIdx + 1} / {alts.length + 1}
+                        </span>
+                        <Tooltip content="Siguiente combinación" width={160}>
+                          <button
+                            type="button"
+                            className="pv-combos__btn"
+                            aria-label="Siguiente combinación"
+                            disabled={comboIdx >= alts.length}
+                            onClick={() => setCombos((c) => ({ ...c, idx: Math.min(alts.length, comboIdx + 1) }))}
+                          >
+                            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                              <path d="M9 5l7 7-7 7" />
+                            </svg>
+                          </button>
+                        </Tooltip>
+                      </span>
+                      <span className="pv-combos__desc">
+                        {alt
+                          ? alt.changes.map((c, k) => (
+                              <span key={c.code}>
+                                {k > 0 && " · "}
+                                <b>{abbrOf(c.code)}</b> → {cuatriLabel(cuatriAt(PL.start, c.to))}
+                              </span>
+                            ))
+                          : alts.length
+                            ? "la del optimizador"
+                            : "no hay otras con estos topes"}
+                      </span>
+                      {alt && (
+                        <Tooltip
+                          width={240}
+                          content="Fijar estas materias en esos cuatrimestres: el plan queda así (se pueden soltar después desde «Materias del plan»)."
+                        >
+                          <button type="button" className="pv-combos__use" onClick={commitAlt}>
+                            Usar esta
+                          </button>
+                        </Tooltip>
+                      )}
+                      <Tooltip content="Volver al plan del optimizador" width={170}>
+                        <button
+                          type="button"
+                          className="pv-combos__close"
+                          aria-label="Cerrar el recorrido de combinaciones"
+                          onClick={() => setCombos({ open: false, idx: 0 })}
+                        >
+                          <IconClose size={11} />
+                        </button>
+                      </Tooltip>
+                    </div>
+                  )}
                 </div>
               </div>
               {/* Todo lo de este bloque es AL FINAL DEL PLAN (igual que «Te
@@ -3514,6 +3687,7 @@ export default function PlanView() {
                       locked={PL.lockedIdx.has(i)}
                       onUnlock={unlockCuatri}
                       reqs={reqByIdx.get(i)}
+                      onBeforeChange={commitAlt}
                     />
                   ))}
                 </ol>
@@ -3587,6 +3761,7 @@ export default function PlanView() {
           dragging={drag?.code ?? null}
           onActed={markActed}
           fixRange={fixRange}
+          onBeforeChange={commitAlt}
         />
       </details>
 

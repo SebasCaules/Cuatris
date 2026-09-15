@@ -623,6 +623,38 @@ plan no tenía: la fecha era la de terminar las obligatorias, no la de recibirse
   columnas angostas. El check verifica que la sugerencia cubre el déficit, entra entera y
   termina donde dice.
 
+## 23. Plan de cursada: «Otras combinaciones» (2026-09-15)
+
+Recorrer las demás formas de repartir las mismas materias del plan sin correr el egreso: una
+materia en otro cuatrimestre, o dos intercambiadas.
+
+- `lib/planner/optimize.ts`: `planAlternatives(PL, approved, fixedCom, base, limit)` prueba
+  cada movimiento de una materia libre (no fijada, no anual) a otro cuatrimestre del plan y
+  cada intercambio de dos materias libres de cuatrimestres distintos; vale si el plan sigue
+  siendo válido —correlativas, dependientes, créditos requeridos (`feasible`), paridad dura
+  (sin supuestos nuevos), topes y comisiones sin superposiciones (reeligiendo las del
+  cuatrimestre con `resolveComs` si hace falta)— y no termina más tarde ni suma
+  superposiciones. Distintas por distribución (no por comisiones), ordenadas por el vector
+  del optimizador (`scoreOf`), hasta 24; presupuesto de 900 evaluaciones (`ALT_BUDGET`).
+  Cada `PlanAlternative` trae el `PlanResult` con sus `items`, `accBefore` y `delayed`, y
+  `changes` (código, de, a). Costo típico: 1–10 ms.
+- `views/PlanView.tsx`: en el resultado, el enlace «Otras combinaciones» (mismo trazo que
+  «Con superposiciones») abre un paso a paso `‹ 2 / 9 ›` (1 = la del optimizador) con qué
+  cambia en cada una («Der → 1c-28 · POD → 1c-27»), «Usar esta» y ×. La combinación elegida
+  se ve en el plan entero como vista previa (`R` pasa a ser la alternativa: tarjetas,
+  resumen, observaciones, arrastre, exportación); el carrusel corre hasta los cuatrimestres
+  que cambian. Cualquier cambio del plan vuelve a la del optimizador y las combinaciones se
+  rehacen sobre el plan nuevo. «Usar esta» (`commitAlt`) fija la combinación con los menos
+  pines que la reproducen: las materias movidas y, si el optimizador arma otra cosa a igual
+  egreso, también las que él cambia de lugar, hasta que coincide (verificado con
+  `optimizePlan`). Editar el plan mientras se ve una combinación (arrastrar, fijar desde el
+  roadmap o «Materias del plan», finalizar un cuatrimestre) la fija primero
+  (`onBeforeChange` en `RoadmapStop` y `PlanPool`): lo que se tiene delante es lo que se
+  edita. `planview.css`: `.pv-combos*`.
+- `scripts/optimizer-check/run.ts`: cada combinación cumple las invariantes del plan, no
+  termina más tarde, no suma superposiciones ni supuestos de paridad, no repite otra ni el
+  plan base, y cambia una o dos materias.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título
