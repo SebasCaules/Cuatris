@@ -407,9 +407,7 @@
 /* «Con superposiciones: 2c-27 · 1 choque»: la alternativa que termina antes,
    un clic apaga «Evitar superposiciones» */
 .planner .pv-result__alt {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  display: inline-block;
   margin-top: 4px;
   padding: 0;
   border: none;
@@ -417,6 +415,8 @@
   cursor: pointer;
   font-family: var(--f-m);
   font-size: 10.5px;
+  line-height: 1.5;
+  text-align: left;
   color: var(--muted);
   border-bottom: 1px dotted transparent;
   transition: color var(--dur-fast) var(--ease-out);

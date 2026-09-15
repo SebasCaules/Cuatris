@@ -41,7 +41,7 @@ import {
   type OptMethodMeta,
   type PlanOverlap,
 } from "@/lib/planner/optimize";
-import { recommendElectives, type Recommendation } from "@/lib/planner/recommend";
+import { recommendElectives, suggestFill, type Recommendation } from "@/lib/planner/recommend";
 import {
   buildCuatriSheet,
   buildPlanHTML,
@@ -2661,6 +2661,33 @@ export default function PlanView() {
   const tituloIdx = elecFaltan > 0 ? Math.max(lastIdx, R.minLastTitulo ?? lastIdx) : lastIdx;
   const tituloCu = cuatriAt(PL.start, tituloIdx);
   const titulo = elecFaltan > 0 ? { faltan: elecFaltan, cu: tituloCu } : null;
+  // Electivas sugeridas para cubrir lo que falta: sobre las mismas
+  // recomendaciones (diferidas), un par de simulaciones más. Un clic las
+  // agrega todas al plan; después cada una se quita o cambia como cualquiera.
+  const fill = useMemo(
+    () =>
+      elecFaltan > 0 && recs.length
+        ? suggestFill(dPL, dApproved, recs, elecFaltan, dFixedCom)
+        : null,
+    [elecFaltan, recs, dPL, dApproved, dFixedCom],
+  );
+  const applyFill = () => {
+    if (!fill) return;
+    for (const p of fill.picks) dispatch({ type: "PLAN_POOL_ADD", code: p.m.codigo });
+  };
+  const fillTip = fill && (
+    <>
+      Para cubrir los {elecFaltan} créditos que faltan:
+      {fill.picks.map((p) => (
+        <span key={p.m.codigo} style={{ display: "block" }}>
+          <b>{p.m.abbr}</b> · {p.m.creditos} cr · {cuatriLabel(cuatriAt(PL.start, p.idx))}
+          {hasHorario(p.m.codigo) ? "" : " · sin horario"}
+        </span>
+      ))}
+      Con ellas el plan termina en <b>{cuatriName(cuatriAt(PL.start, fill.last))}</b>. Clic para
+      agregarlas; después podés quitar o cambiar cualquiera.
+    </>
+  );
 
   // Si la materia previsualizada no entra en ningún cuatrimestre del plan, el
   // recomendador dice dónde caería si el plan se alarga (`landingIdx` más allá
@@ -2930,10 +2957,11 @@ export default function PlanView() {
           : "faltan correlativas: mirá las observaciones.";
       return `${R.unplaced.length} ${R.unplaced.length === 1 ? "materia no entra" : "materias no entran"} en ningún cuatrimestre: ${fix}`;
     }
-    if (recOn && !recsPending && recs.length > 0 && !recs.some((r) => !r.conflict && !r.addsCuatri))
+    // (sin plan no hay nada que alargar: toda electiva «abre» el primer cuatrimestre)
+    if (used.length > 0 && recOn && !recsPending && recs.length > 0 && !recs.some((r) => !r.conflict && !r.addsCuatri))
       return "Ninguna electiva entra sin alargar la carrera: subí el máximo de materias o de créditos por cuatrimestre.";
     return null;
-  }, [R.unplaced.length, R.unplacedWhy, PL.avoid, recOn, recsPending, recs]);
+  }, [R.unplaced.length, R.unplacedWhy, PL.avoid, used.length, recOn, recsPending, recs]);
   const [avisoCerrado, setAvisoCerrado] = useState<string | null>(null);
   const aviso = sinMargen && avisoCerrado !== sinMargen ? sinMargen : null;
   const showSide = recOn && recs.length > 0 && tab !== "min";
@@ -3198,6 +3226,14 @@ export default function PlanView() {
                       </button>
                     </Tooltip>
                   )}
+                  {titulo && fill && !recsPending && (
+                    <Tooltip width={300} content={fillTip}>
+                      <button type="button" className="pv-result__alt" onClick={applyFill}>
+                        Con electivas sugeridas: <b>{cuatriLabel(cuatriAt(PL.start, fill.last))}</b> ·{" "}
+                        {fill.picks.length} {fill.picks.length === 1 ? "materia" : "materias"}
+                      </button>
+                    </Tooltip>
+                  )}
                 </div>
               </div>
               {/* Todo lo de este bloque es AL FINAL DEL PLAN (igual que «Te
@@ -3383,6 +3419,13 @@ export default function PlanView() {
                 ? `Te faltan ${elecFaltan} créditos de electivas para el título: agregá electivas al plan para ver tu camino a recibirte.`
                 : "Agregá materias al plan para ver tu camino a recibirte."}
             </p>
+            {elecFaltan > 0 && fill && !recsPending && (
+              <Tooltip width={300} content={fillTip}>
+                <button type="button" className="btn btn--ghost btn--sm" onClick={applyFill}>
+                  Sugerir electivas · {fill.picks.length} {fill.picks.length === 1 ? "materia" : "materias"}
+                </button>
+              </Tooltip>
+            )}
           </div>
         </div>
       ) : (

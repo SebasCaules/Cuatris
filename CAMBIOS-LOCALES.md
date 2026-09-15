@@ -609,6 +609,19 @@ plan no tenía: la fecha era la de terminar las obligatorias, no la de recibirse
 - `scripts/optimizer-check/run.ts`: sin déficit `minLastTitulo === minLast`; con déficit,
   dos muestras de electivas reales (con horario) que lo cubren nunca terminan antes de la
   cota.
+- Electivas sugeridas (`lib/planner/recommend.ts`, `suggestFill`): con los créditos sin
+  cubrir, el resultado ofrece «Con electivas sugeridas: 2c-28 · 8 materias» (mismo trazo que
+  «Con superposiciones»; tooltip con cada electiva, sus créditos y su cuatrimestre, y la
+  fecha con ellas; un clic las agrega todas al pool). La elección recorre las
+  recomendaciones en su orden y también con los créditos primero (menos materias cuando lo
+  que aprieta es el tope de materias), toma electivas hasta juntar los créditos, simula el
+  plan con todas juntas y descarta las que no entran; gana el orden que termina antes y, a
+  igual egreso, con menos materias. El estado vacío (todo aprobado) lleva el botón «Sugerir
+  electivas · N materias». El aviso «Ninguna electiva entra sin alargar la carrera» ya no
+  sale con el plan vacío (sin plan, toda electiva «abre» el primer cuatrimestre).
+  `planview.css`: `.pv-result__alt` pasa a `inline-block` para envolver como texto en
+  columnas angostas. El check verifica que la sugerencia cubre el déficit, entra entera y
+  termina donde dice.
 
 ## Fuera de los directorios espejados (no lo toca el sync)
 

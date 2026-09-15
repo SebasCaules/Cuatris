@@ -7,6 +7,16 @@ import { byId, isElectiva, hasHorario, DAYS } from "./model";
 import { isAsync } from "./time";
 import type { MateriaM, PlacedMateria, PlanState } from "./types";
 
+/** Electivas sugeridas para cubrir los créditos que faltan para el título. */
+export interface FillSuggestion {
+  /** las elegidas, con el cuatrimestre (índice) donde caen todas juntas. */
+  picks: { m: MateriaM; idx: number }[];
+  /** créditos que suman. */
+  cred: number;
+  /** último cuatrimestre usado por el plan con ellas. */
+  last: number;
+}
+
 export interface Recommendation {
   m: MateriaM;
   landingIdx: number; // índice de cuatrimestre donde caería (-1 si no se ubica)
@@ -119,4 +129,68 @@ export function recommendElectives(
   });
 
   return recs.slice(0, limit);
+}
+
+/**
+ * Sugerencia para cubrir `faltan` créditos de electivas. Dos órdenes de
+ * elección —el de las recomendaciones (ubicables › no alargan el plan › con
+ * horario › más créditos › menos días nuevos › área nueva) y el mismo con
+ * los créditos primero (menos materias: cuando lo que aprieta es el tope de
+ * materias, tres de 6 cr entran donde seis de 3 no)— y de cada uno se toman
+ * electivas hasta juntar los créditos; se simula el plan con todas juntas y,
+ * si alguna queda sin ubicar (de a una entraban, todas juntas no), se
+ * descarta y se completa con las siguientes. Gana el orden que termina antes
+ * y, a igual egreso, el de menos materias. `null` si no hay electivas
+ * ubicables que alcancen.
+ */
+export function suggestFill(
+  PL: PlanState,
+  approved: Set<string>,
+  recs: Recommendation[],
+  faltan: number,
+  fixedCom?: Map<string, string>,
+): FillSuggestion | null {
+  if (faltan <= 0) return null;
+  const usable = recs.filter((r) => !r.conflict && !PL.pool.has(r.m.codigo));
+  const porCreditos = [...usable].sort(
+    (a, b) =>
+      Number(a.noHorario) - Number(b.noHorario) ||
+      (b.m.creditos || 0) - (a.m.creditos || 0) ||
+      usable.indexOf(a) - usable.indexOf(b),
+  );
+  let best: FillSuggestion | null = null;
+  for (const orden of [usable, porCreditos]) {
+    const rejected = new Set<string>();
+    for (let pass = 0; pass < 4; pass++) {
+      const picks: MateriaM[] = [];
+      let cred = 0;
+      for (const r of orden) {
+        if (cred >= faltan) break;
+        if (rejected.has(r.m.codigo)) continue;
+        picks.push(r.m);
+        cred += r.m.creditos || 0;
+      }
+      if (cred < faltan) break;
+      const pool = new Set(PL.pool);
+      for (const m of picks) pool.add(m.codigo);
+      const R = optimizePlan({ ...PL, pool }, approved, fixedCom);
+      const unplaced = new Set(R.unplaced.map((m) => m.codigo));
+      const bad = picks.filter((m) => unplaced.has(m.codigo));
+      if (bad.length) {
+        for (const m of bad) rejected.add(m.codigo);
+        continue;
+      }
+      const idxOf = new Map<string, number>();
+      R.items.forEach((it, i) => it.forEach((x) => idxOf.set(x.m.codigo, i)));
+      const cand: FillSuggestion = {
+        picks: picks.map((m) => ({ m, idx: idxOf.get(m.codigo) ?? -1 })),
+        cred,
+        last: lastUsed(R.items),
+      };
+      if (!best || cand.last < best.last || (cand.last === best.last && cand.picks.length < best.picks.length))
+        best = cand;
+      break;
+    }
+  }
+  return best;
 }

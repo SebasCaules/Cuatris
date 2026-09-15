@@ -13,6 +13,7 @@ import { loadCarrera, mkPL, check } from "./harness";
 import { best as refBest } from "./referencia";
 import { PLAN, byId, remainingOblig, topeNominal, esAnual } from "../../lib/planner/model";
 import { optimizePlan, planOverlaps } from "../../lib/planner/optimize";
+import { recommendElectives, suggestFill } from "../../lib/planner/recommend";
 import { CARRERAS } from "../../lib/planner/carreras/index";
 import type { OptMethod, PlanState } from "../../lib/planner/types";
 
@@ -218,6 +219,23 @@ for (const code of codes) {
               if (!R.electivasFaltan && R.minLastTitulo !== R.minLast) {
                 fails++;
                 console.log(`COTA TÍTULO ${label}: sin déficit, minLastTitulo=${R.minLastTitulo} ≠ minLast=${R.minLast}`);
+              }
+              // la sugerencia de electivas cubre el déficit y entra entera
+              if (R.electivasFaltan && avoid && mc === tope.cred && !sc.fixedCom) {
+                const recs = recommendElectives(PL, sc.ap, Infinity);
+                const fill = suggestFill(PL, sc.ap, recs, R.electivasFaltan);
+                if (fill) {
+                  const pool = new Set(PL.pool);
+                  for (const p of fill.picks) pool.add(p.m.codigo);
+                  const Rf = optimizePlan(mkPL({ ...PL, pool }, sc.ap), sc.ap);
+                  const unpl = new Set(Rf.unplaced.map((m) => m.codigo));
+                  let lastF = -1;
+                  Rf.items.forEach((it, i) => { if (it.length) lastF = i; });
+                  if (fill.cred < R.electivasFaltan || Rf.electivasFaltan || fill.picks.some((p) => unpl.has(p.m.codigo)) || lastF !== fill.last) {
+                    fails++;
+                    console.log(`SUGERENCIA ${label}: cred=${fill.cred}/${R.electivasFaltan} faltan=${Rf.electivasFaltan} sin ubicar=${fill.picks.filter((p) => unpl.has(p.m.codigo)).length} last=${lastF} vs ${fill.last}`);
+                  }
+                }
               }
               if (R.electivasFaltan) {
                 const cand = electivasCon.filter((c) => !PL.pool.has(c) && !sc.ap.has(c));
