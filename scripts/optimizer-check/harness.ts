@@ -95,10 +95,9 @@ export function check(PL: PlanState, approved: Set<string>, R: PlanResult, fixed
         const lastIdx = ci ? Math.max(...ci) : undefined;
         if (lastIdx === undefined || lastIdx >= i) errors.push(`${code} en ${i} con correlativa ${c} en ${lastIdx ?? "ninguno"}`);
       }
-      // superposiciones: sólo se toleran entre dos materias forzadas por el
-      // usuario (fijadas a este cuatrimestre o con comisión fijada)
-      const forced = (y: typeof x) => PL.fixed.get(y.m.codigo) != null || fixedCom?.has(y.m.codigo) === true;
-      if (PL.avoid && x.com) for (const y of it) if (y !== x && y.com && !(forced(x) && forced(y)) && comConflict(x.com, y.com)) errors.push(`cuatri ${i}: ${code}/${x.com.comision} pisa ${y.m.codigo}/${y.com.comision}`);
+      // superposiciones: con «evitar» encendido no se admite ninguna; la
+      // única excepción es un cuatrimestre finalizado (historia del usuario)
+      if (PL.avoid && x.com && !PL.lockedIdx.has(i)) for (const y of it) if (y !== x && y.com && comConflict(x.com, y.com)) errors.push(`cuatri ${i}: ${code}/${x.com.comision} pisa ${y.m.codigo}/${y.com.comision}`);
       if (fixedCom?.get(code) && x.com && x.com.comision !== fixedCom.get(code) && comsOf(orig).some((c) => c.comision === fixedCom.get(code))) errors.push(`${code}: comisión fijada ${fixedCom.get(code)} pero el plan eligió ${x.com.comision}`);
     }
     if (PL.lockedIdx.has(i)) for (const x of it) if (PL.fixed.get(x.m.codigo) == null) errors.push(`cuatri ${i} lockeado con ${x.m.codigo} sin fijar`);

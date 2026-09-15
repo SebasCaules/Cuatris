@@ -427,6 +427,15 @@ superposiciones o por un requisito de créditos que le deja una única ventana (
 - `resolveComs`: decide primero las materias con menos comisiones y presupuesto de 20 000
   nodos (con seis materias de hasta ocho comisiones agotaba los 4000 sin encontrar una
   asignación que existía).
+- «Evitar superposiciones» es absoluto: una materia fijada a un cuatrimestre donde todas sus
+  comisiones se pisan con lo ya fijado ahí (ni reeligiendo comisiones, `resolveComs`) queda
+  SIN UBICAR con motivo `superposicion` (observación: «la fijaste en 2c-27 pero ahí se pisa
+  con Cuántica…»; el aviso ofrece la alternativa «Con superposiciones»). Antes se colocaba
+  igual con la comisión «menos mala» y el plan mostraba un choque con el switch encendido.
+  Excepción: un cuatrimestre finalizado (historia del usuario) se respeta tal cual. La 2.ª
+  mitad de una anual también exige comisión libre en su cuatrimestre (`cabeSegundaMitad`).
+  El check ya no exime a las fijadas: con «evitar», cero choques salvo en finalizados
+  (sondeo aparte: 360 planes al azar con fijadas y comisiones fijadas, 0 choques).
 - `PlanResult.delayed` (`explainDelays`): con «evitar» encendido, qué materia queda más
   tarde sólo por el horario y con quién se pisa en cada cuatrimestre anterior;
   `planOverlaps(items)` lista los choques de un plan con el momento («jue 18:00–19:00»,

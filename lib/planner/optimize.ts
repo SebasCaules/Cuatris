@@ -862,14 +862,17 @@ function placeMats(
           if (j >= N) break;
           const mm = mitadDe(m, parte);
           const coms = comsOf(m);
-          items[j].push({
-            m: mm,
-            com:
-              parte === 1 && com !== undefined
-                ? com
-                : chooseCom(coms, items[j], PL.avoid, fixedCom?.get(m.codigo)),
-            parte,
-          });
+          let cj: Comision | null;
+          if (parte === 1 && com !== undefined) cj = com;
+          else if (PL.avoid && coms.length && !hasFreeCom(coms, items[j], fixedCom?.get(m.codigo))) {
+            // ninguna libre contra lo puesto en j: reelegir las de j (si no
+            // se puede, la menos mala: `cabeSegundaMitad` ya lo evitó salvo
+            // en cuatrimestres finalizados)
+            const re = resolveComs(items[j], m, fixedCom);
+            if (re) applyComs(items[j], re.coms);
+            cj = re ? re.candCom : chooseCom(coms, items[j], PL.avoid, fixedCom?.get(m.codigo));
+          } else cj = chooseCom(coms, items[j], PL.avoid, fixedCom?.get(m.codigo));
+          items[j].push({ m: mm, com: cj, parte });
           placedIdx[m.codigo] = j;
         }
         return;
@@ -891,12 +894,34 @@ function placeMats(
       if (j >= N || PL.lockedIdx.has(j)) return false;
       if (items[j].length >= capMat(PL, j)) return false;
       const add = mitadCred(m, 2);
-      return items[j].length === 0 || credOfCuatri(items[j]) + add <= capCred(PL, j);
+      if (!(items[j].length === 0 || credOfCuatri(items[j]) + add <= capCred(PL, j))) return false;
+      // con `avoid`, la 2.ª mitad también necesita comisión libre en j
+      const coms = comsOf(m);
+      if (PL.avoid && coms.length && !hasFreeCom(coms, items[j], fixedCom?.get(m.codigo)) && !resolveComs(items[j], m, fixedCom)) return false;
+      return true;
     };
-    // materias fijadas a este cuatrimestre van sí o sí
-    remaining
-      .filter((m) => PL.fixed.get(m.codigo) === i)
-      .forEach((m) => place(m));
+    // materias fijadas a este cuatrimestre van sí o sí… salvo que «Evitar
+    // superposiciones» esté encendido y no haya forma de que entre sin
+    // pisarse con lo ya fijado acá (ni reeligiendo comisiones): entonces queda
+    // sin ubicar, con su motivo. En un cuatrimestre finalizado es historia y
+    // va igual.
+    for (const m of remaining.filter((x) => PL.fixed.get(x.codigo) === i)) {
+      const coms = comsOf(m);
+      if (
+        PL.avoid &&
+        coms.length &&
+        !hasFreeCom(coms, items[i], fixedCom?.get(m.codigo))
+      ) {
+        const re = resolveComs(items[i], m, fixedCom);
+        if (re) {
+          applyComs(items[i], re.coms);
+          place(m, re.candCom);
+          continue;
+        }
+        if (!PL.lockedIdx.has(i)) continue; // se pisa con lo fijado: afuera
+      }
+      place(m);
+    }
     remaining = remaining.filter((m) => placedIdx[m.codigo] === undefined);
 
     // cuatrimestre finalizado (lockeado): sólo lo ya pineado vía `fixed` vive
@@ -2065,6 +2090,7 @@ function explainUnplaced(
   approved: Set<string>,
   mats: MateriaM[],
   unplaced: MateriaM[],
+  items: PlacedMateria[][],
 ): Map<string, UnplacedReason> {
   const why = new Map<string, UnplacedReason>();
   const inPool = new Set(mats.map((m) => m.codigo));
@@ -2078,10 +2104,18 @@ function explainUnplaced(
     // lo máximo que puede haber antes de ella: aprobadas más todo el pool
     // (menos ella misma); si ni así alcanza, hacen falta más materias
     const max = total - (m.creditos || 0);
+    const fx = PL.fixed.get(m.codigo);
     if (codes.length) why.set(m.codigo, { kind: "correlativa", codes });
     else if ((m.creditosReq || 0) > max)
       why.set(m.codigo, { kind: "creditos", req: m.creditosReq || 0, max });
-    else why.set(m.codigo, { kind: "sinLugar" });
+    else if (fx != null && PL.avoid && items[fx]) {
+      // fijada en un cuatrimestre donde se pisa con lo demás fijado ahí
+      const coms = comsOf(m);
+      const con = items[fx]
+        .filter((y) => y.com && coms.every((c) => conflicts(y.com!, c)))
+        .map((y) => y.m.codigo);
+      why.set(m.codigo, { kind: "superposicion", idx: fx, codes: [...new Set(con)] });
+    } else why.set(m.codigo, { kind: "sinLugar" });
   }
   return why;
 }
@@ -2253,7 +2287,7 @@ export function optimizePlan(
     accBefore,
     moved,
     minLast: bound.last,
-    unplacedWhy: explainUnplaced(PL, approved, mats, remaining),
+    unplacedWhy: explainUnplaced(PL, approved, mats, remaining, items),
     delayed: explainDelays(PL, approved, items, accBefore),
   };
 }

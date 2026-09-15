@@ -251,6 +251,9 @@ export interface PlacedMateria {
 export type UnplacedReason =
   | { kind: "correlativa"; codes: string[] }
   | { kind: "creditos"; req: number; max: number }
+  /** fijada en `idx`, pero ahí todas sus comisiones se pisan con `codes`
+   *  (también fijadas) y «Evitar superposiciones» está encendido. */
+  | { kind: "superposicion"; idx: number; codes: string[] }
   | { kind: "sinLugar" };
 
 /** Una materia que el plan pone más tarde de lo que podría SOLO por las

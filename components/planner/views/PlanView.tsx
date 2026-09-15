@@ -2759,6 +2759,8 @@ export default function PlanView() {
       motivo = partes.join("; ");
     } else if (why?.kind === "creditos") {
       motivo = `pide ${why.req} créditos y con lo marcado se juntan ${why.max}: agregá electivas`;
+    } else if (why?.kind === "superposicion") {
+      motivo = `la fijaste en ${cuatriLabel(cuatriAt(PL.start, why.idx))} pero ahí se pisa con ${why.codes.map(abbrOf).join(", ")}; con «Evitar superposiciones» encendido queda afuera: movela, o apagá el switch`;
     } else {
       motivo = PL.avoid
         ? "no encontró cuatrimestre (superposiciones o topes): subí los máximos o apagá «Evitar superposiciones»"
@@ -2904,7 +2906,9 @@ export default function PlanView() {
   const sinMargen = useMemo(() => {
     if (R.unplaced.length > 0) {
       const kinds = new Set([...(R.unplacedWhy?.values() ?? [])].map((w) => w.kind));
-      const fix = kinds.has("sinLugar")
+      const fix = kinds.has("superposicion")
+        ? "se pisa con otra materia fijada en el mismo cuatrimestre: mirá las observaciones."
+        : kinds.has("sinLugar")
         ? PL.avoid
           ? "subí el máximo de materias o de créditos, o apagá «Evitar superposiciones»."
           : "subí el máximo de materias o de créditos."
