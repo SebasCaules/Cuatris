@@ -40,7 +40,7 @@ export function mkPL(over: Partial<PlanState> = {}, approved = new Set<string>()
 
 const comsOf = (m: MateriaM) => m.horario?.comisiones ?? [];
 
-export interface Check { ok: boolean; errors: string[]; used: number; last: number; unplaced: string[]; loads: number[]; mats: number[]; days: number[]; viajes: number[] }
+export interface Check { ok: boolean; errors: string[]; used: number; last: number; unplaced: string[]; loads: number[]; mats: number[]; days: number[]; viajes: number[]; /** materias no fijadas fuera de su cuatrimestre nominal (paridad blanda: sólo se admiten si acortan el plan) */ parityViol: string[] }
 
 export function check(PL: PlanState, approved: Set<string>, R: PlanResult, fixedCom?: Map<string, string>): Check {
   const errors: string[] = [];
@@ -65,7 +65,7 @@ export function check(PL: PlanState, approved: Set<string>, R: PlanResult, fixed
   let acc = approvedCredits(approved);
   const capCred = (i: number) => PL.capCredByIdx.get(i) ?? PL.maxCred;
   const capMat = (i: number) => PL.capMatByIdx.get(i) ?? PL.maxMat;
-  const loads: number[] = [], mats: number[] = [], days: number[] = [], viajes: number[] = [];
+  const loads: number[] = [], mats: number[] = [], days: number[] = [], viajes: number[] = []; const parityViol: string[] = [];
   for (let i = 0; i < N; i++) {
     const it = R.items[i];
     const cu = cuatriAt(PL.start, i);
@@ -86,7 +86,7 @@ export function check(PL: PlanState, approved: Set<string>, R: PlanResult, fixed
       if (fx != null && fx !== i && !(esAnual(code) && x.parte === 2 && fx === i - 1)) errors.push(`${code} fijada en ${fx} pero está en ${i}`);
       const orig = byId.get(code)!;
       const par = parityOf(orig);
-      if (fx == null && !esAnual(code) && par != null && par !== cu.parity) errors.push(`${code} paridad ${par} en cuatri ${i} (paridad ${cu.parity})`);
+      if (fx == null && !esAnual(code) && par != null && par !== cu.parity) parityViol.push(code);
       const pinned = fx != null; // lo fijado a mano va sí o sí: el plan lo marca como aviso
       if (!pinned && (orig.creditosReq || 0) > acc && !(x.parte === 2)) errors.push(`${code} creditosReq ${orig.creditosReq} > acumulado ${acc} en cuatri ${i}`);
       if (!pinned) for (const c of orig.correlativas || []) {
@@ -106,7 +106,7 @@ export function check(PL: PlanState, approved: Set<string>, R: PlanResult, fixed
   }
   let last = -1; let used = 0;
   R.items.forEach((it, i) => { if (it.length) { last = i; used++; } });
-  return { ok: !errors.length, errors: [...new Set(errors)], used, last, unplaced: R.unplaced.map((m) => m.codigo), loads, mats, days, viajes };
+  return { ok: !errors.length, errors: [...new Set(errors)], used, last, unplaced: R.unplaced.map((m) => m.codigo), loads, mats, days, viajes, parityViol: [...new Set(parityViol)] };
 }
 
 /** Cota inferior del último cuatrimestre: ASAP sin caps (correlativas +

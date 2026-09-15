@@ -2269,6 +2269,20 @@ export default function PlanView() {
     ],
   );
   const overlapsNow = useMemo<PlanOverlap[]>(() => (PL.avoid ? [] : planOverlaps(R.items)), [PL.avoid, R]);
+  // supuestos de paridad: materias (no fijadas) fuera de su cuatrimestre
+  // nominal, que el plan sólo asume cuando eso acorta el egreso
+  const supuestos = useMemo(() => {
+    const out: { m: MateriaM; idx: number; par: number }[] = [];
+    R.items.forEach((it, i) => {
+      const cu = cuatriAt(PL.start, i);
+      for (const x of it) {
+        if (x.parte || PL.fixed.get(x.m.codigo) != null) continue;
+        const par = parityOf(x.m);
+        if (par !== null && par !== cu.parity) out.push({ m: x.m, idx: i, par });
+      }
+    });
+    return out;
+  }, [R, PL.start, PL.fixed]);
 
   // El primer cuatrimestre que se puede planificar es el que SIGUE al que está
   // en curso (por fecha): lo que se cursa hoy ya está decidido y vive en la
@@ -2698,7 +2712,9 @@ export default function PlanView() {
       const par = parityOf(x.m);
       if (par !== null && par !== cu.parity)
         warns.push(
-          `${x.m.abbr}: el plan de estudios la dicta en ${par}.º cuatrimestre (no hay horario publicado del ${cu.parity}.º), pero la fijaste en ${cuatriLabel(cu)}.`,
+          PL.fixed.get(x.m.codigo) != null
+            ? `${x.m.abbr}: el plan de estudios la ubica en ${par}.º cuatrimestre (no hay horario publicado del ${cu.parity}.º), pero la fijaste en ${cuatriLabel(cu)}.`
+            : `${x.m.abbr} · ${x.m.nombre}: el plan de estudios la ubica en ${par}.º cuatrimestre; para terminar antes el plan la pone en ${cuatriLabel(cu)}. No hay horario publicado del ${cu.parity}.º: verificá en el SGA que se dicte (si no, fijala en un ${par}.º).`,
         );
     }),
   );
@@ -3061,6 +3077,31 @@ export default function PlanView() {
                         >
                           <span className="pv-result__min" tabIndex={0}>
                             mínimo posible
+                          </span>
+                        </Tooltip>
+                      </>
+                    )}
+                    {supuestos.length > 0 && (
+                      <>
+                        {" · "}
+                        <Tooltip
+                          width={290}
+                          content={
+                            <>
+                              {supuestos.map((sp, k) => (
+                                <span key={k} style={{ display: "block" }}>
+                                  <b>{sp.m.abbr}</b> en {cuatriLabel(cuatriAt(PL.start, sp.idx))}: el plan de
+                                  estudios la ubica en {sp.par}.º cuatrimestre y no hay horario publicado
+                                  del otro.
+                                </span>
+                              ))}
+                              Se asume que se dictan los dos cuatrimestres porque así el plan termina
+                              antes: verificá en el SGA.
+                            </>
+                          }
+                        >
+                          <span className="pv-result__min pv-result__min--warn" tabIndex={0}>
+                            {supuestos.length} fuera de su cuatrimestre
                           </span>
                         </Tooltip>
                       </>

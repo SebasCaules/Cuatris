@@ -195,6 +195,14 @@ for (const code of codes) {
                 `REFERENCIA MEJOR ${label}: optimizador last=${ck.last} sin ubicar=${ck.unplaced.length}; referencia last=${ref.last} sin ubicar=${ref.unplaced}`,
               );
             }
+            // paridad blanda: fuera del cuatrimestre nominal SOLO si acorta el
+            // plan respecto de la referencia con paridad dura
+            // (sólo con `avoid`: sin él, la referencia no minimiza choques y un
+            // supuesto de paridad puede estar evitando uno)
+            if (avoid && ck.parityViol.length && ref.unplaced === ck.unplaced.length && ref.last <= ck.last) {
+              fails++;
+              console.log(`PARIDAD GRATUITA ${label}: ${ck.parityViol.join(",")} fuera de su cuatrimestre sin acortar el plan (referencia con paridad dura: last=${ref.last})`);
+            }
             if (R.minLast != null && ck.unplaced.length === 0 && ck.last < R.minLast) {
               fails++;
               console.log(`COTA INVÁLIDA ${label}: last=${ck.last} < minLast=${R.minLast}`);

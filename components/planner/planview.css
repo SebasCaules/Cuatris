@@ -68,6 +68,10 @@
   font-family: var(--f-m);
   font-size: 10.5px;
   color: var(--muted);
+  /* con marcadores («mínimo posible», «1 fuera de su cuatrimestre») la línea
+     envuelve en vez de ensanchar el bloque y aplastar los minors */
+  max-width: 38ch;
+  line-height: 1.5;
 }
 .planner .pv-result__cred {
   display: flex;

@@ -403,6 +403,20 @@ superposiciones o por un requisito de créditos que le deja una única ventana (
   es lo que el usuario armaba a mano fijando SIA. La UI (`PlanView`: arrastre, vista previa,
   aviso de paridad) y el check usan la misma noción; el aviso de una fijada en la otra
   paridad ahora aclara «no hay horario publicado del N.º».
+- Paridad como preferencia (2026-09-14, noche): sin evidencia del otro cuatrimestre, poner
+  una materia fuera de su cuatrimestre nominal es un SUPUESTO que el plan sólo asume si
+  acorta el egreso (cuenta en el vector después de los choques). Colocaciones de holgura
+  «blandas» (`softParity`) y un tercio de los reinicios lo permiten; `repairParity` (con
+  movimiento directo, reelección de comisiones e intercambio 1-1) devuelve a su cuatrimestre
+  lo que no hizo falta; una fase de limpieza con paridad dura apuntada al egreso conseguido
+  busca el mismo plan sin supuestos; corte por estancamiento (`STAGNATION` = 20 reinicios sin
+  mejorar). Motivo: el ITBA admite en marzo y agosto y la oferta del 2.º 2026 incluye TODAS
+  las obligatorias de 1.º de Informática (y de I, K, L, LAES, LN, M, Q, BIO); con Cuántica
+  fijada en el 2.º, el plan de fin de carrera cierra en 2 cuatrimestres poniendo SIA en el
+  1.º, que era lo que el autor esperaba. `PlanView`: «N fuera de su cuatrimestre» junto al
+  egreso (tooltip con cada supuesto) y observación por materia («verificá en el SGA que se
+  dicte; si no, fijala en un 2.º»). El check exige que los supuestos sólo aparezcan cuando
+  acortan el plan respecto de la referencia con paridad dura.
 - Orden por holgura por cuatrimestre (`PlaceOrder.at(i)`): primero lo urgente
   (`latestStart` ≤ i), después las atadas a una paridad, y entre iguales holgura, camino
   crítico y FFD; los reinicios apuntan a «un cuatrimestre menos que el mejor conocido» y

@@ -51,11 +51,21 @@
 //      cargado (misma paridad) mientras eso reduzca el desbalance, sin crear
 //      cuatrimestres nuevos ni dejar materias sin ubicar.
 //
-// PARIDAD: la del plan de estudios (`m.parity`) es la grilla nominal; si el
-// horario publicado muestra a la materia dictada en el otro cuatrimestre, se
-// dicta en los dos y no restringe (`parityOf`). La evidencia amplía, nunca
-// restringe: Redes es de 1.º en la grilla y está en la oferta del 2.º, así que
-// entra en cualquiera; SIA es de 2.º y sólo hay horario del 2.º, sigue de 2.º.
+// PARIDAD (preferencia, no invariante): la del plan de estudios (`m.parity`)
+// es la grilla nominal. Si el horario publicado muestra a la materia dictada
+// en el otro cuatrimestre, se dicta en los dos y no restringe (`parityOf`):
+// Redes es de 1.º en la grilla y está en la oferta del 2.º, así que entra en
+// cualquiera sin supuesto. Sin esa evidencia (SIA es de 2.º y sólo hay
+// horario del 2.º), ponerla en el otro cuatrimestre es un SUPUESTO: el ITBA
+// admite en marzo y en agosto y dicta casi todo los dos cuatrimestres (en la
+// oferta del 2.º 2026 están TODAS las obligatorias de 1.º de Informática),
+// pero no está confirmado materia por materia. Los supuestos cuentan en el
+// vector justo después de los choques: el plan sólo los asume si acortan el
+// egreso, y la UI los marca para verificar en el SGA. Colocación: la nominal
+// y las de holgura «duras» no asumen nada; las de holgura blandas y un tercio
+// de los reinicios sí (`softParity`); `repairParity` devuelve a su
+// cuatrimestre lo que no hizo falta mover; compactar, rebalancear y reparar
+// choques nunca crean un supuesto.
 //
 // «EVITAR SUPERPOSICIONES» APAGADO no es ignorar el horario: es tolerar
 // choques SOLO si acortan el plan. El plan sin choques (la misma búsqueda con
@@ -640,8 +650,13 @@ export function buildSlackOrder(
   return {
     at: (i: number) => {
       const urgente = (m: MateriaM) => ((ls.get(m.codigo) ?? L) <= i ? 0 : 1);
+      // en su cuatrimestre nominal (o sin paridad) antes que fuera de él: con
+      // paridad blanda, lo de otra paridad sólo entra cuando es urgente o
+      // sobra lugar
+      const propia = (m: MateriaM) => (parityOk(PL, m, i) ? 0 : 1);
       return (a, b) =>
         urgente(a) - urgente(b) ||
+        propia(a) - propia(b) ||
         atada(a) - atada(b) ||
         key(a) - key(b) ||
         depthOf(b.codigo) - depthOf(a.codigo) ||
@@ -684,6 +699,7 @@ export function lowerBoundLast(
   approved: Set<string>,
   mats: MateriaM[],
   N: number,
+  softParity = true,
 ): Bound {
   const inPool = new Map(mats.map((m) => [m.codigo, m]));
   const earliest = new Map<string, number>();
@@ -720,7 +736,7 @@ export function lowerBoundLast(
         e = lo;
         for (; e < N; e++) {
           if (PL.lockedIdx.has(e)) continue;
-          if (!parityOk(PL, m, e)) continue;
+          if (!softParity && !parityOk(PL, m, e)) continue;
           if ((m.creditosReq || 0) > creditsBefore(e)) continue;
           break;
         }
@@ -797,6 +813,9 @@ export function lowerBoundLast(
 interface PlaceOpts {
   /** respetar la ventana del orden nominal (default: sí). */
   ventana?: boolean;
+  /** paridad nominal como preferencia: una materia entra en el otro
+   *  cuatrimestre si el orden la trae (default: no, paridad dura). */
+  softParity?: boolean;
 }
 
 interface PlaceResult {
@@ -819,6 +838,7 @@ function placeMats(
   popts: PlaceOpts = {},
 ): PlaceResult {
   const ventana = popts.ventana !== false;
+  const softParity = popts.softParity === true;
   const items: PlacedMateria[][] =
     seed?.items ?? Array.from({ length: N }, () => []);
   const placedIdx: Record<string, number> = seed?.placedIdx ?? {};
@@ -887,7 +907,7 @@ function placeMats(
           const fx = PL.fixed.get(m.codigo);
           if (fx !== undefined && fx !== null && fx !== i) return false;
           // las anuales arrancan en cualquier cuatrimestre
-          if (!parityOk(PL, m, i)) return false;
+          if (!softParity && !parityOk(PL, m, i)) return false;
           if ((m.creditosReq || 0) > acc) return false;
           return prereqDone(m, i);
         })
@@ -1299,19 +1319,35 @@ const overlapsOf = (items: PlacedMateria[][]): number => {
   return n;
 };
 
+// Materias (no fijadas) puestas fuera de su cuatrimestre nominal: cada una es
+// un supuesto («se dicta también en el otro cuatrimestre») que el plan sólo
+// asume si acorta el egreso.
+const parityDevOf = (PL: PlanState, items: PlacedMateria[][]): number => {
+  let n = 0;
+  items.forEach((it, i) => {
+    for (const x of it) {
+      if (x.parte || PL.fixed.get(x.m.codigo) != null) continue;
+      if (!parityOk(PL, x.m, i)) n++;
+    }
+  });
+  return n;
+};
+
 /** Vector lexicográfico (menor es mejor) con el que se comparan dos
  *  colocaciones del mismo pool. El egreso va siempre primero; después, las
  *  superposiciones (0 por construcción con `avoid`; con `avoid` apagado son
- *  lo que se tolera SOLO si acorta el plan). */
+ *  lo que se tolera SOLO si acorta el plan) y las materias fuera de su
+ *  cuatrimestre nominal (ídem: sólo si acortan). */
 function scoreOf(PL: PlanState, method: OptMethod, r: PlaceResult): number[] {
   const last = lastCuatri(r.items);
   const used = usedCuatris(r.items);
   const dev = orderDevOf(PL, r.items);
   const overlaps = overlapsOf(r.items);
+  const paridad = parityDevOf(PL, r.items);
   const { viajes, dias } = viajesDiasOf(r.items);
   return method === "dias"
-    ? [r.remaining.length, last, overlaps, dias, viajes, used, dev]
-    : [r.remaining.length, last, overlaps, used, dev, viajes, dias];
+    ? [r.remaining.length, last, overlaps, paridad, dias, viajes, used, dev]
+    : [r.remaining.length, last, overlaps, paridad, used, dev, viajes, dias];
 }
 
 const betterScore = (a: number[], b: number[]): boolean => {
@@ -1329,6 +1365,8 @@ const betterScore = (a: number[], b: number[]): boolean => {
  *  con electivas) corre en cada simulación del recomendador y lleva menos. */
 const SEARCH_RESTARTS = 48;
 const MIXED_RESTARTS = 8;
+/** reinicios seguidos sin mejorar el vector tras los cuales se corta. */
+const STAGNATION = 20;
 
 /** Horizonte de cuatrimestres: 14 (siete años) y, si con eso quedan materias
  *  ubicables afuera (topes muy bajos, muchas fijadas), se extiende hasta
@@ -1346,15 +1384,159 @@ function placeAndCompact(
   opts: CompactOpts,
   ventana: boolean,
   seed?: { items: PlacedMateria[][]; placedIdx: Record<string, number> },
+  softParity = false,
 ): BaseResult {
-  const r = placeMats(PL, approved, fixedCom, mats, order, N, seed, { ventana });
+  const r = placeMats(PL, approved, fixedCom, mats, order, N, seed, { ventana, softParity });
   const moved = compact(PL, approved, fixedCom, r.items, r.placedIdx, N, {
     ...opts,
     ventana,
   });
   if (!PL.avoid) repairOverlaps(PL, approved, fixedCom, r.items, r.placedIdx, N);
-  const swapped = vaciarUltimo(PL, approved, fixedCom, r.items, r.placedIdx, N);
+  const swapped = vaciarUltimo(PL, approved, fixedCom, r.items, r.placedIdx, N, softParity);
+  if (softParity) repairParity(PL, approved, fixedCom, r.items, r.placedIdx, N);
   return { ...r, moved: moved + swapped };
+}
+
+/* ---------- reparación de paridad (colocación con paridad blanda) ---------- */
+// Una materia fuera de su cuatrimestre nominal que no hizo falta ahí (hay un
+// cuatrimestre de su paridad, dentro del mismo rango, con lugar y comisión
+// libre) vuelve a su paridad: los supuestos se reservan para lo que acorta.
+function repairParity(
+  PL: PlanState,
+  approved: Set<string>,
+  fixedCom: Map<string, string> | undefined,
+  items: PlacedMateria[][],
+  placedIdx: Record<string, number>,
+  N: number,
+): number {
+  const credOfCuatri = (it: PlacedMateria[]) =>
+    it.reduce((s, x) => s + (x.m.creditos || 0), 0);
+  const last = lastCuatri(items);
+  if (last < 1) return 0;
+  const dependentsOf = new Map<string, string[]>();
+  for (let i = 0; i <= last; i++)
+    for (const { m } of items[i])
+      for (const c of m.correlativas || []) {
+        const arr = dependentsOf.get(c);
+        if (arr) arr.push(m.codigo);
+        else dependentsOf.set(c, [m.codigo]);
+      }
+  let moved = 0;
+  let changed = true;
+  let guard = 0;
+  while (changed && guard++ < 100) {
+    changed = false;
+    const accB: number[] = [];
+    let a2 = approvedCredits(approved);
+    for (let i = 0; i < N; i++) {
+      accB[i] = a2;
+      a2 += credOfCuatri(items[i]);
+    }
+    findMove: for (let i = 0; i <= last; i++) {
+      if (PL.lockedIdx.has(i)) continue;
+      for (const it of items[i]) {
+        if (it.parte || esAnual(it.m.codigo) || PL.fixed.get(it.m.codigo) != null) continue;
+        if (parityOk(PL, it.m, i)) continue;
+        const coms = comsOf(it.m);
+        const fx = fixedCom?.get(it.m.codigo);
+        for (let j = 0; j <= last; j++) {
+          if (j === i || PL.lockedIdx.has(j) || !parityOk(PL, it.m, j)) continue;
+          if (items[j].length >= capMat(PL, j)) continue;
+          if (items[j].length > 0 && credOfCuatri(items[j]) + (it.m.creditos || 0) > capCred(PL, j)) continue;
+          if ((it.m.creditosReq || 0) > accB[j]) continue;
+          if (!(it.m.correlativas || []).every((c) => approved.has(c) || (placedIdx[c] !== undefined && placedIdx[c] < j))) continue;
+          if ((dependentsOf.get(it.m.codigo) || []).some((d) => placedIdx[d] !== undefined && placedIdx[d] <= j)) continue;
+          let comJ: Comision | null = null;
+          let reComs: (Comision | null)[] | null = null;
+          if (coms.length) {
+            if (hasFreeCom(coms, items[j], fx)) comJ = chooseCom(coms, items[j], true, fx);
+            else {
+              // ninguna libre contra lo elegido: reelegir las comisiones del destino
+              const re = resolveComs(items[j], it.m, fixedCom);
+              if (!re) continue;
+              reComs = re.coms;
+              comJ = re.candCom;
+            }
+          }
+          const prevCom: Comision | null = it.com;
+          const prevComsJ = items[j].map((z) => z.com);
+          if (reComs) applyComs(items[j], reComs);
+          it.com = comJ;
+          items[i] = items[i].filter((x) => x !== it);
+          items[j].push(it);
+          placedIdx[it.m.codigo] = j;
+          if (!feasible(PL, approved, items, N)) {
+            items[j] = items[j].filter((x) => x !== it);
+            items[j].forEach((z, q) => {
+              if (q < prevComsJ.length) z.com = prevComsJ[q];
+            });
+            items[i].push(it);
+            placedIdx[it.m.codigo] = i;
+            it.com = prevCom;
+            continue;
+          }
+          moved++;
+          changed = true;
+          break findMove;
+        }
+        // sin lugar directo: intercambio con una y de un cuatrimestre de la
+        // paridad de x que pueda vivir en i sin salirse de la suya
+        for (let j = 0; j <= last; j++) {
+          if (j === i || PL.lockedIdx.has(j) || !parityOk(PL, it.m, j)) continue;
+          if ((it.m.creditosReq || 0) > accB[j]) continue;
+          if (!(it.m.correlativas || []).every((c) => approved.has(c) || (placedIdx[c] !== undefined && placedIdx[c] < j))) continue;
+          if ((dependentsOf.get(it.m.codigo) || []).some((d) => placedIdx[d] !== undefined && placedIdx[d] <= j)) continue;
+          let hecho = false;
+          for (const y of items[j]) {
+            if (y.parte || esAnual(y.m.codigo) || PL.fixed.get(y.m.codigo) != null) continue;
+            if (!parityOk(PL, y.m, i)) continue;
+            if ((y.m.creditosReq || 0) > accB[i]) continue;
+            if (!(y.m.correlativas || []).every((c) => approved.has(c) || (placedIdx[c] !== undefined && placedIdx[c] < i))) continue;
+            if ((dependentsOf.get(y.m.codigo) || []).some((d) => placedIdx[d] !== undefined && placedIdx[d] <= i)) continue;
+            const sinY = items[j].filter((z) => z !== y);
+            const sinX = items[i].filter((z) => z !== it);
+            if (sinY.length > 0 && credOfCuatri(sinY) + (it.m.creditos || 0) > capCred(PL, j)) continue;
+            if (sinX.length > 0 && credOfCuatri(sinX) + (y.m.creditos || 0) > capCred(PL, i)) continue;
+            const cx = coms.length ? (hasFreeCom(coms, sinY, fx) ? chooseCom(coms, sinY, true, fx) : null) : null;
+            if (coms.length && !cx) continue;
+            const comsY = comsOf(y.m);
+            const fy = fixedCom?.get(y.m.codigo);
+            const cy = comsY.length ? (hasFreeCom(comsY, sinX, fy) ? chooseCom(comsY, sinX, true, fy) : null) : null;
+            if (comsY.length && !cy) continue;
+            const prevX: Comision | null = it.com;
+            const prevY: Comision | null = y.com;
+            items[i] = sinX;
+            items[j] = sinY;
+            it.com = cx;
+            y.com = cy;
+            items[j].push(it);
+            items[i].push(y);
+            placedIdx[it.m.codigo] = j;
+            placedIdx[y.m.codigo] = i;
+            if (!feasible(PL, approved, items, N)) {
+              items[j] = items[j].filter((z) => z !== it);
+              items[i] = items[i].filter((z) => z !== y);
+              it.com = prevX;
+              y.com = prevY;
+              items[i].push(it);
+              items[j].push(y);
+              placedIdx[it.m.codigo] = i;
+              placedIdx[y.m.codigo] = j;
+              continue;
+            }
+            hecho = true;
+            break;
+          }
+          if (hecho) {
+            moved++;
+            changed = true;
+            break findMove;
+          }
+        }
+      }
+    }
+  }
+  return moved;
 }
 
 /* ---------- vaciar el último cuatrimestre por intercambio ---------- */
@@ -1374,6 +1556,7 @@ function vaciarUltimo(
   items: PlacedMateria[][],
   placedIdx: Record<string, number>,
   N: number,
+  softParity = false,
 ): number {
   const credOfCuatri = (it: PlacedMateria[]) =>
     it.reduce((s, x) => s + (x.m.creditos || 0), 0);
@@ -1389,7 +1572,7 @@ function vaciarUltimo(
       }
   const okEn = (x: PlacedMateria, j: number, sin?: PlacedMateria): boolean => {
     // ¿x puede vivir en j (paridad, correlativas, dependientes, topes)?
-    if (PL.lockedIdx.has(j) || !parityOk(PL, x.m, j)) return false;
+    if (PL.lockedIdx.has(j) || (!softParity && !parityOk(PL, x.m, j))) return false;
     if (!(x.m.correlativas || []).every((c) => approved.has(c) || (placedIdx[c] !== undefined && placedIdx[c] < j))) return false;
     if ((dependentsOf.get(x.m.codigo) || []).some((d) => placedIdx[d] !== undefined && placedIdx[d] <= j)) return false;
     const it = sin ? items[j].filter((y) => y !== sin) : items[j];
@@ -1603,18 +1786,22 @@ function searchPlacement(
   const bound = lowerBoundLast(PL, approved, mats, N);
   let best = placeAndCompact(PL, approved, fixedCom, mats, buildCriticalOrder(mats), N, copts, true);
   let bestScore = scoreOf(PL, method, best);
-  // en la cota y (con `avoid` apagado) sin choques: no hay nada mejor
+  // en la cota, sin supuestos de paridad y (con `avoid` apagado) sin
+  // choques: no hay nada mejor
   const atBound = (r: BaseResult) =>
     r.remaining.length <= bound.unplaceable &&
     lastCuatri(r.items) <= bound.last &&
+    parityDevOf(PL, r.items) === 0 &&
     (PL.avoid || overlapsOf(r.items) === 0);
   if (atBound(best)) return best;
+  let sinMejora = 0; // reinicios seguidos sin mejorar (corte por estancamiento)
   const consider = (r: BaseResult) => {
     const s = scoreOf(PL, method, r);
     if (betterScore(s, bestScore)) {
       best = r;
       bestScore = s;
-    }
+      sinMejora = 0;
+    } else sinMejora++;
   };
   if (!PL.avoid) {
     // con «Evitar superposiciones» apagado, el plan SIN choques (la misma
@@ -1624,16 +1811,24 @@ function searchPlacement(
     consider(searchPlacement(hard, approved, fixedCom, mats, N, method, restarts));
     if (atBound(best)) return best;
   }
+  // objetivo de la urgencia: la cota con paridad dura para las colocaciones
+  // duras (la blanda es más baja y comprime todo en «urgente»)
+  const Lh = Math.max(lowerBoundLast(PL, approved, mats, N, false).last, 0);
   const L = Math.max(bound.last, 0);
-  consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, L), N, copts, false));
+  // holgura con paridad dura (sin supuestos) y con paridad blanda
+  consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, Lh), N, copts, false));
   if (atBound(best)) return best;
-  consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, L), N, copts, true));
+  consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, L), N, copts, false, undefined, true));
+  if (atBound(best)) return best;
+  consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, Lh), N, copts, true));
   if (atBound(best)) return best;
   // Reinicios en tres sabores, para diversidad: holgura con ruido chico;
   // holgura sin la prioridad de paridad; y casi al azar (sólo lo urgente
   // primero, holgura con peso mínimo).
   const rand = rng(0x5eed);
+  sinMejora = 0;
   for (let r = 0; r < restarts; r++) {
+    if (sinMejora >= STAGNATION) break;
     const noise = new Map<string, number>();
     const w = 0.5 + rand() * 2;
     for (const m of mats) noise.set(m.codigo, rand() * w);
@@ -1647,9 +1842,30 @@ function searchPlacement(
     // la urgencia apunta al objetivo real: un cuatrimestre menos que el mejor
     // plan conocido (la cota puede ser inalcanzable y comprimir todo en
     // «urgente»)
-    const Lr = Math.max(L, lastCuatri(best.items) - 1);
-    consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, Lr, sopts), N, copts, false));
+    // dos de cada tres reinicios con paridad dura, uno con blanda; la
+    // urgencia apunta a un cuatrimestre menos que el mejor conocido
+    const soft = r % 3 === 2;
+    const Lr = Math.max(soft ? L : Lh, lastCuatri(best.items) - 1);
+    consider(
+      placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, Lr, sopts), N, copts, false, undefined, soft),
+    );
     if (atBound(best)) break;
+  }
+  // Limpieza: si el mejor plan se apoya en supuestos de paridad (o, sin
+  // `avoid`, en choques), buscar uno que termine IGUAL sin ellos: reinicios
+  // con paridad dura apuntados justo al egreso conseguido.
+  if (restarts > 0 && (parityDevOf(PL, best.items) > 0 || overlapsOf(best.items) > 0)) {
+    const Lc = lastCuatri(best.items);
+    sinMejora = 0;
+    for (let r = 0; r < Math.max(16, restarts / 2); r++) {
+      if (sinMejora >= STAGNATION) break;
+      const noise = new Map<string, number>();
+      const w = 0.5 + rand() * 2;
+      for (const m of mats) noise.set(m.codigo, rand() * w);
+      const sopts: SlackOpts = r % 2 ? { noise, atadaFirst: false } : { noise };
+      consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, Lc, sopts), N, copts, false));
+      if (parityDevOf(PL, best.items) === 0 && overlapsOf(best.items) === 0) break;
+    }
   }
   return best;
 }
@@ -1812,6 +2028,10 @@ function basePlacement(
         moved: cand.moved + again.moved,
       };
     }
+    // el esqueleto pudo asumir una paridad para terminar antes; si las
+    // electivas igual abrieron un cuatrimestre más, ese supuesto quizá ya no
+    // hace falta: devolver lo que se pueda a su cuatrimestre nominal
+    repairParity(PL, approved, fixedCom, cand.items, cand.placedIdx, N);
     const sc = scoreOf(PL, method, cand);
     if (!layered || betterScore(sc, layeredScore)) {
       layered = cand;
@@ -1827,6 +2047,7 @@ function basePlacement(
   if (
     layered.remaining.length <= bound.unplaceable &&
     lastCuatri(layered.items) <= bound.last &&
+    parityDevOf(PL, layered.items) === 0 &&
     (PL.avoid || overlapsOf(layered.items) === 0)
   )
     return layered;
