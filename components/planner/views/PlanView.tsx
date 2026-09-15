@@ -28,6 +28,7 @@ import { isAsync, slotsConflict, comModalidad, salaLabel } from "@/lib/planner/t
 import {
   optimizePlan,
   planOverlaps,
+  parityOf,
   assignComs,
   compareCuatri,
   cuatriAt,
@@ -440,7 +441,8 @@ function fitsOf(
     if (PL.lockedIdx.has(i)) return;
     if (it.some((x) => x.m.codigo === code)) return;
     const cu = cuatriAt(PL.start, i);
-    if (m.parity !== null && m.parity !== cu.parity) return;
+    const par = parityOf(m);
+    if (par !== null && par !== cu.parity) return;
     if ((m.creditosReq || 0) > (R.accBefore[i] ?? 0)) return;
     const before = new Set(approved);
     R.items.slice(0, i).forEach((its) => its.forEach((x) => before.add(x.m.codigo)));
@@ -2546,7 +2548,8 @@ export default function PlanView() {
     const m = byId.get(drag.code);
     if (!m || newIdx >= MAX_PLAN_CUATRIS) return false;
     const cu = cuatriAt(PL.start, newIdx);
-    if (m.parity !== null && m.parity !== cu.parity) return false;
+    const par = parityOf(m);
+    if (par !== null && par !== cu.parity) return false;
     const before = new Set(settled);
     let acc = approvedCredits(settled);
     baseR.items.forEach((it) =>
@@ -2692,9 +2695,10 @@ export default function PlanView() {
           `${x.m.abbr} · ${x.m.nombre}: requiere ${x.m.creditosReq} créditos pero al inicio de ${cuatriLabel(cuatriAt(PL.start, i))} tenés ${R.accBefore[i]}.`,
         );
       const cu = cuatriAt(PL.start, i);
-      if (x.m.parity !== null && x.m.parity !== cu.parity)
+      const par = parityOf(x.m);
+      if (par !== null && par !== cu.parity)
         warns.push(
-          `${x.m.abbr}: el plan la ubica en ${x.m.cuatri}.º cuatrimestre, pero la fijaste en ${cuatriLabel(cu)}.`,
+          `${x.m.abbr}: el plan de estudios la dicta en ${par}.º cuatrimestre (no hay horario publicado del ${cu.parity}.º), pero la fijaste en ${cuatriLabel(cu)}.`,
         );
     }),
   );

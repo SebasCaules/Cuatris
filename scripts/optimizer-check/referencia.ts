@@ -4,7 +4,7 @@
 // avoid). Si alguna vez ubica más materias o termina antes que el optimizador,
 // el optimizador dejó de ser óptimo para ese escenario.
 import { byId, esAnual } from "../../lib/planner/model";
-import { cuatriAt } from "../../lib/planner/optimize";
+import { cuatriAt, parityOf } from "../../lib/planner/optimize";
 import { approvedCredits } from "../../lib/planner/metrics";
 import { comConflict } from "../../lib/planner/time";
 import type { PlanState, MateriaM, Comision } from "../../lib/planner/types";
@@ -60,7 +60,7 @@ export function schedule(PL: PlanState, approved: Set<string>, order: (a: Materi
     if (!PL.lockedIdx.has(i)) {
       const feas = remaining.filter((m) => {
         const fx = PL.fixed.get(m.codigo); if (fx != null && fx !== i) return false;
-        if (!esAnual(m.codigo) && m.parity != null && m.parity !== cu.parity) return false;
+        if (!esAnual(m.codigo) && parityOf(m) != null && parityOf(m) !== cu.parity) return false;
         if ((m.creditosReq || 0) > acc) return false;
         return (m.correlativas || []).every((c) => approved.has(c) || (placedIdx.has(c) && placedIdx.get(c)! < i));
       }).sort(order);

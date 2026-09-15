@@ -16,13 +16,17 @@
 //      1. NOMINAL: obligatorias en el orden del plan de estudios (año y
 //         cuatrimestre), con la ventana ORDEN_VENTANA; entre iguales, camino
 //         crítico y FFD por créditos. Es el plan «natural».
-//      2. HOLGURA: prioridad por menor `latestStart` (el último cuatrimestre
-//         en el que la materia puede arrancar sin correr la fecha de egreso,
-//         calculado hacia atrás por dependientes, con paridad y anuales).
-//         Sin ventana: una materia de 4.º con holgura cero entra en 2.º si
-//         eso acorta el plan. Atrapa lo que la nominal no ve: requisitos de
-//         créditos que dejan una sola ventana (94.23 pide 168 créditos y es
-//         del 2.º cuatrimestre), materias con una sola comisión, etc.
+//      2. HOLGURA: en cada cuatrimestre, primero lo urgente (`latestStart`
+//         ≤ índice: el último cuatrimestre en el que la materia puede
+//         arrancar sin correr el egreso, calculado hacia atrás por
+//         dependientes, con paridad y anuales), después las materias atadas a
+//         una paridad (las libres no deben quedarse con el lugar que sólo
+//         ellas pueden usar), y entre iguales menor holgura, camino crítico y
+//         FFD por créditos. Sin ventana: una materia de 4.º con holgura cero
+//         entra en 2.º si eso acorta el plan. Atrapa lo que la nominal no ve:
+//         requisitos de créditos que dejan una sola ventana (94.23 pide 168
+//         créditos y es del 2.º cuatrimestre), materias con una sola
+//         comisión, etc.
 //      3. REINICIOS: si ninguna alcanza la cota inferior (`lowerBoundLast`:
 //         ASAP sin topes + capacidad), hasta SEARCH_RESTARTS colocaciones
 //         más con la prioridad de holgura perturbada (ruido determinista con
@@ -31,7 +35,9 @@
 //         superposición: probar otro subconjunto en el cuatrimestre que
 //         trababa a una materia crítica.
 //      Cada colocación termina con `compact` (adelantar materias a
-//      cuatrimestres previos de igual paridad con lugar). Empaquetado FFD por
+//      cuatrimestres previos con lugar) y `vaciarUltimo` (intercambiar una
+//      materia del último cuatrimestre con otra de uno previo que sí tiene a
+//      dónde mudarse). Empaquetado FFD por
 //      créditos dentro de cada cuatrimestre; selección de comisión que
 //      minimiza las IDAS a la facultad (`viajesDe`) y siempre prefiere una
 //      comisión sin superposición si existe (con `avoid` apagado, la materia
@@ -44,6 +50,12 @@
 //      rebalancea: mueve materias del cuatrimestre más cargado al menos
 //      cargado (misma paridad) mientras eso reduzca el desbalance, sin crear
 //      cuatrimestres nuevos ni dejar materias sin ubicar.
+//
+// PARIDAD: la del plan de estudios (`m.parity`) es la grilla nominal; si el
+// horario publicado muestra a la materia dictada en el otro cuatrimestre, se
+// dicta en los dos y no restringe (`parityOf`). La evidencia amplía, nunca
+// restringe: Redes es de 1.º en la grilla y está en la oferta del 2.º, así que
+// entra en cualquiera; SIA es de 2.º y sólo hay horario del 2.º, sigue de 2.º.
 //
 // «EVITAR SUPERPOSICIONES» APAGADO no es ignorar el horario: es tolerar
 // choques SOLO si acortan el plan. El plan sin choques (la misma búsqueda con
@@ -339,7 +351,7 @@ interface ComAssignment {
   candCom: Comision | null; // la de la candidata
 }
 
-const RESOLVE_BUDGET = 4000;
+const RESOLVE_BUDGET = 20000;
 
 function resolveComs(
   placed: PlacedMateria[],
@@ -357,13 +369,18 @@ function resolveComs(
     }
     return coms;
   });
-  const chosen: (Comision | null)[] = [];
+  // las materias con menos comisiones se deciden primero (poda mucho antes:
+  // con seis materias de hasta ocho comisiones, en orden de llegada el
+  // presupuesto se agotaba sin encontrar una asignación que existía)
+  const orden = mats.map((_, k) => k).sort((a, b) => options[a].length - options[b].length);
+  const chosen: (Comision | null)[] = Array(mats.length).fill(null);
+  const taken: Comision[] = [];
   let best: (Comision | null)[] | null = null;
   let bestScore = Infinity;
   let nodes = 0;
-  const rec = (k: number): void => {
+  const rec = (d: number): void => {
     if (nodes++ > RESOLVE_BUDGET) return;
-    if (k === mats.length) {
+    if (d === orden.length) {
       const sc = comScore(chosen);
       if (sc < bestScore) {
         bestScore = sc;
@@ -371,11 +388,14 @@ function resolveComs(
       }
       return;
     }
+    const k = orden[d];
     for (const c of options[k]) {
-      if (c && chosen.some((o) => o && conflicts(o, c))) continue;
-      chosen.push(c);
-      rec(k + 1);
-      chosen.pop();
+      if (c && taken.some((o) => conflicts(o, c))) continue;
+      chosen[k] = c;
+      if (c) taken.push(c);
+      rec(d + 1);
+      if (c) taken.pop();
+      chosen[k] = null;
       if (bestScore <= 10000 + 100) return; // una sola ida: no se puede mejorar
     }
   };
@@ -427,9 +447,9 @@ export function assignComs(
 // mayor requisito de créditos › código. El camino crítico se calcula sobre el
 // pool restante `mats`: materias que destraban cadenas largas de correlativas
 // van primero (el piso de cuatrimestres está acotado por la cadena más larga).
-function buildCriticalOrder(
-  mats: MateriaM[],
-): (a: MateriaM, b: MateriaM) => number {
+/** Profundidad de la cadena de dependientes de cada materia dentro del pool
+ *  (0 = nadie depende de ella). Ver la nota sobre electivas en el cuerpo. */
+function buildDepth(mats: MateriaM[]): (code: string) => number {
   const codeSet = new Set(mats.map((m) => m.codigo));
   const dependents = new Map<string, string[]>();
   for (const m of mats) {
@@ -463,6 +483,13 @@ function buildCriticalOrder(
     depthMemo.set(code, d);
     return d;
   };
+  return depthOf;
+}
+
+function buildCriticalOrder(
+  mats: MateriaM[],
+): (a: MateriaM, b: MateriaM) => number {
+  const depthOf = buildDepth(mats);
   // obligatorias antes que electivas; entre obligatorias, primero las de
   // año/cuatrimestre más temprano del plan (orden nominal) y recién después
   // el camino crítico: así cada cuatrimestre se llena con lo que «toca».
@@ -479,10 +506,35 @@ function buildCriticalOrder(
 
 /** Índices de cuatrimestre que puede ocupar `m` (paridad; las anuales y las
  *  materias sin paridad entran en cualquiera). Fijadas: sólo su índice. */
-const parityOk = (PL: PlanState, m: MateriaM, i: number): boolean =>
-  esAnual(m.codigo) ||
-  m.parity === null ||
-  m.parity === cuatriAt(PL.start, i).parity;
+/** Paridad del período del horario publicado (1 = primer cuatrimestre, 2 =
+ *  segundo), o null si no se sabe. */
+const horarioParity = (m: MateriaM): number | null => {
+  const p = m.horario?.periodo ?? "";
+  if (/primer/i.test(p)) return 1;
+  if (/segundo/i.test(p)) return 2;
+  return null;
+};
+
+/**
+ * Paridad EFECTIVA de una materia: la del plan de estudios (`m.parity`, la
+ * grilla nominal), salvo que el horario publicado la muestre dictada en el
+ * otro cuatrimestre: entonces se dicta en los dos y no restringe (null). La
+ * evidencia amplía, nunca restringe: Redes es de 1.º cuatrimestre en la
+ * grilla y aparece en la oferta del 2.º, así que entra en cualquiera; SIA es
+ * de 2.º y sólo hay horario del 2.º, así que sigue siendo de 2.º. Las anuales
+ * y las electivas sin cuatrimestre nominal no tienen paridad.
+ */
+export const parityOf = (m: MateriaM): number | null => {
+  if (m.parity === null || m.parity === undefined) return null;
+  const hp = horarioParity(m);
+  return hp !== null && hp !== m.parity ? null : m.parity;
+};
+
+const parityOk = (PL: PlanState, m: MateriaM, i: number): boolean => {
+  if (esAnual(m.codigo)) return true;
+  const p = parityOf(m);
+  return p === null || p === cuatriAt(PL.start, i).parity;
+};
 
 // Último índice ≤ `upto` donde `m` puede arrancar (paridad); -1 si ninguno.
 const latestFit = (PL: PlanState, m: MateriaM, upto: number): number => {
@@ -498,7 +550,7 @@ const latestFit = (PL: PlanState, m: MateriaM, upto: number): number => {
  * cuatrimestres. Puede dar negativo: significa que con ese L la cadena no
  * entra (sigue siendo un orden útil: cuanto más negativo, más urgente).
  */
-function latestStarts(
+export function latestStarts(
   PL: PlanState,
   mats: MateriaM[],
   L: number,
@@ -549,16 +601,55 @@ function latestStarts(
  * › mayor requisito de créditos › código. Con `noise`, cada materia suma un
  * desplazamiento aleatorio (reinicios de la búsqueda).
  */
-function buildSlackOrder(
+type Cmp = (a: MateriaM, b: MateriaM) => number;
+/** Orden de colocación que puede depender del cuatrimestre que se está
+ *  llenando (la urgencia es relativa al índice). */
+type PlaceOrder = Cmp | { at: (i: number) => Cmp };
+const orderAt = (order: PlaceOrder, i: number): Cmp =>
+  typeof order === "function" ? order : order.at(i);
+
+interface SlackOpts {
+  /** desplazamiento aleatorio por materia (reinicios). */
+  noise?: Map<string, number>;
+  /** con `noise`: cuánto pesa la holgura frente al ruido (0 = orden al azar
+   *  salvo lo urgente; 1 = ruido chico). */
+  peso?: number;
+  /** las atadas a una paridad antes que las libres (default: sí). */
+  atadaFirst?: boolean;
+}
+
+export function buildSlackOrder(
   PL: PlanState,
   mats: MateriaM[],
   L: number,
-  noise?: Map<string, number>,
-): (a: MateriaM, b: MateriaM) => number {
+  sopts: SlackOpts = {},
+): PlaceOrder {
+  const { noise, peso = 1, atadaFirst = true } = sopts;
   const ls = latestStarts(PL, mats, L);
-  const critical = buildCriticalOrder(mats);
-  const key = (m: MateriaM) => (ls.get(m.codigo) ?? L) + (noise?.get(m.codigo) ?? 0);
-  return (a, b) => key(a) - key(b) || critical(a, b);
+  const depthOf = buildDepth(mats);
+  const key = (m: MateriaM) => (ls.get(m.codigo) ?? L) * peso + (noise?.get(m.codigo) ?? 0);
+  // En el cuatrimestre i: primero lo URGENTE (latestStart ≤ i: si no entra
+  // acá, corre el egreso); después las materias atadas a una paridad, aunque
+  // tengan holgura (las que entran en cualquier cuatrimestre no deben
+  // quedarse con el lugar que sólo ellas pueden usar: un 2.º cuatrimestre
+  // lleno de materias «libres» deja las de 2.º para dos cuatrimestres más
+  // tarde); entre iguales, menor holgura, camino crítico y FFD por créditos.
+  // Acá el orden nominal no manda: para eso está la colocación nominal.
+  const atada = (m: MateriaM) =>
+    !atadaFirst || esAnual(m.codigo) || parityOf(m) === null ? 1 : 0;
+  return {
+    at: (i: number) => {
+      const urgente = (m: MateriaM) => ((ls.get(m.codigo) ?? L) <= i ? 0 : 1);
+      return (a, b) =>
+        urgente(a) - urgente(b) ||
+        atada(a) - atada(b) ||
+        key(a) - key(b) ||
+        depthOf(b.codigo) - depthOf(a.codigo) ||
+        (b.creditos || 0) - (a.creditos || 0) ||
+        (b.creditosReq || 0) - (a.creditosReq || 0) ||
+        a.codigo.localeCompare(b.codigo);
+    },
+  };
 }
 
 /** Generador determinista (LCG): la búsqueda con reinicios da siempre el
@@ -588,7 +679,7 @@ interface Bound {
  * capacidad (créditos y materias del pool contra los topes de los primeros
  * cuatrimestres). Ningún plan factible termina antes.
  */
-function lowerBoundLast(
+export function lowerBoundLast(
   PL: PlanState,
   approved: Set<string>,
   mats: MateriaM[],
@@ -719,7 +810,7 @@ function placeMats(
   approved: Set<string>,
   fixedCom: Map<string, string> | undefined,
   mats: MateriaM[],
-  order: (a: MateriaM, b: MateriaM) => number,
+  order: PlaceOrder,
   N: number,
   // Con `seed`, `mats` se colocan SOBRE un plan ya armado (relleno de
   // electivas en el esqueleto de obligatorias): los cuatrimestres conservan lo
@@ -743,7 +834,6 @@ function placeMats(
     it.reduce((s, x) => s + (x.m.creditos || 0), 0);
 
   for (let i = 0; i < N && remaining.length; i++) {
-    const cu = cuatriAt(PL.start, i);
     const place = (m: MateriaM, com?: Comision | null) => {
       if (esAnual(m.codigo)) {
         // dos mitades: i e i+1; los dependientes se cuentan desde la segunda
@@ -797,11 +887,11 @@ function placeMats(
           const fx = PL.fixed.get(m.codigo);
           if (fx !== undefined && fx !== null && fx !== i) return false;
           // las anuales arrancan en cualquier cuatrimestre
-          if (!esAnual(m.codigo) && m.parity !== null && m.parity !== cu.parity) return false;
+          if (!parityOk(PL, m, i)) return false;
           if ((m.creditosReq || 0) > acc) return false;
           return prereqDone(m, i);
         })
-        .sort(order);
+        .sort(orderAt(order, i));
       // Orden del plan: la obligatoria pendiente más temprana marca hasta
       // dónde se puede adelantar en este cuatrimestre (ORDEN_VENTANA). Si con
       // esa ventana no entra NINGUNA, se abre de a un año hasta que algo
@@ -886,7 +976,6 @@ function compact(
     }
     for (let i = N - 1; i >= 1 && !changed; i--) {
       if (!items[i].length) continue;
-      const ci = cuatriAt(PL.start, i);
       for (const it of items[i]) {
         const fx = PL.fixed.get(it.m.codigo);
         if (fx !== undefined && fx !== null) continue;
@@ -894,8 +983,7 @@ function compact(
         let done = false;
         for (let j = 0; j < i; j++) {
           if (PL.lockedIdx.has(j)) continue; // no adelantar a un cuatri finalizado
-          const cj = cuatriAt(PL.start, j);
-          if (cj.parity !== ci.parity) continue;
+          if (!parityOk(PL, it.m, j)) continue;
           if ((it.m.creditosReq || 0) > accB[j]) continue;
           if (
             !(it.m.correlativas || []).every(
@@ -1054,7 +1142,6 @@ function rebalance(
     findMove: for (const i of overOrder) {
       if (!items[i].length) continue;
       if (PL.lockedIdx.has(i)) continue; // no tocar cuatris finalizados
-      const ci = cuatriAt(PL.start, i);
       // dentro del cuatri sobrecargado, probamos primero mover la materia
       // más "grande" (créditos): un solo movimiento grande baja más la
       // varianza que varios chicos.
@@ -1068,14 +1155,14 @@ function rebalance(
         .sort((a, b) => (b.m.creditos || 0) - (a.m.creditos || 0));
 
       for (const it of cands) {
-        // cuatris destino: misma paridad, distinto de i, de menos a más
+        // cuatris destino: paridad admitida, distinto de i, de menos a más
         // cargado (least-loaded first).
         const dest = [...Array(U).keys()]
           .filter(
             (j) =>
               j !== i &&
               !PL.lockedIdx.has(j) && // no mover a un cuatri finalizado
-              cuatriAt(PL.start, j).parity === ci.parity,
+              parityOk(PL, it.m, j),
           )
           .sort((a, b) => loads[a] - loads[b]);
 
@@ -1254,7 +1341,7 @@ function placeAndCompact(
   approved: Set<string>,
   fixedCom: Map<string, string> | undefined,
   mats: MateriaM[],
-  order: (a: MateriaM, b: MateriaM) => number,
+  order: PlaceOrder,
   N: number,
   opts: CompactOpts,
   ventana: boolean,
@@ -1266,7 +1353,150 @@ function placeAndCompact(
     ventana,
   });
   if (!PL.avoid) repairOverlaps(PL, approved, fixedCom, r.items, r.placedIdx, N);
-  return { ...r, moved };
+  const swapped = vaciarUltimo(PL, approved, fixedCom, r.items, r.placedIdx, N);
+  return { ...r, moved: moved + swapped };
+}
+
+/* ---------- vaciar el último cuatrimestre por intercambio ---------- */
+// La compactación sólo ADELANTA materias a cuatrimestres con lugar. Cuando el
+// último cuatrimestre quedó con una o dos materias que no entran antes porque
+// los cuatrimestres previos están al tope, muchas veces alcanza con un
+// intercambio: x (del último) ocupa el lugar de y en un cuatrimestre previo, e
+// y —que sí entra en otro lado— se muda. Si el último queda vacío, el plan
+// termina un cuatrimestre antes. Se repite mientras rinda. Cada movimiento
+// respeta paridad, correlativas, dependientes, créditos requeridos (se
+// revalida el plan entero con `feasible`), topes y horarios (con `avoid`, sin
+// superposiciones nuevas).
+function vaciarUltimo(
+  PL: PlanState,
+  approved: Set<string>,
+  fixedCom: Map<string, string> | undefined,
+  items: PlacedMateria[][],
+  placedIdx: Record<string, number>,
+  N: number,
+): number {
+  const credOfCuatri = (it: PlacedMateria[]) =>
+    it.reduce((s, x) => s + (x.m.creditos || 0), 0);
+  const libre = (x: PlacedMateria) =>
+    !x.parte && !esAnual(x.m.codigo) && PL.fixed.get(x.m.codigo) == null;
+  const dependentsOf = new Map<string, string[]>();
+  for (const it of items)
+    for (const { m } of it)
+      for (const c of m.correlativas || []) {
+        const arr = dependentsOf.get(c);
+        if (arr) arr.push(m.codigo);
+        else dependentsOf.set(c, [m.codigo]);
+      }
+  const okEn = (x: PlacedMateria, j: number, sin?: PlacedMateria): boolean => {
+    // ¿x puede vivir en j (paridad, correlativas, dependientes, topes)?
+    if (PL.lockedIdx.has(j) || !parityOk(PL, x.m, j)) return false;
+    if (!(x.m.correlativas || []).every((c) => approved.has(c) || (placedIdx[c] !== undefined && placedIdx[c] < j))) return false;
+    if ((dependentsOf.get(x.m.codigo) || []).some((d) => placedIdx[d] !== undefined && placedIdx[d] <= j)) return false;
+    const it = sin ? items[j].filter((y) => y !== sin) : items[j];
+    if (it.length >= capMat(PL, j)) return false;
+    if (it.length > 0 && credOfCuatri(it) + (x.m.creditos || 0) > capCred(PL, j)) return false;
+    return true;
+  };
+  // comisión para x en j (sin `sin`): libre si `avoid`; null si no hay
+  const comEn = (x: PlacedMateria, j: number, sin?: PlacedMateria): { com: Comision | null; re: (Comision | null)[] | null } | null => {
+    const coms = comsOf(x.m);
+    if (!coms.length) return { com: null, re: null };
+    const it = sin ? items[j].filter((y) => y !== sin) : items[j];
+    const fx = fixedCom?.get(x.m.codigo);
+    if (!PL.avoid || hasFreeCom(coms, it, fx)) return { com: chooseCom(coms, it, PL.avoid, fx), re: null };
+    const re = resolveComs(it, x.m, fixedCom);
+    return re ? { com: re.candCom, re: re.coms } : null;
+  };
+  let swaps = 0;
+  let guard = 0;
+  while (guard++ < 20) {
+    const last = lastCuatri(items);
+    if (last < 1 || PL.lockedIdx.has(last)) return swaps;
+    if (!items[last].every(libre)) return swaps;
+    let progreso = false;
+    for (const x of items[last].slice()) {
+      let hecho = false;
+      for (let j = 0; j < last && !hecho; j++) {
+        if (!okEn(x, j)) {
+          // no entra directo: probar intercambio con una y de j
+          for (const y of items[j]) {
+            if (!libre(y) || !okEn(x, j, y)) continue;
+            // y a algún k ≠ j, k < last, con lugar
+            for (let k = 0; k < last && !hecho; k++) {
+              if (k === j || !okEn(y, k)) continue;
+              const cy = comEn(y, k);
+              if (!cy) continue;
+              const cx = comEn(x, j, y);
+              if (!cx) continue;
+              // tentativo: y → k, x → j
+              const snapshot = items.map((it) => it.slice());
+              const prevIdx = { ...placedIdx };
+              const prevComY = y.com;
+              const prevComX = x.com;
+              const prevComsJ = items[j].map((z) => z.com);
+              const prevComsK = items[k].map((z) => z.com);
+              items[j] = items[j].filter((z) => z !== y);
+              if (cy.re) applyComs(items[k], cy.re);
+              y.com = cy.com;
+              items[k].push(y);
+              placedIdx[y.m.codigo] = k;
+              if (cx.re) applyComs(items[j], cx.re);
+              x.com = cx.com;
+              items[last] = items[last].filter((z) => z !== x);
+              items[j].push(x);
+              placedIdx[x.m.codigo] = j;
+              const ok =
+                feasible(PL, approved, items, N) &&
+                (!PL.avoid || (overlapsOf([items[j]]) === 0 && overlapsOf([items[k]]) === 0));
+              if (ok) {
+                hecho = true;
+                swaps++;
+              } else {
+                for (let q = 0; q < items.length; q++) items[q] = snapshot[q];
+                for (const key of Object.keys(placedIdx)) delete placedIdx[key];
+                Object.assign(placedIdx, prevIdx);
+                y.com = prevComY;
+                x.com = prevComX;
+                items[j].forEach((z, q) => {
+                  if (q < prevComsJ.length) z.com = prevComsJ[q];
+                });
+                items[k].forEach((z, q) => {
+                  if (q < prevComsK.length) z.com = prevComsK[q];
+                });
+              }
+            }
+            if (hecho) break;
+          }
+        } else {
+          const cx = comEn(x, j);
+          if (!cx) continue;
+          const prevComsJ = items[j].map((z) => z.com);
+          const prevComX = x.com;
+          if (cx.re) applyComs(items[j], cx.re);
+          x.com = cx.com;
+          items[last] = items[last].filter((z) => z !== x);
+          items[j].push(x);
+          placedIdx[x.m.codigo] = j;
+          if (feasible(PL, approved, items, N)) {
+            hecho = true;
+            swaps++;
+          } else {
+            items[j] = items[j].filter((z) => z !== x);
+            items[j].forEach((z, q) => {
+              if (q < prevComsJ.length) z.com = prevComsJ[q];
+            });
+            x.com = prevComX;
+            items[last].push(x);
+            placedIdx[x.m.codigo] = last;
+          }
+        }
+      }
+      if (hecho) progreso = true;
+    }
+    if (!progreso) return swaps;
+    if (items[last].length) return swaps; // no se vació: no insistir
+  }
+  return swaps;
 }
 
 /* ---------- reparación de superposiciones (avoid apagado) ---------- */
@@ -1399,14 +1629,26 @@ function searchPlacement(
   if (atBound(best)) return best;
   consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, L), N, copts, true));
   if (atBound(best)) return best;
+  // Reinicios en tres sabores, para diversidad: holgura con ruido chico;
+  // holgura sin la prioridad de paridad; y casi al azar (sólo lo urgente
+  // primero, holgura con peso mínimo).
   const rand = rng(0x5eed);
   for (let r = 0; r < restarts; r++) {
     const noise = new Map<string, number>();
     const w = 0.5 + rand() * 2;
     for (const m of mats) noise.set(m.codigo, rand() * w);
-    consider(
-      placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, L + (r % 2), noise), N, copts, false),
-    );
+    const sabor = r % 3;
+    const sopts: SlackOpts =
+      sabor === 0
+        ? { noise }
+        : sabor === 1
+          ? { noise, atadaFirst: false }
+          : { noise, peso: 0.1, atadaFirst: rand() < 0.5 };
+    // la urgencia apunta al objetivo real: un cuatrimestre menos que el mejor
+    // plan conocido (la cota puede ser inalcanzable y comprimir todo en
+    // «urgente»)
+    const Lr = Math.max(L, lastCuatri(best.items) - 1);
+    consider(placeAndCompact(PL, approved, fixedCom, mats, buildSlackOrder(PL, mats, Lr, sopts), N, copts, false));
     if (atBound(best)) break;
   }
   return best;
@@ -1531,7 +1773,7 @@ function basePlacement(
   // Relleno sobre una copia del esqueleto, con varios órdenes de electivas
   // (son pocas: cada relleno es barato); después se reintentan las
   // obligatorias que el esqueleto dejó afuera. Gana el mejor por `scoreOf`.
-  const fillOrders: ((a: MateriaM, b: MateriaM) => number)[] = [
+  const fillOrders: PlaceOrder[] = [
     buildCriticalOrder(filling),
     (a, b) => (b.creditos || 0) - (a.creditos || 0) || a.codigo.localeCompare(b.codigo),
     (a, b) => (a.creditos || 0) - (b.creditos || 0) || a.codigo.localeCompare(b.codigo),

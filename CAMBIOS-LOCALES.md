@@ -394,6 +394,25 @@ superposiciones o por un requisito de créditos que le deja una única ventana (
   GPI y seis electivas: Cuántica (una sola comisión) se pisa con Redes en el 1.º y con SIA
   en el 2.º, así que con «evitar» el plan da 3 cuatrimestres y sin evitar, 2 con un choque
   de una hora (antes, 2 con tres choques).
+- Paridad con evidencia (`parityOf`): la del plan de estudios es la grilla nominal; si el
+  horario publicado muestra la materia dictada en el otro cuatrimestre, se dicta en los dos
+  y no restringe. Redes (5/1) figura en la oferta del 2.º cuatrimestre 2026: puede ir en un
+  2.º. En Informática, 23 de 41 obligatorias con horario están en ese caso. Con eso el plan
+  de fin de carrera del ejemplo (PF, SIA, Redes, GPI + seis electivas) cierra en 2
+  cuatrimestres SIN superposiciones (Redes y SIA juntas en el 2.º, Cuántica en el 1.º), que
+  es lo que el usuario armaba a mano fijando SIA. La UI (`PlanView`: arrastre, vista previa,
+  aviso de paridad) y el check usan la misma noción; el aviso de una fijada en la otra
+  paridad ahora aclara «no hay horario publicado del N.º».
+- Orden por holgura por cuatrimestre (`PlaceOrder.at(i)`): primero lo urgente
+  (`latestStart` ≤ i), después las atadas a una paridad, y entre iguales holgura, camino
+  crítico y FFD; los reinicios apuntan a «un cuatrimestre menos que el mejor conocido» y
+  vienen en tres sabores (holgura con ruido, sin prioridad de paridad, casi al azar).
+- `vaciarUltimo`: intercambio 1-1 entre el último cuatrimestre y uno previo (x entra donde
+  estaba y, e y se muda a otro con lugar), revalidando el plan entero; resuelve los casos con
+  topes justos y electivas donde la compactación (que sólo adelanta) no alcanzaba.
+- `resolveComs`: decide primero las materias con menos comisiones y presupuesto de 20 000
+  nodos (con seis materias de hasta ocho comisiones agotaba los 4000 sin encontrar una
+  asignación que existía).
 - `PlanResult.delayed` (`explainDelays`): con «evitar» encendido, qué materia queda más
   tarde sólo por el horario y con quién se pisa en cada cuatrimestre anterior;
   `planOverlaps(items)` lista los choques de un plan con el momento («jue 18:00–19:00»,

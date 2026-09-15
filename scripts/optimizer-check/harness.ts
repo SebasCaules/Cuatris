@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 const ROOT = path.resolve(import.meta.dirname, "../..");
 import { PLAN, byId, loadPlan, remainingOblig, topeNominal, esAnual } from "../../lib/planner/model";
-import { optimizePlan, cuatriAt, OPT_METHODS } from "../../lib/planner/optimize";
+import { optimizePlan, cuatriAt, OPT_METHODS, parityOf } from "../../lib/planner/optimize";
 import { approvedCredits } from "../../lib/planner/metrics";
 import { comConflict, viajesDe, isAsync } from "../../lib/planner/time";
 import type { PlanState, PlanResult, MateriaM, OptMethod } from "../../lib/planner/types";
@@ -85,7 +85,8 @@ export function check(PL: PlanState, approved: Set<string>, R: PlanResult, fixed
       const fx = PL.fixed.get(code);
       if (fx != null && fx !== i && !(esAnual(code) && x.parte === 2 && fx === i - 1)) errors.push(`${code} fijada en ${fx} pero está en ${i}`);
       const orig = byId.get(code)!;
-      if (fx == null && !esAnual(code) && orig.parity != null && orig.parity !== cu.parity) errors.push(`${code} paridad ${orig.parity} en cuatri ${i} (paridad ${cu.parity})`);
+      const par = parityOf(orig);
+      if (fx == null && !esAnual(code) && par != null && par !== cu.parity) errors.push(`${code} paridad ${par} en cuatri ${i} (paridad ${cu.parity})`);
       const pinned = fx != null; // lo fijado a mano va sí o sí: el plan lo marca como aviso
       if (!pinned && (orig.creditosReq || 0) > acc && !(x.parte === 2)) errors.push(`${code} creditosReq ${orig.creditosReq} > acumulado ${acc} en cuatri ${i}`);
       if (!pinned) for (const c of orig.correlativas || []) {
@@ -133,7 +134,7 @@ export function lowerBound(PL: PlanState, approved: Set<string>): { asap: number
         const cu = cuatriAt(PL.start, i);
         if (fx != null) { i = fx; break; }
         if (PL.lockedIdx.has(i)) continue;
-        if (!esAnual(m.codigo) && m.parity != null && m.parity !== cu.parity) continue;
+        if (!esAnual(m.codigo) && parityOf(m) != null && parityOf(m) !== cu.parity) continue;
         if ((m.creditosReq || 0) > totalCredBefore(i)) continue;
         break;
       }
