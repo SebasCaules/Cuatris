@@ -135,6 +135,10 @@ for (const code of codes) {
     continue;
   }
   const tope = topeNominal();
+  const electivasCon = PLAN.electivas
+    .map((m) => m.codigo)
+    .filter((c) => byId.get(c)?.horario?.comisiones.length);
+  const rand = rng(code.length * 104729 + 7);
   for (const sc of scenariosFor(code)) {
     // por (método, tope): el plan con «evitar superposiciones» y sin él
     const porModo: Record<string, { last: number; unpl: number; overlaps: number }> = {};
@@ -206,6 +210,37 @@ for (const code of codes) {
             if (R.minLast != null && ck.unplaced.length === 0 && ck.last < R.minLast) {
               fails++;
               console.log(`COTA INVÁLIDA ${label}: last=${ck.last} < minLast=${R.minLast}`);
+            }
+            // cota con las electivas que faltan para el título: sin déficit es
+            // la misma cota; con déficit, ningún plan que lo cubra con electivas
+            // reales (dos muestras al azar, con horario) termina antes
+            if (R.minLastTitulo != null && R.minLast != null) {
+              if (!R.electivasFaltan && R.minLastTitulo !== R.minLast) {
+                fails++;
+                console.log(`COTA TÍTULO ${label}: sin déficit, minLastTitulo=${R.minLastTitulo} ≠ minLast=${R.minLast}`);
+              }
+              if (R.electivasFaltan) {
+                const cand = electivasCon.filter((c) => !PL.pool.has(c) && !sc.ap.has(c));
+                for (let muestra = 0; muestra < 2 && cand.length; muestra++) {
+                  const pool = new Set(PL.pool);
+                  let cred = 0;
+                  const bolsa = [...cand];
+                  while (cred < R.electivasFaltan && bolsa.length) {
+                    const c = bolsa.splice(Math.floor(rand() * bolsa.length), 1)[0];
+                    pool.add(c);
+                    cred += byId.get(c)?.creditos || 0;
+                  }
+                  if (cred < R.electivasFaltan) break;
+                  const Rt = optimizePlan(mkPL({ ...PL, pool }, sc.ap), sc.ap, sc.fixedCom);
+                  if (Rt.unplaced.length) continue;
+                  let lastT = -1;
+                  Rt.items.forEach((it, i) => { if (it.length) lastT = i; });
+                  if (lastT < R.minLastTitulo) {
+                    fails++;
+                    console.log(`COTA TÍTULO INVÁLIDA ${label}: con electivas last=${lastT} < minLastTitulo=${R.minLastTitulo}`);
+                  }
+                }
+              }
             }
           }
         }

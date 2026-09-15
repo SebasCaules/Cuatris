@@ -108,9 +108,9 @@
 // dependientes van después de la segunda mitad. Las mitades no se compactan
 // ni se rebalancean sueltas: la colocación ya las deja en el primer par de
 // cuatrimestres donde caben.
-import { PLAN, byId, esAnual, onPlanChange } from "./model";
+import { PLAN, byId, electivasReq, esAnual, onPlanChange } from "./model";
 import { MAX_PLAN_CUATRIS } from "./consts";
-import { approvedCredits } from "./metrics";
+import { approvedCredits, electiveCredits } from "./metrics";
 import { comConflict, isAsync, slotsConflict, toMin, viajesDe } from "./time";
 import type {
   Comision,
@@ -686,13 +686,71 @@ interface Bound {
   unplaceable: number;
 }
 
+/** Demanda GENÉRICA que la cota suma a la del pool: las electivas que el
+ *  título pide y todavía no están ni aprobadas ni en el pool. Se cuentan con
+ *  el supuesto más optimista —se cursan desde el primer cuatrimestre y sus
+ *  créditos valen para los requisitos desde el segundo— así la cota sigue
+ *  siendo inferior sea cual sea la electiva que después se elija. */
+interface DemandaExtra {
+  /** créditos que faltan. */
+  cred: number;
+  /** la menor cantidad de materias que puede juntarlos. */
+  count: number;
+  /** créditos de la mayor de esas materias (para la cota de capacidad). */
+  maxCred: number;
+}
+
+/**
+ * Créditos de electivas que el título pide y que ni lo aprobado ni el pool
+ * cubren, como demanda genérica para la cota (`null` si no falta nada). La
+ * cantidad mínima de materias sale de las electivas candidatas del plan de
+ * estudios (las de más créditos primero); si no alcanzan (plan sin electivas
+ * cargadas), lo que resta se supone en materias del crédito máximo del plan.
+ */
+export function electivasFaltantes(
+  approved: Set<string>,
+  mats: MateriaM[],
+): DemandaExtra | null {
+  let have = electiveCredits(approved);
+  for (const m of mats) if (m.tipo === "electiva") have += m.creditos || 0;
+  const faltan = electivasReq() - have;
+  if (faltan <= 0) return null;
+  const inPool = new Set(mats.map((m) => m.codigo));
+  const creds = PLAN.electivas
+    .filter((m) => !approved.has(m.codigo) && !inPool.has(m.codigo) && (m.creditos || 0) > 0)
+    .map((m) => m.creditos || 0)
+    .sort((a, b) => b - a);
+  let count = 0;
+  let sum = 0;
+  let maxCred = 0;
+  for (const c of creds) {
+    if (sum >= faltan) break;
+    sum += c;
+    count++;
+    if (c > maxCred) maxCred = c;
+  }
+  if (sum < faltan) {
+    let generic = maxCred;
+    for (const m of PLAN.obligatorias) generic = Math.max(generic, m.creditos || 0);
+    generic = Math.max(1, generic);
+    while (sum < faltan) {
+      sum += generic;
+      count++;
+    }
+    if (generic > maxCred) maxCred = generic;
+  }
+  return { cred: faltan, count, maxCred };
+}
+
 /**
  * Cota inferior de la fecha de egreso. ASAP sin topes: el índice más temprano
  * de cada materia dado el de sus correlativas, su paridad, los cuatrimestres
  * finalizados y su requisito de créditos contra una acumulación OPTIMISTA (todo
  * lo que puede estar antes, está antes); punto fijo monótono. Más la cota de
  * capacidad (créditos y materias del pool contra los topes de los primeros
- * cuatrimestres). Ningún plan factible termina antes.
+ * cuatrimestres). Ningún plan factible termina antes. Con `extra`, la demanda
+ * genérica de las electivas que faltan para el título entra en las dos partes:
+ * sus créditos en la acumulación optimista y su carga en la capacidad.
  */
 export function lowerBoundLast(
   PL: PlanState,
@@ -700,13 +758,14 @@ export function lowerBoundLast(
   mats: MateriaM[],
   N: number,
   softParity = true,
+  extra: DemandaExtra | null = null,
 ): Bound {
   const inPool = new Map(mats.map((m) => [m.codigo, m]));
   const earliest = new Map<string, number>();
   for (const m of mats) earliest.set(m.codigo, 0);
   const base = approvedCredits(approved);
   const creditsBefore = (i: number): number => {
-    let s = base;
+    let s = base + (extra && i >= 1 ? extra.cred : 0);
     for (const m of mats) {
       const e = earliest.get(m.codigo)!;
       if (e < i && e < N) s += m.creditos || 0;
@@ -778,6 +837,11 @@ export function lowerBoundLast(
     count += anual ? 2 : 1;
     const c1 = anual ? mitadCred(m, 1) : m.creditos || 0;
     if (c1 > maxCredMateria) maxCredMateria = c1;
+  }
+  if (extra) {
+    cred += extra.cred;
+    count += extra.count;
+    if (extra.maxCred > maxCredMateria) maxCredMateria = extra.maxCred;
   }
   // capacidad: el menor L tal que los topes de 0..L (sin los finalizados, y
   // descontando lo fijado) alcanzan para los créditos y las materias libres.
@@ -2281,12 +2345,20 @@ export function optimizePlan(
     acc += items[i].reduce((s, x) => s + (x.m.creditos || 0), 0);
   }
   const bound = lowerBoundLast(PL, approved, mats, N);
+  // la misma cota contando las electivas que faltan para el título: con el
+  // horizonte máximo, porque esa demanda puede no entrar en el del plan
+  const extra = electivasFaltantes(approved, mats);
+  const boundTitulo = extra
+    ? lowerBoundLast(PL, approved, mats, HORIZON_MAX, true, extra)
+    : bound;
   return {
     items,
     unplaced: remaining,
     accBefore,
     moved,
     minLast: bound.last,
+    minLastTitulo: boundTitulo.last,
+    electivasFaltan: extra?.cred ?? 0,
     unplacedWhy: explainUnplaced(PL, approved, mats, remaining, items),
     delayed: explainDelays(PL, approved, items, accBefore),
   };

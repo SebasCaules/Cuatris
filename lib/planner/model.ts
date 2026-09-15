@@ -89,6 +89,9 @@ export function loadPlan(data: Plan): void {
 }
 
 export const credOf = (c: string) => Number(byId.get(c)?.creditos) || 0;
+/** Créditos de electivas que pide el título del plan ACTIVO (cambia con la
+ *  carrera); 27 si el plan no lo declara (Informática). */
+export const electivasReq = () => PLAN.creditosElectivasReq ?? 27;
 export const isElectiva = (c: string) => byId.get(c)?.tipo === "electiva";
 export const abbrOf = (c: string) => byId.get(c)?.abbr || c;
 export const hasHorario = (c: string) => {

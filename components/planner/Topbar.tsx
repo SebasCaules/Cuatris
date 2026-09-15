@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { usePlanner } from "./state";
 import { DotCursando } from "./EstadoControl";
 import { Tooltip } from "./Tooltip";
-import { PLAN } from "@/lib/planner/model";
+import { PLAN, electivasReq } from "@/lib/planner/model";
 import {
   approvedCredits,
   electiveCredits,
@@ -20,7 +20,7 @@ export default function Topbar() {
   // PlanView) y totales de la carrera para leer «cómo queda» cada stat:
   // créditos de todas las obligatorias más los electivos exigidos; cantidad de
   // obligatorias; materias. Se leen en el render: cambian con la carrera.
-  const ELEC_REQ = PLAN.creditosElectivasReq ?? 27;
+  const ELEC_REQ = electivasReq();
   const CRED_TOTAL =
     PLAN.obligatorias.reduce((s, m) => s + (m.creditos || 0), 0) + ELEC_REQ;
   const OBLIG_TOTAL = PLAN.obligatorias.length;

@@ -582,6 +582,34 @@ tarjeta de la materia.
   corre los tres; Node ≥ 22.18 con type stripping, `engines` en `package.json`; `tsconfig`
   con `allowImportingTsExtensions`).
 
+## 22. Plan de cursada: «Te recibís en» cuenta las electivas que faltan (2026-09-15)
+
+Con las obligatorias marcadas y ninguna electiva agregada, el resultado decía «Te recibís
+en 1.º cuat. 2028 · mínimo posible» aunque el título pide 27 créditos de electivas que el
+plan no tenía: la fecha era la de terminar las obligatorias, no la de recibirse.
+
+- `lib/planner/optimize.ts`: `electivasFaltantes(approved, mats)` mide los créditos de
+  electivas que el título pide y que ni lo aprobado ni el pool cubren, como demanda GENÉRICA
+  (créditos, la menor cantidad de materias que los junta —las electivas candidatas de más
+  créditos primero— y el crédito mayor). `lowerBoundLast(…, extra)` la suma a la cota: sus
+  créditos entran en la acumulación optimista desde el segundo cuatrimestre y su carga en la
+  cota de capacidad, así sigue siendo inferior sea cual sea la electiva que después se
+  elija. `optimizePlan` la devuelve como `PlanResult.minLastTitulo` (con el horizonte
+  máximo) junto a `electivasFaltan`; `minLast` no cambia (sigue siendo la cota del pool y lo
+  que apuntan los reinicios). `lib/planner/model.ts`: `electivasReq()` (los créditos
+  electivos del plan activo, antes duplicado en `PlanView` y `Topbar`).
+- `views/PlanView.tsx`: mientras falten créditos electivos, el rótulo pasa a «Te recibís no
+  antes de» y la fecha es `max(último cuatrimestre del plan, minLastTitulo)`; la línea de
+  abajo suma «faltan N cr de electivas» (tono de aviso, tooltip: cuántos pide el título,
+  cuántos junta el plan, la cota y que la fecha exacta depende de cuáles se agreguen).
+  «Mínimo posible» sólo con los créditos electivos cubiertos; «Cómo se armó este plan» dice
+  la cota con las electivas en vez de «coincide con la cota mínima». Estado vacío (todas las
+  obligatorias aprobadas, sin electivas): «Te faltan N créditos de electivas para el título:
+  agregá electivas al plan…».
+- `scripts/optimizer-check/run.ts`: sin déficit `minLastTitulo === minLast`; con déficit,
+  dos muestras de electivas reales (con horario) que lo cubren nunca terminan antes de la
+  cota.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

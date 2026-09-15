@@ -273,6 +273,12 @@ export interface PlanResult {
   /** cota inferior del último cuatrimestre usado (correlativas, paridad,
    *  créditos requeridos y topes): si el plan termina ahí, no se puede antes. */
   minLast?: number;
+  /** la misma cota contando también los créditos de electivas que el título
+   *  pide y que ni lo aprobado ni el pool cubren (`electivasFaltan`): ningún
+   *  plan que los junte termina antes. Igual a `minLast` si no falta nada. */
+  minLastTitulo?: number;
+  /** créditos de electivas que faltan para el título (0 si el pool los cubre). */
+  electivasFaltan?: number;
   /** motivo por materia sin ubicar (código → motivo). */
   unplacedWhy?: Map<string, UnplacedReason>;
   /** materias retrasadas por superposición (código → cuatrimestres anteriores

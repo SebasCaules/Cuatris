@@ -21,6 +21,7 @@ import {
   DAYS,
   PLAN,
   REQUISITOS,
+  electivasReq,
   remainingOblig,
 } from "@/lib/planner/model";
 import { approvedCredits, electiveCredits } from "@/lib/planner/metrics";
@@ -98,8 +99,6 @@ import type {
 import { normalizar } from "@/lib/planner/texto";
 import "@/components/planner/planview.css";
 
-// créditos electivos requeridos por el plan ACTIVO (cambia con la carrera)
-const elecReq = () => PLAN.creditosElectivasReq ?? 27;
 const EMPTY_BLOCKS: WeekBlock[] = [];
 const EMPTY_CODES: string[] = [];
 
@@ -289,10 +288,14 @@ function methodText(
   R: PlanResult,
   PL: { method: OptMethod; maxCred: number; maxMat: number; avoid: boolean },
   lastIdx: number,
+  /** electivas que faltan para el título y el egreso mínimo contándolas
+   *  (null si el plan ya junta los créditos electivos). */
+  titulo: { faltan: number; cu: PlanStart } | null,
 ) {
   const meta = OPT_METHODS.find((m) => m.key === PL.method);
   const objetivo = meta?.objetivo ?? "Minimizar la cantidad de cuatrimestres.";
-  const minimo = R.minLast != null && R.minLast === lastIdx && R.unplaced.length === 0;
+  const minimo =
+    !titulo && R.minLast != null && R.minLast === lastIdx && R.unplaced.length === 0;
   const secundario =
     PL.method === "dias"
       ? "entre los planes que terminan ahí, el de menos días de campus por semana."
@@ -305,11 +308,13 @@ function methodText(
       la fecha de egreso más temprana —varias colocaciones (orden del plan de
       estudios, urgencia por correlativas y reinicios) y se queda con la que
       termina antes— y después, {secundario}{" "}
-      {minimo
-        ? "El egreso coincide con la cota mínima: no existe plan más corto con estas restricciones."
-        : R.minLast != null && R.minLast >= 0 && R.unplaced.length === 0
-          ? `Cota teórica: ${R.minLast + 1} cuatrimestres (calculada sin combinar los topes con los créditos requeridos ni las superposiciones, así que puede no ser alcanzable).`
-          : ""}{" "}
+      {titulo
+        ? `Faltan ${titulo.faltan} créditos de electivas para el título: contándolos, ningún plan termina antes de ${cuatriName(titulo.cu)}. La fecha exacta depende de qué electivas agregues.`
+        : minimo
+          ? "El egreso coincide con la cota mínima: no existe plan más corto con estas restricciones."
+          : R.minLast != null && R.minLast >= 0 && R.unplaced.length === 0
+            ? `Cota teórica: ${R.minLast + 1} cuatrimestres (calculada sin combinar los topes con los créditos requeridos ni las superposiciones, así que puede no ser alcanzable).`
+            : ""}{" "}
       Restricciones respetadas: paridad 1.º/2.º cuatrimestre · correlativas ·
       créditos requeridos
       {PL.avoid
@@ -1690,7 +1695,7 @@ function Recommendations({
   preview: string | null;
   onHide?: () => void;
 }) {
-  const ELEC_REQ = elecReq();
+  const ELEC_REQ = electivasReq();
   const { dispatch } = usePlanner();
 
   if (!recs.length) return null;
@@ -2622,7 +2627,6 @@ export default function PlanView() {
   const flat = R.items.flat();
   const accNow = approvedCredits(approved);
   const lastIdx = used.length ? used[used.length - 1].i : 0;
-  const gradCu = cuatriAt(PL.start, lastIdx);
   // selects «fijar en»: hasta un cuatrimestre después del último usado (el
   // plan extiende su horizonte cuando hace falta; MAX_PLAN_CUATRIS es el tope)
   const fixRange = Math.min(MAX_PLAN_CUATRIS, Math.max(14, lastIdx + 2));
@@ -2647,7 +2651,16 @@ export default function PlanView() {
       .flat()
       .filter((x) => x.m.tipo === "electiva")
       .reduce((s, x) => s + (x.m.creditos || 0), 0);
-  const elecPlanPct = Math.min(100, Math.round((elecCommitted / elecReq()) * 100));
+  const elecPlanPct = Math.min(100, Math.round((elecCommitted / electivasReq()) * 100));
+  // Créditos de electivas que el título pide y el plan no junta. Mientras
+  // falten, «Te recibís en» no es una fecha sino una cota: el egreso mínimo
+  // contando esos créditos (`minLastTitulo`, nunca antes del último
+  // cuatrimestre que el plan ya usa). Sin electivas elegidas no hay fecha
+  // exacta que dar.
+  const elecFaltan = Math.max(0, electivasReq() - elecCommitted);
+  const tituloIdx = elecFaltan > 0 ? Math.max(lastIdx, R.minLastTitulo ?? lastIdx) : lastIdx;
+  const tituloCu = cuatriAt(PL.start, tituloIdx);
+  const titulo = elecFaltan > 0 ? { faltan: elecFaltan, cu: tituloCu } : null;
 
   // Si la materia previsualizada no entra en ningún cuatrimestre del plan, el
   // recomendador dice dónde caería si el plan se alarga (`landingIdx` más allá
@@ -3067,12 +3080,35 @@ export default function PlanView() {
               <div className="pv-result__grad">
                 <IconGraduationCap size={18} />
                 <div>
-                  <span className="pv-result__lbl">Te recibís en</span>
-                  <b className="pv-result__val">{cuatriName(gradCu)}</b>
+                  <span className="pv-result__lbl">
+                    {titulo ? "Te recibís no antes de" : "Te recibís en"}
+                  </span>
+                  <b className="pv-result__val">{cuatriName(tituloCu)}</b>
                   <span className="pv-result__sub">
                     {used.length} {used.length === 1 ? "cuatrimestre" : "cuatrimestres"} ·{" "}
                     {flat.length} materias
-                    {R.minLast != null && R.minLast === lastIdx && R.unplaced.length === 0 && (
+                    {titulo && (
+                      <>
+                        {" · "}
+                        <Tooltip
+                          width={290}
+                          content={
+                            <>
+                              El título pide {electivasReq()} créditos de electivas y el plan{" "}
+                              {elecCommitted > 0 ? `junta ${elecCommitted}` : "todavía no tiene ninguna"}.
+                              Con los {titulo.faltan} que faltan y estos topes, ningún plan termina antes
+                              de <b>{cuatriName(titulo.cu)}</b>; la fecha exacta depende de cuáles
+                              agregues: elegilas en el recomendador o en «Materias del plan».
+                            </>
+                          }
+                        >
+                          <span className="pv-result__min pv-result__min--warn" tabIndex={0}>
+                            faltan {titulo.faltan} cr de electivas
+                          </span>
+                        </Tooltip>
+                      </>
+                    )}
+                    {!titulo && R.minLast != null && R.minLast === lastIdx && R.unplaced.length === 0 && (
                       <>
                         {" · "}
                         <Tooltip
@@ -3175,7 +3211,7 @@ export default function PlanView() {
                     Electivos
                   </span>
                   <span>
-                    <b>{Math.min(elecCommitted, elecReq())}</b> / {elecReq()} cr
+                    <b>{Math.min(elecCommitted, electivasReq())}</b> / {electivasReq()} cr
                   </span>
                   <span
                     className="pv-strip__bar"
@@ -3187,8 +3223,8 @@ export default function PlanView() {
                   >
                     <i style={{ width: `${elecPlanPct}%` }} />
                   </span>
-                  <span className={"pv-strip__pct" + (elecCommitted >= elecReq() ? " is-ok" : "")}>
-                    {elecCommitted >= elecReq() ? "cubiertos" : `faltan ${elecReq() - elecCommitted}`}
+                  <span className={"pv-strip__pct" + (elecCommitted >= electivasReq() ? " is-ok" : "")}>
+                    {elecCommitted >= electivasReq() ? "cubiertos" : `faltan ${electivasReq() - elecCommitted}`}
                   </span>
                 </span>
                 <span className="pv-strip__minors" role="group" aria-label="Progreso de minors">
@@ -3342,7 +3378,11 @@ export default function PlanView() {
               <path d="M12 3 2 8l10 5 10-5-10-5Z" />
               <path d="M6 10.5V16c0 1.1 2.7 2.5 6 2.5s6-1.4 6-2.5v-5.5M22 8v5" />
             </svg>
-            <p>Agregá materias al plan para ver tu camino a recibirte.</p>
+            <p>
+              {elecFaltan > 0
+                ? `Te faltan ${elecFaltan} créditos de electivas para el título: agregá electivas al plan para ver tu camino a recibirte.`
+                : "Agregá materias al plan para ver tu camino a recibirte."}
+            </p>
           </div>
         </div>
       ) : (
@@ -3472,7 +3512,7 @@ export default function PlanView() {
         <div className="plan2-opt">
           <details className="plan2-optnote-d">
             <summary>Cómo se armó este plan</summary>
-            <p className="plan2-method">{methodText(R, PL, lastIdx)}</p>
+            <p className="plan2-method">{methodText(R, PL, lastIdx, titulo)}</p>
           </details>
         </div>
       )}
