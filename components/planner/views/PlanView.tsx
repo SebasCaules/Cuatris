@@ -2266,17 +2266,19 @@ export default function PlanView() {
   // previa hasta que «Usar esta» la fija. Cualquier cambio del plan vuelve a
   // la del optimizador (las combinaciones se rehacen sobre el plan nuevo).
   const [combos, setCombos] = useState<{ open: boolean; idx: number }>({ open: false, idx: 0 });
+  // Se calculan sobre valores diferidos (mediana 0,7 ms, máximo ~60 ms) para
+  // saber cuántas hay antes de abrir: sin ninguna no se ofrece nada.
+  const dBaseR = useDeferredValue(baseR);
   const alts = useMemo<PlanAlternative[]>(
-    () => (combos.open ? planAlternatives(PL, settled, state.fixedCom, baseR) : []),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [combos.open, baseR],
+    () => planAlternatives(dPL, dApproved, dFixedCom, dBaseR),
+    [dBaseR, dPL, dApproved, dFixedCom],
   );
+  const altsPending = dBaseR !== baseR || dPL !== PL;
   useEffect(() => {
     setCombos((c) => (c.idx ? { ...c, idx: 0 } : c));
   }, [baseR]);
-  // (la posición se acota a las combinaciones que hay: al abrir se pide la
-  // primera sin saber todavía si existe)
-  const comboIdx = combos.open ? Math.min(combos.idx, alts.length) : 0;
+  // (la posición se acota a las combinaciones que hay)
+  const comboIdx = combos.open && !altsPending ? Math.min(combos.idx, alts.length) : 0;
   const alt: PlanAlternative | null = comboIdx > 0 ? (alts[comboIdx - 1] ?? null) : null;
   // Fijar la combinación que se está viendo con los menos pines que la
   // reproducen: primero sólo las materias movidas; si con eso el optimizador
@@ -3287,6 +3289,12 @@ export default function PlanView() {
                       </>
                     )}
                   </span>
+                  {/* Lo que se puede hacer con este plan, en una fila de chips
+                      silenciosos (el valor en tinta; el acento queda para la
+                      fecha y lo elegido): la alternativa con superposiciones,
+                      las electivas sugeridas y las otras combinaciones. */}
+                  {(altHint || (titulo && fill && !recsPending) || (!altsPending && alts.length > 0)) && (
+                  <div className="pv-result__acts">
                   {altHint && (
                     <Tooltip
                       width={300}
@@ -3309,7 +3317,7 @@ export default function PlanView() {
                         className="pv-result__alt"
                         onClick={() => dispatch({ type: "SET_PLAN_AVOID", value: false })}
                       >
-                        Con superposiciones: <b>{cuatriLabel(cuatriAt(PL.start, altHint.last))}</b> ·{" "}
+                        Con superposiciones <b>{cuatriLabel(cuatriAt(PL.start, altHint.last))}</b> ·{" "}
                         {altHint.overlaps.length}{" "}
                         {altHint.overlaps.length === 1 ? "choque" : "choques"}
                       </button>
@@ -3318,16 +3326,17 @@ export default function PlanView() {
                   {titulo && fill && !recsPending && (
                     <Tooltip width={300} content={fillTip}>
                       <button type="button" className="pv-result__alt" onClick={applyFill}>
-                        Con electivas sugeridas: <b>{cuatriLabel(cuatriAt(PL.start, fill.last))}</b> ·{" "}
+                        Con electivas sugeridas <b>{cuatriLabel(cuatriAt(PL.start, fill.last))}</b> ·{" "}
                         {fill.picks.length} {fill.picks.length === 1 ? "materia" : "materias"}
                       </button>
                     </Tooltip>
                   )}
                   {/* Otras combinaciones: recorrer las demás formas de repartir
                       estas mismas materias sin correr el egreso. Cerrado, un
-                      enlace; abierto, un paso a paso (1 = la del optimizador)
-                      con qué cambia en cada una y «Usar esta» para fijarla. */}
-                  {!combos.open ? (
+                      chip con cuántas hay; abierto, un paso a paso (1 = la del
+                      optimizador) con qué cambia en cada una y «Usar esta»
+                      para fijarla. Sin ninguna, nada. */}
+                  {!altsPending && alts.length > 0 && !combos.open && (
                     <Tooltip
                       width={280}
                       content="Otras formas de repartir estas mismas materias que terminan en la misma fecha: una materia en otro cuatrimestre, o dos intercambiadas. Clic para recorrerlas."
@@ -3337,10 +3346,11 @@ export default function PlanView() {
                         className="pv-result__alt"
                         onClick={() => setCombos({ open: true, idx: 1 })}
                       >
-                        Otras combinaciones
+                        <b>{alts.length}</b> {alts.length === 1 ? "combinación más" : "combinaciones más"}
                       </button>
                     </Tooltip>
-                  ) : (
+                  )}
+                  {!altsPending && alts.length > 0 && combos.open && (
                     <div className="pv-combos" role="group" aria-label="Otras combinaciones">
                       <span className="pv-combos__nav">
                         <Tooltip content="Combinación anterior" width={150}>
@@ -3381,9 +3391,7 @@ export default function PlanView() {
                                 <b>{abbrOf(c.code)}</b> → {cuatriLabel(cuatriAt(PL.start, c.to))}
                               </span>
                             ))
-                          : alts.length
-                            ? "la del optimizador"
-                            : "no hay otras con estos topes"}
+                          : "la del optimizador"}
                       </span>
                       {alt && (
                         <Tooltip
@@ -3406,6 +3414,8 @@ export default function PlanView() {
                         </button>
                       </Tooltip>
                     </div>
+                  )}
+                  </div>
                   )}
                 </div>
               </div>

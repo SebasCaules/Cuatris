@@ -82,11 +82,11 @@
 .planner .pv-strip__when {
   font-family: var(--f-m);
   font-size: 9.5px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--brass);
+  color: var(--faint);
 }
-.planner .pv-strip__pct.is-ok { color: var(--sage); }
+.planner .pv-strip__pct.is-ok { color: var(--status-go-text); }
 .planner .pv-strip__item {
   display: inline-flex;
   align-items: center;
@@ -129,7 +129,7 @@
   transition: width var(--dur-base) var(--ease-out);
 }
 .planner .pv-strip__pct {
-  color: var(--brass);
+  color: var(--muted);
   font-weight: 600;
 }
 .planner .pv-strip__sep {
@@ -364,8 +364,8 @@
   letter-spacing: 0.01em;
 }
 .planner .pv-seg__opt--ic[aria-checked="true"] {
-  background: var(--brass);
-  color: var(--block-ink);
+  background: var(--brass-soft);
+  color: var(--accent-text);
   padding: 0 12px 0 10px;
 }
 .planner .pv-seg__opt--ic[aria-checked="true"] .pv-seg__txt {
@@ -390,10 +390,14 @@
   outline: 2px solid var(--brass);
   outline-offset: 1px;
 }
+.planner .pv-seg__opt--ic:focus-visible:not([aria-checked="true"]) {
+  color: var(--ink);
+}
 
-/* «mínimo posible»: la fecha de egreso coincide con la cota inferior */
+/* «mínimo posible»: la fecha de egreso coincide con la cota inferior (un
+   estado logrado: texto de estado, no acento) */
 .planner .pv-result__min {
-  color: var(--accent-text);
+  color: var(--status-go-text);
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: help;
@@ -404,35 +408,54 @@
 .planner .pv-result__min--warn {
   color: var(--status-warn-text);
 }
-/* «Con superposiciones: 2c-27 · 1 choque»: la alternativa que termina antes,
-   un clic apaga «Evitar superposiciones» */
+/* Lo que se puede hacer con el plan («Con superposiciones 2c-27 · 1 choque»,
+   «Con electivas sugeridas 2c-27 · 2 materias», «7 combinaciones más»): una
+   fila de chips en silencio —hairline, sin relleno, el valor en tinta— para
+   que ninguno compita con la fecha. Los marcadores de estado de la línea de
+   arriba se distinguen por forma (texto con punteado, sin borde). */
+.planner .pv-result__acts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin-top: 8px;
+  /* como la línea de arriba (38ch): envuelve en vez de ensanchar la columna
+     del egreso y aplastar créditos y minors (el ch es el de los chips) */
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  max-width: 46ch;
+}
 .planner .pv-result__alt {
-  display: inline-block;
-  margin-top: 4px;
-  padding: 0;
-  border: none;
-  background: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 22px;
+  padding: 2px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
   cursor: pointer;
   font-family: var(--f-m);
   font-size: 10.5px;
-  line-height: 1.5;
+  line-height: 1.4;
   text-align: left;
   color: var(--muted);
-  border-bottom: 1px dotted transparent;
-  transition: color var(--dur-fast) var(--ease-out);
+  transition: color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
 }
 .planner .pv-result__alt b {
-  color: var(--accent-text);
+  color: var(--ink);
   font-weight: 600;
 }
 .planner .pv-result__alt:hover {
   color: var(--ink);
-  border-bottom-color: currentColor;
+  border-color: var(--line-2);
+  background: var(--panel-3);
 }
 .planner .pv-result__alt:focus-visible {
   outline: 2px solid var(--brass);
   outline-offset: 2px;
-  border-radius: 2px;
 }
 .planner .pv-result__min:focus-visible {
   outline: 2px solid var(--brass);
@@ -440,13 +463,13 @@
   border-radius: 2px;
 }
 
-/* «Otras combinaciones» abierto: ‹ 2 / 9 › · qué cambia · Usar esta · × */
+/* «Otras combinaciones» abierto: ‹ 2 / 9 › · qué cambia · Usar esta · ×
+   (dentro de la fila de acciones, con la misma altura que los chips) */
 .planner .pv-combos {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 4px 8px;
-  margin-top: 6px;
   font-family: var(--f-m);
   font-size: 10.5px;
   line-height: 1.5;
@@ -456,9 +479,9 @@
   display: inline-flex;
   align-items: center;
   height: 22px;
-  border: 1px solid var(--line-2);
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: var(--panel);
+  background: transparent;
   overflow: hidden;
 }
 .planner .pv-combos__btn {
@@ -503,19 +526,23 @@
   font-weight: 600;
 }
 .planner .pv-combos__use {
-  padding: 0;
-  border: none;
-  background: none;
+  height: 22px;
+  padding: 0 9px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--brass-soft);
   cursor: pointer;
   font-family: var(--f-m);
   font-size: 10.5px;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--accent-text);
-  border-bottom: 1px dotted currentColor;
+  transition: background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
 }
 .planner .pv-combos__use:hover {
-  color: var(--ink);
+  background: var(--brass);
+  color: var(--block-ink);
 }
 .planner .pv-combos__use:focus-visible,
 .planner .pv-combos__close:focus-visible {
@@ -1933,7 +1960,9 @@
     gap: 6px 14px;
   }
 }
-@media (max-width: 560px) {
+/* (la fila de acciones del egreso mide hasta 46ch: por debajo de ~700px las
+   dos columnas del resultado ya no dejan lugar a la barra de créditos) */
+@media (max-width: 700px) {
   .planner .pv-result {
     grid-template-columns: 1fr;
     row-gap: 10px;

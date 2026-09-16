@@ -654,6 +654,20 @@ materia en otro cuatrimestre, o dos intercambiadas.
 - `scripts/optimizer-check/run.ts`: cada combinación cumple las invariantes del plan, no
   termina más tarde, no suma superposiciones ni supuestos de paridad, no repite otra ni el
   plan base, y cambia una o dos materias.
+- Pasada «más silencio» sobre el banner del plan (`/impeccable quieter`, 2026-09-15): las
+  tres acciones del egreso («Con superposiciones 2c-27 · 1 choque», «Con electivas
+  sugeridas …», «N combinaciones más») salían pegadas en una sola línea y con tres valores
+  en acento compitiendo con la fecha. Ahora son una fila de chips en silencio
+  (`.pv-result__acts`: hairline, sin relleno, valor en tinta, envuelve a 46ch); las
+  combinaciones se calculan por adelantado sobre valores diferidos (mediana 0,7 ms, máximo
+  ~60 ms) para mostrar cuántas hay y no ofrecer nada cuando no hay ninguna; el paso a paso
+  vive en la misma fila y «Usar esta» es su único acento, suave (`--brass-soft`). Además:
+  el objetivo elegido pasa de relleno sólido a tinte suave con texto de acento (el switch
+  queda como único acento sólido de la fila), «Al final del plan» toma la voz de las demás
+  etiquetas (`--faint`), «faltan N» de la tira queda en `--muted` (la línea del egreso ya
+  lo dice en tono de aviso), «cubiertos» y «mínimo posible» usan `--status-go-text` (texto
+  de estado, no `--sage` ni acento). El resultado se apila por debajo de 700 px (antes
+  560): con la fila de acciones, las dos columnas no dejaban lugar a la barra de créditos.
 
 ## Fuera de los directorios espejados (no lo toca el sync)
 
