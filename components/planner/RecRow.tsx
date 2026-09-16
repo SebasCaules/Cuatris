@@ -10,6 +10,7 @@
 import "./rec-row.css";
 
 import { MinorBadge } from "./MinorBadge";
+import { Tooltip } from "./Tooltip";
 import { minorsOf } from "@/lib/planner/minors";
 import { IconPlus } from "./icons";
 import type { MateriaM } from "@/lib/planner/types";
@@ -25,10 +26,13 @@ export function RecSig({
   title?: string;
   children: ReactNode;
 }) {
-  return (
-    <span className={"recsig recsig--" + tone} title={title}>
-      {children}
-    </span>
+  const chip = <span className={"recsig recsig--" + tone}>{children}</span>;
+  return title ? (
+    <Tooltip content={title} width={220}>
+      {chip}
+    </Tooltip>
+  ) : (
+    chip
   );
 }
 
@@ -81,30 +85,38 @@ export function RecRow({
           la fila y cada MinorBadge trae su propio aria-label. */}
       <span className="recrow__mark">
         {troncal ? (
-          <span
-            className="recrow__ob"
-            role="img"
-            aria-label="Troncal (obligatoria del plan)"
-            title="Troncal — obligatoria de tu plan"
-          />
+          <Tooltip content="Troncal: obligatoria de tu plan" width={170}>
+            <span
+              className="recrow__ob"
+              role="img"
+              aria-label="Troncal (obligatoria del plan)"
+            />
+          </Tooltip>
         ) : minors.length > 0 ? (
           minors.map((mn) => (
-            <MinorBadge key={mn.id} minor={mn} variant="dot" />
+            <Tooltip key={mn.id} content={`Minor: ${mn.name}`} width={200}>
+              <span className="recrow__dot">
+                <MinorBadge minor={mn} variant="dot" title={null} />
+              </span>
+            </Tooltip>
           ))
         ) : (
           <span className="recrow__nodot" aria-hidden="true" />
         )}
       </span>
-      <button
-        type="button"
-        className="recrow__main"
-        title={title ?? `${m.codigo} · ${m.nombre}`}
-        onClick={onOpen}
-        onFocus={onHoverStart}
-        onBlur={onHoverEnd}
-      >
-        <span className="recrow__name">{m.nombre}</span>
-      </button>
+      {/* el nombre puede quedar truncado: el tooltip lo trae entero, con el
+          código (y los dots de minor, cada uno con su propio aria-label) */}
+      <Tooltip content={title ?? `${m.codigo} · ${m.nombre}`} width={240}>
+        <button
+          type="button"
+          className="recrow__main"
+          onClick={onOpen}
+          onFocus={onHoverStart}
+          onBlur={onHoverEnd}
+        >
+          <span className="recrow__name">{m.nombre}</span>
+        </button>
+      </Tooltip>
       {signals != null && <span className="recrow__sig">{signals}</span>}
       <span className="recrow__cr">{m.creditos} cr</span>
       <button

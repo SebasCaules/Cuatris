@@ -1126,28 +1126,30 @@ function SemCard({
               Sin lockear: "Finalizar" (candado abierto → abre el confirm).
               Lockeado: "Finalizado" (candado cerrado, acento → desbloquea directo). */}
           {locked ? (
-            <button
-              type="button"
-              className="pv-lockbtn is-locked"
-              aria-label="Desbloquear cuatrimestre"
-              title="Desbloquear cuatrimestre"
-              onClick={() => onUnlock(i)}
-            >
-              <IconLock size={13} /> Finalizado
-            </button>
+            <Tooltip content="Desbloquear: el optimizador vuelve a acomodar este cuatrimestre" width={220}>
+              <button
+                type="button"
+                className="pv-lockbtn is-locked"
+                aria-label="Desbloquear cuatrimestre"
+                onClick={() => onUnlock(i)}
+              >
+                <IconLock size={13} /> Finalizado
+              </button>
+            </Tooltip>
           ) : (
-            <button
-              type="button"
-              className="pv-lockbtn"
-              aria-label="Finalizar cuatrimestre — el optimizador deja de tocarlo"
-              title="Finalizar cuatrimestre — el optimizador deja de tocarlo"
-              onClick={() => {
-                setMenuOpen(false);
-                setConfirmOpen(true);
-              }}
-            >
-              <IconUnlock size={13} /> Finalizar
-            </button>
+            <Tooltip content="Finalizar: el optimizador deja de tocar este cuatrimestre" width={220}>
+              <button
+                type="button"
+                className="pv-lockbtn"
+                aria-label="Finalizar cuatrimestre — el optimizador deja de tocarlo"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setConfirmOpen(true);
+                }}
+              >
+                <IconUnlock size={13} /> Finalizar
+              </button>
+            </Tooltip>
           )}
           <button
             type="button"
@@ -1337,7 +1339,7 @@ function SemCard({
 
       <div className="pv-sem__foot">
         <div className="pv-loadbar" aria-hidden="true">
-          <i style={{ width: `${load}%` }} />
+          <i style={{ transform: `scaleX(${Math.min(100, load) / 100})` }} />
         </div>
         <div className="pv-load-meta">
           <span className="cr">
@@ -1468,15 +1470,16 @@ function RoadmapStop({
           </div>
           {/* en el roadmap el lock sólo aparece finalizado: clic → desbloquea */}
           {locked && (
-            <button
-              type="button"
-              className="pv-dotbtn pv-dotbtn--lock is-locked"
-              aria-label="Desbloquear cuatrimestre"
-              title="Desbloquear cuatrimestre"
-              onClick={() => onUnlock(i)}
-            >
-              <IconLock size={15} />
-            </button>
+            <Tooltip content="Desbloquear cuatrimestre" width={170}>
+              <button
+                type="button"
+                className="pv-dotbtn pv-dotbtn--lock is-locked"
+                aria-label="Desbloquear cuatrimestre"
+                onClick={() => onUnlock(i)}
+              >
+                <IconLock size={15} />
+              </button>
+            </Tooltip>
           )}
           <span className="rmap-stop__step" aria-hidden="true">
             {i + 1}
@@ -1507,7 +1510,7 @@ function RoadmapStop({
         )}
 
         <div className="rmap-stop__load" aria-hidden="true">
-          <i style={{ width: `${load}%` }} />
+          <i style={{ transform: `scaleX(${Math.min(100, load) / 100})` }} />
         </div>
 
         <div className="rmap-stop__mats">
@@ -1525,7 +1528,6 @@ function RoadmapStop({
                 style={
                   { "--blk": PALETTE[k % PALETTE.length] } as React.CSSProperties
                 }
-                title={`${x.m.codigo} · ${x.m.nombre}`}
               >
                 <button
                   type="button"
@@ -1676,7 +1678,7 @@ function MinorsPanel({
             </div>
             <div className="pv-minor-prog">
               <div className="pv-minor-track">
-                <i style={{ width: `${pct}%` }} />
+                <i style={{ transform: `scaleX(${Math.min(100, pct) / 100})` }} />
               </div>
             </div>
             <div className={"pv-minor-count" + (done ? " is-done" : "")}>
@@ -1810,14 +1812,16 @@ function Recommendations({
   ) =>
     items.length > 0 ? (
       <details className={"plan2-recgrp plan2-recgrp--" + tone} open={open}>
-        <summary title={hint}>
-          <span
-            className={"plan2-recgrp__dot plan2-recgrp__dot--" + tone}
-            aria-hidden="true"
-          />
-          <span className="plan2-recgrp__title">{title}</span>
-          <span className="plan2-recgrp__count">{items.length}</span>
-        </summary>
+        <Tooltip content={hint} width={240}>
+          <summary>
+            <span
+              className={"plan2-recgrp__dot plan2-recgrp__dot--" + tone}
+              aria-hidden="true"
+            />
+            <span className="plan2-recgrp__title">{title}</span>
+            <span className="plan2-recgrp__count">{items.length}</span>
+          </summary>
+        </Tooltip>
         <ul className="recrow-list">{items.map(row)}</ul>
       </details>
     ) : null;
@@ -1828,11 +1832,11 @@ function Recommendations({
         <div className="plan2-recs__hrow">
           <span className="plan2-recs__title">Recomendaciones de electivas</span>
           {onHide && (
+            <Tooltip content="Ocultar las recomendaciones" width={170}>
             <button
               type="button"
               className="plan2-recs__collapse"
               aria-label="Ocultar recomendaciones de electivas"
-              title="Ocultar electivas"
               onClick={onHide}
             >
               <svg
@@ -1851,6 +1855,7 @@ function Recommendations({
                 />
               </svg>
             </button>
+            </Tooltip>
           )}
         </div>
         <div
@@ -1866,7 +1871,7 @@ function Recommendations({
             {faltan > 0 ? <span> · faltan {faltan}</span> : <span> · cubiertos</span>}
           </span>
           <span className="plan2-recs__progbar" aria-hidden="true">
-            <i style={{ width: `${elecPct}%` }} />
+            <i style={{ transform: `scaleX(${Math.min(100, elecPct) / 100})` }} />
           </span>
         </div>
       </div>
@@ -2362,27 +2367,30 @@ export default function PlanView() {
   const R = alt ? alt.result : baseR;
 
   // Con «Evitar superposiciones» encendido, el mismo plan permitiéndolas: si
-  // termina antes, el resultado lo ofrece («Con superposiciones: 2.º cuat.
-  // 2027 · 1 choque»), con el detalle de cada choque. Con «Evitar
-  // superposiciones» apagado, los choques del plan actual.
+  // termina antes, el resultado lo ofrece («Con superposiciones 2c-27 · 1
+  // choque»), con el detalle de cada choque. Con «Evitar superposiciones»
+  // apagado, los choques del plan actual. Corre sobre valores DIFERIDOS, como
+  // el recomendador: no bloquea el paint del plan al mover una perilla (el
+  // chip aparece un instante después; mientras, no se muestra uno viejo).
   const altR = useMemo(
-    () => (PL.avoid ? optimizePlan({ ...PL, avoid: false }, settled, state.fixedCom) : null),
+    () => (dPL.avoid ? optimizePlan({ ...dPL, avoid: false }, dApproved, dFixedCom) : null),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
-      PL.pool,
-      PL.fixed,
-      PL.start,
-      PL.maxCred,
-      PL.maxMat,
-      PL.avoid,
-      PL.method,
-      PL.capCredByIdx,
-      PL.capMatByIdx,
-      PL.lockedIdx,
-      settled,
-      state.fixedCom,
+      dPL.pool,
+      dPL.fixed,
+      dPL.start,
+      dPL.maxCred,
+      dPL.maxMat,
+      dPL.avoid,
+      dPL.method,
+      dPL.capCredByIdx,
+      dPL.capMatByIdx,
+      dPL.lockedIdx,
+      dApproved,
+      dFixedCom,
     ],
   );
+  const altRPending = dPL !== PL || dApproved !== settled || dFixedCom !== state.fixedCom;
   const overlapsNow = useMemo<PlanOverlap[]>(() => (PL.avoid ? [] : planOverlaps(R.items)), [PL.avoid, R]);
   // supuestos de paridad: materias (no fijadas) fuera de su cuatrimestre
   // nominal, que el plan sólo asume cuando eso acorta el egreso
@@ -2750,7 +2758,7 @@ export default function PlanView() {
   const fixRange = Math.min(MAX_PLAN_CUATRIS, Math.max(14, lastIdx + 2));
   // alternativa permitiendo superposiciones: sólo si termina antes (o ubica más)
   const altHint = useMemo(() => {
-    if (!altR) return null;
+    if (!altR || altRPending) return null;
     let altLast = -1;
     altR.items.forEach((it, i) => {
       if (it.length) altLast = i;
@@ -2761,7 +2769,7 @@ export default function PlanView() {
       (altR.unplaced.length === R.unplaced.length && altLast < lastIdx);
     if (!mejora) return null;
     return { last: altLast, overlaps: planOverlaps(altR.items) };
-  }, [altR, R.unplaced.length, lastIdx]);
+  }, [altR, altRPending, R.unplaced.length, lastIdx]);
   // créditos electivos comprometidos (sin el preview) → para el panel de recos
   const elecCommitted =
     electiveCredits(settled) +
@@ -3180,7 +3188,7 @@ export default function PlanView() {
             {/* El veredicto: rótulo, fecha (la única cosa grande del panel;
                 su tooltip lleva el tamaño del plan y los créditos electivos),
                 las marcas que la matizan y, si faltan electivas, el remedio. */}
-            <p className="pv-verdict" role="group" aria-label="Resumen del plan">
+            <div className="pv-verdict" role="group" aria-label="Resumen del plan">
               <IconGraduationCap size={16} />
               <span className="pv-verdict__lbl">
                 {titulo ? "Te recibís no antes de" : "Te recibís en"}
@@ -3218,7 +3226,7 @@ export default function PlanView() {
                   </button>
                 </Tooltip>
               )}
-            </p>
+            </div>
 
             {/* Minors al final del plan (aprobado más planificado): sigla,
                 barrita en el color del minor y créditos; el nombre y el «al
@@ -3237,9 +3245,8 @@ export default function PlanView() {
                     <span
                       className={"pv-strip__minor" + (done ? " is-done" : "")}
                       style={{ ["--minor-color" as string]: minor.color }}
-                      tabIndex={0}
                     >
-                      <MinorBadge minor={minor} variant="pill" />
+                      <MinorBadge minor={minor} variant="pill" title={null} />
                       <span className="pv-strip__mbar" aria-hidden="true">
                         <i style={{ width: `${Math.min(100, (cr / minor.req) * 100)}%` }} />
                       </span>

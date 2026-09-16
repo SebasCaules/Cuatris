@@ -1232,12 +1232,16 @@
   background: var(--panel-3);
   overflow: hidden;
 }
+/* el relleno escala con transform (ancho completo, origen a la izquierda):
+   animar sin relayout */
 .planner .pv-loadbar > i {
   display: block;
+  width: 100%;
   height: 100%;
   border-radius: 999px;
   background: color-mix(in srgb, var(--brass) 62%, var(--line-2));
-  transition: width var(--dur-base) var(--ease-out);
+  transform-origin: left center;
+  transition: transform var(--dur-base) var(--ease-out);
 }
 .planner .pv-sem.is-locked .pv-loadbar > i {
   background: var(--muted);
@@ -1511,10 +1515,12 @@
 }
 .planner .pv-minor-track > i {
   display: block;
+  width: 100%;
   height: 100%;
   border-radius: 999px;
   background: var(--minor-color);
-  transition: width var(--dur-base) var(--ease-out);
+  transform-origin: left center;
+  transition: transform var(--dur-base) var(--ease-out);
 }
 .planner .pv-minor-count {
   flex: none;
@@ -1857,9 +1863,8 @@
   gap: 10px;
   max-width: 340px;
   padding: 12px 12px 12px 14px;
-  background: var(--panel);
-  border: 1px solid color-mix(in srgb, var(--status-warn) 45%, transparent);
-  border-left: 3px solid var(--status-warn);
+  background: color-mix(in srgb, var(--status-warn) 8%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--status-warn) 55%, transparent);
   border-radius: 10px;
   box-shadow: var(--shadow-2);
   font-family: var(--f-m);
@@ -1876,8 +1881,8 @@
 /* variante de confirmación (perfil guardado): verde, sin botón de cerrar */
 .planner.pv-toast--ok {
   align-items: center;
-  border-color: color-mix(in srgb, var(--status-go) 45%, transparent);
-  border-left-color: var(--status-go);
+  background: color-mix(in srgb, var(--status-go) 8%, var(--panel));
+  border-color: color-mix(in srgb, var(--status-go) 55%, transparent);
 }
 .planner.pv-toast--ok > svg { margin-top: 0; color: var(--status-go-text); }
 .planner.pv-toast .pv-toast__x {
@@ -1900,6 +1905,56 @@
 
 /* ============================ RESPONSIVE ================================== */
 /* el panel ya es de tres líneas que envuelven: no hace falta reacomodarlo */
+
+/* Táctil: los mismos controles, más altos para acertarles con el dedo (el
+   escritorio conserva la densidad). Chips y flechas a 32 px, controles del
+   banner a 40, marcas y minors con más aire vertical. */
+@media (hover: none), (pointer: coarse) {
+  .planner .pv-chip {
+    min-height: 32px;
+    padding: 4px 12px;
+  }
+  .planner .pv-combos__nav,
+  .planner .pv-combos__use {
+    height: 32px;
+  }
+  .planner .pv-combos__btn {
+    width: 34px;
+  }
+  .planner .pv-combos__close {
+    width: 32px;
+    height: 32px;
+  }
+  .planner .pv-combos__pos {
+    min-width: 8ch;
+  }
+  .planner .pv-mark,
+  .planner .pv-verdict__val,
+  .planner .pv-combos__desc {
+    padding: 6px 0;
+  }
+  .planner .pv-strip__minor {
+    min-height: 32px;
+  }
+  .planner .pv-ctl,
+  .planner .pv-num__ctl,
+  .planner .pv-seg--obj {
+    height: 40px;
+  }
+  .planner .pv-seg__opt--ic {
+    height: 32px;
+  }
+  .planner .pv-num__btn {
+    width: 38px;
+  }
+  .planner .pv-bctl .cmb-switch {
+    min-height: 40px;
+  }
+  .planner .pv-tabs__actions .pv-seg--cols .pv-seg__opt {
+    min-width: 34px;
+    height: 32px;
+  }
+}
 @media (max-width: 640px) {
   .planner .pv-track > .pv-sem {
     flex-basis: 100%;

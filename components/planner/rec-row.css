@@ -39,17 +39,22 @@
   box-shadow: 0 0 0 1.5px var(--panel);
   position: relative;
 }
-.planner .recrow__mark .minor-dot + .minor-dot {
+/* cada dot va en un span (disparador del tooltip del planner) */
+.planner .recrow__dot {
+  display: inline-flex;
+  position: relative;
+}
+.planner .recrow__dot + .recrow__dot {
   margin-left: -4px;
 }
 /* el PRIMER minor queda entero arriba; los siguientes asoman por atrás */
-.planner .recrow__mark .minor-dot:nth-child(1) {
+.planner .recrow__dot:nth-child(1) {
   z-index: 3;
 }
-.planner .recrow__mark .minor-dot:nth-child(2) {
+.planner .recrow__dot:nth-child(2) {
   z-index: 2;
 }
-.planner .recrow__mark .minor-dot:nth-child(3) {
+.planner .recrow__dot:nth-child(3) {
   z-index: 1;
 }
 /* troncal (obligatoria): CUADRADITO slate — la forma (no el color) la

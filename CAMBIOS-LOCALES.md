@@ -706,6 +706,40 @@ configuración medía 345 px a 600 px de ancho y 222 px en escritorio; queda en 
   `altR` recalculan también cuando cambia `lockedIdx` (finalizar o reabrir un cuatrimestre
   sin pines que soltar no los actualizaba).
 
+## 25. Auditoría técnica del plan de cursada: contraste, táctil, rendimiento (2026-09-16)
+
+Tras `/impeccable audit` (14/20): las cuatro acciones recomendadas, en orden.
+
+- Contraste (`planner.css`): `--muted` y `--faint` pasan de `--text-secondary` (3,4:1 sobre
+  el panel en oscuro) a `--text-secondary-strong` (6,2:1 en oscuro, 5,2–5,9:1 en claro). Es
+  todo el texto secundario del planner (rótulos, chips, prefijos, minors, pestañas
+  inactivas, filas del recomendador); en claro las pestañas inactivas pasan de 4,39:1 a
+  5,39:1. Cero `[data-theme]` en el planner, como pide DESIGN.md.
+- `title=` → `Tooltip` en el plan de cursada: `RecSig` (`RecRow.tsx`), la fila y los dots
+  de minor del recomendador (`RecRow.tsx`: cada dot en un `span.recrow__dot` que dispara el
+  tooltip y hereda el apilado en `rec-row.css`), el marcador «Troncal», los botones
+  Finalizar/Desbloquear de las tarjetas y del roadmap, el resumen de cada grupo de
+  recomendaciones y el botón de ocultarlas; la materia del roadmap pierde el `title`
+  redundante. `MinorBadge` acepta `title={null}` para apagar el nativo cuando un `Tooltip`
+  lo envuelve (antes, los minors del banner mostraban dos tooltips) y sus variantes pill y
+  logo llevan `role="img"` (sin rol, su `aria-label` era inválido). Quedan con `title=` los
+  bloques del calendario (`CursadaCalendar`) y las demás vistas (Combinadores, Electivas,
+  Detalle, Sidebar), fuera de esta pasada.
+- Banner: el veredicto es un `div` (era `<p role="group">`); los minors dejan la tabulación
+  (su nombre va en `aria-label`): de 27 a 23 paradas en la cabecera.
+- Táctil (`planview.css`, `@media (hover: none), (pointer: coarse)`): chips y flechas a
+  32 px, controles del banner a 40, marcas y descripción con aire vertical, minors a 32,
+  columnas 2 · 3 · 4 a 34 × 32. El escritorio conserva la densidad.
+- Rendimiento (`views/PlanView.tsx`): la alternativa «Con superposiciones» (`altR`, un
+  segundo `optimizePlan`) corre sobre valores diferidos, como el recomendador y las
+  combinaciones; mientras está pendiente el chip no se muestra. Un cambio de tope pinta en
+  ~105 ms sincrónicos (antes ~135; lo que queda es el plan y las tarjetas). Las barras de
+  carga del cuatrimestre, del roadmap, de minors y del recomendador animan con
+  `transform: scaleX` (ancho completo, origen a la izquierda) en vez de `width`.
+- Avisos (`planner.css` `.plan2-warns`, `planview.css` `.pv-toast`): borde de 1 px teñido y
+  fondo teñido en vez de la barra lateral de 3 px. Los bloques del calendario conservan su
+  barra: es identidad del sistema (DESIGN.md §5.1).
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

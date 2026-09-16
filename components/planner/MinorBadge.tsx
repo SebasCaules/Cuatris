@@ -21,10 +21,13 @@ export function MinorBadge({
 }: {
   minor: Minor;
   variant?: Variant;
-  title?: string;
+  /** tooltip nativo; `null` lo apaga (cuando un `Tooltip` propio envuelve el
+   *  badge, para no mostrar dos). */
+  title?: string | null;
 }) {
   const style = { ["--minor-color" as string]: minor.color };
   const label = `Minor: ${minor.name}`;
+  const nativeTitle = (fallback: string) => (title === null ? undefined : (title ?? fallback));
   if (variant === "dot") {
     // role="img" es obligatorio para que aria-label sea válido en un <span>
     // (sin rol, aria-label es aria-prohibited-attr y el lector lo descarta: el
@@ -34,7 +37,7 @@ export function MinorBadge({
         className="minor-dot"
         style={style}
         role="img"
-        title={title ?? minor.name}
+        title={nativeTitle(minor.name)}
         aria-label={label}
       />
     );
@@ -44,7 +47,8 @@ export function MinorBadge({
       <span
         className="minor-badge minor-badge--logo"
         style={style}
-        title={title ?? label}
+        role="img"
+        title={nativeTitle(label)}
         aria-label={label}
       >
         <MinorIcon minor={minor} className="minor-badge__glyph" />
@@ -56,7 +60,8 @@ export function MinorBadge({
     <span
       className="minor-badge"
       style={style}
-      title={title ?? label}
+      role="img"
+      title={nativeTitle(label)}
       aria-label={label}
     >
       {minor.initials}

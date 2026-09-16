@@ -16,8 +16,11 @@
   --panel-3:var(--surface-3);
   --ink:var(--ink-strong);
   --ink-soft:var(--text-primary);
-  --muted:var(--text-secondary);
-  --faint:var(--text-secondary);
+  /* texto secundario: la variante AA del token (≥ 4.5:1 sobre --surface-2 en
+     los dos temas; --text-secondary rinde 3.4:1 en oscuro, sirve de borde o
+     ícono pero no de texto de 10 px) */
+  --muted:var(--text-secondary-strong);
+  --faint:var(--text-secondary-strong);
   --line:var(--hairline);
   --line-2:var(--hairline-strong);
 
@@ -958,8 +961,8 @@
   height:4px;border-radius:999px;background:var(--panel-3);overflow:hidden;
 }
 .planner .rmap-stop__load i{
-  display:block;height:100%;border-radius:999px;
-  background:linear-gradient(90deg,var(--brass),var(--brass-2));transition:width .5s var(--ease,ease);
+  display:block;width:100%;height:100%;border-radius:999px;transform-origin:left center;
+  background:linear-gradient(90deg,var(--brass),var(--brass-2));transition:transform .5s var(--ease,ease);
 }
 
 .planner .rmap-stop__mats{display:flex;flex-wrap:wrap;gap:6px}
@@ -1023,9 +1026,8 @@
 /* warnings — <details> plegado por default; el summary lleva el contador */
 .planner .plan2-warns{
   margin-top:18px;padding:14px 16px;display:flex;flex-direction:column;gap:7px;
-  border:1px solid color-mix(in srgb,var(--oxblood) 30%,var(--line));border-radius:var(--r);
-  background:color-mix(in srgb,var(--oxblood) 5%,transparent);
-  border-left:3px solid var(--oxblood);
+  border:1px solid color-mix(in srgb,var(--oxblood) 38%,var(--line));border-radius:var(--r);
+  background:color-mix(in srgb,var(--oxblood) 7%,transparent);
 }
 .planner .plan2-warns:not([open]){padding:10px 16px}
 .planner .plan2-warns__h{
@@ -1285,7 +1287,7 @@
 .planner .plan2-recs__progtxt b{font-family:var(--f-d);font-weight:600;font-size:20px;line-height:1;letter-spacing:-.01em;color:var(--ink);text-transform:none}
 .planner .plan2-recs__progtxt>span{margin-left:auto;color:var(--brass);font-weight:600}
 .planner .plan2-recs__progbar{display:block;height:6px;border-radius:999px;background:var(--panel-3);overflow:hidden}
-.planner .plan2-recs__progbar>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--brass),var(--brass-2));transition:width var(--dur-base) var(--ease-out)}
+.planner .plan2-recs__progbar>i{display:block;width:100%;height:100%;border-radius:999px;transform-origin:left center;background:linear-gradient(90deg,var(--brass),var(--brass-2));transition:transform var(--dur-base) var(--ease-out)}
 /* fila de encabezado: título a la izquierda + chevron de ocultar a la derecha,
    mismo patrón (y estilo) que `.side__head`/`.side__collapse` del rail principal */
 .planner .plan2-recs__hrow{display:flex;align-items:center;justify-content:space-between;gap:9px}
