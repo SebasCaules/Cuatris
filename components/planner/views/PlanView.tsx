@@ -3219,10 +3219,11 @@ export default function PlanView() {
               )}
             </p>
 
-            {/* Minors al final del plan (aprobado más planificado): sigla y
-                créditos, nada más; el nombre y el «al final del plan» van en
-                el tooltip. Los créditos electivos ya los dice el veredicto (y
-                el recomendador); el «hoy» vive en la barra de métricas. */}
+            {/* Minors al final del plan (aprobado más planificado): sigla,
+                barrita en el color del minor y créditos; el nombre y el «al
+                final del plan» van en el tooltip. Los créditos electivos ya los
+                dice el veredicto (y el recomendador); el «hoy» vive en la barra
+                de métricas. */}
             {minorRows.length > 0 && (
               <div className="pv-strip" role="group" aria-label="Minors al final del plan">
                 <span className="pv-strip__when">Minors</span>
@@ -3238,6 +3239,9 @@ export default function PlanView() {
                       tabIndex={0}
                     >
                       <MinorBadge minor={minor} variant="pill" />
+                      <span className="pv-strip__mbar" aria-hidden="true">
+                        <i style={{ width: `${Math.min(100, (cr / minor.req) * 100)}%` }} />
+                      </span>
                       {done ? <IconCheck size={11} /> : null}
                       {cr}/{minor.req}
                     </span>

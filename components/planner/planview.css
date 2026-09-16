@@ -65,7 +65,7 @@
   min-width: 0;
 }
 /* minors al final del plan: «Minors» tenue y, por cada uno, la pill de la
-   sigla con sus créditos (el nombre, en el tooltip) */
+   sigla, su barrita y sus créditos (el nombre, en el tooltip) */
 .planner .pv-strip {
   display: flex;
   flex-wrap: wrap;
@@ -97,6 +97,24 @@
   min-width: 24px;
   height: 15px;
   font-size: 9px;
+}
+/* barrita en el color del minor (verde al completarlo) */
+.planner .pv-strip__mbar {
+  width: 34px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--panel-3);
+  overflow: hidden;
+  flex: none;
+}
+.planner .pv-strip__mbar > i {
+  display: block;
+  height: 100%;
+  background: var(--minor-color);
+  border-radius: 999px;
+}
+.planner .pv-strip__minor.is-done .pv-strip__mbar > i {
+  background: var(--status-go);
 }
 .planner .pv-strip__minor:focus-visible {
   outline: 2px solid var(--brass);

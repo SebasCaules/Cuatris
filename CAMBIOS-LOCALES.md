@@ -689,8 +689,9 @@ configuración medía 345 px a 600 px de ancho y 222 px en escritorio; queda en 
   ve abajo, como ellas, y la fila es sticky. En angosto (≤ 700 px) el chip omite «más».
 - Sin las reglas responsive del grid anterior (`.pv-result*`, apilado a 1100/700 px): tres
   líneas que envuelven no necesitan reacomodo; a 375 px los dos topes comparten línea.
-- La línea «Al final del plan» queda en «Minors · CD 0/14 · IRV 0/14 …» (sigla y créditos;
-  nombre y «al final del plan» en el tooltip; las barritas y la barra de electivos se van):
+- La línea «Al final del plan» queda en «Minors · CD ▬ 0/14 · IRV ▬ 0/14 …» (sigla, barrita
+  del minor y créditos; nombre y «al final del plan» en el tooltip; la barra de electivos se
+  va):
   los créditos electivos ya los dice el veredicto —«faltan 27 cr de electivas» o, cubiertos,
   la marca «electivas cubiertas» (`--status-go-text`, tooltip)— y el recomendador. Sin
   minors en el plan, la línea no aparece.
