@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Fragment,
   useCallback,
   useDeferredValue,
   useEffect,
@@ -8,6 +9,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
 import { usePlanner } from "@/components/planner/state";
@@ -2790,6 +2792,81 @@ export default function PlanView() {
     if (!fill) return;
     for (const p of fill.picks) dispatch({ type: "PLAN_POOL_ADD", code: p.m.codigo });
   };
+  // Marcas que matizan la fecha (cada una con su tooltip): lo que falta para
+  // el título, el mínimo alcanzado, los supuestos de paridad y los choques.
+  const verdictMarks: ReactNode[] = [];
+  if (titulo)
+    verdictMarks.push(
+      <Tooltip
+        width={290}
+        content={
+          <>
+            El título pide {electivasReq()} créditos de electivas y el plan{" "}
+            {elecCommitted > 0 ? `junta ${elecCommitted}` : "todavía no tiene ninguna"}. Con los{" "}
+            {titulo.faltan} que faltan y estos topes, ningún plan termina antes de{" "}
+            <b>{cuatriName(titulo.cu)}</b>; la fecha exacta depende de cuáles agregues: elegilas
+            en el recomendador o en «Materias del plan».
+          </>
+        }
+      >
+        <span className="pv-mark pv-mark--warn" tabIndex={0}>
+          faltan {titulo.faltan} cr de electivas
+        </span>
+      </Tooltip>,
+    );
+  if (!titulo && R.minLast != null && R.minLast === lastIdx && R.unplaced.length === 0)
+    verdictMarks.push(
+      <Tooltip
+        width={250}
+        content="No hay plan más corto con estas correlativas, requisitos de créditos y topes por cuatrimestre: cualquier objetivo termina acá."
+      >
+        <span className="pv-mark" tabIndex={0}>
+          mínimo posible
+        </span>
+      </Tooltip>,
+    );
+  if (supuestos.length > 0)
+    verdictMarks.push(
+      <Tooltip
+        width={290}
+        content={
+          <>
+            {supuestos.map((sp, k) => (
+              <span key={k} style={{ display: "block" }}>
+                <b>{sp.m.abbr}</b> en {cuatriLabel(cuatriAt(PL.start, sp.idx))}: el plan de estudios
+                la ubica en {sp.par}.º cuatrimestre y no hay horario publicado del otro.
+              </span>
+            ))}
+            Se asume que se dictan los dos cuatrimestres porque así el plan termina antes:
+            verificá en el SGA.
+          </>
+        }
+      >
+        <span className="pv-mark pv-mark--warn" tabIndex={0}>
+          {supuestos.length} fuera de su cuatrimestre
+        </span>
+      </Tooltip>,
+    );
+  if (overlapsNow.length > 0)
+    verdictMarks.push(
+      <Tooltip
+        width={280}
+        content={
+          <>
+            {overlapsNow.map((o, k) => (
+              <span key={k} style={{ display: "block" }}>
+                {cuatriLabel(cuatriAt(PL.start, o.idx))}: <b>{o.a.m.abbr}</b> y <b>{o.b.m.abbr}</b> (
+                {o.cuando})
+              </span>
+            ))}
+          </>
+        }
+      >
+        <span className="pv-mark pv-mark--warn" tabIndex={0}>
+          {overlapsNow.length} {overlapsNow.length === 1 ? "superposición" : "superposiciones"}
+        </span>
+      </Tooltip>,
+    );
   const fillTip = fill && (
     <>
       Para cubrir los {elecFaltan} créditos que faltan:
@@ -3100,120 +3177,44 @@ export default function PlanView() {
               switch, las electivas junto a lo que falta, las combinaciones en
               la fila de pestañas). */}
           <div className="pv-config">
-            {/* El veredicto, en una línea que envuelve: rótulo, fecha (la
-                única cosa grande del panel), tamaño del plan y sus marcas. */}
+            {/* El veredicto: rótulo, fecha (la única cosa grande del panel;
+                su tooltip lleva el tamaño del plan y los créditos electivos),
+                las marcas que la matizan y, si faltan electivas, el remedio. */}
             <p className="pv-verdict" role="group" aria-label="Resumen del plan">
               <IconGraduationCap size={16} />
               <span className="pv-verdict__lbl">
                 {titulo ? "Te recibís no antes de" : "Te recibís en"}
               </span>{" "}
-              <b className="pv-verdict__val">{cuatriName(tituloCu)}</b>
-              <span className="pv-verdict__sub">
-                {used.length} {used.length === 1 ? "cuatrimestre" : "cuatrimestres"} ·{" "}
-                {flat.length} materias
-                {titulo && (
+              <Tooltip
+                width={250}
+                content={
                   <>
-                    {" · "}
-                    <Tooltip
-                      width={290}
-                      content={
-                        <>
-                          El título pide {electivasReq()} créditos de electivas y el plan{" "}
-                          {elecCommitted > 0 ? `junta ${elecCommitted}` : "todavía no tiene ninguna"}.
-                          Con los {titulo.faltan} que faltan y estos topes, ningún plan termina antes
-                          de <b>{cuatriName(titulo.cu)}</b>; la fecha exacta depende de cuáles
-                          agregues: elegilas en el recomendador o en «Materias del plan».
-                        </>
-                      }
-                    >
-                      <span className="pv-mark pv-mark--warn" tabIndex={0}>
-                        faltan {titulo.faltan} cr de electivas
-                      </span>
-                    </Tooltip>
+                    {used.length} {used.length === 1 ? "cuatrimestre" : "cuatrimestres"} desde{" "}
+                    {cuatriName(PL.start)} · {flat.length} materias ·{" "}
+                    {Math.min(elecCommitted, electivasReq())}/{electivasReq()} cr de electivas
                   </>
-                )}
-                {!titulo && electivasReq() > 0 && (
-                  <>
-                    {" · "}
-                    <Tooltip
-                      width={240}
-                      content={`El plan junta los ${electivasReq()} créditos de electivas que pide el título.`}
-                    >
-                      <span className="pv-mark" tabIndex={0}>
-                        electivas cubiertas
-                      </span>
-                    </Tooltip>
-                  </>
-                )}
-                {!titulo && R.minLast != null && R.minLast === lastIdx && R.unplaced.length === 0 && (
-                  <>
-                    {" · "}
-                    <Tooltip
-                      width={250}
-                      content="No hay plan más corto con estas correlativas, requisitos de créditos y topes por cuatrimestre: cualquier objetivo termina acá."
-                    >
-                      <span className="pv-mark" tabIndex={0}>
-                        mínimo posible
-                      </span>
-                    </Tooltip>
-                  </>
-                )}
-                {supuestos.length > 0 && (
-                  <>
-                    {" · "}
-                    <Tooltip
-                      width={290}
-                      content={
-                        <>
-                          {supuestos.map((sp, k) => (
-                            <span key={k} style={{ display: "block" }}>
-                              <b>{sp.m.abbr}</b> en {cuatriLabel(cuatriAt(PL.start, sp.idx))}: el plan de
-                              estudios la ubica en {sp.par}.º cuatrimestre y no hay horario publicado
-                              del otro.
-                            </span>
-                          ))}
-                          Se asume que se dictan los dos cuatrimestres porque así el plan termina
-                          antes: verificá en el SGA.
-                        </>
-                      }
-                    >
-                      <span className="pv-mark pv-mark--warn" tabIndex={0}>
-                        {supuestos.length} fuera de su cuatrimestre
-                      </span>
-                    </Tooltip>
-                  </>
-                )}
-                {overlapsNow.length > 0 && (
-                  <>
-                    {" · "}
-                    <Tooltip
-                      width={280}
-                      content={
-                        <>
-                          {overlapsNow.map((o, k) => (
-                            <span key={k} style={{ display: "block" }}>
-                              {cuatriLabel(cuatriAt(PL.start, o.idx))}: <b>{o.a.m.abbr}</b> y{" "}
-                              <b>{o.b.m.abbr}</b> ({o.cuando})
-                            </span>
-                          ))}
-                        </>
-                      }
-                    >
-                      <span className="pv-mark pv-mark--warn" tabIndex={0}>
-                        {overlapsNow.length}{" "}
-                        {overlapsNow.length === 1 ? "superposición" : "superposiciones"}
-                      </span>
-                    </Tooltip>
-                  </>
-                )}
-              </span>
+                }
+              >
+                <b className="pv-verdict__val" tabIndex={0}>
+                  {cuatriName(tituloCu)}
+                </b>
+              </Tooltip>
+              {verdictMarks.length > 0 && (
+                <span className="pv-verdict__sub">
+                  {verdictMarks.map((m, k) => (
+                    <Fragment key={k}>
+                      {k > 0 && " · "}
+                      {m}
+                    </Fragment>
+                  ))}
+                </span>
+              )}
               {/* el remedio, al lado de lo que falta */}
               {titulo && fill && !recsPending && (
                 <Tooltip width={300} content={fillTip}>
                   <button type="button" className="pv-chip" onClick={applyFill}>
                     Sugerir <b>{fill.picks.length}</b>{" "}
-                    {fill.picks.length === 1 ? "electiva" : "electivas"} ·{" "}
-                    {cuatriLabel(cuatriAt(PL.start, fill.last))}
+                    {fill.picks.length === 1 ? "electiva" : "electivas"}
                   </button>
                 </Tooltip>
               )}

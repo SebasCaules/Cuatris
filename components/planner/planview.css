@@ -60,6 +60,12 @@
   line-height: 1.1;
   letter-spacing: -0.01em;
   color: var(--ink);
+  cursor: help; /* el tooltip lleva cuatrimestres, materias y créditos electivos */
+}
+.planner .pv-verdict__val:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 .planner .pv-verdict__sub {
   min-width: 0;

@@ -676,9 +676,11 @@ configuración medía 345 px a 600 px de ancho y 222 px en escritorio; queda en 
 
 - `views/PlanView.tsx` / `planview.css`: el panel es una columna de tres líneas, la
   información arriba y los controles abajo. (1) Veredicto: icono + «Te recibís en» + fecha
-  (lo único grande) + tamaño del plan y marcas (`.pv-verdict`, `.pv-mark`), todo en una
-  frase que envuelve, con el chip «Sugerir 8 electivas · 2c-28» al lado de «faltan 27 cr de
-  electivas». (2) «Al final del plan»: créditos electivos y minors en una línea que envuelve
+  (lo único grande; su tooltip lleva cuatrimestres, inicio, materias y créditos electivos
+  X/27) + las marcas que la matizan (`.pv-verdict`, `.pv-mark`: «faltan 27 cr de
+  electivas», «mínimo posible», «N fuera de su cuatrimestre», «N superposiciones»), todo en
+  una frase que envuelve, con el chip «Sugerir 8 electivas» al lado de lo que falta. (2)
+  «Al final del plan»: créditos electivos y minors en una línea que envuelve
   (`.pv-strip`). (3) Tras una divisoria, los parámetros sin rótulos encima: «desde 1.º cuat.
   2027» (el select dentro de una pastilla con prefijo, `.pv-ctl`), «− máx. 6 mat. +» y
   «− máx. 27 cr +» (`NumField` con `prefix`: el rótulo queda `sr-only`), el objetivo (sin
@@ -696,9 +698,8 @@ configuración medía 345 px a 600 px de ancho y 222 px en escritorio; queda en 
 - La línea «Al final del plan» queda en «Minors · CD ▬ 0/14 · IRV ▬ 0/14 …» (sigla, barrita
   del minor y créditos; nombre y «al final del plan» en el tooltip; la barra de electivos se
   va):
-  los créditos electivos ya los dice el veredicto —«faltan 27 cr de electivas» o, cubiertos,
-  la marca «electivas cubiertas» (`--status-go-text`, tooltip)— y el recomendador. Sin
-  minors en el plan, la línea no aparece.
+  los créditos electivos ya los dice el veredicto —«faltan 27 cr de electivas», o X/27 en
+  el tooltip de la fecha— y el recomendador. Sin minors en el plan, la línea no aparece.
 - Panel de recomendaciones (`planner.css`): piso de 420 px de alto en el layout espejado
   (≥ 1080 px). Con un tablero corto (roadmap de dos cuatrimestres) el panel absoluto
   quedaba en un par de filas con scroll, como si se hubiera roto. Además, `recs`, `baseR` y
