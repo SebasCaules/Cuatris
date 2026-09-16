@@ -562,13 +562,23 @@
 /* Vista previa: vive en la fila de pestañas, en el hueco entre las pestañas y
    las acciones. No ocupa alto propio (la fila ya lo tiene) ni mueve el
    tablero; en angosto, donde la fila envuelve, ocupa su propia línea. */
+/* FUERA DEL FLUJO de la fila: el mensaje flota centrado justo debajo de las
+   pestañas y no cambia el alto de la fila ni la hace envolver. Antes, con un
+   mensaje largo la fila envolvía y el tablero bajaba; el cursor quedaba fuera
+   de la fila del recomendador, el mensaje se iba, el tablero volvía a subir…
+   y así en bucle: la vista parpadeaba. */
 .planner .view-panel .plan2-preview-slot {
-  flex: 1 1 auto;
-  min-width: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
   min-height: 0;
   margin: 0;
+  padding-top: 4px;
   display: flex;
   justify-content: center;
+  pointer-events: none;
+  z-index: 1;
 }
 .planner .view-panel .plan2-preview-slot__hint {
   display: none;
@@ -576,10 +586,15 @@
 .planner .view-panel .plan2-preview-slot__msg {
   padding: 4px 12px;
   font-size: 11.5px;
-  max-width: 100%;
+  max-width: min(100%, 60ch);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  /* flota sobre las tarjetas: fondo opaco y sombra */
+  background:
+    linear-gradient(var(--brass-soft), var(--brass-soft)),
+    var(--panel);
+  box-shadow: var(--shadow-2);
 }
 .planner .view-panel .plan2-preview-slot__msg > span {
   overflow: hidden;
@@ -1953,6 +1968,15 @@
   .planner .pv-tabs__actions .pv-seg--cols .pv-seg__opt {
     min-width: 34px;
     height: 32px;
+  }
+}
+/* con el recomendador debajo del tablero (≤ 1080 px), la tarjeta fantasma de
+   «cuatrimestre nuevo» de la vista previa cambiaría el alto del tablero bajo
+   el cursor (mismo bucle que el mensaje): ahí no se dibuja; el mensaje ya dice
+   que alarga la carrera */
+@media (max-width: 1080px) {
+  .planner .pv-track > .pv-sem--ghost {
+    display: none;
   }
 }
 @media (max-width: 640px) {

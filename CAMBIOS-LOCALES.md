@@ -740,6 +740,21 @@ Tras `/impeccable audit` (14/20): las cuatro acciones recomendadas, en orden.
   fondo teñido en vez de la barra lateral de 3 px. Los bloques del calendario conservan su
   barra: es identidad del sistema (DESIGN.md §5.1).
 
+## 26. Plan de cursada: la vista previa ya no hace parpadear la vista (2026-09-16)
+
+Al posarse sobre una electiva del recomendador, el mensaje «Vista previa: …» iba en la
+fila de pestañas, entre las pestañas y las acciones. Con un mensaje largo (o una fila
+angosta) la fila envolvía y crecía, el tablero bajaba, el cursor quedaba fuera de la fila
+del recomendador, el mensaje se iba, el tablero subía… y así en bucle.
+
+- `planview.css`: `.plan2-preview-slot` sale del flujo (`position: absolute; top: 100%`
+  dentro de la fila sticky, centrado, `pointer-events: none`): flota como una pastilla
+  justo debajo de las pestañas, con fondo opaco y sombra, recortada a 60ch. La fila nunca
+  cambia de alto por el mensaje.
+- Con el recomendador debajo del tablero (≤ 1080 px), la tarjeta fantasma de «cuatrimestre
+  nuevo» de la vista previa no se dibuja (`.pv-sem--ghost`): cambiaba el alto del tablero
+  bajo el cursor, mismo bucle. El mensaje ya dice que alarga la carrera.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título
