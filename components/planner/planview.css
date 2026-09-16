@@ -12,71 +12,64 @@
    ============================================================================ */
 
 /* ============================ CONFIGURACIÓN GENERAL ======================= */
-/* Un panel: parámetros del optimizador a la izquierda, resultado (egreso,
-   créditos, minors) a la derecha tras una divisoria. Compacto y sin héroe: el
-   protagonista es el calendario de abajo. */
+/* Un panel en tres líneas: parámetros (controles de 34px que se leen solos),
+   veredicto (una frase que envuelve, con la fecha como única cosa grande) y
+   créditos al final del plan. Compacto y sin héroe: el protagonista es el
+   calendario de abajo. */
 .planner .pv-config {
-  display: grid;
-  /* el resultado toma lo que necesita hasta la mitad del panel: con muchos
-     minors (Industrial: nueve) sus pastillas envuelven en vez de aplastar los
-     parámetros a una columna */
-  grid-template-columns: minmax(0, 1fr) fit-content(52%);
-  gap: 12px 24px;
-  align-items: center;
-  padding: 12px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 16px 11px;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   box-shadow: var(--shadow-1);
 }
-.planner .pv-result {
+/* el veredicto: icono + «Te recibís en» + fecha + tamaño del plan y marcas,
+   en una sola frase que envuelve */
+.planner .pv-verdict {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-  padding-left: 24px;
-  border-left: 1px solid var(--line);
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 0;
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--muted);
 }
-.planner .pv-result__grad {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.planner .pv-result__grad > svg {
+.planner .pv-verdict > svg {
   flex: none;
+  align-self: center;
+  margin-right: -6px;
   color: var(--brass);
 }
-.planner .pv-result__lbl {
-  display: block;
-  font-family: var(--f-m);
+/* rótulo y fecha van juntos: el rótulo no se separa de su fecha al envolver */
+.planner .pv-verdict__lbl {
+  margin-right: -6px;
   font-size: 9.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--faint);
 }
-.planner .pv-result__val {
-  display: block;
+.planner .pv-verdict__val {
   font-family: var(--f-d);
   font-weight: 600;
   font-size: 17px;
-  line-height: 1.15;
+  line-height: 1.1;
   letter-spacing: -0.01em;
   color: var(--ink);
 }
-.planner .pv-result__sub {
-  display: block;
-  font-family: var(--f-m);
-  font-size: 10.5px;
-  color: var(--muted);
-  /* con marcadores («mínimo posible», «1 fuera de su cuatrimestre») la línea
-     envuelve en vez de ensanchar el bloque y aplastar los minors */
-  max-width: 38ch;
-  line-height: 1.5;
+.planner .pv-verdict__sub {
+  min-width: 0;
 }
-.planner .pv-result__cred {
+/* créditos y minors al final del plan: una línea que envuelve */
+.planner .pv-strip {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
 }
 /* el bloque entero habla del final del plan: la etiqueta lo dice una vez */
 .planner .pv-strip__when {
@@ -180,23 +173,18 @@
 .planner .pv-strip__minor.is-done .pv-strip__mbar > i {
   background: var(--sage);
 }
-/* Parámetros: mismo lenguaje que el resultado de al lado (rótulo mono en
-   versalitas tenue + valor en negrita), controles de 34px alineados en una
-   fila; el switch cierra la fila a la misma altura. */
+/* Parámetros: controles de 34px en una fila que envuelve, debajo del
+   veredicto y tras una divisoria; sin rótulo encima: cada uno se lee solo
+   (prefijo «desde» / «máx.», unidad, icono). */
 .planner .pv-bctl {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 18px;
-  align-items: flex-end;
+  gap: 8px;
+  align-items: center;
   min-width: 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
 }
-.planner .pv-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-}
-.planner .pv-field__lbl,
 .planner .pv-num > label {
   font-family: var(--f-m);
   font-size: 9.5px;
@@ -204,19 +192,50 @@
   text-transform: uppercase;
   color: var(--faint);
 }
-/* el <select> de "empiezo a cursar" reusa el look de CommissionSelect
-   (@studyvaults/ui) pero en tamaño banner: padding-derecho holgado y la flecha
-   separada del borde para que NUNCA pise el texto (fix B13). */
-.planner .pv-field .commission-select {
-  min-width: 168px;
-  max-width: none;
+/* «desde 1.º cuat. 2027»: el <select> de CommissionSelect (@studyvaults/ui)
+   dentro de una pastilla del alto de los demás controles, con el prefijo
+   tenue a la izquierda y la flecha separada del borde para que NUNCA pise el
+   texto (fix B13). */
+.planner .pv-ctl {
+  display: inline-flex;
+  align-items: center;
   height: 34px;
+  padding-left: 12px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  background: var(--panel);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+.planner .pv-ctl:hover {
+  border-color: var(--brass);
+}
+.planner .pv-ctl:focus-within {
+  border-color: var(--brass);
+  box-shadow: var(--ring);
+}
+.planner .pv-ctl__pre,
+.planner .pv-num__pre {
+  font-family: var(--f-m);
+  font-size: 10.5px;
+  color: var(--faint);
+}
+.planner .pv-ctl .commission-select {
+  min-width: 0;
+  max-width: none;
+  height: 100%;
   font-size: 12px;
   font-weight: 600;
-  padding: 0 36px 0 12px;
-  background-position: right 13px center;
+  padding: 0 32px 0 6px;
+  background-color: transparent;
+  background-position: right 12px center;
   background-size: 12px;
+  border: 0;
   border-radius: 999px;
+}
+.planner .pv-ctl .commission-select:focus-visible {
+  box-shadow: none;
 }
 .planner .pv-num {
   gap: 6px;
@@ -276,6 +295,10 @@
   padding: 0 4px;
   border-left: 1px solid var(--line);
   border-right: 1px solid var(--line);
+}
+.planner .pv-num__pre {
+  align-self: center;
+  padding-left: 2px;
 }
 .planner .pv-num .pv-num__val input {
   width: 2.4ch;
@@ -375,13 +398,6 @@
   width: calc(15ch + 0.15em);
   text-align: left;
 }
-/* objetivo + switch envuelven juntos: son «cómo se arma», no parámetros */
-.planner .pv-field-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 18px;
-  align-items: flex-end;
-}
 .planner .pv-seg__opt--ic:not([aria-checked="true"]):hover {
   color: var(--ink);
   background: var(--panel);
@@ -394,38 +410,30 @@
   color: var(--ink);
 }
 
-/* «mínimo posible»: la fecha de egreso coincide con la cota inferior (un
-   estado logrado: texto de estado, no acento) */
-.planner .pv-result__min {
+/* Marcas del veredicto («mínimo posible», «faltan 27 cr de electivas», «N
+   superposiciones»): texto con punteado, tooltip al posarse. «Mínimo posible»
+   es un estado logrado (texto de estado, no acento); el resto, aviso. */
+.planner .pv-mark {
   color: var(--status-go-text);
   font-weight: 600;
   letter-spacing: 0.02em;
   cursor: help;
   border-bottom: 1px dotted currentColor;
 }
-/* «N superposiciones» (con «Evitar superposiciones» apagado): mismo trazo, en
-   el color de aviso */
-.planner .pv-result__min--warn {
+.planner .pv-mark--warn {
   color: var(--status-warn-text);
 }
-/* Lo que se puede hacer con el plan («Con superposiciones 2c-27 · 1 choque»,
-   «Con electivas sugeridas 2c-27 · 2 materias», «7 combinaciones más»): una
-   fila de chips en silencio —hairline, sin relleno, el valor en tinta— para
-   que ninguno compita con la fecha. Los marcadores de estado de la línea de
-   arriba se distinguen por forma (texto con punteado, sin borde). */
-.planner .pv-result__acts {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 8px;
-  margin-top: 8px;
-  /* como la línea de arriba (38ch): envuelve en vez de ensanchar la columna
-     del egreso y aplastar créditos y minors (el ch es el de los chips) */
-  font-family: var(--f-m);
-  font-size: 10.5px;
-  max-width: 46ch;
+.planner .pv-mark:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
-.planner .pv-result__alt {
+/* Chips de acción en silencio («Con superposiciones 2c-27 · 1 choque»,
+   «Sugerir 8 electivas · 2c-28», «3 combinaciones más»): hairline, sin
+   relleno, el valor en tinta; ninguno compite con la fecha. Viven al lado de
+   lo que tocan. Los marcadores de estado se distinguen por forma (texto con
+   punteado, sin borde). */
+.planner .pv-chip {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -444,23 +452,31 @@
     border-color var(--dur-fast) var(--ease-out),
     background var(--dur-fast) var(--ease-out);
 }
-.planner .pv-result__alt b {
+.planner .pv-chip b {
   color: var(--ink);
   font-weight: 600;
 }
-.planner .pv-result__alt:hover {
+.planner .pv-chip > svg {
+  flex: none;
+}
+.planner .pv-chip:hover {
   color: var(--ink);
   border-color: var(--line-2);
   background: var(--panel-3);
 }
-.planner .pv-result__alt:focus-visible {
+.planner .pv-chip:focus-visible {
   outline: 2px solid var(--brass);
   outline-offset: 2px;
 }
-.planner .pv-result__min:focus-visible {
-  outline: 2px solid var(--brass);
-  outline-offset: 2px;
-  border-radius: 2px;
+/* en la fila de parámetros y en el veredicto el chip se alinea con lo demás */
+.planner .pv-verdict .pv-chip {
+  align-self: center;
+}
+/* «N combinaciones más»: en angosto, sin el «más» */
+@media (max-width: 700px) {
+  .planner .pv-chip__opt {
+    display: none;
+  }
 }
 
 /* «Otras combinaciones» abierto: ‹ 2 / 9 › · qué cambia · Usar esta · ×
@@ -569,12 +585,8 @@
   background: var(--line);
 }
 
-/* sin label "Horario" (redundante): el switch ocupa un slot de la misma fila,
-   con el mismo alto de control (36px) para alinear con selects e inputs. */
-.planner .pv-field--sw {
-  justify-content: flex-end;
-}
-.planner .pv-field--sw .cmb-switch {
+/* el switch ocupa un slot de la misma fila, con el alto de los controles */
+.planner .pv-bctl .cmb-switch {
   min-height: 34px;
 }
 
@@ -1918,60 +1930,7 @@
 }
 
 /* ============================ RESPONSIVE ================================== */
-/* el grid del banner colapsa temprano: por debajo de ~1100px los parámetros
-   (cinco campos + el switch) y el egreso lado a lado envuelven en tres o
-   cuatro filas; apilados caben en una */
-@media (max-width: 1100px) {
-  .planner .pv-config {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 10px 16px 12px;
-  }
-  /* apilado: el egreso a la izquierda y, tras una divisoria, créditos y
-     minors ocupando todo el ancho libre (antes quedaban apretados abajo) */
-  .planner .pv-result {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-    column-gap: 20px;
-    row-gap: 0;
-    padding: 10px 0 0;
-    border-left: 0;
-    border-top: 1px solid var(--line);
-  }
-  .planner .pv-result__grad {
-    align-self: stretch;
-    padding-right: 20px;
-    border-right: 1px solid var(--line);
-  }
-  .planner .pv-result__cred {
-    gap: 8px;
-  }
-  .planner .pv-result__cred .pv-strip__item {
-    display: flex;
-    max-width: 380px;
-  }
-  .planner .pv-result__cred .pv-strip__bar {
-    width: auto;
-    flex: 1 1 60px;
-    max-width: 200px;
-  }
-  .planner .pv-strip__minors {
-    gap: 6px 14px;
-  }
-}
-/* (la fila de acciones del egreso mide hasta 46ch: por debajo de ~700px las
-   dos columnas del resultado ya no dejan lugar a la barra de créditos) */
-@media (max-width: 700px) {
-  .planner .pv-result {
-    grid-template-columns: 1fr;
-    row-gap: 10px;
-  }
-  .planner .pv-result__grad {
-    padding-right: 0;
-    border-right: 0;
-  }
-}
+/* el panel ya es de tres líneas que envuelven: no hace falta reacomodarlo */
 @media (max-width: 640px) {
   .planner .pv-track > .pv-sem {
     flex-basis: 100%;

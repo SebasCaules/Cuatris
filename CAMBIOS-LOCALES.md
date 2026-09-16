@@ -669,6 +669,32 @@ materia en otro cuatrimestre, o dos intercambiadas.
   de estado, no `--sage` ni acento). El resultado se apila por debajo de 700 px (antes
   560): con la fila de acciones, las dos columnas no dejaban lugar a la barra de créditos.
 
+## 24. Plan de cursada: el banner en tres líneas (2026-09-15)
+
+Pasada de compactación (`/impeccable polish`, con permiso para reacomodar): el panel de
+configuración medía 345 px a 600 px de ancho y 222 px en escritorio; queda en 231 y 124.
+
+- `views/PlanView.tsx` / `planview.css`: el panel es una columna de tres líneas, la
+  información arriba y los controles abajo. (1) Veredicto: icono + «Te recibís en» + fecha
+  (lo único grande) + tamaño del plan y marcas (`.pv-verdict`, `.pv-mark`), todo en una
+  frase que envuelve, con el chip «Sugerir 8 electivas · 2c-28» al lado de «faltan 27 cr de
+  electivas». (2) «Al final del plan»: créditos electivos y minors en una línea que envuelve
+  (`.pv-strip`). (3) Tras una divisoria, los parámetros sin rótulos encima: «desde 1.º cuat.
+  2027» (el select dentro de una pastilla con prefijo, `.pv-ctl`), «− máx. 6 mat. +» y
+  «− máx. 27 cr +» (`NumField` con `prefix`: el rótulo queda `sr-only`), el objetivo (sin
+  «Objetivo» encima; el elegido en tinte suave) y el switch, con el chip «Con superposiciones
+  2c-27 · 1 choque» pegado al switch que lo habilita. Los chips comparten `.pv-chip`.
+- El paso a paso de combinaciones («⇄ N combinaciones más» → `‹ 2 / 9 ›`, qué cambia, «Usar
+  esta», ×) se muda a la fila de pestañas, junto a las columnas 2 · 3 · 4: cambia lo que se
+  ve abajo, como ellas, y la fila es sticky. En angosto (≤ 700 px) el chip omite «más».
+- Sin las reglas responsive del grid anterior (`.pv-result*`, apilado a 1100/700 px): tres
+  líneas que envuelven no necesitan reacomodo; a 375 px los dos topes comparten línea.
+- Panel de recomendaciones (`planner.css`): piso de 420 px de alto en el layout espejado
+  (≥ 1080 px). Con un tablero corto (roadmap de dos cuatrimestres) el panel absoluto
+  quedaba en un par de filas con scroll, como si se hubiera roto. Además, `recs`, `baseR` y
+  `altR` recalculan también cuando cambia `lockedIdx` (finalizar o reabrir un cuatrimestre
+  sin pines que soltar no los actualizaba).
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

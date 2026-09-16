@@ -119,6 +119,23 @@ const IconDots = ({ size = 16, ...rest }: IconProps) => (
     <circle cx="19" cy="12" r="1.9" />
   </svg>
 );
+const IconSwap = ({ size = 16, ...rest }: IconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    {...rest}
+  >
+    <path d="M4 8h13M14 5l3 3-3 3" />
+    <path d="M20 16H7M10 13l-3 3 3 3" />
+  </svg>
+);
 const IconWarnTri = ({ size = 21, ...rest }: IconProps) => (
   <svg
     viewBox="0 0 24 24"
@@ -168,6 +185,7 @@ function NumField({
   onCommit,
   stepper = false,
   unit,
+  prefix,
 }: {
   id: string;
   label: string;
@@ -181,6 +199,9 @@ function NumField({
   stepper?: boolean;
   /** sufijo tenue al lado del número («cr», «mat.»). */
   unit?: string;
+  /** prefijo tenue dentro de la pastilla («máx.»): con él, el rótulo queda
+   *  sólo para lectores de pantalla y el control se lee solo. */
+  prefix?: string;
 }) {
   const [draft, setDraft] = useState(String(value));
   const [focused, setFocused] = useState(false);
@@ -245,7 +266,9 @@ function NumField({
   }
   return (
     <div className="plan2-field pv-num">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id} className={prefix ? "sr-only" : undefined}>
+        {label}
+      </label>
       <div className="pv-num__ctl" role="group" aria-label={label}>
         <button
           type="button"
@@ -259,6 +282,7 @@ function NumField({
           </svg>
         </button>
         <span className="pv-num__val">
+          {prefix && <span className="pv-num__pre">{prefix}</span>}
           {input}
           {unit && <span className="pv-num__unit">{unit}</span>}
         </span>
@@ -2227,6 +2251,7 @@ export default function PlanView() {
       dPL.method,
       dPL.capCredByIdx,
       dPL.capMatByIdx,
+      dPL.lockedIdx,
       dApproved,
       dFixedCom,
     ],
@@ -2254,6 +2279,7 @@ export default function PlanView() {
       PL.method,
       PL.capCredByIdx,
       PL.capMatByIdx,
+      PL.lockedIdx,
       settled,
       state.fixedCom,
     ],
@@ -2350,6 +2376,7 @@ export default function PlanView() {
       PL.method,
       PL.capCredByIdx,
       PL.capMatByIdx,
+      PL.lockedIdx,
       settled,
       state.fixedCom,
     ],
@@ -3066,405 +3093,308 @@ export default function PlanView() {
     <section className="view-panel pv">
       {used.length > 0 && (
         <>
-          {/* Configuración general: parámetros a la izquierda, resultado a la
-              derecha, en un solo panel compacto. Contexto del calendario, no
-              protagonista. */}
+          {/* Configuración general en tres líneas —veredicto, créditos al
+              final y, debajo, los parámetros— sin rótulos encima de los
+              controles: cada uno se lee solo (prefijo, unidad, icono).
+              Contexto del calendario, no protagonista: lo que se puede hacer
+              con el plan vive al lado de lo que toca (el choque junto al
+              switch, las electivas junto a lo que falta, las combinaciones en
+              la fila de pestañas). */}
           <div className="pv-config">
-            <div className="pv-bctl" role="group" aria-label="Parámetros del plan">
-              <div className="pv-field">
-                <label className="pv-field__lbl" htmlFor="pcStart">
-                  Empiezo a cursar
-                </label>
-                <select
-                  id="pcStart"
-                  className="commission-select"
-                  aria-label="Cuatrimestre de inicio"
-                  value={PL.start.parity + "-" + PL.start.year}
-                  onChange={(e) => {
-                    const [p, y] = e.target.value.split("-").map(Number);
-                    dispatch({
-                      type: "SET_PLAN_START",
-                      start: { parity: p, year: y },
-                    });
-                  }}
+            {/* El veredicto, en una línea que envuelve: rótulo, fecha (la
+                única cosa grande del panel), tamaño del plan y sus marcas. */}
+            <p className="pv-verdict" role="group" aria-label="Resumen del plan">
+              <IconGraduationCap size={16} />
+              <span className="pv-verdict__lbl">
+                {titulo ? "Te recibís no antes de" : "Te recibís en"}
+              </span>{" "}
+              <b className="pv-verdict__val">{cuatriName(tituloCu)}</b>
+              <span className="pv-verdict__sub">
+                {used.length} {used.length === 1 ? "cuatrimestre" : "cuatrimestres"} ·{" "}
+                {flat.length} materias
+                {titulo && (
+                  <>
+                    {" · "}
+                    <Tooltip
+                      width={290}
+                      content={
+                        <>
+                          El título pide {electivasReq()} créditos de electivas y el plan{" "}
+                          {elecCommitted > 0 ? `junta ${elecCommitted}` : "todavía no tiene ninguna"}.
+                          Con los {titulo.faltan} que faltan y estos topes, ningún plan termina antes
+                          de <b>{cuatriName(titulo.cu)}</b>; la fecha exacta depende de cuáles
+                          agregues: elegilas en el recomendador o en «Materias del plan».
+                        </>
+                      }
+                    >
+                      <span className="pv-mark pv-mark--warn" tabIndex={0}>
+                        faltan {titulo.faltan} cr de electivas
+                      </span>
+                    </Tooltip>
+                  </>
+                )}
+                {!titulo && R.minLast != null && R.minLast === lastIdx && R.unplaced.length === 0 && (
+                  <>
+                    {" · "}
+                    <Tooltip
+                      width={250}
+                      content="No hay plan más corto con estas correlativas, requisitos de créditos y topes por cuatrimestre: cualquier objetivo termina acá."
+                    >
+                      <span className="pv-mark" tabIndex={0}>
+                        mínimo posible
+                      </span>
+                    </Tooltip>
+                  </>
+                )}
+                {supuestos.length > 0 && (
+                  <>
+                    {" · "}
+                    <Tooltip
+                      width={290}
+                      content={
+                        <>
+                          {supuestos.map((sp, k) => (
+                            <span key={k} style={{ display: "block" }}>
+                              <b>{sp.m.abbr}</b> en {cuatriLabel(cuatriAt(PL.start, sp.idx))}: el plan de
+                              estudios la ubica en {sp.par}.º cuatrimestre y no hay horario publicado
+                              del otro.
+                            </span>
+                          ))}
+                          Se asume que se dictan los dos cuatrimestres porque así el plan termina
+                          antes: verificá en el SGA.
+                        </>
+                      }
+                    >
+                      <span className="pv-mark pv-mark--warn" tabIndex={0}>
+                        {supuestos.length} fuera de su cuatrimestre
+                      </span>
+                    </Tooltip>
+                  </>
+                )}
+                {overlapsNow.length > 0 && (
+                  <>
+                    {" · "}
+                    <Tooltip
+                      width={280}
+                      content={
+                        <>
+                          {overlapsNow.map((o, k) => (
+                            <span key={k} style={{ display: "block" }}>
+                              {cuatriLabel(cuatriAt(PL.start, o.idx))}: <b>{o.a.m.abbr}</b> y{" "}
+                              <b>{o.b.m.abbr}</b> ({o.cuando})
+                            </span>
+                          ))}
+                        </>
+                      }
+                    >
+                      <span className="pv-mark pv-mark--warn" tabIndex={0}>
+                        {overlapsNow.length}{" "}
+                        {overlapsNow.length === 1 ? "superposición" : "superposiciones"}
+                      </span>
+                    </Tooltip>
+                  </>
+                )}
+              </span>
+              {/* el remedio, al lado de lo que falta */}
+              {titulo && fill && !recsPending && (
+                <Tooltip width={300} content={fillTip}>
+                  <button type="button" className="pv-chip" onClick={applyFill}>
+                    Sugerir <b>{fill.picks.length}</b>{" "}
+                    {fill.picks.length === 1 ? "electiva" : "electivas"} ·{" "}
+                    {cuatriLabel(cuatriAt(PL.start, fill.last))}
+                  </button>
+                </Tooltip>
+              )}
+            </p>
+
+            {/* Todo lo de esta línea es AL FINAL DEL PLAN (igual que el
+                veredicto): créditos electivos que junta el plan sobre los que
+                pide el título, y los minors con lo aprobado más lo
+                planificado. El «hoy» vive en la barra de métricas de arriba. */}
+            <div className="pv-strip">
+              <span className="pv-strip__when">Al final del plan</span>
+              <span className="pv-strip__item">
+                <span className="pv-strip__lbl" id="pvCredLbl">
+                  Electivos
+                </span>
+                <span>
+                  <b>{Math.min(elecCommitted, electivasReq())}</b> / {electivasReq()} cr
+                </span>
+                <span
+                  className="pv-strip__bar"
+                  role="progressbar"
+                  aria-labelledby="pvCredLbl"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={elecPlanPct}
                 >
-                  {startOptions.map((o) => (
-                    <option value={o.value} key={o.value}>
-                      {o.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  <i style={{ width: `${elecPlanPct}%` }} />
+                </span>
+                <span className={"pv-strip__pct" + (elecCommitted >= electivasReq() ? " is-ok" : "")}>
+                  {elecCommitted >= electivasReq() ? "cubiertos" : `faltan ${electivasReq() - elecCommitted}`}
+                </span>
+              </span>
+              <span className="pv-strip__minors" role="group" aria-label="Progreso de minors">
+                {minorRows.map(({ minor, cr, done }) => (
+                  <Tooltip key={minor.id} width={200} content={`${minor.name}: ${cr} de ${minor.req} créditos`}>
+                    <span
+                      className={"pv-strip__minor" + (done ? " is-done" : "")}
+                      style={{ ["--minor-color" as string]: minor.color }}
+                      tabIndex={-1}
+                    >
+                      <MinorBadge minor={minor} variant="pill" />
+                      <span className="pv-strip__mbar" aria-hidden="true">
+                        <i style={{ width: `${Math.min(100, (cr / minor.req) * 100)}%` }} />
+                      </span>
+                      {done ? <IconCheck size={11} /> : null}
+                      {cr}/{minor.req}
+                    </span>
+                  </Tooltip>
+                ))}
+              </span>
+            </div>
 
-              <div className="pv-field pv-field--num">
-                <NumField
-                  id="pcMaxMat"
-                  label="Máx. materias"
-                  value={PL.maxMat}
-                  min={1}
-                  max={9}
-                  stepper
-                  unit="mat."
-                  onCommit={(n) =>
-                    dispatch({ type: "SET_PLAN_MAXMAT", value: n })
-                  }
-                />
-              </div>
+            <div className="pv-bctl" role="group" aria-label="Parámetros del plan">
+              <Tooltip content="Primer cuatrimestre del plan: el que sigue al que está en curso, o uno posterior" width={250}>
+                <label className="pv-ctl" htmlFor="pcStart">
+                  <span className="pv-ctl__pre">desde</span>
+                  <select
+                    id="pcStart"
+                    className="commission-select"
+                    aria-label="Cuatrimestre de inicio"
+                    value={PL.start.parity + "-" + PL.start.year}
+                    onChange={(e) => {
+                      const [p, y] = e.target.value.split("-").map(Number);
+                      dispatch({
+                        type: "SET_PLAN_START",
+                        start: { parity: p, year: y },
+                      });
+                    }}
+                  >
+                    {startOptions.map((o) => (
+                      <option value={o.value} key={o.value}>
+                        {o.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </Tooltip>
 
-              <div className="pv-field pv-field--num">
-                <NumField
-                  id="pcMaxCred"
-                  label="Máx. créditos"
-                  value={PL.maxCred}
-                  min={3}
-                  max={40}
-                  stepper
-                  unit="cr"
-                  onCommit={(n) =>
-                    dispatch({ type: "SET_PLAN_MAXCRED", value: n })
-                  }
-                />
-              </div>
+              <NumField
+                id="pcMaxMat"
+                label="Máx. materias"
+                prefix="máx."
+                value={PL.maxMat}
+                min={1}
+                max={9}
+                stepper
+                unit="mat."
+                onCommit={(n) =>
+                  dispatch({ type: "SET_PLAN_MAXMAT", value: n })
+                }
+              />
+
+              <NumField
+                id="pcMaxCred"
+                label="Máx. créditos"
+                prefix="máx."
+                value={PL.maxCred}
+                min={3}
+                max={40}
+                stepper
+                unit="cr"
+                onCommit={(n) =>
+                  dispatch({ type: "SET_PLAN_MAXCRED", value: n })
+                }
+              />
 
               {/* Objetivo del plan: segmentado de tres, con el elegido
                   desplegado (icono + nombre) y los otros dos como icono con
                   tooltip. Un clic cambia; los tres terminan lo antes posible
                   (el egreso es el objetivo primario de cualquiera) y difieren
                   en cómo reparten la cursada. */}
-              <div className="pv-field-group">
-                <div className="pv-field pv-field--obj">
-                  <span className="pv-field__lbl" id="pcObjLbl">
-                    Objetivo
-                  </span>
-                  <div
-                    className="pv-seg pv-seg--obj"
-                    role="radiogroup"
-                    aria-labelledby="pcObjLbl"
-                    onKeyDown={onObjetivoKeyDown}
-                  >
-                    {OPT_METHODS.map((m: OptMethodMeta) => (
-                      <Tooltip
-                        key={m.key}
-                        width={236}
-                        content={
-                          <>
-                            <b>{m.label}</b> · {m.objetivo}
-                          </>
-                        }
-                      >
-                        <button
-                          type="button"
-                          role="radio"
-                          aria-checked={PL.method === m.key}
-                          aria-label={m.label}
-                          tabIndex={PL.method === m.key ? 0 : -1}
-                          className="pv-seg__opt pv-seg__opt--ic"
-                          onClick={() =>
-                            dispatch({ type: "SET_PLAN_METHOD", value: m.key })
-                          }
-                        >
-                          <MethodIcon method={m.key} size={14} />
-                          <span className="pv-seg__txt">{m.label}</span>
-                        </button>
-                      </Tooltip>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pv-field pv-field--sw">
+              <div
+                className="pv-seg pv-seg--obj"
+                role="radiogroup"
+                aria-label="Objetivo del plan"
+                onKeyDown={onObjetivoKeyDown}
+              >
+                {OPT_METHODS.map((m: OptMethodMeta) => (
                   <Tooltip
-                    width={220}
-                    content="Con esto encendido, el plan no pone dos materias que se pisen en el mismo cuatrimestre."
+                    key={m.key}
+                    width={236}
+                    content={
+                      <>
+                        <b>{m.label}</b> · {m.objetivo}
+                      </>
+                    }
                   >
                     <button
                       type="button"
-                      className={"cmb-switch" + (PL.avoid ? " on" : "")}
-                      role="switch"
-                      aria-checked={PL.avoid}
+                      role="radio"
+                      aria-checked={PL.method === m.key}
+                      aria-label={m.label}
+                      tabIndex={PL.method === m.key ? 0 : -1}
+                      className="pv-seg__opt pv-seg__opt--ic"
                       onClick={() =>
-                        dispatch({ type: "SET_PLAN_AVOID", value: !PL.avoid })
+                        dispatch({ type: "SET_PLAN_METHOD", value: m.key })
                       }
                     >
-                      <span className="cmb-switch__track">
-                        <span className="cmb-switch__knob" />
-                      </span>
-                      Evitar superposiciones
+                      <MethodIcon method={m.key} size={14} />
+                      <span className="pv-seg__txt">{m.label}</span>
                     </button>
                   </Tooltip>
-                </div>
+                ))}
               </div>
-            </div>
 
-            <div className="pv-result" role="group" aria-label="Resumen del plan">
-              <div className="pv-result__grad">
-                <IconGraduationCap size={18} />
-                <div>
-                  <span className="pv-result__lbl">
-                    {titulo ? "Te recibís no antes de" : "Te recibís en"}
+              <Tooltip
+                width={220}
+                content="Con esto encendido, el plan no pone dos materias que se pisen en el mismo cuatrimestre."
+              >
+                <button
+                  type="button"
+                  className={"cmb-switch" + (PL.avoid ? " on" : "")}
+                  role="switch"
+                  aria-checked={PL.avoid}
+                  onClick={() =>
+                    dispatch({ type: "SET_PLAN_AVOID", value: !PL.avoid })
+                  }
+                >
+                  <span className="cmb-switch__track">
+                    <span className="cmb-switch__knob" />
                   </span>
-                  <b className="pv-result__val">{cuatriName(tituloCu)}</b>
-                  <span className="pv-result__sub">
-                    {used.length} {used.length === 1 ? "cuatrimestre" : "cuatrimestres"} ·{" "}
-                    {flat.length} materias
-                    {titulo && (
-                      <>
-                        {" · "}
-                        <Tooltip
-                          width={290}
-                          content={
-                            <>
-                              El título pide {electivasReq()} créditos de electivas y el plan{" "}
-                              {elecCommitted > 0 ? `junta ${elecCommitted}` : "todavía no tiene ninguna"}.
-                              Con los {titulo.faltan} que faltan y estos topes, ningún plan termina antes
-                              de <b>{cuatriName(titulo.cu)}</b>; la fecha exacta depende de cuáles
-                              agregues: elegilas en el recomendador o en «Materias del plan».
-                            </>
-                          }
-                        >
-                          <span className="pv-result__min pv-result__min--warn" tabIndex={0}>
-                            faltan {titulo.faltan} cr de electivas
-                          </span>
-                        </Tooltip>
-                      </>
-                    )}
-                    {!titulo && R.minLast != null && R.minLast === lastIdx && R.unplaced.length === 0 && (
-                      <>
-                        {" · "}
-                        <Tooltip
-                          width={250}
-                          content="No hay plan más corto con estas correlativas, requisitos de créditos y topes por cuatrimestre: cualquier objetivo termina acá."
-                        >
-                          <span className="pv-result__min" tabIndex={0}>
-                            mínimo posible
-                          </span>
-                        </Tooltip>
-                      </>
-                    )}
-                    {supuestos.length > 0 && (
-                      <>
-                        {" · "}
-                        <Tooltip
-                          width={290}
-                          content={
-                            <>
-                              {supuestos.map((sp, k) => (
-                                <span key={k} style={{ display: "block" }}>
-                                  <b>{sp.m.abbr}</b> en {cuatriLabel(cuatriAt(PL.start, sp.idx))}: el plan de
-                                  estudios la ubica en {sp.par}.º cuatrimestre y no hay horario publicado
-                                  del otro.
-                                </span>
-                              ))}
-                              Se asume que se dictan los dos cuatrimestres porque así el plan termina
-                              antes: verificá en el SGA.
-                            </>
-                          }
-                        >
-                          <span className="pv-result__min pv-result__min--warn" tabIndex={0}>
-                            {supuestos.length} fuera de su cuatrimestre
-                          </span>
-                        </Tooltip>
-                      </>
-                    )}
-                    {overlapsNow.length > 0 && (
-                      <>
-                        {" · "}
-                        <Tooltip
-                          width={280}
-                          content={
-                            <>
-                              {overlapsNow.map((o, k) => (
-                                <span key={k} style={{ display: "block" }}>
-                                  {cuatriLabel(cuatriAt(PL.start, o.idx))}: <b>{o.a.m.abbr}</b> y{" "}
-                                  <b>{o.b.m.abbr}</b> ({o.cuando})
-                                </span>
-                              ))}
-                            </>
-                          }
-                        >
-                          <span className="pv-result__min pv-result__min--warn" tabIndex={0}>
-                            {overlapsNow.length}{" "}
-                            {overlapsNow.length === 1 ? "superposición" : "superposiciones"}
-                          </span>
-                        </Tooltip>
-                      </>
-                    )}
-                  </span>
-                  {/* Lo que se puede hacer con este plan, en una fila de chips
-                      silenciosos (el valor en tinta; el acento queda para la
-                      fecha y lo elegido): la alternativa con superposiciones,
-                      las electivas sugeridas y las otras combinaciones. */}
-                  {(altHint || (titulo && fill && !recsPending) || (!altsPending && alts.length > 0)) && (
-                  <div className="pv-result__acts">
-                  {altHint && (
-                    <Tooltip
-                      width={300}
-                      content={
-                        <>
-                          Permitiendo superposiciones el plan termina en{" "}
-                          <b>{cuatriName(cuatriAt(PL.start, altHint.last))}</b>:
-                          {altHint.overlaps.map((o, k) => (
-                            <span key={k} style={{ display: "block" }}>
-                              {cuatriLabel(cuatriAt(PL.start, o.idx))}: <b>{o.a.m.abbr}</b> y{" "}
-                              <b>{o.b.m.abbr}</b> ({o.cuando})
-                            </span>
-                          ))}
-                          Clic para apagar «Evitar superposiciones».
-                        </>
-                      }
-                    >
-                      <button
-                        type="button"
-                        className="pv-result__alt"
-                        onClick={() => dispatch({ type: "SET_PLAN_AVOID", value: false })}
-                      >
-                        Con superposiciones <b>{cuatriLabel(cuatriAt(PL.start, altHint.last))}</b> ·{" "}
-                        {altHint.overlaps.length}{" "}
-                        {altHint.overlaps.length === 1 ? "choque" : "choques"}
-                      </button>
-                    </Tooltip>
-                  )}
-                  {titulo && fill && !recsPending && (
-                    <Tooltip width={300} content={fillTip}>
-                      <button type="button" className="pv-result__alt" onClick={applyFill}>
-                        Con electivas sugeridas <b>{cuatriLabel(cuatriAt(PL.start, fill.last))}</b> ·{" "}
-                        {fill.picks.length} {fill.picks.length === 1 ? "materia" : "materias"}
-                      </button>
-                    </Tooltip>
-                  )}
-                  {/* Otras combinaciones: recorrer las demás formas de repartir
-                      estas mismas materias sin correr el egreso. Cerrado, un
-                      chip con cuántas hay; abierto, un paso a paso (1 = la del
-                      optimizador) con qué cambia en cada una y «Usar esta»
-                      para fijarla. Sin ninguna, nada. */}
-                  {!altsPending && alts.length > 0 && !combos.open && (
-                    <Tooltip
-                      width={280}
-                      content="Otras formas de repartir estas mismas materias que terminan en la misma fecha: una materia en otro cuatrimestre, o dos intercambiadas. Clic para recorrerlas."
-                    >
-                      <button
-                        type="button"
-                        className="pv-result__alt"
-                        onClick={() => setCombos({ open: true, idx: 1 })}
-                      >
-                        <b>{alts.length}</b> {alts.length === 1 ? "combinación más" : "combinaciones más"}
-                      </button>
-                    </Tooltip>
-                  )}
-                  {!altsPending && alts.length > 0 && combos.open && (
-                    <div className="pv-combos" role="group" aria-label="Otras combinaciones">
-                      <span className="pv-combos__nav">
-                        <Tooltip content="Combinación anterior" width={150}>
-                          <button
-                            type="button"
-                            className="pv-combos__btn"
-                            aria-label="Combinación anterior"
-                            disabled={comboIdx <= 0}
-                            onClick={() => setCombos((c) => ({ ...c, idx: Math.max(0, comboIdx - 1) }))}
-                          >
-                            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                              <path d="M15 5l-7 7 7 7" />
-                            </svg>
-                          </button>
-                        </Tooltip>
-                        <span className="pv-combos__pos" aria-live="polite">
-                          {comboIdx + 1} / {alts.length + 1}
+                  Evitar superposiciones
+                </button>
+              </Tooltip>
+              {/* la alternativa permitiéndolas, pegada al switch que la habilita */}
+              {altHint && (
+                <Tooltip
+                  width={300}
+                  content={
+                    <>
+                      Permitiendo superposiciones el plan termina en{" "}
+                      <b>{cuatriName(cuatriAt(PL.start, altHint.last))}</b>:
+                      {altHint.overlaps.map((o, k) => (
+                        <span key={k} style={{ display: "block" }}>
+                          {cuatriLabel(cuatriAt(PL.start, o.idx))}: <b>{o.a.m.abbr}</b> y{" "}
+                          <b>{o.b.m.abbr}</b> ({o.cuando})
                         </span>
-                        <Tooltip content="Siguiente combinación" width={160}>
-                          <button
-                            type="button"
-                            className="pv-combos__btn"
-                            aria-label="Siguiente combinación"
-                            disabled={comboIdx >= alts.length}
-                            onClick={() => setCombos((c) => ({ ...c, idx: Math.min(alts.length, comboIdx + 1) }))}
-                          >
-                            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                              <path d="M9 5l7 7-7 7" />
-                            </svg>
-                          </button>
-                        </Tooltip>
-                      </span>
-                      <span className="pv-combos__desc">
-                        {alt
-                          ? alt.changes.map((c, k) => (
-                              <span key={c.code}>
-                                {k > 0 && " · "}
-                                <b>{abbrOf(c.code)}</b> → {cuatriLabel(cuatriAt(PL.start, c.to))}
-                              </span>
-                            ))
-                          : "la del optimizador"}
-                      </span>
-                      {alt && (
-                        <Tooltip
-                          width={240}
-                          content="Fijar estas materias en esos cuatrimestres: el plan queda así (se pueden soltar después desde «Materias del plan»)."
-                        >
-                          <button type="button" className="pv-combos__use" onClick={commitAlt}>
-                            Usar esta
-                          </button>
-                        </Tooltip>
-                      )}
-                      <Tooltip content="Volver al plan del optimizador" width={170}>
-                        <button
-                          type="button"
-                          className="pv-combos__close"
-                          aria-label="Cerrar el recorrido de combinaciones"
-                          onClick={() => setCombos({ open: false, idx: 0 })}
-                        >
-                          <IconClose size={11} />
-                        </button>
-                      </Tooltip>
-                    </div>
-                  )}
-                  </div>
-                  )}
-                </div>
-              </div>
-              {/* Todo lo de este bloque es AL FINAL DEL PLAN (igual que «Te
-                  recibís en»): créditos electivos que junta el plan sobre los
-                  que pide el título, y los minors con lo aprobado más lo
-                  planificado. El «hoy» vive en la barra de métricas de arriba. */}
-              <div className="pv-result__cred">
-                <span className="pv-strip__when">Al final del plan</span>
-                <span className="pv-strip__item">
-                  <span className="pv-strip__lbl" id="pvCredLbl">
-                    Electivos
-                  </span>
-                  <span>
-                    <b>{Math.min(elecCommitted, electivasReq())}</b> / {electivasReq()} cr
-                  </span>
-                  <span
-                    className="pv-strip__bar"
-                    role="progressbar"
-                    aria-labelledby="pvCredLbl"
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    aria-valuenow={elecPlanPct}
+                      ))}
+                      Clic para apagar «Evitar superposiciones».
+                    </>
+                  }
+                >
+                  <button
+                    type="button"
+                    className="pv-chip"
+                    onClick={() => dispatch({ type: "SET_PLAN_AVOID", value: false })}
                   >
-                    <i style={{ width: `${elecPlanPct}%` }} />
-                  </span>
-                  <span className={"pv-strip__pct" + (elecCommitted >= electivasReq() ? " is-ok" : "")}>
-                    {elecCommitted >= electivasReq() ? "cubiertos" : `faltan ${electivasReq() - elecCommitted}`}
-                  </span>
-                </span>
-                <span className="pv-strip__minors" role="group" aria-label="Progreso de minors">
-                  {minorRows.map(({ minor, cr, done }) => (
-                    <Tooltip key={minor.id} width={200} content={`${minor.name}: ${cr} de ${minor.req} créditos`}>
-                      <span
-                        className={"pv-strip__minor" + (done ? " is-done" : "")}
-                        style={{ ["--minor-color" as string]: minor.color }}
-                        tabIndex={-1}
-                      >
-                        <MinorBadge minor={minor} variant="pill" />
-                        <span className="pv-strip__mbar" aria-hidden="true">
-                          <i style={{ width: `${Math.min(100, (cr / minor.req) * 100)}%` }} />
-                        </span>
-                        {done ? <IconCheck size={11} /> : null}
-                        {cr}/{minor.req}
-                      </span>
-                    </Tooltip>
-                  ))}
-                </span>
-              </div>
+                    Con superposiciones <b>{cuatriLabel(cuatriAt(PL.start, altHint.last))}</b> ·{" "}
+                    {altHint.overlaps.length}{" "}
+                    {altHint.overlaps.length === 1 ? "choque" : "choques"}
+                  </button>
+                </Tooltip>
+              )}
             </div>
           </div>
         </>
@@ -3552,6 +3482,93 @@ export default function PlanView() {
         )}
 
           <div className="pv-tabs__actions">
+            {/* Otras combinaciones: recorrer las demás formas de repartir estas
+                mismas materias sin correr el egreso. Vive acá porque cambia lo
+                que se ve abajo (como las columnas): cerrado, un chip con
+                cuántas hay; abierto, un paso a paso (1 = la del optimizador)
+                con qué cambia en cada una y «Usar esta» para fijarla. Sin
+                ninguna, nada. */}
+            {tab !== "min" && !altsPending && alts.length > 0 && !combos.open && (
+              <Tooltip
+                width={280}
+                content="Otras formas de repartir estas mismas materias que terminan en la misma fecha: una materia en otro cuatrimestre, o dos intercambiadas. Clic para recorrerlas."
+              >
+                <button
+                  type="button"
+                  className="pv-chip"
+                  onClick={() => setCombos({ open: true, idx: 1 })}
+                >
+                  <IconSwap size={12} />
+                  <b>{alts.length}</b> {alts.length === 1 ? "combinación" : "combinaciones"}
+                  <span className="pv-chip__opt"> más</span>
+                </button>
+              </Tooltip>
+            )}
+            {tab !== "min" && !altsPending && alts.length > 0 && combos.open && (
+              <div className="pv-combos" role="group" aria-label="Otras combinaciones">
+                <span className="pv-combos__nav">
+                  <Tooltip content="Combinación anterior" width={150}>
+                    <button
+                      type="button"
+                      className="pv-combos__btn"
+                      aria-label="Combinación anterior"
+                      disabled={comboIdx <= 0}
+                      onClick={() => setCombos((c) => ({ ...c, idx: Math.max(0, comboIdx - 1) }))}
+                    >
+                      <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M15 5l-7 7 7 7" />
+                      </svg>
+                    </button>
+                  </Tooltip>
+                  <span className="pv-combos__pos" aria-live="polite">
+                    {comboIdx + 1} / {alts.length + 1}
+                  </span>
+                  <Tooltip content="Siguiente combinación" width={160}>
+                    <button
+                      type="button"
+                      className="pv-combos__btn"
+                      aria-label="Siguiente combinación"
+                      disabled={comboIdx >= alts.length}
+                      onClick={() => setCombos((c) => ({ ...c, idx: Math.min(alts.length, comboIdx + 1) }))}
+                    >
+                      <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </Tooltip>
+                </span>
+                <span className="pv-combos__desc">
+                  {alt
+                    ? alt.changes.map((c, k) => (
+                        <span key={c.code}>
+                          {k > 0 && " · "}
+                          <b>{abbrOf(c.code)}</b> → {cuatriLabel(cuatriAt(PL.start, c.to))}
+                        </span>
+                      ))
+                    : "la del optimizador"}
+                </span>
+                {alt && (
+                  <Tooltip
+                    width={240}
+                    content="Fijar estas materias en esos cuatrimestres: el plan queda así (se pueden soltar después desde «Materias del plan»)."
+                  >
+                    <button type="button" className="pv-combos__use" onClick={commitAlt}>
+                      Usar esta
+                    </button>
+                  </Tooltip>
+                )}
+                <Tooltip content="Volver al plan del optimizador" width={170}>
+                  <button
+                    type="button"
+                    className="pv-combos__close"
+                    aria-label="Cerrar el recorrido de combinaciones"
+                    onClick={() => setCombos({ open: false, idx: 0 })}
+                  >
+                    <IconClose size={11} />
+                  </button>
+                </Tooltip>
+              </div>
+            )}
             {tab === "cal" && (
               <Tooltip content="Cuántos cuatrimestres se ven a la vez en el carrusel" width={190}>
                 <div
