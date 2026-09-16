@@ -2767,7 +2767,6 @@ export default function PlanView() {
       .flat()
       .filter((x) => x.m.tipo === "electiva")
       .reduce((s, x) => s + (x.m.creditos || 0), 0);
-  const elecPlanPct = Math.min(100, Math.round((elecCommitted / electivasReq()) * 100));
   // Créditos de electivas que el título pide y el plan no junta. Mientras
   // falten, «Te recibís en» no es una fecha sino una cota: el egreso mínimo
   // contando esos créditos (`minLastTitulo`, nunca antes del último
@@ -3133,6 +3132,19 @@ export default function PlanView() {
                     </Tooltip>
                   </>
                 )}
+                {!titulo && electivasReq() > 0 && (
+                  <>
+                    {" · "}
+                    <Tooltip
+                      width={240}
+                      content={`El plan junta los ${electivasReq()} créditos de electivas que pide el título.`}
+                    >
+                      <span className="pv-mark" tabIndex={0}>
+                        electivas cubiertas
+                      </span>
+                    </Tooltip>
+                  </>
+                )}
                 {!titulo && R.minLast != null && R.minLast === lastIdx && R.unplaced.length === 0 && (
                   <>
                     {" · "}
@@ -3207,52 +3219,32 @@ export default function PlanView() {
               )}
             </p>
 
-            {/* Todo lo de esta línea es AL FINAL DEL PLAN (igual que el
-                veredicto): créditos electivos que junta el plan sobre los que
-                pide el título, y los minors con lo aprobado más lo
-                planificado. El «hoy» vive en la barra de métricas de arriba. */}
-            <div className="pv-strip">
-              <span className="pv-strip__when">Al final del plan</span>
-              <span className="pv-strip__item">
-                <span className="pv-strip__lbl" id="pvCredLbl">
-                  Electivos
-                </span>
-                <span>
-                  <b>{Math.min(elecCommitted, electivasReq())}</b> / {electivasReq()} cr
-                </span>
-                <span
-                  className="pv-strip__bar"
-                  role="progressbar"
-                  aria-labelledby="pvCredLbl"
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  aria-valuenow={elecPlanPct}
-                >
-                  <i style={{ width: `${elecPlanPct}%` }} />
-                </span>
-                <span className={"pv-strip__pct" + (elecCommitted >= electivasReq() ? " is-ok" : "")}>
-                  {elecCommitted >= electivasReq() ? "cubiertos" : `faltan ${electivasReq() - elecCommitted}`}
-                </span>
-              </span>
-              <span className="pv-strip__minors" role="group" aria-label="Progreso de minors">
+            {/* Minors al final del plan (aprobado más planificado): sigla y
+                créditos, nada más; el nombre y el «al final del plan» van en
+                el tooltip. Los créditos electivos ya los dice el veredicto (y
+                el recomendador); el «hoy» vive en la barra de métricas. */}
+            {minorRows.length > 0 && (
+              <div className="pv-strip" role="group" aria-label="Minors al final del plan">
+                <span className="pv-strip__when">Minors</span>
                 {minorRows.map(({ minor, cr, done }) => (
-                  <Tooltip key={minor.id} width={200} content={`${minor.name}: ${cr} de ${minor.req} créditos`}>
+                  <Tooltip
+                    key={minor.id}
+                    width={220}
+                    content={`${minor.name}: ${cr} de ${minor.req} créditos al final del plan${done ? " · completo" : ""}`}
+                  >
                     <span
                       className={"pv-strip__minor" + (done ? " is-done" : "")}
                       style={{ ["--minor-color" as string]: minor.color }}
-                      tabIndex={-1}
+                      tabIndex={0}
                     >
                       <MinorBadge minor={minor} variant="pill" />
-                      <span className="pv-strip__mbar" aria-hidden="true">
-                        <i style={{ width: `${Math.min(100, (cr / minor.req) * 100)}%` }} />
-                      </span>
                       {done ? <IconCheck size={11} /> : null}
                       {cr}/{minor.req}
                     </span>
                   </Tooltip>
                 ))}
-              </span>
-            </div>
+              </div>
+            )}
 
             <div className="pv-bctl" role="group" aria-label="Parámetros del plan">
               <Tooltip content="Primer cuatrimestre del plan: el que sigue al que está en curso, o uno posterior" width={250}>

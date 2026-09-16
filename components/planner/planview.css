@@ -64,14 +64,14 @@
 .planner .pv-verdict__sub {
   min-width: 0;
 }
-/* créditos y minors al final del plan: una línea que envuelve */
+/* minors al final del plan: «Minors» tenue y, por cada uno, la pill de la
+   sigla con sus créditos (el nombre, en el tooltip) */
 .planner .pv-strip {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px 14px;
+  gap: 4px 12px;
 }
-/* el bloque entero habla del final del plan: la etiqueta lo dice una vez */
 .planner .pv-strip__when {
   font-family: var(--f-m);
   font-size: 9.5px;
@@ -79,74 +79,16 @@
   text-transform: uppercase;
   color: var(--faint);
 }
-.planner .pv-strip__pct.is-ok { color: var(--status-go-text); }
-.planner .pv-strip__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-  font-family: var(--f-m);
-  font-size: 11px;
-  letter-spacing: 0.01em;
-  color: var(--muted);
-  white-space: nowrap;
-}
-.planner .pv-strip__item b {
-  font-weight: 600;
-  color: var(--ink);
-}
-.planner .pv-strip__item > svg {
-  flex: none;
-  color: var(--brass);
-}
-.planner .pv-strip__lbl {
-  font-size: 9.5px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--faint);
-}
-/* barra de créditos: 72×4, brass → brass-2 como la barra de electivas */
-.planner .pv-strip__bar {
-  width: 72px;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--panel-3);
-  overflow: hidden;
-  flex: none;
-}
-.planner .pv-strip__bar > i {
-  display: block;
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--brass), var(--brass-2));
-  transition: width var(--dur-base) var(--ease-out);
-}
-.planner .pv-strip__pct {
-  color: var(--muted);
-  font-weight: 600;
-}
-.planner .pv-strip__sep {
-  width: 1px;
-  align-self: stretch;
-  background: var(--line);
-  flex: none;
-}
-/* minors: pill de sigla + barrita en el color del minor + n/14 */
-.planner .pv-strip__minors {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  flex-wrap: wrap;
-}
 .planner .pv-strip__minor {
   display: inline-flex;
   align-items: center;
   gap: 5px;
   font-family: var(--f-m);
   font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
   color: var(--muted);
   white-space: nowrap;
+  border-radius: 999px;
 }
 .planner .pv-strip__minor.is-done {
   color: var(--status-go-text);
@@ -156,22 +98,9 @@
   height: 15px;
   font-size: 9px;
 }
-.planner .pv-strip__mbar {
-  width: 34px;
-  height: 3px;
-  border-radius: 999px;
-  background: var(--panel-3);
-  overflow: hidden;
-  flex: none;
-}
-.planner .pv-strip__mbar > i {
-  display: block;
-  height: 100%;
-  background: var(--minor-color);
-  border-radius: 999px;
-}
-.planner .pv-strip__minor.is-done .pv-strip__mbar > i {
-  background: var(--sage);
+.planner .pv-strip__minor:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
 }
 /* Parámetros: controles de 34px en una fila que envuelve, debajo del
    veredicto y tras una divisoria; sin rótulo encima: cada uno se lee solo
@@ -1946,7 +1875,6 @@
   .planner .pv-seg__opt,
   .planner .pv-switch,
   .planner .pv-switch::after,
-  .planner .pv-strip__bar > i,
   .planner .pv-loadbar > i,
   .planner .pv-minor-track > i,
   .planner .pv-dotbtn,
