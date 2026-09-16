@@ -474,7 +474,7 @@
   color: var(--brass);
 }
 .planner .pv-combos__pos {
-  min-width: 7ch; /* «10 / 24» sin que las flechas se muevan al pasar de 9 a 10 */
+  min-width: 7ch; /* «10 / 24» sin que la › se mueva al pasar de 9 a 10 */
   padding: 0 6px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -486,10 +486,10 @@
   align-items: center;
   justify-content: center;
 }
-/* la descripción tiene ancho fijo (lo que no entra, en el tooltip): así el
-   grupo mide siempre lo mismo y ‹ › no se corren bajo el cursor */
+/* la descripción va a la izquierda de ‹ › y crece hacia allá (con tope; lo
+   que no entra, en el tooltip) */
 .planner .pv-combos__desc {
-  width: 30ch;
+  max-width: 40ch;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -522,11 +522,6 @@
 .planner .pv-combos__use:hover {
   background: var(--brass);
   color: var(--block-ink);
-}
-/* en la posición 1 (la del optimizador) no hay nada que fijar: el botón
-   reserva su lugar sin verse, para que el grupo no cambie de ancho */
-.planner .pv-combos__use.is-idle {
-  visibility: hidden;
 }
 .planner .pv-combos__use:focus-visible,
 .planner .pv-combos__close:focus-visible {

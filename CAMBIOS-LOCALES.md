@@ -687,10 +687,10 @@ configuración medía 345 px a 600 px de ancho y 222 px en escritorio; queda en 
 - El paso a paso de combinaciones («⇄ N combinaciones más» → `‹ 2 / 9 ›`, qué cambia, «Usar
   esta», ×) se muda a la fila de pestañas, junto a las columnas 2 · 3 · 4: cambia lo que se
   ve abajo, como ellas, y la fila es sticky. En angosto (≤ 700 px) el chip omite «más».
-  Las flechas ‹ › no se mueven al pasar de una combinación a otra (el grupo va alineado a la
-  derecha): la descripción tiene ancho fijo (30ch; lo que no entra, en su tooltip, con el
-  nombre completo y de dónde a dónde), el contador `min-width: 7ch` y «Usar esta» reserva su
-  lugar sin verse en la posición 1.
+  Las flechas ‹ › no se mueven al pasar de una combinación a otra: el grupo va alineado a
+  la derecha, así que qué cambia y «Usar esta» van a la izquierda de las flechas (crecen
+  hacia allá; tope de 40ch y el detalle —nombre completo, de dónde a dónde— en el tooltip)
+  y a su derecha solo queda la ×; el contador lleva `min-width: 7ch`.
 - Sin las reglas responsive del grid anterior (`.pv-result*`, apilado a 1100/700 px): tres
   líneas que envuelven no necesitan reacomodo; a 375 px los dos topes comparten línea.
 - La línea «Al final del plan» queda en «Minors · CD ▬ 0/14 · IRV ▬ 0/14 …» (sigla, barrita
