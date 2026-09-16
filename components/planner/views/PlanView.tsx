@@ -3533,26 +3533,49 @@ export default function PlanView() {
                     </button>
                   </Tooltip>
                 </span>
-                <span className="pv-combos__desc">
-                  {alt
-                    ? alt.changes.map((c, k) => (
-                        <span key={c.code}>
-                          {k > 0 && " · "}
-                          <b>{abbrOf(c.code)}</b> → {cuatriLabel(cuatriAt(PL.start, c.to))}
-                        </span>
-                      ))
-                    : "la del optimizador"}
-                </span>
-                {alt && (
-                  <Tooltip
-                    width={240}
-                    content="Fijar estas materias en esos cuatrimestres: el plan queda así (se pueden soltar después desde «Materias del plan»)."
+                {/* Ancho fijo para todo lo que hay a la derecha de ‹ ›: el
+                    paso a paso vive en un grupo alineado a la derecha, y si la
+                    descripción cambiara de ancho las flechas se correrían bajo
+                    el cursor al pasar de una combinación a otra. */}
+                <Tooltip
+                  width={260}
+                  content={
+                    alt
+                      ? alt.changes.map((c) => (
+                          <span key={c.code} style={{ display: "block" }}>
+                            <b>{abbrOf(c.code)}</b> · {byId.get(c.code)?.nombre ?? c.code}:{" "}
+                            {cuatriLabel(cuatriAt(PL.start, c.from))} → {cuatriLabel(cuatriAt(PL.start, c.to))}
+                          </span>
+                        ))
+                      : "El plan tal como lo arma el optimizador."
+                  }
+                >
+                  <span className="pv-combos__desc" tabIndex={0}>
+                    {alt
+                      ? alt.changes.map((c, k) => (
+                          <span key={c.code}>
+                            {k > 0 && " · "}
+                            <b>{abbrOf(c.code)}</b> → {cuatriLabel(cuatriAt(PL.start, c.to))}
+                          </span>
+                        ))
+                      : "la del optimizador"}
+                  </span>
+                </Tooltip>
+                <Tooltip
+                  width={240}
+                  content="Fijar estas materias en esos cuatrimestres: el plan queda así (se pueden soltar después desde «Materias del plan»)."
+                >
+                  <button
+                    type="button"
+                    className={"pv-combos__use" + (alt ? "" : " is-idle")}
+                    disabled={!alt}
+                    aria-hidden={!alt}
+                    tabIndex={alt ? 0 : -1}
+                    onClick={commitAlt}
                   >
-                    <button type="button" className="pv-combos__use" onClick={commitAlt}>
-                      Usar esta
-                    </button>
-                  </Tooltip>
-                )}
+                    Usar esta
+                  </button>
+                </Tooltip>
                 <Tooltip content="Volver al plan del optimizador" width={170}>
                   <button
                     type="button"
