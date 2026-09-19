@@ -18,8 +18,8 @@ pedido del autor.
 | 6 · `mant/6-docs-portada` | DONE | 2c1c676 | pie y portada verificados en dev (:3103, claro/oscuro, 400 px) y en el build estático bajo `/Cuatris/`; CONTRIBUTING, docs/mantenimiento.md, README, CLAUDE.md |
 | 7 · `mant/7-plataforma` | DONE | e6cc4e1 | `configurar-github.sh --dry-run` probado; no se aplicó |
 | Gates de cierre | DONE | | typecheck · build · test:datos (38) · test:grafo · guardarrailes · datos:validar · pytest (176) · `./run.sh build` |
-| Prueba real de los workflows contra `mantenimiento` | TODO | | requiere pushear la rama (permiso del autor); casos en PLAN.md «Ramas y worktree» |
-| Cierre · merge a `main` | TODO | | tras la prueba real; push y `configurar-github.sh` solo a pedido del autor |
+| Prueba real de los workflows contra `mantenimiento` | HECHA, NO CONCLUYENTE | | la rama se pusheó y se abrieron 5 PR contra ella (#1–#5): `pull_request_target` no se disparó porque solo corre desde la rama por defecto (E-09). `ci.yml` sí corrió (verde en los válidos, rojo en los inválidos) y destapó una prueba flaky (E-10). PR cerrados y ramas borradas |
+| Cierre · merge a `main` | TODO | | push, `configurar-github.sh` y los PR de prueba inofensivos contra `main` solo a pedido del autor |
 
 ## Decisiones durante la ejecución
 
@@ -44,3 +44,14 @@ pedido del autor.
   contenido, fecha original) en vez de regenerarlos.
 - **E-08** `ci.yml` no es check requerido (fork nuevo → corrida pendiente → merge automático
   bloqueado); el gate corre el mismo `npm run build` que el deploy para los PR con datos.
+- **E-09** `pull_request_target` **solo se dispara si el workflow existe en la rama por
+  defecto, y corre con GITHUB_SHA/GITHUB_REF de esa rama** (documentación de GitHub,
+  comprobado con los PR #1–#5 contra `mantenimiento`: cero corridas). El plan asumía «la rama
+  base». Consecuencias: el checkout sin `ref:` es `main` (mejor todavía: el código del gate
+  nunca sale de otra rama), `fetch-depth: 0` sigue haciendo falta para que el triage
+  encuentre la base de un PR contra otra rama, y la prueba real del gate solo puede hacerse
+  con el workflow ya en `main`, con PR inofensivos (`docs/mantenimiento.md`, «Probar un
+  cambio del gate»). Comentarios del workflow, docs y PLAN corregidos.
+- **E-10** El test del triage limpiaba el repo temporal mientras git cerraba un proceso en
+  segundo plano (ENOTEMPTY en Linux, una corrida de cinco): `gc.auto=0` en el repo temporal
+  y `rmSync` con reintentos.

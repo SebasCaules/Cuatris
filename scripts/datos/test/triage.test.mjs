@@ -17,7 +17,7 @@ let repo;
 let n = 0;
 
 const git = (...args) =>
-  execFileSync("git", ["-C", repo, "-c", "user.name=test", "-c", "user.email=test@example.invalid", "-c", "core.autocrlf=false", ...args], {
+  execFileSync("git", ["-C", repo, "-c", "user.name=test", "-c", "user.email=test@example.invalid", "-c", "core.autocrlf=false", "-c", "gc.auto=0", ...args], {
     stdio: ["ignore", "pipe", "pipe"],
   })
     .toString("utf8")
@@ -66,7 +66,8 @@ before(() => {
 });
 
 after(() => {
-  rmSync(repo, { recursive: true, force: true });
+  // Con reintentos: en Linux, git puede estar cerrando un proceso en segundo plano.
+  rmSync(repo, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
 });
 
 test("tipoDeRuta: solo bajo data/plan/, sin normalizar nada", () => {

@@ -4,9 +4,12 @@
 # Con `pull_request`, el archivo de workflow que corre **sale del PR**: quien abre el PR lo
 # reescribe como un `exit 0` con el mismo nombre de job y el check requerido queda verde. Con
 # `pull_request_target`, el workflow, el validador (scripts/datos/) y el lockfile salen
-# **siempre de la rama base** y el PR no puede tocarlos (y `/.github/`, `/scripts/` y el resto
-# del código están además bajo CODEOWNERS). Es contraintuitivo y es a propósito. Consecuencia
-# útil: el gate se prueba abriendo PR contra una rama que tenga esta versión del workflow.
+# **siempre de la rama por defecto** (`main`: GitHub solo dispara este evento si el archivo
+# existe ahí, y GITHUB_SHA/GITHUB_REF son los de esa rama, no los de la base del PR) y el PR
+# no puede tocarlos (y `/.github/`, `/scripts/` y el resto del código están además bajo
+# CODEOWNERS). Es contraintuitivo y es a propósito. Consecuencia: un cambio en este archivo
+# recién corre cuando está en `main`; se prueba después con PR de prueba inofensivos (ver
+# docs/mantenimiento.md, «Probar un cambio del gate»).
 #
 # ¿Por qué `permissions: {}` en el job que toca los bytes del PR?
 # El precio habitual de `pull_request_target` es que el token tiene escritura sobre el
@@ -18,7 +21,7 @@
 # triage decide qué rutas son datos (archivos regulares del allowlist, sin LFS, de tamaño
 # admisible), y solo esas se copian con `git cat-file` sobre `data/plan` del checkout base.
 # Después corren el validador y el mismo `npm run build` que hará el deploy: el único código
-# que se ejecuta es el de la rama base (`data.js`, lo único que el build evalúa, no es
+# que se ejecuta es el de la rama por defecto (`data.js`, lo único que el build evalúa, no es
 # contribuible). Ni `npm`, ni un script del PR corren en ningún momento.
 #
 # El segundo job, `decidir`, tiene escritura y **no abre ningún archivo del PR**: le vuelve a
@@ -57,9 +60,11 @@ jobs:
       validacion: ${{ steps.validar.outputs.validacion }}
       build: ${{ steps.build.outputs.cola }}
     steps:
-      # Sin `ref:`, `pull_request_target` hace checkout de la **rama base**: es lo que se
-      # quiere. De acá salen el validador, los pipelines de build y el lockfile.
-      - name: Traer el código de la rama base
+      # Sin `ref:`, `pull_request_target` hace checkout de la **rama por defecto**: es lo
+      # que se quiere. De acá salen el validador, los pipelines de build y el lockfile.
+      # `fetch-depth: 0` trae todas las ramas, así el triage encuentra la base del PR
+      # aunque el PR apunte a otra rama.
+      - name: Traer el código de la rama por defecto
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           persist-credentials: false
@@ -202,9 +207,9 @@ jobs:
       issues: write
       actions: write
     steps:
-      # De nuevo sin `ref:`: solo el código de la rama base, para reaplicar el allowlist con
-      # la misma función que usa el triage y armar el comentario. No toca ni un byte del PR.
-      - name: Traer el código de la rama base
+      # De nuevo sin `ref:`: solo el código de la rama por defecto, para reaplicar el allowlist
+      # con la misma función que usa el triage y armar el comentario. No toca ni un byte del PR.
+      - name: Traer el código de la rama por defecto
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           persist-credentials: false

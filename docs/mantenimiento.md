@@ -26,7 +26,7 @@ está `CONTRIBUTING.md`; esta página es la de atrás del mostrador.
 
 ```
 PR abierto/actualizado
-  └─ pr-datos.yml (pull_request_target: el workflow y los scripts salen de la rama base)
+  └─ pr-datos.yml (pull_request_target: el workflow y los scripts salen de la rama por defecto)
        ├─ validar-datos  (permissions: {})   ← el único check requerido
        │    git fetch refs/pull/N/head → triage (rutas, modos de git, tamaño, magnitud)
        │    → copia SOLO los archivos de datos aceptados sobre data/plan (git cat-file)
@@ -49,7 +49,7 @@ centinela.yml (cada 6 h)
 implementan estos workflows):
 
 - *Ejecutar código del PR con permisos* (A1/A3): `pull_request_target` toma el workflow de
-  la rama base; el job que toca bytes del PR no tiene permisos; los bytes se traen con
+  la rama por defecto; el job que toca bytes del PR no tiene permisos; los bytes se traen con
   `git fetch` y `git cat-file`, nunca con checkout; solo se copian archivos regulares del
   allowlist; lo único que se ejecuta es el código de la base (`npm run build`, que evalúa
   `data/plan/data.js`, que no es contribuible).
@@ -79,8 +79,11 @@ implementan estos workflows):
   el merge automático para siempre. `pull_request_target` no tiene ese problema.
 - `git archive` y el checkout aplican el `.gitattributes` del árbol extraído; por eso el
   gate aborta si el PR trae uno y usa `git cat-file`.
-- `pull_request_target` corre el workflow de la **rama base**: un cambio en `pr-datos.yml`
-  se prueba abriendo PR contra una rama que ya lo tenga, no contra `main`.
+- `pull_request_target` solo se dispara si el workflow existe en la **rama por defecto**, y
+  corre esa versión (GITHUB_SHA y GITHUB_REF son los de `main`, no los de la base del PR).
+  Un cambio en `pr-datos.yml` no se puede probar en una rama: recién corre cuando está en
+  `main`. Comprobado el 2026-09-19: cinco PR contra una rama con el workflow no dispararon
+  nada.
 
 ## Configuración de la plataforma (no se versiona)
 
@@ -105,9 +108,13 @@ Para comprobar el estado: `gh api repos/SebasCaules/Cuatris/rulesets`,
 
 ## Operación
 
-- **Probar un cambio del gate**: pushear la rama con el workflow nuevo y abrir PR de prueba
-  **contra esa rama** desde ramas `prueba/*`; el gate corre con el workflow de la base y
-  mergea contra ella, sin desplegar (solo despliega si la base es la rama por defecto).
+- **Probar un cambio del gate**: mergearlo a `main` (pasa por `ci`, que corre el validador,
+  los tests y los guardarraíles) y después abrir PR de prueba **inofensivos** desde ramas
+  `prueba/*`: una línea en `data/plan/horarios/README.md` (`datos-menor`, se mergea sola y
+  publica: no cambia ningún dato), un JSON con un bloque invertido (check rojo; se cierra),
+  un symlink (`necesita-humano`; se cierra), un `2027-1C.json` sintético (`datos-mayor` +
+  `esperando`; **se cierra antes de que venza la espera**), un cambio en `scripts/`
+  (`necesita-humano` + revisión del autor; se cierra). Las ramas de prueba se borran.
 - **Probar el centinela**: `gh workflow run centinela.yml -f hoy=2027-02-15` abre el issue
   «Faltan los horarios de 1C 2027» si el archivo no existe.
 - **Un PR quedó `esperando` y hay que apurarlo**: mergearlo a mano (el autor, o quien tenga
