@@ -1,153 +1,153 @@
 {
- "fuente": {
-  "sistema": "sga",
-  "nivel": "Grado",
-  "capturado": "2026-09-13"
- },
- "carreras": [
-  {
-   "codigo": "BIO",
-   "nombre": "Bioingeniería",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "BIO 22",
-   "vacio": false
-  },
-  {
-   "codigo": "AER",
-   "nombre": "Ingeniería Aeroespacial",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "AER 25",
-   "vacio": true
-  },
-  {
-   "codigo": "C",
-   "nombre": "Ingeniería Civil",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "C23",
-   "vacio": false
-  },
-  {
-   "codigo": "E",
-   "nombre": "Ingeniería Electricista",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "E 11",
-   "vacio": false
-  },
-  {
-   "codigo": "K",
-   "nombre": "Ingeniería Electrónica",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "K22",
-   "vacio": false
-  },
-  {
-   "codigo": "B",
-   "nombre": "Ingeniería en Biotecnología",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "B 25",
-   "vacio": false
-  },
-  {
-   "codigo": "S",
-   "nombre": "Ingeniería en Informática",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "S10-Rev23",
-   "vacio": false
-  },
-  {
-   "codigo": "P",
-   "nombre": "Ingeniería en Petróleo",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "P22",
-   "vacio": false
-  },
-  {
-   "codigo": "I",
-   "nombre": "Ingeniería Industrial",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "I22",
-   "vacio": false
-  },
-  {
-   "codigo": "M",
-   "nombre": "Ingeniería Mecánica",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "M22",
-   "vacio": false
-  },
-  {
-   "codigo": "N",
-   "nombre": "Ingeniería Naval",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "N22",
-   "vacio": false
-  },
-  {
-   "codigo": "Q",
-   "nombre": "Ingeniería Química",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "Q22",
-   "vacio": false
-  },
-  {
-   "codigo": "X",
-   "nombre": "Intercambio",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": null,
-   "vacio": null
-  },
-  {
-   "codigo": "L",
-   "nombre": "Lic.en Administración y Sistemas",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "L09T",
-   "vacio": false
-  },
-  {
-   "codigo": "LAES",
-   "nombre": "Licenciatura en Analítica Empresarial y Social",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "A22",
-   "vacio": false
-  },
-  {
-   "codigo": "LCA",
-   "nombre": "Licenciatura en Ciencias Aplicadas",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "LCA26",
-   "vacio": false
-  },
-  {
-   "codigo": "LCC",
-   "nombre": "Licenciatura en Ciencias del Comportamiento",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "LCC 25",
-   "vacio": false
-  },
-  {
-   "codigo": "LN",
-   "nombre": "Licenciatura en Gestión de Negocios",
-   "escuela": "Escuela de Gestión y Tecnología",
-   "nivel": "Grado",
-   "plan": "L20",
-   "vacio": false
+  "carreras": [
+    {
+      "codigo": "BIO",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Bioingeniería",
+      "plan": "BIO 22",
+      "vacio": false
+    },
+    {
+      "codigo": "AER",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería Aeroespacial",
+      "plan": "AER 25",
+      "vacio": true
+    },
+    {
+      "codigo": "C",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería Civil",
+      "plan": "C23",
+      "vacio": false
+    },
+    {
+      "codigo": "E",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería Electricista",
+      "plan": "E 11",
+      "vacio": false
+    },
+    {
+      "codigo": "K",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería Electrónica",
+      "plan": "K22",
+      "vacio": false
+    },
+    {
+      "codigo": "B",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería en Biotecnología",
+      "plan": "B 25",
+      "vacio": false
+    },
+    {
+      "codigo": "S",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería en Informática",
+      "plan": "S10-Rev23",
+      "vacio": false
+    },
+    {
+      "codigo": "P",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería en Petróleo",
+      "plan": "P22",
+      "vacio": false
+    },
+    {
+      "codigo": "I",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería Industrial",
+      "plan": "I22",
+      "vacio": false
+    },
+    {
+      "codigo": "M",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería Mecánica",
+      "plan": "M22",
+      "vacio": false
+    },
+    {
+      "codigo": "N",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería Naval",
+      "plan": "N22",
+      "vacio": false
+    },
+    {
+      "codigo": "Q",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería Química",
+      "plan": "Q22",
+      "vacio": false
+    },
+    {
+      "codigo": "X",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Intercambio",
+      "plan": null,
+      "vacio": null
+    },
+    {
+      "codigo": "L",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Lic.en Administración y Sistemas",
+      "plan": "L09T",
+      "vacio": false
+    },
+    {
+      "codigo": "LAES",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Licenciatura en Analítica Empresarial y Social",
+      "plan": "A22",
+      "vacio": false
+    },
+    {
+      "codigo": "LCA",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Licenciatura en Ciencias Aplicadas",
+      "plan": "LCA26",
+      "vacio": false
+    },
+    {
+      "codigo": "LCC",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Licenciatura en Ciencias del Comportamiento",
+      "plan": "LCC 25",
+      "vacio": false
+    },
+    {
+      "codigo": "LN",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Licenciatura en Gestión de Negocios",
+      "plan": "L20",
+      "vacio": false
+    }
+  ],
+  "fuente": {
+    "capturado": "2026-09-13",
+    "nivel": "Grado",
+    "sistema": "sga"
   }
- ]
 }

@@ -1,0 +1,14 @@
+# Todo el repositorio exige la revisión del autor… salvo los datos contribuibles.
+#
+# El ruleset de `main` pide revisión de code owner: un PR que toque código, workflows o el
+# validador queda esperando al autor, y así «el PR modifica su propio gate» es imposible por
+# plataforma, no por acierto del código. Las rutas de abajo, sin dueño, son las que el gate
+# de pr-datos.yml valida y mergea solo. Una línea posterior sin dueños quita la propiedad que
+# dio la anterior (es la semántica documentada de CODEOWNERS).
+*   @SebasCaules
+
+/data/plan/horarios/
+/data/plan/carreras/
+/data/plan/carreras.json
+/data/plan/sga-carreras/
+/data/plan/finales-*.csv

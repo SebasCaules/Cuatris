@@ -1,0 +1,86 @@
+{
+  "contrato": "1.0.0",
+  "cursos": [
+    {
+      "codigo": "72.44",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "001R"
+              ],
+              "desde": "15:00",
+              "dia": "lunes",
+              "hasta": "18:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 70
+          },
+          "desde": "2026-09-01",
+          "docentes": [],
+          "hasta": "2026-08-01",
+          "id": "S",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 51
+          }
+        }
+      ],
+      "departamento": "Sistemas Digitales y Datos",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [
+        "93.18"
+      ],
+      "hasta": "2026-12-31",
+      "nombre": "Criptografía y Seguridad"
+    },
+    {
+      "codigo": "93.18",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "001R"
+              ],
+              "desde": "14:00",
+              "dia": "lunes",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 48
+          },
+          "docentes": [],
+          "id": "A",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 48
+          }
+        }
+      ],
+      "departamento": "Ciencias Exactas y Naturales",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Álgebra Lineal"
+    }
+  ],
+  "fuente": {
+    "capturado": "2026-09-09",
+    "sistema": "sga"
+  },
+  "periodo": {
+    "anio": 2026,
+    "cuatrimestre": "2C",
+    "desde": "2026-07-26",
+    "hasta": "2026-12-31",
+    "id": "2026-2C"
+  }
+}

@@ -30,6 +30,8 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+import { serializar } from "./datos/forma.mjs";
+
 const SRC_DIR = path.join(process.cwd(), "data", "plan", "sga-carreras");
 const OUT_INDEX = path.join(process.cwd(), "data", "plan", "carreras.json");
 const OUT_DIR = path.join(process.cwd(), "data", "plan", "carreras");
@@ -278,7 +280,7 @@ for (const f of readdirSync(SRC_DIR)) {
     bloques: plan.bloques,
     titulos: plan.titulos,
   };
-  writeFileSync(path.join(OUT_DIR, `${codigo}.json`), JSON.stringify(out, null, 1) + "\n");
+  writeFileSync(path.join(OUT_DIR, `${codigo}.json`), serializar(out));
   planes.set(codigo, plan);
   const nObl = materiasDe(plan.bloques, (b) => b.tipo === "todos").length;
   const nEle = materiasDe(plan.bloques, (b) => b.tipo !== "todos").length;
@@ -299,6 +301,6 @@ const index = {
     vacio: planes.get(c.codigo)?.vacio ?? null,
   })),
 };
-writeFileSync(OUT_INDEX, JSON.stringify(index, null, 1) + "\n");
+writeFileSync(OUT_INDEX, serializar(index));
 const sinPlan = carreras.filter((c) => !planes.has(c.codigo)).map((c) => c.codigo);
 console.log(`[carreras] ${carreras.length} carreras → data/plan/carreras.json · con plan: ${[...planes.keys()].join(" ") || "—"} · sin plan: ${sinPlan.join(" ") || "—"}`);

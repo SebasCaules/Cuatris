@@ -1,409 +1,409 @@
 {
- "carrera": {
-  "codigo": "LCC",
-  "nombre": "Licenciatura en Ciencias del Comportamiento",
-  "escuela": "Escuela de Gestión y Tecnología",
-  "nivel": "Grado"
- },
- "plan": "LCC 25",
- "planes": [
-  {
-   "nombre": "LCC 25",
-   "version": "1",
-   "desde": "Primer Cuat. 2025",
-   "hasta": "",
-   "elegido": true
-  }
- ],
- "vacio": false,
- "capturado": "2026-09-13",
- "bloques": [
-  {
-   "nombre": "Ciclo Básico",
-   "tituloOtorgado": null,
-   "requisito": "Aprobar todos los items (suma 192 créditos)",
-   "creditos": 192,
-   "tipo": "todos",
-   "secciones": [
+  "bloques": [
     {
-     "nombre": "Año 1 - Cuatrimestre 1",
-     "anio": 1,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "19.01",
-       "nombre": "Fundamentos del comportamiento humano",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "19.02",
-       "nombre": "Filosofía de la mente",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "93.20",
-       "nombre": "Análisis Matemático",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "93.21",
-       "nombre": "Álgebra",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.33",
-       "nombre": "Tecnología y Sociedad",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
+      "creditos": 192,
+      "nombre": "Ciclo Básico",
+      "requisito": "Aprobar todos los items (suma 192 créditos)",
+      "secciones": [
+        {
+          "anio": 1,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "19.01",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Fundamentos del comportamiento humano"
+            },
+            {
+              "codigo": "19.02",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Filosofía de la mente"
+            },
+            {
+              "codigo": "93.20",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático"
+            },
+            {
+              "codigo": "93.21",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Álgebra"
+            },
+            {
+              "codigo": "94.33",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Tecnología y Sociedad"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 1"
+        },
+        {
+          "anio": 1,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "19.03",
+              "correlativas": [
+                "19.01",
+                "19.02"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Psicología cognitiva"
+            },
+            {
+              "codigo": "19.04",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Neurofisiología y Neuroanatomía"
+            },
+            {
+              "codigo": "71.20",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Informática General"
+            },
+            {
+              "codigo": "71.90",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Certificaciones tecnológicas"
+            },
+            {
+              "codigo": "92.10",
+              "correlativas": [
+                "93.20",
+                "93.21"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Matemática Aplicada"
+            },
+            {
+              "codigo": "94.34",
+              "correlativas": [
+                "94.33"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Economía y Sociedad"
+            },
+            {
+              "codigo": "94.90",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Inglés I (analista)"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 2"
+        },
+        {
+          "anio": 2,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "11.28",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Sistemas Complejos"
+            },
+            {
+              "codigo": "19.05",
+              "correlativas": [
+                "19.03"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Psicología del Desarrollo"
+            },
+            {
+              "codigo": "61.17",
+              "correlativas": [
+                "94.34",
+                "19.03"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Economía del Comportamiento"
+            },
+            {
+              "codigo": "71.88",
+              "correlativas": [
+                "71.20"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión de Datos"
+            },
+            {
+              "codigo": "93.36",
+              "correlativas": [
+                "92.10",
+                "93.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Probabilidad"
+            }
+          ],
+          "nombre": "Año 2 - Cuatrimestre 1"
+        },
+        {
+          "anio": 2,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "11.67",
+              "correlativas": [
+                "93.36"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Estadística Aplicada"
+            },
+            {
+              "codigo": "19.06",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Lenguaje y cognición"
+            },
+            {
+              "codigo": "19.07",
+              "correlativas": [
+                "19.03",
+                "19.04"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Cerebro y neurociencias cognitivas"
+            },
+            {
+              "codigo": "94.66",
+              "correlativas": [
+                "11.67"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Metodología de la Investigación en Ciencias del comportamiento"
+            },
+            {
+              "codigo": "94.91",
+              "correlativas": [
+                "94.90"
+              ],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Inglés II (licenciado)"
+            }
+          ],
+          "nombre": "Año 2 - Cuatrimestre 2"
+        },
+        {
+          "anio": 3,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "19.08",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Neurotecnología"
+            },
+            {
+              "codigo": "71.22",
+              "correlativas": [
+                "92.10",
+                "71.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Sistemas de Inteligencia Artificial"
+            },
+            {
+              "codigo": "81.92",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión de proyectos de innovación y transformación"
+            },
+            {
+              "codigo": "82.04",
+              "correlativas": [
+                "11.67",
+                "71.88"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Analítica Descriptiva"
+            },
+            {
+              "codigo": "94.67",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Ética profesional"
+            }
+          ],
+          "nombre": "Año 3 - Cuatrimestre 1"
+        },
+        {
+          "anio": 3,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "19.09",
+              "correlativas": [
+                "19.07",
+                "19.06"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Neurociencia aplicada al comportamiento del consumidor"
+            },
+            {
+              "codigo": "19.10",
+              "correlativas": [
+                "19.01",
+                "94.66"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Medición y evaluación de la conducta"
+            },
+            {
+              "codigo": "61.05",
+              "correlativas": [
+                "94.34"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Economía de la Salud"
+            },
+            {
+              "codigo": "82.05",
+              "correlativas": [
+                "11.67"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Predictivo"
+            },
+            {
+              "codigo": "94.35",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Antropología cognitiva"
+            }
+          ],
+          "nombre": "Año 3 - Cuatrimestre 2"
+        },
+        {
+          "anio": 4,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "19.11",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Sistemas sociotécnicos adaptativos"
+            },
+            {
+              "codigo": "19.12",
+              "correlativas": [
+                "19.01"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Técnicas de modificación del comportamiento"
+            },
+            {
+              "codigo": "19.13",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Proyecto final de carrera (Anual)"
+            }
+          ],
+          "nombre": "Año 4 - Cuatrimestre 1"
+        },
+        {
+          "anio": 4,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "19.14",
+              "correlativas": [
+                "19.07"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Cognición afectiva y motivacional"
+            }
+          ],
+          "nombre": "Año 4 - Cuatrimestre 2"
+        }
+      ],
+      "tipo": "todos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 1 - Cuatrimestre 2",
-     "anio": 1,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "19.03",
-       "nombre": "Psicología cognitiva",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "19.01",
-        "19.02"
-       ]
-      },
-      {
-       "codigo": "19.04",
-       "nombre": "Neurofisiología y Neuroanatomía",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.20",
-       "nombre": "Informática General",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.90",
-       "nombre": "Certificaciones tecnológicas",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "92.10",
-       "nombre": "Matemática Aplicada",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.20",
-        "93.21"
-       ]
-      },
-      {
-       "codigo": "94.34",
-       "nombre": "Economía y Sociedad",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.33"
-       ]
-      },
-      {
-       "codigo": "94.90",
-       "nombre": "Inglés I (analista)",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    },
-    {
-     "nombre": "Año 2 - Cuatrimestre 1",
-     "anio": 2,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "11.28",
-       "nombre": "Sistemas Complejos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "19.05",
-       "nombre": "Psicología del Desarrollo",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "19.03"
-       ]
-      },
-      {
-       "codigo": "61.17",
-       "nombre": "Economía del Comportamiento",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.34",
-        "19.03"
-       ]
-      },
-      {
-       "codigo": "71.88",
-       "nombre": "Gestión de Datos",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.20"
-       ]
-      },
-      {
-       "codigo": "93.36",
-       "nombre": "Probabilidad",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.10",
-        "93.20"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 2 - Cuatrimestre 2",
-     "anio": 2,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "11.67",
-       "nombre": "Estadística Aplicada",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.36"
-       ]
-      },
-      {
-       "codigo": "19.06",
-       "nombre": "Lenguaje y cognición",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "19.07",
-       "nombre": "Cerebro y neurociencias cognitivas",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "19.03",
-        "19.04"
-       ]
-      },
-      {
-       "codigo": "94.66",
-       "nombre": "Metodología de la Investigación en Ciencias del comportamiento",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "11.67"
-       ]
-      },
-      {
-       "codigo": "94.91",
-       "nombre": "Inglés II (licenciado)",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.90"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 3 - Cuatrimestre 1",
-     "anio": 3,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "19.08",
-       "nombre": "Neurotecnología",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.22",
-       "nombre": "Sistemas de Inteligencia Artificial",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.10",
-        "71.20"
-       ]
-      },
-      {
-       "codigo": "81.92",
-       "nombre": "Gestión de proyectos de innovación y transformación",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.04",
-       "nombre": "Analítica Descriptiva",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "11.67",
-        "71.88"
-       ]
-      },
-      {
-       "codigo": "94.67",
-       "nombre": "Ética profesional",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    },
-    {
-     "nombre": "Año 3 - Cuatrimestre 2",
-     "anio": 3,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "19.09",
-       "nombre": "Neurociencia aplicada al comportamiento del consumidor",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "19.07",
-        "19.06"
-       ]
-      },
-      {
-       "codigo": "19.10",
-       "nombre": "Medición y evaluación de la conducta",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "19.01",
-        "94.66"
-       ]
-      },
-      {
-       "codigo": "61.05",
-       "nombre": "Economía de la Salud",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.34"
-       ]
-      },
-      {
-       "codigo": "82.05",
-       "nombre": "Análisis Predictivo",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "11.67"
-       ]
-      },
-      {
-       "codigo": "94.35",
-       "nombre": "Antropología cognitiva",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    },
-    {
-     "nombre": "Año 4 - Cuatrimestre 1",
-     "anio": 4,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "19.11",
-       "nombre": "Sistemas sociotécnicos adaptativos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "19.12",
-       "nombre": "Técnicas de modificación del comportamiento",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "19.01"
-       ]
-      },
-      {
-       "codigo": "19.13",
-       "nombre": "Proyecto final de carrera (Anual)",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    },
-    {
-     "nombre": "Año 4 - Cuatrimestre 2",
-     "anio": 4,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "19.14",
-       "nombre": "Cognición afectiva y motivacional",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "19.07"
-       ]
-      }
-     ]
+      "creditos": 33,
+      "nombre": "Electivas",
+      "requisito": "Juntar 33 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     }
-   ]
+  ],
+  "capturado": "2026-09-13",
+  "carrera": {
+    "codigo": "LCC",
+    "escuela": "Escuela de Gestión y Tecnología",
+    "nivel": "Grado",
+    "nombre": "Licenciatura en Ciencias del Comportamiento"
   },
-  {
-   "nombre": "Electivas",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 33 créditos",
-   "creditos": 33,
-   "tipo": "creditos",
-   "secciones": [
+  "plan": "LCC 25",
+  "planes": [
     {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": []
+      "desde": "Primer Cuat. 2025",
+      "elegido": true,
+      "hasta": "",
+      "nombre": "LCC 25",
+      "version": "1"
     }
-   ]
-  }
- ],
- "titulos": [
-  {
-   "tipo": "Principal",
-   "titulo": "Licenciado/a en Ciencias del Comportamiento",
-   "requisitos": "Aprobar LCC 25 y sumar 192 créditos",
-   "creditos": 192
-  }
- ]
+  ],
+  "titulos": [
+    {
+      "creditos": 192,
+      "requisitos": "Aprobar LCC 25 y sumar 192 créditos",
+      "tipo": "Principal",
+      "titulo": "Licenciado/a en Ciencias del Comportamiento"
+    }
+  ],
+  "vacio": false
 }

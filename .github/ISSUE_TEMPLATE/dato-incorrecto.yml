@@ -1,0 +1,58 @@
+# Formulario al que lleva «¿Un dato está mal?» desde el sitio (components/shell/Footer.tsx).
+# Quien lo completa no necesita saber git: con el issue, cualquiera puede armar el PR
+# siguiendo CONTRIBUTING.md, y el gate lo valida y lo mergea solo.
+name: Un dato está mal
+description: Un horario, una comisión, una correlativa o una fecha de final que no coincide con el SGA.
+title: "[dato] "
+labels: ["dato-incorrecto"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por avisar. Cuanto más concreto sea el dato, más rápido lo corrige alguien (quizás vos: en `CONTRIBUTING.md` está la receta para abrir el PR, que se valida y se mergea solo).
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: Qué dato está mal
+      options:
+        - Horario, aula, sede o docente de una comisión
+        - Una materia que no aparece o que sobra en la oferta del cuatrimestre
+        - Correlativas, créditos o nombre de una materia en el plan de estudios
+        - Fecha u hora de una mesa de final
+        - Otra cosa
+    validations:
+      required: true
+  - type: input
+    id: carrera
+    attributes:
+      label: Carrera
+      description: Código o nombre (S, I, K, LAES…). Dejalo vacío si aplica a todas.
+      placeholder: S
+  - type: input
+    id: materia
+    attributes:
+      label: Materia
+      description: Código y nombre, como los muestra el SGA.
+      placeholder: 72.44 Sistemas Operativos
+    validations:
+      required: true
+  - type: input
+    id: periodo
+    attributes:
+      label: Cuatrimestre o llamado
+      placeholder: 2.º cuatrimestre 2026 · llamado de diciembre 2026
+  - type: textarea
+    id: detalle
+    attributes:
+      label: Qué dice el sitio y qué dice el SGA
+      description: El dato tal como aparece en Cuatris y tal como aparece en la fuente oficial.
+      placeholder: |
+        Cuatris: comisión A, lunes 14:00–16:00, aula 001R.
+        SGA: comisión A, lunes 14:00–16:00, aula 202R.
+    validations:
+      required: true
+  - type: textarea
+    id: fuente
+    attributes:
+      label: Fuente
+      description: Dónde lo verificaste (pantalla del SGA, planilla oficial, PDF de la materia). Una captura ayuda; sin credenciales ni datos personales.

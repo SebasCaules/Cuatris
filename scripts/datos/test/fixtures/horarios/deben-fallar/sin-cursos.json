@@ -1,0 +1,15 @@
+{
+  "contrato": "1.0.0",
+  "cursos": [],
+  "fuente": {
+    "capturado": "2026-09-09",
+    "sistema": "sga"
+  },
+  "periodo": {
+    "anio": 2026,
+    "cuatrimestre": "2C",
+    "desde": "2026-07-26",
+    "hasta": "2026-12-31",
+    "id": "2026-2C"
+  }
+}

@@ -1,932 +1,932 @@
 {
- "carrera": {
-  "codigo": "N",
-  "nombre": "Ingeniería Naval",
-  "escuela": "Escuela de Gestión y Tecnología",
-  "nivel": "Grado"
- },
- "plan": "N22",
- "planes": [
-  {
-   "nombre": "N22",
-   "version": "1",
-   "desde": "Segundo Cuat. 2024",
-   "hasta": "",
-   "elegido": true
-  },
-  {
-   "nombre": "N18 Agosto",
-   "version": "1",
-   "desde": "Primer Cuat. 2018",
-   "hasta": "Segundo Cuat. 2020",
-   "elegido": false
-  },
-  {
-   "nombre": "N18 Marzo",
-   "version": "1",
-   "desde": "Primer Cuat. 2018",
-   "hasta": "Segundo Cuat. 2020",
-   "elegido": false
-  }
- ],
- "vacio": false,
- "capturado": "2026-09-13",
- "bloques": [
-  {
-   "nombre": "Básico",
-   "tituloOtorgado": null,
-   "requisito": "Aprobar todos los items (suma 240 créditos)",
-   "creditos": 240,
-   "tipo": "todos",
-   "secciones": [
+  "bloques": [
     {
-     "nombre": "Año 1 - Cuatrimestre 1",
-     "anio": 1,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "12.67",
-       "nombre": "Química General",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.58",
-       "nombre": "Informática General",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "92.01",
-       "nombre": "Análisis Matemático I",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "93.18",
-       "nombre": "Álgebra Lineal",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.33",
-       "nombre": "Tecnología y Sociedad",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
+      "creditos": 240,
+      "nombre": "Básico",
+      "requisito": "Aprobar todos los items (suma 240 créditos)",
+      "secciones": [
+        {
+          "anio": 1,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "12.67",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Química General"
+            },
+            {
+              "codigo": "71.58",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Informática General"
+            },
+            {
+              "codigo": "92.01",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático I"
+            },
+            {
+              "codigo": "93.18",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Álgebra Lineal"
+            },
+            {
+              "codigo": "94.33",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Tecnología y Sociedad"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 1"
+        },
+        {
+          "anio": 1,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "30.26",
+              "correlativas": [
+                "12.67"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Ciencia de Materiales I"
+            },
+            {
+              "codigo": "31.08",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Sistemas de Representación"
+            },
+            {
+              "codigo": "32.06",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Introducción a la Ing. Naval"
+            },
+            {
+              "codigo": "71.90",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Certificaciones tecnológicas"
+            },
+            {
+              "codigo": "92.02",
+              "correlativas": [
+                "92.01",
+                "93.18"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático II"
+            },
+            {
+              "codigo": "93.41",
+              "correlativas": [
+                "92.01"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Física I"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 2"
+        },
+        {
+          "anio": 2,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "16.55",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Biología"
+            },
+            {
+              "codigo": "30.41",
+              "correlativas": [
+                "93.41",
+                "30.26",
+                "31.08"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Diseño Mecánico I"
+            },
+            {
+              "codigo": "71.59",
+              "correlativas": [
+                "71.58",
+                "71.90"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Estructura de Datos y Programación"
+            },
+            {
+              "codigo": "92.03",
+              "correlativas": [
+                "92.01",
+                "93.18"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático III"
+            },
+            {
+              "codigo": "93.42",
+              "correlativas": [
+                "92.02"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Física II"
+            }
+          ],
+          "nombre": "Año 2 - Cuatrimestre 1"
+        },
+        {
+          "anio": 2,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "30.42",
+              "correlativas": [
+                "92.02",
+                "92.03",
+                "93.41"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Diseño Mecánico II"
+            },
+            {
+              "codigo": "31.21",
+              "correlativas": [
+                "93.42",
+                "93.41"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Termodinámica"
+            },
+            {
+              "codigo": "92.04",
+              "correlativas": [
+                "92.02",
+                "92.03"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático IV"
+            },
+            {
+              "codigo": "93.07",
+              "correlativas": [
+                "71.58",
+                "92.03"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Métodos Numéricos"
+            },
+            {
+              "codigo": "93.43",
+              "correlativas": [
+                "92.03",
+                "93.41"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Física III"
+            }
+          ],
+          "nombre": "Año 2 - Cuatrimestre 2"
+        },
+        {
+          "anio": 3,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "30.25",
+              "correlativas": [
+                "30.26"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Ciencia de Materiales II"
+            },
+            {
+              "codigo": "30.43",
+              "correlativas": [
+                "30.42",
+                "92.03",
+                "93.07",
+                "92.04"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Diseño Mecánico III A"
+            },
+            {
+              "codigo": "30.44",
+              "correlativas": [
+                "30.42",
+                "92.03",
+                "93.07",
+                "92.04"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Diseño Mecánico III B"
+            },
+            {
+              "codigo": "32.66",
+              "correlativas": [
+                "92.03",
+                "93.41",
+                "31.08"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Hidrostática y Estabilidad"
+            },
+            {
+              "codigo": "93.61",
+              "correlativas": [
+                "93.42",
+                "93.43"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Física IV"
+            },
+            {
+              "codigo": "94.43",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 72,
+              "nombre": "Metodología del Diseño"
+            }
+          ],
+          "nombre": "Año 3 - Cuatrimestre 1"
+        },
+        {
+          "anio": 3,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "21.08",
+              "correlativas": [
+                "93.43"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Electrotecnia"
+            },
+            {
+              "codigo": "31.22",
+              "correlativas": [
+                "31.21",
+                "92.03",
+                "93.42",
+                "93.41"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Mecánica de Fluidos"
+            },
+            {
+              "codigo": "32.69",
+              "correlativas": [
+                "32.66"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Resistencia y Propulsión"
+            },
+            {
+              "codigo": "93.24",
+              "correlativas": [
+                "92.02"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Probabilidad y Estadística"
+            },
+            {
+              "codigo": "94.44",
+              "correlativas": [
+                "94.43"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Proyecto Interdisciplinario"
+            },
+            {
+              "codigo": "94.51",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Inglés I"
+            }
+          ],
+          "nombre": "Año 3 - Cuatrimestre 2"
+        },
+        {
+          "anio": 4,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "11.15",
+              "correlativas": [
+                "93.24"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Organización Industrial"
+            },
+            {
+              "codigo": "22.10",
+              "correlativas": [
+                "92.04",
+                "21.08"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Electrónica e Instrumentación"
+            },
+            {
+              "codigo": "30.49",
+              "correlativas": [
+                "31.22"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Máquinas Térmicas e Hidráulicas"
+            },
+            {
+              "codigo": "32.54",
+              "correlativas": [
+                "32.66",
+                "30.44"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Construcción Naval"
+            },
+            {
+              "codigo": "61.27",
+              "correlativas": [
+                "93.24"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Análisis de Coyuntura Económica"
+            }
+          ],
+          "nombre": "Año 4 - Cuatrimestre 1"
+        },
+        {
+          "anio": 4,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "12.83",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 168,
+              "nombre": "Seguridad Ocupacional y Ambiental"
+            },
+            {
+              "codigo": "30.45",
+              "correlativas": [
+                "30.43",
+                "30.25",
+                "30.44"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Diseño Mecánico IV"
+            },
+            {
+              "codigo": "32.03",
+              "correlativas": [
+                "30.49"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Motores Marinos"
+            },
+            {
+              "codigo": "32.56",
+              "correlativas": [
+                "31.21",
+                "31.22",
+                "32.66"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Alistamiento Naval"
+            },
+            {
+              "codigo": "61.31",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Derecho para Ingenieros"
+            }
+          ],
+          "nombre": "Año 4 - Cuatrimestre 2"
+        },
+        {
+          "anio": 5,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "32.49",
+              "correlativas": [
+                "30.44"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Estructura de Buques"
+            },
+            {
+              "codigo": "32.64",
+              "correlativas": [
+                "22.10",
+                "30.45",
+                "32.03"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Plantas Propulsoras Marinas"
+            },
+            {
+              "codigo": "32.72",
+              "correlativas": [
+                "32.54",
+                "32.56",
+                "30.45",
+                "32.03"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Proyecto de Buques"
+            }
+          ],
+          "nombre": "Año 5 - Cuatrimestre 1"
+        },
+        {
+          "anio": 5,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "32.05",
+              "correlativas": [],
+              "creditos": 4,
+              "creditosReq": 144,
+              "nombre": "Astilleros y Mantenimiento de Buques"
+            },
+            {
+              "codigo": "32.70",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 200,
+              "nombre": "Práctica de Embarque"
+            },
+            {
+              "codigo": "32.71",
+              "correlativas": [
+                "32.54",
+                "32.56",
+                "30.45",
+                "32.03"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Proyecto de Embarcaciones de Trabajo"
+            },
+            {
+              "codigo": "32.73",
+              "correlativas": [
+                "32.72"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Proyecto Final (Anual)"
+            },
+            {
+              "codigo": "94.52",
+              "correlativas": [
+                "94.51"
+              ],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Inglés II"
+            },
+            {
+              "codigo": "94.65",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 144,
+              "nombre": "Practica Profesional supervisada"
+            }
+          ],
+          "nombre": "Año 5 - Cuatrimestre 2"
+        }
+      ],
+      "tipo": "todos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 1 - Cuatrimestre 2",
-     "anio": 1,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "30.26",
-       "nombre": "Ciencia de Materiales I",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "12.67"
-       ]
-      },
-      {
-       "codigo": "31.08",
-       "nombre": "Sistemas de Representación",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "32.06",
-       "nombre": "Introducción a la Ing. Naval",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.90",
-       "nombre": "Certificaciones tecnológicas",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "92.02",
-       "nombre": "Análisis Matemático II",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.01",
-        "93.18"
-       ]
-      },
-      {
-       "codigo": "93.41",
-       "nombre": "Física I",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.01"
-       ]
-      }
-     ]
+      "creditos": 4,
+      "nombre": "ELECTIVAS AREA GESTIÓN",
+      "requisito": "Juntar 4 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "10.08",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 96,
+              "nombre": "Energías Renovables"
+            },
+            {
+              "codigo": "10.09",
+              "correlativas": [
+                "61.16"
+              ],
+              "creditos": 3,
+              "creditosReq": 96,
+              "nombre": "Formación para Emprendedores"
+            },
+            {
+              "codigo": "11.20",
+              "correlativas": [
+                "11.15"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Supply Chain"
+            },
+            {
+              "codigo": "11.73",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 144,
+              "nombre": "Teoría de la Decisión"
+            },
+            {
+              "codigo": "11.76",
+              "correlativas": [
+                "93.24"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Gestión de Calidad"
+            },
+            {
+              "codigo": "11.84",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 160,
+              "nombre": "Gestión de Proyectos"
+            },
+            {
+              "codigo": "61.09",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Economía Empresaria"
+            },
+            {
+              "codigo": "61.16",
+              "correlativas": [
+                "11.15",
+                "61.27"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Introducción a las Finanzas"
+            },
+            {
+              "codigo": "92.92",
+              "correlativas": [],
+              "creditos": 2,
+              "creditosReq": 0,
+              "nombre": "Complementos de Física de la Relatividad"
+            },
+            {
+              "codigo": "94.40",
+              "correlativas": [
+                "94.44"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Estructura de las Organizaciones"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 2 - Cuatrimestre 1",
-     "anio": 2,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "16.55",
-       "nombre": "Biología",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "30.41",
-       "nombre": "Diseño Mecánico I",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.41",
-        "30.26",
-        "31.08"
-       ]
-      },
-      {
-       "codigo": "71.59",
-       "nombre": "Estructura de Datos y Programación",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.58",
-        "71.90"
-       ]
-      },
-      {
-       "codigo": "92.03",
-       "nombre": "Análisis Matemático III",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.01",
-        "93.18"
-       ]
-      },
-      {
-       "codigo": "93.42",
-       "nombre": "Física II",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.02"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 2 - Cuatrimestre 2",
-     "anio": 2,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "30.42",
-       "nombre": "Diseño Mecánico II",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.02",
-        "92.03",
-        "93.41"
-       ]
-      },
-      {
-       "codigo": "31.21",
-       "nombre": "Termodinámica",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.42",
-        "93.41"
-       ]
-      },
-      {
-       "codigo": "92.04",
-       "nombre": "Análisis Matemático IV",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.02",
-        "92.03"
-       ]
-      },
-      {
-       "codigo": "93.07",
-       "nombre": "Métodos Numéricos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.58",
-        "92.03"
-       ]
-      },
-      {
-       "codigo": "93.43",
-       "nombre": "Física III",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.03",
-        "93.41"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 3 - Cuatrimestre 1",
-     "anio": 3,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "30.25",
-       "nombre": "Ciencia de Materiales II",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.26"
-       ]
-      },
-      {
-       "codigo": "30.43",
-       "nombre": "Diseño Mecánico III A",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.42",
-        "92.03",
-        "93.07",
-        "92.04"
-       ]
-      },
-      {
-       "codigo": "30.44",
-       "nombre": "Diseño Mecánico III B",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.42",
-        "92.03",
-        "93.07",
-        "92.04"
-       ]
-      },
-      {
-       "codigo": "32.66",
-       "nombre": "Hidrostática y Estabilidad",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.03",
-        "93.41",
-        "31.08"
-       ]
-      },
-      {
-       "codigo": "93.61",
-       "nombre": "Física IV",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.42",
-        "93.43"
-       ]
-      },
-      {
-       "codigo": "94.43",
-       "nombre": "Metodología del Diseño",
-       "creditos": 3,
-       "creditosReq": 72,
-       "correlativas": []
-      }
-     ]
-    },
-    {
-     "nombre": "Año 3 - Cuatrimestre 2",
-     "anio": 3,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "21.08",
-       "nombre": "Electrotecnia",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.43"
-       ]
-      },
-      {
-       "codigo": "31.22",
-       "nombre": "Mecánica de Fluidos",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.21",
-        "92.03",
-        "93.42",
-        "93.41"
-       ]
-      },
-      {
-       "codigo": "32.69",
-       "nombre": "Resistencia y Propulsión",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "32.66"
-       ]
-      },
-      {
-       "codigo": "93.24",
-       "nombre": "Probabilidad y Estadística",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.02"
-       ]
-      },
-      {
-       "codigo": "94.44",
-       "nombre": "Proyecto Interdisciplinario",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.43"
-       ]
-      },
-      {
-       "codigo": "94.51",
-       "nombre": "Inglés I",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    },
-    {
-     "nombre": "Año 4 - Cuatrimestre 1",
-     "anio": 4,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "11.15",
-       "nombre": "Organización Industrial",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.24"
-       ]
-      },
-      {
-       "codigo": "22.10",
-       "nombre": "Electrónica e Instrumentación",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.04",
-        "21.08"
-       ]
-      },
-      {
-       "codigo": "30.49",
-       "nombre": "Máquinas Térmicas e Hidráulicas",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.22"
-       ]
-      },
-      {
-       "codigo": "32.54",
-       "nombre": "Construcción Naval",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "32.66",
-        "30.44"
-       ]
-      },
-      {
-       "codigo": "61.27",
-       "nombre": "Análisis de Coyuntura Económica",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.24"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 4 - Cuatrimestre 2",
-     "anio": 4,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "12.83",
-       "nombre": "Seguridad Ocupacional y Ambiental",
-       "creditos": 3,
-       "creditosReq": 168,
-       "correlativas": []
-      },
-      {
-       "codigo": "30.45",
-       "nombre": "Diseño Mecánico IV",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.43",
-        "30.25",
-        "30.44"
-       ]
-      },
-      {
-       "codigo": "32.03",
-       "nombre": "Motores Marinos",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.49"
-       ]
-      },
-      {
-       "codigo": "32.56",
-       "nombre": "Alistamiento Naval",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.21",
-        "31.22",
-        "32.66"
-       ]
-      },
-      {
-       "codigo": "61.31",
-       "nombre": "Derecho para Ingenieros",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    },
-    {
-     "nombre": "Año 5 - Cuatrimestre 1",
-     "anio": 5,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "32.49",
-       "nombre": "Estructura de Buques",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.44"
-       ]
-      },
-      {
-       "codigo": "32.64",
-       "nombre": "Plantas Propulsoras Marinas",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "22.10",
-        "30.45",
-        "32.03"
-       ]
-      },
-      {
-       "codigo": "32.72",
-       "nombre": "Proyecto de Buques",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "32.54",
-        "32.56",
-        "30.45",
-        "32.03"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 5 - Cuatrimestre 2",
-     "anio": 5,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "32.05",
-       "nombre": "Astilleros y Mantenimiento de Buques",
-       "creditos": 4,
-       "creditosReq": 144,
-       "correlativas": []
-      },
-      {
-       "codigo": "32.70",
-       "nombre": "Práctica de Embarque",
-       "creditos": 0,
-       "creditosReq": 200,
-       "correlativas": []
-      },
-      {
-       "codigo": "32.71",
-       "nombre": "Proyecto de Embarcaciones de Trabajo",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "32.54",
-        "32.56",
-        "30.45",
-        "32.03"
-       ]
-      },
-      {
-       "codigo": "32.73",
-       "nombre": "Proyecto Final (Anual)",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "32.72"
-       ]
-      },
-      {
-       "codigo": "94.52",
-       "nombre": "Inglés II",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.51"
-       ]
-      },
-      {
-       "codigo": "94.65",
-       "nombre": "Practica Profesional supervisada",
-       "creditos": 0,
-       "creditosReq": 144,
-       "correlativas": []
-      }
-     ]
+      "creditos": 6,
+      "nombre": "ELECTIVAS AREA TECNOLOGIA",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "11.34",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 96,
+              "nombre": "Taller de Modelización de Productos"
+            },
+            {
+              "codigo": "12.28",
+              "correlativas": [
+                "32.56"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Residuos sólidos y residuos peligrosos"
+            },
+            {
+              "codigo": "12.46",
+              "correlativas": [
+                "31.21"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Introducción al Proceso de Fabricación de Aceros"
+            },
+            {
+              "codigo": "12.87",
+              "correlativas": [
+                "32.56"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Tratamiento de Efluentes"
+            },
+            {
+              "codigo": "12.94",
+              "correlativas": [
+                "12.67"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Introducción a la Ingeniería Nuclear"
+            },
+            {
+              "codigo": "17.15",
+              "correlativas": [
+                "32.56"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Introducción a la Ingeniería Ambiental"
+            },
+            {
+              "codigo": "21.44",
+              "correlativas": [
+                "21.08"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Instalaciones Eléctricas"
+            },
+            {
+              "codigo": "30.14",
+              "correlativas": [
+                "31.22",
+                "93.07",
+                "31.37"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Mecánica de Fluidos Computacional"
+            },
+            {
+              "codigo": "30.24",
+              "correlativas": [
+                "30.25"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Metalurgia Física I"
+            },
+            {
+              "codigo": "30.30",
+              "correlativas": [
+                "31.22",
+                "21.08"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Transporte Sustentable A"
+            },
+            {
+              "codigo": "30.46",
+              "correlativas": [
+                "93.41",
+                "31.08",
+                "30.26"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Laboratorio de Diseño Mecánico"
+            },
+            {
+              "codigo": "30.50",
+              "correlativas": [
+                "30.42"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Mecánica del Continuo"
+            },
+            {
+              "codigo": "30.52",
+              "correlativas": [
+                "92.02",
+                "92.03",
+                "93.41",
+                "93.07"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Mecánica Aplicada"
+            },
+            {
+              "codigo": "30.53",
+              "correlativas": [
+                "93.07",
+                "30.44"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Mecánica de Sólidos Computacional"
+            },
+            {
+              "codigo": "30.54",
+              "correlativas": [
+                "31.22",
+                "30.52",
+                "30.25"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Mecánica de Sólidos Computacional Avanzada"
+            },
+            {
+              "codigo": "31.30",
+              "correlativas": [
+                "30.25"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Materiales Poliméricos"
+            },
+            {
+              "codigo": "31.37",
+              "correlativas": [
+                "31.22",
+                "93.07"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Transferencia de Calor"
+            },
+            {
+              "codigo": "31.66",
+              "correlativas": [
+                "31.22",
+                "30.43",
+                "22.10"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Hidráulica, Neumática y PLC"
+            },
+            {
+              "codigo": "31.68",
+              "correlativas": [
+                "31.22",
+                "30.44"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Instalaciones Industriales"
+            },
+            {
+              "codigo": "31.73",
+              "correlativas": [
+                "31.21",
+                "31.22"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Aire Acondicionado y Refrigeración"
+            },
+            {
+              "codigo": "31.90",
+              "correlativas": [
+                "30.25",
+                "30.44"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Integridad Estructural"
+            },
+            {
+              "codigo": "31.94",
+              "correlativas": [
+                "30.25",
+                "30.44"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Tecnología de Materiales Compuestos"
+            },
+            {
+              "codigo": "31.95",
+              "correlativas": [
+                "30.24"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Física y Mecánica de Aceros"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     }
-   ]
+  ],
+  "capturado": "2026-09-13",
+  "carrera": {
+    "codigo": "N",
+    "escuela": "Escuela de Gestión y Tecnología",
+    "nivel": "Grado",
+    "nombre": "Ingeniería Naval"
   },
-  {
-   "nombre": "ELECTIVAS AREA GESTIÓN",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 4 créditos",
-   "creditos": 4,
-   "tipo": "creditos",
-   "secciones": [
+  "plan": "N22",
+  "planes": [
     {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "10.08",
-       "nombre": "Energías Renovables",
-       "creditos": 3,
-       "creditosReq": 96,
-       "correlativas": []
-      },
-      {
-       "codigo": "10.09",
-       "nombre": "Formación para Emprendedores",
-       "creditos": 3,
-       "creditosReq": 96,
-       "correlativas": [
-        "61.16"
-       ]
-      },
-      {
-       "codigo": "11.20",
-       "nombre": "Supply Chain",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "11.15"
-       ]
-      },
-      {
-       "codigo": "11.73",
-       "nombre": "Teoría de la Decisión",
-       "creditos": 3,
-       "creditosReq": 144,
-       "correlativas": []
-      },
-      {
-       "codigo": "11.76",
-       "nombre": "Gestión de Calidad",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.24"
-       ]
-      },
-      {
-       "codigo": "11.84",
-       "nombre": "Gestión de Proyectos",
-       "creditos": 3,
-       "creditosReq": 160,
-       "correlativas": []
-      },
-      {
-       "codigo": "61.09",
-       "nombre": "Economía Empresaria",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "61.16",
-       "nombre": "Introducción a las Finanzas",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "11.15",
-        "61.27"
-       ]
-      },
-      {
-       "codigo": "92.92",
-       "nombre": "Complementos de Física de la Relatividad",
-       "creditos": 2,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.40",
-       "nombre": "Estructura de las Organizaciones",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.44"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "ELECTIVAS AREA TECNOLOGIA",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
+      "desde": "Segundo Cuat. 2024",
+      "elegido": true,
+      "hasta": "",
+      "nombre": "N22",
+      "version": "1"
+    },
     {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "11.34",
-       "nombre": "Taller de Modelización de Productos",
-       "creditos": 3,
-       "creditosReq": 96,
-       "correlativas": []
-      },
-      {
-       "codigo": "12.28",
-       "nombre": "Residuos sólidos y residuos peligrosos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "32.56"
-       ]
-      },
-      {
-       "codigo": "12.46",
-       "nombre": "Introducción al Proceso de Fabricación de Aceros",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.21"
-       ]
-      },
-      {
-       "codigo": "12.87",
-       "nombre": "Tratamiento de Efluentes",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "32.56"
-       ]
-      },
-      {
-       "codigo": "12.94",
-       "nombre": "Introducción a la Ingeniería Nuclear",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "12.67"
-       ]
-      },
-      {
-       "codigo": "17.15",
-       "nombre": "Introducción a la Ingeniería Ambiental",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "32.56"
-       ]
-      },
-      {
-       "codigo": "21.44",
-       "nombre": "Instalaciones Eléctricas",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "21.08"
-       ]
-      },
-      {
-       "codigo": "30.14",
-       "nombre": "Mecánica de Fluidos Computacional",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.22",
-        "93.07",
-        "31.37"
-       ]
-      },
-      {
-       "codigo": "30.24",
-       "nombre": "Metalurgia Física I",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.25"
-       ]
-      },
-      {
-       "codigo": "30.30",
-       "nombre": "Transporte Sustentable A",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.22",
-        "21.08"
-       ]
-      },
-      {
-       "codigo": "30.46",
-       "nombre": "Laboratorio de Diseño Mecánico",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.41",
-        "31.08",
-        "30.26"
-       ]
-      },
-      {
-       "codigo": "30.50",
-       "nombre": "Mecánica del Continuo",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.42"
-       ]
-      },
-      {
-       "codigo": "30.52",
-       "nombre": "Mecánica Aplicada",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.02",
-        "92.03",
-        "93.41",
-        "93.07"
-       ]
-      },
-      {
-       "codigo": "30.53",
-       "nombre": "Mecánica de Sólidos Computacional",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.07",
-        "30.44"
-       ]
-      },
-      {
-       "codigo": "30.54",
-       "nombre": "Mecánica de Sólidos Computacional Avanzada",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.22",
-        "30.52",
-        "30.25"
-       ]
-      },
-      {
-       "codigo": "31.30",
-       "nombre": "Materiales Poliméricos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.25"
-       ]
-      },
-      {
-       "codigo": "31.37",
-       "nombre": "Transferencia de Calor",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.22",
-        "93.07"
-       ]
-      },
-      {
-       "codigo": "31.66",
-       "nombre": "Hidráulica, Neumática y PLC",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.22",
-        "30.43",
-        "22.10"
-       ]
-      },
-      {
-       "codigo": "31.68",
-       "nombre": "Instalaciones Industriales",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.22",
-        "30.44"
-       ]
-      },
-      {
-       "codigo": "31.73",
-       "nombre": "Aire Acondicionado y Refrigeración",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.21",
-        "31.22"
-       ]
-      },
-      {
-       "codigo": "31.90",
-       "nombre": "Integridad Estructural",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.25",
-        "30.44"
-       ]
-      },
-      {
-       "codigo": "31.94",
-       "nombre": "Tecnología de Materiales Compuestos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.25",
-        "30.44"
-       ]
-      },
-      {
-       "codigo": "31.95",
-       "nombre": "Física y Mecánica de Aceros",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "30.24"
-       ]
-      }
-     ]
+      "desde": "Primer Cuat. 2018",
+      "elegido": false,
+      "hasta": "Segundo Cuat. 2020",
+      "nombre": "N18 Agosto",
+      "version": "1"
+    },
+    {
+      "desde": "Primer Cuat. 2018",
+      "elegido": false,
+      "hasta": "Segundo Cuat. 2020",
+      "nombre": "N18 Marzo",
+      "version": "1"
     }
-   ]
-  }
- ],
- "titulos": [
-  {
-   "tipo": "Principal",
-   "titulo": "Ingeniero/a Naval",
-   "requisitos": "Aprobar N22 - Marzo y sumar 240 créditos",
-   "creditos": 240
-  }
- ]
+  ],
+  "titulos": [
+    {
+      "creditos": 240,
+      "requisitos": "Aprobar N22 - Marzo y sumar 240 créditos",
+      "tipo": "Principal",
+      "titulo": "Ingeniero/a Naval"
+    }
+  ],
+  "vacio": false
 }

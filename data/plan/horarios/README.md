@@ -1,14 +1,19 @@
 # Horarios del SGA (contrato 1.1.0)
 
-Un archivo por período, tal como lo emite el scraper del proyecto anterior
-(`deprecated/tools/cuatris/sga`, comando `cuatris sga bajar`): todos los cursos de grado
-del catálogo del SGA, sin filtrar por carrera, con comisiones, bloques (día, hora, aulas,
-sede, modalidad), docentes, cupo e inscriptos. El esquema está en
-`deprecated/schemas/v1/horarios.schema.json` y su documentación en `deprecated/docs/contrato.md`.
+Un archivo por período, `<AAAA>-<1|2>C.json`, tal como lo emite el scraper de `tools/`
+(`cuatris sga bajar`): todos los cursos de grado del catálogo del SGA, sin filtrar por
+carrera, con comisiones, bloques (día, hora, aulas, sede, modalidad), docentes, cupo e
+inscriptos. El esquema de referencia es `deprecated/schemas/v1/horarios.schema.json` y su
+documentación `deprecated/docs/contrato.md`; lo que el gate exige está en
+`scripts/datos/horarios.mjs`.
 
 `scripts/build-planner-data.mjs` toma el período más nuevo, lo convierte al formato del
 planner (`Horario` / `Comision` / `Slot` de `lib/planner/types.ts`) y lo recorta a las
 materias de cada carrera al generar `lib/planner/carreras/<CODIGO>.json`.
+
+**Cualquiera puede agregar el cuatrimestre siguiente o corregir uno por PR**: la receta está
+en `CONTRIBUTING.md`. Un archivo nuevo tiene que ser el período siguiente al más nuevo de
+esta carpeta.
 
 | Archivo | Cursos | Capturado |
 |---|---|---|

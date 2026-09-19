@@ -1,0 +1,219 @@
+{
+  "contrato": "1.1.0",
+  "cursos": [
+    {
+      "codigo": "25.20",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [],
+              "desde": "15:00",
+              "dia": "miercoles",
+              "hasta": "18:00",
+              "modalidad": "virtual",
+              "sede": null
+            },
+            {
+              "aulas": [
+                "102T"
+              ],
+              "desde": "19:00",
+              "dia": "viernes",
+              "hasta": "22:00",
+              "modalidad": "blended",
+              "sede": "sdt"
+            }
+          ],
+          "cupo": {
+            "capacidad": 24
+          },
+          "docentes": [
+            "DI SANZO, BRUNO",
+            "Jacoby, Daniel",
+            "BEADE, NICOLAS AGUSTÍN",
+            "Bergerman, Matías"
+          ],
+          "id": "K",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 17
+          }
+        }
+      ],
+      "departamento": "Sistemas Digitales y Datos",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Análisis de Señales y Sistemas Digitales"
+    },
+    {
+      "codigo": "61.27",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [],
+              "desde": "13:00",
+              "dia": "domingo",
+              "hasta": "14:00",
+              "modalidad": "virtual_asincronica",
+              "sede": null
+            },
+            {
+              "aulas": [
+                "801F"
+              ],
+              "desde": "19:00",
+              "dia": "miercoles",
+              "hasta": "21:00",
+              "modalidad": "presencial",
+              "sede": "sdf"
+            }
+          ],
+          "cupo": {
+            "capacidad": 48
+          },
+          "docentes": [
+            "Yañez, Esteban Hernan",
+            "Rottenschweiler, Sergio Gabriel",
+            "Maria Fernanda, Tamborini",
+            "Park, Leonardo Fernando",
+            "Abayu, Jorge Alejandro"
+          ],
+          "id": "A",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 41
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [],
+              "desde": "12:00",
+              "dia": "domingo",
+              "hasta": "13:00",
+              "modalidad": "virtual_asincronica",
+              "sede": null
+            },
+            {
+              "aulas": [
+                "702F"
+              ],
+              "desde": "19:00",
+              "dia": "jueves",
+              "hasta": "21:00",
+              "modalidad": "presencial",
+              "sede": "sdf"
+            }
+          ],
+          "cupo": {
+            "capacidad": 24
+          },
+          "docentes": [
+            "Yañez, Esteban Hernan",
+            "Rottenschweiler, Sergio Gabriel",
+            "Maria Fernanda, Tamborini",
+            "Park, Leonardo Fernando",
+            "Abayu, Jorge Alejandro"
+          ],
+          "id": "B",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 24
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [],
+              "desde": "14:00",
+              "dia": "domingo",
+              "hasta": "15:00",
+              "modalidad": "virtual_asincronica",
+              "sede": null
+            },
+            {
+              "aulas": [
+                "401F"
+              ],
+              "desde": "16:00",
+              "dia": "jueves",
+              "hasta": "18:00",
+              "modalidad": "presencial",
+              "sede": "sdf"
+            }
+          ],
+          "cupo": {
+            "capacidad": 48
+          },
+          "docentes": [
+            "Rottenschweiler, Sergio Gabriel",
+            "Maria Fernanda, Tamborini",
+            "Abayu, Jorge Alejandro",
+            "Añes, Pablo Blas"
+          ],
+          "id": "C",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 48
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [],
+              "desde": "12:00",
+              "dia": "domingo",
+              "hasta": "13:00",
+              "modalidad": "virtual_asincronica",
+              "sede": null
+            },
+            {
+              "aulas": [
+                "301F"
+              ],
+              "desde": "16:00",
+              "dia": "miercoles",
+              "hasta": "18:00",
+              "modalidad": "presencial",
+              "sede": "sdf"
+            }
+          ],
+          "cupo": {
+            "capacidad": 41
+          },
+          "docentes": [
+            "Rottenschweiler, Sergio Gabriel",
+            "Maria Fernanda, Tamborini",
+            "Curvale, Ernesto Manuel",
+            "Abayu, Jorge Alejandro",
+            "Añes, Pablo Blas"
+          ],
+          "id": "D",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 33
+          }
+        }
+      ],
+      "departamento": "Economía y Negocios",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Análisis de Coyuntura Económica"
+    }
+  ],
+  "fuente": {
+    "capturado": "2026-09-12",
+    "sistema": "sga"
+  },
+  "periodo": {
+    "anio": 2026,
+    "cuatrimestre": "2C",
+    "desde": "2026-07-26",
+    "hasta": "2026-12-31",
+    "id": "2026-2C"
+  }
+}

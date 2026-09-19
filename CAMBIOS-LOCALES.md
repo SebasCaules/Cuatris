@@ -755,6 +755,20 @@ del recomendador, el mensaje se iba, el tablero subía… y así en bucle.
   nuevo» de la vista previa no se dibuja (`.pv-sem--ghost`): cambiaba el alto del tablero
   bajo el cursor, mismo bucle. El mensaje ya dice que alarga la carrera.
 
+## 27. Finales generados en el build, fuera del espejo (2026-09-19)
+
+- `lib/planner/mesasFinales.ts` y `lib/planner/finalesFlags.ts` dejan de estar commiteados:
+  los generan `scripts/build-mesas-finales-data.mjs` y `build-finales-flags-data.mjs` en cada
+  `npm run datos` (que ahora corre en `predev`, `prebuild` y `typecheck`) a partir de
+  `data/plan/finales-*.csv`, y están en `.gitignore`. `scripts/sync-desde-studyvaults.sh` los
+  excluye del rsync, como a `data.json`.
+
+Por qué: las planillas de finales pasan a ser un dato contribuible por PR (gate de
+`.github/workflows/pr-datos.yml`). Un CSV nuevo archivado acá tiene que llegar al sitio sin
+que nadie regenere un `.ts` a mano ni sin que el próximo sync desde StudyVaults lo pise. El
+sync sigue copiando los `finales-*.csv` de StudyVaults (sin borrar): los CSV de Cuatris son
+un superconjunto de los de allá. Cuando StudyVaults haga lo mismo, esta entrada se borra.
+
 ## Fuera de los directorios espejados (no lo toca el sync)
 
 `app/` (portada en `/`, planner en `/planificar/`, manifest instalable, iconos PNG, título

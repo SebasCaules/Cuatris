@@ -1,0 +1,87 @@
+"""Tests de la forma canonica y del subcomando `cuatris fmt`."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+from cuatris import canon
+
+MINIMO = {"contrato": "1.0.0", "sedes": [{"id": "rectorado", "nombre": "Rectorado"}]}
+
+
+def test_serializar_es_la_forma_del_contrato() -> None:
+    """Claves ordenadas, sangria de 2, acentos sin escapar y salto de linea final."""
+    texto = canon.serializar({"b": 1, "a": "Álgebra"})
+    assert texto == '{\n  "a": "Álgebra",\n  "b": 1\n}\n'
+
+
+def test_serializar_es_idempotente() -> None:
+    """Reserializar la forma canonica no la cambia."""
+    una = canon.serializar(MINIMO)
+    assert canon.serializar(canon.cargar_texto(una)) == una
+
+
+def test_cargar_rechaza_claves_duplicadas(tmp_path: Path) -> None:
+    """`{"a": 1, "a": 2}` es error: el humano lee una cosa y el parser usa otra."""
+    ruta = tmp_path / "dup.json"
+    ruta.write_text('{\n  "a": 1,\n  "a": 2\n}\n', encoding="utf-8")
+    with pytest.raises(canon.ErrorClaveDuplicada) as error:
+        canon.cargar(ruta)
+    assert "«a»" in str(error.value)
+
+
+def test_cargar_rechaza_bom(tmp_path: Path) -> None:
+    """Un BOM al principio del archivo se rechaza con el mensaje propio de `leer_texto`.
+
+    El mensaje importa: si el BOM lo rechazara `json.loads` («Unexpected UTF-8 BOM»), el
+    guardia de `leer_texto` podria no existir y `leer_texto` devolveria texto con BOM, que es
+    lo que alimenta el hash del indice. Por eso se afirma el texto en español, no «BOM».
+    """
+    ruta = tmp_path / "bom.json"
+    ruta.write_bytes(canon.BOM_UTF8 + canon.serializar(MINIMO).encode("utf-8"))
+    with pytest.raises(canon.ErrorCanonico, match="empieza con BOM de UTF-8"):
+        canon.cargar(ruta)
+    with pytest.raises(canon.ErrorCanonico, match="empieza con BOM de UTF-8"):
+        canon.leer_texto(ruta)
+    with pytest.raises(canon.ErrorCanonico, match="empieza con BOM de UTF-8"):
+        canon.hash_canonico(ruta)
+
+
+def test_cargar_rechaza_crlf(tmp_path: Path) -> None:
+    """Los finales de linea CRLF se rechazan con un mensaje propio."""
+    ruta = tmp_path / "crlf.json"
+    ruta.write_bytes(canon.serializar(MINIMO).replace("\n", "\r\n").encode("utf-8"))
+    with pytest.raises(canon.ErrorCanonico, match="LF"):
+        canon.cargar(ruta)
+
+
+def test_esta_canonico_distingue_las_dos_formas(tmp_path: Path) -> None:
+    """El mismo contenido escrito de otra manera no esta canonico."""
+    bueno = tmp_path / "bueno.json"
+    bueno.write_text(canon.serializar(MINIMO), encoding="utf-8")
+    malo = tmp_path / "malo.json"
+    malo.write_text(
+        json.dumps(MINIMO, indent=4, sort_keys=False) + "\n", encoding="utf-8"
+    )
+    assert canon.esta_canonico(bueno)
+    assert not canon.esta_canonico(malo)
+
+
+def test_hash_canonico_es_estable(tmp_path: Path, fixtures: Path) -> None:
+    """El hash depende del contenido canonico, no de como este escrito el archivo."""
+    original = fixtures / "carreras" / "indice" / "carreras.json"
+    esperado = canon.hash_canonico(original)
+    assert canon.hash_canonico(original) == esperado
+    assert esperado.startswith("sha256:")
+    assert len(esperado) == len("sha256:") + 64
+
+    desordenado = tmp_path / "desordenado.json"
+    datos = canon.cargar(original)
+    desordenado.write_text(
+        json.dumps(datos, ensure_ascii=False, indent=4, sort_keys=False) + "\n",
+        encoding="utf-8",
+    )
+    assert canon.hash_canonico(desordenado) == esperado

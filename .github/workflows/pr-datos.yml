@@ -1,0 +1,327 @@
+# Gate de los PR de datos: valida en cuarentena, clasifica y mergea solo lo que corresponde.
+#
+# ¿Por qué `pull_request_target` y no `pull_request`?
+# Con `pull_request`, el archivo de workflow que corre **sale del PR**: quien abre el PR lo
+# reescribe como un `exit 0` con el mismo nombre de job y el check requerido queda verde. Con
+# `pull_request_target`, el workflow, el validador (scripts/datos/) y el lockfile salen
+# **siempre de la rama por defecto** (`main`: GitHub solo dispara este evento si el archivo
+# existe ahí, y GITHUB_SHA/GITHUB_REF son los de esa rama, no los de la base del PR) y el PR
+# no puede tocarlos (y `/.github/`, `/scripts/` y el resto del código están además bajo
+# CODEOWNERS). Es contraintuitivo y es a propósito. Consecuencia: un cambio en este archivo
+# recién corre cuando está en `main`; se prueba después con PR de prueba inofensivos (ver
+# docs/mantenimiento.md, «Probar un cambio del gate»).
+#
+# ¿Por qué `permissions: {}` en el job que toca los bytes del PR?
+# El precio habitual de `pull_request_target` es que el token tiene escritura sobre el
+# repositorio. Ese precio se paga dándole al job **ningún permiso**: `validar-datos` es el
+# único job que toca bytes del PR y no puede hacer nada con ellos. Como además el repositorio
+# no tiene ningún secreto, tampoco queda nada que robar.
+#
+# Los bytes del PR nunca se ejecutan: se traen con `git fetch` de `refs/pull/<n>/head`, el
+# triage decide qué rutas son datos (archivos regulares del allowlist, sin LFS, de tamaño
+# admisible), y solo esas se copian con `git cat-file` sobre `data/plan` del checkout base.
+# Después corren el validador y el mismo `npm run build` que hará el deploy: el único código
+# que se ejecuta es el de la rama por defecto (`data.js`, lo único que el build evalúa, no es
+# contribuible). Ni `npm`, ni un script del PR corren en ningún momento.
+#
+# El segundo job, `decidir`, tiene escritura y **no abre ningún archivo del PR**: le vuelve a
+# pedir la lista de archivos a la API, reaplica el allowlist por su cuenta, aborta si el SHA
+# cambió, comenta, etiqueta y —si la clase lo permite— mergea. Un merge hecho con
+# `GITHUB_TOKEN` no dispara el `push` de deploy.yml (regla de GitHub), así que el deploy se
+# dispara a mano con `workflow_dispatch`, la excepción documentada a esa regla.
+#
+# Checks: `validar-datos` es el único requerido por el ruleset de `main`. `decidir` no puede
+# serlo (se bloquearía a sí mismo al mergear) y `ci` tampoco (en un fork nuevo queda
+# pendiente hasta que alguien apruebe la corrida, y un check requerido pendiente bloquearía
+# el merge automático para siempre).
+name: PR de datos
+
+on:
+  # Sin filtro `paths:`: si el workflow no corriera para los PR que no tocan datos, el check
+  # requerido nunca aparecería y esos PR quedarían bloqueados para siempre.
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions: {}
+
+concurrency:
+  group: pr-datos-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validar_datos:
+    name: validar-datos
+    runs-on: ubuntu-24.04
+    # Token sin ningún alcance. Este es el único job que toca bytes del PR.
+    permissions: {}
+    outputs:
+      clase: ${{ steps.triage.outputs.clase }}
+      triage: ${{ steps.triage.outputs.triage }}
+      validacion: ${{ steps.validar.outputs.validacion }}
+      build: ${{ steps.build.outputs.cola }}
+    steps:
+      # Sin `ref:`, `pull_request_target` hace checkout de la **rama por defecto**: es lo
+      # que se quiere. De acá salen el validador, los pipelines de build y el lockfile.
+      # `fetch-depth: 0` trae todas las ramas, así el triage encuentra la base del PR
+      # aunque el PR apunte a otra rama.
+      - name: Traer el código de la rama por defecto
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Instalar Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      # `refs/pull/<n>/head` existe en el repositorio base también para un PR de fork, y el
+      # repositorio es público: el fetch es anónimo. Los datos del evento entran por `env:`
+      # y se usan entre comillas; nunca se interpolan dentro del `run:`.
+      - name: Traer los bytes del PR
+        env:
+          NUMERO: ${{ github.event.pull_request.number }}
+          SHA_PR: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          case "$NUMERO" in ''|*[!0-9]*) echo "::error::número de PR inesperado"; exit 1;; esac
+          case "$SHA_PR" in ''|*[!0-9a-f]*) echo "::error::SHA de PR inesperado"; exit 1;; esac
+          git fetch --no-tags origin "+refs/pull/$NUMERO/head:refs/cuatris/pr"
+          traido="$(git rev-parse refs/cuatris/pr)"
+          if [ "$traido" != "$SHA_PR" ]; then
+            echo "::error::el PR cambió entre el disparo y el fetch ($traido ≠ $SHA_PR)"
+            exit 1
+          fi
+
+      # El triage clasifica el diff por ruta, modo de git y magnitud. Su clase **no** hace
+      # fallar el job: un PR de código es legítimamente `necesita-humano`. Solo un código de
+      # salida 2 (no se pudo leer el diff) es un error.
+      - name: Triage del diff
+        id: triage
+        env:
+          SHA_BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -uo pipefail
+          codigo=0
+          node scripts/datos/triage.mjs --base "$SHA_BASE" --head refs/cuatris/pr --salida triage.json || codigo=$?
+          if [ "$codigo" -ge 2 ]; then
+            echo "::error::el triage no pudo leer el diff"
+            exit "$codigo"
+          fi
+          clase="$(node -e 'console.log(JSON.parse(require("fs").readFileSync("triage.json","utf8")).clase)')"
+          echo "clase=$clase" >> "$GITHUB_OUTPUT"
+          delim="triage-$(openssl rand -hex 12)"
+          { echo "triage<<$delim"; node -e 'console.log(JSON.stringify(JSON.parse(require("fs").readFileSync("triage.json","utf8"))))'; echo "$delim"; } >> "$GITHUB_OUTPUT"
+          echo "clase del PR según el triage: $clase"
+
+      # `git archive` y el checkout aplican el `.gitattributes` del árbol que se extrae
+      # (`export-subst`, `export-ignore`, filtros): con uno del PR, lo que se valida no sería
+      # lo que se mergea. `git cat-file blob` no aplica atributos, pero igual se corta acá:
+      # un `.gitattributes` en el PR ya lo manda a una persona en el triage, y nada que
+      # cambie cómo git materializa el árbol entra por este camino.
+      - name: Copiar los datos del PR sobre data/plan
+        run: |
+          set -euo pipefail
+          git ls-tree -r -z --name-only refs/cuatris/pr | tr '\0' '\n' > rutas-del-pr.txt
+          if grep -qE '(^|/)\.gitattributes$' rutas-del-pr.txt; then
+            echo "::error::el PR trae un .gitattributes: reescribiría los bytes que se validan"
+            exit 1
+          fi
+          node -e 'for (const r of JSON.parse(require("fs").readFileSync("triage.json","utf8")).datos) console.log(r)' > datos-del-pr.txt
+          n=0
+          while IFS= read -r ruta; do
+            [ -n "$ruta" ] || continue
+            case "$ruta" in data/plan/*) ;; *) echo "::error::ruta inesperada del triage: $ruta"; exit 1;; esac
+            mkdir -p "$(dirname "$ruta")"
+            git cat-file blob "refs/cuatris/pr:$ruta" > "$ruta"
+            n=$((n + 1))
+          done < datos-del-pr.txt
+          echo "archivos de datos copiados desde el PR: $n"
+          echo "$n" > cantidad-de-datos.txt
+
+      # Se valida todo `data/plan`, no solo lo que el diff toca: es el mismo precio y atrapa
+      # el caso «dos PR válidos por separado, inválidos juntos». Los avisos no bloquean.
+      - name: Validar los datos
+        id: validar
+        run: |
+          set -uo pipefail
+          codigo=0
+          node scripts/datos/validar.mjs --json validacion.json || codigo=$?
+          if [ -f validacion.json ]; then
+            delim="validacion-$(openssl rand -hex 12)"
+            { echo "validacion<<$delim"; node -e 'const j=JSON.parse(require("fs").readFileSync("validacion.json","utf8")); j.hallazgos=j.hallazgos.slice(0,200); console.log(JSON.stringify(j))'; echo "$delim"; } >> "$GITHUB_OUTPUT"
+          fi
+          exit "$codigo"
+
+      # Lo mismo que hará deploy.yml, sobre el árbol con los datos del PR. Solo si el PR trae
+      # datos: para un PR de código ya corre ci.yml.
+      - name: Build de prueba
+        id: build
+        run: |
+          set -uo pipefail
+          if [ "$(cat cantidad-de-datos.txt)" = "0" ]; then
+            echo "el PR no trae datos: no hace falta el build de prueba"
+            exit 0
+          fi
+          codigo=0
+          { npm ci && npm run build; } > build.txt 2>&1 || codigo=$?
+          tail -n 40 build.txt
+          if [ "$codigo" -ne 0 ]; then
+            delim="build-$(openssl rand -hex 12)"
+            { echo "cola<<$delim"; tail -n 40 build.txt; echo "$delim"; } >> "$GITHUB_OUTPUT"
+          fi
+          exit "$codigo"
+
+      - name: Resumen
+        if: always()
+        env:
+          CLASE: ${{ steps.triage.outputs.clase }}
+        run: |
+          {
+            echo "### Triage del PR"
+            echo
+            echo "Clase: \`${CLASE:-desconocida}\`"
+            echo
+            if [ -f triage.json ]; then echo '```json'; cat triage.json; echo '```'; fi
+            if [ -f validacion.json ]; then
+              echo
+              echo "### Validación"
+              echo
+              echo '```'
+              node scripts/datos/validar.mjs 2>/dev/null | tail -n 60 || true
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  decidir:
+    name: decidir
+    runs-on: ubuntu-24.04
+    needs: [validar_datos]
+    # Corre siempre, para informar también cuando `validar-datos` falló o quedó cancelado.
+    if: always()
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      actions: write
+    steps:
+      # De nuevo sin `ref:`: solo el código de la rama por defecto, para reaplicar el allowlist
+      # con la misma función que usa el triage y armar el comentario. No toca ni un byte del PR.
+      - name: Traer el código de la rama por defecto
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Instalar Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Releer el PR desde la API, comentar, etiquetar y decidir
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          NUMERO: ${{ github.event.pull_request.number }}
+          SHA_VALIDADO: ${{ github.event.pull_request.head.sha }}
+          BORRADOR: ${{ github.event.pull_request.draft }}
+          BASE: ${{ github.event.pull_request.base.ref }}
+          DEFAULT: ${{ github.event.repository.default_branch }}
+          RESULTADO: ${{ needs.validar_datos.result }}
+          CLASE_TRIAGE: ${{ needs.validar_datos.outputs.clase }}
+          TRIAGE_JSON: ${{ needs.validar_datos.outputs.triage }}
+          VALIDACION_JSON: ${{ needs.validar_datos.outputs.validacion }}
+          BUILD_COLA: ${{ needs.validar_datos.outputs.build }}
+          EJECUCION: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          case "$NUMERO" in ''|*[!0-9]*) echo "::error::número de PR inesperado"; exit 1;; esac
+
+          # El SHA no puede haber cambiado desde que se validó: si cambió, lo validado ya no
+          # es lo que se mergearía (y otra corrida se está ocupando del SHA nuevo).
+          sha_actual="$(gh api "repos/$REPO/pulls/$NUMERO" --jq .head.sha)"
+          if [ "$sha_actual" != "$SHA_VALIDADO" ]; then
+            echo "::error::el PR cambió después de validarse ($sha_actual ≠ $SHA_VALIDADO)"
+            exit 1
+          fi
+
+          # La lista de archivos se vuelve a pedir a la API: no se confía en la que produjo
+          # el job anterior, ni se abre ningún archivo del PR. Este recálculo solo ve rutas y
+          # estados; el triage vio además modos, LFS, tamaños y magnitud. Se publica la más
+          # restrictiva de las dos clases. Un `CLASE_TRIAGE` vacío (el job anterior murió
+          # antes del triage) también cuenta como `necesita-humano`.
+          gh api "repos/$REPO/pulls/$NUMERO/files" --paginate --jq '.[] | .status + " " + .filename' > archivos-api.txt
+          clase_api="$(node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            const { tipoDeRuta } = await import("./scripts/datos/triage.mjs");
+            const lineas = readFileSync("archivos-api.txt", "utf8").split("\n").filter(Boolean);
+            const ok = lineas.length > 0 && lineas.every((l) => { const i = l.indexOf(" "); return l.slice(0, i) !== "removed" && tipoDeRuta(l.slice(i + 1)) !== null; });
+            console.log(ok ? "datos" : "necesita-humano");
+          ' 2>/dev/null || echo necesita-humano)"
+          clase="$CLASE_TRIAGE"
+          case "$clase" in datos-menor|datos-mayor) ;; *) clase=necesita-humano;; esac
+          if [ "$clase_api" != "datos" ]; then clase=necesita-humano; fi
+          echo "clase: $clase (triage: ${CLASE_TRIAGE:-vacía}; rutas según la API: $clase_api)"
+
+          # Etiquetas: se crean si faltan (idempotente) y queda solo la de la clase actual.
+          gh label create datos-menor --repo "$REPO" --force --color 0e8a16 --description "Corrección chica de datos: se mergea sola al pasar el gate" >/dev/null
+          gh label create datos-mayor --repo "$REPO" --force --color fbca04 --description "Carga grande de datos: se mergea sola tras la ventana de espera" >/dev/null
+          gh label create necesita-humano --repo "$REPO" --force --color d93f0b --description "Lo tiene que revisar una persona con permiso de merge" >/dev/null
+          gh label create esperando --repo "$REPO" --force --color c5def5 --description "PR de datos en la ventana de espera; el centinela lo mergea al vencer" >/dev/null
+          quitar=()
+          for l in datos-menor datos-mayor necesita-humano esperando; do
+            [ "$l" = "$clase" ] || quitar+=(--remove-label "$l")
+          done
+          gh pr edit "$NUMERO" --repo "$REPO" --add-label "$clase" "${quitar[@]}" >/dev/null || true
+
+          # Qué pasa ahora.
+          accion=humano
+          hasta=""
+          if [ "$BORRADOR" = "true" ]; then
+            accion=borrador
+          elif [ "$RESULTADO" = "failure" ]; then
+            accion=invalido
+          elif [ "$RESULTADO" != "success" ]; then
+            accion=""
+          elif [ "$clase" = "datos-menor" ]; then
+            estado_merge="$(gh api "repos/$REPO/pulls/$NUMERO" --jq .mergeable_state)"
+            if [ "$estado_merge" = "dirty" ]; then
+              accion=conflicto
+            elif gh pr merge "$NUMERO" --repo "$REPO" --merge --match-head-commit "$SHA_VALIDADO"; then
+              if [ "$BASE" = "$DEFAULT" ]; then
+                accion=mergeado
+                gh workflow run deploy.yml --repo "$REPO" --ref "$DEFAULT" || echo "::warning::no se pudo disparar el deploy; deploy.yml corre igual por schedule"
+              else
+                accion=base
+              fi
+            else
+              echo "::warning::el merge automático falló; queda para una persona"
+              accion=humano
+            fi
+          elif [ "$clase" = "datos-mayor" ]; then
+            accion=espera
+            horas="$(node -e 'console.log(JSON.parse(require("fs").readFileSync("scripts/datos/politica.json","utf8")).esperaHoras)')"
+            hasta="$(node -e 'console.log(new Date(Date.now() + Number(process.argv[1]) * 3600e3).toISOString())' "$horas")"
+            gh pr edit "$NUMERO" --repo "$REPO" --add-label esperando >/dev/null || true
+          fi
+
+          # El comentario: uno solo por PR, que se actualiza en cada corrida.
+          args=(--estado "$RESULTADO" --clase "$clase" --ejecucion "$EJECUCION" --sha "$SHA_VALIDADO")
+          if [ -n "$accion" ]; then args+=(--accion "$accion"); fi
+          if [ -n "$hasta" ]; then args+=(--hasta "$hasta"); fi
+          if [ -n "$TRIAGE_JSON" ]; then printf '%s' "$TRIAGE_JSON" > triage.json; args+=(--triage triage.json); fi
+          if [ -n "$VALIDACION_JSON" ]; then printf '%s' "$VALIDACION_JSON" > validacion.json; args+=(--validacion validacion.json); fi
+          if [ -n "$BUILD_COLA" ]; then printf '%s' "$BUILD_COLA" > build.txt; args+=(--build build.txt); fi
+          node scripts/datos/comentario.mjs "${args[@]}" > comentario.md
+          existente="$(gh api "repos/$REPO/issues/$NUMERO/comments" --paginate --jq '.[] | select(.body | startswith("<!-- cuatris:gate -->")) | .id' | head -n 1)"
+          if [ -n "$existente" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$existente" -F body=@comentario.md >/dev/null
+          else
+            gh pr comment "$NUMERO" --repo "$REPO" --body-file comentario.md >/dev/null
+          fi
+          echo "acción: ${accion:-ninguna}"
+
+          if [ "$RESULTADO" != "success" ]; then
+            exit 1
+          fi

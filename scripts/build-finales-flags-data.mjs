@@ -21,63 +21,14 @@
 import { readFileSync, writeFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 
+import { parseCsv } from "./datos/csv.mjs";
+import { CODIGO_RE } from "./datos/vocabulario.mjs";
+
 const SRC_DIR = path.join(process.cwd(), "data", "plan");
 const OUT = path.join(process.cwd(), "lib", "planner", "finalesFlags.ts");
 
-/** Código de materia tipo "10.01" / "93.58" (mismo regex que finales/parseFinales.ts). */
-const CODE_RE = /^\d{1,3}\.\d{1,3}$/;
-
-/**
- * Tokenizer CSV mínimo (RFC 4180-ish): comillas, comas dentro de comillas,
- * `""` escapadas, LF/CRLF. Mismo comportamiento que `parseCsv` de
- * lib/planner/finales/parseFinales.ts (no importable desde un .mjs por ser TS).
- */
-function parseCsv(text) {
-  if (text.charCodeAt(0) === 0xfeff) text = text.slice(1);
-  const rows = [];
-  let row = [];
-  let field = "";
-  let inQuotes = false;
-  let sawAny = false;
-  const endField = () => {
-    row.push(field);
-    field = "";
-  };
-  const endRow = () => {
-    endField();
-    rows.push(row);
-    row = [];
-    sawAny = false;
-  };
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (inQuotes) {
-      if (c === '"') {
-        if (text[i + 1] === '"') {
-          field += '"';
-          i++;
-        } else inQuotes = false;
-      } else field += c;
-      continue;
-    }
-    if (c === '"') {
-      inQuotes = true;
-      sawAny = true;
-    } else if (c === ",") {
-      endField();
-      sawAny = true;
-    } else if (c === "\n") {
-      endRow();
-    } else if (c === "\r") {
-      if (text[i + 1] !== "\n") endRow();
-    } else {
-      field += c;
-      sawAny = true;
-    }
-  }
-  if (sawAny || field !== "" || row.length > 0) endRow();
-  return rows;
-}
+/** Código de materia (misma regla que el validador y el resto de los pipelines). */
+const CODE_RE = CODIGO_RE;
 
 // ---- unión de códigos sobre todas las planillas archivadas -----------------
 

@@ -1,860 +1,860 @@
 {
- "carrera": {
-  "codigo": "C",
-  "nombre": "Ingeniería Civil",
-  "escuela": "Escuela de Gestión y Tecnología",
-  "nivel": "Grado"
- },
- "plan": "C23",
- "planes": [
-  {
-   "nombre": "C23",
-   "version": "1",
-   "desde": "Segundo Cuat. 2024",
-   "hasta": "",
-   "elegido": true
-  }
- ],
- "vacio": false,
- "capturado": "2026-09-13",
- "bloques": [
-  {
-   "nombre": "Básico",
-   "tituloOtorgado": null,
-   "requisito": "Aprobar todos los items (suma 221 créditos)",
-   "creditos": 221,
-   "tipo": "todos",
-   "secciones": [
+  "bloques": [
     {
-     "nombre": "Año 1 - Cuatrimestre 1",
-     "anio": 1,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "12.67",
-       "nombre": "Química General",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.58",
-       "nombre": "Informática General",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "92.01",
-       "nombre": "Análisis Matemático I",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "93.18",
-       "nombre": "Álgebra Lineal",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.33",
-       "nombre": "Tecnología y Sociedad",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
+      "creditos": 221,
+      "nombre": "Básico",
+      "requisito": "Aprobar todos los items (suma 221 créditos)",
+      "secciones": [
+        {
+          "anio": 1,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "12.67",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Química General"
+            },
+            {
+              "codigo": "71.58",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Informática General"
+            },
+            {
+              "codigo": "92.01",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático I"
+            },
+            {
+              "codigo": "93.18",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Álgebra Lineal"
+            },
+            {
+              "codigo": "94.33",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Tecnología y Sociedad"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 1"
+        },
+        {
+          "anio": 1,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "16.55",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Biología"
+            },
+            {
+              "codigo": "31.08",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Sistemas de Representación"
+            },
+            {
+              "codigo": "67.04",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Introducción a la temática social"
+            },
+            {
+              "codigo": "71.90",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Certificaciones tecnológicas"
+            },
+            {
+              "codigo": "92.02",
+              "correlativas": [
+                "92.01",
+                "93.18"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático II"
+            },
+            {
+              "codigo": "93.41",
+              "correlativas": [
+                "92.01"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Física I"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 2"
+        },
+        {
+          "anio": 2,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "67.02",
+              "correlativas": [
+                "93.18",
+                "93.41"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Estática"
+            },
+            {
+              "codigo": "92.03",
+              "correlativas": [
+                "92.01",
+                "93.18"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático III"
+            },
+            {
+              "codigo": "93.24",
+              "correlativas": [
+                "92.02"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Probabilidad y Estadística"
+            },
+            {
+              "codigo": "93.42",
+              "correlativas": [
+                "92.02"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Física II"
+            },
+            {
+              "codigo": "94.51",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Inglés I"
+            }
+          ],
+          "nombre": "Año 2 - Cuatrimestre 1"
+        },
+        {
+          "anio": 2,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "31.22",
+              "correlativas": [
+                "92.03",
+                "93.41"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Mecánica de Fluidos"
+            },
+            {
+              "codigo": "67.01",
+              "correlativas": [
+                "93.41",
+                "12.67"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Tecnología de materiales"
+            },
+            {
+              "codigo": "67.03",
+              "correlativas": [
+                "67.02"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Resistencia de Materiales"
+            },
+            {
+              "codigo": "93.43",
+              "correlativas": [
+                "92.03",
+                "93.41"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Física III"
+            }
+          ],
+          "nombre": "Año 2 - Cuatrimestre 2"
+        },
+        {
+          "anio": 3,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "11.15",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Organización Industrial"
+            },
+            {
+              "codigo": "67.05",
+              "correlativas": [
+                "67.01",
+                "93.24"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Tecnología del Hormigón"
+            },
+            {
+              "codigo": "67.06",
+              "correlativas": [
+                "67.01"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Construcciones"
+            },
+            {
+              "codigo": "67.08",
+              "correlativas": [
+                "67.03"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Análisis Estructural"
+            },
+            {
+              "codigo": "93.07",
+              "correlativas": [
+                "71.58",
+                "92.03"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Métodos Numéricos"
+            },
+            {
+              "codigo": "94.43",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 72,
+              "nombre": "Metodología del Diseño"
+            }
+          ],
+          "nombre": "Año 3 - Cuatrimestre 1"
+        },
+        {
+          "anio": 3,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "46.21",
+              "correlativas": [
+                "93.42"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Geología I"
+            },
+            {
+              "codigo": "67.07",
+              "correlativas": [
+                "93.18",
+                "93.42",
+                "93.24"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Geotopografía"
+            },
+            {
+              "codigo": "67.09",
+              "correlativas": [
+                "67.06"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Instalaciones"
+            },
+            {
+              "codigo": "67.10",
+              "correlativas": [
+                "67.03",
+                "67.06",
+                "67.05"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Hormigón I"
+            },
+            {
+              "codigo": "94.44",
+              "correlativas": [
+                "94.43"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Proyecto Interdisciplinario"
+            },
+            {
+              "codigo": "94.52",
+              "correlativas": [
+                "94.51"
+              ],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Inglés II"
+            }
+          ],
+          "nombre": "Año 3 - Cuatrimestre 2"
+        },
+        {
+          "anio": 4,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "61.27",
+              "correlativas": [
+                "93.24"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Análisis de Coyuntura Económica"
+            },
+            {
+              "codigo": "61.31",
+              "correlativas": [
+                "94.33"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Derecho para Ingenieros"
+            },
+            {
+              "codigo": "67.11",
+              "correlativas": [
+                "16.55",
+                "12.67",
+                "67.06"
+              ],
+              "creditos": 2,
+              "creditosReq": 0,
+              "nombre": "Evaluación de Impacto Ambiental y Social"
+            },
+            {
+              "codigo": "67.12",
+              "correlativas": [
+                "31.22",
+                "67.03",
+                "67.07"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Geotecnia"
+            },
+            {
+              "codigo": "67.13",
+              "correlativas": [
+                "67.03",
+                "31.22",
+                "67.07"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Hidrología y obras hidráulicas"
+            }
+          ],
+          "nombre": "Año 4 - Cuatrimestre 1"
+        },
+        {
+          "anio": 4,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "67.14",
+              "correlativas": [
+                "67.10",
+                "93.07",
+                "67.08"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Hormigón II"
+            },
+            {
+              "codigo": "67.15",
+              "correlativas": [
+                "94.33",
+                "61.31",
+                "67.07",
+                "67.06",
+                "67.11"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Planeamiento territorial y urbano"
+            },
+            {
+              "codigo": "67.16",
+              "correlativas": [
+                "67.07",
+                "67.12",
+                "67.06",
+                "67.05",
+                "67.13"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Vías de Comunicación"
+            },
+            {
+              "codigo": "67.17",
+              "correlativas": [
+                "94.33",
+                "67.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Higiene y Seguridad en Obras Civiles"
+            }
+          ],
+          "nombre": "Año 4 - Cuatrimestre 2"
+        },
+        {
+          "anio": 5,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "17.20",
+              "correlativas": [
+                "67.09",
+                "67.12",
+                "67.13"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Agua y Efluentes Líquidos"
+            },
+            {
+              "codigo": "67.18",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 144,
+              "nombre": "Proyecto Final"
+            },
+            {
+              "codigo": "67.19",
+              "correlativas": [
+                "67.10",
+                "67.08",
+                "67.12",
+                "67.13"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Cimentaciones"
+            },
+            {
+              "codigo": "67.20",
+              "correlativas": [
+                "67.10",
+                "67.08"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Estructuras Metálicas y de Madera"
+            },
+            {
+              "codigo": "67.21",
+              "correlativas": [
+                "11.15",
+                "67.10",
+                "67.09",
+                "67.12",
+                "67.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Organización y conducción de obras"
+            },
+            {
+              "codigo": "67.22",
+              "correlativas": [
+                "67.11"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Auditorías ambientales"
+            }
+          ],
+          "nombre": "Año 5 - Cuatrimestre 1"
+        },
+        {
+          "anio": 5,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "94.65",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 144,
+              "nombre": "Practica Profesional supervisada"
+            }
+          ],
+          "nombre": "Año 5 - Cuatrimestre 2"
+        }
+      ],
+      "tipo": "todos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 1 - Cuatrimestre 2",
-     "anio": 1,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "16.55",
-       "nombre": "Biología",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "31.08",
-       "nombre": "Sistemas de Representación",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "67.04",
-       "nombre": "Introducción a la temática social",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.90",
-       "nombre": "Certificaciones tecnológicas",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "92.02",
-       "nombre": "Análisis Matemático II",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.01",
-        "93.18"
-       ]
-      },
-      {
-       "codigo": "93.41",
-       "nombre": "Física I",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.01"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 2 - Cuatrimestre 1",
-     "anio": 2,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "67.02",
-       "nombre": "Estática",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.18",
-        "93.41"
-       ]
-      },
-      {
-       "codigo": "92.03",
-       "nombre": "Análisis Matemático III",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.01",
-        "93.18"
-       ]
-      },
-      {
-       "codigo": "93.24",
-       "nombre": "Probabilidad y Estadística",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.02"
-       ]
-      },
-      {
-       "codigo": "93.42",
-       "nombre": "Física II",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.02"
-       ]
-      },
-      {
-       "codigo": "94.51",
-       "nombre": "Inglés I",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    },
-    {
-     "nombre": "Año 2 - Cuatrimestre 2",
-     "anio": 2,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "31.22",
-       "nombre": "Mecánica de Fluidos",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.03",
-        "93.41"
-       ]
-      },
-      {
-       "codigo": "67.01",
-       "nombre": "Tecnología de materiales",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.41",
-        "12.67"
-       ]
-      },
-      {
-       "codigo": "67.03",
-       "nombre": "Resistencia de Materiales",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.02"
-       ]
-      },
-      {
-       "codigo": "93.43",
-       "nombre": "Física III",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.03",
-        "93.41"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 3 - Cuatrimestre 1",
-     "anio": 3,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "11.15",
-       "nombre": "Organización Industrial",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "67.05",
-       "nombre": "Tecnología del Hormigón",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.01",
-        "93.24"
-       ]
-      },
-      {
-       "codigo": "67.06",
-       "nombre": "Construcciones",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.01"
-       ]
-      },
-      {
-       "codigo": "67.08",
-       "nombre": "Análisis Estructural",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.03"
-       ]
-      },
-      {
-       "codigo": "93.07",
-       "nombre": "Métodos Numéricos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.58",
-        "92.03"
-       ]
-      },
-      {
-       "codigo": "94.43",
-       "nombre": "Metodología del Diseño",
-       "creditos": 3,
-       "creditosReq": 72,
-       "correlativas": []
-      }
-     ]
-    },
-    {
-     "nombre": "Año 3 - Cuatrimestre 2",
-     "anio": 3,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "46.21",
-       "nombre": "Geología I",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.42"
-       ]
-      },
-      {
-       "codigo": "67.07",
-       "nombre": "Geotopografía",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.18",
-        "93.42",
-        "93.24"
-       ]
-      },
-      {
-       "codigo": "67.09",
-       "nombre": "Instalaciones",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.06"
-       ]
-      },
-      {
-       "codigo": "67.10",
-       "nombre": "Hormigón I",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.03",
-        "67.06",
-        "67.05"
-       ]
-      },
-      {
-       "codigo": "94.44",
-       "nombre": "Proyecto Interdisciplinario",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.43"
-       ]
-      },
-      {
-       "codigo": "94.52",
-       "nombre": "Inglés II",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.51"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 4 - Cuatrimestre 1",
-     "anio": 4,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "61.27",
-       "nombre": "Análisis de Coyuntura Económica",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.24"
-       ]
-      },
-      {
-       "codigo": "61.31",
-       "nombre": "Derecho para Ingenieros",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.33"
-       ]
-      },
-      {
-       "codigo": "67.11",
-       "nombre": "Evaluación de Impacto Ambiental y Social",
-       "creditos": 2,
-       "creditosReq": 0,
-       "correlativas": [
-        "16.55",
-        "12.67",
-        "67.06"
-       ]
-      },
-      {
-       "codigo": "67.12",
-       "nombre": "Geotecnia",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.22",
-        "67.03",
-        "67.07"
-       ]
-      },
-      {
-       "codigo": "67.13",
-       "nombre": "Hidrología y obras hidráulicas",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.03",
-        "31.22",
-        "67.07"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 4 - Cuatrimestre 2",
-     "anio": 4,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "67.14",
-       "nombre": "Hormigón II",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.10",
-        "93.07",
-        "67.08"
-       ]
-      },
-      {
-       "codigo": "67.15",
-       "nombre": "Planeamiento territorial y urbano",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.33",
-        "61.31",
-        "67.07",
-        "67.06",
-        "67.11"
-       ]
-      },
-      {
-       "codigo": "67.16",
-       "nombre": "Vías de Comunicación",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.07",
-        "67.12",
-        "67.06",
-        "67.05",
-        "67.13"
-       ]
-      },
-      {
-       "codigo": "67.17",
-       "nombre": "Higiene y Seguridad en Obras Civiles",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.33",
-        "67.06"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 5 - Cuatrimestre 1",
-     "anio": 5,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "17.20",
-       "nombre": "Agua y Efluentes Líquidos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.09",
-        "67.12",
-        "67.13"
-       ]
-      },
-      {
-       "codigo": "67.18",
-       "nombre": "Proyecto Final",
-       "creditos": 6,
-       "creditosReq": 144,
-       "correlativas": []
-      },
-      {
-       "codigo": "67.19",
-       "nombre": "Cimentaciones",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.10",
-        "67.08",
-        "67.12",
-        "67.13"
-       ]
-      },
-      {
-       "codigo": "67.20",
-       "nombre": "Estructuras Metálicas y de Madera",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.10",
-        "67.08"
-       ]
-      },
-      {
-       "codigo": "67.21",
-       "nombre": "Organización y conducción de obras",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "11.15",
-        "67.10",
-        "67.09",
-        "67.12",
-        "67.06"
-       ]
-      },
-      {
-       "codigo": "67.22",
-       "nombre": "Auditorías ambientales",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "67.11"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 5 - Cuatrimestre 2",
-     "anio": 5,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "94.65",
-       "nombre": "Practica Profesional supervisada",
-       "creditos": 0,
-       "creditosReq": 144,
-       "correlativas": []
-      }
-     ]
+      "creditos": 30,
+      "nombre": "Electivas",
+      "requisito": "Juntar 30 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "10.07",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Creatividad"
+            },
+            {
+              "codigo": "10.08",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Energías Renovables"
+            },
+            {
+              "codigo": "10.09",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Formación para Emprendedores"
+            },
+            {
+              "codigo": "10.12",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Energías Convencionales"
+            },
+            {
+              "codigo": "11.05",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Calidad"
+            },
+            {
+              "codigo": "11.19",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Prototipado e Impresión 3D"
+            },
+            {
+              "codigo": "11.39",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Marketing"
+            },
+            {
+              "codigo": "11.46",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Planeamiento Estratégico"
+            },
+            {
+              "codigo": "11.73",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 144,
+              "nombre": "Teoría de la Decisión"
+            },
+            {
+              "codigo": "11.76",
+              "correlativas": [
+                "93.24"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Gestión de Calidad"
+            },
+            {
+              "codigo": "11.84",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 160,
+              "nombre": "Gestión de Proyectos"
+            },
+            {
+              "codigo": "11.89",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Formulación y Evaluación de Proyectos"
+            },
+            {
+              "codigo": "16.04",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Neurociencias y Desarrollo Productivo"
+            },
+            {
+              "codigo": "25.63",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Redes Neuronales"
+            },
+            {
+              "codigo": "25.64",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Deep Learning"
+            },
+            {
+              "codigo": "25.66",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Acústica para Ingenieros"
+            },
+            {
+              "codigo": "25.69",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 183,
+              "nombre": "Introducción a la Investigación"
+            },
+            {
+              "codigo": "46.82",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Evaluación de Proyectos"
+            },
+            {
+              "codigo": "47.87",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Desarrollo de Negocios"
+            },
+            {
+              "codigo": "61.04",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Sistema Monetario y Financiero en Argentina"
+            },
+            {
+              "codigo": "61.09",
+              "correlativas": [
+                "93.24"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Economía Empresaria"
+            },
+            {
+              "codigo": "61.16",
+              "correlativas": [
+                "11.15",
+                "61.27"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Introducción a las Finanzas"
+            },
+            {
+              "codigo": "61.50",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Finanzas de la Empresa"
+            },
+            {
+              "codigo": "67.23",
+              "correlativas": [
+                "93.42"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Sustentabilidad y eficiencia energética en la construcción"
+            },
+            {
+              "codigo": "68.99",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 144,
+              "nombre": "Introducción a la Ciencia de Ciudades"
+            },
+            {
+              "codigo": "71.22",
+              "correlativas": [
+                "71.88"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Sistemas de Inteligencia Artificial"
+            },
+            {
+              "codigo": "71.59",
+              "correlativas": [
+                "71.58"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Estructura de Datos y Programación"
+            },
+            {
+              "codigo": "71.88",
+              "correlativas": [
+                "71.59"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión de Datos"
+            },
+            {
+              "codigo": "81.59",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Gestión de Servicios"
+            },
+            {
+              "codigo": "92.04",
+              "correlativas": [
+                "92.02",
+                "92.03"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático IV"
+            },
+            {
+              "codigo": "92.07",
+              "correlativas": [
+                "92.04"
+              ],
+              "creditos": 4,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático V"
+            },
+            {
+              "codigo": "92.20",
+              "correlativas": [
+                "31.08"
+              ],
+              "creditos": 1,
+              "creditosReq": 0,
+              "nombre": "Representación Gráfica para Ingeniería Civil"
+            },
+            {
+              "codigo": "92.97",
+              "correlativas": [],
+              "creditos": 2,
+              "creditosReq": 0,
+              "nombre": "Complementos de Matemática V"
+            },
+            {
+              "codigo": "93.75",
+              "correlativas": [
+                "93.07"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Métodos Numéricos Avanzados"
+            },
+            {
+              "codigo": "94.40",
+              "correlativas": [
+                "94.44"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Estructura de las Organizaciones"
+            },
+            {
+              "codigo": "94.42",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Comunicación Estratégica"
+            },
+            {
+              "codigo": "94.61",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Filosofía"
+            },
+            {
+              "codigo": "94.62",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 72,
+              "nombre": "Ética en los Negocios"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     }
-   ]
+  ],
+  "capturado": "2026-09-13",
+  "carrera": {
+    "codigo": "C",
+    "escuela": "Escuela de Gestión y Tecnología",
+    "nivel": "Grado",
+    "nombre": "Ingeniería Civil"
   },
-  {
-   "nombre": "Electivas",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 30 créditos",
-   "creditos": 30,
-   "tipo": "creditos",
-   "secciones": [
+  "plan": "C23",
+  "planes": [
     {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "10.07",
-       "nombre": "Creatividad",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "10.08",
-       "nombre": "Energías Renovables",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "10.09",
-       "nombre": "Formación para Emprendedores",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "10.12",
-       "nombre": "Energías Convencionales",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "11.05",
-       "nombre": "Calidad",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "11.19",
-       "nombre": "Prototipado e Impresión 3D",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "11.39",
-       "nombre": "Marketing",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "11.46",
-       "nombre": "Planeamiento Estratégico",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "11.73",
-       "nombre": "Teoría de la Decisión",
-       "creditos": 3,
-       "creditosReq": 144,
-       "correlativas": []
-      },
-      {
-       "codigo": "11.76",
-       "nombre": "Gestión de Calidad",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.24"
-       ]
-      },
-      {
-       "codigo": "11.84",
-       "nombre": "Gestión de Proyectos",
-       "creditos": 3,
-       "creditosReq": 160,
-       "correlativas": []
-      },
-      {
-       "codigo": "11.89",
-       "nombre": "Formulación y Evaluación de Proyectos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "16.04",
-       "nombre": "Neurociencias y Desarrollo Productivo",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "25.63",
-       "nombre": "Redes Neuronales",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "25.64",
-       "nombre": "Deep Learning",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "25.66",
-       "nombre": "Acústica para Ingenieros",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "25.69",
-       "nombre": "Introducción a la Investigación",
-       "creditos": 3,
-       "creditosReq": 183,
-       "correlativas": []
-      },
-      {
-       "codigo": "46.82",
-       "nombre": "Evaluación de Proyectos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "47.87",
-       "nombre": "Desarrollo de Negocios",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "61.04",
-       "nombre": "Sistema Monetario y Financiero en Argentina",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "61.09",
-       "nombre": "Economía Empresaria",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.24"
-       ]
-      },
-      {
-       "codigo": "61.16",
-       "nombre": "Introducción a las Finanzas",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "11.15",
-        "61.27"
-       ]
-      },
-      {
-       "codigo": "61.50",
-       "nombre": "Finanzas de la Empresa",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "67.23",
-       "nombre": "Sustentabilidad y eficiencia energética en la construcción",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.42"
-       ]
-      },
-      {
-       "codigo": "68.99",
-       "nombre": "Introducción a la Ciencia de Ciudades",
-       "creditos": 1,
-       "creditosReq": 144,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.22",
-       "nombre": "Sistemas de Inteligencia Artificial",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.88"
-       ]
-      },
-      {
-       "codigo": "71.59",
-       "nombre": "Estructura de Datos y Programación",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.58"
-       ]
-      },
-      {
-       "codigo": "71.88",
-       "nombre": "Gestión de Datos",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.59"
-       ]
-      },
-      {
-       "codigo": "81.59",
-       "nombre": "Gestión de Servicios",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "92.04",
-       "nombre": "Análisis Matemático IV",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.02",
-        "92.03"
-       ]
-      },
-      {
-       "codigo": "92.07",
-       "nombre": "Análisis Matemático V",
-       "creditos": 4,
-       "creditosReq": 0,
-       "correlativas": [
-        "92.04"
-       ]
-      },
-      {
-       "codigo": "92.20",
-       "nombre": "Representación Gráfica para Ingeniería Civil",
-       "creditos": 1,
-       "creditosReq": 0,
-       "correlativas": [
-        "31.08"
-       ]
-      },
-      {
-       "codigo": "92.97",
-       "nombre": "Complementos de Matemática V",
-       "creditos": 2,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "93.75",
-       "nombre": "Métodos Numéricos Avanzados",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.07"
-       ]
-      },
-      {
-       "codigo": "94.40",
-       "nombre": "Estructura de las Organizaciones",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.44"
-       ]
-      },
-      {
-       "codigo": "94.42",
-       "nombre": "Comunicación Estratégica",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.61",
-       "nombre": "Filosofía",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.62",
-       "nombre": "Ética en los Negocios",
-       "creditos": 3,
-       "creditosReq": 72,
-       "correlativas": []
-      }
-     ]
+      "desde": "Segundo Cuat. 2024",
+      "elegido": true,
+      "hasta": "",
+      "nombre": "C23",
+      "version": "1"
     }
-   ]
-  }
- ],
- "titulos": [
-  {
-   "tipo": "Principal",
-   "titulo": "Ingeniero/a Civil",
-   "requisitos": "Aprobar C23 y sumar 221 créditos",
-   "creditos": 221
-  }
- ]
+  ],
+  "titulos": [
+    {
+      "creditos": 221,
+      "requisitos": "Aprobar C23 y sumar 221 créditos",
+      "tipo": "Principal",
+      "titulo": "Ingeniero/a Civil"
+    }
+  ],
+  "vacio": false
 }

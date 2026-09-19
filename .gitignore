@@ -11,6 +11,10 @@ npm-debug.log*
 # generado por scripts/build-planner-data.mjs a partir de data/plan/
 lib/planner/data.json
 lib/planner/carreras/
+# generados por scripts/build-mesas-finales-data.mjs y build-finales-flags-data.mjs a
+# partir de data/plan/finales-*.csv (en cada build; fuera del sync con StudyVaults)
+lib/planner/mesasFinales.ts
+lib/planner/finalesFlags.ts
 
 # ---- proyecto anterior, congelado en deprecated/ ----
 # material crudo: nunca entra al repositorio

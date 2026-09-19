@@ -1,0 +1,33 @@
+{
+  "carreras": [
+    {
+      "codigo": "S",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería en Informática",
+      "plan": "S10-Rev23",
+      "vacio": false
+    },
+    {
+      "codigo": "X",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Intercambio",
+      "plan": null,
+      "vacio": null
+    },
+    {
+      "codigo": "S",
+      "escuela": "Escuela de Gestión y Tecnología",
+      "nivel": "Grado",
+      "nombre": "Ingeniería en Informática",
+      "plan": "S10-Rev23",
+      "vacio": false
+    }
+  ],
+  "fuente": {
+    "capturado": "2026-09-13",
+    "nivel": "Grado",
+    "sistema": "sga"
+  }
+}

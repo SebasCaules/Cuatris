@@ -8,9 +8,8 @@ Recorre lo mismo que haría una persona: `/app2/` → login → Académica → C
 Al final corre `scripts/build-carreras-data.mjs`, que convierte esos HTML en
 `data/plan/carreras.json` y `data/plan/carreras/<CODIGO>.json`.
 
-Reutiliza el cliente del scraper del proyecto anterior (`deprecated/tools/cuatris/sga`):
-sesión, cookies, ritmo, reintentos y re-login. Necesita `httpx` y `beautifulsoup4`
-(los trae el Python del sistema o `deprecated/.venv`).
+Reutiliza el cliente del scraper de horarios (`tools/cuatris/sga`): sesión, cookies,
+ritmo, reintentos y re-login. Necesita `httpx` y `beautifulsoup4` (ver `tools/README.md`).
 
 Uso, desde la raíz del repositorio:
 
@@ -34,7 +33,7 @@ from pathlib import Path
 from urllib.parse import urljoin
 
 RAIZ = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(RAIZ / "deprecated" / "tools"))
+sys.path.insert(0, str(RAIZ / "tools"))
 
 from bs4 import BeautifulSoup  # noqa: E402
 

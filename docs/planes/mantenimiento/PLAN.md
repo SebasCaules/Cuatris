@@ -1,10 +1,8 @@
 # Mantenimiento comunitario de los datos — plan de implementación
 
-> **Estado: pendiente, no se empezó.** Plan aprobado por el autor el 2026-09-16 y guardado
-> para implementarlo más adelante. Nada de lo que describe existe todavía en el repositorio
-> (ni la rama `mantenimiento`, ni `scripts/datos/`, ni `tools/`). Para retomarlo: empezar
-> por la Etapa 0 de la tabla de «Etapas» y llevar el estado en un `EXEC_STATE.md` al lado
-> de este archivo, como en `docs/planes/mapa-correlativas/`.
+> **Estado: en curso** (desde el 2026-09-19) en la rama `mantenimiento` (worktree
+> `.claude/worktrees/mantenimiento`). El avance paso a paso está en `EXEC_STATE.md`, al lado
+> de este archivo. Plan aprobado por el autor el 2026-09-16.
 
 ## Contexto
 
@@ -286,8 +284,9 @@ main ──┬──────────────────────
 
 ## Trampas conocidas (van como comentarios en los workflows)
 
-- `pull_request_target` corre el workflow de la **rama base**: por eso se puede probar
-  contra `mantenimiento` y por eso el PR no puede reescribir el gate.
+- `pull_request_target` corre el workflow de la **rama por defecto** y solo si existe ahí
+  (corrección E-09: el plan asumía «la rama base»; no se puede probar contra
+  `mantenimiento`, solo en `main` con PR inofensivos). El PR no puede reescribir el gate.
 - Un merge o push hecho con `GITHUB_TOKEN` no dispara workflows de `push`: el deploy se
   dispara explícitamente por `workflow_dispatch`, y solo cuando la base es `main`.
 - `git archive` respeta el `.gitattributes` del PR (`export-subst`/`export-ignore`): se

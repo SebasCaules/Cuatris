@@ -1,0 +1,49 @@
+{
+  "bloques": [],
+  "capturado": "2026-09-13",
+  "carrera": {
+    "codigo": "S",
+    "escuela": "Escuela de Gestión y Tecnología",
+    "nivel": "Grado",
+    "nombre": "Ingeniería en Informática"
+  },
+  "plan": "S10-Rev23",
+  "planes": [
+    {
+      "desde": "Segundo Cuat. 2024",
+      "elegido": true,
+      "hasta": "Segundo Cuat. 2024",
+      "nombre": "S10-Rev23",
+      "version": "1"
+    },
+    {
+      "desde": "Segundo Cuat. 2018",
+      "elegido": false,
+      "hasta": "",
+      "nombre": "S10 - Rev18",
+      "version": "1"
+    },
+    {
+      "desde": "Segundo Cuat. 2018",
+      "elegido": false,
+      "hasta": "",
+      "nombre": "S10 A - Rev18",
+      "version": "1"
+    }
+  ],
+  "titulos": [
+    {
+      "creditos": 147,
+      "requisitos": "Aprobar Ciclo Básico y sumar 147 créditos",
+      "tipo": "Intermedio",
+      "titulo": "Analista en Tecnologia Informática"
+    },
+    {
+      "creditos": 243,
+      "requisitos": "Aprobar S10-Rev23 y sumar 243 créditos",
+      "tipo": "Principal",
+      "titulo": "Ingeniero/a en Informática"
+    }
+  ],
+  "vacio": false
+}

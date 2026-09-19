@@ -1,0 +1,848 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description"
+	content="Sistema de Gesti&oacute;n Acad&eacute;mica" />
+<meta name="keywords" content="academica, gestion" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="../../../css/bootstrap.css" type="text/css" rel="stylesheet"/>
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="../../../css/itba_bootstrap.css" type="text/css" rel="stylesheet"/>
+<script src="../../../js/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="../../../js/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="../../../img/favicon.ico" type="image/x-icon"/>
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRVhLnwK6Xt2XUzmDb5rEL3LyVOGdQenvKLJg6cKXTudsxmjFoX-n0wC9iZeNW0T7TPgvaJxrcFBg/X5E87/mDb9a/oX-53/sVVa2"></script>
+<script type="text/javascript" src="../../X5EA-RpmG5-t7GSByiSposVVWJ28fpoU-XgFo7bOPIRkIHSE4F8KjLsgOrqfLXUgeS1FdngABiY-grLb5kAceQP65u0gCbPEOWOU3B2z5lQ/X5E87/IRk91/eQPe3/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="fyBfZ9p6trOzVkLCcrJtbg/fyBce/LCcab";
+/*]]>*/
+</script>
+<script type="text/javascript" >
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../fyBfZ9p6trOHLYsne2iXM8ImureAU-3Jg9fl62xUBCp2uE5Co9dMKJSTjdm0GhNA7abXGv-TNd0/fyBce/XGv06',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id6bc'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div id="id6bd" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<![If !IE]> <a href="../../../app2/"><div class="logo"></div></a> <![endif]>
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp&nbsp&nbsp<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFRc4INi57ffU1g/fyBce/OHL62">[Salir]</a> <a id="id6be" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFRfUvOw06Km1Oc5cIuWUf3Hz9Zqkjat7W3FxwcVixLEeXbqxAE6HyxPcoi7t4LWec3I/fyBce/W3F89" class="dropdown-toggle" data-toggle="dropdown"><span>Inicio</span><b
+		class="caret"></b></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFRfUvOw06Km1Oc5cIuWUf3Hzu6TveqX-j4ezsV6-tPc8q9IzxBT1od71eNHRzbikt9iZprqtMNbkwgDBWCB28gEdxvH9eZcDcWT8op6BMKKciI7rCVp9gQDb92jXeCB0a9A/fyBce/IWI5a"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFRfUvOw06Km1Oc5cIuWUf3HzP8m1BwRLVX0vryv40I8Mc8D83XLKQJrRwNEuwZI3jERYiuc5IgJLAjN7svAILhKfu5WKQvxHZe_12Tp_5ZQQCTLHj0oY779oq5RGKBxZfb8/fyBce/IWI5a"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFRfUvOw06Km1Oc5cIuWUf3HzP8m1BwRLVX0vryv40I8Mc8D83XLKQJrRwNEuwZI3jERYiuc5IgJLAjN7svAILhKf1CTpM0pDvQuaNuXWUhE8G7uMF9idwj0JfrnLv-hwRyg/fyBce/IWI5a"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFRfUvOw06Km1Oc5cIuWUf3HzP8m1BwRLVX0vryv40I8Mc8D83XLKQJrRwNEuwZI3jERYiuc5IgJLAjN7svAILhKfiZVJvHS89Hf4i6624QELoLJbc_jjXDmTNfrrGZG3aL8/fyBce/IWI5a"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFRfUvOw06Km1Oc5cIuWUf3HzP8m1BwRLVX0vryv40I8Mc8D83XLKQJrRwNEuwZI3jERYiuc5IgJLAjN7svAILhKfbqUaCNyGVnWRBQc7iB5iqT-q3dMngTbRZ4F7D7-HiSg/fyBce/IWI5a"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFRfUvOw06Km1Oc5cIuWUf3HzHQzzhWFJL2B2_aCNeyXYqjZjVZ-k2fq8lpJOKfHWVmSrZuOe5Fci95jWA4btNONjTDza1V-80EiWbyQ8rbZI_AcvlsQJJZkmWGd9yI5G9MY/fyBce/IWI5a"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b
+		class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFRfUvOw06Km1Oc5cIuWUf3Hz-AF40K5_lAsYp8Bh2GEEHd_iiUk6tPNzcVnV0D6hR3Oi8UGFytNx7Bf84CkmNejb3NZZn97JRaRj-cUriNUG4oXskS5dKDYPM9Kl235UKxQ/fyBce/IWI5a"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id6bf">
+  
+</div>
+			
+		<h3>
+			Detalle del curso
+		</h3>
+
+		<div class="backgroundBordered">
+			<div>
+				<div class="row bottomMargin5">
+					<div class="span3">
+						<label class="bold">Materia:</label>
+					</div>
+					<label>93.41 - Física I</label>
+				</div>
+				<div class="row bottomMargin5">
+					<div class="span3">
+						<label class="bold">Departamento:</label>
+					</div>
+					<label>Ciencias Exactas y Naturales</label>
+				</div>
+				<div class="row bottomMargin5">
+					<div class="span3">
+						<label class="bold">Cuatrimestre:</label>
+					</div>
+					<div class="span2 noLeftMargin">
+						<span>Segundo Cuat.</span> <span>2026</span>
+					</div>
+				</div>
+				<div id="id6c0" style="display:none"></div>
+				<br/>
+				<div class="row bottomMargin5">
+					<div >
+						<span class="span3"></span>
+						&nbsp;&nbsp; 
+						
+					</div>
+				</div>
+				<br/>
+				<div class="tabpanel4">
+<div class="tab-row">
+<ul>
+	<li class="tab0">
+		<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFReKx3lNN9Nw03XvS90AYCkuUitX7NcJnDnuSaNe7p0qEHinq1S788cr/fyBce/Uit5f"><span>Plantel Docente</span></a>
+	</li><li class="tab1 selected">
+		<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFReKx3lNN9Nw03XvS90AYCkuUitX7NcJnDnaA0icVGWy1yTBpUMC-Zyc/fyBce/Uit5f"><span>Comisiones</span></a>
+	</li><li class="tab3">
+		<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFReKx3lNN9Nw03XvS90AYCkuUitX7NcJnDm6CBh8FKM2zmPhPBDhICOO/fyBce/Uit5f"><span>Contenidos mínimos</span></a>
+	</li><li class="tab5 last">
+		<a href="../../fyBfZ9p6trOHLYsne2iXM_6pqqBKIWIhEWKKNStAFReKx3lNN9Nw03XvS90AYCkuUitX7NcJnDlg7HFFkLhaAaFiLXTg-0iO/fyBce/Uit5f"><span>Información de la materia</span></a>
+	</li>
+</ul>
+</div>
+<div class="tab-panel">
+		<div class="backgroundBordered" id="id6c1">
+			<h4>
+				<span>93.41</span> - <span>Física I</span>
+			</h4>
+			<table class="table table-bordered table-condensed table-hover">
+				<thead>
+					<tr class="blue">
+						<th class="centered">Comisión</th>
+						<th class="centered">Horarios</th>
+						<th class="centered">Profesores</th>
+						<th class="centered">Cupo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><label class="centered">A</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id6c2" style="display:none"></span>
+		<span id="id6c3">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6c4" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Martes</span>
+								<span>08:00</span> - <span>10:00</span>
+								<span><span>
+		<span id="id6c5" style="display:none"></span>
+		<span id="id6c6">
+			Aula externa: <span>Virtual sincrónica</span>
+		</span>
+		<span id="id6c7" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Miércoles</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id6c8" style="display:none"></span>
+		<span id="id6c9">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6ca" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Lopez, Daniel Marcelo</label></div><div><label>Vieytes, Roberto Eduardo</label></div><div><label>Alonso, Lucas</label></div><div><label>Colombo, Priscila Daiana</label></div>
+						</td>
+						<td class="centered"><span>11</span>
+							/ <span>36</span></td>
+					</tr><tr>
+						<td><label class="centered">B</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>09:00</span> - <span>11:00</span>
+								<span><span>
+		<span id="id6cb" style="display:none"></span>
+		<span id="id6cc">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6cd" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Martes</span>
+								<span>08:00</span> - <span>10:00</span>
+								<span><span>
+		<span id="id6ce" style="display:none"></span>
+		<span id="id6cf">
+			Aula externa: <span>Virtual sincrónica</span>
+		</span>
+		<span id="id6d0" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>11:00</span> - <span>13:00</span>
+								<span><span>
+		<span id="id6d1" style="display:none"></span>
+		<span id="id6d2">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6d3" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Lopez, Daniel Marcelo</label></div><div><label>González, Gustavo Javier</label></div><div><label>Vieytes, Roberto Eduardo</label></div><div><label>Colombo, Priscila Daiana</label></div>
+						</td>
+						<td class="centered"><span>36</span>
+							/ <span>36</span></td>
+					</tr><tr>
+						<td><label class="centered">C</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id6d4" style="display:none"></span>
+		<span id="id6d5">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6d6" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>08:00</span> - <span>10:00</span>
+								<span><span>
+		<span id="id6d7" style="display:none"></span>
+		<span id="id6d8">
+			Aula externa: <span>Virtual sincrónica</span>
+		</span>
+		<span id="id6d9" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Viernes</span>
+								<span>11:00</span> - <span>13:00</span>
+								<span><span>
+		<span id="id6da" style="display:none"></span>
+		<span id="id6db">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6dc" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>González, Gustavo Javier</label></div><div><label>Vieytes, Roberto Eduardo</label></div><div><label>Diaz, Alejandro Raul</label></div><div><label>Alonso, Lucas</label></div><div><label>Vergara, Martín Alexis</label></div>
+						</td>
+						<td class="centered"><span>11</span>
+							/ <span>36</span></td>
+					</tr><tr>
+						<td><label class="centered">D</label></td>
+						<td class="centered">
+							<div>
+								<span>Martes</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id6dd" style="display:none"></span>
+		<span id="id6de">
+			Aula externa: <span>Virtual sincrónica</span>
+		</span>
+		<span id="id6df" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Miércoles</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id6e0" style="display:none"></span>
+		<span id="id6e1">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6e2" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>09:00</span> - <span>11:00</span>
+								<span><span>
+		<span id="id6e3" style="display:none"></span>
+		<span id="id6e4">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6e5" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Perotti, Marcelo Gustavo</label></div><div><label>Di Lorenzo, Francisco Javier</label></div><div><label>Lobo Poblet, Matías Alejandro</label></div>
+						</td>
+						<td class="centered"><span>26</span>
+							/ <span>36</span></td>
+					</tr><tr>
+						<td><label class="centered">E</label></td>
+						<td class="centered">
+							<div>
+								<span>Martes</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id6e6" style="display:none"></span>
+		<span id="id6e7">
+			Aula externa: <span>Virtual sincrónica</span>
+		</span>
+		<span id="id6e8" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Miércoles</span>
+								<span>08:00</span> - <span>10:00</span>
+								<span><span>
+		<span id="id6e9" style="display:none"></span>
+		<span id="id6ea">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6eb" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Viernes</span>
+								<span>09:00</span> - <span>11:00</span>
+								<span><span>
+		<span id="id6ec" style="display:none"></span>
+		<span id="id6ed">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6ee" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>González, Gustavo Javier</label></div><div><label>Diaz, Alejandro Raul</label></div><div><label>Repossi, Patricia del Valle</label></div>
+						</td>
+						<td class="centered"><span>15</span>
+							/ <span>36</span></td>
+					</tr><tr>
+						<td><label class="centered">F</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id6ef" style="display:none"></span>
+		<span id="id6f0">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6f1" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Martes</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id6f2" style="display:none"></span>
+		<span id="id6f3">
+			Aula externa: <span>Virtual sincrónica</span>
+		</span>
+		<span id="id6f4" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Viernes</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id6f5" style="display:none"></span>
+		<span id="id6f6">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6f7" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Di Lorenzo, Francisco Javier</label></div><div><label>González, Gustavo Javier</label></div><div><label>Vieytes, Roberto Eduardo</label></div>
+						</td>
+						<td class="centered"><span>11</span>
+							/ <span>36</span></td>
+					</tr><tr>
+						<td><label class="centered">G</label></td>
+						<td class="centered">
+							<div>
+								<span>Martes</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id6f8" style="display:none"></span>
+		<span id="id6f9">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id6fa" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Miércoles</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id6fb" style="display:none"></span>
+		<span id="id6fc">
+			Aula externa: <span>Virtual sincrónica</span>
+		</span>
+		<span id="id6fd" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>13:00</span> - <span>15:00</span>
+								<span><span>
+		<span id="id6fe" style="display:none"></span>
+		<span id="id6ff">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id700" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Di Lorenzo, Francisco Javier</label></div><div><label>Vieytes, Roberto Eduardo</label></div><div><label>Repossi, Patricia del Valle</label></div>
+						</td>
+						<td class="centered"><span>16</span>
+							/ <span>36</span></td>
+					</tr><tr>
+						<td><label class="centered">H</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>11:00</span> - <span>13:00</span>
+								<span><span>
+		<span id="id701" style="display:none"></span>
+		<span id="id702">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id703" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Martes</span>
+								<span>10:00</span> - <span>12:00</span>
+								<span><span>
+		<span id="id704" style="display:none"></span>
+		<span id="id705">
+			Aula externa: <span>Virtual sincrónica</span>
+		</span>
+		<span id="id706" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Miércoles</span>
+								<span>08:00</span> - <span>10:00</span>
+								<span><span>
+		<span id="id707" style="display:none"></span>
+		<span id="id708">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id709" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>González, Gustavo Javier</label></div><div><label>Vieytes, Roberto Eduardo</label></div><div><label>Alonso, Lucas</label></div><div><label>Repossi, Patricia del Valle</label></div><div><label>Colombo, Priscila Daiana</label></div>
+						</td>
+						<td class="centered"><span>17</span>
+							/ <span>36</span></td>
+					</tr><tr>
+						<td><label class="centered">K</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id70a" style="display:none"></span>
+		<span id="id70b">
+			Aula externa: <span>Virtual sincrónica</span>
+		</span>
+		<span id="id70c" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Martes</span>
+								<span>14:00</span> - <span>16:00</span>
+								<span><span>
+		<span id="id70d" style="display:none"></span>
+		<span id="id70e">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id70f" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Viernes</span>
+								<span>13:00</span> - <span>15:00</span>
+								<span><span>
+		<span id="id710" style="display:none"></span>
+		<span id="id711">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id712" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Perotti, Marcelo Gustavo</label></div><div><label>Di Lorenzo, Francisco Javier</label></div><div><label>González, Gustavo Javier</label></div><div><label>Vieytes, Roberto Eduardo</label></div><div><label>Diaz, Alejandro Raul</label></div><div><label>Repossi, Patricia del Valle</label></div>
+						</td>
+						<td class="centered"><span>36</span>
+							/ <span>36</span></td>
+					</tr><tr>
+						<td><label class="centered">S</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id713" style="display:none"></span>
+		<span id="id714">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id715" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Martes</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id716" style="display:none"></span>
+		<span id="id717">
+			Aula externa: <span>Virtual sincrónica</span>
+		</span>
+		<span id="id718" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Miércoles</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id719" style="display:none"></span>
+		<span id="id71a">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id71b" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Perotti, Marcelo Gustavo</label></div><div><label>Vergara, Martín Alexis</label></div><div><label>Lobo Poblet, Matías Alejandro</label></div><div><label>Colombo, Priscila Daiana</label></div>
+						</td>
+						<td class="centered"><span>35</span>
+							/ <span>36</span></td>
+					</tr><tr>
+						<td><label class="centered">S1</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id71c" style="display:none"></span>
+		<span id="id71d">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id71e" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Martes</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id71f" style="display:none"></span>
+		<span id="id720">
+			Aula externa: <span>Virtual sincrónica</span>
+		</span>
+		<span id="id721" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Miércoles</span>
+								<span>16:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id722" style="display:none"></span>
+		<span id="id723">
+			Aula externa: <span>Laboratorio</span>
+		</span>
+		<span id="id724" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Perotti, Marcelo Gustavo</label></div><div><label>Di Lorenzo, Francisco Javier</label></div><div><label>González, Gustavo Javier</label></div><div><label>Alonso, Lucas</label></div>
+						</td>
+						<td class="centered"><span>34</span>
+							/ <span>36</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br />
+		<br />
+	</div>
+</div>
+			</div>
+		</div>
+
+	
+		</div>
+		<div id="id6bc"></div>
+	</div>
+</body>
+</html>

@@ -7,17 +7,22 @@
     "packages/*"
   ],
   "scripts": {
-    "predev": "node scripts/build-planner-data.mjs",
+    "predev": "npm run datos",
     "dev": "next dev",
-    "prebuild": "node scripts/build-planner-data.mjs",
+    "prebuild": "npm run datos",
     "build": "next build",
     "start": "next start",
-    "typecheck": "node scripts/build-planner-data.mjs && tsc --noEmit",
+    "typecheck": "npm run datos && tsc --noEmit",
     "datos": "node scripts/build-planner-data.mjs && node scripts/build-finales-flags-data.mjs && node scripts/build-mesas-finales-data.mjs",
     "carreras": "node scripts/build-carreras-data.mjs",
+    "datos:validar": "node scripts/datos/validar.mjs",
+    "datos:fmt": "node scripts/datos/validar.mjs --fmt",
+    "datos:triage": "node scripts/datos/triage.mjs",
+    "guardarrailes": "node scripts/datos/guardarrailes.mjs .github",
     "sync": "bash scripts/sync-desde-studyvaults.sh",
     "check:optimizador": "tsx scripts/optimizer-check/run.ts",
-    "test:grafo": "node scripts/build-planner-data.mjs && node scripts/test-grafo-layout.mts && node scripts/test-grafo-model.mts && node scripts/test-grafo-viewport.mts"
+    "test:grafo": "node scripts/build-planner-data.mjs && node scripts/test-grafo-layout.mts && node scripts/test-grafo-model.mts && node scripts/test-grafo-viewport.mts",
+    "test:datos": "node --test \"scripts/datos/test/*.test.mjs\""
   },
   "engines": {
     "node": ">=22.18"

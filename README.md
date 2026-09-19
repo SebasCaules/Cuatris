@@ -35,17 +35,25 @@ queden cambios viejos pegados. Sin el script: `npm run dev` / `npm run build` (e
 | `packages/ui/` | `@studyvaults/ui`, el sistema de diseño (tokens, chrome, primitivos). Espejo de StudyVaults. |
 | `components/shell/` | Lo propio del standalone: `Header`, `Footer`, marca, portada (`Landing`) |
 | `lib/content/slug.ts`, `lib/site.ts` | Shims del standalone (`withBase`, URLs) |
-| `data/plan/` | Fuentes de datos: `electivas.csv`/`obligatorias.csv` → `electivas.py` → `.json`; `horarios.json` (SGA, ver `SCRAPING.md`); `build-data.py` → `data.js`; planillas oficiales de finales `finales-*.csv` |
-| `scripts/` | Pipelines: `build-planner-data.mjs` (→ `lib/planner/data.json`, en cada build), `build-mesas-finales-data.mjs` y `build-finales-flags-data.mjs` (→ `.ts` commiteados), `build-fichas-data.mjs` (PDFs → `fichas.ts`, requiere `pdftotext`), `sync-desde-studyvaults.sh` |
+| `data/plan/` | Fuentes de datos. **Contribuibles por PR** (ver `CONTRIBUTING.md`): `horarios/<periodo>.json` (SGA, contrato 1.1.0), `carreras.json` + `carreras/<CODIGO>.json` (planes del SGA, desde el HTML de `sga-carreras/`), `finales-*.csv` (planillas oficiales). Del autor: `data.js` (plan curado de Informática, desde `electivas.csv`/`obligatorias.csv` → `electivas.py` → `build-data.py`) |
+| `scripts/` | Pipelines: `build-planner-data.mjs`, `build-mesas-finales-data.mjs` y `build-finales-flags-data.mjs` (→ `lib/planner/data.json`, `mesasFinales.ts`, `finalesFlags.ts`, en cada build), `build-carreras-data.mjs`, `build-fichas-data.mjs` (PDFs → `fichas.ts`, requiere `pdftotext`), `sync-desde-studyvaults.sh`; `datos/`: el validador, el triage y el bot del gate de datos (`docs/mantenimiento.md`) |
+| `tools/` | El scraper de horarios del SGA (Python; `tools/README.md`) |
+| `.github/` | `pr-datos.yml` (gate y auto-merge de los PR de datos), `centinela.yml`, `ci.yml`, `deploy.yml`, CODEOWNERS y plantillas |
 | `public/electivas-fichas/` | Programas analíticos oficiales (PDF), enlazados desde la ficha de cada materia |
 
 ## Actualizar datos
 
+Horarios, planes de estudio y finales se actualizan **por PR de cualquiera**: el gate los
+valida y los mergea solo, y el sitio se publica. Las recetas están en
+[`CONTRIBUTING.md`](CONTRIBUTING.md); cómo funciona el mecanismo, en
+[`docs/mantenimiento.md`](docs/mantenimiento.md).
+
 ```bash
-# horarios / materias: editar data/plan/*.csv o regenerar horarios.json (SCRAPING.md), luego
+npm run datos:validar       # lo que revisa el gate, sobre data/plan
+npm run datos:fmt           # forma canónica de los JSON de datos
+npm run test:datos          # tests del validador, el triage y los guardarraíles
+# plan curado de Informática (solo el autor): editar data/plan/*.csv y luego
 (cd data/plan && python3 electivas.py && python3 build-data.py)
-# finales: archivar la planilla oficial como data/plan/finales-<año>-<mes>.csv, luego
-npm run datos
 ```
 
 ## Traer cambios del planner desde StudyVaults
@@ -62,5 +70,7 @@ Los cambios hechos localmente dentro de los directorios sincronizados se pisan: 
 
 ## Publicar
 
-Push a `main` dispara `.github/workflows/deploy.yml` (build + GitHub Pages). En la
-configuración del repositorio, *Pages → Source* debe ser **GitHub Actions**.
+Push a `main` dispara `.github/workflows/deploy.yml` (validación + build + GitHub Pages); el
+bot del gate lo dispara también tras cada merge automático, y corre una vez por semana. En la
+configuración del repositorio, *Pages → Source* debe ser **GitHub Actions**; el ruleset de
+`main` y las etiquetas los aplica `scripts/repo/configurar-github.sh`.

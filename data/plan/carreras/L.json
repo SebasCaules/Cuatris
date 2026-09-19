@@ -1,1151 +1,1151 @@
 {
- "carrera": {
-  "codigo": "L",
-  "nombre": "Lic.en Administración y Sistemas",
-  "escuela": "Escuela de Gestión y Tecnología",
-  "nivel": "Grado"
- },
- "plan": "L09T",
- "planes": [
-  {
-   "nombre": "L09T",
-   "version": "1",
-   "desde": "Segundo Cuat. 2021",
-   "hasta": "Verano 2024",
-   "elegido": true
-  },
-  {
-   "nombre": "L09-REV13",
-   "version": "1",
-   "desde": "Primer Cuat. 2013",
-   "hasta": "",
-   "elegido": false
-  },
-  {
-   "nombre": "L09",
-   "version": "1",
-   "desde": "Primer Cuat. 2009",
-   "hasta": "",
-   "elegido": false
-  }
- ],
- "vacio": false,
- "capturado": "2026-09-13",
- "bloques": [
-  {
-   "nombre": "Ciclo Básico",
-   "tituloOtorgado": "Analista en Administración y Sistemas",
-   "requisito": "Aprobar todos los items (suma 141 créditos)",
-   "creditos": 141,
-   "tipo": "todos",
-   "secciones": [
+  "bloques": [
     {
-     "nombre": "Año 1 - Cuatrimestre 1",
-     "anio": 1,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "81.06",
-       "nombre": "Introducción a la Administración",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.07",
-       "nombre": "Sistemas Contables",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "93.21",
-       "nombre": "Álgebra",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
+      "creditos": 141,
+      "nombre": "Ciclo Básico",
+      "requisito": "Aprobar todos los items (suma 141 créditos)",
+      "secciones": [
+        {
+          "anio": 1,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "81.06",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Introducción a la Administración"
+            },
+            {
+              "codigo": "81.07",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Sistemas Contables"
+            },
+            {
+              "codigo": "93.21",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Álgebra"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 1"
+        },
+        {
+          "anio": 1,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "93.20",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático"
+            },
+            {
+              "codigo": "94.60",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Panorama Histórico Global"
+            },
+            {
+              "codigo": "94.61",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Filosofía"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 2"
+        },
+        {
+          "anio": 2,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "61.81",
+              "correlativas": [
+                "93.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Microeconomía"
+            },
+            {
+              "codigo": "81.11",
+              "correlativas": [
+                "81.07"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Contabilidad Gerencial"
+            },
+            {
+              "codigo": "93.39",
+              "correlativas": [
+                "71.29",
+                "93.20"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Estadística"
+            },
+            {
+              "codigo": "94.62",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Ética en los Negocios"
+            }
+          ],
+          "nombre": "Año 2 - Cuatrimestre 1"
+        },
+        {
+          "anio": 2,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "61.12",
+              "correlativas": [
+                "81.07",
+                "93.21"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión Financiera"
+            },
+            {
+              "codigo": "61.82",
+              "correlativas": [
+                "93.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Macroeconomía"
+            },
+            {
+              "codigo": "71.88",
+              "correlativas": [
+                "71.29",
+                "71.30"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión de Datos"
+            },
+            {
+              "codigo": "81.20",
+              "correlativas": [
+                "81.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Comercialización"
+            },
+            {
+              "codigo": "94.63",
+              "correlativas": [
+                "94.61"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Epistemología y Heurística"
+            },
+            {
+              "codigo": "94.90",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Inglés I (analista)"
+            }
+          ],
+          "nombre": "Año 2 - Cuatrimestre 2"
+        },
+        {
+          "anio": 3,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "11.83",
+              "correlativas": [
+                "93.39",
+                "81.06"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión de Operaciones"
+            },
+            {
+              "codigo": "81.21",
+              "correlativas": [
+                "81.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Gestión de Ventas"
+            },
+            {
+              "codigo": "94.40",
+              "correlativas": [
+                "81.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Estructura de las Organizaciones"
+            }
+          ],
+          "nombre": "Año 3 - Cuatrimestre 1"
+        },
+        {
+          "anio": 3,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "11.84",
+              "correlativas": [
+                "93.39",
+                "81.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Gestión de Proyectos"
+            },
+            {
+              "codigo": "11.85",
+              "correlativas": [
+                "93.39",
+                "81.06"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Toma de Decisiones"
+            }
+          ],
+          "nombre": "Año 3 - Cuatrimestre 2"
+        }
+      ],
+      "tipo": "todos",
+      "tituloOtorgado": "Analista en Administración y Sistemas"
     },
     {
-     "nombre": "Año 1 - Cuatrimestre 2",
-     "anio": 1,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "93.20",
-       "nombre": "Análisis Matemático",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.60",
-       "nombre": "Panorama Histórico Global",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.61",
-       "nombre": "Filosofía",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
+      "creditos": 3,
+      "nombre": "Electiva 61.90",
+      "requisito": "Juntar 3 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "61.87",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Derecho Público y Privado I"
+            },
+            {
+              "codigo": "61.90",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Derecho Público y Privado"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 2 - Cuatrimestre 1",
-     "anio": 2,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "61.81",
-       "nombre": "Microeconomía",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.20"
-       ]
-      },
-      {
-       "codigo": "81.11",
-       "nombre": "Contabilidad Gerencial",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.07"
-       ]
-      },
-      {
-       "codigo": "93.39",
-       "nombre": "Estadística",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.29",
-        "93.20"
-       ]
-      },
-      {
-       "codigo": "94.62",
-       "nombre": "Ética en los Negocios",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
+      "creditos": 6,
+      "nombre": "Electiva 71.80",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "71.79",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Introducción a las bases de datos"
+            },
+            {
+              "codigo": "71.80",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Utilitarios en Informática"
+            },
+            {
+              "codigo": "71.90",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Certificaciones tecnológicas"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 2 - Cuatrimestre 2",
-     "anio": 2,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "61.12",
-       "nombre": "Gestión Financiera",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.07",
-        "93.21"
-       ]
-      },
-      {
-       "codigo": "61.82",
-       "nombre": "Macroeconomía",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.20"
-       ]
-      },
-      {
-       "codigo": "71.88",
-       "nombre": "Gestión de Datos",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.29",
-        "71.30"
-       ]
-      },
-      {
-       "codigo": "81.20",
-       "nombre": "Comercialización",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "94.63",
-       "nombre": "Epistemología y Heurística",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.61"
-       ]
-      },
-      {
-       "codigo": "94.90",
-       "nombre": "Inglés I (analista)",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
+      "creditos": 6,
+      "nombre": "Electiva 71.85",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "71.29",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Informática general"
+            },
+            {
+              "codigo": "71.38",
+              "correlativas": [
+                "71.30"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Programación web"
+            },
+            {
+              "codigo": "71.85",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Programación"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 3 - Cuatrimestre 1",
-     "anio": 3,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "11.83",
-       "nombre": "Gestión de Operaciones",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.39",
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "81.21",
-       "nombre": "Gestión de Ventas",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.20"
-       ]
-      },
-      {
-       "codigo": "94.40",
-       "nombre": "Estructura de las Organizaciones",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.06"
-       ]
-      }
-     ]
+      "creditos": 3,
+      "nombre": "Electiva 81.08",
+      "requisito": "Juntar 3 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "71.30",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Introducción a la tecnología informática"
+            },
+            {
+              "codigo": "81.08",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Aplicación de las Telecomunicaciones"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 3 - Cuatrimestre 2",
-     "anio": 3,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "11.84",
-       "nombre": "Gestión de Proyectos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.39",
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "11.85",
-       "nombre": "Toma de Decisiones",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.39",
-        "81.06"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 61.90",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 3 créditos",
-   "creditos": 3,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "61.87",
-       "nombre": "Derecho Público y Privado I",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "61.90",
-       "nombre": "Derecho Público y Privado",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 71.80",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "71.79",
-       "nombre": "Introducción a las bases de datos",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.80",
-       "nombre": "Utilitarios en Informática",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.90",
-       "nombre": "Certificaciones tecnológicas",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 71.85",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "71.29",
-       "nombre": "Informática general",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.38",
-       "nombre": "Programación web",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.30"
-       ]
-      },
-      {
-       "codigo": "71.85",
-       "nombre": "Programación",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.08",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 3 créditos",
-   "creditos": 3,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "71.30",
-       "nombre": "Introducción a la tecnología informática",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.08",
-       "nombre": "Aplicación de las Telecomunicaciones",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.30",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.29",
-       "nombre": "Gestión organizacional basada en procesos de negocio",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.29",
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "81.30",
-       "nombre": "Análisis y Modelado de Procesos de Negocios",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.31",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.31",
-       "nombre": "Análisis y Diseño de Aplicaciones Informáticas",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.32",
-       "nombre": "Análisis funcional de aplicaciones informáticas",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.29"
-       ]
-      },
-      {
-       "codigo": "81.33",
-       "nombre": "Diseño de aplicaciones informáticas",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.32"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.36",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.36",
-       "nombre": "Sistemas Integrados de Gestión Empresaria II",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.69",
-       "nombre": "Sistemas Integrados de Gestión Empresaria II",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "61.12",
-        "81.68"
-       ]
-      },
-      {
-       "codigo": "81.89",
-       "nombre": "Taller de Sistemas Integrados de Gestión Empresaria II",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.68"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.39",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.39",
-       "nombre": "Sistemas Integrados de Gestión Empresaria I",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.68",
-       "nombre": "Sistemas Integrados de Gestión I",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.11",
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.87",
-       "nombre": "Taller de Sistemas Integrados de Gestión Empresaria",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.68"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.52",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.52",
-       "nombre": "Negocios y Tecnología en Internet",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.53",
-       "nombre": "Negocios en Internet",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.30",
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "81.54",
-       "nombre": "Aplicaciones en Internet",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.30"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 94.41",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 3 créditos",
-   "creditos": 3,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "94.27",
-       "nombre": "Administración de Recursos Humanos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "61.87"
-       ]
-      },
-      {
-       "codigo": "94.41",
-       "nombre": "Gestión de los Recursos Humanos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Ciclo Profesional - Orientaciones",
-   "tituloOtorgado": null,
-   "requisito": "Aprobar un item (suma 18 créditos)",
-   "creditos": 18,
-   "tipo": "uno",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": []
-    }
-   ]
-  },
-  {
-   "nombre": "Comercio Internacional",
-   "tituloOtorgado": "Comercio Internacional",
-   "requisito": "Aprobar todos los items (suma 18 créditos)",
-   "creditos": 18,
-   "tipo": "todos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "61.92",
-       "nombre": "Derecho Aduanero",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.26",
-        "61.87"
-       ]
-      },
-      {
-       "codigo": "81.71",
-       "nombre": "Marketing avanzado",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.20"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 61.40",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "61.14",
-       "nombre": "Economía Internacional Real",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "61.82",
-        "61.12"
-       ]
-      },
-      {
-       "codigo": "61.15",
-       "nombre": "Economía Internacional Monetaria",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "61.14"
-       ]
-      },
-      {
-       "codigo": "61.40",
-       "nombre": "Economía y Finanzas Internacionales",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.64",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.64",
-       "nombre": "Gestión y Sistemas de Información de la Logística Internacional",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.65",
-       "nombre": "Logística Internacional",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "11.83",
-        "81.26"
-       ]
-      },
-      {
-       "codigo": "81.66",
-       "nombre": "Logística Internacional Aplicada",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Sistemas de Información",
-   "tituloOtorgado": "Sistemas de Información",
-   "requisito": "Aprobar todos los items (suma 18 créditos)",
-   "creditos": 18,
-   "tipo": "todos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.38",
-       "nombre": "Integración de Procesos de Negocios y Aplicaciones Informáticas",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.29",
-        "71.30",
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.46",
-       "nombre": "Auditoría General y de Sistemas",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.29"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.60",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.58",
-       "nombre": "Service Design",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.59",
-       "nombre": "Gestión de Servicios",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.60",
-       "nombre": "Sistemas Integrados de Gestión en la Industria de Servicios",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.61",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.34",
-       "nombre": "Arquitectura empresarial",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.57",
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.61",
-       "nombre": "Modelado Avanzado de Procesos e Inteligencia de Negocios",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.88",
-       "nombre": "Taller de modelado Avanzado",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.29"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Ciclo Superior",
-   "tituloOtorgado": null,
-   "requisito": "Aprobar todos los items (suma 33 créditos)",
-   "creditos": 33,
-   "tipo": "todos",
-   "secciones": [
-    {
-     "nombre": "Año 4 - Cuatrimestre 1",
-     "anio": 4,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "10.09",
-       "nombre": "Formación para Emprendedores",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.40"
-       ]
-      },
-      {
-       "codigo": "81.26",
-       "nombre": "Comercio Exterior",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
+      "creditos": 6,
+      "nombre": "Electiva 81.30",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.29",
+              "correlativas": [
+                "71.29",
+                "81.06"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión organizacional basada en procesos de negocio"
+            },
+            {
+              "codigo": "81.30",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis y Modelado de Procesos de Negocios"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 4 - Cuatrimestre 2",
-     "anio": 4,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "81.23",
-       "nombre": "Comercio Electrónico",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.53"
-       ]
-      },
-      {
-       "codigo": "94.91",
-       "nombre": "Inglés II (licenciado)",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.90"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.25",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 3 créditos",
-   "creditos": 3,
-   "tipo": "creditos",
-   "secciones": [
+      "creditos": 6,
+      "nombre": "Electiva 81.31",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.31",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis y Diseño de Aplicaciones Informáticas"
+            },
+            {
+              "codigo": "81.32",
+              "correlativas": [
+                "71.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Análisis funcional de aplicaciones informáticas"
+            },
+            {
+              "codigo": "81.33",
+              "correlativas": [
+                "81.32"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Diseño de aplicaciones informáticas"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
     {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.25",
-       "nombre": "Impuestos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.47",
-       "nombre": "Impuestos para la toma de decisiones I",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.11",
-        "61.82",
-        "61.87"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.41",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
+      "creditos": 6,
+      "nombre": "Electiva 81.36",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.36",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Sistemas Integrados de Gestión Empresaria II"
+            },
+            {
+              "codigo": "81.69",
+              "correlativas": [
+                "61.12",
+                "81.68"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Sistemas Integrados de Gestión Empresaria II"
+            },
+            {
+              "codigo": "81.89",
+              "correlativas": [
+                "81.68"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Taller de Sistemas Integrados de Gestión Empresaria II"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
     {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.41",
-       "nombre": "Estrategia Empresaria",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.42",
-       "nombre": "Estrategia Empresarial",
-       "creditos": 3,
-       "creditosReq": 144,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.43",
-       "nombre": "Ciclo de charlas sobre estrategia empresarial",
-       "creditos": 3,
-       "creditosReq": 144,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.45",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 3 créditos",
-   "creditos": 3,
-   "tipo": "creditos",
-   "secciones": [
+      "creditos": 6,
+      "nombre": "Electiva 81.39",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.39",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Sistemas Integrados de Gestión Empresaria I"
+            },
+            {
+              "codigo": "81.68",
+              "correlativas": [
+                "81.11",
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Sistemas Integrados de Gestión I"
+            },
+            {
+              "codigo": "81.87",
+              "correlativas": [
+                "81.68"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Taller de Sistemas Integrados de Gestión Empresaria"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
     {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.28",
-       "nombre": "Tecnologías exponenciales",
-       "creditos": 3,
-       "creditosReq": 120,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.45",
-       "nombre": "Seminario de Actualización",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.55",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
+      "creditos": 6,
+      "nombre": "Electiva 81.52",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.52",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Negocios y Tecnología en Internet"
+            },
+            {
+              "codigo": "81.53",
+              "correlativas": [
+                "71.30",
+                "81.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Negocios en Internet"
+            },
+            {
+              "codigo": "81.54",
+              "correlativas": [
+                "71.30"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Aplicaciones en Internet"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
     {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.55",
-       "nombre": "Diagnóstico Empresario y Plan de Acción ( Trabajo Final )",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.97",
-       "nombre": "Diagnóstico Empresario y Plan de Acción ( Trabajo Final )",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.42",
-        "81.34"
-       ]
-      },
-      {
-       "codigo": "94.64",
-       "nombre": "Prácticas Expositivas",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electiva 81.56",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 6 créditos",
-   "creditos": 6,
-   "tipo": "creditos",
-   "secciones": [
+      "creditos": 3,
+      "nombre": "Electiva 94.41",
+      "requisito": "Juntar 3 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "94.27",
+              "correlativas": [
+                "61.87"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Administración de Recursos Humanos"
+            },
+            {
+              "codigo": "94.41",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Gestión de los Recursos Humanos"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
     {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.56",
-       "nombre": "Arquitectura de la Tecnología Informática",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.57",
-       "nombre": "Arquitectura de soluciones digitales",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.88",
-        "81.53"
-       ]
-      },
-      {
-       "codigo": "82.08",
-       "nombre": "Cloud Computing",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.57"
-       ]
-      }
-     ]
+      "creditos": 18,
+      "nombre": "Ciclo Profesional - Orientaciones",
+      "requisito": "Aprobar un item (suma 18 créditos)",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [],
+          "nombre": null
+        }
+      ],
+      "tipo": "uno",
+      "tituloOtorgado": null
+    },
+    {
+      "creditos": 18,
+      "nombre": "Comercio Internacional",
+      "requisito": "Aprobar todos los items (suma 18 créditos)",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "61.92",
+              "correlativas": [
+                "81.26",
+                "61.87"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Derecho Aduanero"
+            },
+            {
+              "codigo": "81.71",
+              "correlativas": [
+                "81.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Marketing avanzado"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "todos",
+      "tituloOtorgado": "Comercio Internacional"
+    },
+    {
+      "creditos": 6,
+      "nombre": "Electiva 61.40",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "61.14",
+              "correlativas": [
+                "61.82",
+                "61.12"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Economía Internacional Real"
+            },
+            {
+              "codigo": "61.15",
+              "correlativas": [
+                "61.14"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Economía Internacional Monetaria"
+            },
+            {
+              "codigo": "61.40",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Economía y Finanzas Internacionales"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
+    {
+      "creditos": 6,
+      "nombre": "Electiva 81.64",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.64",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión y Sistemas de Información de la Logística Internacional"
+            },
+            {
+              "codigo": "81.65",
+              "correlativas": [
+                "11.83",
+                "81.26"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Logística Internacional"
+            },
+            {
+              "codigo": "81.66",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Logística Internacional Aplicada"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
+    {
+      "creditos": 18,
+      "nombre": "Sistemas de Información",
+      "requisito": "Aprobar todos los items (suma 18 créditos)",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.38",
+              "correlativas": [
+                "71.29",
+                "71.30",
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Integración de Procesos de Negocios y Aplicaciones Informáticas"
+            },
+            {
+              "codigo": "81.46",
+              "correlativas": [
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Auditoría General y de Sistemas"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "todos",
+      "tituloOtorgado": "Sistemas de Información"
+    },
+    {
+      "creditos": 6,
+      "nombre": "Electiva 81.60",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.58",
+              "correlativas": [
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Service Design"
+            },
+            {
+              "codigo": "81.59",
+              "correlativas": [
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Gestión de Servicios"
+            },
+            {
+              "codigo": "81.60",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Sistemas Integrados de Gestión en la Industria de Servicios"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
+    {
+      "creditos": 6,
+      "nombre": "Electiva 81.61",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.34",
+              "correlativas": [
+                "81.57",
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Arquitectura empresarial"
+            },
+            {
+              "codigo": "81.61",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Modelado Avanzado de Procesos e Inteligencia de Negocios"
+            },
+            {
+              "codigo": "81.88",
+              "correlativas": [
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Taller de modelado Avanzado"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
+    {
+      "creditos": 33,
+      "nombre": "Ciclo Superior",
+      "requisito": "Aprobar todos los items (suma 33 créditos)",
+      "secciones": [
+        {
+          "anio": 4,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "10.09",
+              "correlativas": [
+                "94.40"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Formación para Emprendedores"
+            },
+            {
+              "codigo": "81.26",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Comercio Exterior"
+            }
+          ],
+          "nombre": "Año 4 - Cuatrimestre 1"
+        },
+        {
+          "anio": 4,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "81.23",
+              "correlativas": [
+                "81.53"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Comercio Electrónico"
+            },
+            {
+              "codigo": "94.91",
+              "correlativas": [
+                "94.90"
+              ],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Inglés II (licenciado)"
+            }
+          ],
+          "nombre": "Año 4 - Cuatrimestre 2"
+        }
+      ],
+      "tipo": "todos",
+      "tituloOtorgado": null
+    },
+    {
+      "creditos": 3,
+      "nombre": "Electiva 81.25",
+      "requisito": "Juntar 3 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.25",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Impuestos"
+            },
+            {
+              "codigo": "81.47",
+              "correlativas": [
+                "81.11",
+                "61.82",
+                "61.87"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Impuestos para la toma de decisiones I"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
+    {
+      "creditos": 6,
+      "nombre": "Electiva 81.41",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.41",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Estrategia Empresaria"
+            },
+            {
+              "codigo": "81.42",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 144,
+              "nombre": "Estrategia Empresarial"
+            },
+            {
+              "codigo": "81.43",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 144,
+              "nombre": "Ciclo de charlas sobre estrategia empresarial"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
+    {
+      "creditos": 3,
+      "nombre": "Electiva 81.45",
+      "requisito": "Juntar 3 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.28",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 120,
+              "nombre": "Tecnologías exponenciales"
+            },
+            {
+              "codigo": "81.45",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Seminario de Actualización"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
+    {
+      "creditos": 6,
+      "nombre": "Electiva 81.55",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.55",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Diagnóstico Empresario y Plan de Acción ( Trabajo Final )"
+            },
+            {
+              "codigo": "81.97",
+              "correlativas": [
+                "81.42",
+                "81.34"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Diagnóstico Empresario y Plan de Acción ( Trabajo Final )"
+            },
+            {
+              "codigo": "94.64",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Prácticas Expositivas"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
+    },
+    {
+      "creditos": 6,
+      "nombre": "Electiva 81.56",
+      "requisito": "Juntar 6 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.56",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Arquitectura de la Tecnología Informática"
+            },
+            {
+              "codigo": "81.57",
+              "correlativas": [
+                "71.88",
+                "81.53"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Arquitectura de soluciones digitales"
+            },
+            {
+              "codigo": "82.08",
+              "correlativas": [
+                "81.57"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Cloud Computing"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     }
-   ]
-  }
- ],
- "titulos": [
-  {
-   "tipo": "Intermedio",
-   "titulo": "Analista en Administración y Sistemas",
-   "requisitos": "Aprobar Ciclo Básico y sumar 141 créditos",
-   "creditos": 141
+  ],
+  "capturado": "2026-09-13",
+  "carrera": {
+    "codigo": "L",
+    "escuela": "Escuela de Gestión y Tecnología",
+    "nivel": "Grado",
+    "nombre": "Lic.en Administración y Sistemas"
   },
-  {
-   "tipo": "Orientación",
-   "titulo": "Comercio Internacional",
-   "requisitos": "Aprobar Comercio Internacional y sumar 51 créditos",
-   "creditos": 51
-  },
-  {
-   "tipo": "Principal",
-   "titulo": "Lic.en Administración y Sistemas",
-   "requisitos": "Aprobar L09T y sumar 192 créditos",
-   "creditos": 192
-  },
-  {
-   "tipo": "Orientación",
-   "titulo": "Sistemas de Información",
-   "requisitos": "Aprobar Sistemas de Información y sumar 51 créditos",
-   "creditos": 51
-  }
- ]
+  "plan": "L09T",
+  "planes": [
+    {
+      "desde": "Segundo Cuat. 2021",
+      "elegido": true,
+      "hasta": "Verano 2024",
+      "nombre": "L09T",
+      "version": "1"
+    },
+    {
+      "desde": "Primer Cuat. 2013",
+      "elegido": false,
+      "hasta": "",
+      "nombre": "L09-REV13",
+      "version": "1"
+    },
+    {
+      "desde": "Primer Cuat. 2009",
+      "elegido": false,
+      "hasta": "",
+      "nombre": "L09",
+      "version": "1"
+    }
+  ],
+  "titulos": [
+    {
+      "creditos": 141,
+      "requisitos": "Aprobar Ciclo Básico y sumar 141 créditos",
+      "tipo": "Intermedio",
+      "titulo": "Analista en Administración y Sistemas"
+    },
+    {
+      "creditos": 51,
+      "requisitos": "Aprobar Comercio Internacional y sumar 51 créditos",
+      "tipo": "Orientación",
+      "titulo": "Comercio Internacional"
+    },
+    {
+      "creditos": 192,
+      "requisitos": "Aprobar L09T y sumar 192 créditos",
+      "tipo": "Principal",
+      "titulo": "Lic.en Administración y Sistemas"
+    },
+    {
+      "creditos": 51,
+      "requisitos": "Aprobar Sistemas de Información y sumar 51 créditos",
+      "tipo": "Orientación",
+      "titulo": "Sistemas de Información"
+    }
+  ],
+  "vacio": false
 }

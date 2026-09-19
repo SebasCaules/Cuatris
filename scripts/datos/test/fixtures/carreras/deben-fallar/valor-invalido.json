@@ -1,0 +1,128 @@
+{
+  "bloques": [
+    {
+      "creditos": 147,
+      "nombre": "Ciclo Básico",
+      "requisito": "Aprobar todos los items (suma 147 créditos)",
+      "secciones": [
+        {
+          "anio": 1,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "93.58",
+              "correlativas": [],
+              "creditos": 9,
+              "creditosReq": 0,
+              "nombre": "Álgebra"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 1"
+        },
+        {
+          "anio": 1,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "72.31",
+              "correlativas": [
+                "93.58"
+              ],
+              "creditos": 9,
+              "creditosReq": 0,
+              "nombre": "Programación Imperativa"
+            },
+            {
+              "codigo": "93.28",
+              "correlativas": [
+                "93.58"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático II"
+            },
+            {
+              "codigo": "93.41",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Física I"
+            },
+            {
+              "codigo": "93.59",
+              "correlativas": [
+                "93.58"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Matemática Discreta"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 2"
+        },
+        {
+          "anio": 3,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "72.11",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Sistemas Operativos"
+            }
+          ],
+          "nombre": "Año 3 - Cuatrimestre 1"
+        }
+      ],
+      "tipo": "opcional",
+      "tituloOtorgado": "Analista en Tecnologia Informática"
+    }
+  ],
+  "capturado": "2026-09-13",
+  "carrera": {
+    "codigo": "S",
+    "escuela": "Escuela de Gestión y Tecnología",
+    "nivel": "Grado",
+    "nombre": "Ingeniería en Informática"
+  },
+  "plan": "S10-Rev23",
+  "planes": [
+    {
+      "desde": "Segundo Cuat. 2024",
+      "elegido": true,
+      "hasta": "Segundo Cuat. 2024",
+      "nombre": "S10-Rev23",
+      "version": "1"
+    },
+    {
+      "desde": "Segundo Cuat. 2018",
+      "elegido": false,
+      "hasta": "",
+      "nombre": "S10 - Rev18",
+      "version": "1"
+    },
+    {
+      "desde": "Segundo Cuat. 2018",
+      "elegido": false,
+      "hasta": "",
+      "nombre": "S10 A - Rev18",
+      "version": "1"
+    }
+  ],
+  "titulos": [
+    {
+      "creditos": 147,
+      "requisitos": "Aprobar Ciclo Básico y sumar 147 créditos",
+      "tipo": "Intermedio",
+      "titulo": "Analista en Tecnologia Informática"
+    },
+    {
+      "creditos": 243,
+      "requisitos": "Aprobar S10-Rev23 y sumar 243 créditos",
+      "tipo": "Principal",
+      "titulo": "Ingeniero/a en Informática"
+    }
+  ],
+  "vacio": false
+}

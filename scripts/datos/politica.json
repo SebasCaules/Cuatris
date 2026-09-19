@@ -1,0 +1,24 @@
+{
+  "_": "Umbrales del gate de datos (scripts/datos/): tamaños máximos por tipo de archivo y magnitud de cambio que decide la clase de un PR. Un solo archivo, bajo CODEOWNERS, para que nadie tenga que buscar los números dentro del código.",
+  "tamanos": {
+    "horarios": 4194304,
+    "carreras": 524288,
+    "indice": 65536,
+    "finales": 1048576,
+    "evidencia": 4194304,
+    "readme": 20480
+  },
+  "menor": {
+    "_": "datos-menor: se mergea solo apenas pasa el gate. Solo modificaciones de archivos que ya existen.",
+    "horarios": { "cursosTocados": 5, "cursosQuitados": 0 },
+    "carreras": { "archivos": 1, "materiasTocadas": 10 },
+    "finales": { "filasTocadas": 10 }
+  },
+  "mayor": {
+    "_": "datos-mayor: se mergea solo tras la ventana de espera. Archivos nuevos y modificaciones grandes pero acotadas.",
+    "horarios": { "fraccionDelArchivo": 0.5, "cursosQuitados": 5, "cursosDelPeriodoNuevo": [0.7, 1.3] },
+    "carreras": { "fraccionDelArchivo": 0.5 },
+    "finales": { "fraccionDelArchivo": 0.5 }
+  },
+  "esperaHoras": 72
+}
