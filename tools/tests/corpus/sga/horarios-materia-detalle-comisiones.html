@@ -1,0 +1,412 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0063)https://sga.itba.edu.ar/app2/fyBfZ9p6trMBioy7DSypEg/fyBce/y7Da5 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="description" content="Sistema de Gestión Académica">
+<meta name="keywords" content="academica, gestion">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="./horarios-materia-detalle-comisiones_files/bootstrap.css" type="text/css" rel="stylesheet">
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="./horarios-materia-detalle-comisiones_files/itba_bootstrap.css" type="text/css" rel="stylesheet">
+<script src="./horarios-materia-detalle-comisiones_files/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="./horarios-materia-detalle-comisiones_files/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="https://sga.itba.edu.ar/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://sga.itba.edu.ar/img/favicon.ico" type="image/x-icon">
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="./horarios-materia-detalle-comisiones_files/sVVa2"></script>
+<script type="text/javascript" src="./horarios-materia-detalle-comisiones_files/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="fyBfZ9p6trMBioy7DSypEg/fyBce/y7Da5";
+/*]]>*/
+</script>
+<script type="text/javascript">
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../fyBfZ9p6trNsVMrwV2gZ7FEHDhgW4hXhguOwHI37r55zTZmp7vTzPtYyVktGNN4i8A-VYNVLZsE/fyBce/VYNea',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id1bd'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+</head>
+<body>
+	<div id="id1be" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<!--[If !IE]--> <a href="https://sga.itba.edu.ar/app2/"><div class="logo"></div></a> <!--[endif]-->
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp;&nbsp;&nbsp;<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw7xTE8L4hod5x4iRUD6XLfwg/fyBce/NsVb0">[Salir]</a> <a id="id1bf" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw74Wg_gbj-vg7A__Ng4YvpdRS1xmMV-ajd9ySGVhuE5VJDpNiTu5w-mWlmp_1IPSmP8HepTP_nyLI/fyBce/5VJ98" class="" data-toggle=""><span>Inicio</span></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMBioy7DSypEg/fyBce/y7Da5#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw74Wg_gbj-vg7A__Ng4YvpdRS1xmMV-ajdCNsYZiZuOkfrifk5dY9BU4ubyv_996EQPsYcc0JwR96lJ-bVoWxIH1hR9_OAYEVcQUsdjmmLJ1iJjdMGZPO74N1hvJfyj7_BF6ieklMTgxU/fyBce/QTw03"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMBioy7DSypEg/fyBce/y7Da5#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw74Wg_gbj-vg7A__Ng4YvpdRS1xmMV-ajdO84oYs2rLKWHASM0ZJGmCR8GCD4SkWBlTOcU7-hynmGQI0oAUQ4Hf0kjrRzfiFiU9vBf4z2dnT1TGXKrcWVsysePTLG_YQD7z1WV8bs7YuE/fyBce/QTw03"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw74Wg_gbj-vg7A__Ng4YvpdRS1xmMV-ajdO84oYs2rLKWHASM0ZJGmCR8GCD4SkWBlTOcU7-hynmGQI0oAUQ4Hf0kjrRzfiFiU2RwGiPLEDJp-CgBDV24R4G2K0mszjJ6l9Cvvtc4oOqI/fyBce/QTw03"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw74Wg_gbj-vg7A__Ng4YvpdRS1xmMV-ajdO84oYs2rLKWHASM0ZJGmCR8GCD4SkWBlTOcU7-hynmGQI0oAUQ4Hf0kjrRzfiFiUHZI1ywYgMimArnh5LyX3UD4sfWFzK-NWZ8Zrjy_icSM/fyBce/QTw03"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw74Wg_gbj-vg7A__Ng4YvpdRS1xmMV-ajdO84oYs2rLKWHASM0ZJGmCR8GCD4SkWBlTOcU7-hynmGQI0oAUQ4Hf0kjrRzfiFiU6spCV79j6oCDwMgoCfHt4cwG2xqfi7KDyEuQXjl1Lgw/fyBce/QTw03"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMBioy7DSypEg/fyBce/y7Da5#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMBioy7DSypEg/fyBce/y7Da5#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw74Wg_gbj-vg7A__Ng4YvpdRS1xmMV-ajdGWneUQV6MEeUbPVaMxa1Gy5V2tlTOkG1pTFQOlQIM5ZBUasDu46jAL3PYI2wOBqHQoO2WCPx7o6bhMsDn8oAspNeFgtbxtKPI2IvkKXAYPE/fyBce/QTw03"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMBioy7DSypEg/fyBce/y7Da5#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw74Wg_gbj-vg7A__Ng4YvpdRS1xmMV-ajdzKJiYt9qWk_QxUf2WnO0W9D6S0yWQeYsLXutE_kZVomQVbo1StcNAi-XIIlP0NVbtS6m057T4r3H8uh6ZPBWe6sJDpoDSoMi1v8BijwCn1Y/fyBce/QTw03"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id1c0">
+  
+</div>
+			
+		<h3>
+			Detalle del curso
+		</h3>
+
+		<div class="backgroundBordered">
+			<div>
+				<div class="row bottomMargin5">
+					<div class="span3">
+						<label class="bold">Materia:</label>
+					</div>
+					<label>72.44 - Criptografía y Seguridad</label>
+				</div>
+				<div class="row bottomMargin5">
+					<div class="span3">
+						<label class="bold">Departamento:</label>
+					</div>
+					<label>Sistemas Digitales y Datos</label>
+				</div>
+				<div class="row bottomMargin5">
+					<div class="span3">
+						<label class="bold">Cuatrimestre:</label>
+					</div>
+					<div class="span2 noLeftMargin">
+						<span>Primer Cuat.</span> <span>2026</span>
+					</div>
+				</div>
+				<div id="id1c1" style="display:none"></div>
+				<br>
+				<div class="row bottomMargin5">
+					<div>
+						<span class="span3"></span>
+						&nbsp;&nbsp; 
+						
+					</div>
+				</div>
+				<br>
+				<div class="tabpanel4">
+<div class="tab-row">
+<ul class="nav nav-tabs">
+	<li class="tab0">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw7uxd7g1nbv6GPzoS1-uqr6dg75r-Mkv3RLkpSiX-0JuZPMW83mC5B-1xT21frdPMG/fyBce/Lkp10"><span>Plantel Docente</span></a>
+	</li><li class="active">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw7uxd7g1nbv6GPzoS1-uqr6dg75r-Mkv3RLkpSiX-0JuaP5-ssYr7yf8-dRAaLMfL9/fyBce/Lkp10"><span>Comisiones</span></a>
+	</li><li class="tab3">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw7uxd7g1nbv6GPzoS1-uqr6dg75r-Mkv3RLkpSiX-0JuZSDu6rgmEWPJkrBSNAzstt/fyBce/Lkp10"><span>Contenidos mínimos</span></a>
+	</li><li class="tab5 last">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trNsVMrwV2gZ7HZM4g8UQTw7uxd7g1nbv6GPzoS1-uqr6dg75r-Mkv3RLkpSiX-0Jub_gDNYalNGLVpuOaC_r1D5/fyBce/Lkp10"><span>Información de la materia</span></a>
+	</li>
+</ul>
+</div>
+<div class="tab-panel">
+		<div class="backgroundBordered" id="id1c2">
+			<h4>
+				<span>72.44</span> - <span>Criptografía y Seguridad</span>
+			</h4>
+			<table class="table table-bordered table-condensed table-hover">
+				<thead>
+					<tr class="blue">
+						<th class="centered">Comisión</th>
+						<th class="centered">Horarios</th>
+						<th class="centered">Profesores</th>
+						<th class="centered">Cupo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><label class="centered">S</label></td>
+						<td class="centered">
+							<div>
+								<span>Lunes</span>
+								<span>15:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id1c3">
+			Aula ITBA: <span>002R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id1c4">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id1c5" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Lunes</span>
+								<span>15:00</span> - <span>18:00</span>
+								<span><span>
+		<span id="id1c6">
+			Aula ITBA: <span>003R #----&gt; Sede Rectorado</span>
+		</span>
+		<span id="id1c7">
+			Aula externa: <span>Presencial</span>
+		</span>
+		<span id="id1c8" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div><div>
+								<span>Jueves</span>
+								<span>16:00</span> - <span>19:00</span>
+								<span><span>
+		<span id="id1c9" style="display:none"></span>
+		<span id="id1ca">
+			Aula externa: <span>Virtual sincrónico</span>
+		</span>
+		<span id="id1cb" style="display:none"></span>
+		
+	</span> <span></span></span>
+							</div>
+						</td>
+						<td class="centered">
+							<div><label>Suarez, Leandro Ariel</label></div><div><label>Abad, Pablo</label></div><div><label>Ramele, Rodrigo</label></div><div><label>Arias Roig, Ana Maria</label></div>
+						</td>
+						<td class="centered"><span>51</span>
+							/ <span>70</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<br>
+		<br>
+	</div>
+</div>
+			</div>
+		</div>
+
+	
+		</div>
+		<div id="id1bd"></div>
+	</div>
+
+
+</body></html>

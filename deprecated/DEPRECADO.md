@@ -38,3 +38,11 @@ Nada de esta carpeta se compila, se prueba ni se despliega. Los workflows de
 Lo que sí sigue teniendo valor de referencia y no está en el planner nuevo: el scraper del
 SGA (`tools/cuatris/sga/`, con sus hallazgos en `material-raw/02-sga/HALLAZGOS.md`) y el
 período real de horarios `data/v1/horarios/2026-2C.json` (461 cursos, contrato 1.1.0).
+
+**Lo que volvió a estar vivo (2026-09-19).** El scraper del SGA se promovió a `/tools/`
+(paquete `cuatris` con solo `sga` y `canon`, sin vendorización: las dependencias se instalan
+de PyPI) y es la herramienta mantenida para cargar cada cuatrimestre; la copia de acá queda
+congelada. El validador y el triage de los PR de datos (`tools/cuatris/validar/`) se
+reescribieron en Node en `/scripts/datos/`, y los workflows de `.github/` se rehicieron sobre
+el mismo modelo de amenazas (`docs/ci.md` sigue siendo la explicación larga). Las fixtures de
+horarios de `tests/fixtures/` se copiaron a `/scripts/datos/test/fixtures/`.

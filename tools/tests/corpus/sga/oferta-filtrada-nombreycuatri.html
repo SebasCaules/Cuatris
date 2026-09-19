@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0165)https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6dqhtRou-eaS-rD440sCJjg/L7E59/O9ab6/otdae -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="description" content="Sistema de Gestión Académica">
+<meta name="keywords" content="academica, gestion">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="./oferta-filtrada-nombreycuatri_files/bootstrap.css" type="text/css" rel="stylesheet">
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="./oferta-filtrada-nombreycuatri_files/itba_bootstrap.css" type="text/css" rel="stylesheet">
+<script src="./oferta-filtrada-nombreycuatri_files/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="./oferta-filtrada-nombreycuatri_files/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="https://sga.itba.edu.ar/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://sga.itba.edu.ar/img/favicon.ico" type="image/x-icon">
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="./oferta-filtrada-nombreycuatri_files/sVVa2"></script>
+<script type="text/javascript" src="./oferta-filtrada-nombreycuatri_files/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6dqhtRou-eaS-rD440sCJjg/L7E59/O9ab6/otdae";
+/*]]>*/
+</script>
+<script type="text/javascript">
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../../fyBfZ9p6trPd2JMLb_B3nkdfu9T1KONIfuqXkzlNBFgPgGf_aOKJtl5Ano_JmE_r45IZJPXg9Mo/fyBce/ZJPaf',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id19f'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+
+
+	<script type="text/javascript" id="org-apache-wicket-extensions-markup-html-repeater-data-table-filter-FilterToolbar-0">
+/*<![CDATA[*/
+
+
+	function _filter_focus(ctrl, trackerId) {
+		document.getElementById(trackerId).value=ctrl.id;
+	}
+	
+	function _filter_focus_restore(trackerId) {
+		var tracker=document.getElementById(trackerId);
+		if (tracker!=null) {
+			var focused=tracker.value;
+			if (focused!="") {
+				document.getElementById(focused).focus();
+			}
+		}
+	}
+	
+	
+/*]]>*/
+</script>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { _filter_focus_restore('id1a0focus');;});
+/*]]>*/
+</script>
+
+</head>
+<body>
+	<div id="id1a1" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<!--[If !IE]--> <a href="https://sga.itba.edu.ar/app2/"><div class="logo"></div></a> <!--[endif]-->
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp;&nbsp;&nbsp;<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaeGPvSws-nikDyQqUIj8bIQ/fyBce/Pd20d">[Salir]</a> <a id="id1a2" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaAIH5KrczFSKiOGvlgRx8RMHwPj7LzewIuklUHOR6B6BiWceKJfhSWgxlMJWGT1AFpul2HNuwl1Q/fyBce/B6Bdd" class="" data-toggle=""><span>Inicio</span></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6dqhtRou-eaS-rD440sCJjg/L7E59/O9ab6/otdae#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaAIH5KrczFSKiOGvlgRx8RMHwPj7LzewIQP2hWXkljr57H11dStKfhadU8WfXj-rctKtyMRXQ0oP7Trm5JvX8LLbGrRjkpDJ9vWs3AEpt8SW5nyinLHa9sBbY8iWBjDfN9T_okSBZShk/fyBce/cfua1"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6dqhtRou-eaS-rD440sCJjg/L7E59/O9ab6/otdae#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaAIH5KrczFSKiOGvlgRx8RMHwPj7LzewI0OLO6o9kCLIjPnEczGi_oBnOYhIqjkVC4pguydhBj-jPJYogHaqgjS9J-3FccftG8r90bnOVn7IwMChtdNihU2N6Nb5o1ElGTl6BdskBvl0/fyBce/cfua1"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaAIH5KrczFSKiOGvlgRx8RMHwPj7LzewI0OLO6o9kCLIjPnEczGi_oBnOYhIqjkVC4pguydhBj-jPJYogHaqgjS9J-3FccftG-biPYZ9BCg0k_kKIsTS3euqOze003O1jSXyDOENwxRw/fyBce/cfua1"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaAIH5KrczFSKiOGvlgRx8RMHwPj7LzewI0OLO6o9kCLIjPnEczGi_oBnOYhIqjkVC4pguydhBj-jPJYogHaqgjS9J-3FccftGakO371l1BUZR4cNa01W-IEcGY_mhSkbveL5mrbRCpIw/fyBce/cfua1"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaAIH5KrczFSKiOGvlgRx8RMHwPj7LzewI0OLO6o9kCLIjPnEczGi_oBnOYhIqjkVC4pguydhBj-jPJYogHaqgjS9J-3FccftGlS9iNt1YZ2ae3YRvn3X-O7BWWQJwwldwLAsCLpyGw8I/fyBce/cfua1"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6dqhtRou-eaS-rD440sCJjg/L7E59/O9ab6/otdae#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6dqhtRou-eaS-rD440sCJjg/L7E59/O9ab6/otdae#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaAIH5KrczFSKiOGvlgRx8RMHwPj7LzewIeTCrQ2pcE2zpTpQ0sge6EcSivvveNVK-7rIdeRvd3X0A1k1mj9Ocq5dei51TEbzyhacOSx4MNi_INFU6jeFfF2wwmng7ZAG3mIlkFW-_RFI/fyBce/cfua1"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6dqhtRou-eaS-rD440sCJjg/L7E59/O9ab6/otdae#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaAIH5KrczFSKiOGvlgRx8RMHwPj7LzewIYFPmWWdpfC5gvt_5DHifX-5LUYzef2werYgN-c9TgZlrK9gNuh45IzcYb7VRuGBU2DkBgYwdUbb09nLEaiqBUI7vrMnJlt7pAze0LGzCJ0A/fyBce/cfua1"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id1a3">
+  
+</div>
+			
+
+		<div class="row sticky-top">
+			<div class="span4 pull-right backgroundBordered">
+				
+				<div id="id1a4">
+			Nivel: 
+				<span>Grado</span>
+			<a id="id1a5" href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6dqhtRou-eaS-rD440sCJjg/L7E59/O9ab6/otdae#" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trPd2JMLb_B3nkdfu9T1KONIfuqXkzlNBFgwv6u236eWSpiUjaiPu9tFzmgiibqJSUqX5ctc-nvCwQ/fyBce/u9T8f&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1a5&#39;) != null;}.bind(this));return !wcall;">Editar</a>
+		</div>
+			</div>
+		</div>
+		
+		
+
+		
+
+		
+
+		
+
+		
+
+		<h3>
+			Cursos
+		</h3>
+
+		<div class="backgroundBordered">
+			<h4>
+				Listado de Cursos
+			</h4>
+			<div id="id1a6">
+		<div>
+	<div style="text-align:left;">
+	<strong>Referencias:</strong>
+	<span>
+		<span style="clear:none; padding-left:10px;">
+			<img src="./oferta-filtrada-nombreycuatri_files/lr039"> = 
+			<span>Ver Detalles</span>
+		</span> 
+	</span>
+	</div>
+</div>
+		<form id="id1a0" method="post" action="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nhba1zJjzvmLebAR08vP_Ne12s7NgjxiNJnrdmKGF7qUXmM4w-f5tRDUCVp_w2AyMA/fyBce/1zJb0"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="id1a0_hf_0" id="id1a0_hf_0"></div><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="text" autocomplete="off"><input type="submit" name="results:topToolbars:toolbars:3366:filters:12:filter:go" onclick=" var b=document.getElementById(&#39;id1a7&#39;); if (b!=null&amp;&amp;b.onclick!=null&amp;&amp;typeof(b.onclick) != &#39;undefined&#39;) {  var r = b.onclick.bind(b)(); if (r != false) b.click(); } else { b.click(); };  return false;"></div>
+			<table id="id1a8" class="table table-bordered table-condensed table-hover">
+
+<thead>
+	
+	<tr class="blue">
+		<td colspan="12">
+			
+		</td>
+	</tr>
+
+	<tr class="blue">
+		<td colspan="12">
+			<div class="navigatorLabel">
+				
+			</div>
+			<div class="navigator">
+				
+			</div>
+		</td>
+	</tr>
+
+	<tr class="headers">
+		
+			<th class="wicket_orderNone width5"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaZrHMnHvvJNrmXTTgKuHowcd5tII77XQ6sl4ghTujhnlObgdg_TEeIMlcPe4VjFRpkLolK7oWOQV2tC7jjT_q3QKqsAePAytZh8XEnQiJ7hVYjK-6-AVXk2jqY43yC3d-/fyBce/ZrHff" id="id1a9" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trPd2JMLb_B3nkdfu9T1KONIfuqXkzlNBFjupzzBS-9RIQM2xfogoYO820MnpA8knzSlYYWc-NW1NLBycEhmmFNy8egTSuVKoAvb2RqGpHXLL0EwFyz30KUtvcjICb6mLkzi0VHh94IC_RG_dMOgs1JY/fyBce/fuq41&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1a9&#39;) != null;}.bind(this));return !wcall;"><span>Cód.</span></a></th>
+		
+			<th class="wicket_orderUp width30"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaZrHMnHvvJNrmXTTgKuHowcd5tII77XQ6sl4ghTujhnlObgdg_TEeIMlcPe4VjFRpkLolK7oWOQV2tC7jjT_q3VBGxThGPMzRlU4GvgTvGo6uyNwFQAEVdwjSzJSscNsj/fyBce/ZrHff" id="id1aa" class="wicket_orderUp" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trPd2JMLb_B3nkdfu9T1KONIfuqXkzlNBFjupzzBS-9RIQM2xfogoYO820MnpA8knzSlYYWc-NW1NLBycEhmmFNy8egTSuVKoAvb2RqGpHXLL0EwFyz30KUtgg58NgJl6184BbAfy5OqVq19DIlNhjUF/fyBce/fuq41&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1aa&#39;) != null;}.bind(this));return !wcall;"><span>Materia</span></a></th>
+		
+			<th class="width10"><span>Nivel</span></th>
+		
+			<th class="wicket_orderNone width15"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaZrHMnHvvJNrmXTTgKuHowcd5tII77XQ6sl4ghTujhnlObgdg_TEeIMlcPe4VjFRpkLolK7oWOQV2tC7jjT_q3cFGxIwSbFnvq3vnyZE1zBNE6RSJU4FC9SxAkQY9-Nt-/fyBce/ZrHff" id="id1ab" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trPd2JMLb_B3nkdfu9T1KONIfuqXkzlNBFjupzzBS-9RIQM2xfogoYO820MnpA8knzSlYYWc-NW1NLBycEhmmFNy8egTSuVKoAvb2RqGpHXLL0EwFyz30KUtIFncyBPPSl2TJG2njRD5o5aRXf0Co8ic/fyBce/fuq41&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1ab&#39;) != null;}.bind(this));return !wcall;"><span>Departamento</span></a></th>
+		
+			<th class="wicket_orderNone width15"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaZrHMnHvvJNrmXTTgKuHowcd5tII77XQ6sl4ghTujhnlObgdg_TEeIMlcPe4VjFRpkLolK7oWOQV2tC7jjT_q3VM_8PTINqVY7wt_zpik5azdqkTwnosJNYBDUoEg74zF/fyBce/ZrHff" id="id1ac" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trPd2JMLb_B3nkdfu9T1KONIfuqXkzlNBFjupzzBS-9RIQM2xfogoYO820MnpA8knzSlYYWc-NW1NLBycEhmmFNy8egTSuVKoAvb2RqGpHXLL0EwFyz30KUtIvAlQzTm-ex7jBYyc5FfM3i5qEMMC4Sh/fyBce/fuq41&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1ac&#39;) != null;}.bind(this));return !wcall;"><span>Período</span></a></th>
+		
+			<th class="wicket_orderNone width5"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaZrHMnHvvJNrmXTTgKuHowcd5tII77XQ6sl4ghTujhnlObgdg_TEeIMlcPe4VjFRpkLolK7oWOQV2tC7jjT_q3a-DD1a9iJbysXCB6ngQQyeoSsQbvzAswaZQYoUdcJAT/fyBce/ZrHff" id="id1ad" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trPd2JMLb_B3nkdfu9T1KONIfuqXkzlNBFjupzzBS-9RIQM2xfogoYO820MnpA8knzSlYYWc-NW1NLBycEhmmFNy8egTSuVKoAvb2RqGpHXLL0EwFyz30KUtA2oFQid87owJktPKxJwKqNaulu0d0j2j/fyBce/fuq41&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1ad&#39;) != null;}.bind(this));return !wcall;"><span>Año</span></a></th>
+		
+			<th class="wicket_orderNone width5"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaZrHMnHvvJNrmXTTgKuHowcd5tII77XQ6sl4ghTujhnlObgdg_TEeIMlcPe4VjFRpkLolK7oWOQV2tC7jjT_q3en_sEVaDPjcWlbS380d0jSU0jfD8iElctjCL_xMquXD/fyBce/ZrHff" id="id1ae" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trPd2JMLb_B3nkdfu9T1KONIfuqXkzlNBFjupzzBS-9RIQM2xfogoYO820MnpA8knzSlYYWc-NW1NLBycEhmmFNy8egTSuVKoAvb2RqGpHXLL0EwFyz30KUtDImtW9hOL_kKDUdsHgYST-w-LgEZuwww/fyBce/fuq41&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1ae&#39;) != null;}.bind(this));return !wcall;"><span>Comienzo</span></a></th>
+		
+			<th class="wicket_orderNone width5"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaZrHMnHvvJNrmXTTgKuHowcd5tII77XQ6sl4ghTujhnlObgdg_TEeIMlcPe4VjFRpkLolK7oWOQV2tC7jjT_q3Z4TVK6kDQ7T5DxusHIyuaEY33WngdY77UKprzjnz5Un/fyBce/ZrHff" id="id1af" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trPd2JMLb_B3nkdfu9T1KONIfuqXkzlNBFjupzzBS-9RIQM2xfogoYO820MnpA8knzSlYYWc-NW1NLBycEhmmFNy8egTSuVKoAvb2RqGpHXLL0EwFyz30KUtKfuudkkgQgSbdpC6Nv7nYcYJiPshDz0q/fyBce/fuq41&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1af&#39;) != null;}.bind(this));return !wcall;"><span>Fin</span></a></th>
+		
+			<th class="wicket_orderNone width5"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaZrHMnHvvJNrmXTTgKuHowcd5tII77XQ6sl4ghTujhnlObgdg_TEeIMlcPe4VjFRpkLolK7oWOQV2tC7jjT_q3c9bvrhuJm2khI-mUGn3DC9_JHZAbKWmyq08vwp6Dl03/fyBce/ZrHff" id="id1b0" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trPd2JMLb_B3nkdfu9T1KONIfuqXkzlNBFjupzzBS-9RIQM2xfogoYO820MnpA8knzSlYYWc-NW1NLBycEhmmFNy8egTSuVKoAvb2RqGpHXLL0EwFyz30KUt90J7OPYbtzefdR113udf6-_Efi19z9vO/fyBce/fuq41&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1b0&#39;) != null;}.bind(this));return !wcall;"><span>Activo</span></a></th>
+		
+			<th class="width8"><span>Alumnos</span></th>
+		
+			<th class="wicket_orderNone width7"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaZrHMnHvvJNrmXTTgKuHowcd5tII77XQ6sl4ghTujhnlObgdg_TEeIMlcPe4VjFRpkLolK7oWOQV2tC7jjT_q3canH20Mh7-4utcWLeTM5pl330mmNyoePG4_xjgm0qGk/fyBce/ZrHff" id="id1b1" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trPd2JMLb_B3nkdfu9T1KONIfuqXkzlNBFjupzzBS-9RIQM2xfogoYO820MnpA8knzSlYYWc-NW1NLBycEhmmFNy8egTSuVKoAvb2RqGpHXLL0EwFyz30KUtkIERp29EA53sy5vVWat1p-TepmvPEHGLhMFj9EwdN0c/fyBce/KON29&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1b1&#39;) != null;}.bind(this));return !wcall;"><span>Nominada</span></a></th>
+		
+			<th><span>Acciones</span></th>
+		
+	</tr>
+
+	<tr class="filters-tr">
+		
+			<td class="filter-td"><input type="text" value="" name="results:topToolbars:toolbars:3366:filters:1:filter:filter" id="id1b2" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid" maxlength="10"></td>
+		
+			<td class="filter-td"><input type="text" value="cripto" name="results:topToolbars:toolbars:3366:filters:2:filter:filter" id="id1b3" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid" maxlength="50"></td>
+		
+			<td class="filter-td"><select name="results:topToolbars:toolbars:3366:filters:3:filter:filter" id="id1b4" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid">
+<option value="">Todos</option>
+<option value="0">Ingreso</option>
+<option selected="selected" value="1">Grado</option>
+<option value="2">Posgrado</option>
+<option value="3">Educación Ejecutiva</option>
+</select></td>
+		
+			<td class="filter-td"><input type="text" value="" name="results:topToolbars:toolbars:3366:filters:4:filter:filter" id="id1b5" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid" maxlength="50"></td>
+		
+			<td class="filter-td"><select name="results:topToolbars:toolbars:3366:filters:5:filter:filter" id="id1b6" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid">
+<option value="">Todos</option>
+<option selected="selected" value="0">Primer Cuat.</option>
+<option value="1">Segundo Cuat.</option>
+<option value="2">Verano</option>
+<option value="3">Especial</option>
+</select></td>
+		
+			<td class="filter-td"><input type="text" value="2026" name="results:topToolbars:toolbars:3366:filters:6:filter:filter" id="id1b7" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid"></td>
+		
+			<td class="filter-td">&nbsp;</td>
+		
+			<td class="filter-td">&nbsp;</td>
+		
+			<td class="filter-td">
+		<input type="checkbox" checked="checked" name="results:topToolbars:toolbars:3366:filters:9:filter:filter" class="valid">
+		</td>
+		
+			<td class="filter-td">&nbsp;</td>
+		
+			<td class="filter-td">&nbsp;</td>
+		
+			<td class="filter-td">
+			<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6dqhtRou-eaS-rD440sCJjg/L7E59/O9ab6/otdae#" onclick="var e=document.getElementById(&#39;id1a0_hf_0&#39;); e.name=&#39;results:topToolbars:toolbars:3366:filters:12:filter:go&#39;; e.value=&#39;x&#39;;var f=document.getElementById(&#39;id1a0&#39;);var ff=f;if (ff.onsubmit != undefined) { if (ff.onsubmit()==false) return false; }f.submit();e.value=&#39;&#39;;e.name=&#39;&#39;;return false;" title="Filtrar" alt="Filtrar"><img src="./oferta-filtrada-nombreycuatri_files/a_Yfa"></a>
+			<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaZrHMnHvvJNrmXTTgKuHowcd5tII77XQ6sl4ghTujhnlObgdg_TEeIMlcPe4VjFRpkLolK7oWOQWvAFIQJzV_vzz10juQgHjn5K0i8JLQPJuIkR1OTai_HA/fyBce/1OTd5" title="Limpiar" alt="Limpiar"><img src="./oferta-filtrada-nombreycuatri_files/a_Yfa(1)"></a>
+		</td>
+		
+	</tr>
+
+</thead>
+
+<tbody>
+	<tr class="even">
+		<td class="width5">
+			<span>72.44</span>
+		</td><td class="width30">
+			<span>Criptografía y Seguridad</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Sistemas Digitales y Datos</span>
+		</td><td class="width15">
+			<span>Primer Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>01/03/2026</span>
+		</td><td class="width5">
+			<span>25/07/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:47:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>51</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trPd2JMLb_B3nsVJ8hc-cfuaZrHMnHvvJNrmXTTgKuHowcd5tII77XQ6sl4ghTujhnk8aDNRDIIUcY5e3DTExK7ODQqX7b2n0xWdIW7PH-JP_NwLIaTL5TQaPOEaVGtoav0/fyBce/ODQab"><img src="./oferta-filtrada-nombreycuatri_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr>
+</tbody>
+</table>
+		<div style="display:inline"><input type="hidden" name="id1a0focus" id="id1a0focus" value="id1b6"></div></form>
+	</div>
+		</div>
+
+	
+	
+		</div>
+		<div id="id19f"></div>
+	</div>
+
+
+</body></html>

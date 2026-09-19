@@ -1,0 +1,1093 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0165)https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6lw29GyC4UP1Do6sBaDtLXQ/L7E59/O9ab6/otdae -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="description" content="Sistema de Gestión Académica">
+<meta name="keywords" content="academica, gestion">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+
+<!--[if gt IE 6]>
+<style type="text/css">
+/*<![CDATA[*/
+
+#header {
+	background: #4E7DD1 url('../img/menu_bg.gif') bottom left repeat-x;
+}
+
+
+/*]]>*/
+</style>
+<![endif]-->
+
+
+
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"/> -->
+<link href="./oferta-materias_files/bootstrap.css" type="text/css" rel="stylesheet">
+<!-- <link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> -->
+<link href="./oferta-materias_files/itba_bootstrap.css" type="text/css" rel="stylesheet">
+<script src="./oferta-materias_files/jquery-1.8.0.js" type="text/javascript"></script>
+<script src="./oferta-materias_files/bootstrap.js" type="text/javascript"></script>
+
+<link rel="icon" href="https://sga.itba.edu.ar/img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="https://sga.itba.edu.ar/img/favicon.ico" type="image/x-icon">
+<title>Sistema de Gestión Académica</title>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+
+		function refreshTabs() {
+  			var tabbedPanel = jQuery('div.tabpanel4');
+  			var tabrow = tabbedPanel.find('> div.tab-row');
+			var ul = tabrow.find('> ul');
+			ul.attr('class', 'nav nav-tabs');
+			var li = ul.find('> li.selected');
+			jQuery.each(li, function(index, tab) {
+				li.attr('class', 'active');
+			});
+		}
+		
+		jQuery(document).ready(function() {
+		  refreshTabs();
+		});
+	
+/*]]>*/
+</script>
+
+	<script type="text/javascript" id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-0">
+/*<![CDATA[*/
+
+		jQuery(document).ready(function() {
+			var menues = jQuery('li.dropdown');
+			jQuery.each(menues, function(key, menu) {
+				if (jQuery(menu).find('ul').length === 0) {
+					var a = jQuery(menu).find('a');
+					jQuery(a).attr('class', '');
+					jQuery(a).attr('data-toggle', '');
+					jQuery(a).find('b').remove();
+				}
+			});
+
+		});
+	
+/*]]>*/
+</script>
+	<script id="ar-edu-itba-it-dev-sga-web-wicket-template-NavMenuPanel-1">
+/*<![CDATA[*/
+
+		jQuery('.dropdown-toggle').dropdown()
+	
+/*]]>*/
+</script>
+<script type="text/javascript" src="./oferta-materias_files/sVVa2"></script>
+<script type="text/javascript" src="./oferta-materias_files/oU-c6"></script>
+<script type="text/javascript" id="wicket-ajax-base-url">
+/*<![CDATA[*/
+Wicket.Ajax.baseUrl="L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6lw29GyC4UP1Do6sBaDtLXQ/L7E59/O9ab6/otdae";
+/*]]>*/
+</script>
+<script type="text/javascript">
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { setTimeout("var wcall=wicketAjaxGet('../../../fyBfZ9p6trMO-jlEfg6R4fQppLuK-f6FUgSCdLtalAuliJuYoGqgNctV2Q53of80SRybEQ7a2Hk/fyBce/bEQcd',function() { }.bind(this),function() { }.bind(this), function() {var c = Wicket.$('id19f'); return typeof(c) != 'undefined' && c != null}.bind(this));", 1200000);;});
+/*]]>*/
+</script>
+
+
+	<script type="text/javascript" id="org-apache-wicket-extensions-markup-html-repeater-data-table-filter-FilterToolbar-0">
+/*<![CDATA[*/
+
+
+	function _filter_focus(ctrl, trackerId) {
+		document.getElementById(trackerId).value=ctrl.id;
+	}
+	
+	function _filter_focus_restore(trackerId) {
+		var tracker=document.getElementById(trackerId);
+		if (tracker!=null) {
+			var focused=tracker.value;
+			if (focused!="") {
+				document.getElementById(focused).focus();
+			}
+		}
+	}
+	
+	
+/*]]>*/
+</script>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+Wicket.Event.add(window, "load", function(event) { _filter_focus_restore('id1a0focus');;});
+/*]]>*/
+</script>
+
+</head>
+<body>
+	<div id="id1a1" style="display:none"></div>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="row headerMargin">
+				<div class="span headerLogo">
+				<!--[if gt IE 6]>
+				<a href="../../../../app2/"><div class="logoIE"></div></a>
+				<![endif]-->
+				<!--[If !IE]--> <a href="https://sga.itba.edu.ar/app2/"><div class="logo"></div></a> <!--[endif]-->
+				</div>
+				
+				<div class="span6 pull-right">
+					
+					<div>
+						
+							<div class="span6 pull-right loggedUser textRight">
+								<span>APELLIDO, NOMBRE</span>&nbsp;&nbsp;&nbsp;<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSnPB2kjWN-wbxqHd5sau8QQ/fyBce/MO-4a">[Salir]</a> <a id="id1a2" style="display:none"></a>
+							</div>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="row" id="content">
+			<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse subnav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQS-RsxR_osVkQt2hoN1TITkwh63IQi8hTFLHXQDmib6XFPLzyMgnBi7J_Scw9hIyqHmqNQhS1BBvM/fyBce/6XF93" class="" data-toggle=""><span>Inicio</span></a>
+	
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6lw29GyC4UP1Do6sBaDtLXQ/L7E59/O9ab6/otdae#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Encuestas</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQS-RsxR_osVkQt2hoN1TITkwh63IQi8hTFp1mk0SaKq_AyGyzQTSf_usKzeuc17z5K6Qz8gW15YVNoWYTsLLrsN6ZGwqoC685GJmrxHcT2vNrbA14yw106tUqaR4ML6rq2lg0vsttVPao/fyBce/vXQde"><span>General</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6lw29GyC4UP1Do6sBaDtLXQ/L7E59/O9ab6/otdae#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Académica</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQS-RsxR_osVkQt2hoN1TITkwh63IQi8hTF0smZ9hC18ZdVotINZkEpFx910Tr-xsWtqs6Bjc3ogzKvsEAF0jEXpaQ8ApFE7vSQFC_69xvchrsSEyuMorvyDwKxhYwjCtIt9uyH2s8i1W8/fyBce/vXQde"><span>Autoridades</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQS-RsxR_osVkQt2hoN1TITkwh63IQi8hTF0smZ9hC18ZdVotINZkEpFx910Tr-xsWtqs6Bjc3ogzKvsEAF0jEXpaQ8ApFE7vSQVIrtv_MOEb7faQqUDLNkMTWwarKK_V5_4enRKJepWe8/fyBce/vXQde"><span>Carreras</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQS-RsxR_osVkQt2hoN1TITkwh63IQi8hTF0smZ9hC18ZdVotINZkEpFx910Tr-xsWtqs6Bjc3ogzKvsEAF0jEXpaQ8ApFE7vSQrgLPmxbeB9JX_X8msAgB2oAsUiFCynbuuEwIOVnMc1E/fyBce/vXQde"><span>Cursos</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQS-RsxR_osVkQt2hoN1TITkwh63IQi8hTF0smZ9hC18ZdVotINZkEpFx910Tr-xsWtqs6Bjc3ogzKvsEAF0jEXpaQ8ApFE7vSQ8dCrPGJKT7zTZ7ZITodL_S1UeEfkD7iwrp1THJcPPaM/fyBce/vXQde"><span>Hoy en el ITBA</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6lw29GyC4UP1Do6sBaDtLXQ/L7E59/O9ab6/otdae#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Legajos</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pG7dKgYIOTeTGmUNKR0jusoZBxMRlBJS3-hae33eMQSD6ZIuqSsAPep/L7E59/e3344/SNb16"><span>Mi legajo</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6lw29GyC4UP1Do6sBaDtLXQ/L7E59/O9ab6/otdae#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Administración</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQS-RsxR_osVkQt2hoN1TITkwh63IQi8hTFnnNr4U3Z2IMzQDMJ80hjOLhcU1_MEpKcR9c89TZIxJLALAmP0Y9qSWIj0cU8J4aeZkTJc935tiaCZZyOWQYF_OCg9_Kg41lUnXBjHQhXnYA/fyBce/vXQde"><span>Ocupación de Aulas</span></a>
+
+		</li>
+	</ul>
+
+						</li><li class="dropdown">
+							<!-- 														<a href="#" 							class="dropdown-toggle" data-toggle="dropdown">link <b -->
+							<!-- 																class="caret"></b></a> -->
+
+							
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6lw29GyC4UP1Do6sBaDtLXQ/L7E59/O9ab6/otdae#" class="dropdown-toggle" data-toggle="dropdown"><span class="menu-has-submenu">Usuario</span><b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://ti.itba.edu.ar/chpassword/login.php"><span>Cambio de clave</span></a>
+
+		</li><li>
+	<!-- 	<a href="#" wicket:id="linkid" class="dropdown-toggle" -->
+	<!-- 		data-toggle="dropdown"><span wicket:id="linktext">Link -->
+	<!-- 			Text -->
+	<!-- 	</span></a> -->
+	<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQS-RsxR_osVkQt2hoN1TITkwh63IQi8hTFj-kW2AYdOJes7sWEP3srSyhGNFfqY4HB0Mr-HuFpIS43xf-jx1ULzBhXSqPSXXmI7iEk47Fp2QLETGpinqBTmGtht2ETm-knIvlL_o9aJWM/fyBce/vXQde"><span>Mensajes</span></a>
+
+		</li>
+	</ul>
+
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+			<div id="id1a3">
+  
+</div>
+			
+
+		<div class="row sticky-top">
+			<div class="span4 pull-right backgroundBordered">
+				
+				<div id="id1a4">
+			Nivel: 
+				<span>Grado</span>
+			<a id="id1a5" href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6lw29GyC4UP1Do6sBaDtLXQ/L7E59/O9ab6/otdae#" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trMO-jlEfg6R4fQppLuK-f6FUgSCdLtalAtlZlNGuanJbZKpsXP8YARJnypNdWa71OWmvg5CsGqEGA/fyBce/pLu08&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1a5&#39;) != null;}.bind(this));return !wcall;">Editar</a>
+		</div>
+			</div>
+		</div>
+		
+		
+
+		
+
+		
+
+		
+
+		
+
+		<h3>
+			Cursos
+		</h3>
+
+		<div class="backgroundBordered">
+			<h4>
+				Listado de Cursos
+			</h4>
+			<div id="id1a6">
+		<div>
+	<div style="text-align:left;">
+	<strong>Referencias:</strong>
+	<span>
+		<span style="clear:none; padding-left:10px;">
+			<img src="./oferta-materias_files/lr039"> = 
+			<span>Ver Detalles</span>
+		</span> 
+	</span>
+	</div>
+</div>
+		<form id="id1a0" method="post" action="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UDEU2dl-Watkr2J_xTq1zySU4nilv9XMUSJziIbfo-fPklCZZ6vYlrc8dIktCSTUw/fyBce/U2d36"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="id1a0_hf_0" id="id1a0_hf_0"></div><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="text" autocomplete="off"><input type="submit" name="results:topToolbars:toolbars:3366:filters:12:filter:go" onclick=" var b=document.getElementById(&#39;id1a7&#39;); if (b!=null&amp;&amp;b.onclick!=null&amp;&amp;typeof(b.onclick) != &#39;undefined&#39;) {  var r = b.onclick.bind(b)(); if (r != false) b.click(); } else { b.click(); };  return false;"></div>
+			<table id="id1a8" class="table table-bordered table-condensed table-hover">
+
+<thead>
+	
+	<tr class="blue">
+		<td colspan="12">
+			
+		</td>
+	</tr>
+
+	<tr class="blue">
+		<td colspan="12">
+			<div class="navigatorLabel">
+				<span>Página 1 a 20 de 472</span>
+			</div>
+			<div class="navigator">
+				<span>
+	<span class="first" title="Go to first page"><em>&lt;&lt;</em></span>
+	<span class="prev" title="Go to previous page"><em>&lt;</em></span>
+	<span class="goto">
+		<span title="Go to page 1"><em><span>1</span></em></span>
+	</span><span class="goto">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3CBUO1DKmrCNdwY8bRKarU2arJ9miz3xI_9ZEUkWtZ2VA_Wc7ygCK3xGwi-SlBG4g/fyBce/vXQde" title="Go to page 2"><span>2</span></a>
+	</span><span class="goto">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3CBUO1DKmrCNdwY8bRKarU2arJ9miz3xKdC6Sr547NC5Jh0v0BGBV64QTRambffMg/fyBce/vXQde" title="Go to page 3"><span>3</span></a>
+	</span><span class="goto">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3CBUO1DKmrCNdwY8bRKarU2arJ9miz3xLpSwN6HUa1IlC3RznAWzRdibzkQvzZ7vg/fyBce/vXQde" title="Go to page 4"><span>4</span></a>
+	</span><span class="goto">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3CBUO1DKmrCNdwY8bRKarU2arJ9miz3xLF5JttP-jNzE0RF8pR_G8Jkqp5YKUWBJA/fyBce/vXQde" title="Go to page 5"><span>5</span></a>
+	</span><span class="goto">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3CBUO1DKmrCNdwY8bRKarU2arJ9miz3xIYnFSEosWSC0MGdQ8rEUMRZjr2GQmMJjw/fyBce/vXQde" title="Go to page 6"><span>6</span></a>
+	</span><span class="goto">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3CBUO1DKmrCNdwY8bRKarU2arJ9miz3xJ6Iyni2t2wxhPdDn5wljvGx4ZldUQuIk0/fyBce/vXQde" title="Go to page 7"><span>7</span></a>
+	</span><span class="goto">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3CBUO1DKmrCNdwY8bRKarU2arJ9miz3xLuKtYtmJV7Kkds-KY1CAlXPtAKkXjoZDc/fyBce/vXQde" title="Go to page 8"><span>8</span></a>
+	</span><span class="goto">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3CBUO1DKmrCNdwY8bRKarU2arJ9miz3xL93LyLpLLQrTvbOHZb9rChaF4yYMVmhGo/fyBce/vXQde" title="Go to page 9"><span>9</span></a>
+	</span><span class="goto">
+		<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3CBUO1DKmrCNdwY8bRKarU2arJ9miz3xIe95ZyPKs2tKOalRsFsIiHOrXSsr7clM8/fyBce/vXQde" title="Go to page 10"><span>10</span></a>
+	</span>
+	<a class="next" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3CBUO1DKmrCNdwY8bRKarUKUANCmr1qJ0I6wLIrURa5w/fyBce/LIrd4" title="Go to next page">&gt;</a>
+	<a class="last" href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3CBUO1DKmrCNdwY8bRKarUyK3_FJrJw2af8Cxg5iMHdQ/fyBce/xg5c5" title="Go to last page">&gt;&gt;</a>
+</span>
+			</div>
+		</td>
+	</tr>
+
+	<tr class="headers">
+		
+			<th class="wicket_orderNone width5"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB00PBFnzuiCxmq9oqdA_E2cBKTOxh4LI4D3fVqkC1Q_0-82NgNnXuLr/fyBce/DnN73" id="id1a9" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trMO-jlEfg6R4fQppLuK-f6FUgSCdLtalAu6DmLonelys4gcU5VJ1biwxm7-GkVdEC19lU99J8qoLLOxfXn-LkgQYn34HwlOWDqCU_LkXQn9DNkNeYAZRQlO-dAdutZWvku24W0y0zOmBhui0zibMFze/fyBce/UgSe0&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1a9&#39;) != null;}.bind(this));return !wcall;"><span>Cód.</span></a></th>
+		
+			<th class="wicket_orderUp width30"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB00PBFnzuiCxqLEcISj8zPnCKXyktcNPd6O2l3fnrzoLqvJU0FY5azx/fyBce/DnN73" id="id1aa" class="wicket_orderUp" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trMO-jlEfg6R4fQppLuK-f6FUgSCdLtalAu6DmLonelys4gcU5VJ1biwxm7-GkVdEC19lU99J8qoLLOxfXn-LkgQYn34HwlOWDqCU_LkXQn9DNkNeYAZRQlOkRNgQXzRvv-kBucy-OGWrs0QfvmgwPcW/fyBce/UgSe0&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1aa&#39;) != null;}.bind(this));return !wcall;"><span>Materia</span></a></th>
+		
+			<th class="width10"><span>Nivel</span></th>
+		
+			<th class="wicket_orderNone width15"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB00PBFnzuiCxoRzg3yU6Cu4dHOLcey5gu4p7AKRp1QiVxFq-eYccBk-/fyBce/DnN73" id="id1ab" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trMO-jlEfg6R4fQppLuK-f6FUgSCdLtalAu6DmLonelys4gcU5VJ1biwxm7-GkVdEC19lU99J8qoLLOxfXn-LkgQYn34HwlOWDqCU_LkXQn9DNkNeYAZRQlO7_4-RqcasFK66dYQDv_F0bHR0e0LRUz2/fyBce/UgSe0&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1ab&#39;) != null;}.bind(this));return !wcall;"><span>Departamento</span></a></th>
+		
+			<th class="wicket_orderNone width15"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB00PBFnzuiCxnHMvrAwcyz13muCwpLLpDMBSPjGrR6EnP-AQe_Y32MI/fyBce/DnN73" id="id1ac" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trMO-jlEfg6R4fQppLuK-f6FUgSCdLtalAu6DmLonelys4gcU5VJ1biwxm7-GkVdEC19lU99J8qoLLOxfXn-LkgQYn34HwlOWDqCU_LkXQn9DNkNeYAZRQlOaMIpmxnnbPFNt9v6qYRIVW83ct0bvvBt/fyBce/UgSe0&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1ac&#39;) != null;}.bind(this));return !wcall;"><span>Período</span></a></th>
+		
+			<th class="wicket_orderNone width5"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB00PBFnzuiCxk_zG8lGWbGaHnovgHf2N-pmLgqU_2QGEm5S6WfUacG1/fyBce/DnN73" id="id1ad" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trMO-jlEfg6R4fQppLuK-f6FUgSCdLtalAu6DmLonelys4gcU5VJ1biwxm7-GkVdEC19lU99J8qoLLOxfXn-LkgQYn34HwlOWDqCU_LkXQn9DNkNeYAZRQlOojBydWcbECJDL_6Fxjb-lGwVYIGOhKXF/fyBce/UgSe0&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1ad&#39;) != null;}.bind(this));return !wcall;"><span>Año</span></a></th>
+		
+			<th class="wicket_orderNone width5"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB00PBFnzuiCxkB31Glv8SxiEXOx1_Q4aGeMC_N0ku3jhLQYoukn0y0b/fyBce/DnN73" id="id1ae" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trMO-jlEfg6R4fQppLuK-f6FUgSCdLtalAu6DmLonelys4gcU5VJ1biwxm7-GkVdEC19lU99J8qoLLOxfXn-LkgQYn34HwlOWDqCU_LkXQn9DNkNeYAZRQlO8h--WapsuFTaAASc-MEL2wi49HG1f5U9/fyBce/UgSe0&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1ae&#39;) != null;}.bind(this));return !wcall;"><span>Comienzo</span></a></th>
+		
+			<th class="wicket_orderNone width5"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB00PBFnzuiCxgxqH1Ld3KSNK9MMptdx4gfshRjHsY3Yv58nIU_bc2t7/fyBce/DnN73" id="id1af" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trMO-jlEfg6R4fQppLuK-f6FUgSCdLtalAu6DmLonelys4gcU5VJ1biwxm7-GkVdEC19lU99J8qoLLOxfXn-LkgQYn34HwlOWDqCU_LkXQn9DNkNeYAZRQlOqNVANUHdtzPpYe5Z5LfIFUO5YfJeRSdg/fyBce/UgSe0&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1af&#39;) != null;}.bind(this));return !wcall;"><span>Fin</span></a></th>
+		
+			<th class="wicket_orderNone width5"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB00PBFnzuiCxj0TOGLuPAL8QcRyhUkec2D5_JbSOEI4062WBJHvxjH_/fyBce/DnN73" id="id1b0" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trMO-jlEfg6R4fQppLuK-f6FUgSCdLtalAu6DmLonelys4gcU5VJ1biwxm7-GkVdEC19lU99J8qoLLOxfXn-LkgQYn34HwlOWDqCU_LkXQn9DNkNeYAZRQlOC3Opx9AQK3lRJN-ZyH5Ss1Iep5dfEixS/fyBce/UgSe0&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1b0&#39;) != null;}.bind(this));return !wcall;"><span>Activo</span></a></th>
+		
+			<th class="width8"><span>Alumnos</span></th>
+		
+			<th class="wicket_orderNone width7"><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB00PBFnzuiCxmVr7OtmBWEBzBkBcest1bqrQvQVclKHMYI7q3T_-yWu/fyBce/DnN73" id="id1b1" class="wicket_orderNone" onclick="var wcall=wicketAjaxGet(&#39;../../../fyBfZ9p6trMO-jlEfg6R4fQppLuK-f6FUgSCdLtalAu6DmLonelys4gcU5VJ1biwxm7-GkVdEC19lU99J8qoLLOxfXn-LkgQYn34HwlOWDqCU_LkXQn9DNkNeYAZRQlOkLLSKk2eSoMaSADc_04Bz6ZPxM1daDBIwS-6jh6FjGs/fyBce/-f66c&#39;,function() { }.bind(this),function() { }.bind(this), function() {return Wicket.$(&#39;id1b1&#39;) != null;}.bind(this));return !wcall;"><span>Nominada</span></a></th>
+		
+			<th><span>Acciones</span></th>
+		
+	</tr>
+
+	<tr class="filters-tr">
+		
+			<td class="filter-td"><input type="text" value="" name="results:topToolbars:toolbars:3366:filters:1:filter:filter" id="id1b2" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid" maxlength="10"></td>
+		
+			<td class="filter-td"><input type="text" value="" name="results:topToolbars:toolbars:3366:filters:2:filter:filter" id="id1b3" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid" maxlength="50"></td>
+		
+			<td class="filter-td"><select name="results:topToolbars:toolbars:3366:filters:3:filter:filter" id="id1b4" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid">
+<option value="">Todos</option>
+<option value="0">Ingreso</option>
+<option selected="selected" value="1">Grado</option>
+<option value="2">Posgrado</option>
+<option value="3">Educación Ejecutiva</option>
+</select></td>
+		
+			<td class="filter-td"><input type="text" value="" name="results:topToolbars:toolbars:3366:filters:4:filter:filter" id="id1b5" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid" maxlength="50"></td>
+		
+			<td class="filter-td"><select name="results:topToolbars:toolbars:3366:filters:5:filter:filter" id="id1b6" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid">
+<option value="">Todos</option>
+<option value="0">Primer Cuat.</option>
+<option selected="selected" value="1">Segundo Cuat.</option>
+<option value="2">Verano</option>
+<option value="3">Especial</option>
+</select></td>
+		
+			<td class="filter-td"><input type="text" value="2026" name="results:topToolbars:toolbars:3366:filters:6:filter:filter" id="id1b7" onfocus="_filter_focus(this, &#39;id1a0focus&#39;);" style="width:100%" class="valid"></td>
+		
+			<td class="filter-td">&nbsp;</td>
+		
+			<td class="filter-td">&nbsp;</td>
+		
+			<td class="filter-td">
+		<input type="checkbox" checked="checked" name="results:topToolbars:toolbars:3366:filters:9:filter:filter" class="valid">
+		</td>
+		
+			<td class="filter-td">&nbsp;</td>
+		
+			<td class="filter-td">&nbsp;</td>
+		
+			<td class="filter-td">
+			<a href="https://sga.itba.edu.ar/app2/L7ExSNbPC4sb6TPJDblCApV28_TV0rSO9auoWx8mJndaDLR_xeZ86GesasHvBscoQIl0NrMY4pFjMp3fr-O6GXotdqoZDnD6lw29GyC4UP1Do6sBaDtLXQ/L7E59/O9ab6/otdae#" onclick="var e=document.getElementById(&#39;id1a0_hf_0&#39;); e.name=&#39;results:topToolbars:toolbars:3366:filters:12:filter:go&#39;; e.value=&#39;x&#39;;var f=document.getElementById(&#39;id1a0&#39;);var ff=f;if (ff.onsubmit != undefined) { if (ff.onsubmit()==false) return false; }f.submit();e.value=&#39;&#39;;e.name=&#39;&#39;;return false;" title="Filtrar" alt="Filtrar"><img src="./oferta-materias_files/a_Yfa"></a>
+			<a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjcNpIGVQfGHZvQbBdjaM-pkGLQMlOkgB3weAjjhlKc-MrO3JkkyWiphoHz-eAqt-xM_5LeoCSgcQ/fyBce/Leof5" title="Limpiar" alt="Limpiar"><img src="./oferta-materias_files/a_Yfa(1)"></a>
+		</td>
+		
+	</tr>
+
+</thead>
+
+<tbody>
+	<tr class="even">
+		<td class="width5">
+			<span>30.28</span>
+		</td><td class="width30">
+			<span>Accionamientos Industriales</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Ambiente y Movilidad</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:21:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>3</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOokV4YLlWm4iddvonNLD0tzmyj5ypkTMQ4e8m0mTnzs0P3i6EuMeZFAI/fyBce/ddve5"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width5">
+			<span>23.05</span>
+		</td><td class="width30">
+			<span>Acústica para Ingenieros</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Sistemas Digitales y Datos</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:22:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>3</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOov9irDPSW0_jbpMhwhL6fD8LLz5LpLHzSUCrp-cPtRQ1GZOgUVTH2dQ/fyBce/jbp47"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width5">
+			<span>25.66</span>
+		</td><td class="width30">
+			<span>Acústica para Ingenieros</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Sistemas Digitales y Datos</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:23:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>0</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOonIDAQwb3VMVg8NC1xmKv1uGrn67pEGZf3bUwIu3C89oNIU0srnUW_w/fyBce/Vg866"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width5">
+			<span>94.27</span>
+		</td><td class="width30">
+			<span>Administración de Recursos Humanos</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Economía y Negocios</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:24:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>71</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOomj8jCptv4bE-CwiMLdosN3IAG5pvAK9QdOxnUrQQetv59cUldWRDd4/fyBce/E-C1a"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width5">
+			<span>15.09</span>
+		</td><td class="width30">
+			<span>Agile, Lean y Lean Six Sigma</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Sistemas Complejos y Energía</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>18/09/2026</span>
+		</td><td class="width5">
+			<span>16/10/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:25:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>5</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOokG8vZHFNJ3QvtDggtbIU8h2rcTZg-UNDIjTdCO_HaperV2Ylgce6uw/fyBce/Qvt3e"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width5">
+			<span>10.23</span>
+		</td><td class="width30">
+			<span>Agroindustria II</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Sistemas Complejos y Energía</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:26:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>47</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOouOpdZqvp-MfFhSdGtTf3X46qKyLgQv3GMw0YPXiy98Ih5WK3djUHQ8/fyBce/fFh97"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width5">
+			<span>17.20</span>
+		</td><td class="width30">
+			<span>Agua y Efluentes Líquidos</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Ambiente y Movilidad</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:27:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>2</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOol17FJS9EHxPIogOkkAZzXeyedNrS2n__AGSmSuyEbf_kYtvgrD59Ec/fyBce/PIo55"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width5">
+			<span>31.73</span>
+		</td><td class="width30">
+			<span>Aire Acondicionado y Refrigeración</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Ambiente y Movilidad</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:28:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>2</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOoo7WmK9SeK8V05ZS9QTMSDC8RiUcf63CMogTsdxkacd6ShqFgLxFtYk/fyBce/V054a"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width5">
+			<span>93.21</span>
+		</td><td class="width30">
+			<span>Álgebra</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Ciencias Exactas y Naturales</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:29:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>31</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOoqv3OKRCw4VPiy2MpPQJmKJ2ZHCk6U5YKUmo_Mazv_ZuGy16bDhQhE0/fyBce/Piy3f"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width5">
+			<span>93.58</span>
+		</td><td class="width30">
+			<span>Álgebra</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Ciencias Exactas y Naturales</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:30:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>88</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOor7aveysbC8j4Hfc-U5cpgN8TE8NVgpmigMIXjB63x3KiXQy64iTlOA/fyBce/j4Had"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width5">
+			<span>93.18</span>
+		</td><td class="width30">
+			<span>Álgebra Lineal</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Ciencias Exactas y Naturales</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:31:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>390</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOotw23WKDtSQzt14z1Dkg2hXSJCM0y49VwZCw7ABLbVUQj4Doz7k-Ogg/fyBce/zt166"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width5">
+			<span>25.03</span>
+		</td><td class="width30">
+			<span>Algoritmos y Estructuras de Datos</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Sistemas Digitales y Datos</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:32:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>23</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOorKhYH4q5HKRn22mWpvyGCQRKfrwdOeXKQ7lnZIp-QVo7MaC6PQiwrM/fyBce/Rn225"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width5">
+			<span>16.93</span>
+		</td><td class="width30">
+			<span>Análisis crítico de evidencia en bioingeniería</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Ciencias de la Vida</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>06/08/2026</span>
+		</td><td class="width5">
+			<span>14/09/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:33:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>3</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOohrAPKsNosZl3TpKZ-pSKn0KSseBx-g68noAwnFNQN1fOU38grJRsxQ/fyBce/l3Tcc"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width5">
+			<span>61.27</span>
+		</td><td class="width30">
+			<span>Análisis de Coyuntura Económica</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Economía y Negocios</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:34:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>146</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOol90TfTc3qIHX4v1FAWJacHe72boPAfe7kcV3Wk6XOHih4EICNsNVbk/fyBce/HX4d3"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width5">
+			<span>73.70</span>
+		</td><td class="width30">
+			<span>Análisis de datos en neurociencias</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Sistemas Digitales y Datos</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:35:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>6</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOosOqQ4_RmCj77kr2t6a8gdNvtZ_LQdmjIH5wReIFCcVDS0uAtHcuQYA/fyBce/77k4a"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width5">
+			<span>25.20</span>
+		</td><td class="width30">
+			<span>Análisis de Señales y Sistemas Digitales</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Sistemas Digitales y Datos</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:36:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>17</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOoiaYDfFg9xDaweBVvlCGRHtViHxoc015ylNHYShJYDk63KQPaaNwNBM/fyBce/awe6e"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width5">
+			<span>73.67</span>
+		</td><td class="width30">
+			<span>Análisis de series de tiempo con Inteligencia Artificial</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Sistemas Digitales y Datos</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>06/08/2026</span>
+		</td><td class="width5">
+			<span>03/09/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:37:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>3</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOorv0GqF6Or0eKlD3wdQNXi71_1safYzaWHjbuxeZEYWwGzJbfk581lk/fyBce/eKle5"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width5">
+			<span>67.08</span>
+		</td><td class="width30">
+			<span>Análisis Estructural</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Ambiente y Movilidad</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:38:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>3</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOorzd8rflixcsf9L6GTk_r0xkbgPZdJFkT3k3kWmlL96vYZLY_IxVtJk/fyBce/sf975"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="even">
+		<td class="width5">
+			<span>81.32</span>
+		</td><td class="width30">
+			<span>Análisis funcional de aplicaciones informáticas</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Economía y Negocios</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:39:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>22</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOoogU0v610Sks4caRxYTagpQkQKPXy7az27UbFLMRYLULnaavQVdFIRw/fyBce/s4c71"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr><tr class="odd">
+		<td class="width5">
+			<span>93.20</span>
+		</td><td class="width30">
+			<span>Análisis Matemático</span>
+		</td><td class="width10">
+			<span>Grado</span>
+		</td><td class="width15">
+			<span>Ciencias Exactas y Naturales</span>
+		</td><td class="width15">
+			<span>Segundo Cuat.</span>
+		</td><td class="width5">
+			<span>2026</span>
+		</td><td class="width5">
+			<span>26/07/2026</span>
+		</td><td class="width5">
+			<span>31/12/2026</span>
+		</td><td class="width5">
+			<span>
+	<input type="checkbox" checked="checked" name="results:body:rows:40:cells:9:cell:checkbox" disabled="disabled" class="valid">
+</span>
+		</td><td class="width8">
+			<span>31</span>
+		</td><td class="width7">
+			<span>No</span>
+		</td><td align="center">
+			<span>
+	<span><a href="https://sga.itba.edu.ar/app2/fyBfZ9p6trMO-jlEfg6R4UtJQjNXvXQSDnNdU-iqh_7uUZk1cH1VHtVI9Gnh9ONoiTvFQ5quPzjmo3-le-tOojSkTF-QKfuEcIjdViIzqVLGWSIJim44pR9SoBgVcp0aYpDEE75AT_o/fyBce/EcI0a"><img src="./oferta-materias_files/lr039" title="Ver Detalles" alt="Detalles"></a></span><span></span><span></span><span></span>
+</span>
+		</td>
+	</tr>
+</tbody>
+</table>
+		<div style="display:inline"><input type="hidden" name="id1a0focus" id="id1a0focus" value=""></div></form>
+	</div>
+		</div>
+
+	
+	
+		</div>
+		<div id="id19f"></div>
+	</div>
+
+
+</body></html>
