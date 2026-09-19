@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 
 import { revisarIndiceDeCarreras, revisarPlanDeCarrera } from "../carreras.mjs";
 import { revisarFinales } from "../finales.mjs";
-import { cargarJson, claveDuplicada, profundidadDelTexto, serializar } from "../forma.mjs";
+import { cargarJson, claveDuplicada, profundidadDelTexto, revisarBytes, serializar } from "../forma.mjs";
 import { revisarHorarios } from "../horarios.mjs";
 import { ERROR, hayErrores } from "../reporte.mjs";
 import { POLITICA, listarDatos, tipoDeArchivo, validar } from "../validar.mjs";
@@ -168,9 +168,19 @@ test("finales: cada fixture negativa dispara la regla de su nombre", () => {
 });
 
 test("finales: CRLF, fecha ilegible y hora ilegible son avisos", () => {
-  const h = finales("finales/avisos", "finales-2026-diciembre.csv");
+  // El CRLF se arma en memoria: git normaliza los finales de línea de las fixtures.
+  const texto = readFileSync(path.join(FIXTURES, "finales/avisos/finales-2026-diciembre.csv"), "utf8");
+  const h = revisarFinales(Buffer.from(texto.replace(/\n/g, "\r\n")), "finales-2026-diciembre.csv", "x", POLITICA.tamanos.finales);
   assert.deepEqual(errores(h), []);
   assert.deepEqual(avisos(h).sort(), ["crlf", "finales-fecha", "finales-hora", "finales-pocas-filas"]);
+});
+
+test("forma: CRLF es error en un JSON (se arma en memoria, git normaliza las fixtures)", () => {
+  const texto = readFileSync(path.join(FIXTURES, "horarios/deben-pasar/casos-raros.json"), "utf8");
+  const h = revisarBytes(Buffer.from(texto.replace(/\n/g, "\r\n")), "x", POLITICA.tamanos.horarios);
+  assert.deepEqual(errores(h), ["crlf"]);
+  assert.deepEqual(revisarBytes(Buffer.from(texto), "x", POLITICA.tamanos.horarios), []);
+  assert.deepEqual(errores(revisarBytes(Buffer.from(texto), "x", 100)), ["tamano"]);
 });
 
 // ---- validar(): el directorio entero ------------------------------------------------
