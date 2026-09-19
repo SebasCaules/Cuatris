@@ -12545,39 +12545,6 @@
       "nombre": "Astrodinámica y misiones espaciales"
     },
     {
-      "codigo": "34.98",
-      "comisiones": [
-        {
-          "bloques": [
-            {
-              "aulas": [
-                "101T"
-              ],
-              "desde": "16:00",
-              "dia": "jueves",
-              "hasta": "19:00",
-              "modalidad": "presencial",
-              "sede": "sdt"
-            }
-          ],
-          "cupo": {
-            "capacidad": 24
-          },
-          "docentes": [],
-          "id": "A",
-          "ocupacion": {
-            "al": "2027-01-31",
-            "inscriptos": 3
-          }
-        }
-      ],
-      "departamento": "Ambiente y Movilidad",
-      "desde": "2027-02-01",
-      "dictado_conjunto": [],
-      "hasta": "2027-07-31",
-      "nombre": "Baterías y Acumulación de Energía"
-    },
-    {
       "codigo": "41.10",
       "comisiones": [
         {
@@ -18800,41 +18767,6 @@
       "nombre": "Ciberseguridad Ofensiva y Defensiva"
     },
     {
-      "codigo": "73.83",
-      "comisiones": [
-        {
-          "bloques": [
-            {
-              "aulas": [
-                "802F"
-              ],
-              "desde": "18:00",
-              "dia": "jueves",
-              "hasta": "21:00",
-              "modalidad": "presencial",
-              "sede": "sdf"
-            }
-          ],
-          "cupo": {
-            "capacidad": 24
-          },
-          "docentes": [
-            "Lucero, Carolina Vanesa"
-          ],
-          "id": "A",
-          "ocupacion": {
-            "al": "2027-01-31",
-            "inscriptos": 3
-          }
-        }
-      ],
-      "departamento": "Sistemas Digitales y Datos",
-      "desde": "2027-02-01",
-      "dictado_conjunto": [],
-      "hasta": "2027-07-31",
-      "nombre": "Gestión estratégica de la Ciberseguridad"
-    },
-    {
       "codigo": "73.84",
       "comisiones": [
         {
@@ -18968,75 +18900,6 @@
       "dictado_conjunto": [],
       "hasta": "2027-07-31",
       "nombre": "Visión por Computadora (Computer Vision)"
-    },
-    {
-      "codigo": "74.61",
-      "comisiones": [
-        {
-          "bloques": [
-            {
-              "aulas": [
-                "201R"
-              ],
-              "desde": "08:00",
-              "dia": "lunes",
-              "hasta": "13:00",
-              "modalidad": "presencial",
-              "sede": "rectorado"
-            },
-            {
-              "aulas": [
-                "205R"
-              ],
-              "desde": "08:00",
-              "dia": "martes",
-              "hasta": "13:00",
-              "modalidad": "presencial",
-              "sede": "rectorado"
-            },
-            {
-              "aulas": [],
-              "desde": "08:00",
-              "dia": "miercoles",
-              "hasta": "13:00",
-              "modalidad": "presencial",
-              "sede": null
-            },
-            {
-              "aulas": [
-                "003T",
-                "004T"
-              ],
-              "desde": "08:00",
-              "dia": "jueves",
-              "hasta": "13:00",
-              "modalidad": "presencial",
-              "sede": "sdt"
-            },
-            {
-              "aulas": [
-                "204R"
-              ],
-              "desde": "08:00",
-              "dia": "viernes",
-              "hasta": "13:00",
-              "modalidad": "presencial",
-              "sede": "rectorado"
-            }
-          ],
-          "docentes": [],
-          "id": "A",
-          "ocupacion": {
-            "al": "2027-01-31",
-            "inscriptos": 13
-          }
-        }
-      ],
-      "departamento": "Sistemas Digitales y Datos",
-      "desde": "2027-02-01",
-      "dictado_conjunto": [],
-      "hasta": "2027-07-31",
-      "nombre": "Current AI techniques for scientific discovery"
     },
     {
       "codigo": "81.03",
