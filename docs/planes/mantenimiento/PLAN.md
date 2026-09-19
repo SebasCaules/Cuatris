@@ -1,6 +1,6 @@
 # Mantenimiento comunitario de los datos — plan de implementación
 
-> **Estado: en curso** (desde el 2026-09-19) en la rama `mantenimiento` (worktree
+> **Estado: implementado y en producción** (2026-09-19). Se hizo en la rama `mantenimiento` (worktree
 > `.claude/worktrees/mantenimiento`). El avance paso a paso está en `EXEC_STATE.md`, al lado
 > de este archivo. Plan aprobado por el autor el 2026-09-16.
 
