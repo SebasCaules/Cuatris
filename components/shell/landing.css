@@ -590,6 +590,15 @@
   letter-spacing: 0.02em;
   color: var(--text-secondary);
 }
+.ld-note + .ld-note { margin-top: 6px; }
+.ld-note__link {
+  color: var(--link);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--link) 40%, transparent);
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.ld-note__link:hover { color: var(--ink-strong); border-color: var(--ink-strong); }
 
 /* cierre */
 .ld-cta {

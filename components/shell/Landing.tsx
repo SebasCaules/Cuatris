@@ -5,6 +5,7 @@ import LegacyRedirect from "./LegacyRedirect";
 import data from "@/lib/planner/data.json";
 import { CARRERAS } from "@/lib/planner/carreras/index";
 import { NAV_VIEWS } from "@/lib/planner/navViews";
+import { CONTRIBUTING_URL } from "@/lib/site";
 import "./landing.css";
 
 /**
@@ -311,6 +312,13 @@ export default function Landing() {
         <Reveal delay={300}>
           <p className="ld-note">
             No es material oficial de la universidad: antes de inscribirte, verificá en el SGA.
+          </p>
+          <p className="ld-note">
+            Los datos los actualiza cualquiera, por PR: el repositorio los valida y los publica
+            solo.{" "}
+            <a className="ld-note__link" href={CONTRIBUTING_URL} target="_blank" rel="noopener noreferrer">
+              Cómo se hace
+            </a>
           </p>
         </Reveal>
       </section>

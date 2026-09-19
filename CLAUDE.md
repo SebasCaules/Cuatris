@@ -70,6 +70,17 @@ y no se retoma sin pedido explícito del autor.
 - **Idioma**: documentación, comentarios, commits y todo lo dirigido al autor en español
   neutro (tú/usted). Los **textos de la interfaz** del planner están en voseo porque hablan a
   estudiantes del ITBA (igual que en StudyVaults): no «corregirlos».
+- **Datos por PR (mantenimiento comunitario)**: horarios, planes del SGA y planillas de
+  finales los actualiza cualquiera por PR; `.github/workflows/pr-datos.yml` los valida en
+  cuarentena (`scripts/datos/`) y los mergea solo (`datos-menor` al instante, `datos-mayor`
+  a las 72 h; `necesita-humano` lo revisa el autor). Nada que venga de un PR se ejecuta en
+  el gate; los umbrales viven en `scripts/datos/politica.json`; cada regla tiene un id que
+  los tests citan; un falso positivo se corrige con su fixture permanente en
+  `scripts/datos/test/fixtures/`. Los workflows pasan `npm run guardarrailes` (acciones
+  fijadas a SHA, sin `${{ }}` en `run:`, sin secretos). Recetas para contribuyentes en
+  `CONTRIBUTING.md`; mecanismo y configuración de plataforma en `docs/mantenimiento.md`;
+  el scraper del SGA vive en `tools/` (`tools/README.md`). `mesasFinales.ts` y
+  `finalesFlags.ts` se generan en cada build y están fuera del sync.
 - **Git**: commits sin trailer `Co-Authored-By`. Commitear temprano y agregando por rutas
   explícitas (nunca el árbol entero de una vez); push a `main` **solo cuando el autor lo
   pide** (dispara el deploy).
@@ -80,12 +91,19 @@ y no se retoma sin pedido explícito del autor.
 npm ci                      dependencias
 ./run.sh                    dev con hot-reload (:3100); limpia cachés antes
 ./run.sh build              build estático servido en http://localhost:3101/Cuatris/
-npm run typecheck           regenera data.json + tsc --noEmit
-npm run build               next build → out/ (prebuild regenera lib/planner/data.json)
+npm run typecheck           regenera data.json, mesasFinales.ts y finalesFlags.ts + tsc --noEmit
+npm run build               next build → out/ (prebuild = npm run datos)
 npm run test:grafo          layout, modelo y viewport del mapa de correlativas contra las 16 carreras (Node ≥ 22.18)
-npm run datos               regenera finalesFlags.ts y mesasFinales.ts desde data/plan/finales-*.csv
+npm run datos               regenera data.json, finalesFlags.ts y mesasFinales.ts desde data/plan/
+npm run datos:validar       el validador del gate sobre data/plan (0 = sin errores)
+npm run datos:fmt           reescribe los JSON de datos en forma canónica
+npm run datos:triage -- --base main --head <rama>   clase que le daría el gate a ese diff
+npm run test:datos          tests del validador, el triage, el bot y los guardarraíles
+npm run guardarrailes       reglas de seguridad sobre .github/
 npm run carreras            HTML del SGA en data/plan/sga-carreras/ → data/plan/carreras.json + carreras/<CODIGO>.json
-python3 data/plan/bajar-carreras.py   baja esos HTML del SGA (login del autor; ~40 peticiones)
+tools/.venv/bin/python data/plan/bajar-carreras.py   baja esos HTML del SGA (login; ~40 peticiones)
+tools/.venv/bin/cuatris sga bajar --anio A --cuatrimestre nC   baja los horarios de un cuatrimestre (tools/README.md)
+scripts/repo/configurar-github.sh [--dry-run]   ruleset, etiquetas y permisos del repo (solo el autor)
 npm run sync                trae el planner desde StudyVaults (ver arriba)
 node scripts/build-fichas-data.mjs   PDFs → lib/planner/fichas.ts (requiere pdftotext)
 ```
@@ -102,7 +120,11 @@ lib/url-state/       estado en la URL (espejo de StudyVaults)
 lib/content/slug.ts  shim: BASE_PATH, SITE_URL, withBase
 packages/ui/         @studyvaults/ui (espejo de StudyVaults)
 public/electivas-fichas/  PDFs oficiales de las materias
-data/plan/           fuentes de datos + scripts Python + planillas de finales
-scripts/             pipelines .mjs, sync y tests del mapa (test-grafo-*.mts)
+data/plan/           fuentes de datos (horarios/, carreras/, finales-*.csv contribuibles; data.js curado)
+scripts/             pipelines .mjs, sync, tests del mapa (test-grafo-*.mts); datos/ = validador,
+                     triage, comentario y centinela del gate, con sus tests y fixtures; repo/ = config
+tools/               scraper del SGA (Python) con tests y corpus
+.github/             pr-datos.yml (gate), centinela.yml, ci.yml, deploy.yml, CODEOWNERS, plantillas
+docs/                mantenimiento.md (cómo se sostiene solo) y planes/ de cada feature
 deprecated/          el Cuatris anterior, congelado
 ```
