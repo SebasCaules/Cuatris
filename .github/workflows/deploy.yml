@@ -1,3 +1,11 @@
+# Deploy a GitHub Pages: revalida los datos, construye y publica por OIDC.
+#
+# Se dispara por push a `main` (los commits del autor), a mano, desde el bot de pr-datos.yml
+# y del centinela (un merge hecho con GITHUB_TOKEN no dispara el `push`: por eso
+# `workflow_dispatch`), y una vez por semana como red de seguridad.
+#
+# Si la validación falla no hay deploy, y Pages sigue sirviendo el último deploy exitoso: es
+# el rollback automático de un merge malo, y sale gratis.
 name: Deploy a GitHub Pages
 
 on:
@@ -7,6 +15,8 @@ on:
       - "deprecated/**"
       - "**.md"
   workflow_dispatch: {}
+  schedule:
+    - cron: "17 6 * * 1"
 
 # Permisos mínimos para publicar en Pages vía OIDC.
 permissions:
@@ -21,15 +31,20 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: package-lock.json
       - run: npm ci
+      - run: npm run datos:validar # un dato inválido en main no se publica
       - run: npm run build # prebuild genera lib/planner/data.json; next build (output: export) → out/
       - run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
@@ -38,7 +53,10 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

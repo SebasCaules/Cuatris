@@ -1,0 +1,166 @@
+# Centinela: lo que el repositorio hace solo, cada seis horas, sin que nadie lo mire.
+#
+#   1. Mergea los PR de datos que cumplieron la ventana de espera (`datos-mayor`, etiqueta
+#      `esperando`): lee el marcador que dejó el bot en su comentario, comprueba que el SHA
+#      siga siendo el validado y que `validar-datos` esté en verde para ese SHA, mergea y
+#      dispara el deploy. Si el SHA cambió, quita la etiqueta (el gate ya volvió a correr y
+#      dejó un marcador nuevo).
+#   2. Pide los datos que faltan: si a esta altura del año debería existir el archivo de
+#      horarios del cuatrimestre o la planilla del próximo llamado de finales y no está, abre
+#      un issue (uno solo, por título) con la receta para cargarlo. Cuando el archivo aparece,
+#      cierra el issue.
+#   3. Revalida los datos de la rama principal; si dejaron de validar (dos PR válidos por
+#      separado, inválidos juntos), abre un issue.
+#
+# Corre sobre la rama por defecto con el token de Actions: sin secretos, sin credenciales
+# del SGA, sin red más que la API de GitHub. Con `workflow_dispatch` se puede simular una
+# fecha (`hoy`) para probar el paso 2 sin esperar al calendario.
+name: Centinela
+
+on:
+  schedule:
+    - cron: "23 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      hoy:
+        description: "Fecha a simular (AAAA-MM-DD); vacío = hoy"
+        required: false
+        default: ""
+
+permissions: {}
+
+concurrency:
+  group: centinela
+  cancel-in-progress: false
+
+jobs:
+  centinela:
+    name: centinela
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      actions: write
+    steps:
+      - name: Traer el código de la rama por defecto
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Instalar Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Mergear los PR de datos cuya espera venció
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          DEFAULT: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          ahora="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          gh pr list --repo "$REPO" --state open --label esperando --json number,headRefOid,baseRefName,isDraft,mergeable \
+            --jq '.[] | [.number, .headRefOid, .baseRefName, (.isDraft|tostring), .mergeable] | @tsv' > esperando.tsv || true
+          while IFS=$'\t' read -r numero sha base borrador mergeable; do
+            [ -n "${numero:-}" ] || continue
+            echo "PR #$numero ($sha, base $base)"
+            marcador="$(gh api "repos/$REPO/issues/$numero/comments" --paginate --jq '.[] | select(.body | startswith("<!-- cuatris:gate -->")) | .body' \
+              | grep -oE '<!-- cuatris:espera sha=[0-9a-f]{40} hasta=[^ ]+ -->' | tail -n 1 || true)"
+            if [ -z "$marcador" ]; then
+              echo "  sin marcador de espera: se quita la etiqueta"
+              gh pr edit "$numero" --repo "$REPO" --remove-label esperando >/dev/null || true
+              continue
+            fi
+            sha_marcado="$(printf '%s' "$marcador" | sed -E 's/.*sha=([0-9a-f]{40}).*/\1/')"
+            hasta="$(printf '%s' "$marcador" | sed -E 's/.*hasta=([^ ]+).*/\1/')"
+            if [ "$sha_marcado" != "$sha" ]; then
+              echo "  el PR cambió desde que se marcó ($sha_marcado → $sha): el gate decide de nuevo"
+              gh pr edit "$numero" --repo "$REPO" --remove-label esperando >/dev/null || true
+              continue
+            fi
+            if [ "$borrador" = "true" ]; then echo "  es borrador"; continue; fi
+            if [ "$mergeable" = "CONFLICTING" ]; then echo "  tiene conflictos"; continue; fi
+            if [[ "$hasta" > "$ahora" ]]; then echo "  espera hasta $hasta"; continue; fi
+            conclusion="$(gh api "repos/$REPO/commits/$sha/check-runs" --paginate --jq '.check_runs[] | select(.name == "validar-datos") | .conclusion' | head -n 1 || true)"
+            if [ "$conclusion" != "success" ]; then echo "  validar-datos no está en verde ($conclusion)"; continue; fi
+            if gh pr merge "$numero" --repo "$REPO" --merge --match-head-commit "$sha"; then
+              echo "  mergeado"
+              gh pr edit "$numero" --repo "$REPO" --remove-label esperando >/dev/null || true
+              gh pr comment "$numero" --repo "$REPO" --body "Venció la ventana de espera sin objeciones: **se mergeó solo** y el sitio se está publicando." >/dev/null || true
+              if [ "$base" = "$DEFAULT" ]; then
+                gh workflow run deploy.yml --repo "$REPO" --ref "$DEFAULT" || echo "::warning::no se pudo disparar el deploy"
+              fi
+            else
+              echo "::warning::no se pudo mergear el PR #$numero"
+            fi
+          done < esperando.tsv
+
+      - name: Pedir los datos que faltan
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          HOY: ${{ github.event.inputs.hoy }}
+        run: |
+          set -euo pipefail
+          if [ -n "$HOY" ]; then
+            case "$HOY" in [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) ;; *) echo "::error::fecha inválida: $HOY"; exit 1;; esac
+            node scripts/datos/centinela.mjs --hoy "$HOY" > faltan.json
+          else
+            node scripts/datos/centinela.mjs > faltan.json
+          fi
+          cat faltan.json
+          gh label create ayuda-necesaria --repo "$REPO" --force --color 0052cc --description "Falta un dato que cualquiera puede cargar por PR" >/dev/null
+          gh issue list --repo "$REPO" --state open --label ayuda-necesaria --json number,title --jq '.[] | [.number, .title] | @tsv' > abiertos.tsv || true
+          # Abrir lo que falta y no tiene issue.
+          node -e 'for (const f of JSON.parse(require("fs").readFileSync("faltan.json","utf8")).faltan) console.log(f.titulo + "\t" + f.archivo)' > faltan.tsv
+          while IFS=$'\t' read -r titulo archivo; do
+            [ -n "${titulo:-}" ] || continue
+            if grep -qF "$titulo" abiertos.tsv; then echo "ya hay issue: $titulo"; continue; fi
+            node -e 'const f=JSON.parse(require("fs").readFileSync("faltan.json","utf8")).faltan.find((x)=>x.titulo===process.argv[1]); process.stdout.write(f.cuerpo)' "$titulo" > cuerpo.md
+            gh issue create --repo "$REPO" --title "$titulo" --label ayuda-necesaria --body-file cuerpo.md
+          done < faltan.tsv
+          # Cerrar los issues cuyo dato ya existe (o que ya no son vigentes).
+          node -e 'const j=JSON.parse(require("fs").readFileSync("faltan.json","utf8")); console.log(j.faltan.map((f)=>f.titulo).join("\n"))' > pendientes.txt
+          while IFS=$'\t' read -r numero titulo; do
+            [ -n "${numero:-}" ] || continue
+            case "$titulo" in "Faltan los horarios de "*|"Falta la planilla de finales de "*) ;; *) continue;; esac
+            if grep -qxF "$titulo" pendientes.txt; then continue; fi
+            gh issue close "$numero" --repo "$REPO" --comment "El dato ya está en el repositorio (o dejó de ser el vigente): este issue se cierra solo." || true
+          done < abiertos.tsv
+
+      - name: Revalidar los datos de la rama por defecto
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          EJECUCION: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -uo pipefail
+          titulo="Los datos de la rama principal no validan"
+          if node scripts/datos/validar.mjs > validacion.txt; then
+            abierto="$(gh issue list --repo "$REPO" --state open --search "in:title \"$titulo\"" --json number --jq '.[0].number' || true)"
+            if [ -n "${abierto:-}" ] && [ "$abierto" != "null" ]; then
+              gh issue close "$abierto" --repo "$REPO" --comment "Los datos vuelven a validar: este issue se cierra solo." || true
+            fi
+            exit 0
+          fi
+          tail -n 60 validacion.txt
+          abierto="$(gh issue list --repo "$REPO" --state open --search "in:title \"$titulo\"" --json number --jq '.[0].number' || true)"
+          if [ -n "${abierto:-}" ] && [ "$abierto" != "null" ]; then
+            echo "ya hay un issue abierto: #$abierto"
+            exit 1
+          fi
+          {
+            echo "El validador falla sobre \`data/plan\` de la rama principal. El deploy no publica mientras esto siga así (Pages conserva la última versión buena)."
+            echo
+            echo "Corrida: $EJECUCION"
+            echo
+            echo '```'
+            tail -n 60 validacion.txt
+            echo '```'
+            echo
+            echo "Para arreglarlo: corregir el dato en un PR (ver \`CONTRIBUTING.md\`). Si el error es del validador y no del dato, es un PR de código."
+          } > cuerpo.md
+          gh issue create --repo "$REPO" --title "$titulo" --label ayuda-necesaria --body-file cuerpo.md
+          exit 1

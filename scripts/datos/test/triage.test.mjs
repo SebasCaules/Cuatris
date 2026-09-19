@@ -91,7 +91,8 @@ test("un diff vacío o fuera del allowlist necesita a una persona", () => {
     }),
   );
   assert.equal(mixto.clase, NECESITA_HUMANO);
-  assert.deepEqual(mixto.datos, []);
+  // Lo que sí es un dato regular se sigue validando aunque el PR necesite a una persona.
+  assert.deepEqual(mixto.datos, ["data/plan/horarios/2026-2C.json"]);
 });
 
 test("horarios: una corrección chica es datos-menor; con bajas o masiva, no", () => {

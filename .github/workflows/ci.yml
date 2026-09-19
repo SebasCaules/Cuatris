@@ -1,0 +1,54 @@
+# CI del código: corre la suite del PR en un sandbox de solo lectura y sin secretos.
+#
+# Acá `pull_request` sí es el disparador correcto, al revés que en pr-datos.yml: este
+# workflow existe para ejecutar el código del PR (typecheck, tests, build), así que tiene que
+# salir del PR. El precio se paga con un token de solo lectura y sin secretos.
+#
+# No es un check requerido del ruleset, a propósito: para un PR de un fork nuevo GitHub lo
+# deja pendiente hasta que alguien apruebe la corrida, y un check requerido pendiente
+# bloquearía el merge automático de los PR de datos para siempre. Los PR de código igual
+# necesitan la revisión del autor (CODEOWNERS), que es quien mira este resultado.
+name: CI
+
+on:
+  pull_request:
+    paths-ignore:
+      - "deprecated/**"
+  push:
+    branches: [main]
+    paths-ignore:
+      - "deprecated/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Traer el repositorio
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Instalar Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - run: npm ci
+      - run: npm run guardarrailes
+      - run: npm run typecheck
+      - run: npm run test:datos
+      - run: npm run test:grafo
+      - run: npm run datos:validar
+      - run: npm run build

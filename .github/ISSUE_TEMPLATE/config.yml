@@ -1,0 +1,11 @@
+# Selector de plantillas de issue. El issue en blanco queda habilitado: cerrar esa puerta
+# dejaría sin forma de avisar lo que no encaja en la plantilla.
+blank_issues_enabled: true
+
+contact_links:
+  - name: Cómo actualizar horarios, planes y finales (y que se mergee solo)
+    url: https://github.com/SebasCaules/Cuatris/blob/main/CONTRIBUTING.md
+    about: Las cuatro recetas para cargar datos por PR, qué revisa el bot y cuánto tarda.
+  - name: Cómo funciona el gate de datos, para quien mantenga el repositorio
+    url: https://github.com/SebasCaules/Cuatris/blob/main/docs/mantenimiento.md
+    about: Workflows, clases de PR, configuración del repositorio y cómo romper el vidrio.
