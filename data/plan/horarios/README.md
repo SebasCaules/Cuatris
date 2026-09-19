@@ -18,3 +18,5 @@ esta carpeta.
 | Archivo | Cursos | Capturado |
 |---|---|---|
 | `2026-2C.json` | 461 | 2026-09-13 |
+
+Un cuatrimestre nuevo lo puede cargar cualquiera con el scraper de `tools/`: ver `CONTRIBUTING.md`.
