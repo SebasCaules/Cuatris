@@ -1,0 +1,72 @@
+{
+    "contrato": "1.0.0",
+    "periodo": {
+        "id": "2026-2C",
+        "anio": 2026,
+        "cuatrimestre": "2C",
+        "desde": "2026-07-26",
+        "hasta": "2026-12-31"
+    },
+    "fuente": {
+        "sistema": "sga",
+        "capturado": "2026-09-09"
+    },
+    "cursos": [
+        {
+            "codigo": "93.18",
+            "nombre": "Álgebra Lineal",
+            "departamento": "Ciencias Exactas y Naturales",
+            "desde": "2026-07-26",
+            "hasta": "2026-12-31",
+            "dictado_conjunto": [],
+            "comisiones": [
+                {
+                    "id": "A",
+                    "cupo": {
+                        "capacidad": 48
+                    },
+                    "ocupacion": {
+                        "inscriptos": 48,
+                        "al": "2026-09-09"
+                    },
+                    "docentes": [
+                        "Cabana, Adriana Elena",
+                        "Peña, Nelly Haydee"
+                    ],
+                    "bloques": [
+                        {
+                            "dia": "lunes",
+                            "desde": "14:00",
+                            "hasta": "16:00",
+                            "sede": "rectorado",
+                            "modalidad": "presencial",
+                            "aulas": [
+                                "001R"
+                            ]
+                        },
+                        {
+                            "dia": "miercoles",
+                            "desde": "14:00",
+                            "hasta": "16:00",
+                            "sede": "sdt",
+                            "modalidad": "presencial",
+                            "aulas": [
+                                "201T"
+                            ]
+                        },
+                        {
+                            "dia": "jueves",
+                            "desde": "14:00",
+                            "hasta": "16:00",
+                            "sede": "rectorado",
+                            "modalidad": "presencial",
+                            "aulas": [
+                                "203R"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

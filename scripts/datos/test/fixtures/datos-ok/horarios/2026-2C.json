@@ -1,0 +1,547 @@
+{
+  "contrato": "1.0.0",
+  "cursos": [
+    {
+      "codigo": "15.09",
+      "comisiones": [],
+      "departamento": "Sistemas Complejos y Energía",
+      "desde": "2026-09-18",
+      "dictado_conjunto": [],
+      "hasta": "2026-10-16",
+      "nombre": "Agile, Lean y Lean Six Sigma"
+    },
+    {
+      "codigo": "23.05",
+      "comisiones": [],
+      "departamento": "Sistemas Digitales y Datos",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Acústica para Ingenieros"
+    },
+    {
+      "codigo": "25.66",
+      "comisiones": [],
+      "departamento": "Sistemas Digitales y Datos",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Acústica para Ingenieros"
+    },
+    {
+      "codigo": "30.28",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "003T"
+              ],
+              "desde": "19:00",
+              "dia": "jueves",
+              "hasta": "22:00",
+              "modalidad": "blended",
+              "sede": "sdt"
+            },
+            {
+              "aulas": [
+                "101T"
+              ],
+              "desde": "19:00",
+              "dia": "viernes",
+              "hasta": "22:00",
+              "modalidad": "presencial",
+              "sede": "sdt"
+            }
+          ],
+          "cupo": {
+            "capacidad": 24
+          },
+          "docentes": [],
+          "id": "A",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 3
+          }
+        }
+      ],
+      "departamento": "Ambiente y Movilidad",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Accionamientos Industriales"
+    },
+    {
+      "codigo": "72.44",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "002R"
+              ],
+              "desde": "15:00",
+              "dia": "lunes",
+              "hasta": "18:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 70
+          },
+          "docentes": [],
+          "id": "S",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 51
+          }
+        }
+      ],
+      "departamento": "Sistemas Digitales y Datos",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Criptografía y Seguridad"
+    },
+    {
+      "codigo": "93.18",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "001R"
+              ],
+              "desde": "14:00",
+              "dia": "lunes",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "201T"
+              ],
+              "desde": "14:00",
+              "dia": "miercoles",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "sdt"
+            },
+            {
+              "aulas": [
+                "203R"
+              ],
+              "desde": "14:00",
+              "dia": "jueves",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 48
+          },
+          "docentes": [
+            "Cabana, Adriana Elena",
+            "Peña, Nelly Haydee"
+          ],
+          "id": "A",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 48
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "007R"
+              ],
+              "desde": "12:00",
+              "dia": "lunes",
+              "hasta": "14:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "003T",
+                "004T"
+              ],
+              "desde": "10:00",
+              "dia": "miercoles",
+              "hasta": "12:00",
+              "modalidad": "presencial",
+              "sede": "sdt"
+            },
+            {
+              "aulas": [
+                "203R"
+              ],
+              "desde": "12:00",
+              "dia": "jueves",
+              "hasta": "14:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 49
+          },
+          "docentes": [
+            "Peña, Nelly Haydee",
+            "Blanco Vitorero, Maria Patricia"
+          ],
+          "id": "B",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 48
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "108R"
+              ],
+              "desde": "10:00",
+              "dia": "lunes",
+              "hasta": "12:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "007R"
+              ],
+              "desde": "11:00",
+              "dia": "jueves",
+              "hasta": "13:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "101R"
+              ],
+              "desde": "10:00",
+              "dia": "viernes",
+              "hasta": "12:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 48
+          },
+          "docentes": [
+            "Cabana, Adriana Elena",
+            "Oviedo, Martina Guadalupe"
+          ],
+          "id": "C",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 31
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "203R"
+              ],
+              "desde": "10:00",
+              "dia": "lunes",
+              "hasta": "12:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "009R"
+              ],
+              "desde": "10:00",
+              "dia": "miercoles",
+              "hasta": "12:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "104R"
+              ],
+              "desde": "10:00",
+              "dia": "jueves",
+              "hasta": "12:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 48
+          },
+          "docentes": [
+            "Blanco Vitorero, Maria Patricia",
+            "Acosta, Demian Matías"
+          ],
+          "id": "D",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 10
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "003R"
+              ],
+              "desde": "14:00",
+              "dia": "martes",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "003R"
+              ],
+              "desde": "08:00",
+              "dia": "jueves",
+              "hasta": "10:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "003R"
+              ],
+              "desde": "12:00",
+              "dia": "viernes",
+              "hasta": "14:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 49
+          },
+          "docentes": [
+            "De Rossi, Fernando Daniel",
+            "Oviedo, Martina Guadalupe"
+          ],
+          "id": "E",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 49
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "002R"
+              ],
+              "desde": "08:00",
+              "dia": "lunes",
+              "hasta": "10:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "006R"
+              ],
+              "desde": "10:00",
+              "dia": "martes",
+              "hasta": "12:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "110R"
+              ],
+              "desde": "10:00",
+              "dia": "viernes",
+              "hasta": "12:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 49
+          },
+          "docentes": [
+            "Gualtieri, Sergio Alberto",
+            "González Rodríguez, Rafael Ricardo"
+          ],
+          "id": "F",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 49
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "201R"
+              ],
+              "desde": "14:00",
+              "dia": "martes",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "109R"
+              ],
+              "desde": "12:00",
+              "dia": "jueves",
+              "hasta": "14:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "006R"
+              ],
+              "desde": "12:00",
+              "dia": "viernes",
+              "hasta": "14:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 49
+          },
+          "docentes": [
+            "Vargas, Gabriela",
+            "D´Alesio Souto, Sofía Nerina"
+          ],
+          "id": "G",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 49
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "102R"
+              ],
+              "desde": "14:00",
+              "dia": "lunes",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "002R"
+              ],
+              "desde": "14:00",
+              "dia": "martes",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "006R"
+              ],
+              "desde": "11:00",
+              "dia": "jueves",
+              "hasta": "13:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 50
+          },
+          "docentes": [
+            "Acosta, Demian Matías",
+            "Palacios, Patricia Elizabeth"
+          ],
+          "id": "H",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 47
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "202R",
+                "203R"
+              ],
+              "desde": "08:00",
+              "dia": "lunes",
+              "hasta": "10:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "002R",
+                "003R"
+              ],
+              "desde": "12:00",
+              "dia": "martes",
+              "hasta": "14:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            },
+            {
+              "aulas": [
+                "202R",
+                "203R"
+              ],
+              "desde": "08:00",
+              "dia": "jueves",
+              "hasta": "10:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 60
+          },
+          "docentes": [
+            "Peralta, Nora Beatriz",
+            "Blanco Vitorero, Maria Patricia"
+          ],
+          "id": "K",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 59
+          }
+        }
+      ],
+      "departamento": "Ciencias Exactas y Naturales",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Álgebra Lineal"
+    }
+  ],
+  "fuente": {
+    "capturado": "2026-09-09",
+    "sistema": "sga"
+  },
+  "periodo": {
+    "anio": 2026,
+    "cuatrimestre": "2C",
+    "desde": "2026-07-26",
+    "hasta": "2026-12-31",
+    "id": "2026-2C"
+  }
+}

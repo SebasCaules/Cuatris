@@ -1,1451 +1,1451 @@
 {
- "carrera": {
-  "codigo": "LN",
-  "nombre": "Licenciatura en Gestión de Negocios",
-  "escuela": "Escuela de Gestión y Tecnología",
-  "nivel": "Grado"
- },
- "plan": "L20",
- "planes": [
-  {
-   "nombre": "L20",
-   "version": "1",
-   "desde": "Segundo Cuat. 2021",
-   "hasta": "Verano 2024",
-   "elegido": true
-  }
- ],
- "vacio": false,
- "capturado": "2026-09-13",
- "bloques": [
-  {
-   "nombre": "Ciclo Básico",
-   "tituloOtorgado": null,
-   "requisito": "Aprobar todos los items (suma 192 créditos)",
-   "creditos": 192,
-   "tipo": "todos",
-   "secciones": [
+  "bloques": [
     {
-     "nombre": "Año 1 - Cuatrimestre 1",
-     "anio": 1,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "71.20",
-       "nombre": "Informática General",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.30",
-       "nombre": "Introducción a la tecnología informática",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.90",
-       "nombre": "Certificaciones tecnológicas",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.06",
-       "nombre": "Introducción a la Administración",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.07",
-       "nombre": "Sistemas Contables",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "93.21",
-       "nombre": "Álgebra",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
+      "creditos": 192,
+      "nombre": "Ciclo Básico",
+      "requisito": "Aprobar todos los items (suma 192 créditos)",
+      "secciones": [
+        {
+          "anio": 1,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "71.20",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Informática General"
+            },
+            {
+              "codigo": "71.30",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Introducción a la tecnología informática"
+            },
+            {
+              "codigo": "71.90",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Certificaciones tecnológicas"
+            },
+            {
+              "codigo": "81.06",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Introducción a la Administración"
+            },
+            {
+              "codigo": "81.07",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Sistemas Contables"
+            },
+            {
+              "codigo": "93.21",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Álgebra"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 1"
+        },
+        {
+          "anio": 1,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "71.38",
+              "correlativas": [
+                "71.30"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Programación web"
+            },
+            {
+              "codigo": "81.11",
+              "correlativas": [
+                "81.07"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Contabilidad Gerencial"
+            },
+            {
+              "codigo": "81.53",
+              "correlativas": [
+                "71.30",
+                "81.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Negocios en Internet"
+            },
+            {
+              "codigo": "93.20",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Análisis Matemático"
+            },
+            {
+              "codigo": "94.60",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Panorama Histórico Global"
+            },
+            {
+              "codigo": "94.61",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Filosofía"
+            }
+          ],
+          "nombre": "Año 1 - Cuatrimestre 2"
+        },
+        {
+          "anio": 2,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "61.12",
+              "correlativas": [
+                "81.11",
+                "81.07",
+                "93.21"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión Financiera"
+            },
+            {
+              "codigo": "61.81",
+              "correlativas": [
+                "93.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Microeconomía"
+            },
+            {
+              "codigo": "71.88",
+              "correlativas": [
+                "71.30",
+                "71.20"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión de Datos"
+            },
+            {
+              "codigo": "81.20",
+              "correlativas": [
+                "81.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Comercialización"
+            },
+            {
+              "codigo": "93.39",
+              "correlativas": [
+                "71.20",
+                "93.20"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Estadística"
+            }
+          ],
+          "nombre": "Año 2 - Cuatrimestre 1"
+        },
+        {
+          "anio": 2,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "61.82",
+              "correlativas": [
+                "93.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Macroeconomía"
+            },
+            {
+              "codigo": "61.87",
+              "correlativas": [
+                "94.60",
+                "94.61"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Derecho Público y Privado I"
+            },
+            {
+              "codigo": "81.29",
+              "correlativas": [
+                "81.06",
+                "71.20"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión organizacional basada en procesos de negocio"
+            },
+            {
+              "codigo": "81.32",
+              "correlativas": [
+                "71.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Análisis funcional de aplicaciones informáticas"
+            },
+            {
+              "codigo": "94.63",
+              "correlativas": [
+                "94.61"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Epistemología y Heurística"
+            },
+            {
+              "codigo": "94.64",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 24,
+              "nombre": "Prácticas Expositivas"
+            }
+          ],
+          "nombre": "Año 2 - Cuatrimestre 2"
+        },
+        {
+          "anio": 3,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "11.85",
+              "correlativas": [
+                "93.39",
+                "81.06"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Toma de Decisiones"
+            },
+            {
+              "codigo": "81.47",
+              "correlativas": [
+                "81.11",
+                "61.82",
+                "61.87"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Impuestos para la toma de decisiones I"
+            },
+            {
+              "codigo": "81.57",
+              "correlativas": [
+                "81.32",
+                "71.88",
+                "81.53"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Arquitectura de soluciones digitales"
+            },
+            {
+              "codigo": "94.40",
+              "correlativas": [
+                "81.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Estructura de las Organizaciones"
+            }
+          ],
+          "nombre": "Año 3 - Cuatrimestre 1"
+        },
+        {
+          "anio": 3,
+          "cuatri": 2,
+          "materias": [
+            {
+              "codigo": "11.83",
+              "correlativas": [
+                "93.39",
+                "81.06"
+              ],
+              "creditos": 6,
+              "creditosReq": 0,
+              "nombre": "Gestión de Operaciones"
+            },
+            {
+              "codigo": "81.21",
+              "correlativas": [
+                "81.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Gestión de Ventas"
+            },
+            {
+              "codigo": "81.48",
+              "correlativas": [
+                "81.47"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Impuestos para la toma de decisiones II"
+            },
+            {
+              "codigo": "81.68",
+              "correlativas": [
+                "81.11",
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Sistemas Integrados de Gestión I"
+            },
+            {
+              "codigo": "94.27",
+              "correlativas": [
+                "61.87"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Administración de Recursos Humanos"
+            }
+          ],
+          "nombre": "Año 3 - Cuatrimestre 2"
+        },
+        {
+          "anio": 4,
+          "cuatri": 1,
+          "materias": [
+            {
+              "codigo": "81.34",
+              "correlativas": [
+                "81.57",
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Arquitectura empresarial"
+            },
+            {
+              "codigo": "81.42",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 144,
+              "nombre": "Estrategia Empresarial"
+            }
+          ],
+          "nombre": "Año 4 - Cuatrimestre 1"
+        },
+        {
+          "anio": 4,
+          "cuatri": 2,
+          "materias": [],
+          "nombre": "Año 4 - Cuatrimestre 2"
+        }
+      ],
+      "tipo": "todos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 1 - Cuatrimestre 2",
-     "anio": 1,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "71.38",
-       "nombre": "Programación web",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.30"
-       ]
-      },
-      {
-       "codigo": "81.11",
-       "nombre": "Contabilidad Gerencial",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.07"
-       ]
-      },
-      {
-       "codigo": "81.53",
-       "nombre": "Negocios en Internet",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.30",
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "93.20",
-       "nombre": "Análisis Matemático",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.60",
-       "nombre": "Panorama Histórico Global",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.61",
-       "nombre": "Filosofía",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": []
-      }
-     ]
+      "creditos": 27,
+      "nombre": "Electivas Gestión",
+      "requisito": "Juntar 27 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "10.07",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Creatividad"
+            },
+            {
+              "codigo": "10.09",
+              "correlativas": [
+                "94.40"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Formación para Emprendedores"
+            },
+            {
+              "codigo": "10.15",
+              "correlativas": [
+                "61.82"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Agroindustria"
+            },
+            {
+              "codigo": "10.23",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 96,
+              "nombre": "Agroindustria II"
+            },
+            {
+              "codigo": "11.79",
+              "correlativas": [
+                "93.39",
+                "81.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Sistemas y Modelos"
+            },
+            {
+              "codigo": "11.84",
+              "correlativas": [
+                "93.39",
+                "81.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Gestión de Proyectos"
+            },
+            {
+              "codigo": "14.24",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "La Evolución de la Calidad y la Mejora Continua"
+            },
+            {
+              "codigo": "14.46",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Lean Manufacturing"
+            },
+            {
+              "codigo": "14.59",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Lean Six Sigma White Belt"
+            },
+            {
+              "codigo": "14.90",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Neurociencia y Liderazgo"
+            },
+            {
+              "codigo": "14.94",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Business Model Implementation"
+            },
+            {
+              "codigo": "14.95",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Economía de la Innovación y la Producción"
+            },
+            {
+              "codigo": "14.96",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Herramientas para Ganar Productividad"
+            },
+            {
+              "codigo": "14.97",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Diseño Circular: Sustentabilidad e Innovación en la Cadena de Valor."
+            },
+            {
+              "codigo": "15.06",
+              "correlativas": [
+                "94.64"
+              ],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Storytelling aplicado a los negocios"
+            },
+            {
+              "codigo": "15.09",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Agile, Lean y Lean Six Sigma"
+            },
+            {
+              "codigo": "15.85",
+              "correlativas": [
+                "11.83"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Logística Internacional"
+            },
+            {
+              "codigo": "17.22",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 96,
+              "nombre": "Cálculo de Huella de Carbono en Organizaciones"
+            },
+            {
+              "codigo": "17.23",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 96,
+              "nombre": "Triple Impacto: Estrategias para el Desarrollo Sostenible"
+            },
+            {
+              "codigo": "61.02",
+              "correlativas": [
+                "61.82",
+                "61.81",
+                "94.27"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Economía del Mercado Laboral"
+            },
+            {
+              "codigo": "61.04",
+              "correlativas": [
+                "61.82"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Sistema Monetario y Financiero en Argentina"
+            },
+            {
+              "codigo": "61.05",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Economía de la Salud"
+            },
+            {
+              "codigo": "61.07",
+              "correlativas": [
+                "61.12"
+              ],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Mercado de Capitales"
+            },
+            {
+              "codigo": "61.08",
+              "correlativas": [
+                "61.87"
+              ],
+              "creditos": 1,
+              "creditosReq": 0,
+              "nombre": "Derecho Digital"
+            },
+            {
+              "codigo": "61.11",
+              "correlativas": [
+                "61.87"
+              ],
+              "creditos": 1,
+              "creditosReq": 0,
+              "nombre": "Derecho Laboral y Seguridad Social en la Empresa"
+            },
+            {
+              "codigo": "61.13",
+              "correlativas": [
+                "61.87"
+              ],
+              "creditos": 1,
+              "creditosReq": 0,
+              "nombre": "Práctica Contractual"
+            },
+            {
+              "codigo": "61.14",
+              "correlativas": [
+                "61.82",
+                "61.12"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Economía Internacional Real"
+            },
+            {
+              "codigo": "61.15",
+              "correlativas": [
+                "61.82",
+                "61.12"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Economía Internacional Monetaria"
+            },
+            {
+              "codigo": "61.30",
+              "correlativas": [
+                "93.39",
+                "61.82"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Econometría Aplicada"
+            },
+            {
+              "codigo": "61.34",
+              "correlativas": [
+                "61.12"
+              ],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Valuación de Empresas"
+            },
+            {
+              "codigo": "61.88",
+              "correlativas": [
+                "61.87"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Derecho Público y Privado II"
+            },
+            {
+              "codigo": "61.92",
+              "correlativas": [
+                "81.26",
+                "61.87"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Derecho Aduanero"
+            },
+            {
+              "codigo": "61.93",
+              "correlativas": [
+                "61.12"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Estrategia Financiera"
+            },
+            {
+              "codigo": "81.04",
+              "correlativas": [
+                "61.82",
+                "61.81"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Teoría de Juegos y Estrategia"
+            },
+            {
+              "codigo": "81.05",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Responsabilidad Social Empresaria"
+            },
+            {
+              "codigo": "81.13",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Futuros Posibles"
+            },
+            {
+              "codigo": "81.14",
+              "correlativas": [
+                "81.53"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Product Management"
+            },
+            {
+              "codigo": "81.16",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Negociación"
+            },
+            {
+              "codigo": "81.17",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Finanzas y Programación"
+            },
+            {
+              "codigo": "81.18",
+              "correlativas": [
+                "81.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Taller de Simulación Comercial"
+            },
+            {
+              "codigo": "81.24",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Internacionalización de la Empresa"
+            },
+            {
+              "codigo": "81.26",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Comercio Exterior"
+            },
+            {
+              "codigo": "81.43",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 144,
+              "nombre": "Ciclo de charlas sobre estrategia empresarial"
+            },
+            {
+              "codigo": "81.46",
+              "correlativas": [
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Auditoría General y de Sistemas"
+            },
+            {
+              "codigo": "81.49",
+              "correlativas": [
+                "81.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Branding y Comunicación"
+            },
+            {
+              "codigo": "81.51",
+              "correlativas": [
+                "81.06"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Gestión de Empresas Familiares"
+            },
+            {
+              "codigo": "81.58",
+              "correlativas": [
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Service Design"
+            },
+            {
+              "codigo": "81.59",
+              "correlativas": [
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Gestión de Servicios"
+            },
+            {
+              "codigo": "81.64",
+              "correlativas": [
+                "11.83"
+              ],
+              "creditos": 6,
+              "creditosReq": 48,
+              "nombre": "Gestión y Sistemas de Información de la Logística Internacional"
+            },
+            {
+              "codigo": "81.65",
+              "correlativas": [
+                "11.83"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Logística Internacional"
+            },
+            {
+              "codigo": "81.66",
+              "correlativas": [
+                "11.83",
+                "81.26"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Logística Internacional Aplicada"
+            },
+            {
+              "codigo": "81.67",
+              "correlativas": [
+                "11.83"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Logística E-commerce"
+            },
+            {
+              "codigo": "81.71",
+              "correlativas": [
+                "81.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Marketing avanzado"
+            },
+            {
+              "codigo": "81.82",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Growth Hacking"
+            },
+            {
+              "codigo": "81.86",
+              "correlativas": [
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Gestión de la Experiencia del Usuario (CX, UX, UI)"
+            },
+            {
+              "codigo": "81.94",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 0,
+              "nombre": "Experiencia Inmersiva de Innovación Tecnológica"
+            },
+            {
+              "codigo": "82.24",
+              "correlativas": [
+                "93.39",
+                "81.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Investigación de Mercados"
+            },
+            {
+              "codigo": "82.80",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Serv. de Exc. Lean aplic. a los Serv. y Princ. de Lean Office"
+            },
+            {
+              "codigo": "82.88",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Estudio de Casos con Grandes Volúmenes de Datos"
+            },
+            {
+              "codigo": "82.89",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Framing: How Politicians Debate"
+            },
+            {
+              "codigo": "82.91",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Responsible Innovation: Ethics, Safety and Technology"
+            },
+            {
+              "codigo": "82.92",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "An Introduction to Credit Risk Management"
+            },
+            {
+              "codigo": "82.93",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Diseño de Producto"
+            },
+            {
+              "codigo": "82.94",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Demand Forecasting"
+            },
+            {
+              "codigo": "82.95",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Analytics"
+            },
+            {
+              "codigo": "82.96",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Negocios en la era de internet"
+            },
+            {
+              "codigo": "82.97",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Introducción a Estrategia"
+            },
+            {
+              "codigo": "82.98",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Introducción a la Consultoría"
+            },
+            {
+              "codigo": "82.99",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Gestión de la Innovación"
+            },
+            {
+              "codigo": "94.07",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Cultura Latinoamericana"
+            },
+            {
+              "codigo": "94.09",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Cultura, Identidad y Política"
+            },
+            {
+              "codigo": "94.11",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 48,
+              "nombre": "Sociología Política"
+            },
+            {
+              "codigo": "94.13",
+              "correlativas": [
+                "81.06"
+              ],
+              "creditos": 6,
+              "creditosReq": 48,
+              "nombre": "Gestión de Organizaciones Sociales"
+            },
+            {
+              "codigo": "94.19",
+              "correlativas": [
+                "94.40"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Comportamiento Organizacional"
+            },
+            {
+              "codigo": "94.42",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Comunicación Estratégica"
+            },
+            {
+              "codigo": "94.62",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Ética en los Negocios"
+            },
+            {
+              "codigo": "94.78",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 96,
+              "nombre": "Gestión de Capital Emprendedor y Venture Capital"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 2 - Cuatrimestre 1",
-     "anio": 2,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "61.12",
-       "nombre": "Gestión Financiera",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.11",
-        "81.07",
-        "93.21"
-       ]
-      },
-      {
-       "codigo": "61.81",
-       "nombre": "Microeconomía",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.20"
-       ]
-      },
-      {
-       "codigo": "71.88",
-       "nombre": "Gestión de Datos",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.30",
-        "71.20"
-       ]
-      },
-      {
-       "codigo": "81.20",
-       "nombre": "Comercialización",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "93.39",
-       "nombre": "Estadística",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.20",
-        "93.20"
-       ]
-      }
-     ]
+      "creditos": 3,
+      "nombre": "Electivas Proyecto Final",
+      "requisito": "Aprobar un item (suma 3 créditos)",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "81.95",
+              "correlativas": [
+                "81.48",
+                "11.83",
+                "61.12",
+                "81.57",
+                "81.42"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Proyecto de lanzamiento de productos o servicios (Trabajo Final)"
+            },
+            {
+              "codigo": "81.96",
+              "correlativas": [
+                "81.48",
+                "11.83",
+                "61.12",
+                "81.57",
+                "81.42"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Diagnóstico Empresario y Plan de Implementación de Sistemas (TF)"
+            },
+            {
+              "codigo": "81.97",
+              "correlativas": [
+                "81.48",
+                "11.83",
+                "81.57",
+                "61.12",
+                "81.42"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Diagnóstico Empresario y Plan de Acción ( Trabajo Final )"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "uno",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 2 - Cuatrimestre 2",
-     "anio": 2,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "61.82",
-       "nombre": "Macroeconomía",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.20"
-       ]
-      },
-      {
-       "codigo": "61.87",
-       "nombre": "Derecho Público y Privado I",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.60",
-        "94.61"
-       ]
-      },
-      {
-       "codigo": "81.29",
-       "nombre": "Gestión organizacional basada en procesos de negocio",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.06",
-        "71.20"
-       ]
-      },
-      {
-       "codigo": "81.32",
-       "nombre": "Análisis funcional de aplicaciones informáticas",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.20"
-       ]
-      },
-      {
-       "codigo": "94.63",
-       "nombre": "Epistemología y Heurística",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.61"
-       ]
-      },
-      {
-       "codigo": "94.64",
-       "nombre": "Prácticas Expositivas",
-       "creditos": 3,
-       "creditosReq": 24,
-       "correlativas": []
-      }
-     ]
+      "creditos": 30,
+      "nombre": "Electivas Sistemas y Tecnología",
+      "requisito": "Juntar 30 créditos",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "23.15",
+              "correlativas": [
+                "71.45",
+                "81.28",
+                "93.21"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Realidad Virtual"
+            },
+            {
+              "codigo": "71.22",
+              "correlativas": [
+                "71.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Sistemas de Inteligencia Artificial"
+            },
+            {
+              "codigo": "71.45",
+              "correlativas": [
+                "71.20"
+              ],
+              "creditos": 6,
+              "creditosReq": 48,
+              "nombre": "Estructura de Datos y Programación"
+            },
+            {
+              "codigo": "71.72",
+              "correlativas": [
+                "81.57",
+                "71.20"
+              ],
+              "creditos": 1,
+              "creditosReq": 0,
+              "nombre": "Computación cuántica para negocios"
+            },
+            {
+              "codigo": "71.77",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 75,
+              "nombre": "Fundamentos de programación y análisis de datos"
+            },
+            {
+              "codigo": "71.79",
+              "correlativas": [],
+              "creditos": 6,
+              "creditosReq": 48,
+              "nombre": "Introducción a las bases de datos"
+            },
+            {
+              "codigo": "72.74",
+              "correlativas": [
+                "71.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Visualización de Información"
+            },
+            {
+              "codigo": "72.80",
+              "correlativas": [
+                "71.88"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Big Data"
+            },
+            {
+              "codigo": "73.83",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 96,
+              "nombre": "Gestión estratégica de la Ciberseguridad"
+            },
+            {
+              "codigo": "73.84",
+              "correlativas": [
+                "71.22"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Ciencia de Datos Aplicada"
+            },
+            {
+              "codigo": "81.19",
+              "correlativas": [
+                "81.20"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Marketing Digital"
+            },
+            {
+              "codigo": "81.23",
+              "correlativas": [
+                "81.53"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Comercio Electrónico"
+            },
+            {
+              "codigo": "81.28",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 120,
+              "nombre": "Tecnologías exponenciales"
+            },
+            {
+              "codigo": "81.33",
+              "correlativas": [
+                "81.32"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Diseño de aplicaciones informáticas"
+            },
+            {
+              "codigo": "81.38",
+              "correlativas": [
+                "71.30",
+                "71.20",
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Integración de Procesos de Negocios y Aplicaciones Informáticas"
+            },
+            {
+              "codigo": "81.54",
+              "correlativas": [
+                "71.30"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Aplicaciones en Internet"
+            },
+            {
+              "codigo": "81.69",
+              "correlativas": [
+                "61.12",
+                "81.68"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Sistemas Integrados de Gestión Empresaria II"
+            },
+            {
+              "codigo": "81.72",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Introducción a la realidad virtual"
+            },
+            {
+              "codigo": "81.73",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Introducción a la IOT"
+            },
+            {
+              "codigo": "81.74",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Introducción a la realidad aumentada"
+            },
+            {
+              "codigo": "81.75",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 71,
+              "nombre": "Fund. del desarrollo de software y análisis de datos en Python"
+            },
+            {
+              "codigo": "81.76",
+              "correlativas": [
+                "81.57",
+                "61.12"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Tecnologías para las Finanzas"
+            },
+            {
+              "codigo": "81.83",
+              "correlativas": [],
+              "creditos": 1,
+              "creditosReq": 48,
+              "nombre": "Tecnología e Innovación Aplicada a la Industria"
+            },
+            {
+              "codigo": "81.84",
+              "correlativas": [
+                "81.11",
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "ERP Action Lab"
+            },
+            {
+              "codigo": "81.85",
+              "correlativas": [
+                "81.21",
+                "81.29"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "CRM Action Lab"
+            },
+            {
+              "codigo": "81.87",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Taller de Sistemas Integrados de Gestión Empresaria"
+            },
+            {
+              "codigo": "81.88",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Taller de modelado Avanzado"
+            },
+            {
+              "codigo": "81.89",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Taller de Sistemas Integrados de Gestión Empresaria II"
+            },
+            {
+              "codigo": "81.91",
+              "correlativas": [
+                "71.38"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Inteligencia Artificial Aplicada a los Negocios"
+            },
+            {
+              "codigo": "82.06",
+              "correlativas": [
+                "71.38"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Plataformas de Computación Cognitiva"
+            },
+            {
+              "codigo": "82.07",
+              "correlativas": [
+                "81.53"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Blockchain (Moneda digital descentralizada)"
+            },
+            {
+              "codigo": "82.08",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Cloud Computing"
+            },
+            {
+              "codigo": "82.21",
+              "correlativas": [],
+              "creditos": 3,
+              "creditosReq": 140,
+              "nombre": "Factibilidad de Proyectos Data Driven"
+            },
+            {
+              "codigo": "82.22",
+              "correlativas": [
+                "81.57"
+              ],
+              "creditos": 1,
+              "creditosReq": 0,
+              "nombre": "Inteligencia Artificial Generativa"
+            },
+            {
+              "codigo": "82.23",
+              "correlativas": [
+                "93.39",
+                "81.20",
+                "71.88"
+              ],
+              "creditos": 3,
+              "creditosReq": 0,
+              "nombre": "Marketing Analytics"
+            },
+            {
+              "codigo": "94.15",
+              "correlativas": [
+                "81.53",
+                "61.87"
+              ],
+              "creditos": 3,
+              "creditosReq": 48,
+              "nombre": "Propiedad Intelectual y Nuevas Tecnologías"
+            },
+            {
+              "codigo": "94.77",
+              "correlativas": [
+                "61.87"
+              ],
+              "creditos": 1,
+              "creditosReq": 0,
+              "nombre": "Propiedad Intelectual"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "creditos",
+      "tituloOtorgado": null
     },
     {
-     "nombre": "Año 3 - Cuatrimestre 1",
-     "anio": 3,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "11.85",
-       "nombre": "Toma de Decisiones",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.39",
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "81.47",
-       "nombre": "Impuestos para la toma de decisiones I",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.11",
-        "61.82",
-        "61.87"
-       ]
-      },
-      {
-       "codigo": "81.57",
-       "nombre": "Arquitectura de soluciones digitales",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.32",
-        "71.88",
-        "81.53"
-       ]
-      },
-      {
-       "codigo": "94.40",
-       "nombre": "Estructura de las Organizaciones",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.06"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 3 - Cuatrimestre 2",
-     "anio": 3,
-     "cuatri": 2,
-     "materias": [
-      {
-       "codigo": "11.83",
-       "nombre": "Gestión de Operaciones",
-       "creditos": 6,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.39",
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "81.21",
-       "nombre": "Gestión de Ventas",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.20"
-       ]
-      },
-      {
-       "codigo": "81.48",
-       "nombre": "Impuestos para la toma de decisiones II",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.47"
-       ]
-      },
-      {
-       "codigo": "81.68",
-       "nombre": "Sistemas Integrados de Gestión I",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.11",
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "94.27",
-       "nombre": "Administración de Recursos Humanos",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "61.87"
-       ]
-      }
-     ]
-    },
-    {
-     "nombre": "Año 4 - Cuatrimestre 1",
-     "anio": 4,
-     "cuatri": 1,
-     "materias": [
-      {
-       "codigo": "81.34",
-       "nombre": "Arquitectura empresarial",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.57",
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.42",
-       "nombre": "Estrategia Empresarial",
-       "creditos": 3,
-       "creditosReq": 144,
-       "correlativas": []
-      }
-     ]
-    },
-    {
-     "nombre": "Año 4 - Cuatrimestre 2",
-     "anio": 4,
-     "cuatri": 2,
-     "materias": []
+      "creditos": 0,
+      "nombre": "Electivas Skills Complementarios",
+      "requisito": "Aprobar todos los items (suma 0 créditos)",
+      "secciones": [
+        {
+          "anio": null,
+          "cuatri": null,
+          "materias": [
+            {
+              "codigo": "94.90",
+              "correlativas": [],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Inglés I (analista)"
+            },
+            {
+              "codigo": "94.91",
+              "correlativas": [
+                "94.90"
+              ],
+              "creditos": 0,
+              "creditosReq": 0,
+              "nombre": "Inglés II (licenciado)"
+            }
+          ],
+          "nombre": null
+        }
+      ],
+      "tipo": "todos",
+      "tituloOtorgado": null
     }
-   ]
+  ],
+  "capturado": "2026-09-13",
+  "carrera": {
+    "codigo": "LN",
+    "escuela": "Escuela de Gestión y Tecnología",
+    "nivel": "Grado",
+    "nombre": "Licenciatura en Gestión de Negocios"
   },
-  {
-   "nombre": "Electivas Gestión",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 27 créditos",
-   "creditos": 27,
-   "tipo": "creditos",
-   "secciones": [
+  "plan": "L20",
+  "planes": [
     {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "10.07",
-       "nombre": "Creatividad",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "10.09",
-       "nombre": "Formación para Emprendedores",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "94.40"
-       ]
-      },
-      {
-       "codigo": "10.15",
-       "nombre": "Agroindustria",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "61.82"
-       ]
-      },
-      {
-       "codigo": "10.23",
-       "nombre": "Agroindustria II",
-       "creditos": 3,
-       "creditosReq": 96,
-       "correlativas": []
-      },
-      {
-       "codigo": "11.79",
-       "nombre": "Sistemas y Modelos",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "93.39",
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "11.84",
-       "nombre": "Gestión de Proyectos",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "93.39",
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "14.24",
-       "nombre": "La Evolución de la Calidad y la Mejora Continua",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "14.46",
-       "nombre": "Lean Manufacturing",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "14.59",
-       "nombre": "Lean Six Sigma White Belt",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "14.90",
-       "nombre": "Neurociencia y Liderazgo",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "14.94",
-       "nombre": "Business Model Implementation",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "14.95",
-       "nombre": "Economía de la Innovación y la Producción",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "14.96",
-       "nombre": "Herramientas para Ganar Productividad",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "14.97",
-       "nombre": "Diseño Circular: Sustentabilidad e Innovación en la Cadena de Valor.",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "15.06",
-       "nombre": "Storytelling aplicado a los negocios",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": [
-        "94.64"
-       ]
-      },
-      {
-       "codigo": "15.09",
-       "nombre": "Agile, Lean y Lean Six Sigma",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "15.85",
-       "nombre": "Logística Internacional",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "11.83"
-       ]
-      },
-      {
-       "codigo": "17.22",
-       "nombre": "Cálculo de Huella de Carbono en Organizaciones",
-       "creditos": 1,
-       "creditosReq": 96,
-       "correlativas": []
-      },
-      {
-       "codigo": "17.23",
-       "nombre": "Triple Impacto: Estrategias para el Desarrollo Sostenible",
-       "creditos": 3,
-       "creditosReq": 96,
-       "correlativas": []
-      },
-      {
-       "codigo": "61.02",
-       "nombre": "Economía del Mercado Laboral",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "61.82",
-        "61.81",
-        "94.27"
-       ]
-      },
-      {
-       "codigo": "61.04",
-       "nombre": "Sistema Monetario y Financiero en Argentina",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "61.82"
-       ]
-      },
-      {
-       "codigo": "61.05",
-       "nombre": "Economía de la Salud",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "61.07",
-       "nombre": "Mercado de Capitales",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": [
-        "61.12"
-       ]
-      },
-      {
-       "codigo": "61.08",
-       "nombre": "Derecho Digital",
-       "creditos": 1,
-       "creditosReq": 0,
-       "correlativas": [
-        "61.87"
-       ]
-      },
-      {
-       "codigo": "61.11",
-       "nombre": "Derecho Laboral y Seguridad Social en la Empresa",
-       "creditos": 1,
-       "creditosReq": 0,
-       "correlativas": [
-        "61.87"
-       ]
-      },
-      {
-       "codigo": "61.13",
-       "nombre": "Práctica Contractual",
-       "creditos": 1,
-       "creditosReq": 0,
-       "correlativas": [
-        "61.87"
-       ]
-      },
-      {
-       "codigo": "61.14",
-       "nombre": "Economía Internacional Real",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "61.82",
-        "61.12"
-       ]
-      },
-      {
-       "codigo": "61.15",
-       "nombre": "Economía Internacional Monetaria",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "61.82",
-        "61.12"
-       ]
-      },
-      {
-       "codigo": "61.30",
-       "nombre": "Econometría Aplicada",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "93.39",
-        "61.82"
-       ]
-      },
-      {
-       "codigo": "61.34",
-       "nombre": "Valuación de Empresas",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": [
-        "61.12"
-       ]
-      },
-      {
-       "codigo": "61.88",
-       "nombre": "Derecho Público y Privado II",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "61.87"
-       ]
-      },
-      {
-       "codigo": "61.92",
-       "nombre": "Derecho Aduanero",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.26",
-        "61.87"
-       ]
-      },
-      {
-       "codigo": "61.93",
-       "nombre": "Estrategia Financiera",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "61.12"
-       ]
-      },
-      {
-       "codigo": "81.04",
-       "nombre": "Teoría de Juegos y Estrategia",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "61.82",
-        "61.81"
-       ]
-      },
-      {
-       "codigo": "81.05",
-       "nombre": "Responsabilidad Social Empresaria",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.13",
-       "nombre": "Futuros Posibles",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.14",
-       "nombre": "Product Management",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.53"
-       ]
-      },
-      {
-       "codigo": "81.16",
-       "nombre": "Negociación",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.17",
-       "nombre": "Finanzas y Programación",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.18",
-       "nombre": "Taller de Simulación Comercial",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.20"
-       ]
-      },
-      {
-       "codigo": "81.24",
-       "nombre": "Internacionalización de la Empresa",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.26",
-       "nombre": "Comercio Exterior",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.43",
-       "nombre": "Ciclo de charlas sobre estrategia empresarial",
-       "creditos": 3,
-       "creditosReq": 144,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.46",
-       "nombre": "Auditoría General y de Sistemas",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.49",
-       "nombre": "Branding y Comunicación",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.20"
-       ]
-      },
-      {
-       "codigo": "81.51",
-       "nombre": "Gestión de Empresas Familiares",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "81.58",
-       "nombre": "Service Design",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.59",
-       "nombre": "Gestión de Servicios",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.64",
-       "nombre": "Gestión y Sistemas de Información de la Logística Internacional",
-       "creditos": 6,
-       "creditosReq": 48,
-       "correlativas": [
-        "11.83"
-       ]
-      },
-      {
-       "codigo": "81.65",
-       "nombre": "Logística Internacional",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "11.83"
-       ]
-      },
-      {
-       "codigo": "81.66",
-       "nombre": "Logística Internacional Aplicada",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "11.83",
-        "81.26"
-       ]
-      },
-      {
-       "codigo": "81.67",
-       "nombre": "Logística E-commerce",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "11.83"
-       ]
-      },
-      {
-       "codigo": "81.71",
-       "nombre": "Marketing avanzado",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.20"
-       ]
-      },
-      {
-       "codigo": "81.82",
-       "nombre": "Growth Hacking",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.86",
-       "nombre": "Gestión de la Experiencia del Usuario (CX, UX, UI)",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.94",
-       "nombre": "Experiencia Inmersiva de Innovación Tecnológica",
-       "creditos": 1,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.24",
-       "nombre": "Investigación de Mercados",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.39",
-        "81.20"
-       ]
-      },
-      {
-       "codigo": "82.80",
-       "nombre": "Serv. de Exc. Lean aplic. a los Serv. y Princ. de Lean Office",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.88",
-       "nombre": "Estudio de Casos con Grandes Volúmenes de Datos",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.89",
-       "nombre": "Framing: How Politicians Debate",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.91",
-       "nombre": "Responsible Innovation: Ethics, Safety and Technology",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.92",
-       "nombre": "An Introduction to Credit Risk Management",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.93",
-       "nombre": "Diseño de Producto",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.94",
-       "nombre": "Demand Forecasting",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.95",
-       "nombre": "Analytics",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.96",
-       "nombre": "Negocios en la era de internet",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.97",
-       "nombre": "Introducción a Estrategia",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.98",
-       "nombre": "Introducción a la Consultoría",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.99",
-       "nombre": "Gestión de la Innovación",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.07",
-       "nombre": "Cultura Latinoamericana",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.09",
-       "nombre": "Cultura, Identidad y Política",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.11",
-       "nombre": "Sociología Política",
-       "creditos": 6,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.13",
-       "nombre": "Gestión de Organizaciones Sociales",
-       "creditos": 6,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.06"
-       ]
-      },
-      {
-       "codigo": "94.19",
-       "nombre": "Comportamiento Organizacional",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "94.40"
-       ]
-      },
-      {
-       "codigo": "94.42",
-       "nombre": "Comunicación Estratégica",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.62",
-       "nombre": "Ética en los Negocios",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.78",
-       "nombre": "Gestión de Capital Emprendedor y Venture Capital",
-       "creditos": 1,
-       "creditosReq": 96,
-       "correlativas": []
-      }
-     ]
+      "desde": "Segundo Cuat. 2021",
+      "elegido": true,
+      "hasta": "Verano 2024",
+      "nombre": "L20",
+      "version": "1"
     }
-   ]
-  },
-  {
-   "nombre": "Electivas Proyecto Final",
-   "tituloOtorgado": null,
-   "requisito": "Aprobar un item (suma 3 créditos)",
-   "creditos": 3,
-   "tipo": "uno",
-   "secciones": [
+  ],
+  "titulos": [
     {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "81.95",
-       "nombre": "Proyecto de lanzamiento de productos o servicios (Trabajo Final)",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.48",
-        "11.83",
-        "61.12",
-        "81.57",
-        "81.42"
-       ]
-      },
-      {
-       "codigo": "81.96",
-       "nombre": "Diagnóstico Empresario y Plan de Implementación de Sistemas (TF)",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.48",
-        "11.83",
-        "61.12",
-        "81.57",
-        "81.42"
-       ]
-      },
-      {
-       "codigo": "81.97",
-       "nombre": "Diagnóstico Empresario y Plan de Acción ( Trabajo Final )",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.48",
-        "11.83",
-        "81.57",
-        "61.12",
-        "81.42"
-       ]
-      }
-     ]
+      "creditos": 192,
+      "requisitos": "Aprobar L20 y sumar 192 créditos",
+      "tipo": "Principal",
+      "titulo": "Licenciado/a en Gestión de Negocios"
     }
-   ]
-  },
-  {
-   "nombre": "Electivas Sistemas y Tecnología",
-   "tituloOtorgado": null,
-   "requisito": "Juntar 30 créditos",
-   "creditos": 30,
-   "tipo": "creditos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "23.15",
-       "nombre": "Realidad Virtual",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "71.45",
-        "81.28",
-        "93.21"
-       ]
-      },
-      {
-       "codigo": "71.22",
-       "nombre": "Sistemas de Inteligencia Artificial",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "71.20"
-       ]
-      },
-      {
-       "codigo": "71.45",
-       "nombre": "Estructura de Datos y Programación",
-       "creditos": 6,
-       "creditosReq": 48,
-       "correlativas": [
-        "71.20"
-       ]
-      },
-      {
-       "codigo": "71.72",
-       "nombre": "Computación cuántica para negocios",
-       "creditos": 1,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.57",
-        "71.20"
-       ]
-      },
-      {
-       "codigo": "71.77",
-       "nombre": "Fundamentos de programación y análisis de datos",
-       "creditos": 1,
-       "creditosReq": 75,
-       "correlativas": []
-      },
-      {
-       "codigo": "71.79",
-       "nombre": "Introducción a las bases de datos",
-       "creditos": 6,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "72.74",
-       "nombre": "Visualización de Información",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "71.20"
-       ]
-      },
-      {
-       "codigo": "72.80",
-       "nombre": "Big Data",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "71.88"
-       ]
-      },
-      {
-       "codigo": "73.83",
-       "nombre": "Gestión estratégica de la Ciberseguridad",
-       "creditos": 1,
-       "creditosReq": 96,
-       "correlativas": []
-      },
-      {
-       "codigo": "73.84",
-       "nombre": "Ciencia de Datos Aplicada",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "71.22"
-       ]
-      },
-      {
-       "codigo": "81.19",
-       "nombre": "Marketing Digital",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.20"
-       ]
-      },
-      {
-       "codigo": "81.23",
-       "nombre": "Comercio Electrónico",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.53"
-       ]
-      },
-      {
-       "codigo": "81.28",
-       "nombre": "Tecnologías exponenciales",
-       "creditos": 3,
-       "creditosReq": 120,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.33",
-       "nombre": "Diseño de aplicaciones informáticas",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.32"
-       ]
-      },
-      {
-       "codigo": "81.38",
-       "nombre": "Integración de Procesos de Negocios y Aplicaciones Informáticas",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "71.30",
-        "71.20",
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.54",
-       "nombre": "Aplicaciones en Internet",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "71.30"
-       ]
-      },
-      {
-       "codigo": "81.69",
-       "nombre": "Sistemas Integrados de Gestión Empresaria II",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "61.12",
-        "81.68"
-       ]
-      },
-      {
-       "codigo": "81.72",
-       "nombre": "Introducción a la realidad virtual",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.73",
-       "nombre": "Introducción a la IOT",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.74",
-       "nombre": "Introducción a la realidad aumentada",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.75",
-       "nombre": "Fund. del desarrollo de software y análisis de datos en Python",
-       "creditos": 1,
-       "creditosReq": 71,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.76",
-       "nombre": "Tecnologías para las Finanzas",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.57",
-        "61.12"
-       ]
-      },
-      {
-       "codigo": "81.83",
-       "nombre": "Tecnología e Innovación Aplicada a la Industria",
-       "creditos": 1,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.84",
-       "nombre": "ERP Action Lab",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.11",
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.85",
-       "nombre": "CRM Action Lab",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.21",
-        "81.29"
-       ]
-      },
-      {
-       "codigo": "81.87",
-       "nombre": "Taller de Sistemas Integrados de Gestión Empresaria",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.88",
-       "nombre": "Taller de modelado Avanzado",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.89",
-       "nombre": "Taller de Sistemas Integrados de Gestión Empresaria II",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "81.91",
-       "nombre": "Inteligencia Artificial Aplicada a los Negocios",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "71.38"
-       ]
-      },
-      {
-       "codigo": "82.06",
-       "nombre": "Plataformas de Computación Cognitiva",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "71.38"
-       ]
-      },
-      {
-       "codigo": "82.07",
-       "nombre": "Blockchain (Moneda digital descentralizada)",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.53"
-       ]
-      },
-      {
-       "codigo": "82.08",
-       "nombre": "Cloud Computing",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.21",
-       "nombre": "Factibilidad de Proyectos Data Driven",
-       "creditos": 3,
-       "creditosReq": 140,
-       "correlativas": []
-      },
-      {
-       "codigo": "82.22",
-       "nombre": "Inteligencia Artificial Generativa",
-       "creditos": 1,
-       "creditosReq": 0,
-       "correlativas": [
-        "81.57"
-       ]
-      },
-      {
-       "codigo": "82.23",
-       "nombre": "Marketing Analytics",
-       "creditos": 3,
-       "creditosReq": 0,
-       "correlativas": [
-        "93.39",
-        "81.20",
-        "71.88"
-       ]
-      },
-      {
-       "codigo": "94.15",
-       "nombre": "Propiedad Intelectual y Nuevas Tecnologías",
-       "creditos": 3,
-       "creditosReq": 48,
-       "correlativas": [
-        "81.53",
-        "61.87"
-       ]
-      },
-      {
-       "codigo": "94.77",
-       "nombre": "Propiedad Intelectual",
-       "creditos": 1,
-       "creditosReq": 0,
-       "correlativas": [
-        "61.87"
-       ]
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "nombre": "Electivas Skills Complementarios",
-   "tituloOtorgado": null,
-   "requisito": "Aprobar todos los items (suma 0 créditos)",
-   "creditos": 0,
-   "tipo": "todos",
-   "secciones": [
-    {
-     "nombre": null,
-     "anio": null,
-     "cuatri": null,
-     "materias": [
-      {
-       "codigo": "94.90",
-       "nombre": "Inglés I (analista)",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": []
-      },
-      {
-       "codigo": "94.91",
-       "nombre": "Inglés II (licenciado)",
-       "creditos": 0,
-       "creditosReq": 0,
-       "correlativas": [
-        "94.90"
-       ]
-      }
-     ]
-    }
-   ]
-  }
- ],
- "titulos": [
-  {
-   "tipo": "Principal",
-   "titulo": "Licenciado/a en Gestión de Negocios",
-   "requisitos": "Aprobar L20 y sumar 192 créditos",
-   "creditos": 192
-  }
- ]
+  ],
+  "vacio": false
 }

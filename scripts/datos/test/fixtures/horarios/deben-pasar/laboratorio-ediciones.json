@@ -1,0 +1,203 @@
+{
+  "contrato": "1.1.0",
+  "cursos": [
+    {
+      "codigo": "17.06",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [],
+              "desde": "19:00",
+              "dia": "lunes",
+              "hasta": "22:00",
+              "modalidad": "presencial",
+              "sede": null
+            },
+            {
+              "aulas": [],
+              "desde": "17:00",
+              "dia": "jueves",
+              "hasta": "19:00",
+              "modalidad": "presencial",
+              "sede": null
+            }
+          ],
+          "cupo": {
+            "capacidad": 18
+          },
+          "docentes": [],
+          "id": "C",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 0
+          }
+        }
+      ],
+      "departamento": "Ambiente y Movilidad",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Proyecto Final de Carrera I"
+    },
+    {
+      "codigo": "81.73",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [],
+              "desde": "20:00",
+              "dia": "sabado",
+              "hasta": "21:00",
+              "modalidad": "virtual_asincronica",
+              "sede": null
+            }
+          ],
+          "desde": "2026-08-03",
+          "docentes": [
+            "Agazzi, Adrian Atilio"
+          ],
+          "hasta": "2026-09-11",
+          "id": "A",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 96
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [],
+              "desde": "20:00",
+              "dia": "sabado",
+              "hasta": "21:00",
+              "modalidad": "virtual_asincronica",
+              "sede": null
+            }
+          ],
+          "desde": "2026-09-14",
+          "docentes": [
+            "Agazzi, Adrian Atilio"
+          ],
+          "hasta": "2026-10-23",
+          "id": "A.2",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 38
+          }
+        }
+      ],
+      "departamento": "Sistemas Digitales y Datos",
+      "desde": "2026-08-03",
+      "dictado_conjunto": [],
+      "hasta": "2026-10-23",
+      "nombre": "Introducción a la IOT (Seminario - 03/08/2026 - 11/09/2026)"
+    },
+    {
+      "codigo": "93.41",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [],
+              "desde": "14:00",
+              "dia": "lunes",
+              "hasta": "16:00",
+              "modalidad": "laboratorio",
+              "sede": null
+            },
+            {
+              "aulas": [],
+              "desde": "08:00",
+              "dia": "martes",
+              "hasta": "10:00",
+              "modalidad": "virtual_sincronica",
+              "sede": null
+            },
+            {
+              "aulas": [],
+              "desde": "10:00",
+              "dia": "miercoles",
+              "hasta": "12:00",
+              "modalidad": "laboratorio",
+              "sede": null
+            }
+          ],
+          "cupo": {
+            "capacidad": 36
+          },
+          "docentes": [
+            "Lopez, Daniel Marcelo",
+            "Vieytes, Roberto Eduardo",
+            "Alonso, Lucas",
+            "Colombo, Priscila Daiana"
+          ],
+          "id": "A",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 11
+          }
+        },
+        {
+          "bloques": [
+            {
+              "aulas": [],
+              "desde": "09:00",
+              "dia": "lunes",
+              "hasta": "11:00",
+              "modalidad": "laboratorio",
+              "sede": null
+            },
+            {
+              "aulas": [],
+              "desde": "08:00",
+              "dia": "martes",
+              "hasta": "10:00",
+              "modalidad": "virtual_sincronica",
+              "sede": null
+            },
+            {
+              "aulas": [],
+              "desde": "11:00",
+              "dia": "jueves",
+              "hasta": "13:00",
+              "modalidad": "laboratorio",
+              "sede": null
+            }
+          ],
+          "cupo": {
+            "capacidad": 36
+          },
+          "docentes": [
+            "Lopez, Daniel Marcelo",
+            "González, Gustavo Javier",
+            "Vieytes, Roberto Eduardo",
+            "Colombo, Priscila Daiana"
+          ],
+          "id": "B",
+          "ocupacion": {
+            "al": "2026-09-12",
+            "inscriptos": 36
+          }
+        }
+      ],
+      "departamento": "Ciencias Exactas y Naturales",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Física I"
+    }
+  ],
+  "fuente": {
+    "capturado": "2026-09-12",
+    "sistema": "sga"
+  },
+  "periodo": {
+    "anio": 2026,
+    "cuatrimestre": "2C",
+    "desde": "2026-07-26",
+    "hasta": "2026-12-31",
+    "id": "2026-2C"
+  }
+}

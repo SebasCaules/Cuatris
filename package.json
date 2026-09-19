@@ -15,9 +15,12 @@
     "typecheck": "node scripts/build-planner-data.mjs && tsc --noEmit",
     "datos": "node scripts/build-planner-data.mjs && node scripts/build-finales-flags-data.mjs && node scripts/build-mesas-finales-data.mjs",
     "carreras": "node scripts/build-carreras-data.mjs",
+    "datos:validar": "node scripts/datos/validar.mjs",
+    "datos:fmt": "node scripts/datos/validar.mjs --fmt",
     "sync": "bash scripts/sync-desde-studyvaults.sh",
     "check:optimizador": "tsx scripts/optimizer-check/run.ts",
-    "test:grafo": "node scripts/build-planner-data.mjs && node scripts/test-grafo-layout.mts && node scripts/test-grafo-model.mts && node scripts/test-grafo-viewport.mts"
+    "test:grafo": "node scripts/build-planner-data.mjs && node scripts/test-grafo-layout.mts && node scripts/test-grafo-model.mts && node scripts/test-grafo-viewport.mts",
+    "test:datos": "node --test \"scripts/datos/test/*.test.mjs\""
   },
   "engines": {
     "node": ">=22.18"

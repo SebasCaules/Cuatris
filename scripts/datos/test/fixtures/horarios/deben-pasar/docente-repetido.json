@@ -1,0 +1,86 @@
+{
+  "contrato": "1.0.0",
+  "cursos": [
+    {
+      "codigo": "23.05",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "001R"
+              ],
+              "desde": "14:00",
+              "dia": "lunes",
+              "hasta": "16:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 48
+          },
+          "docentes": [
+            "Peña, Nelly Haydee"
+          ],
+          "id": "A",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 48
+          }
+        }
+      ],
+      "departamento": "Sistemas Digitales y Datos",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Acústica para Ingenieros"
+    },
+    {
+      "codigo": "25.66",
+      "comisiones": [
+        {
+          "bloques": [
+            {
+              "aulas": [
+                "002R"
+              ],
+              "desde": "15:00",
+              "dia": "lunes",
+              "hasta": "17:00",
+              "modalidad": "presencial",
+              "sede": "rectorado"
+            }
+          ],
+          "cupo": {
+            "capacidad": 48
+          },
+          "docentes": [
+            "Peña, Nelly Haydee"
+          ],
+          "id": "A",
+          "ocupacion": {
+            "al": "2026-09-09",
+            "inscriptos": 48
+          }
+        }
+      ],
+      "departamento": "Sistemas Digitales y Datos",
+      "desde": "2026-07-26",
+      "dictado_conjunto": [],
+      "hasta": "2026-12-31",
+      "nombre": "Acústica para Ingenieros"
+    }
+  ],
+  "fuente": {
+    "capturado": "2026-09-09",
+    "sistema": "sga"
+  },
+  "periodo": {
+    "anio": 2026,
+    "cuatrimestre": "2C",
+    "desde": "2026-07-26",
+    "hasta": "2026-12-31",
+    "id": "2026-2C"
+  }
+}

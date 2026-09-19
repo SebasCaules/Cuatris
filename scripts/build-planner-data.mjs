@@ -28,6 +28,8 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import path from "node:path";
 import vm from "node:vm";
 
+import { DIA, MODALIDAD, SEDE } from "./datos/vocabulario.mjs";
+
 const ROOT = process.cwd();
 const SRC_DATA_JS = path.join(ROOT, "data", "plan", "data.js");
 const SRC_CARRERAS = path.join(ROOT, "data", "plan", "carreras.json");
@@ -60,26 +62,9 @@ function leerPlanCurado() {
 
 // ---- horarios: contrato 1.1.0 → formato del planner -------------------------
 
-const DIA = {
-  lunes: "Lunes",
-  martes: "Martes",
-  miercoles: "Miércoles",
-  jueves: "Jueves",
-  viernes: "Viernes",
-  sabado: "Sábado",
-  domingo: "Domingo",
-};
-// Vocabulario del planner (time.ts decide conflictos de sede con "Virtual";
-// el filtro del combinador ofrece Presencial / Virtual / Blended).
-const MODALIDAD = {
-  presencial: "Presencial",
-  blended: "Blended",
-  virtual: "Virtual",
-  virtual_sincronica: "Virtual",
-  virtual_asincronica: "Asincrónico",
-  laboratorio: "Laboratorio",
-};
-const SEDE = { sdf: "Distrito Financiero", rectorado: "Rectorado", sdt: "SDT" };
+// Los días, modalidades y sedes del contrato (DIA, MODALIDAD, SEDE) viven en
+// scripts/datos/vocabulario.mjs, compartidos con el validador del gate: lo que
+// el gate acepta, este build lo traduce.
 const CUATRI_LABEL = { "1C": "Primer Cuat.", "2C": "Segundo Cuat." };
 const PERIODO_LABEL = { "1C": "1.º cuatrimestre", "2C": "2.º cuatrimestre" };
 
