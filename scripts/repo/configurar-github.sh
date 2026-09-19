@@ -37,9 +37,11 @@ for arg in "$@"; do
 done
 
 log() { printf '\033[1;36m▶ %s\033[0m\n' "$*"; }
-correr() {
+correr() { # SILENCIO=1 correr … descarta la salida (las respuestas JSON de la API)
   if [ "$DRY_RUN" = 1 ]; then
     printf '   (dry-run) %q' "$1"; shift; printf ' %q' "$@"; printf '\n'
+  elif [ "${SILENCIO:-0}" = 1 ]; then
+    "$@" > /dev/null
   else
     "$@"
   fi
@@ -75,14 +77,14 @@ log "Ruleset «main» ($RULESET)"
 existente="$(gh api "repos/$REPO/rulesets" --jq '.[] | select(.name == "main") | .id' 2>/dev/null | head -n 1 || true)"
 if [ -n "$existente" ]; then
   echo "   ya existe (id $existente): se actualiza"
-  correr gh api -X PUT "repos/$REPO/rulesets/$existente" --input "$RULESET"
+  SILENCIO=1 correr gh api -X PUT "repos/$REPO/rulesets/$existente" --input "$RULESET"
 else
-  correr gh api -X POST "repos/$REPO/rulesets" --input "$RULESET"
+  SILENCIO=1 correr gh api -X POST "repos/$REPO/rulesets" --input "$RULESET"
 fi
 
 # 3. Permisos del GITHUB_TOKEN --------------------------------------------------------------
 log "Permisos por defecto del GITHUB_TOKEN: solo lectura"
-correr gh api -X PUT "repos/$REPO/actions/permissions/workflow" \
+SILENCIO=1 correr gh api -X PUT "repos/$REPO/actions/permissions/workflow" \
   -f default_workflow_permissions=read -F can_approve_pull_request_reviews=false
 
 # 4. Pages por Actions ---------------------------------------------------------------------
