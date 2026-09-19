@@ -17,6 +17,8 @@
     "carreras": "node scripts/build-carreras-data.mjs",
     "datos:validar": "node scripts/datos/validar.mjs",
     "datos:fmt": "node scripts/datos/validar.mjs --fmt",
+    "datos:triage": "node scripts/datos/triage.mjs",
+    "guardarrailes": "node scripts/datos/guardarrailes.mjs .github",
     "sync": "bash scripts/sync-desde-studyvaults.sh",
     "check:optimizador": "tsx scripts/optimizer-check/run.ts",
     "test:grafo": "node scripts/build-planner-data.mjs && node scripts/test-grafo-layout.mts && node scripts/test-grafo-model.mts && node scripts/test-grafo-viewport.mts",
