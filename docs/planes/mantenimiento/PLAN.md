@@ -1,10 +1,8 @@
 # Mantenimiento comunitario de los datos — plan de implementación
 
-> **Estado: pendiente, no se empezó.** Plan aprobado por el autor el 2026-09-16 y guardado
-> para implementarlo más adelante. Nada de lo que describe existe todavía en el repositorio
-> (ni la rama `mantenimiento`, ni `scripts/datos/`, ni `tools/`). Para retomarlo: empezar
-> por la Etapa 0 de la tabla de «Etapas» y llevar el estado en un `EXEC_STATE.md` al lado
-> de este archivo, como en `docs/planes/mapa-correlativas/`.
+> **Estado: en curso** (desde el 2026-09-19) en la rama `mantenimiento` (worktree
+> `.claude/worktrees/mantenimiento`). El avance paso a paso está en `EXEC_STATE.md`, al lado
+> de este archivo. Plan aprobado por el autor el 2026-09-16.
 
 ## Contexto
 
