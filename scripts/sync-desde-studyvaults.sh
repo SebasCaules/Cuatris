@@ -6,7 +6,8 @@
 # Copia UNA VÍA (StudyVaults → Cuatris) los directorios que se mantienen
 # byte-idénticos entre ambos proyectos:
 #   site/components/planner/    → components/planner/
-#   site/lib/planner/           → lib/planner/          (sin data.json: se regenera)
+#   site/lib/planner/           → lib/planner/          (sin data.json, mesasFinales.ts ni
+#                                                        finalesFlags.ts: se regeneran acá)
 #   site/lib/url-state/         → lib/url-state/
 #   site/packages/ui/           → packages/ui/
 #   site/public/electivas-fichas/ → public/electivas-fichas/
@@ -44,7 +45,7 @@ sync_dir() { # origen destino [excluir…]
 }
 
 sync_dir "$SITE/components/planner" "$ROOT/components/planner"
-sync_dir "$SITE/lib/planner" "$ROOT/lib/planner" "data.json"
+sync_dir "$SITE/lib/planner" "$ROOT/lib/planner" "data.json" "mesasFinales.ts" "finalesFlags.ts"
 sync_dir "$SITE/lib/url-state" "$ROOT/lib/url-state"
 sync_dir "$SITE/packages/ui" "$ROOT/packages/ui" "tsconfig.tsbuildinfo" "node_modules"
 sync_dir "$SITE/public/electivas-fichas" "$ROOT/public/electivas-fichas"
@@ -60,8 +61,8 @@ for f in "$EL"/finales-*.csv; do
 done
 log "data/plan/  ←  $EL (build-resumenes.py NO se sincroniza: tiene rutas propias)"
 
-log "Regenerando lib/planner/data.json"
-(cd "$ROOT" && node scripts/build-planner-data.mjs)
+log "Regenerando lib/planner/data.json, mesasFinales.ts y finalesFlags.ts"
+(cd "$ROOT" && npm run datos)
 
 echo
 git -C "$ROOT" status --short | sed 's/^/   /'

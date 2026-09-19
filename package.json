@@ -7,12 +7,12 @@
     "packages/*"
   ],
   "scripts": {
-    "predev": "node scripts/build-planner-data.mjs",
+    "predev": "npm run datos",
     "dev": "next dev",
-    "prebuild": "node scripts/build-planner-data.mjs",
+    "prebuild": "npm run datos",
     "build": "next build",
     "start": "next start",
-    "typecheck": "node scripts/build-planner-data.mjs && tsc --noEmit",
+    "typecheck": "npm run datos && tsc --noEmit",
     "datos": "node scripts/build-planner-data.mjs && node scripts/build-finales-flags-data.mjs && node scripts/build-mesas-finales-data.mjs",
     "carreras": "node scripts/build-carreras-data.mjs",
     "datos:validar": "node scripts/datos/validar.mjs",

@@ -2,9 +2,10 @@
 #
 # run.sh — regenera los datos, compila el sitio y lo levanta para ver los cambios.
 #
-# Antes de compilar hay que regenerar lib/planner/data.json a partir de
-# data/plan/data.js (lo hace el hook predev/prebuild de npm); este script
-# además limpia las cachés para que NUNCA queden cambios viejos pegados.
+# Antes de compilar hay que regenerar lib/planner/data.json, mesasFinales.ts y
+# finalesFlags.ts a partir de data/plan/ (lo hace el hook predev/prebuild de npm:
+# `npm run datos`); este script además limpia las cachés para que NUNCA queden
+# cambios viejos pegados.
 #
 # Uso:
 #   ./run.sh            modo dev: limpia, regenera y arranca el dev server con
@@ -44,7 +45,7 @@ ensure_deps() {
 
 clean() {
   log "Limpiando caché de Next y artefactos generados"
-  rm -rf .next out tsconfig.tsbuildinfo lib/planner/data.json .preview
+  rm -rf .next out tsconfig.tsbuildinfo lib/planner/data.json lib/planner/mesasFinales.ts lib/planner/finalesFlags.ts .preview
 }
 
 case "$MODE" in
